@@ -8,7 +8,6 @@
     "lib-build:prod": "cross-env ng build epgu-lib && npm run cp-lib-assets",
     "cp-lib-assets": "cross-env cpx \"./src/assets/**/*\" \"./dist/epgu-lib/assets\""
   },
-  "private": true,
   "peerDependencies": {
     "cross-env": "6.0.0",
     "cpx": "^1.5.0",
