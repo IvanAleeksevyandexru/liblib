@@ -1,0 +1,24 @@
+{
+  "name": "epgu-lib",
+  "version": "0.0.0",
+  "scripts": {
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "lib-build:prod": "cross-env ng build epgu-lib && npm run cp-lib-assets",
+    "cp-lib-assets": "cross-env cpx \"./src/assets/**/*\" \"./dist/epgu-lib/assets\""
+  },
+  "private": true,
+  "peerDependencies": {
+    "cross-env": "6.0.0",
+    "cpx": "^1.5.0",
+    "@angular/common": "9.0.2",
+    "@angular/core": "9.0.2",
+    "angular2-text-mask": "9.0.0",
+    "moment": "2.24.0",
+    "ngx-perfect-scrollbar": "8.0.0"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.0.7"
+  }
+}

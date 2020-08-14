@@ -1,0 +1,151 @@
+.error-icon {
+	position: relative;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	background: url(../../../assets/svg/validation-error-tip.svg) no-repeat;
+	cursor: pointer;
+	&.hidden {
+    display: none;
+  }
+  .error-tip-container {
+    position: absolute;
+		display: block;
+    width: auto;
+		border: none;
+		z-index: 1;
+  }
+  .tail-shadow, .tail-mask {
+    display: block;
+    position: absolute;
+    z-index: 1;
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+  }
+  .tail-shadow {
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.4);
+  }
+  .tail-mask {
+    background-color: white;
+    box-shadow: none;
+  }
+  .validation-error-tip {
+		position: absolute;
+		width: 100%;
+		min-width: 200px;
+		min-height: 150px;
+		border: none;
+		background-color: white;
+		box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+		padding: 16px;
+		border-radius: 4px;
+    z-index: 1;
+		.error-content {
+			font-family: Helvetica, Arial; 
+			font-size: 14px;
+			line-height: 20px;
+			font-weight: normal;
+			color: #515A63;
+		}
+  }
+  .error-tip-container {
+    &.bottom {
+      top: 30px;
+      left: -44px;
+      .tail-shadow, .tail-mask {
+        top: 0;
+        left: 52px;
+      }
+      .validation-error-tip {
+        top: 6px;
+        left: 0;
+      }
+    }
+    &.top {
+      bottom: 30px;
+      left: -44px;
+      .tail-shadow, .tail-mask {
+        bottom: 0;
+        left: 52px;
+      }
+      .validation-error-tip {
+        bottom: 6px;
+        left: 0;
+      }
+    }
+    &.left {
+      top: -44px;
+      right: 30px;
+      .tail-shadow, .tail-mask {
+        top: 52px;
+        right: 0;
+      }
+      .validation-error-tip {
+        right: 6px;
+        top: 0;
+      }
+    }
+    &.right {
+      top: -44px;
+      left: 30px;
+      .tail-shadow, .tail-mask {
+        top: 52px;
+        left: 0;
+      }
+      .validation-error-tip {
+        left: 6px;
+        top: 0;
+      }
+    }
+    &.top-left {
+      bottom: 30px;
+      right: -16px;
+      .tail-shadow, .tail-mask {
+        bottom: 0;
+        right: 24px;
+      }
+      .validation-error-tip {
+        bottom: 6px;
+        right: 0;
+      }
+    }
+    &.bottom-left {
+      top: 30px;
+      right: -16px;
+      .tail-shadow, .tail-mask {
+        top: 0;
+        right: 24px;
+      }
+      .validation-error-tip {
+        top: 6px;
+        right: 0;
+      }
+    }
+  }
+	.error-tip-container {
+    display: none;
+  }
+  &.force-hide {
+    .error-tip-container {
+      display: none;
+    }
+  }
+  &.force-show {
+    .error-tip-container {
+      display: block;
+    }
+  }
+	&.hover-controlled {
+		&.hovered {
+			.error-tip-container {
+				display: block;
+			}
+		}
+		&.force-hide {
+			.error-tip-container {
+				display: none;
+			}
+		}
+	}
+}

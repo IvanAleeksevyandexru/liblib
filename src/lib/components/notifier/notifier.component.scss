@@ -1,0 +1,115 @@
+.notifiers-list {
+  position: fixed;
+  z-index: 2147473650;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  left: 8px;
+  right: unset;
+  bottom: 0;
+  
+  .notifier {
+    position: relative;
+    background: #495159;
+    color: #fff;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 24px 74px 24px 24px;
+    margin-bottom: 8px;
+    min-width: 400px;
+    
+    &.icon {
+      padding-left: 70px;
+      background-repeat: no-repeat;
+      background-size: 26px 26px;
+      background-position: 24px center;
+
+      &.notifier-success {
+        background-image: url(../../../assets/svg/notifier-success.svg);
+      }
+      &.notifier-process {
+        background-image: url(../../../assets/svg/notifier-process.svg);
+      }
+      &.notifier-error {
+        background-image: url(../../../assets/svg/norifier-error.svg);
+      }
+    }
+    
+    &.hide-all {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: center;
+    }
+    
+    &.last-one {
+      margin-bottom: 0;
+    }
+    
+    .cancel, .close-all {
+      font-size: 16px;
+      line-height: 24px;
+      color: #fff;
+    }
+    .cancel {
+      margin-left: 32px;
+    }
+    
+    .close {
+      position: absolute;
+      top: 50%;
+      right: 26px;
+      width: 16px;
+      height: 16px;
+      margin-top: -8px;
+      background: url(../../../assets/svg/close-white.svg) no-repeat center;
+    }
+  }
+  &.light {
+    .notifier {
+      box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      color: #515A63;
+
+      .close {
+        background-image: url(../../../assets/svg/close-dark.svg);
+      }
+    }
+  }
+  &.right {
+    align-items: flex-end;
+    left: unset;
+    right: 8px;
+    text-align: right;
+  }
+}
+
+@media all and (min-width: 768px) and (max-width: 1140px) {
+  .notifiers-list {
+    text-align: center;
+    right: 64px;
+    align-items: stretch;
+  }
+}
+
+@media all and (max-width: 767px) {
+  .notifiers-list {
+    left: 0;
+    right: 0;
+    align-items: stretch;
+    .notifier {
+      padding: 16px 48px 16px 24px;
+      margin-bottom: 0;
+
+      .close {
+        top: 16px;
+        margin-top: 0;
+      }
+
+      .cancel {
+        display: block;
+        margin-left: 0;
+        margin-top: 16px;
+      }
+    }
+  }
+}

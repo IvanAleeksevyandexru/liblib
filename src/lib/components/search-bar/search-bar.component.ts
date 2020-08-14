@@ -1,0 +1,325 @@
+import {
+  Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnChanges, OnDestroy, DoCheck,
+  SimpleChanges, forwardRef, ElementRef, ViewChild, ChangeDetectorRef, Optional, Host, SkipSelf } from '@angular/core';
+import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { FocusManager, Focusable } from '../../services/focus/focus.manager';
+import { Validated, ValidationShowOn } from '../../models/validation-show';
+import { HelperService } from '../../services/helper/helper.service';
+import { ValidationHelper } from '../../services/validation-helper/validation.helper';
+import { ConstantsService } from '../../services/constants.service';
+
+class ScheduledSearch {
+  public constructor(query: string, token: number) {
+    this.query = query;
+    this.token = token;
+  }
+  public query: string;
+  public token: number;
+}
+
+@Component({
+  selector: 'lib-search-bar',
+  templateUrl: 'search-bar.component.html',
+  styleUrls: ['./search-bar.component.scss'],
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => SearchBarComponent),
+    multi: true
+  }]
+})
+export class SearchBarComponent
+    implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated {
+
+  constructor(
+    private changeDetector: ChangeDetectorRef,
+    protected focusManager: FocusManager,
+    @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
+
+  // name привязывается к аттрибуту, чтобы привязать контрол к форме используйте formControlName
+  @Input() public id?: string;
+  @Input() public name?: string;
+  @Input() public formControlName?: string;
+  @Input() public contextClass?: string;  // класс-маркер разметки для deep стилей
+  @Input() public maxlength?: string | number;
+  @Input() public placeholder?: string;
+  @Input() public tabIndex?: string | number;
+  @Input() public readOnly = false;
+  @Input() public disabled = false;
+  @Input() public invalid = false;
+  @Input() public validationShowOn: ValidationShowOn | string = ValidationShowOn.TOUCHED;
+  @Input() public clearable = true;  // разрешает очистить поле если есть значение
+  @Input() public showStaticContent = false; // разрешает показывать ng-content вместо инпута пока он не активен. активируется кликом
+  @Input() public forceShowStaticContent = false; // форсирует показ ng-content-а независимо от активности инпут-поля
+
+  @Input() public commitOnInput = true;
+  @Input() public searching = false; // внешняя привязка статуса searching для более удобного управления
+  @Input() public suggestion: string; // строка "продолжения" фразы, если показана, то enter будет приводить к (suggestionSelected)
+  @Input() public showMagnifyingGlass = true;
+  @Input() public queryTimeout = ConstantsService.DEFAULT_QUERY_DEBOUNCE;
+  @Input() public queryMinSymbolsCount = 1;
+  // должен ли поиск запускаться по программному изменению модели (несмотря на searchOnlyIfFocused)
+  @Input() public searchOnProgrammaticChange = true;
+  // true - запускает новый поиск даже если текущий еще в процессе
+  // false - ставит новый поиск в очередь и ждет окончания текущего (с уведомлением search -> false)
+  @Input() public parallelSearch = true;
+  // дизейблин возможность ввода на время текущего активного поиска
+  @Input() public blockWhenSearching = false;
+  // разрешает запускать поиск только если новое значение отличается от предыдущего
+  @Input() public searchUniqueOnly = false;
+  // запрещает запускать новый поиск (по debounceTime вводу) если контрол уже потерял фокус
+  @Input() public searchOnlyIfFocused = false;
+  // запускать ли поиск по получению фокуса
+  @Input() public searchOnFocus = false;
+  // отменяет срабатывание поиска по вводу и иконке, только по текстовому вводу
+  @Input() public searchByForcing = true;
+  // отменяет срабатывание поиска по текстовому вводу, только по вводу и иконке
+  @Input() public searchByTextInput = !HelperService.isTouchDevice();
+
+  @Output() public focus = new EventEmitter<any>();
+  @Output() public blur = new EventEmitter<any>();
+  @Output() public newSearch = new EventEmitter<string>();
+  @Output() public cleared = new EventEmitter<void>();
+  @Output() public suggestionSelected = new EventEmitter<string>();
+  @ViewChild('input', {static: false}) protected inputElement: ElementRef<HTMLInputElement>;
+
+  public focused = false;
+  public touched = false;
+  public query = '';
+  public invalidDisplayed = false;
+  public control: AbstractControl;
+  private lastEmitted = '';
+  private suppressSearching = false;
+  private insureSearchActiveToken = 0;
+  private queryDebounce = new Subject<ScheduledSearch>();
+  private querySubscription = this.refreshDebouncedSubscription();
+  private searchQueue: Array<string> = [];
+
+  private onTouchedCallback: () => void;
+  protected commit(value: string) {}
+
+  public ngOnInit() {
+    this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
+  }
+
+  public ngAfterViewInit() {
+    this.focusManager.register(this);
+  }
+
+  public ngOnChanges(changes: SimpleChanges) {
+    for (const propName of Object.keys(changes)) {
+      switch (propName) {
+        case 'queryTimeout': {
+          this.querySubscription = this.refreshDebouncedSubscription();
+          break;
+        }
+        case 'searching': {
+          if (this.searching === false && this.searchQueue.length) {
+            this.dequeueUntilSearching();
+          }
+          break;
+        }
+      }
+    }
+    this.check();
+  }
+
+  public ngDoCheck() {
+    if (this.control) {
+      this.touched = this.control.touched;
+    }
+    this.check();
+  }
+
+  public ngOnDestroy() {
+    this.focusManager.unregister(this);
+  }
+
+  public updateQuery(value: string) {
+    this.query = value;
+    this.suggestion = null;
+    if (this.commitOnInput) {
+      this.commit(this.query);
+    }
+    if (this.searchByTextInput) {
+      this.queryDebounce.next(new ScheduledSearch(value, this.insureSearchActiveToken));
+    }
+    this.check();
+  }
+
+  public handleChange(value: string) {
+    if (!this.commitOnInput) {
+      this.commit(value);
+    }
+  }
+
+  public blockInputIfNeeded(e: Event) {
+    if (this.blockWhenSearching && this.searching) {
+      e.stopPropagation();
+      e.preventDefault();
+      return false;
+    }
+  }
+
+  public clearSearch(e: Event) {
+    this.suggestion = null;
+    if (!this.disabled && !(this.blockWhenSearching && this.searching)) {
+      this.returnFocus();
+      this.query = '';
+      this.runOrPostponeSearch(this.query);
+    }
+    e.stopPropagation();
+    this.cleared.emit();
+    this.check();
+  }
+
+   // вызывается только внутри компонента
+   public runOrPostponeSearch(query: string, forcedWithKey = false, forcedWithMagnifyingGlass = false) {
+    if (this.disabled || this.blockWhenSearching && this.searching || this.searchOnlyIfFocused && !this.focused) {
+      this.cancelSearch();
+      return;
+    }
+    if (this.suggestion && forcedWithKey) {
+      this.query = query = query + this.suggestion;
+      this.suggestionSelected.emit(query);
+      this.suggestion = null;
+    } else {
+      if (!this.searchByForcing && (forcedWithKey || forcedWithMagnifyingGlass)) {
+        this.cancelSearch();
+        return;
+      }
+      this.searchValueSkipUnconditional(query);
+    }
+  }
+
+  public cancelSearch() {
+    this.searchQueue = [];
+    this.insureSearchActiveToken = ++this.insureSearchActiveToken % 1000;
+  }
+
+  public selectSuggestion() {
+    if (this.suggestion) {
+      this.suggestionSelected.emit(this.query + this.suggestion);
+    }
+  }
+
+  // вызывается внутри компонента И когда модель изменена программно снаружи
+  public searchValueSkipUnconditional(value: string) {
+    if (value && this.queryMinSymbolsCount && value.length < this.queryMinSymbolsCount) {
+      return;
+    } else if (this.searchUniqueOnly && value === this.lastEmitted) {
+      return;
+    }
+    if (this.searching && (!this.parallelSearch || this.blockWhenSearching)) {
+      // здесь мы можем оказаться с blockWhenSearching только по программному изменению модели
+      this.searchQueue.push(value);
+    } else {
+      this.lastEmitted = value;
+      this.newSearch.emit(value);
+    }
+  }
+
+  public dequeueUntilSearching() {
+    if (this.searchQueue.length) {
+      if (this.searching) {
+        return;  // ждем уведомления от ngOnChanges
+      } else {
+        const search = this.searchQueue.shift();
+        if (search) {
+          this.searchValueSkipUnconditional(search);
+          setTimeout(() => {
+            // сделано асинхронным чтобы внешний обработчик поиска мог нормально запушить изменение searching флага
+            this.dequeueUntilSearching();
+          }, 0);
+        }
+      }
+    }
+  }
+
+  public writeValue(value: string) {
+    const prevValue = this.query;
+    this.query = value || '';
+    this.suggestion = null;
+    if (value !== prevValue) {
+      if (this.searchOnProgrammaticChange) {
+        this.searchValueSkipUnconditional(value);
+      }
+    }
+    this.check();
+    this.changeDetector.detectChanges();
+  }
+
+  public notifyFocusEvent(e: Event) {
+    this.focusManager.notifyFocusMayChanged(this, e.type === 'focus');
+  }
+
+  public handleBlur() {
+    this.focused = false;
+    this.suggestion = null;
+    this.check();
+    this.blur.emit();
+  }
+
+  public handleFocus() {
+    this.focused = this.touched = true;
+    if (this.onTouchedCallback) {
+      this.onTouchedCallback();
+    }
+    if (this.searchOnFocus && !this.suppressSearching) {
+      this.searchValueSkipUnconditional(this.query);
+    }
+    this.check();
+    this.focus.emit();
+  }
+
+  public returnFocus(e?: Event) {
+    if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement)) {
+      this.suppressSearching = true;
+      this.setFocus();
+      this.suppressSearching = false;
+    }
+  }
+
+  public setFocus() {
+    this.inputElement.nativeElement.focus();
+    HelperService.resetSelection(this.inputElement.nativeElement);
+    this.focusManager.notifyFocusMayChanged(this, true);
+  }
+
+  public setTouched(touched: boolean) {
+    this.touched = touched;
+  }
+
+  public registerOnChange(fn: any): void {
+    this.commit = fn;
+  }
+
+  public registerOnTouched(fn: any) {
+    this.onTouchedCallback = fn;
+  }
+
+  public setDisabledState(isDisabled: boolean) {
+    this.disabled = isDisabled;
+    this.check();
+  }
+
+  public check() {
+    this.invalidDisplayed = ValidationHelper.checkValidation(this, {empty: !!this.query});
+  }
+
+  private refreshDebouncedSubscription() {
+    if (!this.queryDebounce) {
+      return;
+    }
+    if (this.querySubscription) {
+      this.querySubscription.unsubscribe();
+    }
+    return this.queryDebounce.pipe(debounceTime(this.queryTimeout)).subscribe((search: ScheduledSearch) => {
+      if (search.token === this.insureSearchActiveToken && this.searchByTextInput) {
+        this.runOrPostponeSearch(search.query);
+      }
+    });
+  }
+
+}

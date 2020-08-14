@@ -1,0 +1,51 @@
+<div class="lookup" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside
+     (clickOutside)="handleBlur(true)">
+  <div class="lookup-field" #dropdownField [ngClass]="{invalid: invalid, expanded: expanded}">
+    <lib-search-bar #searchBar
+      contextClass="lookup-input" 
+      [tabIndex]="tabIndex"
+      [disabled]="disabled"
+      [maxlength]="maxlength"
+      [clearable]="clearable"
+      [invalid]="invalid"
+      [validationShowOn]="validationShowOn"
+      [showMagnifyingGlass]="showMagnifyingGlass"
+      [queryTimeout]="queryTimeout"
+      [queryMinSymbolsCount]="queryMinSymbolsCount"
+      [parallelSearch]="false"
+      [searchOnProgrammaticChange]="false"
+      [searchOnlyIfFocused]="true"
+      [searchOnFocus]="searchOnFocus"
+      [searchByForcing]="false"
+      [searchByTextInput]="true"
+      [(ngModel)]="query"
+      [searching]="searching"
+      (newSearch)="lookupItems($event)"
+      (input)="handleInput($event)"
+      (change)="handleChange($event)"
+      (keydown)="handleKeydownNavigation($event)"
+      (click)="lookupItemsOrClose()"
+      (focus)="handleFocus()"
+      (blur)="handleBlur(false)"
+      (cleared)="cleared.emit($event)"></lib-search-bar>
+  </div>
+  <div class="lookup-list-wrapper">
+    <div class="lookup-list-container" #dropdownList [ngClass]="{hidden: !expanded}">
+      <perfect-scrollbar #scrollComponent [config]="{suppressScrollX: true}">
+        <div class="lookup-list-area" #scrollableArea>
+          <div *ngFor="let suggestion of suggestions" class="lookup-item" 
+               (click)="selectSuggestion(suggestion)" (mouseenter)="highlight(suggestion)" (mouseleave)="highlight(null)"
+               [ngClass]="{highlighted: suggestion === highlighted}">
+            <div class="item-container">
+              <span class="lookup-item-text" *ngIf="!escapeHtml" innerHTML="suggestion.text"></span>
+              <span class="lookup-item-text" *ngIf="escapeHtml">{{suggestion.text}}</span>
+            </div>
+          </div>
+        </div>
+      </perfect-scrollbar>
+      <div class="additional-item">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+</div>

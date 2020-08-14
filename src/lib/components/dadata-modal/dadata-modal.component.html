@@ -1,0 +1,29 @@
+<div class="popup-wrapper">
+  <div class="popup">
+    <a class="close" (click)="onCancel($event)"></a>
+    <h4 class="title title-h2 mb-32">{{'DADATA.MODAL.TITLE'| libTranslate}}</h4>
+    <div class="mb-8 mb-md-16 mb-lg-16">
+      <span class="text-plain dark-gray">{{'DADATA.MODAL.SIMPLE_TEXT'| libTranslate}}</span>&nbsp;
+      <a class="link-plain" href="http://fias.nalog.ru/">{{'DADATA.MODAL.LINK'| libTranslate}}</a>
+    </div>
+    <div class="mb-16 mb-md-32 mb-lg-32">
+      <span class="text-plain bold">{{currentAddress}}</span>
+    </div>
+    <div class="mb-8 mb-md-16 mb-lg-16" *ngIf="successAddress && successAddress !== currentAddress">
+      <span class="text-plain dark-gray">{{'DADATA.MODAL.PURPOSE_TEXT'| libTranslate}}</span>
+    </div>
+    <div class="mb-16 mb-md-32 mb-lg-32" *ngIf="successAddress && successAddress !== currentAddress">
+      <span class="text-plain bold">{{successAddress}}</span>
+    </div>
+    <div class="mb-32" *ngIf="successAddress && successAddress !== currentAddress">
+      <span class="text-plain">{{'DADATA.MODAL.SAVE_TITLE'| libTranslate}}</span>
+    </div>
+    <div class="button-wrapper" *ngIf="successAddress && successAddress !== currentAddress">
+      <lib-button size="md" (click)="confirmAndClose()">{{'DADATA.MODAL.SAVE_BUTTON' | libTranslate}}</lib-button>
+    </div>
+    <div class="button-wrapper">
+      <lib-button color="white" size="md"
+                  (click)="returnToEdit()">{{'DADATA.MODAL.RETURN_BUTTON' | libTranslate}}</lib-button>
+    </div>
+  </div>
+</div>

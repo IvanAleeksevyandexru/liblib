@@ -1,0 +1,25 @@
+@mixin offsets($prefix) {
+  @for $i from 0 through 20 {
+    .mt#{$prefix}-#{$i * 4} {
+      margin-top: #{$i * 4}px;
+    }
+
+    .mb#{$prefix}-#{$i * 4} {
+      margin-bottom: #{$i * 4}px;
+    }
+  }
+}
+
+@include offsets('');
+
+@media all and (max-width: 767px) {
+  @include offsets('-sm');
+}
+
+@media all and (min-width: 768px) {
+  @include offsets('-md');
+}
+
+@media all and (min-width: 1140px) {
+  @include offsets('-lg');
+}

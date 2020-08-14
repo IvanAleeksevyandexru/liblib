@@ -1,0 +1,73 @@
+<ng-container [ngSwitch]="templateType">
+  <ng-container *ngSwitchCase="'monitor-warning'">
+    <ng-container *ngTemplateOutlet="monitorWarning"></ng-container>
+  </ng-container>
+  <ng-container *ngSwitchCase="'exclamation'">
+    <ng-container *ngTemplateOutlet="exclamation"></ng-container>
+  </ng-container>
+  <ng-container *ngSwitchCase="'wrong-route'">
+    <ng-container *ngTemplateOutlet="wrongRoute"></ng-container>
+  </ng-container>
+  <ng-container *ngSwitchCase="'empty-elections'">
+    <ng-container *ngTemplateOutlet="emptyElections"></ng-container>
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <ng-container *ngTemplateOutlet="Default"></ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-template #monitorWarning>
+  <div class="grid-row text-center">
+    <div class="col-lg-6 col-md-4 col-3 push-lg-3 push-md-1">
+      <div class="mt-40">
+        <div class="title-error mb-24" [innerHTML]="title | appTranslate"></div>
+        <img class="error-image" [src]="staticDomainLibAssetsPath + 'svg/errors/monitor-warning.svg'" alt="">
+        <div *ngIf="refUrl" class="subtitle text-plain mt-24 mb-32" [innerHTML]="subTitle | appTranslate: {currentUrl: location, href: refUrl}"></div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #emptyElections>
+  <div class="grid-row text-center">
+    <div class="col-lg-6 col-md-4 col-3 push-lg-3 push-md-1">
+      <div class="mt-40">
+        <div class="title-h4 mb-24" [innerHTML]="title | appTranslate"></div>
+        <img class="error-image" [src]="staticDomainLibAssetsPath + 'svg/errors/no-elections.svg'" alt="">
+        <div class="subtitle text-plain mt-24 mb-32" [innerHTML]="subTitle | appTranslate"></div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #exclamation>
+  <div class="text-center exclamation {{cls}}">
+    <img class="error-image" [src]="staticDomainLibAssetsPath + 'svg/errors/exclamation.svg'" alt="">
+    <div class="title-error mt-8 mt-md-12" [innerHTML]="title | appTranslate"></div>
+  </div>
+</ng-template>
+
+<ng-template #wrongRoute>
+  <div class="grid-row text-center">
+    <div class="col-lg-6 col-md-4 col-3 push-lg-3 push-md-1">
+      <div class="mt-40">
+        <div class="title-error mb-24" [innerHTML]="title | appTranslate"></div>
+        <img class="error-image" [src]="staticDomainLibAssetsPath + 'svg/errors/wrong-route.svg'" alt="">
+        <div *ngIf="refUrl" class="subtitle text-plain mt-24 mb-32" [innerHTML]="subTitle | appTranslate: {currentUrl: location, href: refUrl}"></div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #Default>
+  <div class="error-wrapper flex-container-lg align-{{imgPosition}}">
+    <div class="error mb-24 mb-md-40 mb-lg-0">
+      <div class="title title-h3" [innerHTML]="title | appTranslate"></div>
+      <div *ngIf="!refUrl" class="subtitle text-plain" [innerHTML]="subTitle | appTranslate"></div>
+      <div *ngIf="refUrl" class="subtitle text-plain" [innerHTML]="subTitle | appTranslate: {currentUrl: location, href: refUrl}"></div>
+    </div>
+    <div class="picture-wrapper">
+      <div class="picture {{errorType}}"></div>
+    </div>
+  </div>
+</ng-template>

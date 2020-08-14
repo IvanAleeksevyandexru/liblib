@@ -1,0 +1,68 @@
+@import '../plain-input/plain-input.component.scss';
+.text-control {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  .input-container {
+    display: inline-block;
+    width: 100%;
+  }
+  .text-input {
+    padding-right: 16px;
+  }
+  .buttons-container {
+    position: absolute;
+    width: auto;
+    height: 48px;
+    top: 0;
+    right: 12px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    &.multiline {
+      top: 3px;
+    }
+  }
+  .clear-button {
+    width: 24px;
+    height: 24px;
+    margin-top: 15px;
+    cursor: pointer;
+    background: url(../../../assets/svg/input-clean.svg) 4px 0 no-repeat;
+  }
+  .validation-container, .tip-container {
+    width: 32px;
+    height: 24px;
+    margin-top: 11px;
+    padding-left: 4px;
+  }
+  .password-eye {
+    width: 32px;
+    height: 24px;
+    margin-top: 11px;
+    padding-left: 4px;
+    cursor: pointer;
+    background: url(../../../assets/svg/password-eye-closed.svg) 4px 0 no-repeat;
+    &.password-visible {
+      background: url(../../../assets/svg/password-eye-open.svg) 4px 0 no-repeat;
+    }
+  }
+}
+.text-control.withClearButton .text-input {
+  padding-right: 36px; //8+24+4
+}
+.text-control.withValidationError .text-input, .text-control.withTip .text-input, .text-control.passwordField .text-input {
+  padding-right: 44px; //8+32+4
+}
+.text-control.passwordField.withClearButton .text-input {
+  padding-right: 68px; //8+24+32+4
+}
+.text-control.withValidationError.withClearButton .text-input, .text-control.withTip.withClearButton .text-input {
+  padding-right: 68px; //8+24+32+4
+}
+.text-control.passwordField.withValidationError .text-input, .text-control.passwordField.withTip .text-input {
+  padding-right: 76px; //8+32+32+4
+}
+.text-control.passwordField.withValidationError.withClearButton .text-input, .text-control.passwordField.withTip.withClearButton .text-input {
+  padding-right: 100px; //8+24+32+32+4
+}

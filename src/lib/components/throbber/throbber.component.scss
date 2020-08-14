@@ -1,0 +1,249 @@
+.throbber-header {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 11px;
+  color: #000;
+  font-weight: 400;
+  font-size: 20px;
+}
+.throbber-subheader {
+  text-align: center;
+  color: #535B63;
+  font-size: 15px;
+  margin-bottom: 30px;
+}
+
+// TODO: Актуализировать стили
+//.throbber-fallback{
+//
+//  .throbber-huge {
+//    background: url(../../../assets/img/throbber/loader_huge.gif);
+//  }
+//
+//  .throbber-big {
+//    background: url(../../../assets/img/throbber/loader_big.gif);
+//  }
+//
+//  .throbber-medium {
+//    background: url(../../../assets/img/throbber/loader_medium.gif);
+//  }
+//
+//  .throbber-small {
+//    background: url(../../../assets/img/throbber/loader_small.gif);
+//  }
+//}
+
+.throbber-huge {
+  width: 290px;
+  height: 290px;
+  display: block;
+  margin: 20px auto;
+}
+
+.throbber-big, .throbber-big-add{
+  width: 100px;
+  height: 100px;
+  display: block;
+  margin: 20px auto;
+  -webkit-transform: translate3d(0,0,0);
+}
+
+.throbber-medium {
+  width: 40px;
+  height: 40px;
+  display: block;
+  margin: 20px auto;
+  -webkit-transform: translate3d(0,0,0);
+}
+
+.throbber-small {
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin: 20px auto;
+  overflow:hidden;
+  -webkit-transform: translate3d(0,0,0);
+
+  &.feed-throbber {
+    margin: 0 0 0 auto;
+  }
+}
+
+.throbber-svg{
+  svg{
+    padding: 2px;
+    -webkit-animation: throbberRotateX 1.5s infinite cubic-bezier(.8, 0, 0, .8);
+    animation: throbberRotateX  1.5s infinite cubic-bezier(.8, 0, 0, .8);
+  }
+  .throbber-path{
+    -webkit-transform-origin: 46px 50px;
+    transform-origin: 46px 50px;
+    -webkit-animation: throbberRotateZ  1.5s infinite linear, throbberColor 6s infinite cubic-bezier(.8, 0, 0, .8);
+    animation: throbberRotateZ  1.5s infinite linear, throbberColor  6s infinite cubic-bezier(.8, 0, 0, .8);
+  }
+
+}
+
+.throbber-svg .throbber-big{
+  width: 104px;
+  height: 104px;
+}
+
+
+.throbber-big{
+  svg{
+    width: 104px;
+    height: 104px;
+    -webkit-transform-origin: 0 52px;
+    transform-origin: 0 52px;
+  }
+}
+
+.throbber-svg .throbber-huge{
+  width: 294px;
+  height: 294px;
+}
+
+.throbber-huge{
+  svg{
+    width: 294px;
+    height: 294px;
+    -webkit-transform-origin: 0 147px;
+    transform-origin: 0 147px;
+  }
+}
+
+.throbber-svg .throbber-medium{
+  width: 44px;
+  height: 44px;
+}
+
+.throbber-medium{
+  svg{
+    width: 44px;
+    height: 44px;
+    -webkit-transform-origin: 0 22px;
+    transform-origin: 0 22px;
+  }
+}
+
+.throbber-svg .throbber-small{
+  width: 28px;
+  height: 28px;
+}
+.throbber-small{
+  svg{
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    -webkit-transform-origin: 0 12px;
+    transform-origin: 0 12px;
+  }
+}
+.inline-throbber{
+  .throbber-small{
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .inline-throbber-header{
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+@-webkit-keyframes throbberRotateX {
+  0% {
+    -webkit-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+  }
+  100%{
+    -webkit-transform: rotateX(180deg);
+    transform: rotateX(180deg);
+  }
+}
+@keyframes throbberRotateX {
+  0% {
+    -webkit-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+  }
+  100%{
+    -webkit-transform: rotateX(180deg);
+    transform: rotateX(180deg);
+  }
+}
+
+@-webkit-keyframes throbberRotateZ {
+  0% {
+    -webkit-transform: rotateZ(0deg);
+    transform: rotateZ(0deg);
+  }
+  25%{
+    -webkit-transform: rotateZ(90deg);
+    transform: rotateZ(90deg);
+  }
+  50%{
+    -webkit-transform: rotateZ(180deg);
+    transform: rotateZ(180deg);
+  }
+  75%{
+    -webkit-transform: rotateZ(90deg);
+    transform: rotateZ(90deg);
+  }
+  100%{
+    -webkit-transform: rotateZ(0deg);
+    transform: rotateZ(0deg);
+  }
+}
+
+@keyframes throbberRotateZ {
+  0% {
+    -webkit-transform: rotateZ(0deg);
+    transform: rotateZ(0deg);
+  }
+  25%{
+    -webkit-transform: rotateZ(90deg);
+    transform: rotateZ(90deg);
+  }
+  50%{
+    -webkit-transform: rotateZ(180deg);
+    transform: rotateZ(180deg);
+  }
+  75%{
+    -webkit-transform: rotateZ(90deg);
+    transform: rotateZ(90deg);
+  }
+  100%{
+    -webkit-transform: rotateZ(0deg);
+    transform: rotateZ(0deg);
+  }
+}
+
+@-webkit-keyframes throbberColor {
+  0%, 100% {
+    fill: #00aadd;
+  }
+  25%{
+    fill: #00cb3c;
+  }
+  50%{
+    fill: #d71956;
+  }
+  75%{
+    fill: #ff9700;
+  }
+}
+@keyframes throbberColor {
+  0%, 100% {
+    fill: #00aadd;
+  }
+  25%{
+    fill: #00cb3c;
+  }
+  50%{
+    fill: #d71956;
+  }
+  75%{
+    fill: #ff9700;
+  }
+}

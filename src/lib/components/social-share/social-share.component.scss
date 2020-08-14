@@ -1,0 +1,56 @@
+.social-share {
+  padding-top: 24px;
+  border-top: 1px solid #ced9f0;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #858b92;
+  border-radius: 4px;
+  background: #ffffff;
+
+  & + .social-link {
+    margin-left: 24px;
+  }
+
+  &:hover {
+    border: 1px solid #09338f;
+    background: #e7ecf7;
+
+    .icon {
+      fill: #09338f;
+      stroke: #09338f;
+    }
+  }
+
+  &:active,
+  &:focus {
+    border: 1px solid #07266b;
+    background: #ced9f0;
+
+    .icon {
+      fill: #07266b;
+      stroke: #07266b;
+    }
+  }
+
+  &.disabled {
+    border: 1px solid #859fd9;
+    background: #ffffff;
+
+    .icon {
+      fill: #859fd9;
+      stroke: #859fd9;
+    }
+  }
+}
+
+@media all and (min-width: 768px) {
+  .social-share {
+    padding-top: 32px;
+  }
+}

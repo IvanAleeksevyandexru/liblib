@@ -1,0 +1,4 @@
+<a class="caption link-plain" [class.closed]="hidden" (click)="toggleHidden()">{{caption}}</a>
+<div class="content mt-16" [class.hidden-content]="hidden" [class.no-offset]="!offset">
+  <ng-content></ng-content>
+</div>

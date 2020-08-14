@@ -1,0 +1,31 @@
+<div #container class="simple-select" [ngClass]="contextClass ? [contextClass] : []">
+  <div class="simple-select-field" (click)="toggle()" [ngClass]="{expanded: expanded}">
+    <div class="simple-select-field-label" *ngIf="translation === Translation.NONE">{{item && item.text}}</div>
+    <div class="simple-select-field-label" *ngIf="translation === Translation.APP">{{item && item.text | appTranslate}}</div>
+    <div class="simple-select-field-label" *ngIf="translation === Translation.LIB">{{item && item.text | libTranslate}}</div>
+    <div class="simple-select-arrow"></div>
+    <div class="simple-select-spacer"></div>
+  </div>
+  <div class="simple-select-list" [ngClass]="{expanded: expanded, collapsed: !expanded}">
+    <perfect-scrollbar #scrollComponent [config]="{suppressScrollX: true, wheelPropagation: false}">
+      <div class="simple-select-field-copy" (click)="hide()">
+        <div class="simple-select-field">
+          <div class="simple-select-field-label" *ngIf="translation === Translation.NONE">{{item && item.text}}</div>
+          <div class="simple-select-field-label" *ngIf="translation === Translation.APP">{{item && item.text | appTranslate}}</div>
+          <div class="simple-select-field-label" *ngIf="translation === Translation.LIB">{{item && item.text | libTranslate}}</div>
+          <div class="simple-select-arrow"></div>
+        </div>
+      </div>
+      <ul class="simple-select-items">
+        <li class="select-item select-field-stub">
+          &nbsp;
+        </li>
+        <li *ngFor="let listItem of list" class="select-item" [ngClass]="{selected: item && listItem.id === item.id}" (click)="select(listItem)">
+          <span class="item-text" *ngIf="translation === Translation.NONE">{{listItem.text}}</span>
+          <span class="item-text" *ngIf="translation === Translation.APP">{{listItem.text | appTranslate}}</span>
+          <span class="item-text" *ngIf="translation === Translation.LIB">{{listItem.text | libTranslate}}</span>
+        </li>
+      </ul>
+    </perfect-scrollbar>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+.title-h5 {
+  font-weight: normal;
+}
+
+.button-wrapper {
+  margin-bottom: 20px;
+}
+
+
+@media all and (min-width: 768px) {
+  .button-wrapper {
+    display: inline-block;
+    margin-bottom: 0;
+    margin-right: 24px;
+  }
+}

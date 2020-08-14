@@ -1,0 +1,164 @@
+.dadata-error {
+  color: #DF0024;
+  cursor: default;
+}
+
+.specify {
+  padding-bottom: 3px;
+
+  .link-plain {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .toggle-tip {
+    width: 10px;
+    height: 6px;
+    display: inline-block;
+    margin-right: 4px;
+    background: url(../../../assets/svg/arrow-closed-blue.svg) 0 0 no-repeat;
+    transform: rotate(-90deg);
+    vertical-align: middle;
+
+    &.opened {
+      transform: rotate(0);
+    }
+  }
+
+}
+
+.simple-field,
+.address-item {
+  margin-bottom: 20px;
+}
+
+.address-checkbox {
+  //white-space: nowrap;
+}
+
+.small-field {
+  max-width: 107px;
+}
+
+.checkbox-widget {
+  display: flex;
+  align-items: center;
+
+  .house-checkbox {
+    margin-right: 20px;
+  }
+}
+
+.address-checkbox {
+  ::ng-deep {
+    .check {
+      align-items: center;
+    }
+  }
+}
+
+.dadata {
+  ::ng-deep .dadata-autocomplete {
+    .dadata-additional-item {
+      font-size: 12px;
+      line-height: 16px;
+      padding: 16px 15px 12px 15px;
+
+      .title {
+        color: #515a63;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 768px) {
+  .dadata {
+    ::ng-deep .dadata-autocomplete {
+      .dadata-additional-item {
+        display: flex;
+        align-items: center;
+
+        .title {
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+}
+
+@media all and (min-width: 768px) and (max-width: 1140px) {
+  .building-container {
+    display: flex;
+
+    .address-item {
+      margin-bottom: 0;
+    }
+  }
+
+  .address-item-with-checkbox {
+    display: flex;
+    align-items: center;
+
+    .simple-field {
+      margin-right: 32px;
+    }
+  }
+
+  .building-container .address-item {
+    margin-right: 32px;
+  }
+
+  .address-checkbox {
+    margin-top: 8px;
+  }
+
+  .address-item {
+    margin-bottom: 16px;
+  }
+
+  .index-item {
+    max-width: 246px;
+  }
+}
+
+@media all and (min-width: 1140px){
+
+  .address-row {
+    display: flex;
+  }
+
+  .address-item {
+    margin-right: 32px;
+    width: 31%;
+
+    &.additional-street {
+      width: 40%;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .address-item-with-checkbox {
+    display: flex;
+    align-items: center;
+    //width: auto;
+
+    .simple-field {
+      margin-right: 32px;
+    }
+  }
+  .building-container {
+    .address-item {
+      width: auto;
+    }
+
+    .address-item-with-checkbox {
+      width: 31%;
+    }
+
+  }
+
+}
+

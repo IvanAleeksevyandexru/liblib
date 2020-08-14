@@ -1,0 +1,131 @@
+.authorized-user {
+  padding-top: 20px;
+  border-top: 1px solid #eeeeee;
+
+  .name {
+    font-size: 17px;
+    font-weight: 600;
+  }
+}
+
+.actions {
+  .roles {
+    font-family: ekibastuz, sans-serif;
+  }
+}
+
+.link {
+  position: relative;
+  padding-left: 23px;
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    width: 14px;
+    height: 9px;
+    top: 3px;
+    background: url(../../../assets/svg/key.svg) 0 0 no-repeat;
+    background-size: 100%;
+  }
+
+  &:hover:before {
+    background-image: url(../../../assets/svg/key-hover.svg);
+  }
+
+  &.logout:before {
+    height: 12px;
+    background-image: url(../../../assets/svg/logout.svg);
+  }
+}
+
+@media all and (min-width: 768px) {
+  .authorized-user {
+    position: relative;
+    max-width: 160px;
+    height: 40px;
+    border-top: none;
+    padding-top: 0;
+    padding-left: 56px;
+    cursor: pointer;
+
+    .user-data {
+      max-width: 32vw;
+    }
+
+    .counter-circle {
+      top: -2px;
+      left: 28px;
+    }
+
+    .avatar-wrapper {
+      position: absolute;
+      display: block;
+      overflow: hidden;
+      top: 0;
+      left: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    .avatar,
+    .no-avatar {
+      width: 40px;
+      height: 40px;
+    }
+
+    .no-avatar {
+      background-color: #5479ca;
+      background-image: url(../../../assets/svg/no-avatar.svg);
+      background-size: 100%;
+
+      &.female {
+        background-image: url(../../../assets/svg/no-avatar-f.svg);
+      }
+
+      &.business {
+        background-color: transparent;
+        background-image: url(../../../assets/svg/avatar-business.svg);
+      }
+
+      &.legal {
+        background-color: transparent;
+        background-image: url(../../../assets/svg/avatar-legal.svg);
+      }
+    }
+
+    .name {
+      position: relative;
+      padding-right: 16px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 8px;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 4px 4px 0 4px;
+        border-color: #555555 transparent transparent transparent;
+      }
+    }
+
+    .position {
+      font-size: 12px;
+      line-height: 20px;
+      color: #a5aeb3;
+    }
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .authorized-user {
+    max-width: 100%;
+  }
+}

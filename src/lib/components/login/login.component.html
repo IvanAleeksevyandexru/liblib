@@ -1,0 +1,39 @@
+<div *ngIf="user.authorized; else loginLink" class="authorized-user flex-container-md justify-end-md align-items-center"
+  (click)="userClicked()">
+  <div *ngIf="(loadService.avatar | async) as avatar" class="avatar-wrapper">
+    <img *ngIf="avatar.url && !avatarError; else noAvatar" class="avatar" [src]="avatar.url" (error)="avatarError = true" alt="" />
+    <ng-template #noAvatar>
+      <div
+        class="no-avatar"
+        [class.female]="avatar.gender === 'F'"
+        [class.business]="user.type === 'B'"
+        [class.legal]="user.type === 'L'"
+      ></div>
+    </ng-template>
+  </div>
+  <lib-counter class="counter-circle" [counter]="userCounter"></lib-counter>
+  <div class="user-data">
+    <div class="name text-overflow">
+      <ng-container *ngIf="user.type === 'L'">{{(user.orgShortName || user.orgName)}}</ng-container>
+      <ng-container *ngIf="user.type === 'B'">{{(user.orgShortName || 'ИП ' + user.shortName)}}</ng-container>
+      <ng-container *ngIf="user.type !== 'B' && user.type !== 'L'">{{user.shortName}}</ng-container>
+    </div>
+    <div class="position hide show-md text-overflow">
+      {{user.orgPosition}}
+    </div>
+  </div>
+  <div class="actions hide-md mt-16 mb-32">
+    <div class="mb-32">
+      <a href="/roles" class="roles bold">{{'HEADER.ALL_ROLES' | libTranslate}}</a>
+    </div>
+    <div class="mt-20">
+      <a href="https://lk-dev.test.gosuslugi.ru/start" class="link">{{'HEADER.PERSONAL_AREA' | libTranslate}}</a>
+    </div>
+    <div class="mt-20">
+      <a class="link logout" (click)="logout()">{{'HEADER.EXIT' | libTranslate}}</a>
+    </div>
+  </div>
+</div>
+<ng-template #loginLink>
+  <a [routerLink]="" (click)="login()" class="link">{{'HEADER.PERSONAL_AREA' | libTranslate}}</a>
+</ng-template>

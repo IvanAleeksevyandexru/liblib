@@ -1,0 +1,39 @@
+.loader-wrapper {
+  white-space: normal;
+}
+
+.loader {
+  margin: 0 auto 110px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 4px solid #0173c1;
+  -webkit-animation: rotate 0.7s linear infinite;
+  animation: rotate 0.7s linear infinite;
+
+  &:after {
+    content: '';
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    background: #fff;
+  }
+}
+
+@-webkit-keyframes rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

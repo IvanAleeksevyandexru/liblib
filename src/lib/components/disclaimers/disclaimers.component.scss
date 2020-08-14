@@ -1,0 +1,125 @@
+.disclaimers {
+  .disclaimer {
+    padding: 24px 0;
+
+    &.info {
+      background: #EAF2EB;
+    }
+
+    &.warn {
+      background: #FFF9E5;
+    }
+
+    &.error {
+      background: #FCE5E9;
+    }
+
+    .level-icon-info, .level-icon-warn, .level-icon-error {
+      position: relative;
+      width: 100%;
+      height: auto;
+
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        background-size: cover;
+        width: 24px;
+        height: 24px;
+      }
+
+      .title {
+        margin-left: 40px;
+      }
+
+      .close {
+        display: block;
+        position: absolute;
+        background: url(../../../assets/svg/close.svg) no-repeat center center;
+        background-size: cover;
+        width: 16px;
+        height: 16px;
+        right: 0px;
+        top: -8px;
+        cursor: pointer;
+      }
+
+      .description {
+        .notice-block {
+          margin-left: 88px;
+
+          &.info, &.warn, &.error {
+            &:before {
+              content: '';
+              display: inline-block;
+              vertical-align: middle;
+              background-size: cover;
+              width: 64px;
+              height: 64px;
+              margin: 0 24px 0 -88px;
+            }
+          }
+
+          &.info:before {
+            background: url(../../../assets/svg/attention-green-big.svg) no-repeat center center;
+          }
+
+          &.warn:before {
+            background: url(../../../assets/svg/attention-yellow-big.svg) no-repeat center center;
+          }
+
+          &.error:before {
+            background: url(../../../assets/svg/attention-red-big.svg) no-repeat center center;
+          }
+
+          .notice {
+            display: inline-block;
+            vertical-align: middle;
+          }
+        }
+      }
+    }
+
+    .level-icon-info:before {
+      background: url(../../../assets/svg/warn-green-circle.svg) no-repeat center center;
+    }
+
+    .level-icon-warn:before {
+      background: url(../../../assets/svg/warn-yellow-circle.svg) no-repeat center center;
+    }
+
+    .level-icon-error:before {
+      background: url(../../../assets/svg/statuses/account-reject.svg) no-repeat center center;
+    }
+  }
+}
+
+@media all and (min-width: 768px) {
+  .disclaimers {
+    .disclaimer {
+      padding: 16px 0;
+
+      .level-icon-info, .level-icon-warn, .level-icon-error {
+        &:before, .close {
+          top: 8px;
+        }
+
+        .title, .description {
+          margin-left: 48px;
+        }
+
+        .description .subscribe {
+          .input-email {
+            display: inline-block;
+            width: 286px;
+          }
+
+          .button-email {
+            display: inline-block;
+            margin-left: 20px;
+          }
+        }
+      }
+    }
+  }
+}

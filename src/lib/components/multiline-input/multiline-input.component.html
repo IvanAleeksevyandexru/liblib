@@ -1,0 +1,29 @@
+<div class="multiline-edit"
+    [class.invalid]="invalidDisplayed"
+    [class.focused]="focused"
+    [class.full-height-scroll]="fullHeightScroll"
+    [class.with-symbols-counter]="maxlength"
+    [ngClass]="contextClass ? [contextClass] : []" libStopScreenScroll>
+  <div class="multiline-wrapper">
+    <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}" [ngStyle]="{'max-height.px': maxHeight}">
+      <div class="multiline-input" #input
+          [attr.tabindex]="tabIndex ? tabIndex : '0'"
+          [attr.id]="id ? id : null"
+          [attr.contenteditable]="!disabled && !readOnly ? 'true' : 'false'"
+          [attr.placeholderText]="placeholder"
+          (input)="handleInput($event)"
+          (keypress)="handleKeyPress($event)"
+          (paste)="handlePaste($event)"
+          (focus)="notifyFocusEvent($event)"
+          (blur)="notifyFocusEvent($event)"
+          [ngStyle]="{'min-height.px': minHeight}"
+          [innerHTML]="htmlValue">
+      </div>
+    </perfect-scrollbar>
+    <div class="symbols-counter" *ngIf="maxlength">
+      <span class="symbols-count">
+        <span class="count" [ngClass]="{overloaded: symbolsCount === maxlength}">{{symbolsCount}}</span>&nbsp;/&nbsp;<span class="length">{{maxlength}}</span>
+      </span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<div
+  [id]="object.attrId"
+  class="info-card {{cardType}}"
+  [ngClass]="{'interactive': object.canDetails || object.canEdit, 'form-container': cardType === 'modify'}">
+  <!-- TODO: Реализовать view редактирования -->
+  <div class="inner">
+    <ng-container *ngIf="cardType === 'common'" [ngTemplateOutlet]="common"></ng-container>
+    <ng-container *ngIf="cardType === 'empty'" [ngTemplateOutlet]="empty"></ng-container>
+    <ng-container *ngIf="cardType === 'modify'" [ngTemplateOutlet]="modify"></ng-container>
+  </div>
+</div>
+
+<ng-template #empty>
+  <div class="title">{{object.empty.title}}</div>
+  <div class="subtitle mt-16">{{object.empty.subtitle}}</div>
+  <div class="actions mt-16">
+    <span *ngIf="!externalLink && !addPath" class="link-plain add-link" (click)="toggleForm()">Добавить</span>
+    <a *ngIf="externalLink && !addPath" class="link-plain add-link" [href]="externalLink">Добавить</a>
+    <a *ngIf="addPath" class="link-plain add-link" [routerLink]="addPath">Добавить</a>
+    <a *ngIf="object.serviceUrl" class="link-plain" (click)="toOrder()">Заказать услугу</a>
+  </div>
+</ng-template>
+
+<ng-template #common>
+  <div class="header {{object.gender}}">
+    <div class="title">{{object.full.title}}</div>
+    <div *ngIf="object.withVerificationIcon || state" class="confirm {{state}}"></div>
+    <div *ngIf="isNotificationShow()" [ngClass]="object.warning ? 'notification-red': 'notification'" class="confirm"></div>
+  </div>
+  <div class="fields mt-24 mt-md-28 mb-16" *ngIf="object.fields">
+    <p *ngIf="stateText" class="text-plain state {{state}} mb-16" [innerHTML]="stateText | appTranslate"></p>
+    <p *ngIf="isNotificationShow()"
+       [ngClass]="object.warning ? 'red': 'green'"
+       class="text-plain mb-16"
+       [innerHTML]="object.notification | appTranslate"
+    ></p>
+    <div class="field mt-16" *ngFor="let field of object.fields">
+      <ng-container *ngIf="(field.value || field.showEmpty) && !field.hidden">
+        <span *ngIf="!field.noLabel && field.title" class="text-plain gray">{{field.title}}</span>
+        <span class="value text-plain black mt-8" [class.bold]="!field.title || field.bold" [class.primary]="field.noLabel" [innerHTML]="field.value"></span>
+      </ng-container>
+    </div>
+  </div>
+  <div class="card-actions">
+    <ng-container *ngIf="state === ''">
+      <a *ngIf="object.canDetails" class="link-plain" [queryParams]="object.detailsQueryParam ? object.detailsQueryParam : {}"
+         [routerLink]="object.detailsPath">{{object.detailsLinkTitle ? object.detailsLinkTitle : 'Подробнее'}}</a>
+      <a *ngIf="object.canEdit && !editPath" class="link-plain" (click)="toggleForm()">Редактировать</a>
+      <a *ngIf="object.canEdit && editPath" class="link-plain" [queryParams]="editQueryParam ? editQueryParam : {}"
+         [routerLink]="editPath">Редактировать</a>
+      <a *ngIf="object.canDelete" class="link-plain" (click)="delete()">Удалить</a>
+    </ng-container>
+    <ng-container *ngIf="state !== ''">
+      <a *ngIf="isPassportNotification()" class="link-plain add-link" [href]="loadService.config.betaUrl + object.serviceUrl">{{object.full.orderTitle}}</a>
+      <a *ngIf="editableInternal()" class="link-plain" (click)="toggleForm()">Редактировать</a>
+      <a *ngIf="editableExternal()"
+         class="link-plain add-link"
+         (click)="toExternalLink()"
+      >Редактировать</a>
+      <a *ngIf="showDetailButton()"
+         class="link-plain"
+         [routerLink]="object.detailsPath"
+      >{{!isNotificationShow() ? 'Подробнее' : 'Редактировать'}}</a>
+      <a *ngIf="state === 'process'" class="link-plain add-link" (click)="cancelReq()">Отменить
+        проверку</a>
+      <a *ngIf="showRepeatButton()" class="link-plain add-link" (click)="repeatReq()">Повторить
+        проверку</a>
+      <a *ngIf="object.canDelete && !object.expired" class="link-plain" (click)="delete()">Удалить</a>
+      <a *ngIf="object.expired && state !== 'process' && state !== 'error'" class="link-plain add-link" (click)="toOrder()">{{object.full.orderTitle}}</a>
+    </ng-container>
+    <ng-container *ngIf="data.type === 'INN' && (data.vrfStu === 'VERIFIED' || data.vrfStu === 'NOT_VERIFIED')">
+      <a *ngIf="state !== 'process' && state !== 'error'" class="link-plain" (click)="repeatReq()">{{data.number ? 'Обновить' : 'Запросить'}}</a>
+      <a *ngIf="state === 'error'" class="link-plain add-link" (click)="repeatReq()">Повторить поиск</a>
+      <a *ngIf="state === 'error'" class="link-plain add-link" (click)="toggleForm()">Ввести вручную</a>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #modify>
+  <div class="header">
+    <div class="title">{{object.full.title}}</div>
+  </div>
+  <div>
+    <ng-content></ng-content>
+  </div>
+</ng-template>

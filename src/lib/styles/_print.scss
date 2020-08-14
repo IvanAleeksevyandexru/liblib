@@ -1,0 +1,30 @@
+@media print {
+  .print-only {
+    display: block!important;
+  }
+  .screen-only {
+    display: none!important;
+  }
+
+  /* Чтобы не было лишнего белого листа */
+  html, body {
+    height: auto;
+    margin: 0!important;
+    padding: 0!important;
+  }
+
+  .isPrinting {
+    lib-footer, lib-menu, lib-breadcrumbs, main, iframe, lib-disclaimers, lib-pso {
+      display: none!important;
+    }
+  }
+}
+
+@media screen {
+  .print-only {
+    display: none!important;
+  }
+  .screen-only {
+    display: block!important;
+  }
+}

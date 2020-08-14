@@ -1,0 +1,15 @@
+.popup .title {
+  padding-right: 0;
+}
+
+.button-wrapper {
+  margin-bottom: 20px;
+}
+
+
+@media all and (min-width: 768px) {
+  .button-wrapper {
+    display: inline-block;
+    margin-right: 24px;
+  }
+}

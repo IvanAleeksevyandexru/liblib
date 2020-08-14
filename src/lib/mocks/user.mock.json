@@ -1,0 +1,809 @@
+{
+  "lastName": "Фёдоров",
+  "isAssuranceLevelCorrect": true,
+  "gender": "M",
+  "personEMail": "qatest@mailforspam.com",
+  "soc": [
+    {
+      "channel": "vk",
+      "status": "active",
+      "userId": "123456789"
+    },
+    {
+      "channel": "ok",
+      "status": "disconnected",
+      "userId": "987654321"
+    },
+    {
+      "channel": "vb"
+    }
+  ],
+  "personSNILS": "000-000-000 03",
+  "authToken": "1000299282@@AL20@@1",
+  "formattedName": "Фёдоров Фёдор  Акакиевич",
+  "personCitizenship": "RUS",
+  "mobileVerified": true,
+  "assuranceLevel": "AL20",
+  "principalDocuments": "&lt;?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?&gt;&lt;principalDocuments&gt;&lt;document&gt;&lt;verificationStatus&gt;NOT_VERIFIED&lt;/verificationStatus&gt;&lt;number&gt;3242345&lt;/number&gt;&lt;series&gt;CCCCCC-СС&lt;/series&gt;&lt;issueDate&gt;1986-06-06T12:00:00&lt;/issueDate&gt;&lt;issuedBy&gt;оиыолвоыоаты ты алтыарыкец вытаяв &lt;/issuedBy&gt;&lt;/document&gt;&lt;document&gt;&lt;documentType&gt;07&lt;/documentType&gt;&lt;verificationStatus&gt;VERIFIED&lt;/verificationStatus&gt;&lt;number&gt;3434434&lt;/number&gt;&lt;series&gt;34&lt;/series&gt;&lt;issueDate&gt;2019-02-02T12:00:00&lt;/issueDate&gt;&lt;expiryDate&gt;2019-02-22T12:00:00&lt;/expiryDate&gt;&lt;issuedBy&gt;р&lt;/issuedBy&gt;&lt;/document&gt;&lt;document&gt;&lt;documentType&gt;06&lt;/documentType&gt;&lt;verificationStatus&gt;NOT_VERIFIED&lt;/verificationStatus&gt;&lt;number&gt;2448420880000134&lt;/number&gt;&lt;/document&gt;&lt;/principalDocuments&gt;",
+  "personMobilePhone": "+7(919)4110148",
+  "personINN": "448656183729",
+  "personInn": "448656183729",
+  "personSnils": "000-000-000 03",
+  "formattedLoginName": "Фёдоров Ф.А.",
+  "mapp_business": true,
+  "personType": "R",
+  "email": "qatest@mailforspam.com",
+  "kids": [
+    {
+      "id": "7503778",
+      "lastName": "Ghgfh",
+      "firstName": "weqwq",
+      "middleName": "qweqw",
+      "birthDate": "30.01.2001",
+      "gender": "M",
+      "trusted": false,
+      "updatedOn": "1554199619",
+      "documents": {
+        "stateFacts": [
+          "hasSize"
+        ],
+        "docs": [
+          {
+            "id": "74129",
+            "type": "MDCL_PLCY",
+            "number": "цу131231",
+            "expiryDate": "30.01.2020",
+            "vrfStu": "NOT_VERIFIED",
+            "expDate": "30.01.2020",
+            "etag": "CEF0CFA22E262B59CCB81166AE6DD8BB7E488E1F"
+          },
+          {
+            "id": "74128",
+            "type": "RF_BRTH_CERT",
+            "series": "IV-АБ",
+            "number": "1231231",
+            "issueDate": "07.11.2018",
+            "issuedBy": "цукцукцу",
+            "vrfStu": "NOT_VERIFIED",
+            "actNo": "1231231",
+            "etag": "617B64E5048D1394AF581614DFB6FD7D889B6CE5"
+          }
+        ],
+        "etag": "043153DBD332B3D7B61B55EDA6631E768489BA44"
+      },
+      "etag": "3842B13FB9FDC55117105FD4887F85FE813BB8A4"
+    },
+    {
+      "id": "7486598",
+      "lastName": "цйцй",
+      "firstName": "цй",
+      "middleName": "цй",
+      "birthDate": "08.02.2019",
+      "gender": "M",
+      "trusted": false,
+      "updatedOn": "1550235923",
+      "documents": {
+        "stateFacts": [
+          "hasSize"
+        ],
+        "docs": [
+          {
+            "id": "61111",
+            "type": "MDCL_PLCY",
+            "number": "21",
+            "expiryDate": "16.02.2019",
+            "vrfStu": "NOT_VERIFIED",
+            "expDate": "16.02.2019",
+            "etag": "16E99D188BFC13110703AD65750AFFD97A66F80E"
+          },
+          {
+            "id": "61108",
+            "type": "RF_BRTH_CERT",
+            "series": "VI-АК",
+            "number": "2121212",
+            "issueDate": "07.02.2019",
+            "issuedBy": "21",
+            "vrfStu": "NOT_VERIFIED",
+            "actNo": "2121",
+            "etag": "74A433B953014D9F0389AA58D40A79892A5657E8"
+          }
+        ],
+        "etag": "043153DBD332B3D7B61B55EDA6631E768489BA44"
+      },
+      "etag": "177EB9988FE4A2C50CA87A9E0C2CA071F081FD2C"
+    },
+    {
+      "id": "7486158",
+      "lastName": "Новый",
+      "firstName": "Ребенок",
+      "middleName": "Федорова",
+      "birthDate": "01.02.2019",
+      "gender": "M",
+      "trusted": false,
+      "snils": "000-000-000 00",
+      "inn": "000000000000",
+      "updatedOn": "1550220121",
+      "documents": {
+        "stateFacts": [
+          "hasSize"
+        ],
+        "docs": [
+          {
+            "id": "60749",
+            "type": "RF_BRTH_CERT",
+            "series": "VI-АК",
+            "number": "432323",
+            "issueDate": "02.02.2019",
+            "issuedBy": "32",
+            "vrfStu": "NOT_VERIFIED",
+            "actNo": "32",
+            "etag": "91A927B643579AE32BBCB5753D1446F1A4BA6434"
+          }
+        ],
+        "etag": "043153DBD332B3D7B61B55EDA6631E768489BA44"
+      },
+      "etag": "AE836B472185B05FA91C513C8B36CA1AB4F4D209"
+    },
+    {
+      "id": "7476472",
+      "lastName": "Ломонософ",
+      "firstName": "Михаил",
+      "middleName": "Васильевич",
+      "birthDate": "06.08.2011",
+      "gender": "M",
+      "trusted": false,
+      "snils": "115-894-366 87",
+      "inn": "504224364855",
+      "updatedOn": "1540284051",
+      "documents": {
+        "stateFacts": [
+          "hasSize"
+        ],
+        "docs": [
+          {
+            "id": "53550",
+            "type": "FID_BRTH_CERT",
+            "series": "ККААААААЙ",
+            "number": "5555555",
+            "issueDate": "01.10.2018",
+            "issuedBy": "пааамииии",
+            "vrfStu": "NOT_VERIFIED",
+            "etag": "18C8BD35FDBE709039D4B95D572DAEB61206FA8D"
+          },
+          {
+            "id": "49343",
+            "type": "MDCL_PLCY",
+            "number": "123456675676575677",
+            "vrfStu": "NOT_VERIFIED",
+            "etag": "121784AD5ED62BAC5F7A3F4C3F3889978962CEAE"
+          }
+        ],
+        "etag": "043153DBD332B3D7B61B55EDA6631E768489BA44"
+      },
+      "etag": "68650DD455CB52FA4C8963E980C9272CA3BD0B13"
+    }
+  ],
+  "activeBusinessRoleCount": "1",
+  "mapp": true,
+  "inn": "448656183729",
+  "mobile": "+7(919)4110148",
+  "registrationAddress": "г Санкт-Петербург, пл Ленина",
+  "userName": "OID.1000299282",
+  "userId": 1000299282,
+  "birthDate": "06-06-1986 00:00:00",
+  "firstName": "Фёдор",
+  "emailVerified": false,
+  "globalRole": "P",
+  "person": {
+    "error": "ESIA-OK",
+    "id": "1000299282",
+    "person": {
+      "id": "1000299282",
+      "firstName": "Фёдор",
+      "lastName": "Фёдоров",
+      "middleName": "Акакиевич",
+      "birthDate": "06.06.1986",
+      "gender": "M",
+      "trusted": true,
+      "citizenship": "РОССИЯ",
+      "citizenshipCode": "RUS",
+      "birthPlace": "Россия, Ульяновская обл. Ульяновск",
+      "snils": "000-000-000 03",
+      "inn": "448656183729",
+      "updatedOn": "1561722352",
+      "assuranceLevel": "AL20",
+      "regCtxCfmSte": "PCD",
+      "chosenCfmTypes": [
+        "POS"
+      ],
+      "contacts": {
+        "stateFacts": [
+          "hasSize"
+        ],
+        "contacts": [
+          {
+            "id": "14282209",
+            "type": "CEM",
+            "vrfStu": "NOT_VERIFIED",
+            "value": "test@test.ru",
+            "etag": "C05120A9A74137C16AC4EAD21CDAFC2CF62D2C85"
+          },
+          {
+            "id": "14300430",
+            "type": "CPH",
+            "vrfStu": "NOT_VERIFIED",
+            "value": "+7 (123) 456-78-90*098765",
+            "etag": "EAC4F890F55C16C403236AAFCE02C9B4F57C2A94"
+          },
+          {
+            "id": "14298267",
+            "type": "MBT",
+            "vrfStu": "VERIFIED",
+            "value": "+7(919)4110148",
+            "etag": "E142D0009243DD5AA1594BBE28CEB804718F16B2"
+          },
+          {
+            "id": "14325834",
+            "type": "EML",
+            "vrfStu": "NOT_VERIFIED",
+            "value": "qatest@mailforspam.com",
+            "etag": "E27CC58D291A3044A69E7B1F803CE1A14403E509"
+          },
+          {
+            "id": "14320655",
+            "type": "CEM",
+            "vrfStu": "NOT_VERIFIED",
+            "value": "a_eml_my@gmail.com",
+            "etag": "2FD047701C0FA257FDF1C8F94981F0E7CC7E9779"
+          },
+          {
+            "id": "14320654",
+            "type": "CPH",
+            "vrfStu": "NOT_VERIFIED",
+            "value": "+7 (916) 241-11-33",
+            "etag": "F4AB1EA59CC321B5850CEC9916C82E52855771AC"
+          },
+          {
+            "id": "14309274",
+            "type": "CPH",
+            "vrfStu": "NOT_VERIFIED",
+            "value": "+7 (888) 888-88-88",
+            "etag": "673C59E27E6C3EB4E3AFDE3B6B292407E20FAE60"
+          }
+        ],
+        "etag": "B4A74776BB20989A7E9820BDC99659A1EAE2A337"
+      },
+      "biomStu": false,
+      "etag": "FFC8FC070B7673F1B743B8B4F73CF8860B4A68AA"
+    },
+    "orgs": [
+      {
+        "shortName": "ОРГАНИЗАЦИЯ 542709702",
+        "fullName": "ОРГАНИЗАЦИЯ 542709702",
+        "type": "LEGAL",
+        "ogrn": "3025898706040",
+        "inn": "1671789868",
+        "leg": "",
+        "kpp": "276343699",
+        "employees": [],
+        "oid": "1000366653",
+        "branchesCount": 0,
+        "staffCount": 10,
+        "created": "05.12.2018 10:12:23 +0300",
+        "etag": "BD360842640CD07C10EA76292792A973197212C8"
+      },
+      {
+        "shortName": "ИП Фёдоров Ф. А.",
+        "fullName": "Индивидуальный предприниматель Фёдоров Фёдор Акакиевич",
+        "type": "BUSINESS",
+        "ogrn": "310169035600071",
+        "inn": "930502756203",
+        "leg": "Индивидуальные предприниматели",
+        "legCode": "50102",
+        "employees": [],
+        "oid": "1000357856",
+        "branchesCount": 0,
+        "staffCount": 3,
+        "created": "05.04.2018 11:21:16 +0300",
+        "etag": "206F599D18E8B990D2380FA9631324A0EE174268"
+      },
+      {
+        "shortName": "ОРГАНИЗАЦИЯ -1237682074",
+        "fullName": "ОРГАНИЗАЦИЯ -1237682074",
+        "type": "LEGAL",
+        "ogrn": "1020200715282",
+        "inn": "7714000544",
+        "leg": "Общества с ограниченной ответственностью",
+        "legCode": "12300",
+        "employees": [],
+        "oid": "1000361705",
+        "branchesCount": 0,
+        "staffCount": 2,
+        "created": "16.08.2018 12:19:46 +0300",
+        "etag": "0A2F37C517EBDDFF6365722B9A5C4E0356233309"
+      },
+      {
+        "shortName": "ООО \"Балтинформ\"",
+        "fullName": "Общество с ограниченной ответственностью \"Балтинформ\"",
+        "type": "AGENCY",
+        "ogrn": "0001234000009",
+        "inn": "3905074565",
+        "leg": "Публичные акционерные общества",
+        "legCode": "12247",
+        "kpp": "293487489",
+        "employees": [],
+        "oid": "1000300648",
+        "branchesCount": 7,
+        "staffCount": 53,
+        "created": "11.09.2014 19:57:37 +0400",
+        "etag": "714F159F2E158D47C8B5AB18C3BEBC3A5D8A7AF0"
+      }
+    ],
+    "docs": [
+      {
+        "id": "58534",
+        "type": "FID_BRTH_CERT",
+        "series": "CCCCCC-СС",
+        "number": "3242345",
+        "issueDate": "06.06.1986",
+        "issuedBy": "оиыолвоыоаты ты алтыарыкец вытаяв ",
+        "vrfStu": "NOT_VERIFIED",
+        "actNo": "123123",
+        "etag": "769F49D9AA0C8B24D87829EB8020C43B367E1E90"
+      },
+      {
+        "id": "62188",
+        "type": "FRGN_PASS",
+        "series": "34",
+        "number": "3434434",
+        "issueDate": "02.02.2019",
+        "issuedBy": "р",
+        "expiryDate": "22.02.2019",
+        "lastName": "f",
+        "firstName": "f",
+        "vrfStu": "VERIFIED",
+        "expDate": "22.02.2019",
+        "etag": "14C0C1F627D5DBB46ED8029F188D76322FB2BED5"
+      },
+      {
+        "id": "61149",
+        "type": "MDCL_PLCY",
+        "number": "2448420880000134",
+        "vrfStu": "NOT_VERIFIED",
+        "etag": "E9010F6B2C32E9D493AB8A0F3CA28F2B854AEF4A"
+      }
+    ],
+    "addresses": [
+      {
+        "id": "46908",
+        "type": "PRG",
+        "addressStr": "г Санкт-Петербург, пл Ленина",
+        "countryId": "RUS",
+        "house": "12",
+        "region": "Санкт-Петербург",
+        "street": "Ленина",
+        "zipCode": "195009",
+        "etag": "5C4F537F9C32546D80D8F769CE6FFF1B3F296DEF"
+      }
+    ],
+    "contacts": [
+      {
+        "id": "14282209",
+        "type": "CEM",
+        "vrfStu": "NOT_VERIFIED",
+        "value": "test@test.ru",
+        "etag": "C05120A9A74137C16AC4EAD21CDAFC2CF62D2C85"
+      },
+      {
+        "id": "14300430",
+        "type": "CPH",
+        "vrfStu": "NOT_VERIFIED",
+        "value": "+7 (123) 456-78-90*098765",
+        "etag": "EAC4F890F55C16C403236AAFCE02C9B4F57C2A94"
+      },
+      {
+        "id": "14298267",
+        "type": "MBT",
+        "vrfStu": "VERIFIED",
+        "value": "+7(919)4110148",
+        "etag": "E142D0009243DD5AA1594BBE28CEB804718F16B2"
+      },
+      {
+        "id": "14325834",
+        "type": "EML",
+        "vrfStu": "NOT_VERIFIED",
+        "value": "qatest@mailforspam.com",
+        "etag": "E27CC58D291A3044A69E7B1F803CE1A14403E509"
+      },
+      {
+        "id": "14320655",
+        "type": "CEM",
+        "vrfStu": "NOT_VERIFIED",
+        "value": "a_eml_my@gmail.com",
+        "etag": "2FD047701C0FA257FDF1C8F94981F0E7CC7E9779"
+      },
+      {
+        "id": "14320654",
+        "type": "CPH",
+        "vrfStu": "NOT_VERIFIED",
+        "value": "+7 (916) 241-11-33",
+        "etag": "F4AB1EA59CC321B5850CEC9916C82E52855771AC"
+      },
+      {
+        "id": "14309274",
+        "type": "CPH",
+        "vrfStu": "NOT_VERIFIED",
+        "value": "+7 (888) 888-88-88",
+        "etag": "673C59E27E6C3EB4E3AFDE3B6B292407E20FAE60"
+      }
+    ],
+    "vehicles": [
+      {
+        "id": "41571",
+        "stateFacts": [
+          "Identifiable"
+        ],
+        "name": "FDvfsgfhff  ffff",
+        "numberPlate": "А234АР163",
+        "regCertificate": {
+          "series": "1122",
+          "number": "213232"
+        },
+        "etag": "230716F3BA5980A1877946A32B118E6CD2A480F3"
+      },
+      {
+        "id": "43931",
+        "stateFacts": [
+          "Identifiable"
+        ],
+        "name": "Авто",
+        "numberPlate": "Т276МА69",
+        "regCertificate": {
+          "series": "05EE",
+          "number": "000696"
+        },
+        "etag": "36E00173CFEBA9094BA72C99092B2A7C533CF112"
+      },
+      {
+        "id": "41570",
+        "stateFacts": [
+          "Identifiable"
+        ],
+        "name": "SFF dgh",
+        "numberPlate": "А352АР63",
+        "regCertificate": {
+          "series": "1123",
+          "number": "666778"
+        },
+        "etag": "2973C015853F7E575D2543F79AB8BE5B7D7306E8"
+      },
+      {
+        "id": "33370",
+        "stateFacts": [
+          "Identifiable"
+        ],
+        "name": " Авто01",
+        "numberPlate": "Т001ВК225",
+        "regCertificate": {
+          "series": "5501",
+          "number": "901624"
+        },
+        "etag": "B256814BA5AD120E5735F7221739D303331CD180"
+      },
+      {
+        "id": "33371",
+        "stateFacts": [
+          "Identifiable"
+        ],
+        "name": " Авто02",
+        "numberPlate": "Т001ВК425",
+        "regCertificate": {
+          "series": "5502",
+          "number": "901625"
+        },
+        "etag": "B256814BA5AD120E5735F7221739D303331CD180"
+      },
+      {
+        "id": "33372",
+        "stateFacts": [
+          "Identifiable"
+        ],
+        "name": " Авто03",
+        "numberPlate": "Т001ВК125",
+        "regCertificate": {
+          "series": "5503",
+          "number": "901626"
+        },
+        "etag": "B256814BA5AD120E5735F7221739D303331CD180"
+      },
+      {
+        "id": "33373",
+        "stateFacts": [
+          "Identifiable"
+        ],
+        "name": " Авто04",
+        "numberPlate": "Т002ВК125",
+        "regCertificate": {
+          "series": "5504",
+          "number": "901627"
+        },
+        "etag": "B256814BA5AD120E5735F7221739D303331CD180"
+      },
+      {
+        "id": "33377",
+        "stateFacts": [
+          "Identifiable"
+        ],
+        "name": " Авто8",
+        "numberPlate": "Т001ВК128",
+        "regCertificate": {
+          "series": "5608",
+          "number": "901631"
+        },
+        "etag": "B256814BA5AD120E5735F7221739D303331CD180"
+      },
+      {
+        "id": "33378",
+        "stateFacts": [
+          "Identifiable"
+        ],
+        "name": " Авто9",
+        "numberPlate": "Т001ВК129",
+        "regCertificate": {
+          "series": "5609",
+          "number": "901632"
+        },
+        "etag": "B256814BA5AD120E5735F7221739D303331CD180"
+      },
+      {
+        "id": "33379",
+        "stateFacts": [
+          "Identifiable"
+        ],
+        "name": " Авто10",
+        "numberPlate": "Т001ВК130",
+        "regCertificate": {
+          "series": "5610",
+          "number": "901633"
+        },
+        "etag": "B256814BA5AD120E5735F7221739D303331CD180"
+      }
+    ],
+    "kids": [
+      {
+        "id": "7503778",
+        "lastName": "Ghgfh",
+        "firstName": "weqwq",
+        "middleName": "qweqw",
+        "birthDate": "30.01.2001",
+        "gender": "M",
+        "trusted": false,
+        "updatedOn": "1554199619",
+        "documents": {
+          "stateFacts": [
+            "hasSize"
+          ],
+          "docs": [
+            {
+              "id": "74129",
+              "type": "MDCL_PLCY",
+              "number": "цу131231",
+              "expiryDate": "30.01.2020",
+              "vrfStu": "NOT_VERIFIED",
+              "expDate": "30.01.2020",
+              "etag": "CEF0CFA22E262B59CCB81166AE6DD8BB7E488E1F"
+            },
+            {
+              "id": "74128",
+              "type": "RF_BRTH_CERT",
+              "series": "IV-АБ",
+              "number": "1231231",
+              "issueDate": "07.11.2018",
+              "issuedBy": "цукцукцу",
+              "vrfStu": "NOT_VERIFIED",
+              "actNo": "1231231",
+              "etag": "617B64E5048D1394AF581614DFB6FD7D889B6CE5"
+            }
+          ],
+          "etag": "043153DBD332B3D7B61B55EDA6631E768489BA44"
+        },
+        "etag": "3842B13FB9FDC55117105FD4887F85FE813BB8A4"
+      },
+      {
+        "id": "7486598",
+        "lastName": "цйцй",
+        "firstName": "цй",
+        "middleName": "цй",
+        "birthDate": "08.02.2019",
+        "gender": "M",
+        "trusted": false,
+        "updatedOn": "1550235923",
+        "documents": {
+          "stateFacts": [
+            "hasSize"
+          ],
+          "docs": [
+            {
+              "id": "61111",
+              "type": "MDCL_PLCY",
+              "number": "21",
+              "expiryDate": "16.02.2019",
+              "vrfStu": "NOT_VERIFIED",
+              "expDate": "16.02.2019",
+              "etag": "16E99D188BFC13110703AD65750AFFD97A66F80E"
+            },
+            {
+              "id": "61108",
+              "type": "RF_BRTH_CERT",
+              "series": "VI-АК",
+              "number": "2121212",
+              "issueDate": "07.02.2019",
+              "issuedBy": "21",
+              "vrfStu": "NOT_VERIFIED",
+              "actNo": "2121",
+              "etag": "74A433B953014D9F0389AA58D40A79892A5657E8"
+            }
+          ],
+          "etag": "043153DBD332B3D7B61B55EDA6631E768489BA44"
+        },
+        "etag": "177EB9988FE4A2C50CA87A9E0C2CA071F081FD2C"
+      },
+      {
+        "id": "7486158",
+        "lastName": "Новый",
+        "firstName": "Ребенок",
+        "middleName": "Федорова",
+        "birthDate": "01.02.2019",
+        "gender": "M",
+        "trusted": false,
+        "snils": "000-000-000 00",
+        "inn": "000000000000",
+        "updatedOn": "1550220121",
+        "documents": {
+          "stateFacts": [
+            "hasSize"
+          ],
+          "docs": [
+            {
+              "id": "60749",
+              "type": "RF_BRTH_CERT",
+              "series": "VI-АК",
+              "number": "432323",
+              "issueDate": "02.02.2019",
+              "issuedBy": "32",
+              "vrfStu": "NOT_VERIFIED",
+              "actNo": "32",
+              "etag": "91A927B643579AE32BBCB5753D1446F1A4BA6434"
+            }
+          ],
+          "etag": "043153DBD332B3D7B61B55EDA6631E768489BA44"
+        },
+        "etag": "AE836B472185B05FA91C513C8B36CA1AB4F4D209"
+      },
+      {
+        "id": "7476472",
+        "lastName": "Ломонософ",
+        "firstName": "Михаил",
+        "middleName": "Васильевич",
+        "birthDate": "06.08.2011",
+        "gender": "M",
+        "trusted": false,
+        "snils": "115-894-366 87",
+        "inn": "504224364855",
+        "updatedOn": "1540284051",
+        "documents": {
+          "stateFacts": [
+            "hasSize"
+          ],
+          "docs": [
+            {
+              "id": "53550",
+              "type": "FID_BRTH_CERT",
+              "series": "ККААААААЙ",
+              "number": "5555555",
+              "issueDate": "01.10.2018",
+              "issuedBy": "пааамииии",
+              "vrfStu": "NOT_VERIFIED",
+              "etag": "18C8BD35FDBE709039D4B95D572DAEB61206FA8D"
+            },
+            {
+              "id": "49343",
+              "type": "MDCL_PLCY",
+              "number": "123456675676575677",
+              "vrfStu": "NOT_VERIFIED",
+              "etag": "121784AD5ED62BAC5F7A3F4C3F3889978962CEAE"
+            }
+          ],
+          "etag": "043153DBD332B3D7B61B55EDA6631E768489BA44"
+        },
+        "etag": "68650DD455CB52FA4C8963E980C9272CA3BD0B13"
+      }
+    ],
+    "registration": {
+      "regDate": "29.05.2014",
+      "cfmTyp": "POS",
+      "cfmDate": "29.05.2014",
+      "changeDate": "29.05.2014",
+      "etag": "204231C4435CFCEF56572AD9F963BB1405417FC3"
+    },
+    "roles": [
+      {
+        "oid": "1000366653",
+        "fullName": "ОРГАНИЗАЦИЯ 542709702",
+        "shortName": "ОРГАНИЗАЦИЯ 542709702",
+        "ogrn": "3025898706040",
+        "type": "LEGAL",
+        "chief": "false",
+        "phone": "+7 (123) 456-78-90*098765",
+        "active": "true"
+      },
+      {
+        "oid": "1000357856",
+        "fullName": "Индивидуальный предприниматель Фёдоров Фёдор Акакиевич",
+        "shortName": "ИП Фёдоров Ф. А.",
+        "ogrn": "310169035600071",
+        "type": "BUSINESS",
+        "chief": "true",
+        "phone": "+7 (888) 888-88-88",
+        "active": "true"
+      },
+      {
+        "oid": "1000361705",
+        "fullName": "ОРГАНИЗАЦИЯ -1237682074",
+        "shortName": "ОРГАНИЗАЦИЯ -1237682074",
+        "ogrn": "1020200715282",
+        "type": "LEGAL",
+        "chief": "false",
+        "email": "a_eml_my@gmail.com",
+        "phone": "+7 (916) 241-11-33",
+        "active": "true"
+      },
+      {
+        "oid": "1000300648",
+        "fullName": "Общество с ограниченной ответственностью \"Балтинформ\"",
+        "shortName": "ООО \"Балтинформ\"",
+        "ogrn": "0001234000009",
+        "type": "AGENCY",
+        "chief": "false",
+        "email": "test@test.ru",
+        "active": "true"
+      }
+    ],
+    "biometrics": [],
+    "totalVehicles": 500,
+    "socials": [
+      {
+        "channel": "vk",
+        "status": "active",
+        "userId": "123456789"
+      },
+      {
+        "channel": "ok",
+        "status": "disconnected",
+        "userId": "987654321"
+      }
+    ]
+  },
+  "personEmail": "qatest@mailforspam.com",
+  "middleName": "Акакиевич",
+  "userType": "P",
+  "activeLegalRoleCount": "3",
+  "snils": "000-000-000 03",
+  "orgPosition": null,
+  "authorized": true,
+  "type": "P",
+  "shortName": "Фёдоров Ф. А.",
+  "typeParams": {
+    "catalogType": "",
+    "departmentsType": "",
+    "departmentItem": "PERSON",
+    "occasionType": "PERSON",
+    "faqType": "PERSON",
+    "newsType": "PERSON",
+    "rootPath": "/",
+    "searchSputnikParam": "all",
+    "individual": true,
+    "name": "Для граждан",
+    "userTypeGosBar": "P"
+  }
+}

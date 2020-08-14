@@ -1,0 +1,17 @@
+<nav class="nav" *ngIf="tabsService.getVisibleTabs()">
+  <ul class="tabs-box">
+    <li class="tab-wrapper"
+        *ngFor="let tab of tabsService.tabs$ | async"
+        routerLink="{{tab.url}}"
+        routerLinkActive="active">
+      <ng-container *ngIf="tab.url">
+        <a class="tab">
+          <span class="tab-name" *ngIf="translation === Translation.NONE">{{tab.name}}</span>
+          <span class="tab-name" *ngIf="translation === Translation.APP">{{tab.name | appTranslate}}</span>
+          <span class="tab-name" *ngIf="translation === Translation.LIB">{{tab.name | libTranslate}}</span>
+          <lib-counter class="counter" [counter]="tab.counter"></lib-counter>
+        </a>
+      </ng-container>
+    </li>
+  </ul>
+</nav>

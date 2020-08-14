@@ -1,0 +1,66 @@
+<div class="text-control" [ngClass]="contextClass ? [contextClass] : []"
+      [class.withClearButton]="clearable && !disabled && value"
+      [class.withTip]="questionTip && !(invalidDisplayed && validationMessages)"
+      [class.withValidationError]="invalidDisplayed && validationMessages"
+      [class.passwordField]="type === 'password'"
+      (click)="returnFocus($event)">
+  <div class="input-container plain-input" [ngClass]="{multiline: multiline, invalid: invalidDisplayed, focused: focused, disabled: disabled}">
+    <input #input *ngIf="!multiline" 
+      [attr.name]="name" 
+      [attr.type]="type === 'password' && passwordVisible ? 'text' : type || 'text'" 
+      [attr.tabIndex]="tabIndex" 
+      [attr.id]="id ? id : null" 
+      [attr.maxlength]="maxlength" 
+      [attr.placeholder]="placeholder" 
+      [attr.autocomplete]="autocomplete === undefined ? null : autocomplete" 
+      [value]="value" 
+      [disabled]="disabled" 
+      [readOnly]="readOnly" 
+      class="text-input" 
+      [class.invalid]="invalidDisplayed" 
+      [class.focused]="focused"
+      [class.uppercase]="uppercase"
+      (change)="handleChange($event)" 
+      (input)="handleInput($event)" 
+      (blur)="notifyFocusEvent($event)" 
+      (focus)="notifyFocusEvent($event)" 
+      (keyup.enter)="forceChange()"/>
+    <textarea #input *ngIf="multiline" 
+      [attr.name]="name" 
+      [attr.id]="id ? id : null" 
+      [attr.tabIndex]="tabIndex" 
+      [attr.maxlength]="maxlength" 
+      [attr.placeholder]="placeholder" 
+      [disabled]="disabled" 
+      [readOnly]="readOnly" 
+      class="text-input" 
+      [class.invalid]="invalidDisplayed" 
+      [class.focused]="focused" 
+      [class.uppercase]="uppercase"
+      (change)="handleChange($event)" 
+      (input)="handleInput($event)" 
+      (blur)="notifyFocusEvent($event)" 
+      (focus)="notifyFocusEvent($event)"
+    >{{value}}</textarea>
+  </div>
+  <div class="buttons-container" [ngClass]="{multiline: multiline}">
+    <div *ngIf="clearable && !disabled && value" (click)="clearValue($event)" class="clear-button"></div>
+    <div class="validation-container" *ngIf="invalidDisplayed && validationMessages">
+      <lib-invalid-results-tip  
+        [invalid]="invalid"
+        [validation]="validation" 
+        [validationMessages]="validationMessages" 
+        [tipDirection]="tipDirection"
+        [containerOverlap]="containerOverlap"
+      ></lib-invalid-results-tip>
+    </div>
+    <div class="tip-container" *ngIf="questionTip && !(invalidDisplayed && validationMessages)" >
+      <lib-question-help-tip 
+        [tipDirection]="tipDirection" 
+        [questionTip]="questionTip"
+        [containerOverlap]="containerOverlap"
+      ></lib-question-help-tip>
+    </div>
+    <div class="password-eye" *ngIf="type === 'password'" (click)="switchPasswordMode()" [ngClass]="{'password-visible': passwordVisible}"></div>
+  </div>
+</div>

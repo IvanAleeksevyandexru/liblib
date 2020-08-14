@@ -1,0 +1,149 @@
+.nav {
+  position: relative;
+  background: #eeefef;
+  user-select: none;
+}
+
+.overview {
+  position: relative;
+  width: 100%;
+  padding: 12px 85px 12px 16px;
+  border-bottom: 1px solid #ced9f0;
+  cursor: pointer;
+
+  .overview-text {
+    position: relative;
+    display: inline-block;
+    padding-right: 36px;
+    line-height: 24px;
+
+    .counter {
+      position: absolute;
+      top: 5px;
+      right: -2px;
+    }
+  }
+}
+
+.toggle-button {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(../../../assets/svg/arrow-down-circle.svg) no-repeat;
+    background-size: 100%;
+  }
+
+  .counter-circle {
+    top: 1px;
+    right: -1px;
+    width: 8px;
+    height: 8px;
+  }
+}
+
+.break {
+
+
+  &:before {
+    content: '';
+    padding-bottom: 24px;
+    border-top: 1px solid #b6c6e8;
+    width: 176px;
+    display: block;
+  }
+}
+
+.tabs-box {
+  display: none;
+}
+
+.opened {
+  .overview {
+    height: 0;
+    padding: 0;
+    border: none;
+
+    .overview-text {
+      display: none;
+    }
+  }
+
+  .toggle-button:before {
+    transform: rotate(180deg);
+  }
+
+  .tabs-box {
+    display: block;
+    padding: 4px 0;
+    border-bottom: 1px solid #ced9f0;
+  }
+}
+
+.tab-wrapper {
+  padding: 12px 16px;
+}
+
+.tab {
+  display: block;
+  color: #0b40b3;
+  text-decoration: none;
+  line-height: 24px;
+
+  &.active {
+    cursor: default;
+    color: #000000;
+  }
+
+  .counter {
+    display: inline-block;
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .nav {
+    background: none;
+  }
+
+  .overview {
+    display: none;
+  }
+
+  .tabs-box {
+    display: block;
+    border: none;
+  }
+
+  .tab-wrapper {
+    margin-bottom: 24px;
+    padding: 0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .tab {
+    display: initial;
+    &.active {
+      color: #000000;
+    }
+  }
+
+  .opened {
+    .tabs-box {
+      margin-top: 0;
+      border: none;
+    }
+  }
+}

@@ -1,0 +1,220 @@
+import { Injectable } from '@angular/core';
+import { Renderer2, RendererFactory2 } from '@angular/core';
+import { isDevMode } from '@angular/core';
+import { LoadService } from '../load/load.service';
+import { BannerGroup } from '../../models/main-page.model';
+import { Document } from '../../models/document';
+import { DatesHelperService } from '../dates-helper/dates-helper.service';
+import { DurationInputArg1, DurationInputArg2 } from 'moment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class YaMetricService {
+
+  private isLoaded: boolean;
+
+  public counter = this.loadService.config.yaCounter;
+  public deviceType = this.loadService.attributes.deviceType;
+  public ym: any;
+  private renderer: Renderer2;
+
+  public static getDocumentStatus(document: Document): 'checks' | 'failedVerif' | 'validated' {
+    if (document.number) {
+      if (document.vrfValStu === 'VERIFYING') {
+        return 'checks';
+      } else if (document.vrfStu === 'VERIFIED') {
+        return 'validated';
+      } else {
+        return 'failedVerif';
+      }
+    } else {
+      return null;
+    }
+  }
+
+  public static getDocumentTimeStatus(date: string, amount: DurationInputArg1 = 3, units: DurationInputArg2 = 'month'): 'soonExpire' | 'expired' | 'relevant' {
+    if (date) {
+      if (DatesHelperService.isExpiredDate(date)) {
+        return 'expired';
+      } else if (DatesHelperService.isExpiredDateAfter(date, amount, units)) {
+        return 'soonExpire';
+      } else {
+        return 'relevant';
+      }
+    } else {
+      return null;
+    }
+  }
+
+  constructor(
+    private loadService: LoadService,
+    private rendererFactory: RendererFactory2,
+  ) {
+    this.renderer = this.rendererFactory.createRenderer(null, null);
+  }
+
+  public loadMetric(): void {
+    ((m, e, t, r, i, k, a) => {
+      // tslint:disable-next-line:only-arrow-functions
+      const addScript = function() {
+        (m[i].a = m[i].a || []).push(arguments);
+      };
+      m[i] = m[i] || addScript;
+      m[i].l = +new Date();
+      k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a);
+    })
+    (window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+    // @ts-ignore
+    ym(this.counter, 'init', {
+      defer: true,
+      id: this.counter,
+      clickmap: true,
+      trackLinks: true,
+      accurateTrackBounce: true,
+      trackHash: true,
+      triggerEvent: true
+    });
+  }
+
+  public callReachGoal(name, params = null): Promise<void> {
+    return this.onInit().then(() => {
+      if (this.ym) {
+        if (params) {
+          return this.ym(this.counter, 'reachGoal', name, params);
+        } else {
+          return this.ym(this.counter, 'reachGoal', name);
+        }
+      }
+    });
+  }
+
+  /**
+   * посылает яндекс метрику с событием для элементов с директивой libYaMetric / libYaMetricSendAndPass
+   * параметр name в мапе обязательный, добавление платформы автоматическое, если не отменено параметром skipType
+   */
+  public callReachGoalParamsAsMap(params: { [key: string]: any } = {}) {
+    const name = params.name;
+    if (!name) {
+      throw Error('yandex metric event name is required!');
+    }
+    const paramsCopy = Object.assign({}, params);
+    if (!paramsCopy.skipType) {
+      paramsCopy.type = this.deviceType;
+    }
+    delete paramsCopy.name;
+    delete paramsCopy.skipType;
+    return this.callReachGoal(name, paramsCopy);
+  }
+
+  public initBannerYaMetric(banners: BannerGroup[]): void {
+    if (banners && banners.length && banners[0].banners.length) {
+      this.callReachGoal('new_lk_banners', {
+        banners: 'show',
+        banner: banners[0].banners[0].mnemonic,
+        type: this.loadService.attributes.deviceType
+      });
+    }
+  }
+
+  public initBannerPlaceYaMetric(banners: BannerGroup[]): void {
+    if (banners && banners.length && banners[0].banners.length) {
+      this.callReachGoal('new_lk_banners', {
+        banner_place: banners[0].group,
+        type: this.loadService.attributes.deviceType
+      });
+    }
+  }
+
+  public arrowClickYaMetric(): void {
+    this.callReachGoal('new_lk_banners', {
+      arrowAction: true,
+      type: this.loadService.attributes.deviceType
+    });
+  }
+
+  public bannerClickYaMetric(bannerMnemonic: string, isGeps: boolean): void {
+    if (!isGeps) {
+      this.callReachGoal('new_lk_banners', {
+        banners: 'action',
+        banner: bannerMnemonic,
+        type: this.loadService.attributes.deviceType
+      });
+    } else {
+      this.callReachGoal('new_lk_banners_geps', {
+        banners: 'action',
+        banner: bannerMnemonic,
+        area: 'field',
+        type: this.loadService.attributes.deviceType
+      });
+    }
+  }
+
+  public onInit(): Promise<any> {
+    if (this.isLoaded) {
+      return Promise.resolve();
+    }
+    return new Promise((resolve, reject) => {
+      this.renderer.listen('document', `yacounter${this.counter}inited`, (event: any) => {
+        this.isLoaded = true;
+        if (!isDevMode()) {
+          // @ts-ignore
+          this.ym = ym;
+        } else {
+          console.log('ya metric disabled, environment.name === "local"');
+        }
+        resolve();
+      });
+    });
+  }
+
+  public yaMetricCallToAction(staType: string): void {
+    this.callReachGoal('detailOrder', {
+      action: 'sta',
+      staType,
+      type: this.loadService.attributes.deviceType
+    });
+  }
+
+  public yaMetricOrderDetails(action: string, serviceName: string, status?: number) {
+    const params: { [key: string]: string | number } = {
+      action,
+      serviceName,
+      type: this.loadService.attributes.deviceType
+    };
+    if (status) {
+      params.status = status;
+    }
+    this.callReachGoal('detailOrder', params);
+  }
+
+  public yaMetricAside(mnemonic: string): void {
+    if (this.loadService.config.yaCounter) {
+      const params: { [key: string]: string } = {
+        action: mnemonic,
+        type: this.loadService.attributes.deviceType
+      };
+      if (mnemonic === 'settings') {
+        params.from = 'feedsOrder';
+      }
+      this.callReachGoal('feedsOrder', params);
+    }
+  }
+
+  public init(): void {
+    this.loadMetric();
+    this.onInit();
+  }
+
+  public yaMetricInformerMain(typeAction: string, debt: object | null = null): void {
+    const params = {
+      overviewInformer: {
+        typeAction,
+        screen: this.loadService.attributes.deviceType
+      }
+    };
+    params.overviewInformer = Object.assign(params.overviewInformer, debt);
+
+    this.callReachGoal('overviewInformer', params);
+  }
+}

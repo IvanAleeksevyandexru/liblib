@@ -1,0 +1,22 @@
+<div class="popup-wrapper">
+  <div class="popup">
+    <a class="close" (click)="onCancel()"></a>
+    <div class="warn-container">
+      <div class="warn-icon">
+        <img width="74" src="{{config.staticDomain}}/lib-assets/svg/gos_logo_mobile.svg">
+      </div>
+      <div class="warn-text">
+        <h5 class="title-h5 mb-20">{{'LANG_WARN.TITLE' | libTranslate}}</h5>
+        <p>{{'LANG_WARN.TEXT' | libTranslate}}</p>
+      </div>
+    </div>
+    <div class="button-container">
+      <div class="button-wrapper mb-16 mb-md-0">
+        <lib-button size="md" color="white" (click)="onCancel()">{{'LANG_WARN.GET_BACK' | libTranslate}}</lib-button>
+      </div>
+      <div class="button-wrapper">
+        <lib-button size="md" (click)="continue()">{{'LANG_WARN.CONTINUE' | libTranslate}}</lib-button>
+      </div>
+    </div>
+  </div>
+</div>

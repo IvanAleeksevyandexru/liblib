@@ -1,0 +1,6 @@
+<div class="feeds-header">
+  <h3 class="title-h0" [ngClass]="{'feeds-header-overview': page}">{{title}}</h3>
+  <a [ngClass]="{hide: !showSettings}" (click)="onSettingsClick()" routerLink="/settings/notifications">
+    <img class="feeds-settings" src="{{staticDomainAssetsPath}}svg/settings.svg" alt=""><span class="title">Настройка оповещений</span></a>
+</div>
+

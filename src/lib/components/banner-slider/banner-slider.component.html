@@ -1,0 +1,46 @@
+<div class="banner-group-container flex-row-lg justify-center-lg"
+     [ngClass]="[path, closed ? 'hidden' : '', noBorder ? 'no-border' : '', noBorderRadius ? 'no-border-radius' : '']"
+     [style.height.px]="fixedHeight ? fixedHeight : ''"
+     [style.backgroundColor]="backgroundColor ? backgroundColor : ''"
+     [style.borderColor]="borderColor && !noBorder ? borderColor : ''"
+     [ngStyle]="backgroundImage ? {'background': backgroundImage} : {}">
+  <div class="flex-container-lg flex-row-lg">
+    <div *ngIf="showArrowBtn && bannerList?.length > 1" class="sliders-controls flex-1-lg">
+      <div class="banners-paging">
+        <a class="prev-banner" (click)="prevBanner(true)"><div></div></a>
+      </div>
+    </div>
+    <div #bannersFeedContainer class="banners-feed-container flex-0-lg">
+      <div #bannersFeed class="banners-feed" (touchstart)="beginFeedDragging($event)" [ngStyle]="{'left.px': offset}">
+        <div class="banner-wrapper"
+             *ngFor="let banner of bannersFeedList"
+             [ngClass]="[activeBanner === banner ? 'active' : '', classBannerWrapper? classBannerWrapper : '']">
+          <lib-static-banner
+            [banners]="banners"
+            [path]="path + '.' + banner.mnemonic"
+            [closable]="false"
+            [noBorder]="true"
+            [noBorderRadius]="true"
+            [noPadding]="noPadding"
+            [needContainer]="needContainer"
+          ></lib-static-banner>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showArrowBtn && bannerList?.length > 1" class="sliders-controls right flex-1-lg">
+      <div class="banners-paging">
+        <a class="next-banner" (click)="nextBanner(true)"><div></div></a>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showBullBtn && bannerList?.length > 1"
+       [ngClass]="[navBtnStyle || '']"
+       class="bullet-container">
+    <a *ngFor="let banner of bannerList"
+       class="bullet-item"
+       [ngClass]="{selected: activeBanner === banner}"
+       (click)="scrollToBanner(banner)">
+    </a>
+  </div>
+  <div class="close-banner-group" *ngIf="closeDisplay" (click)="excludeActiveBannerOrClose()"></div>
+</div>

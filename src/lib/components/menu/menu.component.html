@@ -1,0 +1,59 @@
+<div #menu class="menu" [ngClass]="{'show-categories': showCategories}">
+  <div class="inner container grid-row-lg flex-container align-items-center">
+    <div class="col-lg-2 logo-wrapper">
+      <lib-logo></lib-logo>
+    </div>
+    <div class="col-lg-10 align-items-center flex-container justify-end">
+      <div class="links-wrapper flex-container justify-end align-items-center">
+        <ul class="links hide flex-container-lg">
+          <li class="item" *ngFor="let link of links">
+            <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
+               (click)="redirect($event, link.url)"
+               [href]="link.url">{{link.title | appTranslate}}</a>
+            <ng-template #categoryLink>
+              <a class="category-link"
+                [href]="link.url"
+                (mouseenter)="openCategories()"
+                (mouseleave)="closeCategories()">{{link.title | appTranslate}}</a>
+            </ng-template>
+          </li>
+        </ul>
+        <div class="open-search-popup" (click)="popupSearch()"></div>
+      </div>
+      <div class="user-menu-wrapper">
+        <div class=" login-wrapper hide show-lg">
+          <div class="login flex-container justify-end overflow-container">
+            <lib-login [userCounter]="userCounter" (userClick)="showUserMenu(false)"></lib-login>
+          </div>
+        </div>
+        <a class="open-mobile-menu hide-lg"
+           (click)="showUserMenu(true)">
+          <lib-counter class="counter-circle" [counter]="userCounter"></lib-counter>
+        </a>
+        <lib-user-menu [state]="userMenuState"></lib-user-menu>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="categories hide show-lg"
+  [ngClass]="{show: showCategories, loading: emptyCategories}"
+  (mouseenter)="openCategories()"
+  (mouseleave)="closeCategories()">
+  <div class="inner">
+    <div class="container">
+      <div class="grid-row">
+        <div *ngFor="let category of categories;" class="category col-lg-3 col-md-2">
+          <a [href]="'/category/' + category.code" class="flex-container align-items-center">
+            <img *ngIf="category.icons" class="icon" [src]="category.icons[0].path" width="48" height="48" alt="">
+            <span *ngIf="!category.icons" class="icon empty"></span>
+            <span class="title">{{category.title}}</span>
+          </a>
+        </div>
+      </div>
+      <div class="buttons">
+        <lib-button type="anchor" internalLink="/catalog" size="lg" class="catalog-link">{{'HEADER.CATALOG.ALL' | libTranslate}}</lib-button>
+        <lib-button color="white" size="lg" (click)="showCategories = false;">{{'HEADER.CATALOG.CLOSE' | libTranslate}}</lib-button>
+      </div>
+    </div>
+  </div>
+</div>

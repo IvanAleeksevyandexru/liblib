@@ -1,0 +1,64 @@
+.footer-info {
+  position: relative;
+  color: #535b63;
+  font: 14px/ 20px "Helvetica Neue", "Helvetica", "sans-serif";
+  min-height: 176px;
+
+  &__text, .logo-mks, .logo-rostelek {
+    position: absolute;
+  }
+
+  .logo-mks, .logo-rostelek {
+    height: 64px;
+    bottom: 24px;
+  }
+
+  .logo-mks {
+    background-image: url("../../../../assets/img/logos/mks.png");
+    background-size: cover;
+    width: 50px;
+    left: calc(50% - 50px - 35px);
+  }
+
+  .logo-rostelek {
+    right: calc(50% - 50px - 35px);
+  }
+
+  &__text {
+    top: 24px;
+    margin-bottom: 24px;
+    text-align: center;
+    width: 100%;
+  }
+
+}
+
+@media all and (min-width: 768px) {
+  .footer-wrapper {
+    border-top: 1px solid #c6cecf;
+    width: 100%;
+  }
+
+  .footer-info {
+    display: flex;
+    align-items: center;
+    padding: 32px 0;
+    justify-content: center;
+    max-width: 640px;
+    margin: 0 auto;
+
+    &__text, .logo-mks, .logo-rostelek {
+      position: static;
+    }
+
+    .logo-mks, .logo-rostelek {
+      flex: 0 0 auto;
+      bottom: 0;
+    }
+
+    &__text {
+      margin-bottom: 0;
+    }
+  }
+
+}

@@ -1,0 +1,43 @@
+<div class="error-icon" #errorIcon  (click)="toggle()" 
+  [ngClass]="{hidden: !invalidDisplayed, 'hover-controlled': showOnHover, 'force-show': forceShow === true, 'force-hide': forceShow === false, hovered: hovered}" 
+  (mouseenter)="markHovered()" (mouseleave)="markUnhovered()" libClickOutside (clickOutside)="hideDialog()" libStopClickPropagation>
+  <div class="error-tip-container" #errorTipContainer [ngClass]="tipDirection || 'right'">
+    <div class="tail-shadow"></div>
+    <div class="validation-error-tip">
+      <div class="error-content">
+        <div *ngFor="let message of messages" class="error-item">
+          <ng-container *ngIf="message.piped">
+            <ng-container *ngIf="message.key">
+              <span *ngIf="escapeHtml" class="error-text">{{message.piped | pipedMessage:validation[message.key]}}</span>
+              <span *ngIf="!escapeHtml" class="error-text" [innerHTML]="message.piped | pipedMessage:validation[message.key]"></span>
+            </ng-container>
+            <ng-container *ngIf="!message.key">
+              <span *ngIf="escapeHtml" class="error-text">{{message.piped | pipedMessage}}</span>
+              <span *ngIf="!escapeHtml" class="error-text" [innerHTML]="message.piped | pipedMessage"></span>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="!message.piped">
+            <ng-container *ngIf="message.isDefault">
+              <span class="error-text">{{'VALIDATION.DEFAULT' | libTranslate}}</span>
+            </ng-container>
+            <ng-container *ngIf="!message.isDefault">
+              <ng-container *ngIf="translation === Translation.NONE">
+                <span *ngIf="escapeHtml" class="error-text">{{message.str}}</span>
+                <span *ngIf="!escapeHtml" class="error-text" [innerHTML]="message.str"></span>
+              </ng-container>
+              <ng-container *ngIf="translation === Translation.APP">
+                <span *ngIf="escapeHtml" class="error-text">{{message.str | appTranslate}}</span>
+                <span *ngIf="!escapeHtml" class="error-text" [innerHTML]="message.str | appTranslate"></span>
+              </ng-container>
+              <ng-container *ngIf="translation === Translation.LIB">
+                <span *ngIf="escapeHtml" class="error-text">{{message.str | libTranslate}}</span>
+                <span *ngIf="!escapeHtml" class="error-text" [innerHTML]="message.str | libTranslate"></span>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="tail-mask"></div>
+  </div>
+</div>

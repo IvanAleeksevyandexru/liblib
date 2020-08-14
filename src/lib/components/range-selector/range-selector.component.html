@@ -1,0 +1,49 @@
+<div class="dropdown" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside (clickOutside)="closeDropdown();" (keydown)="handleKeydownNavigation($event)">
+  <div class="dropdown-field" #dropdownField [ngClass]="{disabled: disabled, invalid: invalidDisplayed, expanded: expanded}" (click)="toggle()">
+    <div class="dropdown-values nowrap" #dropdownValues>
+      <div *ngFor="let item of internalSelected" class="dropdown-value">
+        <span *ngIf="item.customRange" class="selected-value-text">{{this.formatRange(item.range)}}</span>
+        <span *ngIf="!item.customRange && translation === Translation.NONE" class="selected-value-text">{{item.text}}</span>
+        <span *ngIf="!item.customRange && translation === Translation.APP" class="selected-value-text">{{item.text | appTranslate}}</span>
+        <span *ngIf="!item.customRange && translation === Translation.LIB" class="selected-value-text">{{item.text | libTranslate}}</span>
+      </div>
+      <div *ngIf="!internalSelected || !internalSelected.length" class="dropdown-value empty-value"><span class="selected-value-text">&mdash;</span></div>
+    </div>
+    <input #focusableInput 
+      class="focusable-input" 
+      type="text" 
+      readonly="true"
+      [attr.tabIndex]="tabIndex" 
+      (focus)="notifyFocusEvent($event)" 
+      (blur)="notifyFocusEvent($event)"/>
+    <a class="dropdown-arrow" [ngClass]="{expanded: expanded}" tabIndex="-1"></a>
+  </div>
+  <div class="dropdown-list-wrapper">
+    <div class="dropdown-list-container" #dropdownList [ngClass]="{hidden: !expanded}" [hidden]="!expanded">
+      <perfect-scrollbar #scrollComponent [config]="{suppressScrollX: true}" [hidden]="customRangeSelectingMode">
+        <div class="dropdown-list-area" #scrollableArea>
+          <div *ngFor="let item of internalItems" class="dropdown-item" [attr.itemId]="item.id"
+              (click)="selectItem(item)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
+              [ngClass]="{selected: isSelected(item, internalSelected), highlighted: isHighlighted(item)}">
+            <div class="dropdown-item-container">
+              <span *ngIf="translation === Translation.NONE" class="dropdown-item-text">{{item.text}}</span>
+              <span *ngIf="translation === Translation.APP" class="dropdown-item-text">{{item.text | appTranslate}}</span>
+              <span *ngIf="translation === Translation.LIB" class="dropdown-item-text">{{item.text | libTranslate}}</span>
+            </div>
+          </div>
+        </div>
+      </perfect-scrollbar>
+      <lib-date-picker 
+        [(ngModel)]="customRange" 
+        (ngModelChange)="handleCustomRangeSelectionEnd()" 
+        [hidden]="!customRangeSelectingMode"
+        [isRange]="true"
+        [asSimplePanel]="true"
+        [textModelValue]="textModelValue"
+        [minDate]="minDate"
+        [maxDate]="maxDate"
+        align="adjust"
+      ></lib-date-picker>
+    </div>
+  </div>
+</div>

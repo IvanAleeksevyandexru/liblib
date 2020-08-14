@@ -1,0 +1,88 @@
+<div class="dropdown" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside (clickOutside)="closeDropdown(true);" (keydown)="handleKeydownNavigation($event)">
+  <div class="dropdown-field" #dropdownField [ngClass]="{disabled: disabled, invalid: invalidDisplayed, expanded: expanded, multi: multi, 'separate-items': multi && clearable}" (click)="toggle()">
+    <div class="dropdown-values" #dropdownValues [ngClass]="{nowrap: nowrap}">
+      <ng-container
+        *ngIf="!pluralizeArray.length || (pluralizeArray.length && internalSelected.length === 1); else valueWithPluralize">
+        <div *ngFor="let item of internalSelected" class="dropdown-value">
+          <ng-container *ngIf="translation === Translation.NONE">
+            <span *ngIf="!escapeHtml" class="selected-value-text" [innerHTML]="item.formatted"></span>
+            <span *ngIf="escapeHtml" class="selected-value-text">{{item.formatted}}</span>
+          </ng-container>
+          <ng-container *ngIf="translation === Translation.APP">
+            <span *ngIf="!escapeHtml" class="selected-value-text" [innerHTML]="item.formatted | appTranslate"></span>
+            <span *ngIf="escapeHtml" class="selected-value-text">{{item.formatted | appTranslate}}</span>
+          </ng-container>
+          <ng-container *ngIf="translation === Translation.LIB">
+            <span *ngIf="!escapeHtml" class="selected-value-text" [innerHTML]="item.formatted | libTranslate"></span>
+            <span *ngIf="escapeHtml" class="selected-value-text">{{item.formatted | libTranslate}}</span>
+          </ng-container>
+          <a class="remove-item" *ngIf="clearable" (click)="selectOrDeselectItem(item, true)"></a>
+        </div>
+      </ng-container>
+      <ng-template #valueWithPluralize>
+        <div *ngIf="internalSelected.length" class="dropdown-value">
+          <ng-container *ngIf="translation === Translation.NONE">
+          <span *ngIf="!escapeHtml" class="selected-value-text"
+                [innerHTML]="internalSelected.length | decline: pluralizeArray"></span>
+            <span *ngIf="escapeHtml"
+                  class="selected-value-text">{{internalSelected.length | decline: pluralizeArray}}</span>
+          </ng-container>
+          <ng-container *ngIf="translation === Translation.APP">
+          <span *ngIf="!escapeHtml" class="selected-value-text"
+                [innerHTML]="(internalSelected.length | decline: pluralizeArray) | appTranslate"></span>
+            <span *ngIf="escapeHtml"
+                  class="selected-value-text">{{(internalSelected.length | decline: pluralizeArray) | appTranslate}}</span>
+          </ng-container>
+          <ng-container *ngIf="translation === Translation.LIB">
+          <span *ngIf="!escapeHtml" class="selected-value-text"
+                [innerHTML]="(internalSelected.length | decline: pluralizeArray) | libTranslate"></span>
+            <span *ngIf="escapeHtml"
+                  class="selected-value-text">{{(internalSelected.length | decline: pluralizeArray) | libTranslate}}</span>
+          </ng-container>
+        </div>
+      </ng-template>
+      <div *ngIf="!internalSelected || !internalSelected.length" class="dropdown-value empty-value"><span class="selected-value-text" [innerHTML]="emptyResultTitle"></span></div>
+    </div>
+    <input #focusableInput
+      class="focusable-input"
+      type="text"
+      readonly="true"
+      [attr.tabIndex]="tabIndex"
+      (focus)="notifyFocusEvent($event)"
+      (blur)="notifyFocusEvent($event)"/>
+    <a class="dropdown-arrow" [ngClass]="{expanded: expanded}" tabIndex="-1"></a>
+  </div>
+  <div class="dropdown-list-wrapper">
+    <div class="dropdown-list-container" #dropdownList [ngClass]="{hidden: !expanded}" [hidden]="!expanded" libStopScreenScroll>
+      <div *ngIf="localSearch" class="dropdown-search-input">
+        <div class="dropdown-search-icon"></div>
+        <lib-plain-input [(ngModel)]="searchValue" (focus)="searchFocusHandler($event, true)" libClickOutside (clickOutside)="searchFocusHandler($event, false)" placeholder="Поиск" (input)="search($event)"></lib-plain-input>
+      </div>
+      <perfect-scrollbar #scrollComponent [config]="{suppressScrollX: true, wheelPropagation: false}">
+        <div class="dropdown-list-area" #scrollableArea [ngClass]="{'multi-choise': multi}">
+          <div *ngFor="let item of internalItems; trackBy: trackByFn" class="dropdown-item" [attr.itemId]="item.id"
+               (click)="selectOrDeselectItem(item, multi)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
+               [ngClass]="{selected: isSelected(item, internalSelected), highlighted: isHighlighted(item), hidden: item.hidden}">
+            <div *ngIf="multi" class="dropdown-item-checkbox-wrapper">
+              <div class="dropdown-item-checkbox"></div>
+            </div>
+            <div class="dropdown-item-container">
+              <ng-container *ngIf="translation === Translation.NONE">
+                <span *ngIf="!escapeHtml" class="dropdown-item-text" [innerHTML]="item.formatted"></span>
+                <span *ngIf="escapeHtml" class="dropdown-item-text">{{item.formatted}}</span>
+              </ng-container>
+              <ng-container *ngIf="translation === Translation.APP">
+                <span *ngIf="!escapeHtml" class="dropdown-item-text" [innerHTML]="item.formatted | appTranslate"></span>
+                <span *ngIf="escapeHtml" class="dropdown-item-text">{{item.formatted | appTranslate}}</span>
+              </ng-container>
+              <ng-container *ngIf="translation === Translation.LIB">
+                <span *ngIf="!escapeHtml" class="dropdown-item-text" [innerHTML]="item.formatted | libTranslate"></span>
+                <span *ngIf="escapeHtml" class="dropdown-item-text">{{item.formatted | libTranslate}}</span>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </perfect-scrollbar>
+    </div>
+  </div>
+</div>

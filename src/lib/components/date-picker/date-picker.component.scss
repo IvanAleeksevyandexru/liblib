@@ -1,0 +1,301 @@
+.date-picker {
+  display: inline-block;
+  width: 100%;
+  position: static;
+  .value-field-wrapper {
+    position: static;
+  }
+  .value-field-container {
+    position: relative;
+    ::ng-deep {
+      .calendar-input {
+        input::-ms-clear {
+          display: none;
+          width: 0;
+          height: 0;
+        }
+        &.text-control {
+          .text-input.focused {
+            border: 1px solid #A8ACB1;
+            &.invalid {
+              border: 1px solid #DF0024;
+            }
+          }
+          .buttons-container {
+            right: 36px;
+          }
+        }
+      }
+    }
+    &.expanded {
+      ::ng-deep .calendar-input .text-input {
+        border-radius: 4px 4px 0 0;
+        &.focused {
+          &.invalid {
+            border: 1px solid #A8ACB1;
+          }
+        }
+      }
+    }
+    .calendar-icon {
+      position: absolute;
+      display: block;
+      width: 24px;
+      height: 40px;
+      top: 2px;
+      right: 12px;
+      cursor: pointer;
+      background: url(../../../assets/svg/calendar-icon.svg) 3px 10px no-repeat;
+    }
+  }
+
+  .calendar-wrapper {
+    position: relative;
+    &.simple-panel {
+      position: static;
+      .calendar-container {
+        position: static;
+      }
+    }
+  }
+  .calendar-container {
+    width: 280px;
+    border: 1px solid #CED9F0;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: absolute;
+    background-color: white;
+    z-index: 1;
+    &.align-left {
+      left: 0;
+    }
+    &.align-right {
+      right: 0;
+    }
+    &.adjust {
+      width: 100%;
+    }
+    .calendar-panel {
+      background-color: #E7ECF7;
+      width: 100%;
+      .panel {
+        display: table;
+        width: 100%;
+        height: 20px;
+        padding: 7px;
+        box-sizing: border-box;
+        &.simplified-panel {
+          .month-buttons:first-child {
+            text-align: left;
+          }
+        }
+      }
+      .month-selector, .year-selector, .current-month, .month-buttons {
+        display: table-cell;
+        vertical-align: middle;
+      }
+      .month-buttons {
+        text-align: right;
+      }
+      .current-month {
+        font-face: Helvetica;
+        font-size: 14px;
+        line-height: 20px;
+        color: #09338F;
+      }
+      .month-selector {
+        width: 95px;
+      }
+      .month-arrow-prev, .month-arrow-next {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background-color: white;
+        background-repeat: no-repeat;
+        border-radius: 12px;
+        &.disabled {
+          opacity: 0.5;
+        }
+      }
+      .month-arrow-prev {
+        margin-right: 20px;
+        background-image: url(../../../assets/svg/calendar-prev-month.svg);
+        background-position: 7px 7px;
+      }
+      .month-arrow-next {
+        margin-right: 3px;
+        background-image: url(../../../assets/svg/calendar-next-month.svg);
+        background-position: 10px 7px;
+      }
+      .month-arrow-prev:hover {
+        background-color: #09338F;
+        background-image: url(../../../assets/svg/calendar-prev-month-hover.svg);
+        &.disabled {
+          background-color: white;
+          background-image: url(../../../assets/svg/calendar-prev-month.svg);
+        }
+      }
+      .month-arrow-next:hover {
+        background-color: #09338F;
+        background-image: url(../../../assets/svg/calendar-next-month-hover.svg);
+        &.disabled {
+          background-color: white;
+          background-image: url(../../../assets/svg/calendar-next-month.svg);
+        }
+      }
+    }
+    .calendar-grip-container-wrapper {
+      width: 100%;
+      .calendar-grid-container {
+        display: flex;
+        flex-flow: row;
+        transform: translateX(-100%);
+      }
+    }
+    .calendar-grid-wrap {
+      display: flex;
+      width: 100%;
+      min-width: 100%;
+      flex-shrink: 0;
+      max-height: auto;
+      &.next-month {
+        border-left: solid 1px #DCDEE0;
+      }
+      &.previous-month {
+        border-right: solid 1px #DCDEE0;
+      }
+      &.out-of-area {
+        display: block;
+        max-height: 200px;
+        overflow: hidden;
+      }
+    }
+    .calendar-grid {
+      display: table;
+      width: 100%;
+      .calendar-week-days {
+        display: table-row;
+        width: 100%;
+        .calendar-week-day {
+          display: table-cell;
+          width: 14.28%; // 1/7
+          text-align: center;
+          padding: 10px;
+          .calendar-week-day-text {
+            font-family: Helvetica;
+            font-size: 14px;
+            line-height: 20px;
+            color: #626A73;
+          }
+        }
+      }
+      .calendar-week {
+        display: table-row;
+        width: 100%;
+        .calendar-day {
+          display: table-cell;
+          width: 14.28%; // 1/7
+          text-align: center;
+          padding: 10px;
+          cursor: pointer;
+          box-sizing: border-box;
+          .calendar-day-text {
+            font-family: Helvetica;
+            font-size: 14px;
+            line-height: 20px;
+            color: #101214;
+          }
+          &.today {
+            position: relative;
+            .calendar-day-text {
+            }
+            :after {
+              content: '*';
+              color: #B2001D;
+              position: absolute;
+              right: 3px;
+              top: 3px;
+            }
+            &:hover {
+              :after {
+                content: '*';
+                color: #B2001D;
+                position: absolute;
+                right: 1px;
+                top: 1px;
+              }
+            }
+          }
+          &.holiday {
+            .calendar-day-text {
+              color: #B2001D;
+            }
+          }
+          &:hover {
+            border: 2px solid #CED9F0;
+            padding: 8px;
+          }
+          &.locked {
+            background-color: #EEEFEF;
+            cursor: default;
+            &:hover {
+              border: none;
+            }
+            .calendar-day-text {
+              color: #A8ACB1;
+            }
+          }
+          &.outer {
+          }
+          &.in-range {
+            background-color: #E7ECF7;
+            border-bottom: solid 1px #0B40B3;
+            padding-bottom: 9px;
+            .calendar-day-text {
+              color: #0B40B3;
+            }
+            &.holiday {
+              .calendar-day-text {
+                color: #B2001D;
+              }
+            }
+          }
+          &.range-start {
+            background-image: url(../../../assets/svg/calendar-range-start.svg);
+            background-repeat: no-repeat;
+            background-position: bottom left;
+          }
+          &.range-end {
+            background-image: url(../../../assets/svg/calendar-range-end.svg);
+            background-repeat: no-repeat;
+            background-position: bottom right;
+          }
+          &.selected {
+            background-color: #0B40B3;
+            &:hover {
+              border: none;
+            }
+            .calendar-day-text {
+              color: white;
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+}
+
+@media(hover: none) {
+  .date-picker .calendar-container .calendar-panel {
+    .month-arrow-prev:hover {
+      background-color: white;
+      background-image: url(../../../assets/svg/calendar-prev-month.svg);
+    }
+    .month-arrow-next:hover {
+      background-color: white;
+      background-image: url(../../../assets/svg/calendar-next-month.svg);
+    }
+  }
+}

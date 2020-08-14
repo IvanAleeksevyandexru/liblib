@@ -1,0 +1,401 @@
+html {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  font-family: Helvetica, Arial, sans-serif, -apple-system;
+  overflow-x: hidden;
+
+  &.menu-fixed {
+    padding-top: 80px;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: #0b40b3;
+  cursor: pointer;
+
+  &:hover {
+    color: #013e83;
+  }
+
+  &.external:after {
+    content: url("data:image/svg+xml,%3Csvg%20width%3D'16'%20height%3D'16'%20viewBox%3D'0%200%2016%2016'%20fill%3D'none'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%3E%3Cpath%20d%3D'M16%200H0V16H16V0Z'%20fill%3D'none'%2F%3E%3Cpath%20d%3D'M13%203L6%2010'%20stroke%3D'%230B40B3'%2F%3E%3Cpath%20d%3D'M9%203H13V7'%20stroke%3D'%230B40B3'%2F%3E%3Cpath%20d%3D'M6.80662%204H3V13H12L11.9975%209.19231'%20stroke%3D'%230B40B3'%2F%3E%3C%2Fsvg%3E");
+    display: inline;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+}
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+// TODO: Убрать глобальный стиль кнопки
+.button-base {
+  display: inline-block;
+  height: 54px;
+  border-radius: 4px;
+  padding: 0 25px;
+  font-size: 17px;
+  line-height: 54px;
+  color: #ffffff;
+  background: #0b40b3;
+  cursor: pointer;
+
+  &:hover {
+    color: #ffffff;
+    background: #023e83;
+  }
+
+  &:active {
+    color: #ffffff;
+    background: #002957;
+  }
+
+  &.white {
+    border: 1px solid #cdd1d4;
+    color: #565656;
+    background: #ffffff;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+
+    &:active {
+      background: #e0e0e0;
+    }
+  }
+}
+
+a.button {
+  height: 40px;
+  outline: none;
+  border-radius: 4px;
+  padding: 0 18px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 40px;
+  border: 1px solid #0b40b3;
+  color: #0b40b3;
+  background-color: #ffffff;
+  display: inline-block;
+
+  &:hover,
+  &:focus {
+    border-color: #09338f;
+    color: #09338f;
+    background-color: #e7ecf7;
+  }
+
+  &:active {
+    border-color: #07266b;
+    color: #07266b;
+    background-color: #e7ecf7;
+  }
+
+  &.disabled {
+    border-color: #859fd9;
+    color: #859fd9;
+    background-color: #ffffff;
+  }
+}
+
+.normal {
+  font-weight: 400;
+}
+
+b, strong, .bold {
+  font-weight: 600;
+}
+
+.text-line-through {
+  text-decoration: line-through;
+}
+
+.vertical-middle {
+  vertical-align: middle;
+}
+
+.overflow-container > * {
+  max-width: 100%;
+}
+
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+}
+
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.highlighted {
+  background: #ff0;
+}
+
+.input-label {
+  &.error {
+    color: #DF0024;
+  }
+}
+
+.error-text {
+  margin-bottom: 8px;
+  font-size: 12px;
+  line-height: 16px;
+  color: #DF0024;
+}
+
+@mixin global-classes($prefix) {
+  .hide#{$prefix} {
+    display: none;
+  }
+
+  .show#{$prefix} {
+    display: block;
+  }
+
+  .block#{$prefix} {
+    display: block;
+  }
+
+  .text-center#{$prefix} {
+    text-align: center;
+  }
+
+  .text-left#{$prefix} {
+    text-align: left;
+  }
+
+  .text-right#{$prefix} {
+    text-align: right;
+  }
+
+  .flex-container#{$prefix} {
+    display: flex;
+  }
+
+  .flex-column#{$prefix} {
+    flex-direction: column;
+  }
+
+  .flex-row#{$prefix} {
+    flex-direction: row;
+  }
+
+  .flex-wrap#{$prefix} {
+    flex-wrap: wrap;
+  }
+
+  .flex-order-last#{$prefix} {
+    order: 1;
+  }
+
+  .justify-end#{$prefix} {
+    justify-content: flex-end;
+  }
+
+  .justify-start#{$prefix} {
+    justify-content: flex-start;
+  }
+
+  .justify-center#{$prefix} {
+    justify-content: center;
+  }
+
+  .justify-between#{$prefix} {
+    justify-content: space-between;
+  }
+
+  .justify-around#{$prefix} {
+    justify-content: space-around;
+  }
+
+  .align-items-center#{$prefix} {
+    align-items: center;
+  }
+
+  .align-self-center#{$prefix} {
+    align-self: center;
+  }
+
+  .align-self-end#{$prefix} {
+    align-self: end;
+  }
+
+  .flex-1#{$prefix} {
+    flex: 1;
+  }
+
+  .flex-0#{$prefix} {
+    flex: 0 0 auto;
+  }
+
+  .flex-1-0#{$prefix} {
+    flex: 1 0 auto;
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+@include global-classes('');
+
+@media all and (min-width: 768px) {
+  @include global-classes('-md');
+}
+
+@media all and (min-width: 1140px) {
+  @include global-classes('-lg');
+}
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+  @page {size: A4; margin: 1cm 1cm;}
+  body,
+  lk-root {
+    //фикс многостраничной печати в Firefox
+    display: block !important;
+  }
+
+  html, body {
+    //height: 99%;
+    ::-webkit-scrollbar {
+      width: 0 !important;
+    }
+  }
+}
+
+.balloon-button {
+  display: inline-block;
+  width: 100%;
+  height: 40px;
+  outline: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 0 18px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 40px;
+  color: #ffffff;
+  background-color: #0b40b3;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover,
+  &:focus {
+    color: #ffffff;
+    background-color: #09338f;
+  }
+
+  &:active {
+    color: #ffffff;
+    background-color: #07266b;
+  }
+  &.active {
+    color: #ffffff;
+    background-color: #07266b;
+  }
+
+  &.disabled {
+    color: #9db3e1;
+    background-color: #ced9f0;
+    cursor: default;
+  }
+
+  &.md {
+    height: 48px;
+    padding: 0 24px;
+    line-height: 48px;
+  }
+
+  &.lg {
+    height: 56px;
+    padding: 0 24px;
+    line-height: 56px;
+  }
+
+
+
+  &.white {
+    border: 1px solid #0b40b3;
+    color: #0b40b3;
+    background-color: #ffffff;
+
+    &:hover,
+    &:focus {
+      border-color: #09338f;
+      color: #09338f;
+      background-color: #e7ecf7;
+    }
+
+    &:active {
+      border-color: #07266b;
+      color: #07266b;
+      background-color: #e7ecf7;
+    }
+    &.active {
+      border-color: #07266b;
+      color: #07266b;
+      background-color: #e7ecf7;
+    }
+
+    &.disabled {
+      border-color: #859fd9;
+      color: #859fd9;
+      background-color: #ffffff;
+    }
+  }
+}
+
+.balloon-button::-moz-focus-inner {
+  border: 0;
+}
+
+@media all and (min-width: 768px) {
+  .balloon-button {
+    width: auto;
+    &.wide {
+      width: 100%;
+    }
+  }
+}
+@media all and (min-width: 1140px) {
+  .balloon-button {
+    &.font-13{
+      font-size: 13px;
+    }
+  }
+}
+

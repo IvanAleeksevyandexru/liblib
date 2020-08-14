@@ -1,0 +1,48 @@
+<div class="popup-wrapper">
+  <div class="popup">
+    <a class="close" (click)="onClose()"></a>
+    <h2 class="title title-h2 mb-20">{{'LOCATION.TITLE' | libTranslate}}</h2>
+    <div class="text-plain">
+      {{'LOCATION.DESCRIPTION' | libTranslate}}
+    </div>
+    <div class="mt-32" (change)="onRadioChange()">
+      <div class="current-location">
+        <div class="mb-12 mb-md-20 bold">{{'LOCATION.CURRENT' | libTranslate}}</div>
+        <lib-radio
+          value="current"
+          [(ngModel)]="radioValue"
+          [disabled]="!defaultLocation"
+          [checked]="!!defaultLocation"
+          [labelText]="defaultLocation"
+        ></lib-radio>
+      </div>
+      <div class="mt-32 mb-32">
+        <div class="mb-12 mb-md-20 bold">{{'LOCATION.CHANGE' | libTranslate}}</div>
+        <div class="grid-row">
+          <div *ngIf="showAutoDetect" class="col-3 col-md-3 col-lg-6">
+            <lib-radio
+              value="auto"
+              [(ngModel)]="radioValue"
+              [labelText]="receivedLocation? receivedLocation: 'LOCATION.AUTO-SELECT' | libTranslate"
+              [errorMessage]="(errorMessage ? errorMessage : '') | libTranslate"
+            ></lib-radio>
+          </div>
+          <div class="col-3 col-md-3 push-md-3 push-lg-6 col-lg-6">
+            <lib-radio [labelText]="'LOCATION.MANUAL-SELECT' | libTranslate" [(ngModel)]="radioValue" value="manual"></lib-radio>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="radioValue === 'manual'" class="mb-32">
+      <lib-lookup [itemsProvider]="searchProvider" [queryMinSymbolsCount]="3" [(ngModel)]="searchItem"></lib-lookup>
+    </div>
+    <div class="submit">
+      <lib-button
+        width="wide"
+        size="lg"
+        (click)="onSave()"
+        [disabled]="radioValue !== 'manual' && !regionCode || radioValue === 'manual' && !searchItem"
+      >{{'LOCATION.SUBMIT' | libTranslate}}</lib-button>
+    </div>
+  </div>
+</div>

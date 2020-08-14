@@ -1,0 +1,107 @@
+.lookup {
+  width: 100%;
+  display: inline-block;
+  .lookup-field {
+    &.expanded {
+      ::ng-deep .search-field {
+        .search-input {
+          border-radius: 4px 4px 0 0;
+        }
+      }
+    }
+  }
+  .lookup-list-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .lookup-list-container {
+    position: absolute;
+    width: 100%;
+    max-height: 300px;
+    display: block;
+    border-style: none solid solid solid;
+    border-color: #A7A7AB;
+    border-width: 1px;
+    border-radius: 0 0 4px 4px;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: white;
+    z-index: 1;
+
+    &.hidden {
+      display: none;
+    }
+
+    ::ng-deep .ps {
+      max-height: 250px;
+
+      &.ps--active-y {
+        .ps__rail-y {
+          opacity: 1;
+          background-color: white;
+          width: 8px;
+          .ps__thumb-y {
+            width: 7px;
+            right: 0;
+            background-color: #E9ECEE;
+          }
+        }
+
+        .lookup-list-area {
+          width: calc(100% - 8px);
+          border-right: solid 1px #A7A7AB;
+        }
+      }
+    }
+
+    .lookup-list-area {
+      width: auto;
+      height: auto;
+
+      .lookup-item {
+        display: block;
+        width: 100%;
+        cursor: pointer;
+
+        .item-container {
+          padding: 6px 0 6px 16px;
+
+          .lookup-item-text {
+            font-family: Helvetica;
+            font-size: 16px;
+            line-height: 24px;
+            color: #515A63;
+          }
+        }
+        &.highlighted {
+          .item-container {
+            background-color: #E7ECF7;
+          }
+        }
+      }
+    }
+  }
+    
+  .lookup-field {
+    ::ng-deep {
+      .lookup-item {
+        display: table;
+        width: 100%;
+        vertical-align: middle;  
+        .item-container {
+          display: table-cell;
+          height: 46px;
+          vertical-align: middle;
+          padding: 0;
+          .looiup-item-text {
+            font-family: Helvetica;
+            font-size: 16px;
+            line-height: 24px;
+            color: #515A63;
+          }
+        }
+      }
+    }
+  }
+}
+

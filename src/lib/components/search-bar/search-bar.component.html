@@ -1,0 +1,44 @@
+<div class="search-field" 
+    [ngClass]="[showMagnifyingGlass || searching ? 'magnifying-glass-or-throbber-shown' : '', clearable && query ? 'clear-shown': '', contextClass ? contextClass : '']">
+  <input #input
+      type="text"
+      [attr.id]="id ? id : null"
+      [attr.name]="name ? name : null"
+      [attr.tabIndex]="tabIndex ? tabIndex : '0'"
+      [attr.maxlength]="maxlength"
+      [attr.placeholder]="placeholder"
+      class="search-input"
+      [class.focused]="focused"
+      [class.invalid]="invalidDisplayed"
+      [class.shadowed]="showStaticContent && (!focused || forceShowStaticContent)"
+      [value]="query"
+      [disabled]="disabled"
+      [readonly]="readOnly"
+      [ngModel]="query"
+      (input)="updateQuery($event.target.value)"
+      (change)="handleChange($event.target.value)"
+      (paste)="blockInputIfNeeded($event)"
+      (keydown)="blockInputIfNeeded($event)"
+      (focus)="notifyFocusEvent($event)"
+      (blur)="notifyFocusEvent($event)"
+      (keydown.enter)="runOrPostponeSearch(query, true, false)"
+      (keydown.arrowright)="selectSuggestion()"/>
+  <div class="static-content" [class.shadowed]="focused && !forceShowStaticContent" (click)="setFocus()" *ngIf="showStaticContent">
+    <div class="static-content-wrapper">
+      <div class="static-content-container">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+  <div class="suggestion-container" *ngIf="suggestion">
+    <div class="suggestion-spacer">{{query}}</div>
+    <div class="suggestion" [innerHTML]="suggestion | safeHtml"></div>
+  </div>
+  <div class="search-clear" *ngIf="clearable && query" [ngClass]="{'align-right': !showMagnifyingGlass && !searching}" (click)="clearSearch($event)"></div>
+  <div class="search-go" *ngIf="showMagnifyingGlass && !searching" (click)="runOrPostponeSearch(query, false, true)"></div>
+  <div class="search-in-progress" *ngIf="searching">
+    <div class="search-in-progress-cell">
+      <lib-throbber size="throbber-small"></lib-throbber>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,87 @@
+.multiline-edit {
+  position: static;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #A8ACB1;
+  border-radius: 4px;
+  padding: 16px;
+  box-sizing: border-box;
+
+  .multiline-wrapper {
+    position: relative;
+    width: 100%;
+    .symbols-counter {
+      position: absolute;
+      left: 0;
+      bottom: -26px;
+      right: 16px;
+      height: 35px;
+      padding-top: 14px;
+      padding-left: 0;
+      background-image: linear-gradient(to top, white, white, white, rgba(255,255,255,0));
+      .symbols-count {
+        font-family: Helvetica;
+        font-size: 12px;
+        color: #747B82;
+        .overloaded {
+          color: #E73A3D;
+        }
+      }
+    }
+  }
+  
+  &.focused {
+    border: 1px solid #0B40B3;
+  }
+
+  &.invalid {
+    border: 1px solid #DF0024;
+    color: #DF0024;
+  }
+
+  &[disabled] {
+    background-color: #E7ECF7;
+    border: 1px solid #CBCDD0;
+  }
+
+  &.full-height-scroll {
+    padding: 0;
+    padding-right: 16px;
+    .multiline-wrapper .symbols-counter {
+      padding-left: 16px;
+    }
+    ::ng-deep .ps-content {
+      padding: 16px 0 16px 16px;
+    }
+  }
+  &.with-symbols-counter {
+    padding-bottom: 24px;
+  }
+
+  .multiline-input {
+    outline: none;
+    font-family: Helvetica;
+    font-size: 16px;
+    line-height: 24px;
+    color: #393F45;
+    padding-right: 20px;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    &:empty {
+      &:not(:focus) {
+        &:before {
+          content: attr(placeholderText);
+          color: #777;
+          font-family: Helvetica;
+          font-size: 16px;
+          line-height: 24px;
+          position: absolute;
+          width: 100%;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}

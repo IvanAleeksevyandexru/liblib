@@ -1,0 +1,54 @@
+.snippet-icon{
+  width: 40px;
+  height: 40px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  margin-right: 16px;
+}
+.snippet-equeue{
+  background-image: url(../../../assets/svg/snippets/calendar.svg);
+}
+.snippet-pay{
+  background-image: url(../../../assets/svg/snippets/pay.svg);
+}
+.snippet-pay-reminder{
+  background-image: url(../../../assets/svg/snippets/pay.svg);
+}
+.snippet-draft{
+  background-image: url(../../../assets/svg/snippets/draft.svg);
+}
+.snippets{
+  border: 1px solid #B6C6E8;
+  border-radius: 4px;
+  padding: 16px;
+  margin-top: 16px;
+  background-color: #fff;
+}
+.snippets-data{
+  flex: 1 1 auto;
+}
+.snippet-button-container{
+  margin: 24px 0 8px 0;
+}
+@media all and (min-width: 768px) {
+  .snippets{
+    margin-top: 12px;
+    margin-left: 48px;
+  }
+  .snippet-button-container{
+    display: inline-block;
+  }
+}
+@media all and (min-width: 1140px) {
+  .snippets{
+    display: flex;
+    align-items: center;
+  }
+  .snippet-button-container{
+    margin: 0;
+    padding-left: 50px;
+    flex: 1 0 auto;
+    text-align: right;
+  }
+}

@@ -1,0 +1,14 @@
+.button-wrapper {
+  margin: 0 0 20px 0;
+}
+
+@media all and (min-width: 768px) {
+  .button-wrapper {
+    display: inline-block;
+    margin: 0 20px 0 0;
+  }
+
+  .control-wrapper {
+    max-width: 384px;
+  }
+}

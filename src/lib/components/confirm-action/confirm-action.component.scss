@@ -1,0 +1,39 @@
+.container {
+  margin: 0;
+  padding: 0;
+}
+
+.button-wrapper {
+  margin: 0 0 20px 0;
+}
+
+.icon {
+  text-align: center;
+}
+
+.description {
+  white-space: pre-line;
+}
+
+@media all and (min-width: 768px) {
+  .icon {
+    margin-right: 24px;
+    width: auto;
+    text-align: left;
+  }
+
+  .width-auto{
+    width: auto;
+    min-width: 620px;
+  }
+
+  .description.reduce-width {
+    display: inline-block;
+    width: 70%;
+  }
+
+  .button-wrapper {
+    display: inline-block;
+    margin: 0 20px 0 0;
+  }
+}
