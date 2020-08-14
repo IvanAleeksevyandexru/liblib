@@ -1,6 +1,6 @@
 {
   "name": "epgu-lib",
-  "version": "0.0.0",
+  "version": "0.0.405",
   "scripts": {
     "test": "ng test",
     "lint": "ng lint",
