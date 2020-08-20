@@ -1,9 +1,20 @@
+<div class="above-info" *ngIf="validationPosition === MessagePosition.ABOVE || questionTipPosition === MessagePosition.ABOVE"
+    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+  <div class="information text-help" 
+    *ngIf="questionTip && questionTipPosition === MessagePosition.ABOVE && (!validationOverride || !(invalidDisplayed && validationMessages))" 
+    [innerHTML]="questionTip">
+  </div>
+  <div class="validation" *ngIf="validationPosition === MessagePosition.ABOVE && invalidDisplayed && validationMessages">
+    <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages"></lib-validation-message>
+  </div>
+</div>
 <div class="text-control" [ngClass]="contextClass ? [contextClass] : []"
       [class.withClearButton]="clearable && !disabled && value"
-      [class.withTip]="questionTip && !(invalidDisplayed && validationMessages)"
-      [class.withValidationError]="invalidDisplayed && validationMessages"
+      [class.withTip]="questionTip && questionTipPosition === MessagePosition.INSIDE && (!validationOverride || !(invalidDisplayed && validationMessages))"
+      [class.withValidationError]="validationPosition === MessagePosition.INSIDE && invalidDisplayed && validationMessages"
       [class.passwordField]="type === 'password'"
-      (click)="returnFocus($event)">
+      (click)="returnFocus($event)"
+      [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="input-container plain-input" [ngClass]="{multiline: multiline, invalid: invalidDisplayed, focused: focused, disabled: disabled}">
     <input #input *ngIf="!multiline" 
       [attr.name]="name" 
@@ -45,7 +56,7 @@
   </div>
   <div class="buttons-container" [ngClass]="{multiline: multiline}">
     <div *ngIf="clearable && !disabled && value" (click)="clearValue($event)" class="clear-button"></div>
-    <div class="validation-container" *ngIf="invalidDisplayed && validationMessages">
+    <div class="validation-container" *ngIf="validationPosition === MessagePosition.INSIDE && invalidDisplayed && validationMessages">
       <lib-invalid-results-tip  
         [invalid]="invalid"
         [validation]="validation" 
@@ -54,7 +65,8 @@
         [containerOverlap]="containerOverlap"
       ></lib-invalid-results-tip>
     </div>
-    <div class="tip-container" *ngIf="questionTip && !(invalidDisplayed && validationMessages)" >
+    <div class="tip-container" 
+        *ngIf="questionTip && questionTipPosition === MessagePosition.INSIDE && (!validationOverride || !(invalidDisplayed && validationMessages))">
       <lib-question-help-tip 
         [tipDirection]="tipDirection" 
         [questionTip]="questionTip"
@@ -62,5 +74,15 @@
       ></lib-question-help-tip>
     </div>
     <div class="password-eye" *ngIf="type === 'password'" (click)="switchPasswordMode()" [ngClass]="{'password-visible': passwordVisible}"></div>
+  </div>
+</div>
+<div class="below-info" *ngIf="validationPosition === MessagePosition.BELOW || questionTipPosition === MessagePosition.BELOW"
+    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+  <div class="information text-help" 
+    *ngIf="questionTip && questionTipPosition === MessagePosition.BELOW && (!validationOverride || !(invalidDisplayed && validationMessages))" 
+    [innerHTML]="questionTip">
+  </div>
+  <div class="validation" *ngIf="validationPosition === MessagePosition.BELOW && invalidDisplayed && validationMessages">
+    <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages"></lib-validation-message>
   </div>
 </div>

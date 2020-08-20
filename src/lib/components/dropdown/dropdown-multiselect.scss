@@ -1,0 +1,244 @@
+.dropdown {
+  .dropdown-field {
+    .dropdown-values-custom, .dropdown-values-summary {
+      line-height: 24px;
+      display: none;
+    }
+    .dropdown-value {
+      display: block;
+      position: relative;
+      width: 100%;
+      height: 24px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-right: 0;
+      white-space: nowrap;
+      .selected-value-text {
+        font-family: Helvetica;
+        font-size: 16px;
+        line-height: 24px;
+        color: #000000;
+      }
+    }
+    &.clearable {
+      .dropdown-value {
+        padding-right: 12px;
+        .remove-item {
+          display: block;
+        }
+      }
+    }
+    .remove-item {
+      position: absolute;
+      display: none;
+      width: 16px;
+      height: 16px;
+      top: 4px;
+      right: 0;
+      cursor: pointer;
+      background: url(../../../assets/svg/input-clean.svg) 0 0 no-repeat;
+    }
+    &.multi {
+      .dropdown-value {
+        width: auto;
+        margin-right: 5px;
+        &:after {
+          content: ',';
+        }
+        &:last-child {
+          &:after {
+            content: none;
+          }
+        }
+      }
+      &.clearable {
+        padding: 5px 40px 5px 10px;
+        .dropdown-value {
+          padding: 6px 30px 6px 9px;
+          height: 36px;
+          border: 1px solid #A8ACB1;
+          border-radius: 4px;
+          &:after {
+            content: none;
+          }
+          &.empty-value {
+            border: none;
+          }
+        }
+        .remove-item {
+          top: 9px;
+          right: 9px;
+        }
+        .dropdown-values.overflow .dropdown-values-container .dropdown-value {
+          display: inline-block;
+          vertical-align: bottom;
+        }
+        .dropdown-values.shrink .dropdown-values-container .dropdown-value .remove-item {
+          right: -20px;
+        }
+        .dropdown-values.panel, .dropdown-values.text, .dropdown-values-custom {
+          padding: 6px 0 6px 5px;
+        }
+      }      
+      .dropdown-values {
+        overflow: hidden;
+        .dropdown-values-container {
+          display: block;
+        }
+        &.overflow {
+          .dropdown-values-container {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            .dropdown-value {
+              display: inline;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              .remove-item-wrapper {
+                display: inline-block;
+              }
+            }
+          }
+        }
+        &.shrink {
+          overflow: unset;
+          .dropdown-values-container {
+            display: flex;
+            flex-flow: row nowrap;
+            overflow: unset;
+            position: relative;
+            .dropdown-value {
+              flex-shrink: 1;
+              position: static;
+              .remove-item-wrapper {
+                position: relative;
+              }
+              .remove-item {
+                top: 4px;
+                right: -12px;
+              }
+              &:after {
+                content: none;
+              }
+              &:hover {
+                &:after {
+                  content: attr(tooltipContent);
+                  position: absolute;
+                  display: block;
+                  top: -25px;
+                  background-color: #FFF9E5;
+                  border: 1px solid #FFC300;
+                  border-radius: 5px;
+                  padding: 5px;
+                  z-index: 1;
+                }
+              }
+            }
+          }
+        }
+        &.wrap {
+          width: 100%;
+          .dropdown-values-container {
+            display: flex;
+            flex-flow: row wrap;
+            width: 100%;
+            margin-top: -5px;
+            .dropdown-value {
+              margin-top: 5px;
+            }
+          }
+        }
+        &.panel {
+          position: relative;
+          overflow: unset;
+          .dropdown-values-summary {
+            display: block;
+          }
+          .dropdown-values-container {
+            position: absolute;
+            z-index: 1;
+            background-color: #FFF9E5;
+            border: 1px solid #FFC300;
+            border-radius: 5px;
+            width: auto;
+            min-width: 100%;
+            padding: 7px;
+            cursor: default;
+            display: none;
+            &.panel-expanded {
+              display: block;
+            }
+            .dropdown-value {
+              border: none;
+              padding: 0 30px 0 0;
+              height: 28px;
+              .remove-item {
+                top: 3px;
+              }
+            }
+          }
+        }
+        &.text {
+          .dropdown-values-summary {
+            display: block;
+          }
+          .dropdown-values-container {
+            display: none;
+          }
+        }
+        &.custom {
+          .dropdown-values-custom {
+            display: block;
+          }
+          .dropdown-values-container {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+  .dropdown-list-container {
+    .dropdown-list-area {
+      &.multi-choise {
+        .dropdown-item {
+          .dropdown-item-checkbox-wrapper {
+            display: table-cell;
+            vertical-align: middle;
+            .dropdown-item-checkbox {
+              display: block;
+              border: 2px solid #B6C6E8;
+              border-radius: 4px;
+            }
+          }
+          &.selected {
+            background-color: unset;
+            .dropdown-item-text {
+              color: #515A63;
+            }
+            .dropdown-item-checkbox-wrapper {
+              .dropdown-item-checkbox {
+                border: none;
+                background: #0B40B3 url(../../../assets/svg/check.svg) 5px 3px no-repeat;
+              }
+            }
+            &.highlighted {
+              background-color: #E7ECF7;
+              .dropdown-item-text {
+                color: #515A63;
+              }
+            }
+          }
+          &.unselectable {
+            .dropdown-item-text {
+              color: #A8ACB1;
+              cursor: default;
+            }
+            &.highlighted {
+              background-color: unset;
+            }
+          }
+        }
+      }
+    }
+  }
+}

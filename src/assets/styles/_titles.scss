@@ -242,6 +242,10 @@
   text-decoration: line-through;
 }
 
+.normal {
+  font-weight: 400;
+}
+
 @media all and (min-width: 768px) {
   .title-h0 {
     font-size: 32px;

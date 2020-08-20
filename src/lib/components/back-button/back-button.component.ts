@@ -11,7 +11,7 @@ import { CountersService } from '../../services/counters/counters.service';
 })
 export class BackButtonComponent implements OnInit {
 
-  @Input() public view?: 'link' | 'button' | 'custom' = 'link';
+  @Input() public view?: 'link' | 'button' | 'custom' | 'custom-button' = 'link';
   @Input() public handle?: string;
   @Input() public updateCounters?: boolean;
 
@@ -36,7 +36,7 @@ export class BackButtonComponent implements OnInit {
     }
     if (this.handle) {
       this.router.navigateByUrl(this.handle);
-    } else if (this.view === 'custom') {
+    } else if (this.view.indexOf('custom') >= 0) {
       this.customClick.emit();
     } else {
       this.location.back();

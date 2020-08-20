@@ -1,8 +1,7 @@
 <div
   [id]="object.attrId"
   class="info-card {{cardType}}"
-  [ngClass]="{'interactive': object.canDetails || object.canEdit, 'form-container': cardType === 'modify'}">
-  <!-- TODO: Реализовать view редактирования -->
+  [ngClass]="{'interactive': object.canDetails || object.canEdit, 'form-container': cardType === 'modify', 'new': isNew}">
   <div class="inner">
     <ng-container *ngIf="cardType === 'common'" [ngTemplateOutlet]="common"></ng-container>
     <ng-container *ngIf="cardType === 'empty'" [ngTemplateOutlet]="empty"></ng-container>
@@ -23,7 +22,10 @@
 
 <ng-template #common>
   <div class="header {{object.gender}}">
-    <div class="title">{{object.full.title}}</div>
+    <div class="title">
+      {{object.full.title}}
+      <span class="label-new" *ngIf="isNew">Новое</span>
+    </div>
     <div *ngIf="object.withVerificationIcon || state" class="confirm {{state}}"></div>
     <div *ngIf="isNotificationShow()" [ngClass]="object.warning ? 'notification-red': 'notification'" class="confirm"></div>
   </div>
@@ -33,6 +35,12 @@
        [ngClass]="object.warning ? 'red': 'green'"
        class="text-plain mb-16"
        [innerHTML]="object.notification | appTranslate"
+    ></p>
+    <p *ngIf="object.statusMessage"
+       [class.gray]="state === 'process'"
+       [class.red]="state === 'error'"
+       class="text-plain mb-16"
+       [innerHTML]="object.statusMessage | appTranslate"
     ></p>
     <div class="field mt-16" *ngFor="let field of object.fields">
       <ng-container *ngIf="(field.value || field.showEmpty) && !field.hidden">
@@ -60,7 +68,7 @@
       <a *ngIf="showDetailButton()"
          class="link-plain"
          [routerLink]="object.detailsPath"
-      >{{!isNotificationShow() ? 'Подробнее' : 'Редактировать'}}</a>
+      >{{!isNotificationShow() || object.type === 'FRGN_PASS' ? 'Подробнее' : 'Редактировать'}}</a>
       <a *ngIf="state === 'process'" class="link-plain add-link" (click)="cancelReq()">Отменить
         проверку</a>
       <a *ngIf="showRepeatButton()" class="link-plain add-link" (click)="repeatReq()">Повторить

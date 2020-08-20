@@ -43,7 +43,7 @@ describe('DisclaimerComponent', () => {
     })
       .compileComponents();
 
-    httpMock = TestBed.get(HttpTestingController);
+    httpMock = TestBed.inject(HttpTestingController);
   }));
 
   beforeEach(() => {

@@ -25,12 +25,12 @@ describe('CountersService', () => {
   }));
 
   it('should be created', () => {
-    const service: CountersService = TestBed.get(CountersService);
+    const service: CountersService = TestBed.inject(CountersService);
     expect(service).toBeTruthy();
   });
 
   it('should prepare and set outers data for user', () => {
-    const service: CountersService = TestBed.get(CountersService);
+    const service: CountersService = TestBed.inject(CountersService);
 
     service.setCounters(MOCK_DATA);
     const model = service.getCounter(CounterTarget.USER);
@@ -41,7 +41,7 @@ describe('CountersService', () => {
   });
 
   it('should be zero on payments', () => {
-    const service: CountersService = TestBed.get(CountersService);
+    const service: CountersService = TestBed.inject(CountersService);
 
     service.setCounters(MOCK_DATA);
     const model = service.getCounter(CounterTarget.PAYMENTS);
@@ -52,7 +52,7 @@ describe('CountersService', () => {
   });
 
   it('should be equals GEPS counter on messages', () => {
-    const service: CountersService = TestBed.get(CountersService);
+    const service: CountersService = TestBed.inject(CountersService);
 
     service.setCounters(MOCK_DATA);
     const model = service.getCounter(CounterTarget.MESSAGES);

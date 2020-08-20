@@ -80,12 +80,10 @@
 </ng-template>
 
 <ng-template #menuTabs>
-  <ul class="user-menu-tabs"
-      *ngIf="(tabsService.tabs$ | async)?.length">
-    <li class="item"
-        *ngFor="let tab of tabsService.tabs$ | async">
+  <ul class="user-menu-tabs" *ngIf="mainTabs">
+    <li class="item" *ngFor="let tab of mainTabs.tabs">
       <ng-container *ngIf="tab.url">
-        <a (click)="onClose(tab.mnemonic)" routerLink="{{tab.url}}"
+        <a (click)="selectTab(tab)" routerLink="{{tab.url}}"
            routerLinkActive="active">
           <span class="item-tab-name">{{tab.name | appTranslate}}</span>
           <lib-counter class="counter" [counter]="tab.counter"></lib-counter>

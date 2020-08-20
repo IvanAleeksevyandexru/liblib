@@ -8,6 +8,7 @@ import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { HelperService } from '../../services/helper/helper.service';
+import { Width } from '../../models/width-height';
 
 @Component({
   selector: 'lib-plain-input',
@@ -45,9 +46,10 @@ export class PlainInputComponent
   @Input() public commitOnInput = true;  // коммитить по input или по change
   @Input() public clearable = false;
   @Input() public uppercase = false;
+  @Input() public width?: Width | string;
 
   @Input() public invalid = false;
-  @Input() public validationShowOn: ValidationShowOn | string = ValidationShowOn.TOUCHED;
+  @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
 
   // focus и blur искусственные, одноименные с естественными, остальные события просто всплывают
   @Output() public cleared = new EventEmitter<void>();
@@ -119,6 +121,7 @@ export class PlainInputComponent
       this.writeValue(null);
       this.commit(null);
       this.cleared.emit();
+      this.returnFocus(e);
     }
     e.stopPropagation();
   }
@@ -168,7 +171,7 @@ export class PlainInputComponent
 
   public forceChange() {
     if (this.inputElement) {
-      this.inputElement.nativeElement.dispatchEvent(new Event('change', {bubbles: true, cancelable: false}));
+      this.inputElement.nativeElement.dispatchEvent(HelperService.createEvent('change', true, false));
     }
   }
 

@@ -21,8 +21,8 @@ describe('FeedsService', () => {
       ]
     });
 
-    feedsService = TestBed.get(FeedsService);
-    httpMock = TestBed.get(HttpTestingController);
+    feedsService = TestBed.inject(FeedsService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {

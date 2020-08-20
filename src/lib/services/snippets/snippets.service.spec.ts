@@ -24,7 +24,7 @@ describe('SnippetsService', () => {
         SharedService
       ]
     });
-    snippetsService = TestBed.get(SnippetsService);
+    snippetsService = TestBed.inject(SnippetsService);
   });
 
   it('should be created', () => {

@@ -6,9 +6,11 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
+import { SearchSyncControl } from '../../models/common-enums';
 import { HelperService } from '../../services/helper/helper.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { ConstantsService } from '../../services/constants.service';
+import { Width } from '../../models/width-height';
 
 class ScheduledSearch {
   public constructor(query: string, token: number) {
@@ -48,41 +50,43 @@ export class SearchBarComponent
   @Input() public readOnly = false;
   @Input() public disabled = false;
   @Input() public invalid = false;
-  @Input() public validationShowOn: ValidationShowOn | string = ValidationShowOn.TOUCHED;
+
+  @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
+  @Input() public width?: Width | string;
   @Input() public clearable = true;  // разрешает очистить поле если есть значение
   @Input() public showStaticContent = false; // разрешает показывать ng-content вместо инпута пока он не активен. активируется кликом
   @Input() public forceShowStaticContent = false; // форсирует показ ng-content-а независимо от активности инпут-поля
 
-  @Input() public commitOnInput = true;
-  @Input() public searching = false; // внешняя привязка статуса searching для более удобного управления
+  @Input() public searching = false; // статус поиска (управляется снаружи), логический параметр определяющий фазу и состояние
   @Input() public suggestion: string; // строка "продолжения" фразы, если показана, то enter будет приводить к (suggestionSelected)
   @Input() public showMagnifyingGlass = true;
+  @Input() public showSearching = true; // позволяет отключать показ крутилки если он не желателен, чисто стилистический параметр
   @Input() public queryTimeout = ConstantsService.DEFAULT_QUERY_DEBOUNCE;
   @Input() public queryMinSymbolsCount = 1;
   // должен ли поиск запускаться по программному изменению модели (несмотря на searchOnlyIfFocused)
   @Input() public searchOnProgrammaticChange = true;
-  // true - запускает новый поиск даже если текущий еще в процессе
-  // false - ставит новый поиск в очередь и ждет окончания текущего (с уведомлением search -> false)
-  @Input() public parallelSearch = true;
-  // дизейблин возможность ввода на время текущего активного поиска
-  @Input() public blockWhenSearching = false;
+  // контроль переполнения поиска, как обрабатывать новый запрос поиска если текущий еще в процессе
+  @Input() public searchSyncControl: SearchSyncControl = SearchSyncControl.LAST_STANDING;
+  // алиас для searchSyncControl = SearchSyncControl.PARALLEL, если задан true, то перекрывает searchSyncControl
+  @Input() public parallelSearch = false;
   // разрешает запускать поиск только если новое значение отличается от предыдущего
   @Input() public searchUniqueOnly = false;
   // запрещает запускать новый поиск (по debounceTime вводу) если контрол уже потерял фокус
   @Input() public searchOnlyIfFocused = false;
   // запускать ли поиск по получению фокуса
   @Input() public searchOnFocus = false;
-  // отменяет срабатывание поиска по вводу и иконке, только по текстовому вводу
+  // позволяет отменить срабатывание поиска по ентеру и иконке, только по текстовому вводу
   @Input() public searchByForcing = true;
-  // отменяет срабатывание поиска по текстовому вводу, только по вводу и иконке
+  // позволяет отменить срабатывание поиска по текстовому вводу, только по ентеру и иконке
   @Input() public searchByTextInput = !HelperService.isTouchDevice();
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
   @Output() public newSearch = new EventEmitter<string>();
+  @Output() public forcedSearch = new EventEmitter<any>();
   @Output() public cleared = new EventEmitter<void>();
   @Output() public suggestionSelected = new EventEmitter<string>();
-  @ViewChild('input', {static: false}) protected inputElement: ElementRef<HTMLInputElement>;
+  @ViewChild('input', {static: false}) public inputElement: ElementRef<HTMLInputElement>;
 
   public focused = false;
   public touched = false;
@@ -95,6 +99,7 @@ export class SearchBarComponent
   private queryDebounce = new Subject<ScheduledSearch>();
   private querySubscription = this.refreshDebouncedSubscription();
   private searchQueue: Array<string> = [];
+  private forcedSearchPrevent = false;
 
   private onTouchedCallback: () => void;
   protected commit(value: string) {}
@@ -139,23 +144,15 @@ export class SearchBarComponent
   public updateQuery(value: string) {
     this.query = value;
     this.suggestion = null;
-    if (this.commitOnInput) {
-      this.commit(this.query);
-    }
+    this.commit(this.query);
     if (this.searchByTextInput) {
       this.queryDebounce.next(new ScheduledSearch(value, this.insureSearchActiveToken));
     }
     this.check();
   }
 
-  public handleChange(value: string) {
-    if (!this.commitOnInput) {
-      this.commit(value);
-    }
-  }
-
   public blockInputIfNeeded(e: Event) {
-    if (this.blockWhenSearching && this.searching) {
+    if (this.isBlocked()) {
       e.stopPropagation();
       e.preventDefault();
       return false;
@@ -164,10 +161,11 @@ export class SearchBarComponent
 
   public clearSearch(e: Event) {
     this.suggestion = null;
-    if (!this.disabled && !(this.blockWhenSearching && this.searching)) {
+    if (!this.disabled && !this.isBlocked()) {
       this.returnFocus();
       this.query = '';
-      this.runOrPostponeSearch(this.query);
+      this.commit(this.query);
+      this.searchValueSkipUnconditional(this.query);
     }
     e.stopPropagation();
     this.cleared.emit();
@@ -176,26 +174,36 @@ export class SearchBarComponent
 
    // вызывается только внутри компонента
    public runOrPostponeSearch(query: string, forcedWithKey = false, forcedWithMagnifyingGlass = false) {
-    if (this.disabled || this.blockWhenSearching && this.searching || this.searchOnlyIfFocused && !this.focused) {
+    if (forcedWithMagnifyingGlass) {
+      this.returnFocus();
+    }
+    if (this.disabled || this.isBlocked() || this.searchOnlyIfFocused && !this.focused) {
       this.cancelSearch();
       return;
-    }
-    if (this.suggestion && forcedWithKey) {
+    } else if (this.suggestion && forcedWithKey) {
       this.query = query = query + this.suggestion;
       this.suggestionSelected.emit(query);
       this.suggestion = null;
+      this.commit(this.query);
     } else {
-      if (!this.searchByForcing && (forcedWithKey || forcedWithMagnifyingGlass)) {
-        this.cancelSearch();
-        return;
+      this.forcedSearchPrevent = false;
+      if (forcedWithKey || forcedWithMagnifyingGlass) {
+        this.forcedSearch.emit({query, byEnter: forcedWithKey});
+        if (!this.searchByForcing) {
+          this.cancelSearch();
+          return;
+        }
       }
-      this.searchValueSkipUnconditional(query);
+      if (!this.forcedSearchPrevent) {
+        this.searchValueSkipUnconditional(query);
+      }
     }
   }
 
   public cancelSearch() {
     this.searchQueue = [];
     this.insureSearchActiveToken = ++this.insureSearchActiveToken % 1000;
+    this.forcedSearchPrevent = true;
   }
 
   public selectSuggestion() {
@@ -211,12 +219,25 @@ export class SearchBarComponent
     } else if (this.searchUniqueOnly && value === this.lastEmitted) {
       return;
     }
-    if (this.searching && (!this.parallelSearch || this.blockWhenSearching)) {
-      // здесь мы можем оказаться с blockWhenSearching только по программному изменению модели
-      this.searchQueue.push(value);
+    const parallelSearchAllowed = this.parallelSearch || this.searchSyncControl === SearchSyncControl.PARALLEL;
+    if (this.searching && !parallelSearchAllowed) {
+      this.pushInQueue(value);
     } else {
       this.lastEmitted = value;
       this.newSearch.emit(value);
+    }
+  }
+
+  // возвращает true если элемент поставлен в очередь и его исполнение отложено, false иначе
+  public pushInQueue(search: string) {
+    // сюда мы никогда не попадаем с SearchSyncControl.PARALLEL
+    if (this.searchSyncControl === SearchSyncControl.QUEUE) {
+      this.searchQueue.push(search);
+    } else if (this.searchSyncControl === SearchSyncControl.LAST_STANDING) {
+      this.searchQueue = [search];
+    } else if (this.searchSyncControl === SearchSyncControl.BLOCK) {
+      // маловероятная ситуация программного изменения значения в BLOCK режиме во время поиска
+      this.searchQueue = [search];
     }
   }
 
@@ -226,12 +247,12 @@ export class SearchBarComponent
         return;  // ждем уведомления от ngOnChanges
       } else {
         const search = this.searchQueue.shift();
-        if (search) {
+        if (search !== undefined) {
           this.searchValueSkipUnconditional(search);
           setTimeout(() => {
             // сделано асинхронным чтобы внешний обработчик поиска мог нормально запушить изменение searching флага
             this.dequeueUntilSearching();
-          }, 0);
+          });
         }
       }
     }
@@ -241,10 +262,8 @@ export class SearchBarComponent
     const prevValue = this.query;
     this.query = value || '';
     this.suggestion = null;
-    if (value !== prevValue) {
-      if (this.searchOnProgrammaticChange) {
-        this.searchValueSkipUnconditional(value);
-      }
+    if (value !== prevValue && this.searchOnProgrammaticChange) {
+      this.searchValueSkipUnconditional(value || '');
     }
     this.check();
     this.changeDetector.detectChanges();
@@ -302,10 +321,15 @@ export class SearchBarComponent
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
     this.check();
+    this.changeDetector.detectChanges();
   }
 
   public check() {
     this.invalidDisplayed = ValidationHelper.checkValidation(this, {empty: !!this.query});
+  }
+
+  private isBlocked() {
+    return this.searching && this.searchSyncControl === SearchSyncControl.BLOCK;
   }
 
   private refreshDebouncedSubscription() {

@@ -23,8 +23,8 @@ describe('DadataService', () => {
       ]
     });
 
-    dadataService = TestBed.get(DadataService);
-    httpMock = TestBed.get(HttpTestingController);
+    dadataService = TestBed.inject(DadataService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {

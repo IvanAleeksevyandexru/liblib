@@ -8,7 +8,7 @@ describe('ValidationHelper', () => {
 
 
   it('should be created', () => {
-    const service: ValidationHelper = TestBed.get(ValidationHelper);
+    const service: ValidationHelper = TestBed.inject(ValidationHelper);
     expect(service).toBeTruthy();
   });
 });

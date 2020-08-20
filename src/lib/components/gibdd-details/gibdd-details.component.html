@@ -6,34 +6,34 @@
     <ng-container *ngIf="!loading">
       <div class="gibdd-info flex-container-md mt-32 mb-24">
         <div class="details">
-          <div class="mb-24">
+          <div class="mb-24" *ngIf="message.addParams.articleName || message.addParams.articleCode">
             <p class="text-plain black bold mb-8">{{message.addParams.articleName}}</p>
             <p class="text-plain">{{'GIBDD.ARTICLE' | libTranslate}} {{message.addParams.articleCode}}</p>
           </div>
-          <div class="mb-24">
+          <div class="mb-24" *ngIf="details?.violationDate">
             <p class="text-plain black bold mb-8">{{'GIBDD.DATE' | libTranslate}}</p>
             <p class="text-plain">{{formatDate()}}</p>
           </div>
-          <div class="mb-24">
+          <div class="mb-24" *ngIf="details?.offense">
             <p class="text-plain black bold mb-8">{{'GIBDD.PLACE' | libTranslate}}</p>
             <p class="text-plain">{{details.offense}}</p>
           </div>
-          <div class="mb-24">
+          <div class="mb-24" *ngIf="details?.docNum">
             <p class="text-plain black bold mb-8">{{'GIBDD.NUMBER' | libTranslate}}</p>
-            <p class="text-plain">{{'№ ' + details.docNum + ' от ' + details.docDate}}</p>
+            <p class="text-plain">{{'№ ' + details.docNum}} <span *ngIf="details.docDate">{{'от ' + details.docDate}}</span></p>
           </div>
-          <div class="mb-24">
+          <div class="mb-24" *ngIf="details?.carModel || details?.stsNumber">
             <p class="text-plain black bold mb-8">{{'GIBDD.VEHICLE' | libTranslate}}</p>
             <p class="text-plain">{{details.carModel}}</p>
             <p *ngIf="details.stsNumber" class="text-plain">{{'СТС ' + details.stsNumber}}</p>
           </div>
-          <div class="mb-24">
+          <div class="mb-24" *ngIf="details?.offenseDivision">
             <p class="text-plain black bold mb-8">{{'GIBDD.DIVISION' | libTranslate}}</p>
             <a href="{{details.offenseDivision}}" class="link-plain">{{details.offenseDivisionName}}</a>
           </div>
         </div>
         <div>
-          <div class="map">
+          <div class="map mb-20" *ngIf="center">
             <lib-map
               [redraw]="true"
               [center]="center"
@@ -42,22 +42,35 @@
               [controls]="['zoomControl']"
             ></lib-map>
           </div>
-          <div *ngIf="photos" class="photos">
+          <div *ngIf="!photos && photosLoading" class="mt-32">
+            <lib-throbber size="throbber-medium"></lib-throbber>
+          </div>
+          <div *ngIf="photos" class="photos mb-56 mb-md-0">
             <lib-image-slider [images]="photos" [showModal]="false"></lib-image-slider>
           </div>
         </div>
       </div>
-      <ng-container *ngIf="message.addParams.amount">
-        <p class="text-plain black bold mb-16">
-          {{(message.addParams.linksFkNumber ? 'GIBDD.AMOUNT_DEBT' : 'GIBDD.AMOUNT_PENALTY') | libTranslate}}
-        </p>
-        <p *ngIf="message.addParams.amount" class="amount">{{message.addParams.amount.split('.')[0] + ' ₽'}}</p>
+      <ng-container *ngIf="bill | async as bill">
+        <div *ngIf="bill.amount">
+          <p class="text-plain black bold mb-16">
+            {{(message.addParams.linksFkNumber ? 'GIBDD.AMOUNT_DEBT' : 'GIBDD.AMOUNT_PENALTY') | libTranslate}}
+          </p>
+          <p class="title-h3 black">{{bill.amount | toMoney}} &#164;</p>
+        </div>
       </ng-container>
-      <div class="button-wrapper">
-        <lib-button size="md">
-          {{(message.addParams.linksFkNumber ? 'GIBDD.PAY_DEBT' : 'GIBDD.PAY') | libTranslate}}
-        </lib-button>
+      <div *ngIf="showError" class="mt-24 mt-md-40">
+        <div class="advice-container warn text-plain">
+          <h4 class="title-h4 mb-8">{{'GIBDD.ERROR_TITLE' | libTranslate}}</h4>
+          <div>{{'GIBDD.ERROR_TEXT' | libTranslate}}</div>
+        </div>
       </div>
+      <ng-container *ngIf="bill | async as bill">
+        <div *ngIf="!bill.isPaid" class="button-wrapper mt-24 mt-md-32">
+          <lib-button size="md" (click)="goToPayment(bill.billId)">
+            {{(message.addParams.linksFkNumber ? 'GIBDD.PAY_DEBT' : 'GIBDD.PAY') | libTranslate}}
+          </lib-button>
+        </div>
+      </ng-container>
     </ng-container>
   </div>
 </div>

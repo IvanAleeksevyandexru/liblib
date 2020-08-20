@@ -1,17 +1,40 @@
-<nav class="nav" *ngIf="tabsService.getVisibleTabs()">
-  <ul class="tabs-box">
-    <li class="tab-wrapper"
-        *ngFor="let tab of tabsService.tabs$ | async"
-        routerLink="{{tab.url}}"
-        routerLinkActive="active">
-      <ng-container *ngIf="tab.url">
-        <a class="tab">
-          <span class="tab-name" *ngIf="translation === Translation.NONE">{{tab.name}}</span>
-          <span class="tab-name" *ngIf="translation === Translation.APP">{{tab.name | appTranslate}}</span>
-          <span class="tab-name" *ngIf="translation === Translation.LIB">{{tab.name | libTranslate}}</span>
-          <lib-counter class="counter" [counter]="tab.counter"></lib-counter>
-        </a>
+<nav class="nav" *ngIf="innerTabs?.visible !== false" [ngClass]="{'nav-flex': responsive}" libClickOutside (clickOutside)="showMobTabs = false">
+  <div class="tabs-box">
+    <ul class="mob-tabs" [ngClass]="{'opened': showMobTabs}" *ngIf="responsive">
+      <li class="tab-wrapper" *ngIf="activeTab">
+        <span class="tab-item selected-tab-item small-text" (click)="toggleTabsList($event)">
+          <ng-container [ngTemplateOutlet]="tabTpl" [ngTemplateOutletContext]="{tab: activeTab}"></ng-container>
+        </span>
+      </li>
+      <li class="tab-wrapper-inner">
+        <ul>
+          <ng-container [ngTemplateOutlet]="tabsTpl" [ngTemplateOutletContext]="{excludeActive: true}">
+          </ng-container>
+        </ul>
+      </li>
+    </ul>
+    <ul class="regular-tabs" *ngIf="!responsive">
+      <ng-container [ngTemplateOutlet]="tabsTpl">
       </ng-container>
-    </li>
-  </ul>
+    </ul>
+  </div>
 </nav>
+<ng-template #tabsTpl let-excludeActive="excludeActive">
+  <li class="tab-wrapper" *ngFor="let tab of innerTabs?.tabs"
+    [ngClass]="{
+        hidden: tab.hidden || excludeActive && tab === activeTab, disabled: tab.disabled, active: tab.active,
+        'break-before': tab.break === 'before', 'break-after': tab.break === 'after'}"
+        (click)="select(tab);">
+    <a class="tab">
+      <ng-container [ngTemplateOutlet]="tabTpl" [ngTemplateOutletContext]="{tab: tab}"></ng-container>
+      <lib-counter *ngIf="tab.counter !== undefined" class="counter" [counter]="tab.counter"></lib-counter>
+    </a>
+  </li>
+</ng-template>
+<ng-template #tabTpl let-tab="tab">
+  <span class="tab-name" *ngIf="translation === Translation.NONE">{{tab.name}}</span>
+  <span class="tab-name" *ngIf="translation === Translation.APP">{{tab.name | appTranslate}}</span>
+  <span class="tab-name" *ngIf="translation === Translation.LIB">{{tab.name | libTranslate}}</span>
+</ng-template>
+
+

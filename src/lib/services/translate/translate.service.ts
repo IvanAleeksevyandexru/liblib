@@ -16,9 +16,15 @@ export class LibTranslateService extends TranslateService {
     const compiler = new TranslateFakeCompiler();
     const parser = new TranslateDefaultParser();
     const missingHandler = new FakeMissingTranslationHandler();
-    const assetsLocation = loadService && loadService.isInitializationStarted() ?
-      `${loadService.config.staticDomain}lib-assets/i18n/` : ConstantsService.ASSETS_DEFAULT_LOCATION;
-    const loader: TranslateLoader = new TranslateHttpLoader(httpClient, assetsLocation, '.json');
+    let libAssetsLocation = '/' + ConstantsService.ASSETS_DEFAULT_PATH;
+    const config = loadService && loadService.config;
+    if (config && config.staticDomainLibAssetsPath) {
+      libAssetsLocation = config.staticDomainLibAssetsPath;
+    } else if (config && config.staticDomain) {
+      libAssetsLocation = config.staticDomain + ConstantsService.ASSETS_DEFAULT_PATH;
+    }
+    const assetsLocationAndPath = libAssetsLocation + ConstantsService.TRANSLATIONS_PATH;
+    const loader: TranslateLoader = new TranslateHttpLoader(httpClient, assetsLocationAndPath, '.json');
     super(store, loader, compiler, parser, missingHandler, true, true);
     this.addLangs(['ru']);
     this.setDefaultLang('ru');

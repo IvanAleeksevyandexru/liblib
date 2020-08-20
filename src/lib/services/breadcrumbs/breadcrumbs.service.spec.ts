@@ -7,7 +7,7 @@ describe('BreadcrumbsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.get(BreadcrumbsService);
+    service = TestBed.inject(BreadcrumbsService);
   });
 
   it('should be created', () => {

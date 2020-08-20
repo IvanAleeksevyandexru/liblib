@@ -7,6 +7,7 @@ import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { HelperService } from '../../services/helper/helper.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
+import { Width } from '../../models/width-height';
 
 @Component({
   selector: 'lib-multiline-input',
@@ -33,10 +34,11 @@ export class MultilineInputComponent
   @Input() public maxlength: number;
   @Input() public commitOnInput = false;  // коммитить ли значение по input или по change
   @Input() public invalid = false;
-  @Input() public validationShowOn: ValidationShowOn | string = ValidationShowOn.TOUCHED;
+  @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public minHeight = 77;
   @Input() public maxHeight = 200;
   @Input() public fullHeightScroll = true;
+  @Input() public width?: Width | string;
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
@@ -169,7 +171,7 @@ export class MultilineInputComponent
     const factHtml = this.inputElement && this.inputElement.nativeElement.innerHTML;
     if (truncatedChars || expectedHtml !== factHtml) {
       const newCaretPosition = this.getCaretPositionFromEnd() - truncatedChars;
-      this.update(newCaretPosition);
+      this.update(Math.max(0, newCaretPosition));
     }
   }
 
@@ -186,7 +188,7 @@ export class MultilineInputComponent
         if (scrollPos >= 0) {
           this.scrollContainer().scrollTop = scrollPos;
         }
-        if (caretPositionFromEnd !== -1) {
+        if (caretPositionFromEnd >= 0) {
           this.setCaretPositionFromEnd(this.inputElement.nativeElement, caretPositionFromEnd);
         }
       });

@@ -13,7 +13,7 @@ describe('MenuService', () => {
       providers: [{ provide: LoadService, useClass: LoadServiceStub }]
     });
 
-    service = TestBed.get(MenuService);
+    service = TestBed.inject(MenuService);
   });
 
   it('should be created', () => {

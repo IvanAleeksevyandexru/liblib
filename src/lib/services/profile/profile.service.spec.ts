@@ -13,7 +13,7 @@ describe('ProfileService', () => {
       providers: [ConstantsService, { provide: LoadService, useClass: LoadServiceStub }]
     });
 
-    service = TestBed.get(ProfileService);
+    service = TestBed.inject(ProfileService);
   });
 
 

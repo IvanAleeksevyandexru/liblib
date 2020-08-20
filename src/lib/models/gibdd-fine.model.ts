@@ -22,6 +22,7 @@ export interface GibddDetails {
   offenseDivision?: string;
   offenseDivisionName?: string;
   signature?: string;
+  stsNumber?: string;
   hasPhoto?: boolean;
   appeal?: number;
   deliveryDate?: any;

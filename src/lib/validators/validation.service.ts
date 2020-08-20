@@ -116,9 +116,20 @@ export class ValidationService {
   }
 
   public static actNumberValidator(control: AbstractControl) {
-    const regexp = '(?=^[^-?]*-?[^-?]*$)(?=^[^(в|В)?]*[(в|В)]?[^(в|В)?]*$)(?=^(?!-)([0-9\\-(в|В)]+)((?<!-))$)';
-    return !control.value || new RegExp(regexp).test(control.value)
-      ? null : {wrongActNo: true};
+    const regexp = '(?=^[^-?]*-?[^-?]*$)(?=^[^(в|В)?]*[(в|В)]?[^(в|В)?]*$)(?=^(?!-)([0-9\\-(в|В)]+)$)';
+    if (!control.value) {
+      return null;
+    }
+    if (new RegExp(regexp).test(control.value)) {
+      const hyphenCount = control.value.split('').reduce((acc, curr) => acc += curr === '-' ? 1 : 0, 0);
+      // проверка на количество дефисов, не может быть больше 1 и не может быть в конце
+      if (hyphenCount > 1 && control.value.lastIndexOf('-') !== control.value.length - 1)  {
+        return {wrongActNo: true};
+      }
+      return null;
+    } else  {
+      return {wrongActNo: true};
+    }
   }
 
   public static hyphenValidator(control: AbstractControl) {

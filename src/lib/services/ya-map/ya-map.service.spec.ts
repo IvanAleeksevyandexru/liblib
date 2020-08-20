@@ -6,7 +6,7 @@ describe('YaMapService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: YaMapService = TestBed.get(YaMapService);
+    const service: YaMapService = TestBed.inject(YaMapService);
     expect(service).toBeTruthy();
   });
 });

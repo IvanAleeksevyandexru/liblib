@@ -242,6 +242,10 @@ b, strong, .bold {
     align-items: center;
   }
 
+  .align-items-start#{$prefix} {
+    align-items: start;
+  }
+
   .align-self-center#{$prefix} {
     align-self: center;
   }

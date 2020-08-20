@@ -11,7 +11,7 @@
       </div>
     </div>
     <div #bannersFeedContainer class="banners-feed-container flex-0-lg">
-      <div #bannersFeed class="banners-feed" (touchstart)="beginFeedDragging($event)" [ngStyle]="{'left.px': offset}">
+      <div #bannersFeed class="banners-feed" [ngStyle]="{'left.px': offset}">
         <div class="banner-wrapper"
              *ngFor="let banner of bannersFeedList"
              [ngClass]="[activeBanner === banner ? 'active' : '', classBannerWrapper? classBannerWrapper : '']">

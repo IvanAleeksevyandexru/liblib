@@ -30,8 +30,7 @@
     <a class="feed-link flex-container">
       <div class="feed-icon" (click)="$event.stopPropagation()">
         <lib-checkbox
-          [checked]="feed.selected"
-          (change)="feed.selected = !feed.selected"
+          [(ngModel)]="feed.selected"
         ></lib-checkbox>
       </div>
       <div class="flex-1 flex-container-lg flex-container-md feed-content">

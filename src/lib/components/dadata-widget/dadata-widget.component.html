@@ -17,7 +17,7 @@
       [(ngModel)]="query"
       (focus)="handleFocus()"
       (blur)="normalizeFullAddress(query); handleBlur();"
-      (autocompleted)="normalizeFullAddress(query, true)"
+      (autocompleted)="normalizeFullAddress(query, false)"
       (input)="updateCanOpenFields($event.target.value)"
       (cleared)="onClearHandler()"
       [autocompleteSuggestionProvider]="dadataService">

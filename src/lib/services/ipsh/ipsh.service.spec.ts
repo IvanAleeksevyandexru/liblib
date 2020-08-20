@@ -6,7 +6,7 @@ describe('IpshService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: IpshService = TestBed.get(IpshService);
+    const service: IpshService = TestBed.inject(IpshService);
     expect(service).toBeTruthy();
   });
 });

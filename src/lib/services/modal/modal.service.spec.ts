@@ -11,7 +11,7 @@ describe('ModalService', () => {
       ]
     });
 
-    service = TestBed.get(ModalService);
+    service = TestBed.inject(ModalService);
   });
 
   it('ModalService should create', () => {

@@ -21,8 +21,8 @@ describe('UserAuthInterceptor', () => {
       ]
     });
 
-    authInterceptor = TestBed.get(UserAuthInterceptor);
-    httpMock = TestBed.get(HttpTestingController);
+    authInterceptor = TestBed.inject(UserAuthInterceptor);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   it('should create an instance', () => {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { Renderer2, RendererFactory2 } from '@angular/core';
 import { isDevMode } from '@angular/core';
 import { LoadService } from '../load/load.service';
@@ -14,8 +14,8 @@ export class YaMetricService {
 
   private isLoaded: boolean;
 
-  public counter = this.loadService.config.yaCounter;
-  public deviceType = this.loadService.attributes.deviceType;
+  public counter = 'unknown';
+  public deviceType = 'desk';
   public ym: any;
   private renderer: Renderer2;
 
@@ -48,10 +48,14 @@ export class YaMetricService {
   }
 
   constructor(
-    private loadService: LoadService,
     private rendererFactory: RendererFactory2,
+    @Optional() private loadService: LoadService
   ) {
     this.renderer = this.rendererFactory.createRenderer(null, null);
+    if (this.loadService && this.loadService.config) {
+      this.counter = this.loadService.config.yaCounter;
+      this.deviceType = this.loadService.attributes.deviceType;
+    }
   }
 
   public loadMetric(): void {
@@ -93,7 +97,7 @@ export class YaMetricService {
    * посылает яндекс метрику с событием для элементов с директивой libYaMetric / libYaMetricSendAndPass
    * параметр name в мапе обязательный, добавление платформы автоматическое, если не отменено параметром skipType
    */
-  public callReachGoalParamsAsMap(params: { [key: string]: any } = {}) {
+  public callReachGoalParamsAsMap(params: { [key: string]: any } = {}): Promise<void> {
     const name = params.name;
     if (!name) {
       throw Error('yandex metric event name is required!');
@@ -186,19 +190,6 @@ export class YaMetricService {
       params.status = status;
     }
     this.callReachGoal('detailOrder', params);
-  }
-
-  public yaMetricAside(mnemonic: string): void {
-    if (this.loadService.config.yaCounter) {
-      const params: { [key: string]: string } = {
-        action: mnemonic,
-        type: this.loadService.attributes.deviceType
-      };
-      if (mnemonic === 'settings') {
-        params.from = 'feedsOrder';
-      }
-      this.callReachGoal('feedsOrder', params);
-    }
   }
 
   public init(): void {

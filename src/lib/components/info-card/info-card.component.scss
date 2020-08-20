@@ -27,6 +27,21 @@
     background-color: #ffffff;
     box-shadow: 0 4px 16px rgba(180, 180, 180, .3);
 
+    &.new {
+      border: 1px solid #e5af00;
+
+      .label-new {
+        display: block;
+        font-size: 16px;
+        line-height: 24px;
+        color: #e5af00;
+      }
+
+      .title {
+        max-height: 72px;
+      }
+    }
+
     .card-actions {
       padding: 0 24px 20px 24px;
     }
@@ -58,7 +73,8 @@
 
       .title {
         font-size: 16px;
-        word-break: break-all;
+        word-break: break-word;
+        -ms-word-break: break-all;
         max-height: 48px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -76,7 +92,6 @@
 
         &.error {
           background: url(../../../assets/svg/doc-state-error.svg) no-repeat center;
-
         }
 
         &.process {
@@ -216,6 +231,18 @@
 
     &.common {
       padding: 0;
+
+      &.new {
+        .title {
+          padding-right: 72px;
+        }
+
+        .label-new {
+          position: absolute;
+          top: 20px;
+          right: 24px;
+        }
+      }
 
       .header {
         padding: 23px 24px 17px 24px;

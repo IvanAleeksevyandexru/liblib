@@ -48,7 +48,7 @@ export class InformerMainComponent implements OnInit {
     } else {
       return WordsOfDebt.ALL.split('|');
     }
-}
+  }
 
   private getInformerShortData() {
     this.informersService.getDataInformer().subscribe(

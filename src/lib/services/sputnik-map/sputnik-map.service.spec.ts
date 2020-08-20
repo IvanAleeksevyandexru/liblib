@@ -6,7 +6,7 @@ describe('SputnikMapService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: SputnikMapService = TestBed.get(SputnikMapService);
+    const service: SputnikMapService = TestBed.inject(SputnikMapService);
     expect(service).toBeTruthy();
   });
 });

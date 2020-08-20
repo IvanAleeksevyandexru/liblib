@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Modal } from '../../models/modal-container';
 import { MessageDetails } from '../../models/feed';
-import { GibddService } from '../../services/gibdd/gibdd.service';
-import { Gibdd, GibddDetails, GibddPhotoData } from '../../models/gibdd';
+import { IpshService } from '../../services/ipsh/ipsh.service';
+import { GibddDetails } from '../../models/gibdd-fine.model';
 import * as moment_ from 'moment';
 import { AddressToCoords } from '../../models/location';
 import { LocationService } from '../../services/location/location.service';
 import { SliderImage } from '../../models/slider-image';
+import { Bill } from '../../models/bill.model';
+import { LoadService } from '../../services/load/load.service';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 const moment = moment_;
 
@@ -21,34 +25,47 @@ const moment = moment_;
 export class GibddDetailsComponent implements OnInit {
   public loading = true;
   public message: MessageDetails;
+  public bill: Observable<Bill>;
   public details: GibddDetails;
   public center: number[];
   public photos: SliderImage[];
+  public showError: boolean;
+  public photosLoading: boolean;
 
   public destroy: () => {};
 
-  constructor(private gibdd: GibddService,
-              private locationService: LocationService) { }
+  constructor(private ipshService: IpshService,
+              private locationService: LocationService,
+              private loadService: LoadService) { }
 
   public ngOnInit() {
-    this.gibdd.getGibddDetails(this.message.addParams.fknumber, this.message.addParams.fknumberHash)
-      .subscribe((data: Gibdd) => {
-        if (data.error.code !== 0) {
+    this.ipshService.getGibddDetails(this.message.addParams.fknumber, this.message.addParams.fknumberHash)
+      .subscribe((data: GibddDetails) => {
+        if (!data) {
+          this.showError = true;
+          this.loading = false;
           return;
         }
 
-        this.details = data.content;
+        this.details = data;
         this.getCoordsByAddress();
         this.loading = false;
         this.formatDate();
 
         if (this.details.hasPhoto) {
-          this.gibdd.getPhoto(this.details).subscribe((resp: GibddPhotoData) => {
-            const photos: SliderImage[] = [];
-            resp.photos.forEach((item) => {
-              photos.push({data: 'data:image/png;base64,' + item.base64Value});
-            });
-            this.photos = photos;
+          const requestParams = {
+            uin: this.details.uin,
+            md5: this.details.signature,
+            reg: this.details.carNumber,
+            div: this.details.deptCode
+          };
+          this.photosLoading = true;
+          this.ipshService.getGibddPhotos(requestParams)
+            .pipe(finalize(() => {
+              this.photosLoading = false;
+            }))
+            .subscribe((photos: SliderImage[]) => {
+              this.photos = photos;
           });
         }
     });
@@ -71,6 +88,12 @@ export class GibddDetailsComponent implements OnInit {
           this.center = [data.coords[0].longitude, data.coords[0].latitude];
         }
       });
+  }
+
+  public goToPayment(billId: string): void {
+    (window as any).location = `${this.loadService.config.betaUrl}payment/${billId}?details=1`;
+    // Сделать этот редирект после открытия новой платежки
+    // (window as any).location = `${this.loadService.config.paymentUrl}?billIds=${billId}`;
   }
 
   public onCancel(): void {

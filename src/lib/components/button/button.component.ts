@@ -17,7 +17,6 @@ export class ButtonComponent implements OnInit {
   @Input() public target = ''; // присвоить _blank, что бы внешняя ссылка открылась в новом окне
   @Input() public internalLink = ''; // внутренняя ссылка, которая попадёт в атрибут routerLink
   @Input() public showLoader = false; // троббер в виде трех точек, необходимо использовать в связке с width - 'wide'
-  @Output() public click = new EventEmitter(); // событие клика
 
   public active = false;
 
@@ -28,9 +27,6 @@ export class ButtonComponent implements OnInit {
 
   public onClick(event: Event): void {
     if (this.disabled || this.showLoader) {
-      event.stopPropagation();
-    } else {
-      this.click.emit();
       event.stopPropagation();
     }
   }

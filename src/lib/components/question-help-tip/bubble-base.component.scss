@@ -1,0 +1,152 @@
+.dialog-icon {
+  position: relative;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  .dialog-container {
+    position: absolute;
+    display: block;
+    width: auto;
+    border: none;
+    z-index: 8;
+  }
+  .tail-shadow, .tail-mask {
+    display: block;
+    position: absolute;
+    z-index: 1;
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+  }
+  .tail-shadow {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.16);
+  }
+  .tail-mask {
+    background-color: white;
+    box-shadow: none;
+  }
+  .dialog {
+    position: absolute;
+    display: block;
+    width: auto;
+    border: none;
+    background-color: white;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.16);
+    padding: 16px;
+    border-radius: 4px;
+    z-index: 1;
+    .dialog-content {
+    }
+  }
+  .dialog-container {
+    &.bottom {
+      top: 30px;
+      left: -44px;
+      .tail-shadow, .tail-mask {
+        top: 0;
+        left: 52px;
+      }
+      .dialog {
+        top: 6px;
+        left: 0;
+      }
+    }
+    &.top {
+      bottom: 30px;
+      left: -44px;
+      .tail-shadow, .tail-mask {
+        bottom: 0;
+        left: 52px;
+      }
+      .dialog {
+        bottom: 6px;
+        left: 0;
+      }
+    }
+    &.left {
+      top: -44px;
+      right: 30px;
+      .tail-shadow, .tail-mask {
+        top: 52px;
+        right: 0;
+      }
+      .dialog {
+        right: 6px;
+        top: 0;
+      }
+    }
+    &.right {
+      top: -44px;
+      left: 30px;
+      .tail-shadow, .tail-mask {
+        top: 52px;
+        left: 0;
+      }
+      .dialog {
+        left: 6px;
+        top: 0;
+      }
+    }
+    &.top-left {
+      bottom: 30px;
+      right: -16px;
+      .tail-shadow, .tail-mask {
+        bottom: 0;
+        right: 24px;
+      }
+      .dialog {
+        bottom: 6px;
+        right: 0;
+      }
+    }
+    &.bottom-left {
+      top: 30px;
+      right: -16px;
+      .tail-shadow, .tail-mask {
+        top: 0;
+        right: 24px;
+      }
+      .dialog {
+        top: 6px;
+        right: 0;
+      }
+    }
+  }
+  .dialog-close {
+    display: none;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    width: 24px;
+    height: 24px;
+    background: url(../../../assets/svg/close-dark.svg) center no-repeat;
+    background-size: 12px;
+    z-index: 3;
+  }
+  .dialog-container {
+    display: none;
+  }
+  &.force-hide {
+    .dialog-container {
+      display: none;
+    }
+  }
+  &.force-show {
+    .dialog-container, .tail-close {
+      display: block;
+    }
+  }
+	&.hover-controlled {
+		&.hovered {
+			.dialog-container {
+				display: block;
+			}
+		}
+		&.force-hide {
+			.dialog-container {
+				display: none;
+			}
+		}
+	}
+}

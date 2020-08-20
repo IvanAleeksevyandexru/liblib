@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { LoadService } from '../load/load.service';
 import { Observable } from 'rxjs';
 import { Service } from '../../models/service';
+import { CookieService } from '../cookie/cookie.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class CatalogService {
 
   constructor(
     private http: HttpClient,
-    private loadService: LoadService
+    private loadService: LoadService,
+    private cookieService: CookieService
   ) {
   }
 
@@ -36,6 +38,13 @@ export class CatalogService {
 
   public getOrderNames(frguCodes: number[]) {
     return this.http.post(`${this.loadService.config.catalogApiUrl}passportsByExtId`, frguCodes, {
+      withCredentials: true
+    });
+  }
+
+  public checkMfcRegion() {
+    const region = this.cookieService.get('userSelectedRegion') || '00000000000';
+    return this.http.get(`${this.loadService.config.catalogApiUrl}mfc/config/${region}`, {
       withCredentials: true
     });
   }

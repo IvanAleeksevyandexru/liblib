@@ -11,7 +11,7 @@ describe('MainPageService', () => {
   }));
 
   it('should be created', () => {
-    const service: MainPageService = TestBed.get(MainPageService);
+    const service: MainPageService = TestBed.inject(MainPageService);
     expect(service).toBeTruthy();
   });
 });

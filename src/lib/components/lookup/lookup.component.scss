@@ -59,14 +59,35 @@
       }
     }
   }
-  .lookup-list-container .lookup-list-area {
-    ::ng-deep {
-      .lookup-item .item-container .lookup-item-text {
-        &.highlight-part {
-          color: #0B40B3;
-          font-weight: 600;
-        }
+  .lookup-list-container .lookup-list-area .lookup-item {
+    .expand-collapse {
+      display: none;
+      width: 24px;
+      height: 20px;
+      background: url(../../../assets/svg/dropdown-expand.svg) no-repeat;
+      &.collapsed {
+        background: url(../../../assets/svg/dropdown-collapse.svg) no-repeat;
       }
+    }
+    &.group-level-1 {
+      padding-left: 16px;
+    }
+    &.group-level-2 {
+      padding-left: 32px;
+    }
+    &.group-level-3 {
+      padding-left: 48px;
+    }
+    &.group-level-4 {
+      padding-left: 64px;
+    }
+    &.collapsable {
+      .expand-collapse {
+        display: inline-block;
+      }
+    }
+    &.hidden {
+      display: none;
     }
   }
 }

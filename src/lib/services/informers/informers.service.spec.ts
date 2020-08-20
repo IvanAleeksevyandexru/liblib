@@ -19,8 +19,8 @@ describe('InformersService', () => {
       ]
     });
 
-    service = TestBed.get(InformersService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(InformersService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {

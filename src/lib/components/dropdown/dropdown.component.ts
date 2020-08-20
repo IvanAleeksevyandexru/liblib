@@ -1,16 +1,24 @@
 import {
   Component, ViewChild, Input, Output, OnInit, OnChanges, DoCheck, OnDestroy, AfterViewInit,
-  EventEmitter, ElementRef, forwardRef, SimpleChanges, ChangeDetectorRef, Optional, Host, SkipSelf
+  EventEmitter, ElementRef, forwardRef, SimpleChanges, ChangeDetectorRef, Optional, Host, SkipSelf, Self
 } from '@angular/core';
 import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ListItem, ListItemConverter } from '../../models/dropdown.model';
+import { ListItem, ListElement, ListItemConverter } from '../../models/dropdown.model';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
+import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { PositioningManager, PositioningRequest } from '../../services/positioning/positioning.manager';
+import { ListItemsService, ListItemsOperationsContext, FixedItemsProvider } from '../../services/list-item/list-items.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
-import { Translation } from '../../models/common-enums';
+import { ConstantsService } from '../../services/constants.service';
+import { Translation, MultipleItemsLayout, LineBreak } from '../../models/common-enums';
+import { forkJoin } from 'rxjs';
+import { Width } from '../../models/width-height';
 
+/*
+ * документация по ссылке https://confluence.egovdev.ru/pages/viewpage.action?pageId=170673869
+ */
 @Component({
   selector: 'lib-dropdown',
   templateUrl: 'dropdown.component.html',
@@ -19,64 +27,101 @@ import { Translation } from '../../models/common-enums';
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => DropdownComponent),
     multi: true
-  }]
+  }, ListItemsService]
 })
 export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated {
 
   constructor(
     private focusManager: FocusManager, protected changeDetector: ChangeDetectorRef, private positioningManager: PositioningManager,
-    @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
+    @Self() protected listService: ListItemsService, @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
 
   @Input() public contextClass?: string;  // класс-маркер для deep стилей
   @Input() public formControlName?: string;
   @Input() public tabIndex?: string | number;
   @Input() public disabled?: boolean;
   @Input() public invalid = false;
-  @Input() public validationShowOn: ValidationShowOn | string = ValidationShowOn.TOUCHED;
-  @Input() public translation: Translation | string = Translation.NONE;
+  @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
+  @Input() public width?: Width | string;
 
-  @Input() public clearable = false;  // кнопка очистки позволяет сбрасывать значение либо удалять выбранные по одному в случае multi
-  // должно ли выбранное (список выбранных) значений обрезаться или переноситься на следующую строку (с изменением высоты поля)
-  @Input() public nowrap = true;
-  @Input() public escapeHtml = false;
-  @Input() public containerOverlap = false;
-
-  @Input() public multi = false;  // множественный выбор
-  // (checkboxes рядом со значениями в выпадающем списке, массив вместо одиночного итема в качестве входного и выходного значения модели)
-
-  @Input() public localSearch = false; // включает поиск по списку значений выпадающего меню
-  @Input() public emptyResultTitle = '&mdash;'; // Отображение состояния, когда ничего не выбрано
-  @Input() public pluralizeArray = []; // массив для склонений в режиме мультиселекта
-
-  // функция форматирования для выбранного итема в инпуте и итемов в выпадающем списке
-  @Input() public formatter?: (ListItem) => string;
-  // конвертер объединяет входной и выходной конвертер из типа не соответствующего {id, text} прямо и обратно
+  // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
+  @Input() public formatter?: (item: ListItem, context?: { [name: string]: any }) => string;
+  // функция форматирования специальная, применяется только в списке для случая когда отображение в списке должно отличаться
+  @Input() public listFormatter?: (item: ListItem, context?: { [name: string]: any }) => string;
+  // конвертер объединяет входной и выходной конвертер для объектов не подходящих под интерфейс {id, text}
   @Input() public converter?: ListItemConverter;
-  @Input() public items: Array<any> = [];
 
-  @Output() protected blur = new EventEmitter<any>();
-  @Output() protected focus = new EventEmitter<any>();
-  @Output() protected changed = new EventEmitter<Array<any> | any>();
+  // допускает множественный выбор элементов (выпадашка не закрывается при выборе, моделью является массив)
+  @Input() public multi = false;
+  // крестик очистки при наличии значения: один для !multi или персональный у каждого значения для множественного выбора
+  @Input() public clearable = false;
+  // экранирование хтмл при выводе
+  @Input() public escapeHtml = false;
+  // лейаут области поля для отображения множественных выбранных итемов + кастомный форматтер для специальных кейсов отображения
+  @Input() public multipleItemsLayout: MultipleItemsLayout | string = MultipleItemsLayout.OVERFLOW;
+  @Input() public customMultipleItemsLayout?: (selected: Array<ListItem>, context?: { [name: string]: any }) => string;
+  @Input() public multipleItemsMaxSelected: number;
+  // заглушка для отсутствия выбранного значения/значений
+  @Input() public placeholder = '&mdash;';
+  // включает возможность сворачивать-разворачивать группы элементов, tree-like view
+  @Input() public collapsableGroups = false;
+  // определяет отношение к итемам-группам (заголовкам, элементам структуры) - можно ли их выбирать как обычные элементы
+  @Input() public virtualGroups = true;
+
+  // перевод значений при выводе (текст значения должен быть приемлемым кодом транслитерации)
+  @Input() public translation: Translation | string = Translation.NONE;
+  // позиционировать выпадающий список программно на fixed координатах (выпадашка может выходить за пределы диалоговых окон)
+  @Input() public containerOverlap = false;
+  // постраничная подгрузка итемов в результатах и размер блока
+  @Input() public incrementalLoading = false;
+  @Input() public incrementalPageSize = ConstantsService.DEFAULT_ITEMS_INCREMENTAL_PAGE_SIZE;
+  // включает поле поиска в выпадающую область, позволяет фильтровать отображаемые значения
+  @Input() public localSearch = false;
+  @Input() public highlightSubstring = true;
+
+  // источник значений, массив элементов
+  // стандарт - использование элементов ListElement которые будут автоматически приведены к ListItem
+  // через конвертер можно использовать any
+  @Input() public items: Array<ListElement | any> = [];
+
+  @Output() public blur = new EventEmitter<any>();
+  @Output() public focus = new EventEmitter<any>();
+  // выбранное значение (или набор выбранных значений) изменилось
+  @Output() public changed = new EventEmitter<Array<any> | any>();
+  @Output() public opened = new EventEmitter<any>();
+  @Output() public closed = new EventEmitter<any>();
+  // пре-рендер или обновление контента выпадашки
+  @Output() public listed = new EventEmitter<Array<ListItem>>();
 
   public expanded: boolean;
   public destroyed = false;
   public focused = false;
   public touched = false;
   public invalidDisplayed = false;
+  public translating = false;
+  public preventOpening = false;
   public control?: AbstractControl;
-  public searchFocus = false;
-  public searchValue = '';
+  public filteringQuery = '';
+  public LineBreak = LineBreak;
 
-  public Translation = Translation;
+  // приведенный к [ListItem] входящий список итемов +форматирование
   public internalItems: Array<ListItem> = [];
+  // вырезка массива internalItems когда отображается лишь часть итемов (фильтрация, incrementalLoading)
+  public internalDisplayed: Array<ListItem> = [];
+  // значение модели приведенное к [ListItem]
   public internalSelected: Array<ListItem> = [];
+  // кто является подсвеченным элементом (наведение мышью, выбор с клавиатуры)
   public highlighted: ListItem = null;
+  public fixedItemsProvider = new FixedItemsProvider();
+  public customMultipleItemsLayoutData = null;
   public positioningDescriptor: PositioningRequest = null;
+  public partialPageNumber = 0;
+  public partialsLoaded = false;
+  public multipleItemsDetailsShown = false;
 
   @ViewChild('scrollableArea') private scrollableArea: ElementRef;
   @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
   @ViewChild('focusableInput') private focusableInput: ElementRef;
-  @ViewChild('dropdownValues') private valuesField: ElementRef;
+  @ViewChild('localSearchElement') private localSearchElement: SearchBarComponent;
   @ViewChild('dropdownField', {static: false}) private valuesContainer: ElementRef;
   @ViewChild('dropdownList', {static: false}) private listContainer: ElementRef;
 
@@ -98,9 +143,12 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     }
     for (const propName of Object.keys(changes)) {
       switch (propName) {
+        case 'formatter':
+        case 'listFormatter':
+        case 'translation':
+        case 'converter':
         case 'items': {
-          this.setItems(this.items);
-          break;
+          this.update();
         }
       }
     }
@@ -120,22 +168,45 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   }
 
   public update() {
+    this.listService.synchronizeOperationsContext({
+      formatter: this.formatter,
+      listFormatter: this.listFormatter,
+      converter: this.converter,
+      translation: this.translation,
+      highlightSubstring: this.highlightSubstring,
+      collapsableGroups: this.collapsableGroups,
+      virtualGroups: this.virtualGroups ? (this.multi ? true : null) : false,
+      onLanguageChange: () => this.updateFormatting(true)
+    } as ListItemsOperationsContext);
     this.setItems(this.items);
     this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
     this.check();
   }
 
-  public isExists(item: ListItem) {
-    return (this.internalItems || []).find((existingItem: ListItem) => item.compare(existingItem));
+  public setItems(value: Array<any>) {
+    this.internalItems = this.listService.createListItems(value);
+    this.updateFormatting();
+    this.fixedItemsProvider.setSource(this.internalItems);
+    this.consistencyCheck(true);
+    this.synchronizeSelected();
+    this.resetFilter();
   }
 
-  public isSelected(item: ListItem, internalSelected?: Array<ListItem>) {
-    // internalSelected аргумент добавлен чтобы ангуляр обновлял выход функции по его изменению
-    return (this.internalSelected || []).find((selectedItem: ListItem) => item.compare(selectedItem));
+  public consistencyCheck(strict = false) {
+    this.internalSelected = (this.internalSelected || []).filter((item: ListItem) => item.belongsTo(this.internalItems, strict));
   }
 
-  public isHighlighted(item: ListItem) {
-    return item.compare(this.highlighted);
+  public synchronizeSelected() {
+    (this.internalItems || []).forEach((item: ListItem) => {
+      item.selected = item.belongsTo(this.internalSelected);
+    });
+    this.updateCustomLayoutIfNeeded();
+  }
+
+  public updateCustomLayoutIfNeeded() {
+    if (this.multi && this.multipleItemsLayout === MultipleItemsLayout.CUSTOM) {
+      this.customMultipleItemsLayoutData = this.customMultipleItemsLayout(this.internalSelected);
+    }
   }
 
   public toggle() {
@@ -150,13 +221,15 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   }
 
   public openDropdown() {
-    if (!this.destroyed && !this.disabled && !this.expanded) {
+    if (!this.destroyed && !this.disabled && !this.expanded && !this.translating) {
       this.expanded = true;
+      this.multipleItemsDetailsShown = false;
       this.highlighted = null;
+      this.resetFilter();
       if (this.onTouchedCallback) {
         this.onTouchedCallback();
       }
-      this.changeDetector.detectChanges();
+      this.opened.emit();
       if (this.containerOverlap) {
         this.positioningDescriptor = {master: this.valuesContainer, slave: this.listContainer,
           destroyOnScroll: true, destroyCallback: this.closeDropdown.bind(this)} as PositioningRequest;
@@ -169,150 +242,236 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     }
   }
 
-  public closeDropdown(raisedByOutsideClick = false) {
+  public closeDropdown(raisedByOusideClick = false) {
     if (this.expanded) {
       this.expanded = false;
       if (this.containerOverlap) {
         this.positioningManager.detach(this.positioningDescriptor);
         this.positioningDescriptor = null;
       }
+      this.closed.emit();
     }
-    if (raisedByOutsideClick) {
-      this.focusManager.notifyFocusMayLost(this);
+    if (raisedByOusideClick) {
+      this.multipleItemsDetailsShown = false;
     }
   }
 
   public notifyFocusEvent(e: Event) {
-    if (!this.localSearch || (this.localSearch && !this.searchFocus)) {
-      this.focusManager.notifyFocusMayChanged(this, e.type === 'focus');
-    }
+    this.focusManager.notifyFocusMayChanged(this, e.type === 'focus');
   }
 
   public handleBlur() {
-    if (!this.localSearch) {
-      this.focused = false;
-      this.closeDropdown();
-      this.check();
-      this.blur.emit();
+    if (this.focusManager.isJustFocused(this.localSearchElement)) {
+      return;
     }
+    this.focused = false;
+    this.closeDropdown();
+    this.check();
+    this.changeDetector.detectChanges();
+    this.blur.emit();
   }
 
   public handleFocus() {
-    if (!this.localSearch || (this.localSearch && !this.searchFocus)) {
     this.focused = this.touched = true;
-    if (!this.expanded) {
+    if (!this.expanded && !this.preventOpening) {
       this.openDropdown();
     }
     this.check();
     this.focus.emit();
-    }
   }
 
   public returnFocus(e?: Event) {
-    if (this.focusableInput && this.focusableInput.nativeElement && (!e || e.target !== this.focusableInput.nativeElement)) {
-      if (!this.localSearch || (this.localSearch && !this.searchFocus)) {
-        this.focusableInput.nativeElement.focus();
-        this.focusManager.notifyFocusMayChanged(this, true);
-      }
+    const focusableInputFocused = e && this.focusableInput && e.target === this.focusableInput.nativeElement;
+    const localSearchFocused = e && this.localSearch && this.localSearchElement
+      && e.target === this.localSearchElement.inputElement.nativeElement;
+    if (!e || !(focusableInputFocused || localSearchFocused)) {
+      this.preventOpening = true;
+      this.focusableInput.nativeElement.focus();
+      this.focusManager.notifyFocusMayChanged(this, true);
+      this.preventOpening = false;
     }
-  }
-
-  public setItems(value: Array<any>) {
-    if (value) {
-      if (this.converter) {
-        this.internalItems = value.map(this.converter.inputConverter);
-      } else {
-        this.internalItems = value.map((item: any) => new ListItem(item, item));
-      }
-    } else {
-      this.internalItems = [];
-    }
-    this.internalItems.forEach((item: ListItem) => {
-      item.formatted = this.format(item);
-    });
-    this.internalSelected = !this.localSearch && this.internalSelected && this.internalSelected.length ?
-      this.internalSelected.filter(this.isExists.bind(this)) : this.internalSelected;
   }
 
   public highlight(item: ListItem) {
-    this.highlighted = item;
-  }
-
-  public format(item: ListItem) {
-    return this.formatter ? this.formatter(item) : item.text;
-  }
-
-  // allowDeselect аргумент меняет реакцию если данный итем уже является выделенным. что делать: инвертировать выделение или игнорировать
-  public selectOrDeselectItem(item: ListItem, allowDeselect?: boolean) {
-    let value;
-    this.returnFocus(); // предотвращает handleFocus после выбора если календарь был открыт программно без фокусировки на поле
-    if (this.multi) {
-      value = [].concat(this.internalSelected);  // копия
-      if (this.isSelected(item)) {
-        if (!allowDeselect) {
-          return;
-        }
-        // исключить из выбранного
-        value.splice(value.findIndex((arrayItem) => arrayItem.compare(item)), 1);
-      } else {
-        // добавить к выбранному
-        value.push(item);
-      }
-      const outputValue = this.converter ?
-        value.map(this.converter.outputConverter) : value.map((listItem: ListItem) => listItem.originalItem);
-      this.commit(outputValue);
-      this.changed.emit(outputValue);
-      this.internalSelected = value; // нет необходимости конвертировать/оборачивать, целостность гарантирована
-      this.changeDetector.detectChanges();
-      this.refreshEllipsis();
-    } else {
-      if (this.isSelected(item)) {
-        if (!allowDeselect) {
-          this.closeDropdown();
-          return;
-        }
-        value = null;
-      } else {
-        value = item;
-      }
-      const outputValue = this.converter ? this.converter.outputConverter(value) : value && value.originalItem;
-      this.commit(outputValue);
-      this.changed.emit(outputValue);
-      this.internalSelected = value ? [value] : []; // нет необходимости конвертировать/оборачивать, целостность гарантирована
-      this.closeDropdown();
+    if (!item || this.listService.isHighlightable(item)) {
+      this.highlighted = item;
     }
-    this.check();
+  }
+
+  public filterItems(query: string): void {
+    this.filteringQuery = query;
+    this.setPartialIndex(0);
+  }
+
+  public resetFilter() {
+    this.filterItems('');
+  }
+
+  public updateFormatting(forceTranslate = false) {
+    forkJoin([
+      this.listService.translateFormat(this.internalItems, forceTranslate),
+      this.listService.translateFormat(this.internalSelected, forceTranslate)
+    ]).subscribe(() => {
+      this.changeDetector.detectChanges();
+    });
+  }
+
+  public setPartialIndex(partialNumber: number) {
+    if (this.localSearch || this.incrementalLoading) {
+      this.fixedItemsProvider.search(this.filteringQuery).subscribe((filteredAll: Array<ListItem>) => {
+        const highlightIfNeeded = (filteredItems: Array<ListItem>) => {
+          if (this.filteringQuery && this.highlightSubstring) {
+            this.listService.highlightSubstring(filteredItems, this.filteringQuery);
+          }
+        };
+        if (this.incrementalLoading) {
+          this.partialPageNumber = partialNumber;
+          const pageSize = this.incrementalPageSize || ConstantsService.DEFAULT_ITEMS_INCREMENTAL_PAGE_SIZE;
+          this.fixedItemsProvider.searchPartial(this.filteringQuery, this.partialPageNumber, {partialPageSize: pageSize})
+              .subscribe((filteredPaged: Array<ListItem>) => {
+            highlightIfNeeded(filteredPaged);
+            const partialedItems = partialNumber === 0 ? filteredPaged : this.internalDisplayed.concat(filteredPaged);
+            this.publishList(partialedItems);
+            this.partialsLoaded = partialedItems.length === filteredAll.length;
+          });
+        } else {
+          highlightIfNeeded(filteredAll);
+          this.publishList(filteredAll);
+        }
+      });
+    } else {
+      this.publishList(this.internalItems);
+    }
+    this.changeDetector.detectChanges();
+  }
+
+  public loadNextPartial() {
+    if (this.incrementalLoading && this.expanded && !this.partialsLoaded) {
+      this.setPartialIndex(this.partialPageNumber + 1);
+    }
+  }
+
+  public publishList(items: Array<ListItem>) {
+    const alignedItems = this.listService.alignGroupsTreeIfNeeded(items, this.internalItems);
+    this.internalDisplayed = alignedItems;
+    this.listed.emit(alignedItems);
+  }
+
+  public multipleSummaryOpenDetails(e: Event) {
+    if (!this.destroyed && !this.disabled && this.multi && this.multipleItemsLayout === MultipleItemsLayout.PANEL) {
+      this.multipleItemsDetailsShown = !this.multipleItemsDetailsShown;
+      if (this.multipleItemsDetailsShown) {
+        this.closeDropdown();
+      }
+      this.returnFocus();
+      e.stopPropagation();
+    }
+  }
+
+  public unselect(item: ListItem, e: Event) {
+    if (!this.destroyed && !this.disabled) {
+      this.deselectItem(item);
+      e.stopPropagation();
+    }
+  }
+
+  public invertSelection(item: ListItem) {
+    this.returnFocus();
+    if (item.selected) {
+      if (this.multi) {
+        this.deselectItem(item);
+      }
+    } else {
+      const successfull = this.selectItem(item);
+      if (!this.multi && successfull) {
+        this.closeDropdown();
+      }
+    }
+    if (this.virtualGroups) {
+      this.listService.adjustVirtualGroupsSelectionIfNeeded(this.internalDisplayed);
+    }
+  }
+
+  public selectItem(item: ListItem, commitEmit = true) {
+    if (!item || item.unselectable || item.lineBreak === LineBreak.SELF) {
+      return false;
+    }
+    if (item.collapsable && this.virtualGroups) {
+      if (this.multi) {
+        this.listService.getFinalItems(this.internalDisplayed, item).forEach((finalItem: ListItem) => this.selectItem(finalItem, false));
+        this.commitEmit();
+      } else {
+        return false;
+      }
+    } else {
+      if (this.multi && this.multipleItemsMaxSelected !== undefined
+          && (this.internalSelected || []).length >= this.multipleItemsMaxSelected) {
+        return false;
+      }
+      if (item.belongsTo(this.internalSelected)) {
+        return false;
+      }
+      if (this.multi) {
+        this.internalSelected.push(item);
+      } else {
+        this.internalItems.forEach((previouslySelected: ListItem) => previouslySelected.selected = false);
+        this.internalSelected = [item];
+      }
+      item.selected = true;
+      if (commitEmit) {
+        this.commitEmit();
+      }
+    }
+    return true;
+  }
+
+  public deselectItem(item: ListItem, commitEmit = true) {
+    if (item.collapsable && this.virtualGroups) {
+      if (this.multi) {
+        this.listService.getFinalItems(this.internalDisplayed, item).forEach((finalItem: ListItem) => this.deselectItem(finalItem, false));
+        this.commitEmit();
+      }
+    } else {
+      item.selected = false;
+      if (this.multi) {
+        this.internalSelected = (this.internalSelected || []).filter((anyItem: ListItem) => !ListItem.compare(anyItem, item));
+      } else {
+        this.internalSelected = [];
+      }
+      if (commitEmit) {
+        this.commitEmit();
+      }
+    }
+  }
+
+  public expandCollapse(collapsableItem: ListItem, evt: Event) {
+    this.returnFocus();
+    this.listService.expandCollapse(collapsableItem, this.internalDisplayed, evt);
   }
 
   public handleKeydownNavigation(e: KeyboardEvent) {
-    const highlightedElementIndex = this.internalItems.findIndex((item: ListItem) => item.compare(this.highlighted));
     if (e.key === 'Tab') {  // tab
       // по факту blur, скрываем выпадашку чтобы perfect scrollbar не получил фокус
       this.closeDropdown();
     } else if (e.key === 'Enter') { // ввод
-      if (this.expanded && this.highlighted) {
-        this.selectOrDeselectItem(this.highlighted, this.multi);
+      if (this.expanded && this.highlighted && !this.highlighted.unselectable) {
+        this.invertSelection(this.highlighted);
       } else {
         this.toggle();
       }
-    } else if (e.key === 'ArrowUp') {  // вверх
-      if (this.expanded) {
-        const prevVisible = this.findNextVisible(highlightedElementIndex, false);
-        this.highlighted = this.internalItems.length && prevVisible !== null ? this.internalItems[prevVisible] : null;
-        this.scrollTo(this.highlighted);
-      }
-    } else if (e.key === 'ArrowDown') {  // вниз
-      if (this.expanded) {
-        const nextVisible = this.findNextVisible(highlightedElementIndex, true);
-        this.highlighted = this.internalItems.length && nextVisible !== null ? this.internalItems[nextVisible] : null;
-        this.scrollTo(this.highlighted);
-      }
     } else if (e.key === ' ') {  // пробел
-      if (this.expanded && this.multi && this.highlighted) {
-        this.selectOrDeselectItem(this.highlighted, true);
+      if (this.expanded && this.multi && this.highlighted && !this.highlighted.unselectable) {
+        this.invertSelection(this.highlighted);
       }
+      e.preventDefault();
+      e.stopPropagation();
     } else if (e.key === 'Escape') { // esc
       this.closeDropdown();
+    } else if (this.expanded) { // стрелки
+      const navResult = this.listService.handleKeyboardNavigation(e, this.internalDisplayed, this.highlighted, this.scrollableArea);
+      if (navResult && navResult !== true) {
+        this.highlighted = navResult as ListItem;
+      }
     }
   }
 
@@ -320,19 +479,11 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     if (this.destroyed) {
       return;
     }
-    const valueWrapped = value ? Array.isArray(value) ? value : [value] : value;
-    if (valueWrapped) {
-      if (this.converter) {
-        this.internalSelected = valueWrapped.map(this.converter.inputConverter).filter(this.isExists.bind(this));
-      } else {
-        this.internalSelected = valueWrapped.map((item: any) => new ListItem(item)).filter(this.isExists.bind(this));
-      }
-    } else {
-      this.internalSelected = [];
-    }
-    this.internalSelected.forEach((item: ListItem) => {
-      item.formatted = this.format(item);
-    });
+    this.internalSelected = this.listService.createListItems(value, {noIndex: !this.multi});
+    this.updateFormatting();
+    this.consistencyCheck();
+    this.synchronizeSelected();
+    this.resetFilter();
     this.check();
     this.changeDetector.detectChanges();
   }
@@ -354,34 +505,17 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     this.invalidDisplayed = ValidationHelper.checkValidation(this, {empty: !(this.internalItems || []).length});
   }
 
-  public search(e: InputEvent): void {
-    if (e.data) {
-      const filteredData = this.items.filter(item => item.text.toLowerCase().indexOf(this.searchValue.toLowerCase()) >= 0);
-      this.setItems(filteredData);
+  private commitEmit() {
+    let output = null;
+    if (this.multi) {
+      output = this.listService.restoreOriginals(this.internalSelected);
     } else {
-      this.setItems(this.items);
+      output = this.internalSelected.length ? this.listService.restoreOriginal(this.internalSelected[0]) : null;
     }
-  }
-
-  public searchFocusHandler(e: any, focus: boolean): void {
-    this.searchFocus = focus;
-  }
-
-  private findNextVisible(fromIndex: number, directionForward: boolean) {
-    const initialIndex = fromIndex === -1 && !directionForward ? 0 : fromIndex;
-    let index = initialIndex;
-    do {
-      index = directionForward ? ++index : --index;
-      if (index < 0) {
-        index = this.internalItems.length - 1;
-      } else if (index >= this.internalItems.length) {
-        index = 0;
-      }
-      if (!this.internalItems[index].hidden) {
-        return index;
-      }
-    } while (index !== initialIndex);
-    return null;
+    this.commit(output);
+    this.changed.emit(output);
+    this.updateCustomLayoutIfNeeded();
+    this.check();
   }
 
   private updateScrollBars() {
@@ -390,38 +524,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     }
   }
 
-  private refreshEllipsis() {
-    if (this.valuesField) {
-      this.valuesField.nativeElement.style.textOverflow = 'clip';
-      setTimeout(() => {
-        this.valuesField.nativeElement.style.textOverflow = 'ellipsis';
-      });
-    }
-  }
-
   private scrollTo(item: ListItem) {
-    if (this.scrollContainer()) {
-      let itemElement = this.scrollableArea.nativeElement.querySelector('.dropdown-item[itemId="' + item.id + '"]');
-      if (itemElement) {
-        let height = 0;
-        while (itemElement !== null) {
-          height += itemElement.offsetHeight || 0;
-          itemElement = itemElement.previousSibling;
-        }
-        this.scrollContainer().scrollTop = height - 100;
-      }
-    }
+    this.listService.scrollTo(this.scrollableArea, item.findIndexAmong(this.internalDisplayed));
   }
 
-  private scrollContainer() {
-    if (this.scrollableArea && this.scrollableArea.nativeElement) {
-      const scrollContainer = this.scrollableArea.nativeElement.parentElement.parentElement;
-      return scrollContainer.classList.contains('ps') ? scrollContainer : null;
-    }
-    return null;
-  }
-
-  public trackByFn(index: number, item: ListItem) {
-    return item.id;
-  }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Tab } from '../../models/tabs';
-import { BehaviorSubject } from 'rxjs';
+import { Tab, Tabs, MAIN_TABS } from '../../models/tabs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { LoadService } from '../load/load.service';
 
 @Injectable({
@@ -13,41 +13,86 @@ export class TabsService {
   ) {
   }
 
-  private tabs: BehaviorSubject<Tab[]> = new BehaviorSubject<Tab[]>([]);
-  private visible: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  public tabs$ = this.tabs.asObservable();
+  private tabs: Map<any, BehaviorSubject<Tabs>> = new Map<any, BehaviorSubject<Tabs>>();
+  private appliedAccess: Map<any, Array<string> | string> = new Map<any, Array<string> | string>();
 
-  public setTabs(data: Tab[]) {
-    this.tabs.next(data);
+  public register(tabsName: any): Observable<Tabs> {
+    this.createOrUpdate(tabsName);
+    return this.tabs.get(tabsName).asObservable();
   }
 
-  public getTabs(id?: string): Tab[] {
-    if (!id) {
-      return this.tabs.getValue();
+  public unregister(tabsName: any): void {
+    if (this.tabs.has(tabsName)) {
+      this.tabs.get(tabsName).complete();
+    }
+    this.tabs.delete(tabsName);
+  }
+
+  public setTabs(tabsName: any, tabs: Tab[] | Tabs): Tabs {
+    return this.createOrUpdate(tabsName, Array.isArray(tabs) ? {tabs} : tabs);
+  }
+
+  // возвращаемый объект табов имеет прямой байнд на юай, т.е. его модификация может непосредственно менять вью
+  public getTabs(tabsName: any): Tabs {
+    if (this.tabs.has(tabsName)) {
+      return this.tabs.get(tabsName).getValue();
     } else {
-      const filtered = this.tabs.getValue().find(item => item.id === id);
-      return filtered.children;
+      return this.createOrUpdate(tabsName);
     }
   }
 
-  public setVisibleTabs(value) {
-    this.visible.next(value);
+  public setTabsVisibility(tabsName: any, visibility: boolean): Tabs {
+    return this.createOrUpdate(tabsName, {visible: visibility});
   }
 
-  public getVisibleTabs(): boolean {
-    return this.visible.getValue();
+  // метод оставлен для совместимости
+  public setVisibleTabs(visibility: boolean) {
+    this.setTabsVisibility(MAIN_TABS, visibility);
   }
 
-  public excludeItems(items: Tab[], name): Tab[] {
+  public hideTabsAccordingToAccess(tabsName: any, accessTags: Array<string> | string) {
+    this.appliedAccess.set(tabsName, accessTags);
+    const tabs = this.getTabs(tabsName);
+    tabs.tabs.forEach((tab: Tab) => {
+      if (tab.access && !tab.access.find((accessTag: string) => accessTags.includes(accessTag))) {
+        tabs.hideTab(tab);
+      }
+    });
+  }
+
+  public hideTabsAccordingToConfig(tabsName: any, configName: string): void {
     if (this.loadService.config.excludeMenuItems &&
-        this.loadService.config.excludeMenuItems[name] &&
-        this.loadService.config.excludeMenuItems[name].length
+        this.loadService.config.excludeMenuItems[configName] &&
+        this.loadService.config.excludeMenuItems[configName].length
     ) {
-      return items.filter((item) => {
-        return !this.loadService.config.excludeMenuItems[name].includes(item.id);
+      const tabs = this.getTabs(tabsName);
+      tabs.tabs.forEach((tab: Tab) => {
+        if (this.loadService.config.excludeMenuItems[configName].includes(tab.id)) {
+          tabs.hideTab(tab);
+        }
       });
     }
-    return items;
+  }
+
+  private createOrUpdate(tabsName: any, tabsProperties?: {[key: string]: any}): Tabs {
+    if (!tabsName) {
+      throw new Error('Invalid Tabs Group Name');
+    }
+    const existing = this.tabs.has(tabsName) ? this.tabs.get(tabsName).getValue() : null;
+    if (existing && !tabsProperties) {
+      return existing;
+    }
+    // Object.assign т.к. набор табов и их видимость сетится раздельно асинхронно из разных мест в разное время
+    const updated = Object.assign(new Tabs(), existing || {}, tabsProperties || {}) as Tabs;
+    if (!this.tabs.has(tabsName)) {
+      const subj = new BehaviorSubject<Tabs>(updated);
+      this.tabs.set(tabsName, subj);
+    }
+    this.tabs.get(tabsName).next(updated);
+    if (this.appliedAccess.has(tabsName)) {
+      this.hideTabsAccordingToAccess(tabsName, this.appliedAccess.get(tabsName));
+    }
+    return updated;
   }
 
 }

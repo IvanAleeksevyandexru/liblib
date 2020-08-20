@@ -17,8 +17,8 @@ describe('AuthService', () => {
       ]
     });
 
-    authService = TestBed.get(AuthService);
-    httpMock = TestBed.get(HttpTestingController);
+    authService = TestBed.inject(AuthService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {

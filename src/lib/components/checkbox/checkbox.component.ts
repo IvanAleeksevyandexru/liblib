@@ -14,6 +14,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class CheckboxComponent implements OnInit, ControlValueAccessor {
+
   public static idCounter = 1;
 
   @Input() public checkboxId: string; // input ID: если не указан, генерируется уникальный ID
@@ -24,8 +25,9 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor {
   @Input() public disabled: boolean;
   @Input() public checked: boolean;
 
-  public propagateChange = (event: any) => {};
-  public onTouchedCallback = () => {};
+  private modelInitialization = true;
+  private onTouchedCallback: () => void;
+  private commit(value: any) {}
 
   constructor() { }
 
@@ -36,22 +38,31 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  public onChecked(event) {
-    this.checked = event.target.checked;
-    this.propagateChange(event.target.checked);
+  public onChecked(value: boolean) {
+    this.checked = value;
+    this.commit(value);
   }
 
   // ControlValueAccessor methods
   public writeValue(value: any) {
-    this.checked = value;
+    const isInitialization = this.modelInitialization;
+    this.modelInitialization = false;
+    if (this.checked !== undefined && value === undefined && isInitialization) {
+      return; // управление @Input свойством, переинициализация моделью возможна только реальным значением
+    }
+    this.checked = !!value;
   }
 
   public registerOnChange(func: any) {
-    this.propagateChange = func;
+    this.commit = func;
   }
 
   public registerOnTouched(func: any) {
     this.onTouchedCallback = func;
+  }
+
+  public setDisabledState(disabled: boolean) {
+    this.disabled = disabled;
   }
 
 }

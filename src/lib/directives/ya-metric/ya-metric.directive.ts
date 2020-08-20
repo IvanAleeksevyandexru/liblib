@@ -1,6 +1,6 @@
 import { Directive, HostListener, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
+import { HelperService } from '../../services/helper/helper.service';
 
 @Directive({
   selector: '[libYaMetric]'
@@ -16,7 +16,7 @@ export class YaMetricDirective {
   @Input() public libYaMetricDelay: number;
 
   constructor(
-    private yaMetricService: YaMetricService, private router: Router) {
+    private yaMetricService: YaMetricService, private helperService: HelperService) {
   }
 
   @HostListener('click', ['$event'])
@@ -26,14 +26,8 @@ export class YaMetricDirective {
       const sendMetric = () => {
         this.yaMetricService.callReachGoalParamsAsMap(this.libYaMetric).then(() => {
           if (this.libYaMetricSendAndPass) {
-            const url = this.libYaMetricSendAndPass || '/';
-            const currentHost = window.location.protocol + '//' + window.location.host;
-            const urlInternal = url.startsWith('/') || url.startsWith(currentHost);
-            if (urlInternal) {
-              this.router.navigate([url]);
-            } else {
-              window.location.href = url;
-            }
+            const targetBlank = ((event.target as HTMLElement).getAttribute('target') || '').toLowerCase() === '_blank';
+            this.helperService.navigate(this.libYaMetricSendAndPass || '/', targetBlank);
           }
         });
       };

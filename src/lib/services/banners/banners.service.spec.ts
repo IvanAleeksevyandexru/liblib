@@ -23,8 +23,8 @@ describe('BannersService', () => {
       ]
     });
 
-    bannersService = TestBed.get(BannersService);
-    httpMock = TestBed.get(HttpTestingController);
+    bannersService = TestBed.inject(BannersService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {

@@ -1,4 +1,4 @@
 <a *ngIf="view === 'link' || view === 'custom'" class="back-button small-text blue" (click)="goBack($event)">{{'BACK' | libTranslate}}</a>
-<lib-button *ngIf="view === 'button'" size="md" color="white" (click)="goBack($event)">
+<lib-button *ngIf="view === 'button' || view === 'custom-button'" size="md" color="white" (click)="goBack($event)">
   <span class="back-button">{{'BACK' | libTranslate}}</span>
 </lib-button>

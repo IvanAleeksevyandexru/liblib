@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
+import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AccountEvent, AccountEvents, AccountEventType} from '../../models/account-event';
 import { FileLink } from '../../models/file-link';
 import { DadataResult } from '../../models/dadata';
 import { Address } from '../../models/address';
 import { LoadService } from '../load/load.service';
+import { ConstantsService } from '../constants.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HelperService {
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   public static isTouchDevice() {
@@ -51,6 +54,16 @@ export class HelperService {
     return !((window as any).ActiveXObject) && 'ActiveXObject' in window;
   }
 
+  public static createEvent(eventType: string, bubbles: boolean, cancelable: boolean) {
+    if (HelperService.isIE()) {
+      const evt = document.createEvent('Event');
+      evt.initEvent(eventType, bubbles, cancelable);
+      return evt;
+    } else {
+      return new Event(eventType, {bubbles, cancelable});
+    }
+  }
+
   public static isString(something: any) {
     return typeof something === 'string' || something instanceof String;
   }
@@ -64,6 +77,10 @@ export class HelperService {
 
   public static isArray(something: any) {
     return Array.isArray(something);
+  }
+
+  public static isFunction(something: any) {
+    return typeof something === 'function' || something instanceof Function;
   }
 
   public static isIterable(something: any, strict?: boolean) {
@@ -96,18 +113,12 @@ export class HelperService {
     return Object.keys(something);
   }
 
-  public static values(something: any) {
-    if (!HelperService.isObject(something)) {
-      return [];
-    }
-    return Object.values(something);
-  }
-
+  // простое глубокое копирование, подходит для json-образных структур где конструкторы/типы объектов не имеют значения
   public static deepCopy(obj: any) {
-    let newObj = obj;  // default case for most types
+    let newObj = obj;  // все простые типы копируются как есть
     if (obj && typeof obj === 'object') {
       if (obj instanceof Date) {
-        return new Date(obj.getTime());
+        return new Date(obj.getTime()); // даты клонируем, т.к. они mutable
       }
       newObj = Object.prototype.toString.call(obj) === '[object Array]' ? [] : {};
       for (const i of Object.keys(obj)) {
@@ -117,19 +128,53 @@ export class HelperService {
     return newObj;
   }
 
+  public static copyArrayToArray(source: Array<any>, dest: Array<any>): void {
+    if (!dest) {
+      return;
+    }
+    const sourceX = source || [];
+    const originalLength = dest.length;
+    sourceX.forEach((item: any, index: number) => {
+      dest[index] = source[index];
+    });
+    if (originalLength > sourceX.length) {
+      dest.splice(sourceX.length, originalLength - sourceX.length);
+    }
+  }
+
+  // преобразует cebab-case, snake-case и обычный текст разделенный пробелами в camelCase
   public static toCamelCase(str: string): string {
-    const splitted = str ? str.split(/[\s_]+/) : [];
+    const splitted = str ? str.split(/[\s_\-]+/) : [];
     return splitted.map((word, index) => {
       return index === 0 ? word.toLowerCase() : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
     }).join('');
   }
 
+  // конвертирует хтмл в его текстовое представление, убирает все теги
   public static htmlToText(html: string) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
     return doc.body ? doc.body.textContent : '';
   }
 
+  // определяет затрагивает ли позиция курсора в пользовательском тексте верстку
+  public static isTextPosition(html: string, positionFrom: number, positionTo) {
+    let isText = true;
+    for (let i = 0; i < positionTo; i++) {
+      if (html[i] === '<') {
+        isText = false;
+      }
+      if (i >= positionFrom && i < positionTo && !isText) {
+        return false;
+      }
+      if (html[i] === '>') {
+        isText = true;
+      }
+    }
+    return true;
+  }
+
+  // ставит курсор ввода на конец текста в текстовом элементе, при этом убирает выделение
   public static resetSelection(inputElement: HTMLInputElement, mask: string = null) {
     if (!inputElement || !(inputElement.type === 'text' || inputElement.type === 'password')) {
       return;
@@ -151,8 +196,74 @@ export class HelperService {
     inputElement.setSelectionRange(lastCharacterPosition, lastCharacterPosition);
   }
 
+  // выделяет все найденные подстроки в хтмл, предохраняя кейс оригинала: ("foUnd FoUnd", "found") -> <b>foUnd</b> <b>FoUnd</b>
+  public static highlightSubstring(html: string, highlighQuery: string, caseSensitive: boolean,
+                                   fromStartOnly: boolean, template = ConstantsService.DEFAULT_HIGHLIGHT_TEMPLATE) {
+    if (!highlighQuery) {
+      return html;
+    }
+    let line = html;
+    const pattern = new RegExp('(' + (fromStartOnly ? '^' : '') + highlighQuery + ')', caseSensitive ? 'g' : 'gi');
+    const matches = [];
+    let match;
+    do {
+      match = pattern.exec(line);
+      if (match) {
+        matches.push(match);
+      }
+    } while (match);
+    matches.sort((matchA, matchB) => {
+      return matchB.index - matchA.index;
+    });
+    for (const foundMatch of matches) {
+      if (HelperService.isTextPosition(line, foundMatch.index, foundMatch.index + highlighQuery.length)) {
+        line =
+          line.substring(0, foundMatch.index) + template.replace(/\$\{query\}/, foundMatch[0]) +
+          line.substring(foundMatch.index + highlighQuery.length);
+      }
+    }
+    return line;
+  }
+
+  // проверяет захватило ли выделение целиком всю строку от начала до конца
+  public static isAllHighlighted(highlighResult: string, html: string, template = ConstantsService.DEFAULT_HIGHLIGHT_TEMPLATE) {
+    return highlighResult === template.replace(/\$\{query\}/, html);
+  }
+
+  // процент видимости элемента в контейнере
+  public static getVisibilityExtent(el: HTMLElement, container: HTMLElement): number {
+    if (container.contains(el) && el.getBoundingClientRect && container.getBoundingClientRect) {
+      const clientRect = el.getBoundingClientRect();
+      const hostRect = container.getBoundingClientRect();
+      if (clientRect.right < hostRect.left || clientRect.left > hostRect.right ||
+          clientRect.top > hostRect.bottom || clientRect.bottom < hostRect.top) {
+        return 0;
+      }
+      const xStart = Math.max(hostRect.left, clientRect.left);
+      const xEnd = Math.min(hostRect.right, clientRect.right);
+      const yStart = Math.max(hostRect.top, clientRect.top);
+      const yEnd = Math.min(hostRect.bottom, clientRect.bottom);
+      return ((xEnd - xStart) * (yEnd - yStart)) / (clientRect.height * clientRect.width);
+    } else {
+      return 0;
+    }
+  }
+
+  // определяет отступы от края контейнера где по факту начинается контент
+  public static getContainerIndent(container: HTMLElement) {
+    const probeElement = document.createElement('div');
+    probeElement.style.cssText = 'position: absolute; left: unset; top: unset;';
+    container.insertBefore(probeElement, container.firstChild);
+    const clientRect = probeElement.getBoundingClientRect();
+    const hostRect = container.getBoundingClientRect();
+    const leftIndent = clientRect.left - hostRect.left;
+    const upperIndent = clientRect.top - hostRect.top;
+    container.removeChild(probeElement);
+    return {left: leftIndent, top: upperIndent};
+  }
+
+  // форсирует "подмешивание" переводов модуля к имеющемуся словарю языка
   public static mixinModuleTranslations(moduleTranslationService: TranslateService) {
-    // triggers translation service to load and append module translation to main
     const translate = moduleTranslationService;
     const mixin = () => {
       const existingTranslations = translate.translations[translate.currentLang];
@@ -164,6 +275,13 @@ export class HelperService {
     translate.onLangChange.subscribe((info) => mixin());
     translate.onDefaultLangChange.subscribe((info) => mixin());
     mixin();
+  }
+
+  public static markFormTouched(form: FormGroup) {
+    const controls = form.controls;
+    for (const controlName of Object.keys(controls)) {
+      controls[controlName].markAsTouched({onlySelf: false});
+    }
   }
 
   public static convertEpguDadataAddressToEsiaAddress(dadataAddress: DadataResult, type: 'PLV' | 'PRG' | 'OPS' | 'OLG'): Address {
@@ -335,6 +453,107 @@ export class HelperService {
       return '';
     }
     return str.endsWith('/') ? str.slice(0, -1) : str;
+  }
+
+  public static getQueryParams(absoluteUrl: string): {[key: string]: string} {
+    const result = {};
+    const url = new URL(absoluteUrl);
+    url.searchParams.forEach((value: string, name: string) => {
+      result[name] = value;
+    });
+    return result;
+  }
+
+  public static appendQueryParams(absoluteUrl: string, queryParams?: {[key: string]: string}): string {
+    let url = absoluteUrl;
+    if (queryParams) {
+      const params = Object.keys(queryParams).map((key: string) =>
+        key + '=' + encodeURIComponent(queryParams[key] || '')).join('&');
+      url = url.includes('?') ? url + '&' + params : url + '?' + params;
+    }
+    return url;
+  }
+
+  public static recoverProtocol(url: string) {
+    return url && url.startsWith('//') ? window.location.protocol + ':' + url : url;
+  }
+
+  public static relativeUrlToAbsolute(relativeUrl: string): string {
+    const link = document.createElement('a');
+    link.href = relativeUrl;
+    return link.protocol + '//' + link.host + link.pathname;
+  }
+
+  public static getCurrentHost(): string {
+    return window.location.protocol + '//' + window.location.host;
+  }
+
+  public static isRelativeUrl(url: string): boolean {
+    return url && (url.startsWith('/') || url.startsWith('./') || url.startsWith('../')) && !url.startsWith('//');
+  }
+
+  public static isInternalUrl(url: string): boolean {
+    return url && HelperService.recoverProtocol(url).startsWith(HelperService.getCurrentHost());
+  }
+
+  public static internalUrlToRelative(url: string): string {
+    return url && HelperService.isInternalUrl(url) ?
+      HelperService.recoverProtocol(url).substring(HelperService.getCurrentHost().length) || '/' : url;
+  }
+
+  public static isUrlEqualToCurrent(url: string | {url: string, queryParams?: {[key: string]: string}}) {
+    const urlIsCompound = HelperService.isObject(url);
+    const baseUrl = url && urlIsCompound ? (url as any).url : url;
+    const compoundQueryParams = urlIsCompound ? (url as any).queryParams : null;
+    const absUrl = HelperService.relativeUrlToAbsolute(baseUrl);
+    const basePartEqual = absUrl === HelperService.getCurrentHost() + window.location.pathname;
+    const urlQueryParams = Object.assign(HelperService.getQueryParams(absUrl), urlIsCompound ? compoundQueryParams : {});
+    const currentUrlQueryParams = HelperService.getQueryParams(window.location.href);
+    if (Object.keys(urlQueryParams).length === Object.keys(currentUrlQueryParams).length) {
+      return basePartEqual && Object.keys(urlQueryParams).every((key: string) => urlQueryParams[key] === currentUrlQueryParams[key]);
+    } else {
+      return false;
+    }
+  }
+
+  // queryParams игнорятся! сравнивается только контекст
+  public static isUrlStartsAsCurrent(url: string | {url: string, queryParams?: {[key: string]: string}}) {
+    const urlIsCompound = HelperService.isObject(url);
+    const baseUrl = url && urlIsCompound ? (url as any).url : url;
+    const givenUrl = HelperService.relativeUrlToAbsolute(baseUrl);
+    return window.location.href.startsWith(givenUrl);
+  }
+
+  // переходит по ссылке (относительной или абсолютной) структурированной как объект или как строка
+  // предпочитает router для всех внутренних переходов (относительных или абсолютных) и location.href для внешних
+  public navigate(url: string | {url: string, queryParams?: {[key: string]: string}}, newTab = false) {
+    if (!url) {
+      return;
+    }
+    const urlIsCompound = HelperService.isObject(url);
+    const baseUrl = url && urlIsCompound ? (url as any).url : url;
+    const compoundQueryParams = urlIsCompound ? (url as any).queryParams : null;
+    if (HelperService.isRelativeUrl(baseUrl)) {
+      if (newTab) {
+        const absoluteBaseUrl = HelperService.relativeUrlToAbsolute(baseUrl);
+        const absoluteUrl = HelperService.appendQueryParams(absoluteBaseUrl, compoundQueryParams);
+        window.open(absoluteUrl);
+      } else {
+        this.router.navigate([baseUrl], urlIsCompound ? {queryParams: compoundQueryParams} : {});
+      }
+    } else {
+      if (HelperService.isInternalUrl(baseUrl) && !newTab) {
+        const relativeUrl = HelperService.internalUrlToRelative(baseUrl);
+        this.router.navigateByUrl(relativeUrl, urlIsCompound ? {queryParams: compoundQueryParams} : {});
+      } else {
+        const absoluteUrl = HelperService.appendQueryParams(baseUrl, compoundQueryParams);
+        if (newTab) {
+          window.open(absoluteUrl);
+        } else {
+          window.location.href = absoluteUrl;
+        }
+      }
+    }
   }
 
 }

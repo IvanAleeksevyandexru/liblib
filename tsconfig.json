@@ -15,8 +15,11 @@
       "node_modules/@types"
     ],
     "paths": {
-      "@ifc/plugin": ["projects/epgu-lib/src/assets/vendor/ifccommon-lib.js"],
-      "@ifc/common": ["projects/epgu-lib/src/assets/vendor/ifcplugin-lib.js"]
+      "@angular/*": [
+        "../node_modules/@angular/*"
+      ],
+      "@ifc/plugin": ["src/assets/vendor/ifccommon-lib.js"],
+      "@ifc/common": ["src/assets/vendor/ifcplugin-lib.js"]
     },
     "lib": [
       "es2018",
@@ -27,7 +30,7 @@
     "enableIvy": false,
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
-    "fullTemplateTypeCheck": true,
+    "fullTemplateTypeCheck": false,
     "strictInjectionParameters": true,
     "enableResourceInlining": true
   },

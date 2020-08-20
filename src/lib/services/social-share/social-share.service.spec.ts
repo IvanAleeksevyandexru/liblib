@@ -6,7 +6,7 @@ describe('SocialShareService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: SocialShareService = TestBed.get(SocialShareService);
+    const service: SocialShareService = TestBed.inject(SocialShareService);
     expect(service).toBeTruthy();
   });
 });

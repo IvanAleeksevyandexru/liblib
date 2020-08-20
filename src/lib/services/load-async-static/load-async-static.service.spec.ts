@@ -10,12 +10,12 @@ describe('LoadAsyncStaticService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    service = TestBed.get(LoadAsyncStaticService);
+    service = TestBed.inject(LoadAsyncStaticService);
     expect(service).toBeTruthy();
   });
 
   it('get callback after script loaded', () => {
-    service = TestBed.get(LoadAsyncStaticService);
+    service = TestBed.inject(LoadAsyncStaticService);
     let isLoaded = false;
     service.loadScriptAsync(gosbarUrl, false, () => {
       isLoaded = true;

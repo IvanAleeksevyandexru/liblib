@@ -63,3 +63,26 @@ export interface VehicleCategory {
   // Кастомные поля
   text: string;
 }
+
+export interface ImportResponse {
+  result: {
+    total: number;
+    success: number;
+    failed: number;
+  };
+  report: InvalidVehicle[];
+}
+
+export interface InvalidVehicle {
+  gos_number: InvalidVehicleField;
+  auto_name: InvalidVehicleField;
+  sts: InvalidVehicleField;
+}
+
+export interface InvalidVehicleField {
+  value: string;
+  errors?: {
+    error_message: string;
+    error_code: number;
+  }[];
+}

@@ -1,5 +1,5 @@
 <div class="lookup" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside
-     (clickOutside)="handleBlur(true);">
+     (clickOutside)="cancelSearchAndClose()" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="lookup-field" #lookupField [ngClass]="{expanded: expanded, invalid: invalidDisplayed, 'with-expand-button': showExpandCollapse}">
     <lib-search-bar #searchBar
       contextClass="lookup-input"
@@ -11,6 +11,7 @@
       [clearable]="clearable"
       [validationShowOn]="validationShowOn"
       [showMagnifyingGlass]="showMagnifyingGlass"
+      [showSearching]="showSearching"
       [queryTimeout]="queryTimeout"
       [queryMinSymbolsCount]="queryMinSymbolsCount"
       [parallelSearch]="false"
@@ -24,27 +25,18 @@
       [suggestion]="showSuggestion ? suggestion : null"
       [(ngModel)]="query"
       (newSearch)="lookupItems($event)"
+      (forcedSearch)="forceSearch($event.query, $event.byEnter)"
       [searching]="searching"
       (focus)="handleFocus()"
-      (blur)="handleBlur(false)"
+      (blur)="handleBlur()"
       (click)="lookupItemsOrClose()"
       (input)="showTextField()"
       (keydown)="handleKeydownNavigation($event)"
       (cleared)="clearInput()"
       (suggestionSelected)="selectSuggestion($event)">
         <div class="lookup-item" *ngIf="item">
-          <ng-container *ngIf="formatter">
-            <div *ngIf="escapeHtml" class="item-container">{{item.formatted}}</div>
-            <div *ngIf="!escapeHtml" class="item-container" [innerHTML]="item.formatted | safeHtml"></div>
-          </ng-container>
-          <ng-container *ngIf="!formatter">
-            <div *ngIf="escapeHtml" class="item-container">
-              <span class="lookup-item-text">{{item.text}}</span>
-            </div>
-            <div *ngIf="!escapeHtml" class="item-container">
-              <span class="lookup-item-text" [innerHTML]="item.text | safeHtml"></span>
-            </div>
-          </ng-container>
+          <div *ngIf="escapeHtml" class="item-container">{{item.formatted}}</div>
+          <div *ngIf="!escapeHtml" class="item-container" [innerHTML]="item.formatted | safeHtml"></div>
         </div>
         <ng-container *ngIf="!item && htmlPlaceholder">
           <div [innerHTML]="htmlPlaceholder | safeHtml"></div>
@@ -53,49 +45,38 @@
     <div class="expand-collapse" *ngIf="showExpandCollapse" [ngClass]="{expanded: expanded}" (click)="lookupItemsOrClose(true)"></div>
   </div>
   <div class="lookup-list-wrapper">
-    <div class="lookup-list-container" #lookupList [ngClass]="{hidden: !expanded}" libStopScreenScroll>
-      <perfect-scrollbar #scrollComponent [config]="{suppressScrollX: true, wheelPropagation: false}" *ngIf="items.length">
-        <div class="lookup-list-area" #scrollableArea>
-          <div *ngFor="let item of items" class="lookup-item" [attr.itemId]="item.id"
-               (click)="selectItem(item)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
-               [ngClass]="{highlighted: item === highlighted}">
-            <ng-container *ngIf="listFormatter">
-              <div *ngIf="escapeHtml" class="item-container">{{item.text | dynamicFormatter: listFormatter: item}}</div>
-              <div *ngIf="!escapeHtml" class="item-container" [innerHTML]="item.text | dynamicFormatter: listFormatter: item | safeHtml"></div>
-            </ng-container>
-            <ng-container *ngIf="formatter">
-              <div *ngIf="escapeHtml" class="item-container">{{item.formatted}}</div>
-              <div *ngIf="!escapeHtml" class="item-container" [innerHTML]="item.formatted | safeHtml"></div>
-            </ng-container>
-            <ng-container *ngIf="!formatter && !listFormatter">
-              <ng-container *ngIf="highlightSubstring">
-                <div *ngIf="escapeHtml" class="item-container">
-                  <span class="lookup-item-text">{{item.pre}}</span>
-                  <span class="lookup-item-text highlight-part">{{item.highlighted}}</span>
-                  <span class="lookup-item-text">{{item.post}}</span>
+    <div class="lookup-context-positioning" #lookupList [ngClass]="{'context-positioned': contextMenuPosition}">
+      <div class="lookup-context-shift">{{query}}</div>
+      <div class="lookup-list-container" [class.hidden]="!expanded" libStopScreenScroll>
+        <perfect-scrollbar #scrollComponent [config]="{suppressScrollX: true, wheelPropagation: false}" *ngIf="items.length" (psYReachEnd)="loadNextPartial()">
+          <div class="lookup-list-area" #scrollableArea [class.incremental-loading]="partialsLoading">
+            <div *ngFor="let item of items" class="lookup-item" [attr.itemId]="item.id"
+                 (click)="selectItem(item)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
+                 [ngClass]="[item.groupLevel ? 'group-level-' + item.groupLevel : '']"
+                 [class.highlighted]="item === highlighted"
+                 [class.hidden]="item.hidden"
+                 [class.unselectable]="item.unselectable"
+                 [class.collapsable]="item.collapsable"
+                 [class.line-before]="item.lineBreak === LineBreak.BEFORE || item.lineBreak === LineBreak.BOTH"
+                 [class.line-after]="item.lineBreak === LineBreak.AFTER || item.lineBreak === LineBreak.BOTH"
+                 [class.separator]="item.lineBreak === LineBreak.SELF">
+              <div class="structure-container">
+                <div class="item-container" [ngClass]="{truncated: truncateSubstring && !item.highlightedAll}">
+                  <span *ngIf="highlightSubstring || truncateSubstring" class="lookup-item-text" [innerHTML]="item.highlightFormatted | safeHtml"></span>
+                  <span *ngIf="!highlightSubstring && !truncateSubstring && escapeHtml" class="lookup-item-text">{{item.listFormatted}}</span>
+                  <span *ngIf="!highlightSubstring && !truncateSubstring && !escapeHtml" class="lookup-item-text" [innerHTML]="item.listFormatted | safeHtml"></span>
+                  <div *ngIf="collapsableGroups && item.collapsable" class="expand-collapse" [class.collapsed]="item.collapsed" (click)="expandCollapse(item, $event)"></div>
                 </div>
-                <div *ngIf="!escapeHtml" class="item-container">
-                  <span class="lookup-item-text" [innerHTML]="item.pre | safeHtml"></span>
-                  <span class="lookup-item-text highlight-part" [innerHTML]="item.highlighted | safeHtml"></span>
-                  <span class="lookup-item-text" [innerHTML]="item.post | safeHtml"></span>
-                </div>
-              </ng-container>
-              <ng-container *ngIf="!highlightSubstring">
-                <div *ngIf="escapeHtml" class="item-container">
-                  <span class="lookup-item-text">{{item.text}}</span>
-                </div>
-                <div *ngIf="!escapeHtml" class="item-container">
-                  <span class="lookup-item-text" [innerHTML]="item.text | safeHtml"></span>
-                </div>
-              </ng-container>
-            </ng-container>
+              </div>
+            </div>
           </div>
-        </div>
-      </perfect-scrollbar>
-      <div *ngIf="showNotFound && !items.length" class="lookup-list-area">
-        <div class="lookup-item nothing-found" (click)="closeDropdown(); returnFocus(); ">
-          <div class="item-container">
-            <span class="lookup-item-text" [innerHTML]="'LOOKUP.NOTHING_FOUND' | libTranslate | subst:query"></span>
+        </perfect-scrollbar>
+        <div class="incremental-loading-icon" *ngIf="partialsLoading"><lib-loader size="small"></lib-loader></div>
+        <div *ngIf="showNotFound && !items.length" class="lookup-list-area">
+          <div class="lookup-item nothing-found" (click)="closeDropdown(); returnFocus(); ">
+            <div class="item-container">
+              <span class="lookup-item-text" [innerHTML]="'LOOKUP.NOTHING_FOUND' | libTranslate | subst:query"></span>
+            </div>
           </div>
         </div>
       </div>

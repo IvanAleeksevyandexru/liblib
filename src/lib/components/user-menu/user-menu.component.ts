@@ -1,24 +1,28 @@
-import { AfterViewInit, ChangeDetectorRef, Component, HostListener, Input, isDevMode, NgModuleRef, OnInit, ViewChild } from '@angular/core';
-import { MenuService } from '../../services/menu/menu.service';
-import { LoadService } from '../../services/load/load.service';
-import { ModalService } from '../../services/modal/modal.service';
+import { Component, NgModuleRef, HostListener, isDevMode, ViewChild, ChangeDetectorRef,
+  Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Category } from '../../models/category';
 import { MenuLink } from '../../models/menu-link';
-import { AuthService } from '../../services/auth/auth.service';
+import { Tabs, Tab, MAIN_TABS } from '../../models/tabs';
 import { User } from '../../models/user';
+import { CounterTarget } from '../../models/counter';
 import { UserMenuState } from '../../models/user-menu';
 import { Router } from '@angular/router';
 import { CountersService } from '../../services/counters/counters.service';
-import { CounterTarget } from '../../models/counter';
+import { MenuService } from '../../services/menu/menu.service';
+import { LoadService } from '../../services/load/load.service';
+import { ModalService } from '../../services/modal/modal.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { TabsService } from '../../services/tabs/tabs.service';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
+import { HelperService } from '../../services/helper/helper.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'lib-user-menu',
   templateUrl: './user-menu.component.html',
   styleUrls: ['./user-menu.component.scss']
 })
-export class UserMenuComponent implements OnInit, AfterViewInit {
+export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public categories: Category[] = [];
   public links: MenuLink[] = [];
   public menuOffset: number;
@@ -26,6 +30,8 @@ export class UserMenuComponent implements OnInit, AfterViewInit {
   public staticUrls: object;
   public settingsCounter;
   public avatarError = false;
+  public mainTabs: Tabs = null;
+  public tabsSubscription: Subscription;
 
   @Input()
   public state: UserMenuState;
@@ -57,7 +63,8 @@ export class UserMenuComponent implements OnInit, AfterViewInit {
     public  tabsService: TabsService,
     private router: Router,
     private changeDetector: ChangeDetectorRef,
-    private yaMetricService: YaMetricService
+    private yaMetricService: YaMetricService,
+    private helperService: HelperService
   ) {
   }
 
@@ -68,11 +75,19 @@ export class UserMenuComponent implements OnInit, AfterViewInit {
     this.countersService.counters$.subscribe(_ => {
       this.settingsCounter = this.countersService.getCounter(CounterTarget.SETTINGS);
     });
+    this.tabsSubscription = this.tabsService.register(MAIN_TABS).subscribe((tabs: Tabs) => {
+      this.mainTabs = tabs;
+      this.changeDetector.detectChanges();
+    });
   }
 
   public ngAfterViewInit() {
     const menu = this.state && this.state.isMobileView ? this.menuMobile : this.menuDesk;
     this.menuOffset = menu.nativeElement.offsetTop;
+  }
+
+  public ngOnDestroy() {
+    this.tabsSubscription.unsubscribe();
   }
 
   public logout() {
@@ -90,10 +105,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit {
     return this.staticUrls[menuItemName] || '';
   }
 
-  public onClose(tabName?: string) {
-    if (tabName) {
-      this.sendYaMetric(tabName);
-    }
+  public onClose() {
     this.state.active = false;
   }
 
@@ -107,16 +119,27 @@ export class UserMenuComponent implements OnInit, AfterViewInit {
 
   public menuItemClick(url: string, mnemonic: string) {
     this.sendYaMetric(mnemonic);
-    if (url && (url.startsWith('//') || url.startsWith('http'))) {
-      window.location.href = url;
-    } else {
-      this.router.navigate([url]);
-    }
+    this.helperService.navigate(url);
   }
 
   public menuStaticItemClick(itemName: string, mnemonic) {
     const staticUrl = this.getUrl(itemName);
     return this.menuItemClick(staticUrl, mnemonic);
+  }
+
+  public selectTab(tab: Tab) {
+    const proceed = () => {
+      if (tab.url) {
+        this.helperService.navigate(tab.url);
+      }
+      this.onClose();
+    };
+    if (tab.metric) {
+      const menuTabMetric = Object.assign({}, tab.metric, {name: 'new_lk_dashboard'});
+      this.yaMetricService.callReachGoalParamsAsMap(menuTabMetric).then(proceed);
+    } else {
+      proceed();
+    }
   }
 
   public sendYaMetric(linkName: string): void {

@@ -2,6 +2,8 @@ import { Component, ViewChild, OnInit, AfterViewInit, Input, Output, EventEmitte
   HostListener, ChangeDetectorRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { AnimationBuilder, AnimationPlayer, style, animate } from '@angular/animations';
 import { Banner, BannerGroup } from '../../models/main-page.model';
+import { DragDropManager } from '../../services/drag-drop/drag-drop.manager';
+import { DragDropBinding, DragDropType, DragDropDirection, DragDropOffsetType, DragState } from '../../models/drag-drop.model';
 import { HelperService } from '../../services/helper/helper.service';
 import { interval, Subscription } from 'rxjs';
 
@@ -15,7 +17,9 @@ export const DEFAULT_SLIDE_TIME = 300;
 })
 export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
-  constructor(private animationBuilder: AnimationBuilder, private changeDetection: ChangeDetectorRef) {
+  constructor(private animationBuilder: AnimationBuilder,
+              private dragDropManager: DragDropManager,
+              private changeDetection: ChangeDetectorRef) {
   }
 
   @Input() public banners: Array<BannerGroup> = [];
@@ -55,6 +59,7 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
   public bannerList: Array<Banner> = [];
   // лента баннеров имеет циклическую структуру, необходимо чтобы можно было "бесконечно" и гладко прокручивать ленту в любую сторону
   public bannersFeedList: Array<Banner> = [];
+  public dragDropBinding: DragDropBinding = null;
   private animationSubscription: Subscription = undefined;
 
   public closed = false;
@@ -65,7 +70,6 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
   @ViewChild('bannersFeed') private bannersFeed: ElementRef;
 
   private animationPlayer: AnimationPlayer = null;
-  private initialOffset: number = undefined;
   private startDragPosition: number = undefined;
 
   public ngOnInit() {
@@ -78,10 +82,29 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
       this.animationPlayer.destroy();
       this.animationPlayer = null;
     }
+    if (this.dragDropBinding) {
+      this.dragDropManager.detach(this.dragDropBinding);
+    }
   }
 
   public ngAfterViewInit() {
     this.rebuildBannersFeedAccordingToActiveBanner();
+    this.dragDropBinding = {
+      feedElement: this.bannersFeed,
+      type: DragDropType.TOUCH, direction: DragDropDirection.HORIZONTAL, offsetType: DragDropOffsetType.POSITION,
+      centeringNeeded: true, cleanUp: false, limit: false, centeringDuration: DEFAULT_SLIDE_TIME,
+      dragStart: () => {
+        this.stopAndFreezeOffsetAnimation();
+        this.cancelSlideShow();
+      }, dragRelease: (dragState: DragState) => {
+        this.offset = dragState.offset;
+        this.activeBannerTracable = this.bannersFeedList[dragState.active];
+      }, dragEnd: (dragState: DragState) => {
+        this.offset = dragState.offset;
+        this.rebuildBannersFeedAccordingToActiveBanner();
+      }
+    } as DragDropBinding;
+    this.dragDropManager.attach(this.dragDropBinding);
   }
 
   public ngOnChanges(changes: SimpleChanges) {
@@ -207,46 +230,6 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
       this.animationSubscription.unsubscribe();
       this.animationSubscription = undefined;
     }
-  }
-
-  public beginFeedDragging(e: TouchEvent | any) {
-    if (!this.listAndViewReady(true)) {
-      return;
-    }
-    this.stopAndFreezeOffsetAnimation();
-    this.cancelSlideShow();
-    this.initialOffset = this.offset;
-    this.startDragPosition = e.touches[0].clientX;
-  }
-
-  @HostListener('document:touchmove', ['$event'])
-  public dragFeed(e: TouchEvent | any) {
-    if (!this.listAndViewReady(true)) {
-      return;
-    }
-    if (!this.initialOffset || !this.startDragPosition) {
-      return;
-    }
-    this.offset = this.initialOffset + (e.touches[0].clientX - this.startDragPosition);
-  }
-
-  @HostListener('document:touchend')
-  public endFeedDragging() {
-    if (!this.listAndViewReady(true)) {
-      return;
-    }
-    if (!this.initialOffset || !this.startDragPosition) {
-      return;
-    }
-    const initialOffset = this.initialOffset;
-    this.startDragPosition = this.initialOffset = undefined;
-    if (this.offset === initialOffset) { return; }
-    const newActiveElementIndex = Math.round(-this.offset / this.stdBannerWidth());
-    const preciseOffset = -newActiveElementIndex * this.stdBannerWidth();
-    this.activeBannerTracable = this.bannersFeedList[newActiveElementIndex];
-    this.animateOffset(preciseOffset).then(() => {
-      this.rebuildBannersFeedAccordingToActiveBanner();
-    });
   }
 
   public scrollToBanner(banner: Banner) {

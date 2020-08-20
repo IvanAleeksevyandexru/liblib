@@ -19,8 +19,8 @@ describe('TranslateService', () => {
       ]
     });
 
-    translateService = TestBed.get(LibTranslateService);
-    httpMock = TestBed.get(HttpTestingController);
+    translateService = TestBed.inject(LibTranslateService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
 

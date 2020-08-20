@@ -52,10 +52,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public user: User;
   public feeds: FeedModel[];
   public selectedTypes: string | null;
-  public defaultTypesSelected: boolean;
+  public defaultTypesSelected = true;
   public addFeedsIsLoading = false;
   public feedsIsLoading = true;
-  public feedsNotExistsByFilter: boolean;
   public allFeedsLoaded = false;
   public hasMore: boolean;
   public removeInProgress: boolean;
@@ -126,14 +125,13 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getFeeds(lastFeedId: number | string = '', lastFeedDate: Date | string = '', query = '', pageSize = ''): void {
-    this.feedsNotExistsByFilter = false;
     this.allFeedsLoaded = false;
     this.searching.emit(true);
     this.feedsSubscription = this.feedsService.getFeeds({
       isArchive: this.getIsArchive(),
       isHide: this.isHide,
       pageSize: pageSize ? pageSize : this.count.toString(),
-      types: this.types,
+      types: this.selectedTypes || this.types,
       lastFeedId: lastFeedId.toString(),
       lastFeedDate,
       q: query
@@ -141,12 +139,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe((feeds: FeedsModel) => {
         this.searching.emit(false);
         this.feeds = this.feeds && this.feeds.length ? this.feeds.concat(feeds.items) : feeds.items;
-        this.selectedTypes = this.types;
-        this.defaultTypesSelected = true;
         this.feedsIsLoading = false;
         this.addFeedsIsLoading = false;
         this.hasMore = feeds.hasMore;
-        this.checkFeedsExists(lastFeedDate, query);
         this.emitEmptyFeedsEvent();
         this.loadedFeedsCount += this.feeds.length;
         this.yaMetricOnSearch(query);
@@ -159,14 +154,6 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   public emitEmptyFeedsEvent(): void {
     this.emptyFeeds.emit(this.feeds && this.feeds.length === 0);
-  }
-
-  private checkFeedsExists(lastFeedDate, query): void {
-    // Проверяем есть ли фиды у юзера, а также их наличие при разных фильтрах
-    if (lastFeedDate || query || this.types || this.search) {
-      // поиск по категории или по input
-      this.feedsNotExistsByFilter = true;
-    }
   }
 
   public trackById(index, item) {
@@ -364,7 +351,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public isUpdated(feed: FeedModel): boolean {
-    return (feed.feedType === 'ORDER' || feed.feedType === 'COMPLEX_ORDER' || feed.feedType === 'EQUEUE' || feed.feedType === 'CLAIM') && feed.unread;
+    return (feed.feedType === 'ORDER' || feed.feedType === 'COMPLEX_ORDER'
+      || feed.feedType === 'EQUEUE' || feed.feedType === 'CLAIM') && feed.unread;
   }
 
   public isEqueueEvent(feed: FeedModel): boolean {
@@ -470,7 +458,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
 
-    if (feed.feedType === 'ORGANIZATION') {
+    if (feed.feedType === 'ORGANIZATION' || feed.feedType === 'ACCOUNT_CHILD') {
       this.feedsService.markFeedAsRead(feed.id).subscribe();
     }
   }
@@ -521,15 +509,11 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public clickButton(): void {
-    if (this.getIsArchive()) {
-      this.router.navigate(['/orders/all']);
-    } else if (this.types === 'APPEAL') {
+    if (this.selectedTypes === 'APPEAL') {
       location.href = this.loadService.config.betaUrl + 'help/obratitsya_v_vedomstvo';
     } else if (this.getIsArchive()) {
       this.router.navigate(['/orders/all']);
-    } else if (this.types === 'APPEAL') {
-      location.href = this.loadService.config.betaUrl + 'help/obratitsya_v_vedomstvo';
-    } else if (this.types === 'CLAIM') {
+    } else if (this.selectedTypes === 'CLAIM') {
       location.href = this.loadService.config.betaUrl + 'pay?categories=fine';
     } else {
       location.href = this.loadService.config.betaUrl + 'category';

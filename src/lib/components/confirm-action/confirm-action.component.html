@@ -11,9 +11,12 @@
         <p *ngIf="description" class="text-plain" [innerHTML]="description | appTranslate: {value: value}"></p>
       </div>
     </div>
+    <div class="mb-32 mb-lg-40 mt-20" *ngIf="checkboxConfirm">
+      <lib-checkbox [checked]="isChecked" (change)="onConfirmChange()" labelText="Подтверждаю, что не подавал согласия на зачисление или оригинал аттестата в другие конкурсные группы"></lib-checkbox>
+    </div>
     <div class="controls">
       <div *ngFor="let button of buttons" class="button-wrapper">
-        <lib-button color="{{button.color}}" size="md" (click)="button.handler()">{{button.title | appTranslate}}</lib-button>
+        <lib-button [disabled]="button.disabled" color="{{button.color}}" size="md" (click)="button.handler()">{{button.title | appTranslate}}</lib-button>
       </div>
     </div>
   </div>

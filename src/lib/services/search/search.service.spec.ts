@@ -14,7 +14,7 @@ describe('SearchService', () => {
         { provide: LoadService, useClass: LoadServiceStub }
       ]
     });
-    service = TestBed.get(SearchService);
+    service = TestBed.inject(SearchService);
   }));
 
   it('should be created', () => {

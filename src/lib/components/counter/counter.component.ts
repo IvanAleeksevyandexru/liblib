@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CounterData } from '../../models/counter';
 
 @Component({
@@ -6,8 +6,29 @@ import { CounterData } from '../../models/counter';
   templateUrl: './counter.component.html',
   styleUrls: ['./counter.component.scss'],
 })
-export class CounterComponent implements OnInit {
-  @Input() public counter: CounterData;
+export class CounterComponent implements OnInit, OnChanges {
 
-  public ngOnInit() { }
+  @Input() public counter: CounterData | number;
+
+  public count: number;
+
+  public ngOnInit() {
+    this.updateNumber();
+  }
+
+  public ngOnChanges(changes: SimpleChanges) {
+    this.updateNumber();
+  }
+
+  public updateNumber() {
+    if (this.counter) {
+      if ((this.counter as CounterData).unread) {
+        this.count = (this.counter as CounterData).unread;
+      } else {
+        this.count = this.counter as number;
+      }
+    } else {
+      this.count = 0;
+    }
+  }
 }

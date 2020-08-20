@@ -3,7 +3,6 @@ import { Range, RelativeDate, RelativeRange, MonthYear } from '../../models/date
 import * as moment_ from 'moment';
 import { DurationInputArg1, DurationInputArg2, MomentInput } from 'moment';
 import { HelperService } from '../helper/helper.service';
-
 const moment = moment_;
 
 const STD_DATE_FORMAT = 'DD.MM.YYYY';

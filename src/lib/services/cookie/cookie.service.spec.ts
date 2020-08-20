@@ -14,7 +14,7 @@ describe('CookieService', () => {
         { provide: LoadService, useClass: LoadServiceStub }
       ]
     });
-    service = TestBed.get(CookieService);
+    service = TestBed.inject(CookieService);
   }));
 
   it('should be created', () => {

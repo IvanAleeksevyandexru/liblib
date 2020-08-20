@@ -7,12 +7,15 @@ import {
   Renderer2,
   HostListener,
   SimpleChanges,
-  OnChanges, NgModuleRef, ChangeDetectorRef, ViewChildren, QueryList
+  OnChanges,
+  OnDestroy, NgModuleRef, ChangeDetectorRef, ViewChildren, QueryList
 } from '@angular/core';
 import { SliderImage } from '../../models/slider-image';
 import { SliderImagesModalComponent } from '../slider-images-modal/slider-images-modal.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { LoadService } from '../../services/load/load.service';
+import { DragDropManager } from '../../services/drag-drop/drag-drop.manager';
+import { DragDropBinding, DragDropType, DragDropDirection, DragDropOffsetType, DragState } from '../../models/drag-drop.model';
 
 export const SLIDES_OFFSET = 32;
 export const SLIDES_WIDTH = 280;
@@ -24,7 +27,7 @@ export const SLIDES_HEIGHT_CARD = 226;
   templateUrl: './image-slider.component.html',
   styleUrls: ['./image-slider.component.scss'],
 })
-export class ImageSliderComponent implements AfterViewInit, OnChanges {
+export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() public slidesOffset = SLIDES_OFFSET;
   @Input() public slidesWidth = SLIDES_WIDTH;
   @Input() public slidesHeight = SLIDES_HEIGHT;
@@ -39,13 +42,11 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges {
   @Input() public showBullet = true;
 
   private perPage = this.limit;
-  public containerTransform: any;
+  public containerTransform: string;
   public currentIndex = 0;
   public offset: number;
   public slidesWidthToSet: number;
-
-  private initialOffset: number = undefined;
-  private startDragPosition: number = undefined;
+  public dragDropDescriptor: DragDropBinding = null;
 
   @ViewChild('sliderContainer', {static: true}) private sliderContainer: ElementRef;
   @ViewChild('sliderWrapper', {static: true}) private sliderWrapper: ElementRef;
@@ -69,6 +70,7 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges {
               private modalService: ModalService,
               private moduleRef: NgModuleRef<any>,
               private changeDetector: ChangeDetectorRef,
+              private dragDropManager: DragDropManager,
               private loadService: LoadService) {
   }
 
@@ -77,6 +79,26 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges {
     if (this.enterImages) {
       this.checkImagesSize();
     }
+    this.dragDropDescriptor = {
+      feedElement: this.sliderFeedContainer,
+      type: DragDropType.TOUCH, direction: DragDropDirection.HORIZONTAL, offsetType: DragDropOffsetType.TRANSFORM,
+      centeringNeeded: true, cleanUp: false, limit: true,
+      containerDimension: this.slidesWidthToSet, itemsDistance: SLIDES_OFFSET,
+      dragStart: () => {
+        this.renderer.addClass(this.sliderFeedContainer.nativeElement, 'no-transition');
+      },
+      dragProgress: (dragState: DragState) => {
+        this.currentIndex = dragState.active || 0;
+        this.offset = dragState.offset;
+      },
+      dragEnd: (dragState: DragState) => {
+        this.renderer.removeClass(this.sliderFeedContainer.nativeElement, 'no-transition');
+        this.currentIndex = dragState.active || 0;
+        this.offset = dragState.offset;
+        this.changeOffset();
+      }
+    } as DragDropBinding;
+    this.dragDropManager.attach(this.dragDropDescriptor);
   }
 
   public ngOnChanges(changes: SimpleChanges) {
@@ -90,6 +112,12 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges {
           }
         }
       }
+    }
+  }
+
+  public ngOnDestroy() {
+    if (this.dragDropDescriptor) {
+      this.dragDropManager.detach(this.dragDropDescriptor);
     }
   }
 
@@ -170,45 +198,6 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges {
       this.offset = -(this.slidesWidthToSet + this.slidesOffset) * this.currentIndex;
       this.changeOffset();
     }
-  }
-
-  public beginFeedDragging(e: TouchEvent | any) {
-    this.initialOffset = -this.currentIndex * (this.slidesWidthToSet + this.slidesOffset);
-    this.startDragPosition = e.touches[0].clientX;
-    this.renderer.addClass(this.sliderFeedContainer.nativeElement, 'no-transition');
-  }
-
-  @HostListener('document:touchmove', ['$event'])
-  public dragFeed(e: TouchEvent | any) {
-    if (!this.sliderFeedContainer.nativeElement) {
-      return;
-    }
-    if (this.initialOffset === undefined || this.startDragPosition === undefined) {
-      return;
-    }
-
-    const delta = e.touches[0].clientX - this.startDragPosition;
-    this.offset = this.initialOffset + delta;
-    this.changeOffset();
-    const index = -Math.round(this.offset / (this.slidesWidth + this.slidesOffset));
-    this.currentIndex = Math.max(Math.min(index, this.dots.length - 1), 0);
-  }
-
-  @HostListener('document:touchend')
-  public endFeedDragging() {
-    if (this.initialOffset === undefined || this.startDragPosition === undefined) {
-      return;
-    }
-    this.renderer.removeClass(this.sliderFeedContainer.nativeElement, 'no-transition');
-    const offset = this.initialOffset;
-    this.startDragPosition = this.initialOffset = undefined;
-    if (this.offset === offset) {
-      return;
-    }
-    const index = -Math.round(this.offset / (this.slidesWidthToSet + this.slidesOffset));
-    this.currentIndex = Math.max(Math.min(index, this.dots.length - 1), 0);
-    this.offset = -(this.currentIndex) * (this.slidesWidthToSet + this.slidesOffset);
-    this.changeOffset();
   }
 
   @HostListener('window:resize')

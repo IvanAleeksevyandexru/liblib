@@ -22,4 +22,30 @@
   margin-right: 24px;
 }
 
+.advice-container {
+  border: 1px solid #B6C6E8;
+  padding: 16px 16px 16px 56px;
+  border-radius: 4px;
+  position: relative;
+  &.warn:before {
+    display: block;
+    content: '';
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    left: 16px;
+  }
+  &.warn:before {
+    background: url(../../../assets/svg/warn-yellow.svg) no-repeat;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .advice-container {
+    padding: 24px 16px 24px 72px;
+    &.warn:before {
+      left: 24px;
+    }
+  }
+}
 

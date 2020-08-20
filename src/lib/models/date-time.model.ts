@@ -1,13 +1,15 @@
 import { ListItem } from './dropdown.model';
-import { Moment } from 'moment';
+import { ConstantsService } from '../services/constants.service';
 import * as moment_ from 'moment';
 
 const moment = moment_;
 const MIN_MONTH = 0;
 const MAX_MONTH = 11;
-export const MODEL_DATE_FORMAT = 'DD.MM.YYYY';
+export const MODEL_DATE_FORMAT = ConstantsService.CALENDAR_TEXT_MODEL_FORMAT;
 const DATE_PATTERN = /(\d{1, 2})\.(\d{1, 2})\.(\d{1, 4})/;
-
+const MONTHS_CODES =
+    ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY',
+    'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 // рейндж для дат от..до из строкового или датного представления, строковый формат всегда дд.мм.гггг
 export class Range<T extends Date | string> {
 
@@ -33,12 +35,14 @@ export class Range<T extends Date | string> {
       }
     }
     if (isText) {
-      const minStr = minimalValue instanceof Date ? moment(minimalValue).format(MODEL_DATE_FORMAT) : minimalValue;
-      const maxStr = maximumValue instanceof Date ? moment(maximumValue).format(MODEL_DATE_FORMAT) : maximumValue;
+      const minStr = minimalValue ? (minimalValue instanceof Date ? moment(minimalValue).format(MODEL_DATE_FORMAT) : minimalValue) : null;
+      const maxStr = maximumValue ? (maximumValue instanceof Date ? moment(maximumValue).format(MODEL_DATE_FORMAT) : maximumValue) : null;
       return new Range<string>(minStr, maxStr);
     } else {
-      const minDate = minimalValue instanceof Date ? minimalValue : moment(minimalValue, MODEL_DATE_FORMAT).toDate();
-      const maxDate = maximumValue instanceof Date ? maximumValue : moment(maximumValue, MODEL_DATE_FORMAT).toDate();
+      const minDate = minimalValue ?
+        (minimalValue instanceof Date ? minimalValue : moment(minimalValue, MODEL_DATE_FORMAT).toDate()) : null;
+      const maxDate = maximumValue ?
+        (maximumValue instanceof Date ? maximumValue : moment(maximumValue, MODEL_DATE_FORMAT).toDate()) : null;
       return new Range<Date>(minDate, maxDate);
     }
   }
@@ -104,11 +108,13 @@ export interface DatePropertiesPublisher {
 
 export class MonthYear {
   constructor(month: number, year: number) {
-    this.month = month;
     this.year = year;
+    this.month = month;
+    this.monthCode = MONTHS_CODES[month];
   }
   public month: number;
   public year: number;
+  public monthCode: string;
   public static equals(monthYear1, monthYear2) {
     if (monthYear1 && monthYear2) {
       return monthYear1.month === monthYear2.month && monthYear1.year === monthYear2.year;

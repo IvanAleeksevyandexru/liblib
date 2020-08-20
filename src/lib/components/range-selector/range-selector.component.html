@@ -1,14 +1,17 @@
-<div class="dropdown" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside (clickOutside)="closeDropdown();" (keydown)="handleKeydownNavigation($event)">
-  <div class="dropdown-field" #dropdownField [ngClass]="{disabled: disabled, invalid: invalidDisplayed, expanded: expanded}" (click)="toggle()">
-    <div class="dropdown-values nowrap" #dropdownValues>
-      <div *ngFor="let item of internalSelected" class="dropdown-value">
-        <span *ngIf="item.customRange" class="selected-value-text">{{this.formatRange(item.range)}}</span>
-        <span *ngIf="!item.customRange && translation === Translation.NONE" class="selected-value-text">{{item.text}}</span>
-        <span *ngIf="!item.customRange && translation === Translation.APP" class="selected-value-text">{{item.text | appTranslate}}</span>
-        <span *ngIf="!item.customRange && translation === Translation.LIB" class="selected-value-text">{{item.text | libTranslate}}</span>
+<div class="dropdown standard-skin" [ngClass]="contextClass ? [contextClass] : []" 
+  (click)="returnFocus($event)" libClickOutside (clickOutside)="closeDropdown();" (keydown)="handleKeydownNavigation($event)" 
+  [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+  <div class="dropdown-field" [ngClass]="{disabled: disabled, invalid: invalidDisplayed, expanded: expanded, clearable: clearable}" (click)="toggle()">
+    <div class="dropdown-item" *ngIf="currentItem">
+      <div class="dropdown-item-container">
+        <span *ngIf="currentItem.customRange" class="item-text">{{this.formatRange(currentItem.range)}}</span>
+        <span *ngIf="!currentItem.customRange && translation === Translation.NONE" class="item-text">{{currentItem.text}}</span>
+        <span *ngIf="!currentItem.customRange && translation === Translation.APP" class="item-text">{{currentItem.text | appTranslate}}</span>
+        <span *ngIf="!currentItem.customRange && translation === Translation.LIB" class="item-text">{{currentItem.text | libTranslate}}</span>
       </div>
-      <div *ngIf="!internalSelected || !internalSelected.length" class="dropdown-value empty-value"><span class="selected-value-text">&mdash;</span></div>
+      <div *ngIf="clearable" class="remove-item" (click)="clear($event)"></div>
     </div>
+    <div *ngIf="!currentItem" class="dropdown-item empty"><span class="item-text" [innerHTML]="placeholder | safeHtml"></span></div>
     <input #focusableInput 
       class="focusable-input" 
       type="text" 
@@ -19,16 +22,22 @@
     <a class="dropdown-arrow" [ngClass]="{expanded: expanded}" tabIndex="-1"></a>
   </div>
   <div class="dropdown-list-wrapper">
-    <div class="dropdown-list-container" #dropdownList [ngClass]="{hidden: !expanded}" [hidden]="!expanded">
+    <div class="dropdown-list-container" [ngClass]="{hidden: !expanded}" [hidden]="!expanded">
       <perfect-scrollbar #scrollComponent [config]="{suppressScrollX: true}" [hidden]="customRangeSelectingMode">
         <div class="dropdown-list-area" #scrollableArea>
           <div *ngFor="let item of internalItems" class="dropdown-item" [attr.itemId]="item.id"
-              (click)="selectItem(item)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
-              [ngClass]="{selected: isSelected(item, internalSelected), highlighted: isHighlighted(item)}">
+              (click)="selectRange(item)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
+              [class.selected]="item === currentItem"
+              [class.highlighted]="item === highlighted"
+              [class.hidden]="item.hidden"
+              [class.unselectable]="item.unselectable"
+              [class.line-before]="item.lineBreak === LineBreak.BEFORE || item.lineBreak === LineBreak.BOTH"
+              [class.line-after]="item.lineBreak === LineBreak.AFTER || item.lineBreak === LineBreak.BOTH"
+              [class.separator]="item.lineBreak === LineBreak.SELF">
             <div class="dropdown-item-container">
-              <span *ngIf="translation === Translation.NONE" class="dropdown-item-text">{{item.text}}</span>
-              <span *ngIf="translation === Translation.APP" class="dropdown-item-text">{{item.text | appTranslate}}</span>
-              <span *ngIf="translation === Translation.LIB" class="dropdown-item-text">{{item.text | libTranslate}}</span>
+              <span *ngIf="translation === Translation.NONE" class="item-text">{{item.text}}</span>
+              <span *ngIf="translation === Translation.APP" class="item-text">{{item.text | appTranslate}}</span>
+              <span *ngIf="translation === Translation.LIB" class="item-text">{{item.text | libTranslate}}</span>
             </div>
           </div>
         </div>

@@ -6,13 +6,16 @@ import { UserTypeParams } from '../../models/user-type-params';
 import { Document } from '../../models/document';
 import { Person, PersonData, User, Role } from '../../models/user';
 import { ConstantsService } from '../constants.service';
+import { HelperService } from '../helper/helper.service';
+
+const EMPTY_CONFIG_STUB = {data: {user: {}}, attrs: {}, config: {}};
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoadService {
 
-  private params: any = null;
+  private params: any = HelperService.deepCopy(EMPTY_CONFIG_STUB);
   public avatar: BehaviorSubject<Avatar>;
   public loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public initializationStarted = false;
@@ -76,7 +79,7 @@ export class LoadService {
     this.params = params;
   }
 
-  public load(context: string): Promise<any> {
+  public load(context: string, ignoreConfigMissing = false): Promise<any> {
     this.setInitializationStarted();
     if (isDevMode()) {
       return new Promise((resolve, reject) => {
@@ -88,14 +91,30 @@ export class LoadService {
             this.loaded.next(true);
             resolve();
           }, () => {
-            reject();
+            if (ignoreConfigMissing) {
+              this.prepareData(EMPTY_CONFIG_STUB);
+              this.loaded.next(true);
+              resolve();
+            } else {
+              reject();
+            }
           });
       });
     } else {
       return new Promise((resolve, reject) => {
-        this.prepareData((window as any).serverData);
-        this.loaded.next(true);
-        resolve();
+        try {
+          this.prepareData((window as any).serverData);
+          this.loaded.next(true);
+          resolve();
+        } catch (e) {
+          if (ignoreConfigMissing) {
+            this.prepareData(EMPTY_CONFIG_STUB);
+            this.loaded.next(true);
+            resolve();
+          } else {
+            reject();
+          }
+        }
       });
     }
 
@@ -107,6 +126,10 @@ export class LoadService {
 
   public isInitializationStarted(): boolean {
     return this.initializationStarted;
+  }
+
+  public setProperty(propertyName: string, propertyValue: any) {
+    this.params.config[propertyName] = propertyValue;
   }
 
   public get config(): any {
@@ -122,10 +145,11 @@ export class LoadService {
   }
 
   public getRoles(): Role[] {
-    return [...this.user.person.roles];
+    return this.user.person ? [...this.user.person.roles] : [];
   }
 
   public setAvatar(avatar: Avatar) {
     this.avatar.next(avatar);
   }
+
 }

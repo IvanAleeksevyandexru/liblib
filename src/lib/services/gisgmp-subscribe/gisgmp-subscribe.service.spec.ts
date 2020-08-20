@@ -6,7 +6,7 @@ describe('GisgmpSubscribeService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: GisgmpSubscribeService = TestBed.get(GisgmpSubscribeService);
+    const service: GisgmpSubscribeService = TestBed.inject(GisgmpSubscribeService);
     expect(service).toBeTruthy();
   });
 });

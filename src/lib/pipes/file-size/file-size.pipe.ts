@@ -6,6 +6,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FileSizePipe implements PipeTransform {
 
   public transform(value: number): string {
+    if (value < 1024) {
+      return value + ' Б';
+    }
     if (value <= 1024 * 100) {
       return Math.ceil(value / 1024) + ' Кб';
     }

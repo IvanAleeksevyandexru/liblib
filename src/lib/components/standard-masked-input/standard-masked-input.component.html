@@ -1,8 +1,19 @@
+<div class="above-info" *ngIf="validationPosition === MessagePosition.ABOVE || questionTipPosition === MessagePosition.ABOVE"
+    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+  <div class="information text-help" 
+    *ngIf="questionTip && questionTipPosition === MessagePosition.ABOVE && (!validationOverride || !(invalidDisplayed && validationMessages))" 
+    [innerHTML]="questionTip">
+  </div>
+  <div class="validation" *ngIf="validationPosition === MessagePosition.ABOVE && invalidDisplayed && validationMessages">
+    <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages"></lib-validation-message>
+  </div>
+</div>
 <div class="text-control masked-input" [ngClass]="contextClass ? [contextClass] : []"
-    [class.withClearButton]="clearable && !disabled"
-    [class.withTip]="questionTip && !(invalidDisplayed && validationMessages)"
-    [class.withValidationError]="invalidDisplayed && validationMessages"
-    (click)="returnFocus($event)">
+    [class.withClearButton]="clearable && !disabled && !empty && !readOnly"
+    [class.withTip]="questionTip && questionTipPosition === MessagePosition.INSIDE && (!validationOverride || !(invalidDisplayed && validationMessages))"
+    [class.withValidationError]="validationPosition === MessagePosition.INSIDE && invalidDisplayed && validationMessages"
+    (click)="returnFocus($event)"
+    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="input-container plain-input">
     <input #input type="text"
       [attr.name]="name"
@@ -25,22 +36,33 @@
       (compositionend)="compositionEnd($event.target.value)"/>
   </div>
   <div class="buttons-container">
-    <div *ngIf="clearable && !disabled && !empty" (click)="clearValue($event)" class="clear-button"></div>
-    <div class="validation-container" *ngIf="invalidDisplayed && validationMessages">
-      <lib-invalid-results-tip
+    <div *ngIf="clearable && !disabled && !empty && !readOnly" (click)="clearValue($event)" class="clear-button"></div>
+    <div class="validation-container" *ngIf="validationPosition === MessagePosition.INSIDE && invalidDisplayed && validationMessages">
+      <lib-invalid-results-tip  
         [invalid]="invalid"
-        [validation]="validation"
-        [validationMessages]="validationMessages"
+        [validation]="validation" 
+        [validationMessages]="validationMessages" 
         [tipDirection]="tipDirection"
         [containerOverlap]="containerOverlap"
       ></lib-invalid-results-tip>
     </div>
-    <div class="tip-container" *ngIf="questionTip && !(invalidDisplayed && validationMessages)">
-      <lib-question-help-tip
-        [tipDirection]="tipDirection"
+    <div class="tip-container" 
+        *ngIf="questionTip && questionTipPosition === MessagePosition.INSIDE && (!validationOverride || !(invalidDisplayed && validationMessages))">
+      <lib-question-help-tip 
+        [tipDirection]="tipDirection" 
         [questionTip]="questionTip"
         [containerOverlap]="containerOverlap"
       ></lib-question-help-tip>
     </div>
+  </div>
+</div>
+<div class="below-info" *ngIf="validationPosition === MessagePosition.BELOW || questionTipPosition === MessagePosition.BELOW"
+    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+  <div class="information text-help" 
+    *ngIf="questionTip && questionTipPosition === MessagePosition.BELOW && (!validationOverride || !(invalidDisplayed && validationMessages))" 
+    [innerHTML]="questionTip">
+  </div>
+  <div class="validation" *ngIf="validationPosition === MessagePosition.BELOW && invalidDisplayed && validationMessages">
+    <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages"></lib-validation-message>
   </div>
 </div>

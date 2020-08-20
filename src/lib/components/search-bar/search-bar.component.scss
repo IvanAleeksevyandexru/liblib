@@ -4,6 +4,7 @@
   background-color: white;
   position: relative;
   box-sizing: border-box;
+  vertical-align: bottom;
   .search-input, .static-content, .suggestion-container {
     width: 100%;
     height: 48px;
@@ -15,17 +16,7 @@
     padding-left: 16px;
     padding-right: 16px;
     color: #393F45;
-    box-sizing: border-box;
     outline: none;
-    &:disabled {
-      background-color: #E7ECF7;
-    }
-    &.invalid {
-      border: 1px solid #DF0024;
-    }
-    &::-ms-clear {
-      display: none; width : 0; height: 0;
-    }
     &.shadowed { // элемент перекрыт статичным контентом и не должен быть видим
       position: absolute;
       width: 0;
@@ -33,19 +24,31 @@
       opacity: 0;
       border: none;
       outline: none;
+      padding-top: 0;
+      padding-bottom: 0;
     }
   }
-  .static-content-wrapper {
-    position: relative;
-    width: 100%;
-    .static-content-container {
-      position: absolute;
-      overflow: hidden;
-      max-height: 46px;
-      width: 100%;
-      white-space: nowrap;
-      text-overflow: ellipsis; 
+  .search-input, .static-content {
+    &:disabled {
+      background-color: #E7ECF7;
+      color: #A8ACB1;
     }
+    &.disabled {
+      background-color: #E7ECF7;
+      color: #A8ACB1;
+    }
+    &.invalid {
+      border: 1px solid #DF0024;
+    }
+    &::-ms-clear {
+      display: none; width : 0; height: 0;
+    }
+  }
+  .static-content-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; 
   }
   .suggestion-container {
     position: absolute;
@@ -57,6 +60,7 @@
     display: flex;
     flex-flow: row;
     flex-wrap: nowrap;
+    padding: 0;
     .suggestion-spacer {
       visibility: hidden;
       height: 0;
@@ -93,12 +97,18 @@
     height: 48px;
     top: 0px;
     right: 0;
-    background: url(../../../assets/svg/lookup-search.svg) 12px 12px no-repeat;
+    background: url(../../../assets/svg/lookup-search-bar.svg) 12px 12px no-repeat;
     outline: none;
     cursor: pointer;
     border-left: solid 1px #A8ACB1;
     &:hover {
       background: url(../../../assets/svg/lookup-search-hover.svg) 12px 12px no-repeat;
+    }
+    &.disabled {
+      background: url(../../../assets/svg/lookup-search-disabled.svg) 12px 12px no-repeat;
+      &:hover {
+        background: url(../../../assets/svg/lookup-search-disabled.svg) 12px 12px no-repeat;
+      }
     }
   }
   .search-clear {
@@ -122,9 +132,19 @@
     top: 0;
     right: 0;
     .search-in-progress-cell {
-      position: relative;
-      top: -8px;
-      right: -4px;
+      position: absolute;
+      background: url(../../../assets/svg/search-loader.svg) 0 0 no-repeat;
+      width: 24px;
+      height: 24px;
+      top: 12px;
+      left: 11px;
+      animation: rotate 1.5s linear infinite; 
     }
   }
 }
+@keyframes rotate {
+  to { 
+    transform: rotate(360deg);
+  }
+}
+

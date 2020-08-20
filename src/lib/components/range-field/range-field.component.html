@@ -9,6 +9,8 @@
         [clearable]="clearable"
         [placeholder]="placeholderFrom"
         [asSimpleInput]="showPanel"
+        align="adjust"
+        [rangeTypeMonthPanel]="true"
         [isRange]="false"
         [textEditable]="textEditable && !blockMobileKeyboard"
         [textModelValue]="textModelValue"
@@ -37,6 +39,8 @@
         [clearable]="clearable"
         [placeholder]="placeholderFrom"
         [asSimpleInput]="showPanel"
+        align="adjust"
+        [rangeTypeMonthPanel]="true"
         [isRange]="false"
         [textEditable]="textEditable && !blockMobileKeyboard"
         [textModelValue]="textModelValue"
@@ -55,7 +59,7 @@
     </div>
   </div>
   <div class="range-dropdown-wrapper">
-    <div class="range-dropdown-container" *ngIf="expanded" (click)="returnFocus($event)" >
+    <div class="range-dropdown-container" *ngIf="expanded" (click)="returnFocus($event)" libStopClickPropagation>
       <div class="dropdown-header">
         <span class="dropdown-title">{{'RANGE_FIELD.TITLE' | libTranslate}}</span>
       </div>
@@ -64,6 +68,7 @@
           <lib-date-picker #startDate
             contextClass="range-field-from"
             [asSimplePanel]="true"
+            [rangeTypeMonthPanel]="true"
             [disabled]="disabled"
             [isRange]="true"
             [textModelValue]="textModelValue"
@@ -83,6 +88,7 @@
           <lib-date-picker #endDate
             contextClass="range-field-to"
             [asSimplePanel]="true"
+            [rangeTypeMonthPanel]="true"
             [disabled]="disabled"
             [isRange]="true"
             [textModelValue]="textModelValue"

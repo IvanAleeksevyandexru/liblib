@@ -14,6 +14,8 @@ export class ConfirmActionComponent implements OnInit {
   public subtitle: string;
   public description: string;
   public value: any;
+  public checkboxConfirm: boolean;
+  public isChecked: boolean;
   public image: string;
   public widthAuto = false;
   public maxWidth: number;
@@ -21,6 +23,7 @@ export class ConfirmActionComponent implements OnInit {
     title: string,
     color: string,
     loader?: boolean,
+    disabled?: boolean,
     handler: (d?) => {}
   }[];
 
@@ -34,7 +37,16 @@ export class ConfirmActionComponent implements OnInit {
 
   constructor() { }
 
-  public ngOnInit() { }
+  public ngOnInit() {
+  }
+
+  public onConfirmChange(): void {
+    this.buttons.forEach((button) => {
+      if (button.hasOwnProperty('disabled')) {
+        button.disabled = !(this.isChecked = !this.isChecked);
+      }
+    });
+  }
 
   public onCancel(): void {
     this.destroy();

@@ -1,0 +1,141 @@
+.multi-lookup {
+  width: 100%;
+  display: inline-block;
+  position: static;
+  .lookup-field {
+    width: 100%;
+    border: 1px solid #A7A7AB;
+    border-radius: 4px;
+    background-color: white;
+    box-sizing: border-box;
+    &.disabled {
+      background-color: #E7ECF7;
+    }
+    &.invalid {
+      border-color: #DF0024;
+    }
+    .search-field {
+      display: inline-block;
+      margin: 0;
+      flex-grow: 1;
+      flex-shrink: 0;
+      min-width: 200px;
+      ::ng-deep {
+        .lookup .lookup-field {
+          height: 46px;
+        }
+        .search-field {
+          .search-input, .static-content {
+            height: 46px;
+            border: none;
+          }
+          .search-clear {
+            background-position: 7px 15px;
+          }
+          &.lookup-input {
+            border-radius: 4px;
+          }
+          .lookup .lookup-list-container {
+            max-width: 300px;
+          }
+        }
+      }
+    }
+  }
+}
+@import '../dropdown/dropdown-multiselect.scss';
+.dropdown .dropdown-field.multi {
+  display: flex;
+  width: 100%;
+  white-space: nowrap;
+  &.clearable {
+    padding: 0;
+    .dropdown-value {
+      height: 46px;
+      padding: 11px 30px 11px 9px;
+      border: none;
+      border-radius: none;
+      background-color: #EEE;
+      .remove-item {
+        top: 14px;
+      }
+    }
+    .dropdown-values {
+      padding: 0;
+      &.wrap {
+        padding: 0;
+        .dropdown-values-container {
+          .search-field {
+            ::ng-deep .search-field.lookup-input .search-input {
+              padding-left: 16px;
+            }
+          }
+          .dropdown-value:first-child {
+            padding-left: 9px;
+          }
+        }
+      }
+      &.panel {
+        cursor: pointer;
+        .dropdown-value {
+          background-color: unset;
+        }
+      }
+    }
+  }
+  .dropdown-values {
+    padding-top: 11px;
+    padding-bottom: 11px;
+    .dropdown-value:first-child {
+      padding-left: 16px;
+    }
+    &.overflow {
+    }
+    &.shrink {
+      max-width: calc(100% - 236px);
+    }
+    &.wrap {
+      overflow: unset;
+      width: 100%;
+      padding: 0 16px;
+      .dropdown-values-container {
+        align-items: baseline;
+      }
+      .search-field {
+        margin-top: 5px;
+        ::ng-deep .search-field.lookup-input .search-input {
+          padding-left: 0;
+        }
+      }
+      .dropdown-value:nth-last-child(2) {
+        &:after {
+          content: none;
+        }
+      }
+      .dropdown-value {
+        padding-top: 11px;
+        height: unset;
+        &:first-child {
+          padding-left: 0;
+        }
+      }
+    }
+    &.panel {
+      padding: 6px 0;
+    }
+    &.text {
+      padding: 6px 0;
+    }
+    &.custom {
+      padding: 6px 0;
+    }
+  }
+  .dropdown-values-summary {
+    padding: 5px 0 5px 16px;
+    cursor: pointer;
+  }
+  .dropdown-values-custom {
+    padding: 5px 0 5px 16px;
+    cursor: default;
+  }
+}

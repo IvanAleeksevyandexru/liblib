@@ -6,7 +6,7 @@ describe('FocusManager', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: FocusManager = TestBed.get(FocusManager);
+    const service: FocusManager = TestBed.inject(FocusManager);
     expect(service).toBeTruthy();
   });
 });

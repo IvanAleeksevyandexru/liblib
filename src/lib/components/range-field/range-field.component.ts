@@ -45,7 +45,7 @@ export class RangeFieldComponent implements AfterViewInit, OnChanges, OnDestroy,
   @Input() public invalidTo = false;
   @Input() public validationFrom: boolean | string | ValidationErrors = null;
   @Input() public validationTo: boolean | string | ValidationErrors = null; // пара независимых валидаций
-  @Input() public validationShowOn: ValidationShowOn | string = ValidationShowOn.TOUCHED;
+  @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public validationMessages?: string | PipedMessage | ValidationMessages;
   @Input() public containerOverlap = false;
   // question tip для отдельных полей не предусмотрен, подразумевается что он если и будет, то не на полях по отдельности

@@ -1,5 +1,5 @@
-<div *ngIf="showTextBefore && textBefore" [innerHtml]="textBefore"></div>
-<div class="plain-input" [ngClass]="contextClass ? [contextClass] : []">
+<div class="plain-input" [ngClass]="contextClass ? [contextClass] : []" 
+    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <input #input type="text"
     [attr.name]="name" 
     [attr.id]="id ? id : null" 
@@ -22,4 +22,3 @@
     (compositionend)="compositionEnd($event.target.value)"/>
   <div *ngIf="clearable && !disabled && !empty" (click)="clearValue($event)" class="clear-button"></div>
 </div>
-<div *ngIf="showTextAfter && textAfter" [innerHtml]="textAfter"></div>

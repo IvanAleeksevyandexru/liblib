@@ -1,19 +1,35 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild,
-  forwardRef, Input, NgModuleRef, OnInit, Output, EventEmitter
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  NgModuleRef,
+  OnInit,
+  Output,
+  ViewChild
 } from '@angular/core';
 import { DadataService } from '../../services/dadata/dadata.service';
 import { DadataResult, NormalizedData } from '../../models/dadata';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { ConstantsService } from '../../services/constants.service';
 import {
-  AbstractControl, ControlValueAccessor, FormGroup, Validator,
-  NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
+  AbstractControl,
+  ControlValueAccessor,
+  FormGroup,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator
+} from '@angular/forms';
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { DadataModalComponent } from '../dadata-modal/dadata-modal.component';
 import { CommonController } from '../../common/common-controller';
 import { ValidationService } from '../../validators/validation.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'lib-dadata-widget',
@@ -34,7 +50,7 @@ import { ValidationService } from '../../validators/validation.service';
     DadataService
   ]
 })
-export class DadataWidgetComponent extends CommonController implements OnInit, ControlValueAccessor, Validator {
+export class DadataWidgetComponent extends CommonController implements AfterViewInit, OnInit, ControlValueAccessor, Validator {
 
   @Input() public label = '';
   @Input() public specifyTitle = ''; // код трансляции для ссылки открытия формы
@@ -44,6 +60,10 @@ export class DadataWidgetComponent extends CommonController implements OnInit, C
   @Input() public normalizeOnInit = true;
   @Input() public externalApiUrl?: string;
   @Input() public clearable = true;
+  // массив скрытых уровней, которые не будут заполняться ни в скрытом, ни в развернутом виде
+  // каждое значение - строка - значения из константы DADATA_LEVEL_MAP
+  @Input() public hideLevels?: Array<string> = [];
+  @Input() public debounceTime = 100;
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
@@ -57,28 +77,36 @@ export class DadataWidgetComponent extends CommonController implements OnInit, C
   // Поля, которые исключаются из формы для построения полного адреса
   public excluded = this.constants.DADATA_EXCLUDED_FIELDS;
   public addrStrExcluded = this.constants.DADATA_ADDRSTR_EXCLUDED_FIELDS;
+  // проверка на множественные вызовы
+  public normalizeInProcess = false;
+  private query$ = new BehaviorSubject('');
 
   // Валидация ответа от сервера
   private validateTypes = [{
     errCode: 'DADATA.NEED_REGION',
     level: 1,
-    otherCase: false
+    otherCase: false,
+    checkLvl: 'region'
   }, {
     errCode: 'DADATA.WRONG_TOWN',
     level: 2,
-    otherCase: false
+    otherCase: false,
+    checkLvl: 'town'
   }, {
     errCode: 'DADATA.WRONG_TOWN_OTHER_CASE',
     level: 2,
-    otherCase: true
+    otherCase: true,
+    checkLvl: 'town'
   }, {
     errCode: 'DADATA.WRONG_STREET',
     level: 3,
-    otherCase: false
+    otherCase: false,
+    checkLvl: 'street'
   }, {
     errCode: 'DADATA.WRONG_STREET_OTHER_CASE',
     level: 3,
-    otherCase: true
+    otherCase: true,
+    checkLvl: 'street'
   }, {
     errCode: 'DADATA.WRONG_ADDRESS',
     level: 6,
@@ -122,10 +150,13 @@ export class DadataWidgetComponent extends CommonController implements OnInit, C
   }
 
   public ngOnInit() {
-    this.init();
     if (this.externalApiUrl) {
       this.dadataService.externalApiUrl = this.externalApiUrl;
     }
+    if (this.hideLevels) {
+      this.dadataService.hiddenLevels = this.hideLevels;
+    }
+    this.init();
   }
 
   private init(): void {
@@ -138,7 +169,7 @@ export class DadataWidgetComponent extends CommonController implements OnInit, C
 
     // не убирать debounceTime! агрегирует множественные изменения полей формы в единое событие!
     this.form.valueChanges.pipe(
-        debounceTime(100),
+        debounceTime(this.debounceTime),
         takeUntil(this.destroyed$)
       ).subscribe((res) => {
       const changes = this.form.getRawValue();
@@ -147,11 +178,11 @@ export class DadataWidgetComponent extends CommonController implements OnInit, C
       this.addressStr = '';
       this.controlNames.forEach((control, keyIndex) => {
         const isIndex = control === 'index';
-        if (changes[control]) {
+        if (changes[control] && !this.dadataService.isElementHidden(control)) {
           if (!isIndex) {
+            const ctrlField = this.dadataService.prefixes[control];
             const tmpStr = (keyIndex > 0 ? ', ' : '') + (changes[control] ?
-              (this.dadataService.prefixes[control].shortType || this.dadataService.prefixes[control].abbr) + ' ' + changes[control] :
-              '');
+              (ctrlField.shortType || ctrlField.abbr) + ' ' + changes[control] : '');
             fullAddress += tmpStr;
             if (!this.addrStrExcluded.includes(control)) {
               this.addressStr += tmpStr;
@@ -185,10 +216,12 @@ export class DadataWidgetComponent extends CommonController implements OnInit, C
           hasErrors: this.errorCodes.length
         };
         this.commit(commitValue);
+        this.normalizeInProcess = false;
       } else {
         this.errorCodes = [];
         this.widgetItemsVisibility = {};
         this.commit(null);
+        this.normalizeInProcess = false;
       }
       if (!this.isOpenedFields.getValue() && (dadataQc === '1' || dadataQc === '2') && this.normalizedData.fiasLevel !== '-1'
         && !this.externalApiUrl) {
@@ -242,16 +275,17 @@ export class DadataWidgetComponent extends CommonController implements OnInit, C
     }
   }
 
-  public normalizeFullAddress(fullAddress: string, suppressValidation = false): Promise<any> {
-    if (fullAddress) {
+  public normalizeFullAddress(fullAddress: string, suppressValidation = false, onInitCall = false): Promise<any> {
+    if (fullAddress && !this.normalizeInProcess) {
       this.form.markAsTouched();
       // используем промис, т.к. в противном случае без сабскрайбера не вызывается сервис
+      this.normalizeInProcess = true;
       return this.dadataService.normalize(fullAddress).toPromise().then(res => {
         if (res) {
           this.normalizedData = res;
           this.dadataService.resetForm();
           if (res.address && res.address.elements && res.address.elements.length) {
-            this.dadataService.parseAddress(res);
+            this.dadataService.parseAddress(res, onInitCall);
             // onChange triggering guaranteed
             this.validationSkip = suppressValidation;
             this.cd.detectChanges();
@@ -272,12 +306,10 @@ export class DadataWidgetComponent extends CommonController implements OnInit, C
 
   public updateCanOpenFields(value: string): void {
     this.closeDadataFields();
-      // this.form.reset();
-    // this.canOpenFields.next(!!value);
-    // if (!this.canOpenFields.getValue()) {
-    //   this.closeDadataFields();
-    //   this.form.reset();
-    // }
+    if (!value) {
+      this.form.reset();
+    }
+    this.query$.next(value);
   }
 
   private revalidate() {
@@ -289,7 +321,8 @@ export class DadataWidgetComponent extends CommonController implements OnInit, C
     const errorMessageCodes = [];
     // ошибка по уровню нормализации
     const errorByQc = this.validateTypes.find(type => {
-      return type.level === +this.dadataService.qc && type.otherCase === !!this.dadataService.unparsed;
+      return type.checkLvl && this.dadataService.isElementHidden(type.checkLvl) ? false :
+        type.level === +this.dadataService.qc && type.otherCase === !!this.dadataService.unparsed;
     });
     if (errorByQc && !this.isOpenedFields.getValue()) {
       errorMessageCodes.push(errorByQc.errCode);
@@ -328,7 +361,7 @@ export class DadataWidgetComponent extends CommonController implements OnInit, C
     if (this.query) {
       this.canOpenFields.next(true);
       if (this.normalizeOnInit) {
-        this.normalizeFullAddress(this.query, true);
+        this.normalizeFullAddress(this.query, true, this.normalizeOnInit);
       }
     }
   }
@@ -353,5 +386,17 @@ export class DadataWidgetComponent extends CommonController implements OnInit, C
 
   public handleBlur() {
     this.blur.emit();
+  }
+
+  public ngAfterViewInit() {
+    this.query$.pipe(
+      debounceTime(700),
+      distinctUntilChanged(),
+      takeUntil(this.destroyed$)
+    ).subscribe(value => {
+      if (value) {
+        this.normalizeFullAddress(value, false);
+      }
+    });
   }
 }

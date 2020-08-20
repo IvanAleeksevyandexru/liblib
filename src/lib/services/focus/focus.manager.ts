@@ -17,8 +17,13 @@ export interface Focusable {
   handleBlur(): void;
 }
 
+// таймаут от срабатывания блюра до неприобретения его никаким элементом чтоб считаться утратой фокуса "в никуда"
+// используется для того чтобы оповестить в этом случае покинутый элемент
 export const BLUR_TO_FOCUS_COMMON_DELAY = 200;
-export const FOCUS_TO_CLICK_COMMON_DELAY = 200;
+// время памяти о последней фокусировке чтобы считать ее "только что сделанной"
+// используется в процессе обработчиков, идущих позже (click) которые отстают от фокусных событий на время обработки, используется для
+// кейсов когда focus и click на элементе срабатывают одновременно при клике и обработка (click) в этом случае избыточна
+export const FOCUS_MEMORY_COMMON_DELAY = 500;
 
 @Injectable({
   providedIn: 'root'
@@ -40,15 +45,15 @@ export class FocusManager {
     if (isFocusEvent) {
       if (this.documentSuspended) {
         this.documentSuspended = false;
+        setTimeout(() => {
+          if (!this.lastKnownFocusedComponent && document.activeElement !== document.body) {
+            this.publishFocusState(targetedComponent);
+          }
+        });
         return;
       }
       this.awaitingFocusReceiving = false;
-      if (this.lastKnownFocusedComponent !== targetedComponent) {
-        const prevFocused = this.lastKnownFocusedComponent;
-        this.lastKnownFocusedComponent = targetedComponent;
-        this.focusedComponent.next(new FocusState(targetedComponent, prevFocused));
-        this.focusingTimestamp = new Date();
-      }
+      this.publishFocusState(targetedComponent);
     } else {
       this.awaitingFocusReceiving = true;
       setTimeout(() => {
@@ -59,17 +64,22 @@ export class FocusManager {
     }
   }
 
-  public notifyFocusMayLost(targetedComponent: any) {
-    if (this.lastKnownFocusedComponent === targetedComponent) {
-      this.publishFocusLost();
-    }
-  }
-
   public publishFocusLost() {
     this.awaitingFocusReceiving = false;
-    this.focusedComponent.next(new FocusState(null, this.lastKnownFocusedComponent));
-    this.lastKnownFocusedComponent = null;
+    if (this.lastKnownFocusedComponent !== null) {
+      this.focusedComponent.next(new FocusState(null, this.lastKnownFocusedComponent));
+      this.lastKnownFocusedComponent = null;
+    }
     this.documentSuspended = !document.hasFocus();
+  }
+
+  public publishFocusState(targetedComponent: any) {
+    if (this.lastKnownFocusedComponent !== targetedComponent) {
+      const prevFocused = this.lastKnownFocusedComponent;
+      this.lastKnownFocusedComponent = targetedComponent;
+      this.focusingTimestamp = new Date();
+      this.focusedComponent.next(new FocusState(targetedComponent, prevFocused));
+    }
   }
 
   public subscribe(observer: Observer<any>) {
@@ -97,8 +107,8 @@ export class FocusManager {
 
   public isJustFocused(components: any | Array<any>) {
     const check = (component) => {
-      return component === this.lastKnownFocusedComponent
-        && (new Date().getTime() - this.focusingTimestamp.getTime() < FOCUS_TO_CLICK_COMMON_DELAY);
+      const timePassed = new Date().getTime() - this.focusingTimestamp.getTime();
+      return component === this.lastKnownFocusedComponent && timePassed < FOCUS_MEMORY_COMMON_DELAY;
     };
     if (Array.isArray(components)) {
       return components.some(check);

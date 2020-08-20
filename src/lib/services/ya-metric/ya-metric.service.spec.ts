@@ -15,7 +15,7 @@ describe('YaMetricService', () => {
       ]
     });
 
-    yaMetricService = TestBed.get(YaMetricService);
+    yaMetricService = TestBed.inject(YaMetricService);
   });
 
   it('should be created', () => {

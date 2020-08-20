@@ -8,11 +8,15 @@ import { ValidationDetailed, Validated, ValidationShowStrategy, ValidationShowCo
 })
 export class ValidationHelper {
 
-  public static isValidationOk(value: boolean | string | ValidationErrors): boolean {
-    return [null, '' as any, true as any, undefined].includes(value) || (HelperService.isObject(value) && !Object.keys(value));
+  public static isValidationOk(value: boolean | string | Array<string> | ValidationErrors | { [key: string]: any }): boolean {
+    let ok = false;
+    ok = ok || [null, '' as any, true as any, undefined].includes(value);
+    ok = ok || HelperService.isObject(value) && !Object.keys(value).length;
+    ok = ok || HelperService.isArray(value) && !(value as any).length;
+    return ok;
   }
 
-  public static isValidationBroken(value: boolean | string | ValidationErrors): boolean {
+  public static isValidationBroken(value: boolean | string | Array<string> | ValidationErrors | { [key: string]: any }): boolean {
     return !ValidationHelper.isValidationOk(value);
   }
 
@@ -39,11 +43,29 @@ export class ValidationHelper {
     } as ValidationShowContext;
   }
 
+  // метод объединяет "знание" о неправильности значения с параметром когда ошибку показывать и возвращает должно ли быть invalidDisplayed
   public static checkValidation(component: Validated | ValidationDetailed, override?: { [key: string]: boolean }) {
     const isFieldInvalid = ValidationHelper.isComponentValidationBroken(component);
-    const validationShowStrategyName = component.validationShowOn;
-    const validationShowStrategy = ValidationShowStrategy.byName(validationShowStrategyName) || ValidationShowStrategy.immediate;
-    const validationShowContext = ValidationHelper.createStdValidationShowContext(component, override);
-    return isFieldInvalid && validationShowStrategy(validationShowContext);
+    if (component.validationShowOn === undefined) {
+      return isFieldInvalid;
+    } else if (HelperService.isString(component.validationShowOn) || HelperService.isFunction(component.validationShowOn)) {
+      const validationShowContext = ValidationHelper.createStdValidationShowContext(component, override);
+      if (HelperService.isString(component.validationShowOn)) {
+        // validationShowOn - имя стратегии которая управляет показом валидации, ищем стратегию по name
+        let validationShowStrategy = ValidationShowStrategy.byName(component.validationShowOn);
+        if (component.validationShowOn && !validationShowStrategy) {
+          console.warn('validation show strategy \'' + component.validationShowOn + '\' not recognized, please check');
+          validationShowStrategy = ValidationShowStrategy.immediate;
+        }
+        return isFieldInvalid && validationShowStrategy(validationShowContext);
+      } else {
+        // validationShowOn функция
+        return isFieldInvalid && (component.validationShowOn as ((ValidationShowContext) => boolean))(validationShowContext);
+      }
+    } else {
+      // validationShowOn - просто значение (например boolean) управляющее показом напрямую
+      const validationShouldShow = !!component.validationShowOn;
+      return isFieldInvalid && validationShouldShow;
+    }
   }
 }

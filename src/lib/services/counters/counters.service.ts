@@ -96,7 +96,7 @@ export class CountersService {
   // TODO: описать интерфейс
   public doCountersApiRequest(isHide?: boolean): Observable<any> {
     let params = {
-      types: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,CLAIM,PROFILE,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE',
+      types: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,CLAIM,PROFILE,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE',
       isArchive: 'false',
       _: Math.random().toString()
     };

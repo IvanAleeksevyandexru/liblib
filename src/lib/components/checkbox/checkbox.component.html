@@ -4,7 +4,7 @@
          [checked]="checked"
          [disabled]="disabled"
          [ngClass]="{'disabled': disabled}"
-         (change)="onChecked($event)"
+         (change)="onChecked($event.target.checked)"
          [id]="checkboxId"
          [attr.labelText]="labelText || null"
          [attr.description]="description"

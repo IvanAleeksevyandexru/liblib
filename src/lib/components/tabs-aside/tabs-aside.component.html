@@ -1,7 +1,7 @@
-<aside class="nav" [ngClass]="{'opened': showTabs}" libClickOutside (clickOutside)="showTabs = false">
-  <div class="overview" (click)="onClick()">
-    <div class="toggle-button" (click)="onClick()" libStopClickPropagation>
-      <lib-counter class="counter-circle small" [counter]="commonCounter"></lib-counter>
+<aside class="nav" *ngIf="innerTabs?.visible !== false" 
+  [ngClass]="{'opened': expanded}" libClickOutside (clickOutside)="expanded = false">
+  <div class="overview" (click)="toggle()">
+    <div class="toggle-button" (click)="toggle()">
     </div>
     <span class="overview-text" *ngIf="activeTab">
       <span class="overview-text-inner" *ngIf="translation === Translation.NONE">{{activeTab.name}}</span>
@@ -11,15 +11,12 @@
     </span>
   </div>
   <ul class="tabs-box">
-    <li class="tab-wrapper"
-        [attr.tabs]="tabs"
-        [hidden]="tab.hidden"
-        *ngFor="let tab of tabs">
-      <a class="tab"
-         [class.break]="tab.break"
-         [routerLink]="[tab.url]"
-         [routerLinkActive]="['active']"
-         (click)="onTabClick(tab)">
+    <li class="tab-wrapper" *ngFor="let tab of innerTabs?.tabs"
+        [ngClass]="{
+          hidden: tab.hidden, disabled: tab.disabled, active: tab.active, 
+          'break-before': tab.break === 'before', 'break-after': tab.break === 'after'}" 
+        (click)="select(tab);">
+      <a class="tab">
         <span class="tab-inner" *ngIf="translation === Translation.NONE">{{tab.name}}</span>
       	<span class="tab-inner" *ngIf="translation === Translation.APP">{{tab.name | appTranslate}}</span>
       	<span class="tab-inner" *ngIf="translation === Translation.LIB">{{tab.name | libTranslate}}</span>

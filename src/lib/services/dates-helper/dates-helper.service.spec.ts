@@ -9,7 +9,7 @@ describe('DatesHelperService', () => {
 
 
   it('should be created', () => {
-    const service: DatesHelperService = TestBed.get(DatesHelperService);
+    const service: DatesHelperService = TestBed.inject(DatesHelperService);
     expect(service).toBeTruthy();
   });
 });

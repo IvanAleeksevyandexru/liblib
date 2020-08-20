@@ -1,4 +1,4 @@
-<div [class]="'plain-input' + (contextClass ? ' ' + contextClass : '')" [ngClass]="{multiline: multiline, invalid: invalidDisplayed, focused: focused, disabled: disabled}">
+<div [class]="'plain-input' + (contextClass ? ' ' + contextClass : '')" [ngClass]="{multiline: multiline, invalid: invalidDisplayed, focused: focused, disabled: disabled}" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <input #input *ngIf="!multiline"
          [attr.name]="name"
          [attr.type]="type || 'text'"

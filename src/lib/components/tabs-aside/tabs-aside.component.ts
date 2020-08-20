@@ -1,67 +1,48 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { Tab } from '../../models/tabs';
-import { Translation } from '../../models/common-enums';
-import { CounterData } from '../../models/counter';
+import { Component, EventEmitter, Input, Output, ChangeDetectorRef, OnInit, OnChanges, OnDestroy, Optional } from '@angular/core';
+import { Tab, Tabs, ASIDE_TABS } from '../../models/tabs';
+import { TabsComponent } from '../tabs/tabs.component';
+import { Translation, ModelControl } from '../../models/common-enums';
+import { TabsService } from '../../services/tabs/tabs.service';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
+import { Router } from '@angular/router';
+import { HelperService } from '../../services/helper/helper.service';
 
 @Component({
   selector: 'lib-tabs-aside',
   templateUrl: './tabs-aside.component.html',
   styleUrls: ['./tabs-aside.component.scss']
 })
-export class TabsAsideComponent implements OnInit {
-  @Input() public tabs: Tab[];
+export class TabsAsideComponent extends TabsComponent implements OnInit, OnChanges, OnDestroy {
+
+  // откуда управляется контрол: сервисом или локальным состоянием
+  @Input() public control: ModelControl | string = ModelControl.SERVICE;
+  // имя для регистрации в сервисе, не требуется для control === ModelControl.LOCAL
+  // имя должно быть уникальным в пределах проекта, т.к. при уничтожении контрол уничтожает свое (по имени) состояние в сервисе
+  @Input() public name: string = ASIDE_TABS;
+  // явное локальное состояние, игнорируется для ModelControl.SERVICE
+  @Input() public tabs: Tabs = null;
+  // как интерпретировать .text вкладки: как текст или как код транслитерации
   @Input() public translation: Translation | string = Translation.APP;
-  @Output() public tabItem = new EventEmitter();
+  // событие выбора вкладки
+  @Output() public selected = new EventEmitter<Tab>();
 
-  public showTabs = false;
-  public activeTab: Tab;
-  public commonCounter: CounterData;
-  public Translation = Translation;
-
-  constructor(
-    public router: Router,
-    public yaMetricService: YaMetricService
-  ) {}
-
-  public ngOnInit() {
-    if (this.tabs) {
-      this.activeTab = this.tabs[0];
-      this.selectActiveTab();
-    }
-    this.router.events.subscribe(evt => {
-      if (evt instanceof NavigationEnd) {
-        this.selectActiveTab();
-      }
-    });
+  constructor(protected tabsService: TabsService,
+              @Optional() protected yaMetricService: YaMetricService,
+              protected helperService: HelperService,
+              protected router: Router,
+              protected changeDetection: ChangeDetectorRef) {
+    super(tabsService, yaMetricService, helperService, router, changeDetection);
   }
 
-  public selectActiveTab(): void {
-    this.tabs.forEach((item: Tab) => {
-      if (this.router.url.indexOf(item.url) > -1) {
-        this.activeTab = item;
-      }
-      this.updateCommonCounter();
-    });
+  public expanded = false;
+
+  public toggle() {
+    this.expanded = !this.expanded;
   }
 
-  public onClick() {
-    this.showTabs = !this.showTabs;
-  }
-
-  public onTabClick(item: Tab) {
-    this.yaMetricService.yaMetricAside(item.mnemonic);
-    this.activeTab = item;
-    this.showTabs = false;
-    this.updateCommonCounter();
-  }
-
-  private updateCommonCounter() {
-    const firstTabWithUnreadCounter = this.tabs.find(item => item.counter && item.counter.unread > 0);
-    if (firstTabWithUnreadCounter && firstTabWithUnreadCounter.counter !== this.commonCounter) {
-      this.commonCounter = firstTabWithUnreadCounter.counter;
-    }
+  public select(tab: Tab) {
+    this.expanded = false;
+    super.select(tab);
   }
 
 }

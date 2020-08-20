@@ -17,6 +17,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
   private unparsedPart = '';
   private simpleMode = false;
   private externalUrl = '';
+  private hideLevels = [];
   public canOpenFields = new BehaviorSubject<boolean>(false);
   public isOpenedFields = new BehaviorSubject<boolean>(false);
   public isWidgetVisible = new BehaviorSubject<boolean>(false);
@@ -104,6 +105,14 @@ export class DadataService implements AutocompleteSuggestionProvider {
     return this.externalUrl;
   }
 
+  public set hiddenLevels(levels: Array<string>) {
+    this.hideLevels = levels;
+  }
+
+  public get hiddenLevels(): Array<string> {
+    return this.hideLevels;
+  }
+
   constructor(
     private http: HttpClient,
     private loadService: LoadService,
@@ -136,6 +145,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
 
     this.initCheckboxChange('house', this.lastHouseValue);
     this.initCheckboxChange('apartment', this.lastApartmentValue);
+    this.hideLevelsByDefault();
   }
 
   private initCheckboxChange(checkboxName: string, field: string): void {
@@ -184,7 +194,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
     });
   }
 
-  public parseAddress(data: NormalizedData) {
+  public parseAddress(data: NormalizedData, onInitCall: boolean) {
     data.address.elements.forEach((elem, index, arr) => {
       let level = elem.level;
       let strData = elem.data;
@@ -227,6 +237,15 @@ export class DadataService implements AutocompleteSuggestionProvider {
           apartmentControl.enable({onlySelf: true});
           apartmentCheckbox.setValue(false);
           apartmentControl.setValue(val);
+        }
+
+        if (onInitCall) {
+          if (!houseControl.value) {
+            houseCheckbox.setValue(true);
+          }
+          if (!apartmentControl.value) {
+            apartmentCheckbox.setValue(true);
+          }
         }
         this.setErrorsByLevel(level);
         this.setValidByQcCompete(data.dadataQcComplete, data.unparsedParts);
@@ -273,7 +292,8 @@ export class DadataService implements AutocompleteSuggestionProvider {
     const depFieldLevels = this.dependencyFields[level];
     if (depFieldLevels && depFieldLevels.length) {
       depFieldLevels.forEach((key) => {
-        this.formConfig[this.levelMap[key]].visible = !!this.getFormControlByLevel(key).value;
+        const humanityLvl = this.levelMap[key];
+        this.formConfig[humanityLvl].visible = this.isElementHidden(humanityLvl) ? false : !!this.getFormControlByLevel(key).value;
       });
     }
   }
@@ -293,13 +313,13 @@ export class DadataService implements AutocompleteSuggestionProvider {
     }
 
     if (qc === '4') {
-      if (houseCheckbox.value) {
+      if (houseCheckbox.value || this.isElementHidden('house')) {
         if (!building1.value && isOpenedFields) {
           this.formConfig.building1.isInvalid = !building1.value;
         }
       }
     }
-    if ((isOpenedFields && !apartment.value && !apartmentCheckbox.value) && qc !== 'valid') {
+    if ((isOpenedFields && !apartment.value && !apartmentCheckbox.value && !this.isElementHidden('apartment')) && qc !== 'valid') {
       this.formConfig.apartment.isInvalid = true;
     }
   }
@@ -312,12 +332,14 @@ export class DadataService implements AutocompleteSuggestionProvider {
     const apartment = this.getFormControlByName('apartment');
     let houseCb = false;
     let apartmentCb = false;
-    if (houseCheckbox.value && apartmentCheckbox.value) {
+    const houseHiddenByDefault = this.isElementHidden('house');
+    const apartmentHiddenByDefault = this.isElementHidden('apartment');
+    if ((houseCheckbox.value && apartmentCheckbox.value) || (houseHiddenByDefault && apartmentHiddenByDefault)) {
       this.isWidgetVisible.next(false);
     } else if (!openedFields) {
       this.isWidgetVisible.next(true);
-      houseCb = !house.value && !houseCheckbox.value;
-      apartmentCb = !apartmentCheckbox.value && !apartment.value;
+      houseCb = !houseHiddenByDefault || (!house.value && !houseCheckbox.value);
+      apartmentCb = !apartmentHiddenByDefault || (!apartmentCheckbox.value && !apartment.value);
     }
     return {houseCb, apartmentCb};
   }
@@ -328,6 +350,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
       errorFields.forEach((key) => {
         const controlConfig = this.formConfig[this.levelMap[key]];
         const control = this.getFormControlByLevel(key);
+        const isHiddenLvl = this.isElementHidden(this.levelMap[key]);
         let isInvalid = false;
         switch (key) {
           // Район + если не заполнен Город
@@ -338,20 +361,22 @@ export class DadataService implements AutocompleteSuggestionProvider {
             break;
           // Нас пункт + если заполнен Район
           case 6:
-            isInvalid = this.getFormControlByLevel(3).value ? !control.value : false;
+            isInvalid = isHiddenLvl ? false :
+              this.getFormControlByLevel(3).value ? !control.value : false;
             break;
           case 7:
-            isInvalid = this.getFormControlByLevel(4).value ?
-              (this.getFormControlByLevel(6).value ? false : !control.value) : false;
+            isInvalid = isHiddenLvl ? false :
+              this.getFormControlByLevel(4).value ?
+                (this.getFormControlByLevel(6).value ? false : !control.value) : false;
             break;
           case 11: {
             const houseCheckbox = this.form.get('houseCheckbox');
-            isInvalid = houseCheckbox.value ? false : !control.value;
+            isInvalid = isHiddenLvl || houseCheckbox.value ? false : !control.value;
             break;
           }
           case 14:
             const apartmentCheckbox = this.form.get('apartmentCheckbox');
-            isInvalid = apartmentCheckbox.value ? false : !control.value;
+            isInvalid = isHiddenLvl || apartmentCheckbox.value ? false : !control.value;
             break;
           case 12:
           case 13: {
@@ -387,6 +412,17 @@ export class DadataService implements AutocompleteSuggestionProvider {
     });
     Object.keys(this.formConfig).forEach(key => {
       this.formConfig[key].visible = true;
+    });
+    this.hideLevelsByDefault();
+  }
+
+  public isElementHidden(name): boolean {
+    return this.hiddenLevels.includes(name);
+  }
+
+  private hideLevelsByDefault(): void {
+    this.hiddenLevels.forEach(key => {
+      this.formConfig[key].visible = false;
     });
   }
 

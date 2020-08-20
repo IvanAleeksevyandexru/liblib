@@ -102,6 +102,9 @@
     text-align: center;
     color: #515A63;
     font: 16px/24px Helvetica, 'sans-serif';
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   &.empty-feeds-overview {

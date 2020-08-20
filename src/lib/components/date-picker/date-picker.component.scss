@@ -65,7 +65,7 @@
     overflow: hidden;
     position: absolute;
     background-color: white;
-    z-index: 1;
+    z-index: 7;
     &.align-left {
       left: 0;
     }
@@ -76,75 +76,9 @@
       width: 100%;
     }
     .calendar-panel {
-      background-color: #E7ECF7;
       width: 100%;
-      .panel {
-        display: table;
-        width: 100%;
-        height: 20px;
-        padding: 7px;
-        box-sizing: border-box;
-        &.simplified-panel {
-          .month-buttons:first-child {
-            text-align: left;
-          }
-        }
-      }
-      .month-selector, .year-selector, .current-month, .month-buttons {
-        display: table-cell;
-        vertical-align: middle;
-      }
-      .month-buttons {
-        text-align: right;
-      }
-      .current-month {
-        font-face: Helvetica;
-        font-size: 14px;
-        line-height: 20px;
-        color: #09338F;
-      }
-      .month-selector {
-        width: 95px;
-      }
-      .month-arrow-prev, .month-arrow-next {
-        display: inline-block;
-        width: 24px;
-        height: 24px;
-        background-color: white;
-        background-repeat: no-repeat;
-        border-radius: 12px;
-        &.disabled {
-          opacity: 0.5;
-        }
-      }
-      .month-arrow-prev {
-        margin-right: 20px;
-        background-image: url(../../../assets/svg/calendar-prev-month.svg);
-        background-position: 7px 7px;
-      }
-      .month-arrow-next {
-        margin-right: 3px;
-        background-image: url(../../../assets/svg/calendar-next-month.svg);
-        background-position: 10px 7px;
-      }
-      .month-arrow-prev:hover {
-        background-color: #09338F;
-        background-image: url(../../../assets/svg/calendar-prev-month-hover.svg);
-        &.disabled {
-          background-color: white;
-          background-image: url(../../../assets/svg/calendar-prev-month.svg);
-        }
-      }
-      .month-arrow-next:hover {
-        background-color: #09338F;
-        background-image: url(../../../assets/svg/calendar-next-month-hover.svg);
-        &.disabled {
-          background-color: white;
-          background-image: url(../../../assets/svg/calendar-next-month.svg);
-        }
-      }
     }
-    .calendar-grip-container-wrapper {
+    .calendar-grid-container-wrapper {
       width: 100%;
       .calendar-grid-container {
         display: flex;
@@ -282,20 +216,6 @@
         }
       }
     }
-
-  }
-
-}
-
-@media(hover: none) {
-  .date-picker .calendar-container .calendar-panel {
-    .month-arrow-prev:hover {
-      background-color: white;
-      background-image: url(../../../assets/svg/calendar-prev-month.svg);
-    }
-    .month-arrow-next:hover {
-      background-color: white;
-      background-image: url(../../../assets/svg/calendar-next-month.svg);
-    }
   }
 }
+

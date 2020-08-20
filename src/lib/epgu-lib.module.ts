@@ -16,6 +16,7 @@ import { PsoService } from './services/pso/pso.service';
 import { ConstantsService } from './services/constants.service';
 import { FocusManager } from './services/focus/focus.manager';
 import { PositioningManager } from './services/positioning/positioning.manager';
+import { DragDropManager } from './services/drag-drop/drag-drop.manager';
 import { GridComponent } from './components/grid/grid.component';
 import { LoginComponent } from './components/login/login.component';
 import { LogoComponent } from './components/logo/logo.component';
@@ -40,12 +41,16 @@ import { ThrobberComponent } from './components/throbber/throbber.component';
 import { PlainInputComponent } from './components/plain-input/plain-input.component';
 import { StandardInputComponent } from './components/standard-input/standard-input.component';
 import { MultilineInputComponent } from './components/multiline-input/multiline-input.component';
+import { NoPermissionComponent } from './components/no-permission/no-permission.component';
 import { BaseMaskedInputComponent } from './components/base-masked-input/base-masked-input.component';
 import { StandardMaskedInputComponent } from './components/standard-masked-input/standard-masked-input.component';
 import { DatePickerComponent } from './components/date-picker/date-picker.component';
-import { SimpleSelectComponent } from './components/simple-select/simple-select.component';
+import { MonthYearSelectComponent } from './components/month-year-select/month-year-select.component';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { DropdownSimpleComponent } from './components/dropdown-simple/dropdown-simple.component';
 import { LookupComponent } from './components/lookup/lookup.component';
+import { MultiLookupComponent } from './components/multi-lookup/multi-lookup.component';
+import { FilteredListComponent } from './components/filtered-list/filtered-list.component';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { RangeSelectorComponent } from './components/range-selector/range-selector.component';
@@ -54,6 +59,7 @@ import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { RadioComponent } from './components/radio/radio.component';
 import { PagingControlsComponent } from './components/paging-controls/paging-controls.component';
 import { InvalidResultsTipComponent } from './components/invalid-results-tip/invalid-results-tip.component';
+import { ValidationMessageComponent } from './components/validation-message/validation-message.component';
 import { QuestionHelpTipComponent } from './components/question-help-tip/question-help-tip.component';
 import { HiddenTooltipComponent } from './components/hidden-tooltip/hidden-tooltip.component';
 import { ClickOutsideDirective } from './directives/click-outside/click-out.directive';
@@ -61,6 +67,7 @@ import { StopClickPropagationDirective } from './directives/stop-click-propagati
 import { StopScreenScrollDirective } from './directives/stop-screen-scroll/stop-screen-scroll.directive';
 import { YaMetricDirective } from './directives/ya-metric/ya-metric.directive';
 import { OnlyNumbersDirective } from './directives/only-numbers/only-numbers.directive';
+import { DragAndDropDirective} from './directives/drag-and-drop/drag-and-drop.directive';
 import { LimitNumberPipe } from './pipes/limit-number/limit-number.pipe';
 import { FormatPhonePipe } from './pipes/format-phone/format-phone.pipe';
 import { FormatTimePipe } from './pipes/format-time/format-time.pipe';
@@ -161,12 +168,16 @@ registerLocaleData(localeRu, 'ru');
     PlainInputComponent,
     StandardInputComponent,
     MultilineInputComponent,
+    NoPermissionComponent,
     BaseMaskedInputComponent,
     StandardMaskedInputComponent,
     DatePickerComponent,
-    SimpleSelectComponent,
+    MonthYearSelectComponent,
     DropdownComponent,
+    DropdownSimpleComponent,
     LookupComponent,
+    MultiLookupComponent,
+    FilteredListComponent,
     AutocompleteComponent,
     SearchBarComponent,
     RangeSelectorComponent,
@@ -175,6 +186,7 @@ registerLocaleData(localeRu, 'ru');
     RadioComponent,
     PagingControlsComponent,
     InvalidResultsTipComponent,
+    ValidationMessageComponent,
     QuestionHelpTipComponent,
     HiddenTooltipComponent,
     LocationComponent,
@@ -191,6 +203,7 @@ registerLocaleData(localeRu, 'ru');
     StopScreenScrollDirective,
     YaMetricDirective,
     OnlyNumbersDirective,
+    DragAndDropDirective,
     LimitNumberPipe,
     FormatPhonePipe,
     FormatTimePipe,
@@ -244,7 +257,7 @@ registerLocaleData(localeRu, 'ru');
     CapitalLetterPipe,
     LangWarnModalComponent,
     PsoComponent,
-    DynamicFormatterPipe,
+    DynamicFormatterPipe
   ],
   imports: [
     CommonModule,
@@ -288,21 +301,26 @@ registerLocaleData(localeRu, 'ru');
     PlainInputComponent,
     StandardInputComponent,
     MultilineInputComponent,
+    NoPermissionComponent,
     BaseMaskedInputComponent,
     StandardMaskedInputComponent,
     DropdownComponent,
+    DropdownSimpleComponent,
     LookupComponent,
+    MultiLookupComponent,
+    FilteredListComponent,
     AutocompleteComponent,
     SearchBarComponent,
     RangeSelectorComponent,
     RangeFieldComponent,
     CheckboxComponent,
     RadioComponent,
-    SimpleSelectComponent,
+    MonthYearSelectComponent,
     DatePickerComponent,
     LocationComponent,
     PagingControlsComponent,
     InvalidResultsTipComponent,
+    ValidationMessageComponent,
     QuestionHelpTipComponent,
     HiddenTooltipComponent,
     GibddDetailsComponent,
@@ -313,6 +331,7 @@ registerLocaleData(localeRu, 'ru');
     StopScreenScrollDirective,
     YaMetricDirective,
     OnlyNumbersDirective,
+    DragAndDropDirective,
     LimitNumberPipe,
     FormatPhonePipe,
     FormatTimePipe,
@@ -361,7 +380,10 @@ registerLocaleData(localeRu, 'ru');
     CapitalLetterPipe,
     LangWarnModalComponent,
     PsoComponent,
-    DynamicFormatterPipe,
+    RemoveQuotesPipe,
+    TimeLeftPipe,
+    RemoveTagsPipe,
+    DynamicFormatterPipe
   ],
   providers: [
     GosbarService,
@@ -369,6 +391,7 @@ registerLocaleData(localeRu, 'ru');
     ValidationService,
     FocusManager,
     PositioningManager,
+    DragDropManager,
     PsoService,
     DeclinePipe,
     PluralizePipe,
@@ -412,6 +435,7 @@ export class EpguLibModule {
         NotifierService,
         FocusManager,
         PositioningManager,
+        DragDropManager,
         {
           provide: 'notifierSetting',
           useValue: setting ? setting.notifier : {}

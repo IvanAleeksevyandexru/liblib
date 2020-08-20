@@ -1,12 +1,11 @@
-import { Component, ViewChild, ElementRef, HostListener, Input, Output, EventEmitter, Renderer2, SimpleChanges,
-  OnInit, OnChanges, DoCheck, AfterViewInit, ChangeDetectorRef, forwardRef, Optional, Host, SkipSelf } from '@angular/core';
+import { Component, ViewChild, ElementRef, HostListener, Input, Output, EventEmitter, SimpleChanges,
+  OnInit, OnChanges, DoCheck, AfterViewInit, OnDestroy, ChangeDetectorRef, forwardRef, Optional, Host, SkipSelf } from '@angular/core';
 import { ControlValueAccessor, ValidationErrors, AbstractControl, ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { AnimationBuilder, trigger, state, transition, style, animate } from '@angular/animations';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { StandardMaskedInputComponent } from '../standard-masked-input/standard-masked-input.component';
-import { SimpleSelectComponent } from '../simple-select/simple-select.component';
 import { PipedMessage } from '../../models/piped-message';
 import { HorizontalAlign } from '../../models/positioning';
-import { Translation, Align, TipDirection, BrokenDateFixStrategy } from '../../models/common-enums';
+import { Translation, Align, TipDirection, BrokenDateFixStrategy, MessagePosition } from '../../models/common-enums';
 import { ValidationDetailed, ValidationShowOn, ValidationMessages } from '../../models/validation-show';
 import { FocusManager } from '../../services/focus/focus.manager';
 import { DatesHelperService } from '../../services/dates-helper/dates-helper.service';
@@ -14,10 +13,12 @@ import { ValidationHelper } from '../../services/validation-helper/validation.he
 import { HelperService } from '../../services/helper/helper.service';
 import { ConstantsService } from '../../services/constants.service';
 import { PositioningManager, PositioningRequest } from '../../services/positioning/positioning.manager';
+import { DragDropManager } from '../../services/drag-drop/drag-drop.manager';
+import { DragDropBinding, DragDropType, DragDropDirection, DragDropOffsetType, DragState } from '../../models/drag-drop.model';
 import { RelativeDate, Range, MonthYear, DateProperties, DatePropertiesPublisher } from '../../models/date-time.model';
-import { ListItem } from '../../models/dropdown.model';
 import { Subscription, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Width } from '../../models/width-height';
 import * as moment_ from 'moment';
 const moment = moment_;
 
@@ -31,6 +32,7 @@ const WEAK_DATE_PATTERN = /^([\d_][\d_]?)[\.\/]([\d_][\d_]?)[\.\/]([\d_][\d_][\d
 const RANGE_BASE_MASK = [/\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/,
   '-', /\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
 const DATE_BASE_MASK = [/\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
+const DRAGDROP_CENTERING_THRESHOLD = 0.3;
 
 class ParsingResult<T> {
   public result: T = null;
@@ -74,10 +76,10 @@ class ParsingResult<T> {
     ])
   ]
 })
-export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, DoCheck, ControlValueAccessor, ValidationDetailed {
+export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, DoCheck, ControlValueAccessor, ValidationDetailed, OnDestroy {
 
   constructor(private changeDetection: ChangeDetectorRef, private focusManager: FocusManager,
-              private renderer: Renderer2, private animationBuilder: AnimationBuilder, private positioningManager: PositioningManager,
+              private positioningManager: PositioningManager, private dragDropManager: DragDropManager,
               @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
 
   @Input() public name?: string;
@@ -86,12 +88,25 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   @Input() public tabIndex?: string | number;
   @Input() public placeholder?: string;
   @Input() public disabled = false;
+  @Input() public width?: Width | string;
 
-  @Input() public invalid = false;
-  @Input() public validation: boolean | string | ValidationErrors = null;
-  @Input() public validationShowOn: ValidationShowOn | string = ValidationShowOn.TOUCHED;
-  @Input() public validationMessages: string | PipedMessage | ValidationMessages = null;
+  // информационная подсказка
   @Input() public questionTip?: string;
+  // позиция вывода информации: типом или отдельным блоком над/под контролом
+  @Input() public questionTipPosition: string | MessagePosition = MessagePosition.INSIDE;
+  // позиция вывода ошибки: типом или отдельным блоком над/под контролом
+  @Input() public validationPosition: string | MessagePosition = MessagePosition.INSIDE;
+  // описывает не валидность в терминах true/false, работает только совместно с подсветкой
+  @Input() public invalid = false;
+  // более полная валидация, пригодная для рендера текста ошибок, отменяет значение invalid если задана
+  @Input() public validation: boolean | string | Array<string> | ValidationErrors | { [key: string]: any };
+  // когда показывать некорректность поля (как правило начальное пустое поле не считается корректным, но отображать это не нужно)
+  @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
+  // сообщения валидации вместе с параметрами вывода, работает только совместно с validation
+  @Input() public validationMessages: string | PipedMessage | ValidationMessages | { [key: string]: string | PipedMessage} = null;
+  // определяет должна ли валидация скрывать информационный тип (показываться вместо) или показываться в дополнение
+  @Input() public validationOverride = true;
+  // направление бабблов информации-ошибки, для MessagePosition.INSIDE
   @Input() public tipDirection: TipDirection | string = TipDirection.RIGHT;
 
   @Input() public textEditable = true; // разрешен ли клавиатурный ввод
@@ -107,9 +122,11 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   @Input() public asSimplePanel = false; // без инпута, только панель без возможности ее скрытия/показа
   @Input() public asSimpleInput = false; // только инпут, без возможности показа панели
   @Input() public simplifiedMonthPanel = false;  // без дропдаунов выбора месяца и года, только кнопки вправо-влево
+  @Input() public rangeTypeMonthPanel = false; // сдвоенный селектор месяца-года, специальный дизайн для range-field
   @Input() public align: Align | string = Align.RIGHT; // выравнивание панели если панель не равна по ширине инпуту
   @Input() public shortYearFormat = false;
   @Input() public americanFormat = false; // месяц впереди, разделитель / вместо .
+  @Input() public readOnly = false;
 
   // границы допустимого диапазона для ввода/выбора новых дат, могут иметь относительный формат, см HelperService.relativeDateToDate
   @Input() public minDate: Date | RelativeDate | string = new RelativeDate('start of year');
@@ -123,17 +140,8 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   @Output() public cleared = new EventEmitter<void>();
   @Output() public dateSelected = new EventEmitter<Date>();
   @Output() public navigated = new EventEmitter<MonthYear>();
-
-  public monthsCodes = [];
-  public monthsList: Array<ListItem> =
-    ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER']
-    .map((monthName) => 'MONTHS.' + monthName)
-    .map((monthName, index) => ({id: index, text: monthName}))
-    .map((monthData: any) => new ListItem(monthData));
-  public months: Array<ListItem> = [];
-  public years: Array<ListItem> = [];
-  public Translation = Translation;
-  public Align = Align;
+  @Output() public opened = new EventEmitter<any>();
+  @Output() public closed = new EventEmitter<any>();
 
   public weeks: Array<Array<DateProperties>> = [];
   public prevWeeks: Array<Array<DateProperties>> = [];
@@ -144,31 +152,24 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   public dateFormat = STD_DATE_FORMAT;
   public shortDateFormat = STD_SHORT_FORMAT;
   public control: AbstractControl;
+  public Align = Align;
+  public MessagePosition = MessagePosition;
 
   public expanded = false;
   public inconsistent = false;
+  public invalidDisplayed = false;
   public text = '';
   public monthShift = 'none';
-  public monthPanelDragOffset = null;
-  public monthPanelDragStartPosition = null;
-  public monthPanelDragOffsetRelative = 0;
-  public monthPanelDragTouchMoveSubscription: Subscription = null;
-  public monthPanelDragTouchEndSubscription: Subscription = null;
   public blockMobileKeyboard = false;
   public dateEnteringController: (value: any, additionals: any) => string | boolean;
   public forcedToAcceptValue: string;
   public positioningDescriptor: PositioningRequest = null;
+  public dragDropDescriptor: DragDropBinding = null;
 
   public date: Date = null;
   public range: Range<Date> = new Range<Date>(null, null);
   public rangeStart: Date = null;
-
   public activeMonthYear: MonthYear = null;
-  public activeMonth: ListItem;
-  public activeYear: ListItem;
-  public prevMonthAvailable = true;
-  public nextMonthAvailable = true;
-
   public minimumDate = this.getMinimumDate();
   public maximumDate = this.getMaximumDate();
 
@@ -176,8 +177,6 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   @ViewChild('calendarContainer') public calendarContainer: ElementRef;
   @ViewChild('fieldContainer', {static: false}) public fieldContainer: ElementRef;
   @ViewChild('monthsFeed') public monthsFeed: ElementRef;
-  @ViewChild('monthSelector') public monthSelector: SimpleSelectComponent;
-  @ViewChild('yearsSelector') public yearsSelector: SimpleSelectComponent;
 
   private onTouchedCallback: () => void;
   private commit(value: string | Date | Range<string> | Range<Date>) {}
@@ -196,6 +195,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         this.changeDetection.markForCheck();
       });
     }
+    this.check();
   }
 
   public ngOnChanges(changes: SimpleChanges) {
@@ -217,15 +217,18 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         }
       }
     }
+    this.check();
   }
 
   public ngDoCheck() {
-    if (this.inputElement) {
-      if (this.control) {
-        this.inputElement.setTouched(this.control.touched);
-      }
-      this.inputElement.ngDoCheck();
+    if (this.inputElement && this.control) {
+      this.inputElement.setTouched(this.control.touched);
     }
+    this.check();
+  }
+
+  public ngOnDestroy() {
+    this.detachDescriptors();
   }
 
   public update() {
@@ -240,32 +243,22 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     if (this.asSimpleInput) {
       return;
     }
-    if (!this.expanded && !this.disabled || this.asSimplePanel) {
+    if (!this.expanded && !this.disabled && !this.readOnly || this.asSimplePanel) {
       this.expanded = true;
       this.rangeStart = null;
       this.suppressMobileKeyboard();
-      this.hideMonthYearDropdowns(null);
       this.resetNavigation();
       this.renderMonthGrid();
       this.changeDetection.detectChanges();
-      if (this.containerOverlap) {
-        this.positioningDescriptor = {master: this.fieldContainer, slave: this.calendarContainer,
-          destroyOnScroll: true, destroyCallback: this.closeCalendar.bind(this),
-          alignX: this.align && this.align.toUpperCase() === Align.LEFT ? HorizontalAlign.LEFT_TO_LEFT :
-            this.align && this.align.toUpperCase() === Align.RIGHT ? HorizontalAlign.RIGHT_TO_RIGHT : null,
-            width: this.align && this.align.toUpperCase() === Align.ADJUST ? null : '280px'
-          } as PositioningRequest;
-        this.positioningManager.attach(this.positioningDescriptor);
-      }
+      this.attachDescriptors();
+      this.opened.emit();
     }
   }
 
   public closeCalendar() {
     this.expanded = false;
-    if (this.containerOverlap) {
-      this.positioningManager.detach(this.positioningDescriptor);
-      this.positioningDescriptor = null;
-    }
+    this.detachDescriptors();
+    this.closed.emit();
   }
 
   public toggle(sourceIsInputField: boolean) {
@@ -297,6 +290,39 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   public cancelSupressingMobileKeyboard() {
     this.blockMobileKeyboard = false;
     this.changeDetection.detectChanges();
+  }
+
+  public attachDescriptors() {
+    this.dragDropDescriptor = {
+      feedElement: this.monthsFeed,
+      type: DragDropType.TOUCH, direction: DragDropDirection.HORIZONTAL, offsetType: DragDropOffsetType.TRANSFORM,
+      centeringNeeded: true, cleanUp: true, limit: true, centeringThreshold: DRAGDROP_CENTERING_THRESHOLD,
+      dragEnd: (dragState: DragState) => {
+        const direction = dragState.animatedForward ? (dragState.dragForward ? 1 : -1) : 0;
+        this.handleMonthNavigationAnimationDone(direction);
+      }
+    } as DragDropBinding;
+    this.dragDropManager.attach(this.dragDropDescriptor);
+    if (this.containerOverlap) {
+      this.positioningDescriptor = {master: this.fieldContainer, slave: this.calendarContainer,
+        destroyOnScroll: true, destroyCallback: this.closeCalendar.bind(this),
+        alignX: this.align === Align.LEFT ? HorizontalAlign.LEFT_TO_LEFT :
+          this.align === Align.RIGHT ? HorizontalAlign.RIGHT_TO_RIGHT : null,
+          width: this.align && this.align === Align.ADJUST ? null : '280px'
+        } as PositioningRequest;
+      this.positioningManager.attach(this.positioningDescriptor);
+    }
+  }
+
+  public detachDescriptors() {
+    if (this.containerOverlap && this.positioningDescriptor) {
+      this.positioningManager.detach(this.positioningDescriptor);
+      this.positioningDescriptor = null;
+    }
+    if (this.dragDropDescriptor) {
+      this.dragDropManager.detach(this.dragDropDescriptor);
+      this.dragDropDescriptor = null;
+    }
   }
 
   public selectDate(dateItem: DateProperties) {
@@ -416,13 +442,9 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     this.disabled = isDisabled;
   }
 
-  public handleBlur(raisedByOutsideClick = false) {
+  public handleBlur() {
     this.closeCalendar();
-    if (raisedByOutsideClick) {
-      this.focusManager.notifyFocusMayLost(this.inputElement);
-    } else {
-      this.blur.emit();
-    }
+    this.blur.emit();
   }
 
   public handleFocus() {
@@ -440,14 +462,6 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
 
   public stopPropagation(e: Event) {
     e.stopPropagation();
-  }
-
-  public navigateToMonth(month: number) {
-    this.navigateTo(new MonthYear(month, this.activeMonthYear.year));
-  }
-
-  public navigateToYear(year: number) {
-    this.navigateTo(new MonthYear(this.activeMonthYear.month, year));
   }
 
   public navigateTo(monthYear: MonthYear) {
@@ -481,97 +495,6 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       this.navigateTo(this.activeMonthYear.next());
     }
     this.changeDetection.detectChanges();
-  }
-
-  // привязано к touchstart панели
-  public startMonthDragging(e: TouchEvent | any) {
-    this.monthPanelDragStartPosition = e.touches[0].clientX;
-    const monthPanelWidth = this.calendarContainer.nativeElement.clientWidth;
-    this.monthPanelDragOffset = -monthPanelWidth;
-    this.monthPanelDragOffsetRelative = 0;
-    const monthPanelDragTouchEnd = fromEvent(document, 'touchend');
-    this.monthPanelDragTouchMoveSubscription = fromEvent(document, 'touchmove')
-      .pipe(takeUntil(monthPanelDragTouchEnd)).subscribe((evt) => this.dragMonthInProcess(evt));
-    this.monthPanelDragTouchEndSubscription = monthPanelDragTouchEnd.subscribe((evt) => this.finishMonthDragging());
-    this.renderer.setStyle(this.monthsFeed.nativeElement, 'transform', 'translateX(' + this.monthPanelDragOffset + 'px)');
-  }
-
-  public dragMonthInProcess(e: TouchEvent | any) {
-    const monthPanelWidth = this.calendarContainer.nativeElement.clientWidth;
-    let monthPanelOffset = e.touches[0].clientX - this.monthPanelDragStartPosition;
-    const maxReached = MonthYear.equals(this.activeMonthYear, MonthYear.fromDate(this.maximumDate));
-    const minReached = MonthYear.equals(this.activeMonthYear, MonthYear.fromDate(this.minimumDate));
-    if (maxReached && monthPanelOffset < 0 || minReached && monthPanelOffset > 0) {
-      monthPanelOffset = 0;
-    }
-    this.monthPanelDragOffsetRelative = -monthPanelOffset / monthPanelWidth;
-    this.monthPanelDragOffset = monthPanelOffset - monthPanelWidth;
-    this.renderer.setStyle(this.monthsFeed.nativeElement, 'transform', 'translateX(' + this.monthPanelDragOffset + 'px)');
-    this.takePrevNextMonthInOrOutOfAreaDuringDrag();
-  }
-
-  public takePrevNextMonthInOrOutOfAreaDuringDrag() {
-    // ручное добавление классов во время анимации чтобы не дергать detectChanges
-    const prevMonth = this.monthsFeed.nativeElement.querySelector('.previous-month');
-    const nextMonth = this.monthsFeed.nativeElement.querySelector('.next-month');
-    if (this.monthPanelDragOffsetRelative > 0) {
-      if (nextMonth.classList.contains('out-of-area')) {
-        this.renderer.removeClass(nextMonth, 'out-of-area');
-      }
-      if (!prevMonth.classList.contains('out-of-area')) {
-        this.renderer.addClass(prevMonth, 'out-of-area');
-      }
-    } else if (this.monthPanelDragOffsetRelative < 0) {
-      if (!nextMonth.classList.contains('out-of-area')) {
-        this.renderer.addClass(nextMonth, 'out-of-area');
-      }
-      if (prevMonth.classList.contains('out-of-area')) {
-        this.renderer.removeClass(prevMonth, 'out-of-area');
-      }
-    } else {
-      this.renderer.addClass(prevMonth, 'out-of-area');
-      this.renderer.addClass(nextMonth, 'out-of-area');
-    }
-  }
-
-  public finishMonthDragging() {
-    const finalizedAnimationDirection = this.monthPanelDragOffsetRelative;
-    // 30% ширины месяца достаточно чтобы завершить скролл в заданном направлении, меньший процент возвращает баланс на 0
-    const monthPanelWidth = this.calendarContainer.nativeElement.clientWidth;
-    const finalOffset = finalizedAnimationDirection > 0.3 ?
-      -monthPanelWidth * 2 + 'px' : finalizedAnimationDirection < -0.3 ? '0px' : -monthPanelWidth + 'px';
-    const animationPlayer = this.animationBuilder.build([
-      style({transform: 'translateX(' + this.monthPanelDragOffset + 'px)'}),
-        animate(500, style({transform: 'translateX(' + finalOffset + ')'}))
-    ]).create(this.monthsFeed.nativeElement);
-    animationPlayer.onDone(() => {
-      animationPlayer.destroy();
-      if (this.monthsFeed) {
-        this.renderer.setStyle(this.monthsFeed.nativeElement, 'transform', 'translateX(' + finalOffset + ')');
-      }
-      this.handleMonthNavigationAnimationDone(finalizedAnimationDirection > 0.3 ? 1 : finalizedAnimationDirection < -0.3 ? -1 : 0);
-      this.changeDetection.detectChanges();
-      if (this.monthsFeed) {
-        this.renderer.setStyle(this.monthsFeed.nativeElement, 'transform', null);
-        this.takePrevNextMonthInOrOutOfAreaDuringDrag();
-      }
-    });
-    this.disposeMonthDraggingListeners();
-    animationPlayer.play();
-  }
-
-  public disposeMonthDraggingListeners() {
-    this.monthPanelDragStartPosition = this.monthPanelDragOffset = null;
-    this.monthPanelDragOffsetRelative = 0;
-    if (this.monthPanelDragTouchMoveSubscription) {
-      // освобождает и отключает все динамические лиснеры
-      this.monthPanelDragTouchMoveSubscription.unsubscribe();
-    }
-    if (this.monthPanelDragTouchEndSubscription) {
-      this.monthPanelDragTouchEndSubscription.unsubscribe();
-    }
-    this.monthPanelDragTouchMoveSubscription = this.monthPanelDragTouchEndSubscription = null;
-    return true;
   }
 
   public isToday(date: Date) {
@@ -609,50 +532,17 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     return date && moment(date).month() !== this.activeMonthYear.month + monthShift;
   }
 
-  public hideMonthYearDropdowns(source: Event) {
-    const protectedSource = source ? source.target : null;
-    if (!protectedSource || this.monthSelector && this.monthSelector.container
-        && !this.monthSelector.container.nativeElement.contains(protectedSource)) {
-      if (this.monthSelector) {
-        this.monthSelector.hide();
-      }
-    }
-    if (!protectedSource || this.yearsSelector && this.yearsSelector.container
-        && !this.yearsSelector.container.nativeElement.contains(protectedSource)) {
-      if (this.yearsSelector) {
-        this.yearsSelector.hide();
-      }
-    }
-  }
-
   public checkAndCorrectNavigation() {
     if (this.activeMonthYear === null) {
       this.activeMonthYear = MonthYear.fromDate(new Date());
     }
-    const allowedYears = this.years.map((year) => year.id as number);
-    let requiredYear = this.activeMonthYear.year;
-    if (requiredYear < Math.min(...allowedYears)) {
-      requiredYear = Math.min(...allowedYears);
-    } else if (requiredYear > Math.max(...allowedYears)) {
-      requiredYear = Math.max(...allowedYears);
+    const minMonthYear = MonthYear.fromDate(this.minimumDate);
+    const maxMonthYear = MonthYear.fromDate(this.maximumDate);
+    if (this.activeMonthYear.firstDay() < minMonthYear.firstDay()) {
+      this.activeMonthYear = minMonthYear;
+    } else if (this.activeMonthYear.firstDay() > maxMonthYear.firstDay()) {
+      this.activeMonthYear = maxMonthYear;
     }
-    this.activeMonthYear.year = requiredYear;
-    this.activeYear = this.years.find((year) => year.id === requiredYear);
-    this.months = this.monthsList.filter((month) => {
-      // id с 0
-      return this.monthIsInsideBounds(month.id as number, requiredYear);
-    });
-    const allowedMonths = this.months.map((month) => month.id as number);
-    const currentYearMinMonth = Math.min(...allowedMonths);
-    const currentYearMaxMonth = Math.max(...allowedMonths);
-    let requiredMonth = this.activeMonthYear.month;
-    if (!allowedMonths.includes(requiredMonth)) {
-      requiredMonth = requiredMonth > currentYearMaxMonth ? currentYearMaxMonth : currentYearMinMonth;
-    }
-    this.activeMonthYear.month = requiredMonth;
-    this.activeMonth = this.months.find((month) => month.id === this.activeMonthYear.month);
-    this.prevMonthAvailable = !(requiredYear === moment(this.minimumDate).year() && requiredMonth === currentYearMinMonth);
-    this.nextMonthAvailable = !(requiredYear === moment(this.maximumDate).year() && requiredMonth === currentYearMaxMonth);
   }
 
   public resetNavigation() {
@@ -687,16 +577,10 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
 
   private updateCalendarLimits() {
     this.minimumDate = this.getMinimumDate();
-    const minimumYear = moment(this.minimumDate).year();
     this.maximumDate = this.getMaximumDate();
     if (this.maximumDate < this.minimumDate) {
       this.maximumDate = this.minimumDate;
     }
-    const maximumYear = moment(this.maximumDate).year();
-    this.years = Array.from(Array(maximumYear - minimumYear + 1).keys()).map((yearFromMinYear) => {
-      const year = minimumYear + yearFromMinYear;
-      return new ListItem({id: year, text: year});
-    });
     this.checkAndCorrectNavigation();
     this.renderMonthGrid();
   }
@@ -831,13 +715,11 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     }
   }
 
-  private monthIsInsideBounds(month: number, year: number) {
-    const firstMonthDay = moment().year(year).month(month).startOf('month').startOf('day');
-    const lastMonthDay = moment().year(year).month(month).endOf('month').startOf('day');
-    return firstMonthDay.isBetween(this.minimumDate, this.maximumDate, null, '[]')
-        || lastMonthDay.isBetween(this.minimumDate, this.maximumDate, null, '[]')
-        || moment(this.minimumDate).isBetween(firstMonthDay, lastMonthDay, null, '[]')
-        || moment(this.maximumDate).isBetween(firstMonthDay, lastMonthDay, null, '[]');
+  public check() {
+    this.invalidDisplayed = ValidationHelper.checkValidation(this, {empty: this.isModelEmpty()});
+    if (this.inputElement) {
+      this.inputElement.ngDoCheck();
+    }
   }
 
   private renderMonthGrid() {
@@ -1076,5 +958,4 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       this.recover();
     }
   }
-
 }

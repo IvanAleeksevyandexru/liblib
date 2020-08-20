@@ -1,0 +1,221 @@
+.calendar-panel {
+  width: 100%;
+  background-color: #E7ECF7;
+  position: relative;
+  .panel {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    padding: 7px;
+    box-sizing: border-box;
+    &.simplified-panel {
+    }
+    &.standard-panel {
+      .next-month {
+        margin-left: 18px;
+      }
+    }
+    &.joined-panel {
+    }
+  }
+  .label {
+    font-family: Helvetica;
+    font-size: 14px;
+    line-height: 20px;
+    color: #09338F;
+  }
+  .dropdown {
+    position: absolute;
+    border: 1px solid #CED9F0;
+    background-color: white;
+    box-shadow: 0px 0px 24px rgba(128, 129, 136, 0.15);
+    overflow: hidden;
+    z-index: 1;
+    display: none;
+    &.expanded {
+      display: block;
+    }
+    .item {
+      display: block;
+      background-color: white;
+      padding: 8px;
+      text-align: center;
+      cursor: pointer;
+      &.selected {
+        background-color: #0B40B3;
+        .label {
+          color: white;
+        }
+      }
+    }
+  }
+  ::ng-deep .ps {
+    &.ps--active-y {
+      .ps__rail-y {
+        opacity: 1;
+        background-color: white;
+      }
+    }
+  }
+  .prev-month, .month-year-field, .next-month, .field, .spacer {
+    flex-shrink: 0;
+  }
+  .spacer {
+    flex-grow: 1;
+  }
+  .month-year-field {
+    position: relative;
+  }
+  .field {
+    position: relative;
+    padding: 2px 8px;
+    .select-field {
+      display: table;
+      cursor: pointer;
+      .field-label, .field-arrow {
+        display: table-cell;
+        vertical-align: middle;
+      }
+      .field-label {
+        min-width: 40px;
+      }
+      .field-arrow {
+        width: 22px;
+        background: url(../../../assets/svg/select-arrow.svg) 0 -5px no-repeat;
+      }
+    }
+    .field-list {
+      border-radius: 0px 0px 4px 4px;
+      left: -1px;
+      top: -8px;
+      width: 120px;
+      ::ng-deep .ps {
+        max-height: 255px;
+        &.ps--active-y {
+          .ps__rail-y {
+            width: 18px;
+            .ps__thumb-y {
+              width: 18px;
+              background: #B6C6E8 url(../../../assets/svg/select-slider.svg) 5px 53px no-repeat;
+              border-radius: 16px;
+              &:hover {
+                background-color: #09338F;
+              }
+            }
+          }
+          .items-list {
+            width: calc(100% - 20px);
+            border-right: solid 1px #CED9F0;
+          }
+          .field-overlay {
+            width: calc(100% - 21px);
+          }
+        }
+      }
+      .field-overlay {
+        position: absolute;
+        width: 100%;
+        padding: 9px 8px 5px 8px;
+        background-color: white;
+      }
+      .item {
+        padding: 12px 0 12px 8px;
+        text-align: left;
+        &.field-stub {
+          height: 34px;
+        }
+      }
+    }
+  }
+  .joined-field {
+    .select-field {
+      .field-arrow {
+        background: url(../../../assets/svg/dropdown-expand.svg) 0 -3px;
+      }
+      &.expanded {
+        .field-arrow {
+          background: url(../../../assets/svg/dropdown-collapse.svg) 0 -3px;
+        }
+      }
+    }
+    .joined-dropdown {
+      position: absolute;
+      top: 30px;
+      left: -50%;
+      width: 220px;
+      height: 216px;
+      &.expanded {
+        display: flex;
+        flex-flow: row;
+        flex-wrap: nowrap;
+      }
+      .month-panel {
+        display: flex;
+        flex-flow: row;
+        flex-wrap: wrap;
+        width: 160px;
+        flex-shrink: 0;
+        align-content: flex-start;
+        .month {
+          width: 50%;
+        }
+      }
+      .years-panel {
+        height: 100%;
+        background-color: #F3F5FB;
+        flex-grow: 1;
+        ::ng-deep .ps {
+          .ps__rail-y {
+            width: 7px;
+            .ps__thumb-y {
+              width: 5px;
+              right: 1px;
+            }
+          }
+          &.ps--active-y {
+            .year.item {
+              margin-right: 7px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .prev-month, .next-month {
+    width: 24px;
+    height: 24px;
+    background-color: white;
+    background-repeat: no-repeat;
+    border-radius: 12px;
+    &.disabled {
+      opacity: 0.5;
+    }
+    &:hover {
+      background-color: #09338F;
+      &.disabled {
+        background-color: white;
+      }
+    }
+  }
+  .prev-month {
+    background-image: url(../../../assets/svg/calendar-prev-month.svg);
+    background-position: 7px 7px;
+    &:hover {
+      background-image: url(../../../assets/svg/calendar-prev-month-hover.svg);
+      &.disabled {
+        background-image: url(../../../assets/svg/calendar-prev-month.svg);
+      }
+    }
+  }
+  .next-month {
+    background-image: url(../../../assets/svg/calendar-next-month.svg);
+    background-position: 10px 7px;
+    &:hover {
+      background-image: url(../../../assets/svg/calendar-next-month-hover.svg);
+      &.disabled {
+        background-image: url(../../../assets/svg/calendar-next-month.svg);
+      }
+    }
+  }
+}

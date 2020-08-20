@@ -156,6 +156,13 @@ export class FeedsService {
     return result;
   }
 
+  private getComplexOrderUrl(feed: FeedModel): string {
+    if (feed.ot === 'UNIVERSITY_ENTRANCE') {
+      return `university/external/${feed.extId}`;
+    }
+    return `complex-order/external/${feed.extId}`;
+  }
+
   public openDetails(feed: FeedModel): string {
     let url = this.isLk ? '/' : this.loadService.config.lkUrl;
     switch (feed.feedType) {
@@ -166,7 +173,7 @@ export class FeedsService {
         url += `appeal/${feed.id}`;
         break;
       case 'COMPLEX_ORDER':
-        url += `university/external/${feed.extId}`;
+        url += this.getComplexOrderUrl(feed);
         break;
       case 'GEPS':
         url += `message/${feed.id}`;
@@ -207,6 +214,9 @@ export class FeedsService {
       case 'ESIGNATURE':
         url += `settings/signature`;
         break;
+      case 'ACCOUNT_CHILD':
+        url += `profile/family/child/${feed.extId}/docs`;
+        break;
     }
 
     return url;
@@ -226,8 +236,18 @@ export class FeedsService {
       userName: this.loadService.user.fullName,
       messageType: 'MESSAGE_CONFIRM'
     };
-    return this.http.post(`${this.loadService.config.lkApiUrl}feeds`,  {
+    return this.http.post(`${this.loadService.config.lkApiUrl}feeds`, {
       withCredentials: true, params
     });
+  }
+
+  public getQueryParamsForRedirect(feed: FeedModel) {
+    let params = {};
+    switch (feed.feedType) {
+      case 'ELECTION_INFO':
+        params = {vrnVibRef: feed.extId};
+        break;
+    }
+    return params;
   }
 }

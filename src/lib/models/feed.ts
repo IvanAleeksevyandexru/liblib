@@ -76,6 +76,7 @@ export interface FeedBannerModel {
 export type FeedItemModel = FeedModel | FeedBannerModel;
 
 export interface FeedModel {
+  ot?: string;
   data: FeedDataModel;
   date: string;
   branchId?: number;

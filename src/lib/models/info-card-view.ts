@@ -12,6 +12,7 @@ export interface InfoCardView {
   type?: string;
   detailsQueryParam?: { [key: string]: string };
   notification?: string;
+  statusMessage?: string;
   warning?: boolean;
   expired?: boolean;
   serviceUrl?: string;

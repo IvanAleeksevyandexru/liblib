@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ContactType } from '../models/contact';
 import { SecurityOptionType } from '../models/security';
-import { Tab } from '../models/tabs';
+import { Tabs } from '../models/tabs';
 import { NotificationPeriodItem } from '../models/notifications';
 import { DocumentType } from '../models/document';
 import { HorizontalAlign, VerticalAlign } from '../models/positioning';
 import { VrfStu, VrfValStu } from '../models/verifying-status';
-import { MODEL_DATE_FORMAT } from '../models/date-time.model';
 
 @Injectable(
   {
@@ -49,9 +48,20 @@ export class ConstantsService {
       offsetX: -ConstantsService.TAIL_FROM_EDGE_ALIGN_LEFT, offsetY: ConstantsService.TAIL_FROM_ICON
     }
   };
-  public static readonly ASSETS_DEFAULT_LOCATION = '/lib-assets/i18n/'; // для приложений у которых отсутствует LoadService
+  // дефолтный локейшн ассетов (для приложений у которых отсутствует LoadService чтобы прочитать конфиг)
+  public static readonly ASSETS_DEFAULT_PATH = 'lib-assets/';
+  public static readonly TRANSLATIONS_PATH = 'i18n/';
+  // темплейт подсветки найденной строки в контролах с поиском
+  public static readonly DEFAULT_HIGHLIGHT_TEMPLATE = '<span class="highlighted">${query}</span>';
+  // формат текстовой модели календарей для textModelValue === true
+  public static readonly CALENDAR_TEXT_MODEL_FORMAT = 'DD.MM.YYYY';
+  // процент блока, достаточный чтобы совершить анимацию вперед при перелистывании драгдропом
+  public static readonly DEFAULT_DRAGDROP_CENTERING_THRESHOLD = 0.5;
+  // продолжительность анимации выравнивания блока
+  public static readonly DEFAULT_DRAGDROP_ANIMATION_DURATION = 500;
+  // дефолтное количество итемов для подгрузки для incrementalLoading
+  public static readonly DEFAULT_ITEMS_INCREMENTAL_PAGE_SIZE = 10;
 
-  public static readonly CALENDAR_TEXT_MODEL_FORMAT = MODEL_DATE_FORMAT; // формат текстовой модели календарей для textModelValue === true
   public readonly FIXED_MENU_HEIGHT = 80; // высота закрепленного меню
   public readonly TYPE_CONTACT_EMAIL: ContactType = 'EML';
   public readonly TYPE_CONTACT_MBT: ContactType = 'MBT';
@@ -64,35 +74,55 @@ export class ConstantsService {
   public readonly STATUS_VERIFIED: VrfStu = 'VERIFIED';
   public readonly STATUS_NOT_VERIFIED: VrfStu = 'NOT_VERIFIED';
   public readonly SETTINGS_PAGE_URL = '/settings/account';
-  public readonly LK_TABS: Tab[] = [
-    {
+  public readonly TABS_METRIC_NAME = 'feedsOrder';
+  public readonly IMPORT_UPLOAD_LIMIT = 1 * (1024 * 1024); // Лимит загрузки при импорте ТС - 1 мегабайт
+  public readonly LK_TABS = new Tabs([
+      {
       id: 'overview',
       name: 'TABS.OVERVIEW.TITLE',
       url: '/overview',
-      mnemonic: 'overview'
+      metric: {name: this.TABS_METRIC_NAME, action: 'overview'}
     }, {
       id: 'statements',
       name: 'TABS.ORDERS.TITLE',
       url: '/orders',
-      mnemonic: 'myOrders'
+      metric: {name: this.TABS_METRIC_NAME, action: 'myOrders'}
     }, {
       id: 'profile',
       name: 'TABS.PROFILE.TITLE',
       url: '/profile',
-      mnemonic: 'documentsData'
+      metric: {name: this.TABS_METRIC_NAME, action: 'documentsData'}
     }, {
       id: 'messages',
       name: 'TABS.MESSAGES.TITLE',
       url: '/messages',
-      mnemonic: 'messages'
+      metric: {name: this.TABS_METRIC_NAME, action: 'messages'}
     }, {
       id: 'permissions',
       name: 'TABS.PERMISSIONS.TITLE',
       url: '/permissions',
-      mnemonic: 'permissions'
+      metric: {name: this.TABS_METRIC_NAME, action: 'permissions'}
     }
-  ];
-  public readonly LK_SETTINGS_SIDE_TABS: Tab[] = [
+  ]);
+  public readonly LK_PARTNERS_TABS = new Tabs([
+    {
+      id: 'partners',
+      name: 'TABS.ORDERS.TITLE',
+      url: '/lk/orders/all',
+      mnemonic: 'partnersOrders'
+    }, {
+      id: 'subscriptions',
+      name: 'TABS.SUBSCRIPTIONS.TITLE',
+      url: '/lk/subscriptions',
+      mnemonic: 'partnersSubscriptions'
+    }, {
+      id: 'history',
+      name: 'TABS.HISTORY.TITLE',
+      url: '/lk/history',
+      mnemonic: 'partnersHistory'
+    }
+  ]);
+  public readonly LK_SETTINGS_SIDE_TABS = new Tabs ([
     {
       id: 'account',
       name: 'SETTINGS.TABS.ACCOUNT',
@@ -167,9 +197,9 @@ export class ConstantsService {
       name: 'SETTINGS.TABS.PERMISSIONS',
       url: '/settings/system-permissions'
     }
-  ];
+  ]);
 
-  public readonly LK_MESSAGES_SIDE_TABS: Tab[] = [
+  public readonly LK_MESSAGES_SIDE_TABS = new Tabs([
     {
       id: 'inbox',
       name: 'MESSAGES.TABS.INBOX',
@@ -189,16 +219,16 @@ export class ConstantsService {
       id: 'blocked',
       name: 'MESSAGES.TABS.BLOCKED',
       url: '/settings/blacklist',
-      break: true
+      break: 'after'
     },
     {
       id: 'settings',
       name: 'MESSAGES.TABS.SETTINGS',
       url: '/settings/notifications'
     }
-  ];
+  ]);
 
-  public readonly LK_PROFILE_SIDE_TABS: Tab[] = [
+  public readonly LK_PROFILE_SIDE_TABS = new Tabs([
     {
       id: 'personal',
       name: 'PROFILE.TABS.PERSONAL',
@@ -245,35 +275,35 @@ export class ConstantsService {
       name: 'PROFILE.TABS.SETTINGS',
       url: '/profile/settings'
     }
-  ];
+  ]);
 
-  public readonly ORDERS_ASIDE = [
+  public readonly ORDERS_ASIDE = new Tabs([
     {
       id: 'orders',
       name: 'ORDERS.ASIDE.ORDERS',
       url: '/orders/all',
-      mnemonic: 'feedsOrder'
+      metric: {name: this.TABS_METRIC_NAME, action: 'feedsOrder'}
     },
     {
       id: 'drafts',
       name: 'ORDERS.ASIDE.DRAFTS',
       url: '/orders/drafts',
-      mnemonic: 'feedsDraft'
+      metric: {name: this.TABS_METRIC_NAME, action: 'feedsDraft'}
     },
     {
       id: 'archive',
       name: 'ORDERS.ASIDE.ARCHIVE',
       url: '/orders/archive',
-      mnemonic: 'feedsArchive'
+      metric: {name: this.TABS_METRIC_NAME, action: 'feedsArchive'}
     },
     {
       id: 'settings',
       name: 'ORDERS.ASIDE.SETTINGS',
-      break: true,
+      break: 'after',
       url: '/settings/notifications',
-      mnemonic: 'settings'
+      metric: {name: this.TABS_METRIC_NAME, action: 'settings', from: 'feedsOrder'}
     }
-  ];
+  ]);
   public readonly ORDERS_CATEGORIES = [
     {
       text: 'Все',
@@ -309,7 +339,8 @@ export class ConstantsService {
   public readonly FEEDS_CATEGORIES = [
     {
       text: 'Все',
-      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,CLAIM,COMPLEX_ORDER,FEEDBACK',
+      type:
+        'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION',
       id: 1,
       mnemonic: 'allEvents'
     },
@@ -339,7 +370,7 @@ export class ConstantsService {
     },
     {
       text: 'Системные',
-      type: 'BIOMETRICS,ACCOUNT,PROFILE,ORGANIZATION,ESIGNATURE',
+      type: 'BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,ELECTION_INFO,ORGANIZATION,ESIGNATURE',
       id: 6,
       mnemonic: 'systemEvents'
     },
@@ -740,10 +771,16 @@ export class ConstantsService {
     DRIVING_LICENCE: 'RF_DRIVING_LICENSE',
     PASSPORT: 'RF_PASSPORT',
     FID_DOC: 'FID_DOC',
+    RSDNC_PERMIT: 'RSDNC_PERMIT',
+    RFG_CERT: 'RFG_CERT',
+    CERT_REG_IMM: 'CERT_REG_IMM',
     BIRTH_CERTIFICATE: 'BRTH_CERT',
+    KID_ACT_RECORD: 'KID_ACT_RECORD',
+    BIRTH_CERTIFICATE_KID_RF: 'KID_RF_BRTH_CERT',
     BIRTH_CERTIFICATE_RF: 'RF_BRTH_CERT',
     BIRTH_CERTIFICATE_FID: 'FID_BRTH_CERT',
     BIRTH_CERTIFICATE_OLD: 'OLD_BRTH_CERT',
+    MEDICAL_BIRTH_CERTIFICATE: 'MDCL_BRTH_CERT',
     MILITARY_ID: 'MLTR_ID',
     INN: 'INN',
     SNILS: 'SNILS',
@@ -759,6 +796,11 @@ export class ConstantsService {
     MARRIED_CERT: 'MARRIED_CERT',
     DIVORCE_CERT: 'DIVORCE_CERT'
   };
+
+  public readonly FID_DOCUMENT_TYPES = [
+    this.DOCUMENT_TYPES.FID_DOC, this.DOCUMENT_TYPES.RSDNC_PERMIT,
+    this.DOCUMENT_TYPES.RFG_CERT, this.DOCUMENT_TYPES.CERT_REG_IMM
+  ];
 
   public readonly BIRTH_CERTIFICATES = ['BRTH_CERT', 'RF_BRTH_CERT', 'FID_BRTH_CERT', 'OLD_BRTH_CERT'];
 
@@ -788,7 +830,10 @@ export class ConstantsService {
   public readonly ID_DOC_TYPES = [
     this.DOCUMENT_TYPES.PASSPORT,
     this.DOCUMENT_TYPES.FOREIGN_PASSPORT,
-    this.DOCUMENT_TYPES.FID_DOC
+    this.DOCUMENT_TYPES.FID_DOC,
+    this.DOCUMENT_TYPES.RSDNC_PERMIT,
+    this.DOCUMENT_TYPES.RFG_CERT,
+    this.DOCUMENT_TYPES.CERT_REG_IMM
   ];
 
   public readonly CERTIFICATE_TITLE = {
@@ -825,6 +870,7 @@ export class ConstantsService {
   public readonly DRIVING_LICENSE_CATEGORIES = [
     'A', 'A1', 'B', 'B1', 'C', 'C1', 'D', 'D1', 'BE', 'CE', 'C1E', 'DE', 'D1E', 'M', 'Tm', 'Tb'
   ];
+
   public readonly FILE_TYPES = {
     'text/xml': 'XML',
     'text/html': 'HTML',

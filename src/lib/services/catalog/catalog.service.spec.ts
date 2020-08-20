@@ -19,8 +19,8 @@ describe('CatalogService', () => {
       ]
     });
 
-    catalogService = TestBed.get(CatalogService);
-    httpMock = TestBed.get(HttpTestingController);
+    catalogService = TestBed.inject(CatalogService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {

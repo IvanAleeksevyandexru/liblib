@@ -12,6 +12,7 @@ import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { HelperService } from '../../services/helper/helper.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
+import { Width } from '../../models/width-height';
 
 @Component({
   selector: 'lib-base-masked-input',
@@ -47,12 +48,10 @@ export class BaseMaskedInputComponent
   @Input() public commitOnInput = true;  // коммитить значение по input или по change
   @Input() public removePlaceholderSymbols = true;  // удалять ли символы плейсхолдера из значения перед коммитом
   @Input() public invalid = false;
-  @Input() public validationShowOn: ValidationShowOn | string = ValidationShowOn.TOUCHED;
+  @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public uppercase = false;
-  @Input() public textBefore?: string;
-  @Input() public showTextBefore?: boolean;
-  @Input() public textAfter?: string;
-  @Input() public showTextAfter?: boolean;
+  @Input() public width?: string | Width;
+
   // маска - это массив символов и/или регэкспов, каждый ответственен за свой символ в поле
   // пример: ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
   @Input() public mask: (value: string) => Array<string | RegExp> | Array<string | RegExp>;
@@ -164,7 +163,7 @@ export class BaseMaskedInputComponent
 
   public forceChange() {
     if (this.inputElement) {
-      this.inputElement.nativeElement.dispatchEvent(new Event('change', {bubbles: true, cancelable: false}));
+      this.inputElement.nativeElement.dispatchEvent(HelperService.createEvent('change', true, false));
     }
   }
 
@@ -174,13 +173,14 @@ export class BaseMaskedInputComponent
 
   public notifyFocusEvent(e: Event) {
     this.focusManager.notifyFocusMayChanged(this, e.type === 'focus');
+    const valueChangedOnBlur = e.type !== 'focus' && this.inputElement.nativeElement.value !== this.valueOnFocus;
+    if ((HelperService.isSafari() || HelperService.isIE()) && valueChangedOnBlur) {
+      this.forceChange();
+    }
   }
 
   public handleBlur() {
     this.focused = false;
-    if (HelperService.isSafari() && this.inputElement.nativeElement.value !== this.valueOnFocus) {
-      this.forceChange();
-    }
     this.check();
     this.blur.emit();
   }
@@ -228,12 +228,7 @@ export class BaseMaskedInputComponent
       this.writeValue(null);
       this.commit(null);
       this.cleared.emit();
-      if (this.showTextBefore) {
-        this.showTextBefore = false;
-      }
-      if (this.showTextAfter) {
-        this.showTextAfter = false;
-      }
+      this.returnFocus(e);
     }
     e.stopPropagation();
     this.check();

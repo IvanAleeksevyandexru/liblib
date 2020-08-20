@@ -38,7 +38,7 @@ describe('BreadcrumbsComponent', () => {
     fixture = TestBed.createComponent(BreadcrumbsComponent);
     component = fixture.componentInstance;
     component.translation = Translation.NONE;
-    service = TestBed.get(BreadcrumbsService);
+    service = TestBed.inject(BreadcrumbsService);
     service.setLinks([{
       url: '/',
       name: 'Главная'

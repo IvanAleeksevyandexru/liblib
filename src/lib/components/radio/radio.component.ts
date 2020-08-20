@@ -14,6 +14,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class RadioComponent implements OnInit, ControlValueAccessor {
+
   public static idCounter = 1;
 
   @Input() public radioId: string; // input ID: если не указан, генерируется уникальный ID
@@ -26,8 +27,9 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
   @Input() public value: string;
   @Input() public checked: boolean;
 
-  public propagateChange = (value: any) => {};
-  public onTouchedCallback = () => {};
+  private modelInitialization = true;
+  private onTouchedCallback: () => void;
+  private commit(value: any) {}
 
   constructor() { }
 
@@ -38,21 +40,31 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  public onChanged(event) {
-    this.propagateChange(event.target.value);
-    this.writeValue(this.value);
+  public onChanged(value: boolean) {
+    this.checked = value;
+    this.commit(this.value);
   }
 
   // ControlValueAccessor methods
-  public writeValue(value: any) {
+  public writeValue(value: string) {
+    const isInitialization = this.modelInitialization;
+    this.modelInitialization = false;
+    if (this.checked !== undefined && value === undefined && isInitialization) {
+      return; // управление @Input свойством, переинициализация моделью возможна только реальным значением
+    }
+    this.checked = value === this.value;
   }
 
   public registerOnChange(func: any) {
-    this.propagateChange = func;
+    this.commit = func;
   }
 
   public registerOnTouched(func: any) {
     this.onTouchedCallback = func;
+  }
+
+  public setDisabledState(disabled: boolean) {
+    this.disabled = disabled;
   }
 
 }

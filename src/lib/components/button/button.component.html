@@ -1,43 +1,35 @@
 <ng-template #content>
   <ng-content></ng-content>
 </ng-template>
-<ng-container *ngIf="type === 'button'">
-  <button
+<div class="button-container" (click)="onClick($event)">
+  <button *ngIf="type === 'button'"
     [disabled]="disabled"
-    class="{{size}} {{color}} {{width}} {{height}} {{type}} font-{{fontSize}}"
+    class="{{size}} {{color}} {{height}} {{type}} font-{{fontSize}}"
     [ngClass]="{disabled: disabled, active: active}"
-    tabindex="{{disabled ? -1 : 0}}"
-    (click)="onClick($event)">
+    tabindex="{{disabled ? -1 : 0}}">
     <ng-container *ngIf="!showLoader">
       <ng-container *ngTemplateOutlet="content"></ng-container>
     </ng-container>
     <lib-loader [color]="color" *ngIf="showLoader"></lib-loader>
   </button>
-</ng-container>
-<ng-container *ngIf="type === 'anchor'">
-  <ng-container *ngIf="link !== ''; else internal">
-    <a
-      class="{{size}} {{color}} {{width}} {{height}} {{type}}"
-      [ngClass]="{disabled: disabled, active: active}"
-      tabindex="{{disabled ? -1 : 0}}"
-      target="{{target}}"
-      href="{{link}}">
-      <ng-container *ngTemplateOutlet="content"></ng-container>
-    </a>
-  </ng-container>
-  <ng-template #internal>
-    <a
-      class="{{size}} {{color}} {{width}} {{height}} {{type}}"
-      tabindex="{{disabled ? -1 : 0}}"
-      [ngClass]="{disabled: disabled, active: active}"
-      [routerLink]="internalLink">
-      <ng-container *ngTemplateOutlet="content"></ng-container>
-    </a>
-  </ng-template>
-</ng-container>
-<ng-container *ngIf="type === 'search'">
-  <button
-    class="{{size}} {{width}} {{type}}"
+  <a *ngIf="type === 'anchor' && link !== ''"
+    class="{{size}} {{color}} {{width}} {{height}} {{type}}"
     [ngClass]="{disabled: disabled, active: active}"
-    (click)="onClick($event)"><span class="icon"></span></button>
-</ng-container>
+    tabindex="{{disabled ? -1 : 0}}"
+    target="{{target}}"
+    href="{{link}}">
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </a>
+  <a *ngIf="type === 'anchor' && link === ''"
+    class="{{size}} {{color}} {{width}} {{height}} {{type}}"
+    tabindex="{{disabled ? -1 : 0}}"
+    [ngClass]="{disabled: disabled, active: active}"
+    [routerLink]="internalLink">
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </a>
+  <button *ngIf="type === 'search'"
+    class="{{size}} {{width}} {{type}}"
+    [ngClass]="{disabled: disabled, active: active}">
+    <span class="icon"></span>
+  </button>
+</div>

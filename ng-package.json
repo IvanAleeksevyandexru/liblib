@@ -7,5 +7,6 @@
   "lib": {
     "entryFile": "src/public-api.ts",
     "cssUrl": "inline"
-  }
+  },
+  "whitelistedNonPeerDependencies": ["."]
 }
