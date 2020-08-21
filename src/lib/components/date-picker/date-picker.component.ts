@@ -5,7 +5,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { StandardMaskedInputComponent } from '../standard-masked-input/standard-masked-input.component';
 import { PipedMessage } from '../../models/piped-message';
 import { HorizontalAlign } from '../../models/positioning';
-import { Translation, Align, TipDirection, BrokenDateFixStrategy, MessagePosition } from '../../models/common-enums';
+import { Translation, Align, TipDirection, BrokenDateFixStrategy } from '../../models/common-enums';
 import { ValidationDetailed, ValidationShowOn, ValidationMessages } from '../../models/validation-show';
 import { FocusManager } from '../../services/focus/focus.manager';
 import { DatesHelperService } from '../../services/dates-helper/dates-helper.service';
@@ -18,7 +18,6 @@ import { DragDropBinding, DragDropType, DragDropDirection, DragDropOffsetType, D
 import { RelativeDate, Range, MonthYear, DateProperties, DatePropertiesPublisher } from '../../models/date-time.model';
 import { Subscription, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Width } from '../../models/width-height';
 import * as moment_ from 'moment';
 const moment = moment_;
 
@@ -88,25 +87,12 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   @Input() public tabIndex?: string | number;
   @Input() public placeholder?: string;
   @Input() public disabled = false;
-  @Input() public width?: Width | string;
 
-  // информационная подсказка
-  @Input() public questionTip?: string;
-  // позиция вывода информации: типом или отдельным блоком над/под контролом
-  @Input() public questionTipPosition: string | MessagePosition = MessagePosition.INSIDE;
-  // позиция вывода ошибки: типом или отдельным блоком над/под контролом
-  @Input() public validationPosition: string | MessagePosition = MessagePosition.INSIDE;
-  // описывает не валидность в терминах true/false, работает только совместно с подсветкой
   @Input() public invalid = false;
-  // более полная валидация, пригодная для рендера текста ошибок, отменяет значение invalid если задана
-  @Input() public validation: boolean | string | Array<string> | ValidationErrors | { [key: string]: any };
-  // когда показывать некорректность поля (как правило начальное пустое поле не считается корректным, но отображать это не нужно)
+  @Input() public validation: boolean | string | ValidationErrors;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
-  // сообщения валидации вместе с параметрами вывода, работает только совместно с validation
-  @Input() public validationMessages: string | PipedMessage | ValidationMessages | { [key: string]: string | PipedMessage} = null;
-  // определяет должна ли валидация скрывать информационный тип (показываться вместо) или показываться в дополнение
-  @Input() public validationOverride = true;
-  // направление бабблов информации-ошибки, для MessagePosition.INSIDE
+  @Input() public validationMessages: string | PipedMessage | ValidationMessages = null;
+  @Input() public questionTip?: string;
   @Input() public tipDirection: TipDirection | string = TipDirection.RIGHT;
 
   @Input() public textEditable = true; // разрешен ли клавиатурный ввод
@@ -126,7 +112,6 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   @Input() public align: Align | string = Align.RIGHT; // выравнивание панели если панель не равна по ширине инпуту
   @Input() public shortYearFormat = false;
   @Input() public americanFormat = false; // месяц впереди, разделитель / вместо .
-  @Input() public readOnly = false;
 
   // границы допустимого диапазона для ввода/выбора новых дат, могут иметь относительный формат, см HelperService.relativeDateToDate
   @Input() public minDate: Date | RelativeDate | string = new RelativeDate('start of year');
@@ -153,11 +138,9 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   public shortDateFormat = STD_SHORT_FORMAT;
   public control: AbstractControl;
   public Align = Align;
-  public MessagePosition = MessagePosition;
 
   public expanded = false;
   public inconsistent = false;
-  public invalidDisplayed = false;
   public text = '';
   public monthShift = 'none';
   public blockMobileKeyboard = false;
@@ -195,7 +178,6 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         this.changeDetection.markForCheck();
       });
     }
-    this.check();
   }
 
   public ngOnChanges(changes: SimpleChanges) {
@@ -217,14 +199,15 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         }
       }
     }
-    this.check();
   }
 
   public ngDoCheck() {
-    if (this.inputElement && this.control) {
-      this.inputElement.setTouched(this.control.touched);
+    if (this.inputElement) {
+      if (this.control) {
+        this.inputElement.setTouched(this.control.touched);
+      }
+      this.inputElement.ngDoCheck();
     }
-    this.check();
   }
 
   public ngOnDestroy() {
@@ -243,7 +226,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     if (this.asSimpleInput) {
       return;
     }
-    if (!this.expanded && !this.disabled && !this.readOnly || this.asSimplePanel) {
+    if (!this.expanded && !this.disabled || this.asSimplePanel) {
       this.expanded = true;
       this.rangeStart = null;
       this.suppressMobileKeyboard();
@@ -306,9 +289,9 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     if (this.containerOverlap) {
       this.positioningDescriptor = {master: this.fieldContainer, slave: this.calendarContainer,
         destroyOnScroll: true, destroyCallback: this.closeCalendar.bind(this),
-        alignX: this.align === Align.LEFT ? HorizontalAlign.LEFT_TO_LEFT :
-          this.align === Align.RIGHT ? HorizontalAlign.RIGHT_TO_RIGHT : null,
-          width: this.align && this.align === Align.ADJUST ? null : '280px'
+        alignX: this.align && this.align.toUpperCase() === Align.LEFT ? HorizontalAlign.LEFT_TO_LEFT :
+          this.align && this.align.toUpperCase() === Align.RIGHT ? HorizontalAlign.RIGHT_TO_RIGHT : null,
+          width: this.align && this.align.toUpperCase() === Align.ADJUST ? null : '280px'
         } as PositioningRequest;
       this.positioningManager.attach(this.positioningDescriptor);
     }
@@ -712,13 +695,6 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       return result.empty();
     } else {
       return result.value(Range.create(startDateParseResult.result, endDateParseResult.result, this.textModelValue));
-    }
-  }
-
-  public check() {
-    this.invalidDisplayed = ValidationHelper.checkValidation(this, {empty: this.isModelEmpty()});
-    if (this.inputElement) {
-      this.inputElement.ngDoCheck();
     }
   }
 

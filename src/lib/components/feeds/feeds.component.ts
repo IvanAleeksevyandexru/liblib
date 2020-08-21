@@ -10,19 +10,19 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import {FeedsService} from '../../services/feeds/feeds.service';
-import {FeedModel, FeedsModel, SnippetModel} from '../../models/feed';
-import {LoadService} from '../../services/load/load.service';
-import {User} from '../../models/user';
+import { FeedsService } from '../../services/feeds/feeds.service';
+import { FeedModel, FeedsModel, SnippetModel } from '../../models/feed';
+import { LoadService } from '../../services/load/load.service';
+import { User } from '../../models/user';
 import * as moment_ from 'moment';
-import {TranslateService} from '@ngx-translate/core';
-import {Subscription} from 'rxjs';
-import {NotifierService} from '../../services/notifier/notifier.service';
-import {switchMap} from 'rxjs/operators';
-import {SharedService} from '../../services/shared/shared.service';
-import {HelperService} from '../../services/helper/helper.service';
-import {YaMetricService} from '../../services/ya-metric/ya-metric.service';
-import {CountersService} from '../../services/counters/counters.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { NotifierService } from '../../services/notifier/notifier.service';
+import { switchMap } from 'rxjs/operators';
+import { SharedService } from '../../services/shared/shared.service';
+import { HelperService } from '../../services/helper/helper.service';
+import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
+import { CountersService } from '../../services/counters/counters.service';
 import { Router } from '@angular/router';
 
 const moment = moment_;
@@ -177,7 +177,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public setUnreadFeedCls(feed: FeedModel): boolean {
-    return feed.unread && feed.feedType !== 'DRAFT';
+    return feed.unread && feed.feedType !== 'DRAFT' && feed.feedType !== 'PARTNERS_DRAFT';
   }
 
   public markAsFlag(feed: FeedModel): boolean {
@@ -274,14 +274,23 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public setHeader(feed: FeedModel): string {
-    if (feed.feedType === 'GEPS' || feed.feedType === 'ORDER' || feed.feedType === 'CLAIM' || feed.feedType === 'COMPLEX_ORDER') {
+    if (feed.feedType === 'GEPS' ||
+      feed.feedType === 'ORDER' ||
+      feed.feedType === 'CLAIM' ||
+      feed.feedType === 'PARTNERS' ||
+      feed.feedType === 'COMPLEX_ORDER'
+    ) {
       return feed.subTitle;
     }
     return feed.title;
   }
 
   public setSubHeader(feed: FeedModel): string {
-    if (feed.feedType === 'GEPS' || feed.feedType === 'ORDER' || feed.feedType === 'CLAIM' || feed.feedType === 'COMPLEX_ORDER') {
+    if (feed.feedType === 'GEPS' ||
+      feed.feedType === 'ORDER' ||
+      feed.feedType === 'CLAIM' ||
+      feed.feedType === 'PARTNERS' ||
+      feed.feedType === 'COMPLEX_ORDER') {
       return feed.title;
     }
     return feed.subTitle;
@@ -343,16 +352,18 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public showRemoveFeedButton(feed: FeedModel): boolean {
-    return (this.page === 'overview' || this.page === 'events' || this.page === 'drafts') && !feed.data.reminder;
+    return (this.page === 'overview' || this.page === 'events' ||
+            this.page === 'drafts' || this.page === 'partners_drafts') && !feed.data.reminder;
   }
 
   public getIsArchive(): boolean {
-    return this.selectedTypes === 'DRAFT' ? undefined : this.isArchive;
+    return (this.selectedTypes === 'DRAFT' || this.selectedTypes === 'PARTNERS_DRAFT') ? undefined : this.isArchive;
   }
 
   public isUpdated(feed: FeedModel): boolean {
-    return (feed.feedType === 'ORDER' || feed.feedType === 'COMPLEX_ORDER'
-      || feed.feedType === 'EQUEUE' || feed.feedType === 'CLAIM') && feed.unread;
+    return (feed.feedType === 'PARTNERS' || feed.feedType === 'ORDER' ||
+      feed.feedType === 'COMPLEX_ORDER' || feed.feedType === 'EQUEUE' ||
+      feed.feedType === 'CLAIM') && feed.unread;
   }
 
   public isEqueueEvent(feed: FeedModel): boolean {
@@ -458,7 +469,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
 
-    if (feed.feedType === 'ORGANIZATION' || feed.feedType === 'ACCOUNT_CHILD') {
+    if (feed.feedType === 'ORGANIZATION') {
       this.feedsService.markFeedAsRead(feed.id).subscribe();
     }
   }

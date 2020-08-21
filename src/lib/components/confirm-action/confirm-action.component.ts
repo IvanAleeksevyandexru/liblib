@@ -29,13 +29,15 @@ export class ConfirmActionComponent implements OnInit {
 
   public destroy: () => {};
 
-  @HostListener('document:keydown', ['$event']) public onKeydownComponent(event: KeyboardEvent): void {
+  @HostListener('document:keydown', ['$event'])
+  public onKeydownComponent(event: KeyboardEvent): void {
     if (event.key === 'Escape' || event.key === 'Esc') {
       this.destroy();
     }
   }
 
-  constructor() { }
+  constructor() {
+  }
 
   public ngOnInit() {
   }

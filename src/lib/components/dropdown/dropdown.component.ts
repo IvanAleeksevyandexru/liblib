@@ -14,7 +14,6 @@ import { ValidationHelper } from '../../services/validation-helper/validation.he
 import { ConstantsService } from '../../services/constants.service';
 import { Translation, MultipleItemsLayout, LineBreak } from '../../models/common-enums';
 import { forkJoin } from 'rxjs';
-import { Width } from '../../models/width-height';
 
 /*
  * документация по ссылке https://confluence.egovdev.ru/pages/viewpage.action?pageId=170673869
@@ -41,7 +40,6 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   @Input() public disabled?: boolean;
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
-  @Input() public width?: Width | string;
 
   // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
   @Input() public formatter?: (item: ListItem, context?: { [name: string]: any }) => string;
@@ -83,14 +81,15 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   // через конвертер можно использовать any
   @Input() public items: Array<ListElement | any> = [];
 
+  // отображение сообщений под списком
+  @Input() public additionalItem = false;
+
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
   // выбранное значение (или набор выбранных значений) изменилось
   @Output() public changed = new EventEmitter<Array<any> | any>();
   @Output() public opened = new EventEmitter<any>();
   @Output() public closed = new EventEmitter<any>();
-  // пре-рендер или обновление контента выпадашки
-  @Output() public listed = new EventEmitter<Array<ListItem>>();
 
   public expanded: boolean;
   public destroyed = false;
@@ -331,16 +330,16 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
               .subscribe((filteredPaged: Array<ListItem>) => {
             highlightIfNeeded(filteredPaged);
             const partialedItems = partialNumber === 0 ? filteredPaged : this.internalDisplayed.concat(filteredPaged);
-            this.publishList(partialedItems);
+            this.internalDisplayed = this.listService.alignGroupsTreeIfNeeded(partialedItems, this.internalItems);
             this.partialsLoaded = partialedItems.length === filteredAll.length;
           });
         } else {
           highlightIfNeeded(filteredAll);
-          this.publishList(filteredAll);
+          this.internalDisplayed = this.listService.alignGroupsTreeIfNeeded(filteredAll, this.internalItems);
         }
       });
     } else {
-      this.publishList(this.internalItems);
+      this.internalDisplayed = this.listService.alignGroupsTreeIfNeeded(this.internalItems, this.internalItems);
     }
     this.changeDetector.detectChanges();
   }
@@ -349,12 +348,6 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     if (this.incrementalLoading && this.expanded && !this.partialsLoaded) {
       this.setPartialIndex(this.partialPageNumber + 1);
     }
-  }
-
-  public publishList(items: Array<ListItem>) {
-    const alignedItems = this.listService.alignGroupsTreeIfNeeded(items, this.internalItems);
-    this.internalDisplayed = alignedItems;
-    this.listed.emit(alignedItems);
   }
 
   public multipleSummaryOpenDetails(e: Event) {
@@ -411,13 +404,13 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
       if (item.belongsTo(this.internalSelected)) {
         return false;
       }
+      item.selected = true;
       if (this.multi) {
         this.internalSelected.push(item);
       } else {
-        this.internalItems.forEach((previouslySelected: ListItem) => previouslySelected.selected = false);
+        this.internalSelected.forEach((previouslySelected: ListItem) => previouslySelected.selected = false);
         this.internalSelected = [item];
       }
-      item.selected = true;
       if (commitEmit) {
         this.commitEmit();
       }
@@ -450,6 +443,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   }
 
   public handleKeydownNavigation(e: KeyboardEvent) {
+    const highlightedElementIndex = this.internalDisplayed.findIndex((item: ListItem) => item.compare(this.highlighted));
     if (e.key === 'Tab') {  // tab
       // по факту blur, скрываем выпадашку чтобы perfect scrollbar не получил фокус
       this.closeDropdown();
@@ -525,7 +519,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   }
 
   private scrollTo(item: ListItem) {
-    this.listService.scrollTo(this.scrollableArea, item.findIndexAmong(this.internalDisplayed));
+    this.listService.scrollTo(this.scrollableArea, this.internalDisplayed.findIndex((el: ListItem) => el === item));
   }
 
 }

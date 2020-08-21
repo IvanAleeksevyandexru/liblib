@@ -2,7 +2,7 @@ import {
   Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnChanges, OnDestroy, DoCheck,
   SimpleChanges, forwardRef, ElementRef, ViewChild, ChangeDetectorRef, Optional, Host, SkipSelf } from '@angular/core';
 import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
@@ -10,7 +10,6 @@ import { SearchSyncControl } from '../../models/common-enums';
 import { HelperService } from '../../services/helper/helper.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { ConstantsService } from '../../services/constants.service';
-import { Width } from '../../models/width-height';
 
 class ScheduledSearch {
   public constructor(query: string, token: number) {
@@ -50,9 +49,7 @@ export class SearchBarComponent
   @Input() public readOnly = false;
   @Input() public disabled = false;
   @Input() public invalid = false;
-
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
-  @Input() public width?: Width | string;
   @Input() public clearable = true;  // разрешает очистить поле если есть значение
   @Input() public showStaticContent = false; // разрешает показывать ng-content вместо инпута пока он не активен. активируется кликом
   @Input() public forceShowStaticContent = false; // форсирует показ ng-content-а независимо от активности инпут-поля
@@ -83,7 +80,7 @@ export class SearchBarComponent
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
   @Output() public newSearch = new EventEmitter<string>();
-  @Output() public forcedSearch = new EventEmitter<any>();
+  @Output() public forcedSearch = new EventEmitter();
   @Output() public cleared = new EventEmitter<void>();
   @Output() public suggestionSelected = new EventEmitter<string>();
   @ViewChild('input', {static: false}) public inputElement: ElementRef<HTMLInputElement>;
@@ -99,7 +96,6 @@ export class SearchBarComponent
   private queryDebounce = new Subject<ScheduledSearch>();
   private querySubscription = this.refreshDebouncedSubscription();
   private searchQueue: Array<string> = [];
-  private forcedSearchPrevent = false;
 
   private onTouchedCallback: () => void;
   protected commit(value: string) {}
@@ -144,7 +140,6 @@ export class SearchBarComponent
   public updateQuery(value: string) {
     this.query = value;
     this.suggestion = null;
-    this.commit(this.query);
     if (this.searchByTextInput) {
       this.queryDebounce.next(new ScheduledSearch(value, this.insureSearchActiveToken));
     }
@@ -164,8 +159,7 @@ export class SearchBarComponent
     if (!this.disabled && !this.isBlocked()) {
       this.returnFocus();
       this.query = '';
-      this.commit(this.query);
-      this.searchValueSkipUnconditional(this.query);
+      this.searchValueSkipUnconditional(this.query, true);
     }
     e.stopPropagation();
     this.cleared.emit();
@@ -181,29 +175,26 @@ export class SearchBarComponent
       this.cancelSearch();
       return;
     } else if (this.suggestion && forcedWithKey) {
+      // не запускаем поиск при выборе suggestion, не всегда требуется
       this.query = query = query + this.suggestion;
       this.suggestionSelected.emit(query);
       this.suggestion = null;
       this.commit(this.query);
     } else {
-      this.forcedSearchPrevent = false;
       if (forcedWithKey || forcedWithMagnifyingGlass) {
-        this.forcedSearch.emit({query, byEnter: forcedWithKey});
+        this.forcedSearch.emit();
         if (!this.searchByForcing) {
           this.cancelSearch();
           return;
         }
       }
-      if (!this.forcedSearchPrevent) {
-        this.searchValueSkipUnconditional(query);
-      }
+      this.searchValueSkipUnconditional(query, true);
     }
   }
 
   public cancelSearch() {
     this.searchQueue = [];
     this.insureSearchActiveToken = ++this.insureSearchActiveToken % 1000;
-    this.forcedSearchPrevent = true;
   }
 
   public selectSuggestion() {
@@ -213,7 +204,7 @@ export class SearchBarComponent
   }
 
   // вызывается внутри компонента И когда модель изменена программно снаружи
-  public searchValueSkipUnconditional(value: string) {
+  public searchValueSkipUnconditional(value: string, doCommit: boolean) {
     if (value && this.queryMinSymbolsCount && value.length < this.queryMinSymbolsCount) {
       return;
     } else if (this.searchUniqueOnly && value === this.lastEmitted) {
@@ -225,6 +216,9 @@ export class SearchBarComponent
     } else {
       this.lastEmitted = value;
       this.newSearch.emit(value);
+      if (doCommit) {
+        this.commit(value);
+      }
     }
   }
 
@@ -248,7 +242,7 @@ export class SearchBarComponent
       } else {
         const search = this.searchQueue.shift();
         if (search !== undefined) {
-          this.searchValueSkipUnconditional(search);
+          this.searchValueSkipUnconditional(search, true);
           setTimeout(() => {
             // сделано асинхронным чтобы внешний обработчик поиска мог нормально запушить изменение searching флага
             this.dequeueUntilSearching();
@@ -263,7 +257,7 @@ export class SearchBarComponent
     this.query = value || '';
     this.suggestion = null;
     if (value !== prevValue && this.searchOnProgrammaticChange) {
-      this.searchValueSkipUnconditional(value || '');
+      this.searchValueSkipUnconditional(value || '', false);
     }
     this.check();
     this.changeDetector.detectChanges();
@@ -286,7 +280,7 @@ export class SearchBarComponent
       this.onTouchedCallback();
     }
     if (this.searchOnFocus && !this.suppressSearching) {
-      this.searchValueSkipUnconditional(this.query);
+      this.searchValueSkipUnconditional(this.query, false);
     }
     this.check();
     this.focus.emit();

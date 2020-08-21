@@ -154,31 +154,11 @@ export class ProfileService {
 
         return result;
       }
-      case this.DOCUMENT_TYPES.RSDNC_PERMIT:
-      case this.DOCUMENT_TYPES.RFG_CERT:
-      case this.DOCUMENT_TYPES.CERT_REG_IMM:
-      case this.DOCUMENT_TYPES.FID_DOC: {
-        let docTitle = '';
-        switch (object.type) {
-          case this.DOCUMENT_TYPES.FID_DOC:
-            docTitle = 'Иностранный паспорт:';
-            break;
-          case this.DOCUMENT_TYPES.RSDNC_PERMIT:
-            docTitle = 'Вид на жительство:';
-            break;
-          case this.DOCUMENT_TYPES.RFG_CERT:
-            docTitle = 'Удостоверение беженца Российской Федерации:';
-            break;
-          case this.DOCUMENT_TYPES.CERT_REG_IMM:
-            docTitle = 'Свидетельство о регистрации ходатайства о признании иммигранта беженцем:';
-            break;
-        }
-
+      case this.DOCUMENT_TYPES.FID_DOC:
         return {
           attrId: 'ident',
-          canDetails: true,
+          canDetails: false,
           canEdit: true,
-          detailsPath: '/profile/personal/id-doc',
           empty: {
             title: 'Добавьте основной документ',
             subtitle: 'он необходим для получения большинства услуг на портале'
@@ -188,7 +168,7 @@ export class ProfileService {
           },
           fields: [
             {
-              title: docTitle,
+              title: 'Иностранный паспорт:',
               value: object.series ? object.series + ' ' + object.number : '' + object.number,
             },
             {
@@ -203,14 +183,9 @@ export class ProfileService {
             {
               title: 'Кем выдан',
               value: object.issuedBy
-            },
-            {
-              title: 'Действителен до',
-              value: object.expiryDate
             }
           ]
         };
-      }
       case this.DOCUMENT_TYPES.DRIVING_LICENCE: {
         const result: InfoCardView = {
           canDetails: false,
@@ -261,70 +236,6 @@ export class ProfileService {
 
         return result;
       }
-      case this.DOCUMENT_TYPES.BIRTH_CERTIFICATE_KID_RF:
-        return {
-          canDetails: true,
-          canEdit: false,
-          canDelete: false,
-          detailsPath: `/profile/family/child/${object.kidId}/birthday`,
-          empty: {
-            title: 'Свидетельство о рождении',
-            subtitle: 'Добавьте документ, чтобы он всегда был у вас под рукой'
-          },
-          full: {
-            title: 'Свидетельство о рождении'
-          },
-          fields: [
-            {
-              title: 'Серия и номер',
-              showEmpty: true,
-              noLabel: true,
-              value: `${object.docInfo.series} ${object.docInfo.number}`,
-            },
-            {
-              title: 'ФИО',
-              showEmpty: true,
-              value: `${object.childInfo.lastName} ${object.childInfo.firstName} ${object.childInfo.middleName || ''}`
-            },
-            {
-              title: 'Дата выдачи',
-              showEmpty: true,
-              value: object.docInfo.date
-            }
-          ]
-        };
-      case this.DOCUMENT_TYPES.KID_ACT_RECORD:
-        return {
-          canDetails: true,
-          canEdit: false,
-          canDelete: false,
-          detailsPath: `/profile/family/child/${object.kidId}/act`,
-          empty: {
-            title: 'Актовая запись о рождении ребенка',
-            subtitle: 'Добавьте документ, чтобы он всегда был у вас под рукой'
-          },
-          full: {
-            title: 'Актовая запись о рождении ребенка'
-          },
-          fields: [
-            {
-              title: 'Номер',
-              showEmpty: true,
-              noLabel: true,
-              value: object.actRecord.number,
-            },
-            {
-              title: 'ФИО',
-              showEmpty: true,
-              value: `${object.childInfo.lastName} ${object.childInfo.firstName} ${object.childInfo.middleName || ''}`
-            },
-            {
-              title: 'Дата выдачи',
-              showEmpty: true,
-              value: object.actRecord.date
-            }
-          ]
-        };
       case this.DOCUMENT_TYPES.BIRTH_CERTIFICATE_RF:
       case this.DOCUMENT_TYPES.BIRTH_CERTIFICATE_OLD:
       case this.DOCUMENT_TYPES.BIRTH_CERTIFICATE_FID:
@@ -395,11 +306,10 @@ export class ProfileService {
           attrId: 'frpass',
           canDetails: !object.idDoc,
           canEdit: object.idDoc,
-          canDelete: !object.idDoc && !ProfileService.isExpiredSoonForeignPassport(object),
+          canDelete: !object.idDoc,
           vrfStu: object.vrfStu,
           detailsPath: '/profile/personal/foreign-passport',
           serviceUrl: '10005',
-          type: object.type,
           warning: ProfileService.isExpiredForeignPassport(object),
           notification: ProfileService.getForeignPassportNotification(object),
           expired: ProfileService.isExpiredForeignPassport(object),

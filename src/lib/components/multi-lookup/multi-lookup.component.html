@@ -1,5 +1,4 @@
-<div class="multi-lookup dropdown" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)"
-  [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+<div class="multi-lookup dropdown" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)">
   <div class="lookup-field dropdown-field" [ngClass]="{multi: true, disabled: disabled, invalid: invalidDisplayed, clearable: clearable}">
     <div class="dropdown-values" #dropdownValues [ngClass]="[multipleItemsLayout]" (click)="multipleSummaryOpenDetails($event)">
       <div class="dropdown-values-custom" *ngIf="customMultipleItemsLayoutData" [innerHTML]="customMultipleItemsLayoutData | safeHtml"></div>
@@ -54,7 +53,6 @@
       [itemsProvider]="provider"
       [translation]="translation"
       (changed)="appendItem($event)"
-      (listed)="emitListed($event)"
       (focus)="handleFocus()"
       (blur)="handleBlur()"
       (opened)="handleOpening()"

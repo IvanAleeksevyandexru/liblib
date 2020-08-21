@@ -1,33 +1,22 @@
-<div class="above-info" *ngIf="validationPosition === MessagePosition.ABOVE || questionTipPosition === MessagePosition.ABOVE"
-    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
-  <div class="information text-help" 
-    *ngIf="questionTip && questionTipPosition === MessagePosition.ABOVE && (!validationOverride || !(invalidDisplayed && validationMessages))" 
-    [innerHTML]="questionTip">
-  </div>
-  <div class="validation" *ngIf="validationPosition === MessagePosition.ABOVE && invalidDisplayed && validationMessages">
-    <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages"></lib-validation-message>
-  </div>
-</div>
-<div class="date-picker" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside (clickOutside)="closeCalendar();"
-  [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+<div class="date-picker" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside (clickOutside)="closeCalendar();">
   <div *ngIf="!asSimplePanel" class="value-field-wrapper">
     <div class="value-field-container" #fieldContainer [ngClass]="{expanded: expanded, inconsistent: inconsistent}">
-      <lib-standard-masked-input
-        #input
-        [(ngModel)]="text"
-        contextClass="calendar-input"
-        [name]="name"
-        [tabIndex]="tabIndex"
-        [disabled]="disabled"
+      <lib-standard-masked-input 
+        #input 
+        [(ngModel)]="text" 
+        contextClass="calendar-input" 
+        [name]="name" 
+        [tabIndex]="tabIndex" 
+        [disabled]="disabled" 
         [clearable]="clearable"
         [placeholder]="placeholder"
-        [readOnly]="!textEditable || blockMobileKeyboard || readOnly"
+        [readOnly]="!textEditable || blockMobileKeyboard" 
         [mask]="isRange ? rangeMask : dateMask" 
         [showConstantMaskSymbols]="true" 
-        [formatter]="dateEnteringController"
+        [formatter]="dateEnteringController" 
         [removePlaceholderSymbols]="false"
-        [keepCharPositions]="true"
-        [showMaskAsPlaceholder]="true"
+        [keepCharPositions]="true" 
+        [showMaskAsPlaceholder]="true" 
         [containerOverlap]="containerOverlap"
         (click)="toggle(true)" 
         (change)="handleChange($event.target.value)" 
@@ -35,13 +24,10 @@
         (blur)="handleBlur()" 
         (cleared)="resetToEmpty()"
         [invalid]="invalid"
-        [validation]="validation"
+        [validation]="validation" 
         [validationShowOn]="validationShowOn"
-        [validationPosition]="validationPosition === MessagePosition.INSIDE ? validationPosition : MessagePosition.NOWHERE"
-        [validationMessages]="validationMessages"
-        [validationOverride]="validationOverride"
+        [validationMessages]="validationMessages" 
         [questionTip]="questionTip"
-        [questionTipPosition]="questionTipPosition === MessagePosition.INSIDE ? questionTipPosition : MessagePosition.NOWHERE"
       ></lib-standard-masked-input>
       <div class="calendar-icon" (click)="toggle(false)"></div>
     </div>
@@ -50,7 +36,7 @@
     <div class="calendar-container" *ngIf="expanded || asSimplePanel" #calendarContainer (scroll)="stopPropagation($event)"
         [ngClass]="{'align-left': align === Align.LEFT, 'align-right': align === Align.RIGHT, 'adjust': align === Align.ADJUST}">
       <div class="calendar-panel">
-        <lib-month-year-select
+        <lib-month-year-select 
           [activeMonthYear]="activeMonthYear"
           [minDate]="minimumDate"
           [maxDate]="maximumDate"
@@ -138,15 +124,5 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
-<div class="below-info" *ngIf="validationPosition === MessagePosition.BELOW || questionTipPosition === MessagePosition.BELOW"
-    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
-  <div class="information text-help" 
-    *ngIf="questionTip && questionTipPosition === MessagePosition.BELOW && (!validationOverride || !(invalidDisplayed && validationMessages))" 
-    [innerHTML]="questionTip">
-  </div>
-  <div class="validation" *ngIf="validationPosition === MessagePosition.BELOW && invalidDisplayed && validationMessages">
-    <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages"></lib-validation-message>
   </div>
 </div>

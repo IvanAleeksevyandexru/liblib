@@ -1,11 +1,9 @@
 <div class="multiline-edit"
     [class.invalid]="invalidDisplayed"
     [class.focused]="focused"
-    [class.diabled]="disabled"
     [class.full-height-scroll]="fullHeightScroll"
     [class.with-symbols-counter]="maxlength"
-    [ngClass]="contextClass ? [contextClass] : []" libStopScreenScroll
-    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+    [ngClass]="contextClass ? [contextClass] : []" libStopScreenScroll>
   <div class="multiline-wrapper">
     <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}" [ngStyle]="{'max-height.px': maxHeight}">
       <div class="multiline-input" #input

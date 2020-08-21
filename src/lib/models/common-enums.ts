@@ -13,14 +13,6 @@ export enum ValidationShowOn {
   TOUCHED_UNFOCUSED = 'touched-unfocused' // показывать если touched и не редактируется в настоящий момент
 }
 
-// способ показа валидации или информации для ValidationDetailed компонент
-export enum MessagePosition {
-  ABOVE = 'above',   // над компонентом отдельным блоком
-  BELOW = 'below',   // под компонентом отдельным блоком
-  INSIDE = 'inside', // внутри контрола в виде лампочки по нажатию на которую можно просмотреть сообщение
-  NOWHERE = 'nowhere'// нигде
-}
-
 // выравнивание выпадашек если не совпадает с шириной инпута
 export enum Align {
   LEFT = 'left',  // по левой границе инпута

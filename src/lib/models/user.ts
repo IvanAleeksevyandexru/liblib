@@ -21,7 +21,7 @@ export interface PersonData {
   error?: string;
   id?: string;
   kids?: Kid[];
-  orgs?: Org[];
+  org?: Org;
   person?: Person;
   registration?: Registration;
   roles?: Role[];

@@ -106,10 +106,6 @@ export class ListItem implements ListElement {
     return !!this.findSame(collection, strict);
   }
 
-  public findIndexAmong(collection: Array<ListItem>, strict = false): number {
-    return (collection || []).findIndex((item: ListItem) => item.compare(this, strict));
-  }
-
   // подготоваливает форматирование итема для вывода используя форматтеры компонента
   public prepareFormatting(
       context?: { [name: string]: any },
@@ -141,7 +137,7 @@ export class ListItem implements ListElement {
     this.originalItem = NO_ORIGINAL;
   }
 
-  public hasNoOriginal() {
+  public isNoOriginal() {
     return this.originalItem === NO_ORIGINAL;
   }
 }

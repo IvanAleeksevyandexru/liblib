@@ -154,15 +154,16 @@
     width: 100%;
 
     .image-slider-wrapper {
-      position: relative;
       display: flex;
       justify-content: center;
+      align-items: center;
       width: 100%;
 
       .image-slider-controls {
-        position: absolute;
         top: calc(50% - 8px);
         margin-top: 0px;
+        width: 10px;
+        z-index: 1;
 
         .prev-slider,
         .next-slider {

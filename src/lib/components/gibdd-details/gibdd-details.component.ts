@@ -10,7 +10,6 @@ import { SliderImage } from '../../models/slider-image';
 import { Bill } from '../../models/bill.model';
 import { LoadService } from '../../services/load/load.service';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 
 const moment = moment_;
 
@@ -30,7 +29,6 @@ export class GibddDetailsComponent implements OnInit {
   public center: number[];
   public photos: SliderImage[];
   public showError: boolean;
-  public photosLoading: boolean;
 
   public destroy: () => {};
 
@@ -59,13 +57,8 @@ export class GibddDetailsComponent implements OnInit {
             reg: this.details.carNumber,
             div: this.details.deptCode
           };
-          this.photosLoading = true;
-          this.ipshService.getGibddPhotos(requestParams)
-            .pipe(finalize(() => {
-              this.photosLoading = false;
-            }))
-            .subscribe((photos: SliderImage[]) => {
-              this.photos = photos;
+          this.ipshService.getGibddPhotos(requestParams).subscribe((photos: SliderImage[]) => {
+            this.photos = photos;
           });
         }
     });

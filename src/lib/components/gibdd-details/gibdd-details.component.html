@@ -33,7 +33,7 @@
           </div>
         </div>
         <div>
-          <div class="map mb-20" *ngIf="center">
+          <div class="map" *ngIf="center">
             <lib-map
               [redraw]="true"
               [center]="center"
@@ -42,10 +42,7 @@
               [controls]="['zoomControl']"
             ></lib-map>
           </div>
-          <div *ngIf="!photos && photosLoading" class="mt-32">
-            <lib-throbber size="throbber-medium"></lib-throbber>
-          </div>
-          <div *ngIf="photos" class="photos mb-56 mb-md-0">
+          <div *ngIf="photos" class="photos">
             <lib-image-slider [images]="photos" [showModal]="false"></lib-image-slider>
           </div>
         </div>

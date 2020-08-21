@@ -1,7 +1,7 @@
 import { PipedMessage } from './piped-message';
 import { ValidationErrors } from '@angular/forms';
 import { HelperService } from '../services/helper/helper.service';
-import { Translation, ValidationShowOn, MessagePosition } from './common-enums';
+import { Translation, ValidationShowOn } from './common-enums';
 
 const CONST_PATTERN = /^[A-Z_]+$/;
 const SIMPLE_PATTERN = /^[a-z_/-]+$/;
@@ -49,19 +49,12 @@ export interface Validated {
 // коды ошибок + сообщения для них, контрол может показывать развернутый текст(а) ошибки, соответствующий(ие) ошибке(ам)
 export interface ValidationDetailed extends Validated {
 
-  // расширенная валидация с кодами ошибок и возможно параметрами форматирования
-  // "%x% не может быть больше %n%" - x вернется тут, валидатор может передать параметр x сообщению какое x он проверял
-  validation: boolean | string | Array<string> | ValidationErrors | { [key: string]: any };
+  // расширенная валидация с кодами ошибок и возможно параметрами форматирования вида
+  // x не может быть больше n - x вернется тут, только валидатор "знает" какое значение он проверял
+  validation: boolean | string | ValidationErrors;
   // пак сообщений для различных кодов ошибок со своей базовой параметризацией
-  // "%x% не может быть больше %n%" - n будет храниться тут потому что этот параметр форматирования, известный заранее
-  validationMessages: string | PipedMessage | ValidationMessages | { [key: string]: string | PipedMessage};
-  // где отображать валидацию и/или информацию: внутри контрола или снаружи
-  validationPosition: string | MessagePosition;
-  // должна ли валидация перекрывать (замещать) информационное сообщение или допускается показ и того и другого одновременно
-  validationOverride: boolean;
-  // тут могло бы быть еще одно поле: показывать ли только первое из сообщений валидации или все, но этого можно добиться валидатором
-  // если нужно только первый из кейсов валидации - валидатор должен возвращать единственный ключ, если все - то несколько
-  // рендер валидации работает по контракту: всегда отображать все имеющиеся ключи
+  // x не может быть больше n - n будет храниться тут потому что мы заранее знаем этот параметр
+  validationMessages: string | PipedMessage | ValidationMessages;
 
 }
 

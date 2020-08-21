@@ -1,35 +1,19 @@
 import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  forwardRef,
-  Input,
-  NgModuleRef,
-  OnInit,
-  Output,
-  ViewChild
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild,
+  forwardRef, Input, NgModuleRef, OnInit, Output, EventEmitter
 } from '@angular/core';
 import { DadataService } from '../../services/dadata/dadata.service';
 import { DadataResult, NormalizedData } from '../../models/dadata';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ConstantsService } from '../../services/constants.service';
 import {
-  AbstractControl,
-  ControlValueAccessor,
-  FormGroup,
-  NG_VALIDATORS,
-  NG_VALUE_ACCESSOR,
-  ValidationErrors,
-  Validator
-} from '@angular/forms';
+  AbstractControl, ControlValueAccessor, FormGroup, Validator,
+  NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { DadataModalComponent } from '../dadata-modal/dadata-modal.component';
 import { CommonController } from '../../common/common-controller';
 import { ValidationService } from '../../validators/validation.service';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'lib-dadata-widget',
@@ -50,7 +34,7 @@ import { BehaviorSubject } from 'rxjs';
     DadataService
   ]
 })
-export class DadataWidgetComponent extends CommonController implements AfterViewInit, OnInit, ControlValueAccessor, Validator {
+export class DadataWidgetComponent extends CommonController implements OnInit, ControlValueAccessor, Validator {
 
   @Input() public label = '';
   @Input() public specifyTitle = ''; // код трансляции для ссылки открытия формы
@@ -63,7 +47,10 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   // массив скрытых уровней, которые не будут заполняться ни в скрытом, ни в развернутом виде
   // каждое значение - строка - значения из константы DADATA_LEVEL_MAP
   @Input() public hideLevels?: Array<string> = [];
-  @Input() public debounceTime = 100;
+  @Input() public enabledMap = false;
+  @Input() public queryMinSymbolsCount = 3;
+  @Input() public validateOnSpecify = true;
+  @Input() public addrStrExcluded = this.constants.DADATA_ADDRSTR_EXCLUDED_FIELDS;
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
@@ -76,10 +63,10 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   public controlNames: string[];
   // Поля, которые исключаются из формы для построения полного адреса
   public excluded = this.constants.DADATA_EXCLUDED_FIELDS;
-  public addrStrExcluded = this.constants.DADATA_ADDRSTR_EXCLUDED_FIELDS;
-  // проверка на множественные вызовы
-  public normalizeInProcess = false;
-  private query$ = new BehaviorSubject('');
+  public fullAddrStrExcluded = this.constants.DADATA_FULLADDRSTR_EXCLUDED_FIELDS;
+  // Массив с широтой и долготой для яндекс карты
+  public center = [];
+  public stateShowMap = false;
 
   // Валидация ответа от сервера
   private validateTypes = [{
@@ -169,7 +156,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
     // не убирать debounceTime! агрегирует множественные изменения полей формы в единое событие!
     this.form.valueChanges.pipe(
-        debounceTime(this.debounceTime),
+        debounceTime(100),
         takeUntil(this.destroyed$)
       ).subscribe((res) => {
       const changes = this.form.getRawValue();
@@ -183,7 +170,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
             const ctrlField = this.dadataService.prefixes[control];
             const tmpStr = (keyIndex > 0 ? ', ' : '') + (changes[control] ?
               (ctrlField.shortType || ctrlField.abbr) + ' ' + changes[control] : '');
-            fullAddress += tmpStr;
+            if (!this.fullAddrStrExcluded.includes(control)) {
+              fullAddress += tmpStr;
+            }
             if (!this.addrStrExcluded.includes(control)) {
               this.addressStr += tmpStr;
             }
@@ -216,12 +205,10 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           hasErrors: this.errorCodes.length
         };
         this.commit(commitValue);
-        this.normalizeInProcess = false;
       } else {
         this.errorCodes = [];
         this.widgetItemsVisibility = {};
         this.commit(null);
-        this.normalizeInProcess = false;
       }
       if (!this.isOpenedFields.getValue() && (dadataQc === '1' || dadataQc === '2') && this.normalizedData.fiasLevel !== '-1'
         && !this.externalApiUrl) {
@@ -271,21 +258,20 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     if (isOpened) {
       this.closeDadataFields();
     } else {
-      this.openDadataFields(true);
+      this.openDadataFields(this.validateOnSpecify);
     }
   }
 
-  public normalizeFullAddress(fullAddress: string, suppressValidation = false, onInitCall = false): Promise<any> {
-    if (fullAddress && !this.normalizeInProcess) {
+  public normalizeFullAddress(fullAddress: string, suppressValidation = false): Promise<any> {
+    if (fullAddress) {
       this.form.markAsTouched();
       // используем промис, т.к. в противном случае без сабскрайбера не вызывается сервис
-      this.normalizeInProcess = true;
       return this.dadataService.normalize(fullAddress).toPromise().then(res => {
         if (res) {
           this.normalizedData = res;
           this.dadataService.resetForm();
           if (res.address && res.address.elements && res.address.elements.length) {
-            this.dadataService.parseAddress(res, onInitCall);
+            this.dadataService.parseAddress(res);
             // onChange triggering guaranteed
             this.validationSkip = suppressValidation;
             this.cd.detectChanges();
@@ -306,10 +292,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public updateCanOpenFields(value: string): void {
     this.closeDadataFields();
-    if (!value) {
+    if (!value || value.length < this.queryMinSymbolsCount) {
       this.form.reset();
     }
-    this.query$.next(value);
   }
 
   private revalidate() {
@@ -361,7 +346,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     if (this.query) {
       this.canOpenFields.next(true);
       if (this.normalizeOnInit) {
-        this.normalizeFullAddress(this.query, true, this.normalizeOnInit);
+        this.normalizeFullAddress(this.query, true);
       }
     }
   }
@@ -388,15 +373,13 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     this.blur.emit();
   }
 
-  public ngAfterViewInit() {
-    this.query$.pipe(
-      debounceTime(700),
-      distinctUntilChanged(),
-      takeUntil(this.destroyed$)
-    ).subscribe(value => {
-      if (value) {
-        this.normalizeFullAddress(value, false);
-      }
-    });
+  public setCoordinatesMap() {
+    this.center = [this.form.get('geoLon').value, this.form.get('geoLat').value];
+  }
+
+  public showMap(e: any) {
+    e.preventDefault();
+    this.setCoordinatesMap();
+    this.stateShowMap = !this.stateShowMap;
   }
 }

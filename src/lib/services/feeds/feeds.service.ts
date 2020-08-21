@@ -156,15 +156,8 @@ export class FeedsService {
     return result;
   }
 
-  private getComplexOrderUrl(feed: FeedModel): string {
-    if (feed.ot === 'UNIVERSITY_ENTRANCE') {
-      return `university/external/${feed.extId}`;
-    }
-    return `complex-order/external/${feed.extId}`;
-  }
-
   public openDetails(feed: FeedModel): string {
-    let url = this.isLk ? '/' : this.loadService.config.lkUrl;
+    let url = (this.isLk || this.loadService.attributes.appContext === 'PARTNERS') ? '/' : this.loadService.config.lkUrl;
     switch (feed.feedType) {
       case 'FEEDBACK':
         url += `feedback/${feed.id}`;
@@ -173,7 +166,7 @@ export class FeedsService {
         url += `appeal/${feed.id}`;
         break;
       case 'COMPLEX_ORDER':
-        url += this.getComplexOrderUrl(feed);
+        url += `university/external/${feed.extId}`;
         break;
       case 'GEPS':
         url += `message/${feed.id}`;
@@ -198,6 +191,12 @@ export class FeedsService {
       case 'CLAIM':
         url += `claim/${feed.id}`;
         break;
+      case 'PARTNERS_DRAFT':
+        url += `lk/draft/${feed.extId}`;
+        break;
+      case 'PARTNERS':
+        url += `lk/order/${feed.id}`;
+        break;
       case 'BIOMETRICS':
         url += 'settings/biometry';
         break;
@@ -214,31 +213,9 @@ export class FeedsService {
       case 'ESIGNATURE':
         url += `settings/signature`;
         break;
-      case 'ACCOUNT_CHILD':
-        url += `profile/family/child/${feed.extId}/docs`;
-        break;
     }
 
     return url;
-  }
-
-  public sendMessageStatus(type, feedId) {
-    const params = {
-      actionType: type
-    };
-    return this.http.post(`${this.loadService.config.lkApiUrl}feeds/${feedId}`, feedId, {
-      withCredentials: true, params
-    });
-  }
-
-  public sendConfirmation() {
-    const params = {
-      userName: this.loadService.user.fullName,
-      messageType: 'MESSAGE_CONFIRM'
-    };
-    return this.http.post(`${this.loadService.config.lkApiUrl}feeds`, {
-      withCredentials: true, params
-    });
   }
 
   public getQueryParamsForRedirect(feed: FeedModel) {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidatorFn, FormArray } from '@angular/forms';
 import * as moment_ from 'moment';
 import { MomentInput } from 'moment';
 
@@ -116,20 +116,9 @@ export class ValidationService {
   }
 
   public static actNumberValidator(control: AbstractControl) {
-    const regexp = '(?=^[^-?]*-?[^-?]*$)(?=^[^(в|В)?]*[(в|В)]?[^(в|В)?]*$)(?=^(?!-)([0-9\\-(в|В)]+)$)';
-    if (!control.value) {
-      return null;
-    }
-    if (new RegExp(regexp).test(control.value)) {
-      const hyphenCount = control.value.split('').reduce((acc, curr) => acc += curr === '-' ? 1 : 0, 0);
-      // проверка на количество дефисов, не может быть больше 1 и не может быть в конце
-      if (hyphenCount > 1 && control.value.lastIndexOf('-') !== control.value.length - 1)  {
-        return {wrongActNo: true};
-      }
-      return null;
-    } else  {
-      return {wrongActNo: true};
-    }
+    const regexp = '(?=^[^-?]*-?[^-?]*$)(?=^[^(в|В)?]*[(в|В)]?[^(в|В)?]*$)(?=^(?!-)([0-9\\-(в|В)]+)((?<!-))$)';
+    return !control.value || new RegExp(regexp).test(control.value)
+      ? null : {wrongActNo: true};
   }
 
   public static hyphenValidator(control: AbstractControl) {
@@ -175,4 +164,23 @@ export class ValidationService {
     };
   }
 
+  public static formArrayValidator(control: AbstractControl): { [key: string]: any } | null {
+    const someControlValid = (control as FormArray).controls.some((nestedControl: AbstractControl) => nestedControl.valid);
+    return someControlValid ? null : { formArrayInvalid: true };
+  }
+
+  public static secureUrlValidator(hostnameMinLength = 5): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const urlValidationRe = /^\s*(?:https:\/\/)([^-][a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*[^-])+)(?:\?(?:[a-zA-Z0-9_\-._~:/?#[\]@!$&'()*+,;=]*))?$|^(?:https:\/\/)([^-][а-яА-Я0-9_-]*(?:\.[а-яА-Я0-9_-]*[^-])+)(?:\?(?:[a-zA-Zа-яА-Я0-9_\-._~:/?#[\]@!$&'()*+,;=]*))?\s*$/gm;
+      const result = urlValidationRe.exec(control.value);
+      return result && ((result[1] && result[1].length >= hostnameMinLength) || (result[2] && result[2].length >= hostnameMinLength))
+        ? null
+        : { urlInvalid: true };
+    };
+  }
+
+  public static mnemonicValidator(control: AbstractControl): { [key: string]: any } | null {
+    const mnemonicValidationRe = /^\s*[A-Z-_0-9]+\s*$/gm;
+    return mnemonicValidationRe.test(control.value) ? null : { mnemonicInvalid: true };
+  }
 }

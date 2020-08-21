@@ -304,6 +304,22 @@ export class ConstantsService {
       metric: {name: this.TABS_METRIC_NAME, action: 'settings', from: 'feedsOrder'}
     }
   ]);
+
+  public readonly PARTNERS_ASIDE = new Tabs([
+      {
+        id: 'orders',
+        name: 'ORDERS.ASIDE.ORDERS',
+        url: '/lk/orders/all',
+        mnemonic: 'partnersFeedsOrder'
+      },
+      {
+        id: 'drafts',
+        name: 'ORDERS.ASIDE.DRAFTS',
+        url: '/lk/orders/drafts',
+        mnemonic: 'partnersFeedsDraft'
+      }
+  ]);
+
   public readonly ORDERS_CATEGORIES = [
     {
       text: 'Все',
@@ -339,8 +355,7 @@ export class ConstantsService {
   public readonly FEEDS_CATEGORIES = [
     {
       text: 'Все',
-      type:
-        'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION',
+      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION',
       id: 1,
       mnemonic: 'allEvents'
     },
@@ -370,7 +385,7 @@ export class ConstantsService {
     },
     {
       text: 'Системные',
-      type: 'BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,ELECTION_INFO,ORGANIZATION,ESIGNATURE',
+      type: 'BIOMETRICS,ACCOUNT,PROFILE,ELECTION_INFO,ORGANIZATION,ESIGNATURE',
       id: 6,
       mnemonic: 'systemEvents'
     },
@@ -713,7 +728,14 @@ export class ConstantsService {
     'house',
     'building1',
     'building2',
-    'apartment'
+    'apartment',
+    'geoLat',
+    'geoLon'
+  ];
+
+  public readonly DADATA_FULLADDRSTR_EXCLUDED_FIELDS = [
+    'geoLat',
+    'geoLon'
   ];
 
   public readonly DADATA_DEPENDENCIES = {
@@ -771,12 +793,7 @@ export class ConstantsService {
     DRIVING_LICENCE: 'RF_DRIVING_LICENSE',
     PASSPORT: 'RF_PASSPORT',
     FID_DOC: 'FID_DOC',
-    RSDNC_PERMIT: 'RSDNC_PERMIT',
-    RFG_CERT: 'RFG_CERT',
-    CERT_REG_IMM: 'CERT_REG_IMM',
     BIRTH_CERTIFICATE: 'BRTH_CERT',
-    KID_ACT_RECORD: 'KID_ACT_RECORD',
-    BIRTH_CERTIFICATE_KID_RF: 'KID_RF_BRTH_CERT',
     BIRTH_CERTIFICATE_RF: 'RF_BRTH_CERT',
     BIRTH_CERTIFICATE_FID: 'FID_BRTH_CERT',
     BIRTH_CERTIFICATE_OLD: 'OLD_BRTH_CERT',
@@ -796,11 +813,6 @@ export class ConstantsService {
     MARRIED_CERT: 'MARRIED_CERT',
     DIVORCE_CERT: 'DIVORCE_CERT'
   };
-
-  public readonly FID_DOCUMENT_TYPES = [
-    this.DOCUMENT_TYPES.FID_DOC, this.DOCUMENT_TYPES.RSDNC_PERMIT,
-    this.DOCUMENT_TYPES.RFG_CERT, this.DOCUMENT_TYPES.CERT_REG_IMM
-  ];
 
   public readonly BIRTH_CERTIFICATES = ['BRTH_CERT', 'RF_BRTH_CERT', 'FID_BRTH_CERT', 'OLD_BRTH_CERT'];
 
@@ -830,10 +842,7 @@ export class ConstantsService {
   public readonly ID_DOC_TYPES = [
     this.DOCUMENT_TYPES.PASSPORT,
     this.DOCUMENT_TYPES.FOREIGN_PASSPORT,
-    this.DOCUMENT_TYPES.FID_DOC,
-    this.DOCUMENT_TYPES.RSDNC_PERMIT,
-    this.DOCUMENT_TYPES.RFG_CERT,
-    this.DOCUMENT_TYPES.CERT_REG_IMM
+    this.DOCUMENT_TYPES.FID_DOC
   ];
 
   public readonly CERTIFICATE_TITLE = {
@@ -870,7 +879,6 @@ export class ConstantsService {
   public readonly DRIVING_LICENSE_CATEGORIES = [
     'A', 'A1', 'B', 'B1', 'C', 'C1', 'D', 'D1', 'BE', 'CE', 'C1E', 'DE', 'D1E', 'M', 'Tm', 'Tb'
   ];
-
   public readonly FILE_TYPES = {
     'text/xml': 'XML',
     'text/html': 'HTML',

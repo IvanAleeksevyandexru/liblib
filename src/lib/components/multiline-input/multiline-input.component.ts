@@ -7,7 +7,6 @@ import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { HelperService } from '../../services/helper/helper.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
-import { Width } from '../../models/width-height';
 
 @Component({
   selector: 'lib-multiline-input',
@@ -38,7 +37,6 @@ export class MultilineInputComponent
   @Input() public minHeight = 77;
   @Input() public maxHeight = 200;
   @Input() public fullHeightScroll = true;
-  @Input() public width?: Width | string;
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();

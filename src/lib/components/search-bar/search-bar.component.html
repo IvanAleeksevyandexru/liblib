@@ -1,8 +1,5 @@
 <div class="search-field" 
-    [ngClass]="[contextClass ? contextClass : '']"
-    [class.magnifying-glass-or-throbber-shown]="showMagnifyingGlass || searching"
-    [class.clear-shown]="clearable && query"
-    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+    [ngClass]="[showMagnifyingGlass || searching ? 'magnifying-glass-or-throbber-shown' : '', clearable && query ? 'clear-shown': '', contextClass ? contextClass : '']">
   <input #input
       type="text"
       [attr.id]="id ? id : null"

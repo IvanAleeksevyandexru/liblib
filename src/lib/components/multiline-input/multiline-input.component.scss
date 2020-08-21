@@ -41,13 +41,9 @@
     color: #DF0024;
   }
 
-  &[disabled], &.disabled {
+  &[disabled] {
     background-color: #E7ECF7;
-    color: #A8ACB1;
     border: 1px solid #CBCDD0;
-    .multiline-edit {
-      color: #A8ACB1;
-    }
   }
 
   &.full-height-scroll {

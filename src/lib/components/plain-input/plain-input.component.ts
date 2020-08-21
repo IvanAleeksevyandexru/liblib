@@ -8,7 +8,6 @@ import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { HelperService } from '../../services/helper/helper.service';
-import { Width } from '../../models/width-height';
 
 @Component({
   selector: 'lib-plain-input',
@@ -46,7 +45,6 @@ export class PlainInputComponent
   @Input() public commitOnInput = true;  // коммитить по input или по change
   @Input() public clearable = false;
   @Input() public uppercase = false;
-  @Input() public width?: Width | string;
 
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;

@@ -11,7 +11,6 @@ import { ValidationHelper } from '../../services/validation-helper/validation.he
 import { ListItemsService, FixedItemsProvider, ListItemsOperationsContext } from '../../services/list-item/list-items.service';
 import { ConstantsService } from '../../services/constants.service';
 import { Translation, LineBreak } from '../../models/common-enums';
-import { Width, Height } from '../../models/width-height';
 
 @Component({
   selector: 'lib-filtered-list',
@@ -37,8 +36,6 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
   @Input() public placeholder?: string;
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
-  @Input() public width?: Width | string;
-  @Input() public height?: Height | string;
 
   // функция форматирования элемента в списке
   @Input() public formatter?: (listItem: ListItem, context?: { [name: string]: any }) => string;
@@ -63,8 +60,6 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
   @Input() public showSuggestion = false;
   // отфильтровывать ли итемы которые уже выбраны или оставлять их в дополнение к отфильтрованным
   @Input() public filterSelected = false;
-  // мультивыбор
-  @Input() public multi = true;
   // максимум выбранных
   @Input() public multipleItemsMaxSelected: number;
   // включает возможность сворачивать-разворачивать группы элементов, tree-like view
@@ -88,8 +83,8 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
   @Output() public focus = new EventEmitter<any>();
   // список выбранных значений изменился
   @Output() public changed = new EventEmitter<Array<any> | any>();
-  // фильтрация или инкремент
-  @Output() public listed = new EventEmitter<Array<ListItem>>();
+  // список значений отфильтрован по новой подстроке
+  @Output() public filtered = new EventEmitter<string>();
 
   public focused = false;
   public touched = false;
@@ -98,7 +93,6 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
   public query = '';
   public activeQuery = '';
   public LineBreak = LineBreak;
-  public highlighted: ListItem;
 
   public itemsFilter = new FixedItemsProvider();
   public internalItems: Array<ListItem> = [];
@@ -107,7 +101,6 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
 
   @ViewChild('searchBar') private searchBar: SearchBarComponent;
   @ViewChild('itemsArea') private itemsArea: ElementRef;
-  @ViewChild('scrollableArea') private scrollableArea: ElementRef;
 
   private onTouchedCallback: () => void;
   protected commit(value: Array<any> | any) {}
@@ -214,9 +207,7 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
         [].concat(this.internalSelected.filter((listItem: ListItem) => !listItem.belongsTo(items))).concat(items) : items;
       this.listService.highlightSubstring(filteredList, query);
       this.filteredItems = this.listService.alignGroupsTreeIfNeeded(filteredList, this.internalItems);
-      this.listed.emit(this.filteredItems);
     });
-    this.highlighted = null;
   }
 
   public resetFilter() {
@@ -250,16 +241,12 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
       this.listService.getFinalItems(this.filteredItems, item).forEach((finalItem: ListItem) => this.selectItem(finalItem, false));
       this.commitEmit();
     } else {
-      if (item.belongsTo(this.internalSelected) || (this.multi && this.multipleItemsMaxSelected !== undefined
+      if (item.belongsTo(this.internalSelected) || (this.multipleItemsMaxSelected !== undefined
           && (this.internalSelected || []).length >= this.multipleItemsMaxSelected)) {
         return;
       }
-      if (this.multi) {
-        this.internalSelected.push(item);
-      } else {
-        this.internalSelected = [item];
-      }
-      this.synchronizeSelected();
+      item.selected = true;
+      this.internalSelected.push(item);
       if (commitEmit) {
         this.commitEmit();
       }
@@ -282,21 +269,6 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
   public expandCollapse(item: ListItem, evt: Event) {
     this.searchBar.returnFocus();
     this.listService.expandCollapse(item, this.filteredItems, evt);
-  }
-
-  public handleKeydownNavigation(e: KeyboardEvent) {
-    if (e.key === 'Enter' || e.key === ' ') { // ввод, пробел
-      if (this.highlighted && !this.highlighted.unselectable) {
-        this.invertSelection(this.highlighted);
-      }
-      e.preventDefault();
-      e.stopPropagation();
-    } else { // стрелки
-      const navResult = this.listService.handleKeyboardNavigation(e, this.filteredItems, this.highlighted, this.scrollableArea);
-      if (navResult && navResult !== true) {
-        this.highlighted = navResult as ListItem;
-      }
-    }
   }
 
   public writeValue(value: Array<any> | any) {
@@ -336,12 +308,7 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
   }
 
   private commitEmit() {
-    let output = null;
-    if (this.multi) {
-      output = this.listService.restoreOriginals(this.internalSelected);
-    } else {
-      output = this.internalSelected.length ? this.listService.restoreOriginal(this.internalSelected[0]) : null;
-    }
+    const output = this.listService.restoreOriginals(this.internalSelected);
     this.commit(output);
     this.changed.emit(output);
     this.check();

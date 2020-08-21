@@ -14,7 +14,6 @@ import { ConstantsService } from '../../services/constants.service';
 import { PositioningManager, PositioningRequest } from '../../services/positioning/positioning.manager';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
-import { Width } from '../../models/width-height';
 
 const SHOW_ALL_MARKER = {};
 
@@ -45,7 +44,6 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public maxlength?: number;
   @Input() public placeholder?: string;
-  @Input() public width?: Width | string;
 
   // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
   @Input() public formatter?: (item: ListItem, context: { [name: string]: any }) => string;
@@ -112,10 +110,9 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   // сброс значения крестиком
   @Output() public cleared = new EventEmitter();
   // произведен форсированный поиск ентером или кликом по лупе, поиск (стандартное действие) уже в процессе
-  @Output() public forcedSearch = new EventEmitter<any>();
+  @Output() public forcedSearch = new EventEmitter();
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
-  @Output() public listed = new EventEmitter<Array<ListItem>>();
 
   public internalFixedItems: Array<ListItem> = [];
   public internalItem: ListItem;
@@ -285,17 +282,14 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     if (this.disabled) {
       return;
     }
+    if (!showAll) {
+      this.forcedSearch.emit();
+    }
     if (this.expanded) {
       this.closeDropdown();
     } else {
       this.showTextField();
       this.lookupItems(showAll ? SHOW_ALL_MARKER : this.query);
-    }
-  }
-
-  public forceSearch(query: string, byEnter = false) {
-    if (!byEnter || !(this.expanded && this.highlighted)) {
-      this.forcedSearch.emit({query, byEnter});
     }
   }
 
@@ -376,7 +370,6 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
         this.items = newItems;
       }
       this.listService.alignGroupsTreeIfNeeded(this.items, this.itemsProvider ? this.items : this.internalFixedItems);
-      this.listed.emit(this.items);
     });
   }
 
@@ -417,6 +410,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   }
 
   public handleKeydownNavigation(e: KeyboardEvent) {
+    const highlightedElementIndex = this.items.findIndex((item: ListItem) => item.compare(this.highlighted));
     if (e.key === 'Tab') {  // tab
       // blur, скрывем дропдаун чтобы ползунок скролла не получил фокус
       this.closeDropdown();

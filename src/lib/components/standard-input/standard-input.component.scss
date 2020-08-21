@@ -48,32 +48,21 @@
     }
   }
 }
-.text-control.withClearButton .text-input {                                     // крестик
+.text-control.withClearButton .text-input {
   padding-right: 36px; //8+24+4
 }
-.text-control.withValidationError .text-input,                                  // ошибка
-.text-control.withTip .text-input,                                              // ?
-.text-control.passwordField .text-input {                                       // глаз
+.text-control.withValidationError .text-input, .text-control.withTip .text-input, .text-control.passwordField .text-input {
   padding-right: 44px; //8+32+4
 }
-.text-control.withValidationError.withClearButton .text-input,                 // крестик + ошибка
-.text-control.withTip.withClearButton .text-input,                             // крестик + ?
-.text-control.passwordField.withClearButton .text-input {                      // крестик + глаз
+.text-control.passwordField.withClearButton .text-input {
   padding-right: 68px; //8+24+32+4
 }
-.text-control.passwordField.withValidationError .text-input,                   // глаз + ошибка
-.text-control.passwordField.withTip .text-input,                               // глаз + ?
-.text-control.withValidationError.withTip .text-input {                        // ошибка + ?
+.text-control.withValidationError.withClearButton .text-input, .text-control.withTip.withClearButton .text-input {
+  padding-right: 68px; //8+24+32+4
+}
+.text-control.passwordField.withValidationError .text-input, .text-control.passwordField.withTip .text-input {
   padding-right: 76px; //8+32+32+4
 }
-.text-control.passwordField.withValidationError.withClearButton .text-input,  // крестик + глаз + ошибка
-.text-control.passwordField.withTip.withClearButton .text-input,              // крестик + глаз + ?
-.text-control.withValidationError.withTip.withClearButton .text-input {       // крестик + ошибка + ?
+.text-control.passwordField.withValidationError.withClearButton .text-input, .text-control.passwordField.withTip.withClearButton .text-input {
   padding-right: 100px; //8+24+32+32+4
-}
-.text-control.passwordField.withValidationError.withTip .text-input {         // глаз + ошибка + ?
-  padding-right: 108px; //8+32+32+32+4
-}
-.text-control.passwordField.withValidationError.withTip.withClearButton .text-input {// крестик + глаз + ошибка + ?
-  padding-right: 132px; //8+24+32+32+32+4
 }

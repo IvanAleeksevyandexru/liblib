@@ -1,14 +1,13 @@
 import { Component, OnInit, OnChanges, AfterViewInit, DoCheck, OnDestroy, Input, Output,
   EventEmitter, forwardRef, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DropdownSimpleComponent } from '../dropdown-simple/dropdown-simple.component';
+import { DropdownComponent } from '../dropdown/dropdown.component';
 import { Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { RelativeDate, Range, RangeListItem } from '../../models/date-time.model';
 import { ListItemsService } from '../../services/list-item/list-items.service';
 import { DatesHelperService } from '../../services/dates-helper/dates-helper.service';
 import { Translation } from '../../models/common-enums';
-import { Width } from '../../models/width-height';
 import * as moment_ from 'moment';
 const moment = moment_;
 
@@ -24,7 +23,7 @@ const STD_DATE_FORMAT = 'DD.MM.YYYY';
     multi: true
   }, ListItemsService]
 })
-export class RangeSelectorComponent extends DropdownSimpleComponent
+export class RangeSelectorComponent extends DropdownComponent
     implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated  {
 
   // свойства для дропдауна
@@ -32,10 +31,8 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
   @Input() public formControlName?: string;
   @Input() public tabIndex?: string | number;
   @Input() public disabled?: boolean;
-  @Input() public placeholder = '&mdash;';
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
-  @Input() public width?: Width | string;
   @Input() public translation: Translation | string = Translation.NONE;
   @Input() public items: Array<any> = [];
 
@@ -55,7 +52,7 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
   @Output() public changed = new EventEmitter<any>();
 
   public internalItems: Array<RangeListItem> = [];
-  public currentItem: RangeListItem = null;
+  public internalSelected: Array<RangeListItem> = [];
   public activeCustomItem: RangeListItem = null;
 
   public customRangeSelectingMode = false;
@@ -74,6 +71,7 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
       }
     });
     this.checkConsistency();
+    this.synchronizeSelected();
   }
 
   public selectRange(item: RangeListItem) {
@@ -97,10 +95,11 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
         }
         this.commit(outputValue);
         this.changed.emit(outputValue);
-        this.currentItem = item;
+        this.internalSelected = [item];
         this.closeDropdown();
       }
     }
+    this.synchronizeSelected();
     this.check();
   }
 
@@ -113,7 +112,7 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
   public handleCustomRangeSelectionEnd() {
     if (this.activeCustomItem) {
       this.activeCustomItem.range = this.customRange; // модифицируем внутреннее поле, копию
-      this.currentItem = this.activeCustomItem;
+      this.internalSelected = [this.activeCustomItem];
       let outputValue;
       if (this.listModelValue) {
         outputValue = this.activeCustomItem.originalItem;
@@ -132,8 +131,8 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
   public writeValue(value: Range<Date> | Range<string> | any) {
     if (value) {
       if (this.listModelValue) {
-        const selectedValue = value.findSame(this.internalItems);
-        this.currentItem = selectedValue;
+        const selectedValue = (this.internalItems || []).find((item) => item.id === value.id);
+        this.internalSelected = selectedValue ? [selectedValue] : [];
         if (value.customRange && selectedValue.customRange) {
           if (value.relativeRange) {
             selectedValue.range = DatesHelperService.relativeRangeToRange(value.relativeRange, this.textModelValue);
@@ -146,14 +145,14 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
         const customItem = (this.internalItems || []).find((item) => item.customRange);
         const selectedNonCustom = nonCustomItems.find((nonCustom) => nonCustom.range.equals(value));
         if (selectedNonCustom) {
-          this.currentItem = selectedNonCustom;
+          this.internalSelected = [selectedNonCustom];
         } else if (customItem) {
           customItem.range = value;
-          this.currentItem = customItem;
+          this.internalSelected = [customItem];
         }
       }
     } else {
-      this.currentItem = null;
+      this.internalSelected = [];
     }
     this.check();
   }
@@ -170,9 +169,11 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
   }
 
   private checkConsistency() {
-    if (this.currentItem) {
-      this.currentItem = (this.internalItems || []).find((internalItem) =>
-        this.listModelValue ? internalItem.id === this.currentItem.id : internalItem.range.equals(this.currentItem.range));
+    this.internalSelected = (this.internalSelected || []).filter((internalSelected) =>
+      (this.internalItems || []).find((internalItem) =>
+        this.listModelValue ? internalItem.id === internalSelected.id : internalItem.range.equals(internalSelected.range)));
+    if (this.internalSelected.length > 1) {
+      this.internalSelected = [this.internalSelected[0]];
     }
   }
 

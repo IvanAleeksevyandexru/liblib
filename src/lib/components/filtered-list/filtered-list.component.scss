@@ -1,7 +1,4 @@
 .filtered-list {
-  display: inline-flex;
-  flex-flow: column;
-  width: 100%;
   .search-field {
     display: block;
     width: 100%;
@@ -14,8 +11,8 @@
     width: 100%;
     padding-bottom: 12px;
     position: relative;
-    overflow: hidden;
     ::ng-deep .ps {
+      max-height: 250px;
       &.ps--active-y {
         .ps__rail-y {
           opacity: 1;
@@ -83,9 +80,6 @@
             }
           }
         }
-        &.highlighted {
-          background-color: #E7ECF7;
-        }
         &.selected {
           .list-item-checkbox-wrapper .list-item-checkbox {
             border: none;
@@ -96,9 +90,6 @@
           .item-container .item-text {
             color: #A8ACB1;
             cursor: default;
-          }
-          &.highlighted {
-            background-color: unset;
           }
         }
         &.collapsable {

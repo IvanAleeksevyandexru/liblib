@@ -14,7 +14,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
 
   @Input() public data: any = {}; // Входные данные. TODO: описать интерфейс
   @Input() public cardType: 'common' | 'empty' | 'modify' = 'common';
-  @Input() public state: '' | 'process' | 'verified' | 'error' | 'success'| 'refreshError' = '';
+  @Input() public state: '' | 'process' | 'verified' | 'error' | 'success' = '';
   @Input() public addPath: string;
   @Input() public editPath: string;
   @Input() public editQueryParam: { [key: string]: string };
@@ -79,8 +79,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
   }
 
   public isPassportNotification(): boolean {
-    return (this.object.type === 'RF_PASSPORT' || this.object.type === 'FRGN_PASS') &&
-      this.state === 'verified' && this.object.notification && !this.object.expired;
+    return this.object.type === 'RF_PASSPORT' && this.state === 'verified' && this.object.notification && !this.object.expired;
   }
 
   public showRepeatButton(): boolean {

@@ -53,14 +53,17 @@ export class MenuService {
     switch (this.loadService.attributes.appContext) {
       case 'PARTNERS':
         links = [{
-          url: '/catalog',
-          title: 'HEADER.MENU.CATALOG'
+          url: '/service-centers',
+          title: 'HEADER.MENU.SERVICE_CENTERS'
         }, {
-          url: '/news',
-          title: 'HEADER.MENU.NEWS'
+          url: '/powers',
+          title: 'HEADER.MENU.POWERS'
         }, {
-          url: '/docs',
-          title: 'HEADER.MENU.DOCS'
+          url: '/access-groups',
+          title: 'HEADER.MENU.ACCESS_GROUPS'
+        }, {
+          url: '/systems',
+          title: 'HEADER.MENU.SYSTEMS'
         }];
         break;
       case 'LK':

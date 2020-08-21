@@ -8,15 +8,11 @@ import { ValidationDetailed, Validated, ValidationShowStrategy, ValidationShowCo
 })
 export class ValidationHelper {
 
-  public static isValidationOk(value: boolean | string | Array<string> | ValidationErrors | { [key: string]: any }): boolean {
-    let ok = false;
-    ok = ok || [null, '' as any, true as any, undefined].includes(value);
-    ok = ok || HelperService.isObject(value) && !Object.keys(value).length;
-    ok = ok || HelperService.isArray(value) && !(value as any).length;
-    return ok;
+  public static isValidationOk(value: boolean | string | ValidationErrors): boolean {
+    return [null, '' as any, true as any, undefined].includes(value) || (HelperService.isObject(value) && !Object.keys(value));
   }
 
-  public static isValidationBroken(value: boolean | string | Array<string> | ValidationErrors | { [key: string]: any }): boolean {
+  public static isValidationBroken(value: boolean | string | ValidationErrors): boolean {
     return !ValidationHelper.isValidationOk(value);
   }
 
@@ -63,7 +59,7 @@ export class ValidationHelper {
         return isFieldInvalid && (component.validationShowOn as ((ValidationShowContext) => boolean))(validationShowContext);
       }
     } else {
-      // validationShowOn - просто значение (например boolean) управляющее показом напрямую
+      // validationShowOn - не имя, а просто значение (например boolean) управляющее показом напрямую
       const validationShouldShow = !!component.validationShowOn;
       return isFieldInvalid && validationShouldShow;
     }

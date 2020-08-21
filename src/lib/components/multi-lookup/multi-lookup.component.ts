@@ -12,7 +12,6 @@ import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { Translation, MultipleItemsLayout } from '../../models/common-enums';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { ConstantsService } from '../../services/constants.service';
-import { Width } from '../../models/width-height';
 
 @Component({
   selector: 'lib-multi-lookup',
@@ -38,7 +37,6 @@ export class MultiLookupComponent implements OnInit, AfterViewInit, OnChanges, D
   @Input() public disabled?: boolean;
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
-  @Input() public width?: Width | string;
 
   // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
   @Input() public formatter?: (item: ListItem, context: { [name: string]: any }) => string;
@@ -100,7 +98,6 @@ export class MultiLookupComponent implements OnInit, AfterViewInit, OnChanges, D
   @Output() public changed = new EventEmitter<Array<any> | any>();
   @Output() public opened = new EventEmitter<any>();
   @Output() public closed = new EventEmitter<any>();
-  @Output() public listed = new EventEmitter<Array<ListItem>>();
 
   public focused = false;
   public touched = false;
@@ -270,10 +267,6 @@ export class MultiLookupComponent implements OnInit, AfterViewInit, OnChanges, D
     const outputValue = this.listService.restoreOriginals(this.internalSelected);
     this.commit(outputValue);
     this.changed.emit(outputValue);
-  }
-
-  public emitListed(items: Array<ListItem>) {
-    this.listed.emit(items);
   }
 
   public registerOnChange(fn: any): void {

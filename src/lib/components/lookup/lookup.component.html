@@ -1,5 +1,5 @@
 <div class="lookup" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside
-     (clickOutside)="cancelSearchAndClose()" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+     (clickOutside)="cancelSearchAndClose()">
   <div class="lookup-field" #lookupField [ngClass]="{expanded: expanded, invalid: invalidDisplayed, 'with-expand-button': showExpandCollapse}">
     <lib-search-bar #searchBar
       contextClass="lookup-input"
@@ -25,7 +25,6 @@
       [suggestion]="showSuggestion ? suggestion : null"
       [(ngModel)]="query"
       (newSearch)="lookupItems($event)"
-      (forcedSearch)="forceSearch($event.query, $event.byEnter)"
       [searching]="searching"
       (focus)="handleFocus()"
       (blur)="handleBlur()"

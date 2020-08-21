@@ -47,7 +47,6 @@ import { StandardMaskedInputComponent } from './components/standard-masked-input
 import { DatePickerComponent } from './components/date-picker/date-picker.component';
 import { MonthYearSelectComponent } from './components/month-year-select/month-year-select.component';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
-import { DropdownSimpleComponent } from './components/dropdown-simple/dropdown-simple.component';
 import { LookupComponent } from './components/lookup/lookup.component';
 import { MultiLookupComponent } from './components/multi-lookup/multi-lookup.component';
 import { FilteredListComponent } from './components/filtered-list/filtered-list.component';
@@ -59,7 +58,6 @@ import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { RadioComponent } from './components/radio/radio.component';
 import { PagingControlsComponent } from './components/paging-controls/paging-controls.component';
 import { InvalidResultsTipComponent } from './components/invalid-results-tip/invalid-results-tip.component';
-import { ValidationMessageComponent } from './components/validation-message/validation-message.component';
 import { QuestionHelpTipComponent } from './components/question-help-tip/question-help-tip.component';
 import { HiddenTooltipComponent } from './components/hidden-tooltip/hidden-tooltip.component';
 import { ClickOutsideDirective } from './directives/click-outside/click-out.directive';
@@ -134,6 +132,7 @@ import { DynamicFormatterPipe } from './pipes/dynamic-formatter/dynamic-formatte
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { Setting } from './models/setting';
+import { AccessesService } from './services/accesses/accesses.service';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -174,7 +173,6 @@ registerLocaleData(localeRu, 'ru');
     DatePickerComponent,
     MonthYearSelectComponent,
     DropdownComponent,
-    DropdownSimpleComponent,
     LookupComponent,
     MultiLookupComponent,
     FilteredListComponent,
@@ -186,7 +184,6 @@ registerLocaleData(localeRu, 'ru');
     RadioComponent,
     PagingControlsComponent,
     InvalidResultsTipComponent,
-    ValidationMessageComponent,
     QuestionHelpTipComponent,
     HiddenTooltipComponent,
     LocationComponent,
@@ -305,7 +302,6 @@ registerLocaleData(localeRu, 'ru');
     BaseMaskedInputComponent,
     StandardMaskedInputComponent,
     DropdownComponent,
-    DropdownSimpleComponent,
     LookupComponent,
     MultiLookupComponent,
     FilteredListComponent,
@@ -320,7 +316,6 @@ registerLocaleData(localeRu, 'ru');
     LocationComponent,
     PagingControlsComponent,
     InvalidResultsTipComponent,
-    ValidationMessageComponent,
     QuestionHelpTipComponent,
     HiddenTooltipComponent,
     GibddDetailsComponent,
@@ -436,6 +431,7 @@ export class EpguLibModule {
         FocusManager,
         PositioningManager,
         DragDropManager,
+        AccessesService,
         {
           provide: 'notifierSetting',
           useValue: setting ? setting.notifier : {}

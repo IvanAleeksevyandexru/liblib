@@ -1,4 +1,4 @@
-import { OnInit, OnDestroy, Optional, ElementRef, Injectable } from '@angular/core';
+import { OnInit, OnDestroy, Optional, ElementRef } from '@angular/core';
 import { Observable, Subscription, forkJoin, of } from 'rxjs';
 import { tap, map, catchError } from 'rxjs/operators';
 import { LibTranslateService } from '../translate/translate.service';
@@ -52,140 +52,14 @@ class ListItemGroup {
   }
 }
 
-export class HierarchyBuilder {
-
-  public static isHierarchyList(list: Array<ListItem>) {
-    return list && list.length && list.some((item: ListItem) => item.groupId);
-  }
-
-  public static alignGroupsTree(filteredItems: Array<ListItem>, availableItems: Array<ListItem>): Array<ListItem> {
-    const treeView = new ListItemGroup();
-    let unsorted = [].concat(filteredItems);
-    const findGroup = (groupId: string | number): ListItem => {
-      unsorted = unsorted.filter((item: ListItem) => item.id !== groupId);
-      return availableItems.find((item: ListItem) => item.id === groupId);
-    };
-    const recoverPath = (item: ListItem) => {
-      const itemPath = [findGroup(item.id)];
-      let parentId = item.groupId;
-      while (parentId !== undefined) {
-        const pathIds = itemPath.map((pathEl: ListItem) => pathEl.id);
-        if (pathIds.includes(parentId)) {
-          break; // остановка рекурсии для некорректного (с циклами) графа связей
-        }
-        const parent = findGroup(parentId);
-        itemPath.unshift(parent);
-        parentId = parent.groupId;
-      }
-      let node = treeView;
-      itemPath.forEach((pathFragment: ListItem) => {
-        node = node.add(pathFragment);
-      });
-    };
-    [].concat(unsorted).forEach((unsortedItem: ListItem) => {
-      recoverPath(unsortedItem);
-    });
-    const output = [];
-    treeView.out(0, [], output);
-    return output;
-  }
-
-  public static findAppended(treeAligned: Array<ListItem>, initialList: Array<ListItem>): Array<ListItem> {
-    const aligned = treeAligned;
-    return aligned.filter((appendedItem: ListItem) => !initialList.includes(appendedItem));
-  }
-
-  public static getChildrenAligned(item: ListItem, treeAligned: Array<ListItem>, particularLevel?: number) {
-    const children = [];
-    const position = treeAligned.findIndex((someItem: ListItem) => someItem === item);
-    if (position >= 0) {
-      for (let i = position + 1; i < treeAligned.length; i++) {
-        if (treeAligned[i].groupLevel <= item.groupLevel) {
-          break;
-        } else {
-          if (particularLevel === undefined || treeAligned[i].groupLevel === particularLevel) {
-            children.push(treeAligned[i]);
-          }
-        }
-      }
-    }
-    return children;
-  }
-
-  public static collectChildren(items: Array<ListItem>, availableItems: Array<ListItem>): Array<ListItem> {
-    const result = new Set<ListItem>();
-    const put = (newItems: Array<ListItem>) => {
-      newItems.forEach((item: ListItem) => result.add(item));
-    };
-    let collected = items;
-    while (collected.length) {
-      put(collected);
-      collected = availableItems.filter((item: ListItem) => {
-        return !result.has(item) && collected.some((collectedItem: ListItem) => item.groupId === collectedItem.id);
-      });
-    }
-    return Array.from(result);
-  }
-
-}
-
-// не инжектится в root, это сервис инстанс которого привязан к инстансу контрола, т.к. необходим TranslateService,
+// никаких @Injected root/static, это сервис инстанс которого приходится на каждый инстанс контрола, т.к. необходим TranslateService,
 // находящийся по месту расположения компонента, состояние связано с компонентом-хозяином также как и жизненный цикл
-@Injectable()
 export class ListItemsService implements OnInit, OnDestroy {
 
   private operationsContext = {} as ListItemsOperationsContext;
   private langSubscription: Subscription;
 
   constructor(private libTranslate: LibTranslateService, @Optional() private appTranslate: TranslateService) {
-  }
-
-  public static findNextItem(source: Array<ListItem | AutocompleteSuggestion>, highlightedElement: ListItem | AutocompleteSuggestion,
-                             directionForward: boolean, highlightableCheck: (ListItem) => boolean) {
-    if (!source || !source.length) {
-      return null;
-    }
-    const fromIndex = source.findIndex((item: ListItem | AutocompleteSuggestion) => item === highlightedElement);
-    const initialIndex = fromIndex === -1 && !directionForward ? 0 : fromIndex;
-    let index = initialIndex;
-    do {
-      index = directionForward ? ++index : --index;
-      if (index < 0) {
-        index = source.length - 1;
-      } else if (index >= source.length) {
-        index = 0;
-      }
-      if (highlightableCheck(source[index])) {
-        return index;
-      }
-    } while (index !== initialIndex);
-    return null;
-  }
-
-  public static scrollTo(scrollContainerBaseRef: ElementRef, elementIndex: number) {
-    const scrollContainer = this.findScrollContainer(scrollContainerBaseRef);
-    if (scrollContainerBaseRef && scrollContainer && elementIndex >= 0
-        && elementIndex < scrollContainerBaseRef.nativeElement.childElementCount) {
-      let itemElement = scrollContainerBaseRef.nativeElement.children[elementIndex];
-      if (itemElement) {
-        let height = 0;
-        while (itemElement !== null) {
-          height += itemElement.offsetHeight || 0;
-          itemElement = itemElement.previousSibling;
-        }
-        scrollContainer.scrollTop = height - 100;
-      }
-    }
-  }
-
-  private static findScrollContainer(baseElement: ElementRef) {
-    let base = baseElement && baseElement.nativeElement;
-    let level = 0;
-    while (level < 3 && !base.classList.contains('ps')) {
-      base = base.parentElement;
-      level ++;
-    }
-    return base.classList.contains('ps') ? base : null;
   }
 
   public ngOnInit() {
@@ -246,7 +120,7 @@ export class ListItemsService implements OnInit, OnDestroy {
     if (converter) {
       return converter(item, convertContext);
     } else if (item) {
-      return item.hasNoOriginal() ? item : item.originalItem;
+      return item.isNoOriginal() ? item : item.originalItem;
     } else {
       return item;
     }
@@ -305,18 +179,41 @@ export class ListItemsService implements OnInit, OnDestroy {
 
   // восстанавливает структуру дерева и недостающие элементы по item.groupId. меняет исходный массив!
   public alignGroupsTreeIfNeeded(filteredItems: Array<ListItem>, availableItems: Array<ListItem>): Array<ListItem> {
-    if (HierarchyBuilder.isHierarchyList(filteredItems)) {
-      const hierarchyAligned = HierarchyBuilder.alignGroupsTree(filteredItems, availableItems);
-      hierarchyAligned.filter((item: ListItem) => item.collapsable).forEach((item: ListItem) => {
-        (item as any).collapse = () => this.collapse(item, availableItems);
-        (item as any).expand = () => this.expand(item, availableItems);
+    if (filteredItems && filteredItems.length && filteredItems.some((item: ListItem) => item.groupId)) {
+      const treeView = new ListItemGroup();
+      let unsorted = [].concat(filteredItems);
+      const findGroup = (groupId: string | number): ListItem => {
+        unsorted = unsorted.filter((item: ListItem) => item.id !== groupId);
+        return availableItems.find((item: ListItem) => item.id === groupId);
+      };
+      const recoverPath = (item: ListItem) => {
+        const itemPath = [findGroup(item.id)];
+        let parentId = item.groupId;
+        while (parentId !== undefined) {
+          const pathIds = itemPath.map((pathEl: ListItem) => pathEl.id);
+          if (pathIds.includes(parentId)) {
+            break; // остановка рекурсии для некорректного (с циклами) графа связей
+          }
+          const parent = findGroup(parentId);
+          itemPath.unshift(parent);
+          parentId = parent.groupId;
+        }
+        let node = treeView;
+        itemPath.forEach((pathFragment: ListItem) => {
+          node = node.add(pathFragment);
+        });
+      };
+      [].concat(unsorted).forEach((unsortedItem: ListItem) => {
+        recoverPath(unsortedItem);
       });
-      this.adjustVirtualGroupsSelectionIfNeeded(hierarchyAligned);
-      const appended = HierarchyBuilder.findAppended(hierarchyAligned, filteredItems);
+      const output = [];
+      treeView.out(0, [], output);
+      this.adjustVirtualGroupsSelectionIfNeeded(output);
+      const appended = output.filter((appendedItem: ListItem) => !filteredItems.includes(appendedItem));
       appended.forEach((appendedItem: ListItem) => {
         appendedItem.resetHighlighting();
       });
-      HelperService.copyArrayToArray(hierarchyAligned, filteredItems);
+      HelperService.copyArrayToArray(output, filteredItems);
     }
     return filteredItems;
   }
@@ -325,7 +222,7 @@ export class ListItemsService implements OnInit, OnDestroy {
     if (this.operationsContext.virtualGroups === false) {
       return; // если группы можно выделять как обычные итемы - мы не позволяем регулирование их выделения кроме как пользователем
     }
-    const elements = rootElement ? HierarchyBuilder.getChildrenAligned(rootElement, list, rootElement.groupLevel + 1) :
+    const elements = rootElement ? this.getChildren(rootElement, list, rootElement.groupLevel + 1) :
       list.filter((listElement: ListItem) => listElement.groupLevel === 1);
     elements.forEach((listElement: ListItem) => {
       if (listElement.collapsable) {
@@ -338,7 +235,7 @@ export class ListItemsService implements OnInit, OnDestroy {
   }
 
   public getFinalItems(list: Array<ListItem>, root: ListItem) {
-    return HierarchyBuilder.getChildrenAligned(root, list).filter((item: ListItem) => !item.collapsable);
+    return this.getChildren(root, list).filter((item: ListItem) => !item.collapsable);
   }
 
   public expandCollapse(switchedElement: ListItem, list: Array<ListItem>, evt?: Event) {
@@ -346,7 +243,7 @@ export class ListItemsService implements OnInit, OnDestroy {
       return;
     }
     switchedElement.collapsed = !switchedElement.collapsed;
-    const itemChildren = HierarchyBuilder.getChildrenAligned(switchedElement, list);
+    const itemChildren = this.getChildren(switchedElement, list);
     const parents = [switchedElement];
     itemChildren.forEach((childItem: ListItem) => {
       const deltaLev = childItem.groupLevel - switchedElement.groupLevel;
@@ -362,18 +259,14 @@ export class ListItemsService implements OnInit, OnDestroy {
     if (switchedElement.collapsed) {
       this.expandCollapse(switchedElement, list);
     }
-    if (evt) {
-      evt.stopPropagation();
-    }
+    evt.stopPropagation();
   }
 
   public collapse(switchedElement: ListItem, list: Array<ListItem>, evt?: Event) {
     if (!switchedElement.collapsed) {
       this.expandCollapse(switchedElement, list);
     }
-    if (evt) {
-      evt.stopPropagation();
-    }
+    evt.stopPropagation();
   }
 
   public highlightSubstring(items: Array<ListItem>, query: string) {
@@ -388,10 +281,11 @@ export class ListItemsService implements OnInit, OnDestroy {
   public handleKeyboardNavigation(e: KeyboardEvent, items: Array<ListItem | AutocompleteSuggestion>,
                                   highlightedElement: ListItem | AutocompleteSuggestion,
                                   scrollContainerBaseRef: ElementRef): ListItem | AutocompleteSuggestion | boolean {
+    const highlightedElementIndex = items.findIndex((item: ListItem | AutocompleteSuggestion) => item === highlightedElement);
     if (e.key === 'ArrowUp') {  // вверх
       e.preventDefault();
       e.stopPropagation();
-      const prevVisible = this.findNextItem(items, highlightedElement, false);
+      const prevVisible = this.findNextItem(items, highlightedElementIndex, false);
       if (prevVisible !== null) {
         this.scrollTo(scrollContainerBaseRef, prevVisible);
         return items[prevVisible];
@@ -399,7 +293,7 @@ export class ListItemsService implements OnInit, OnDestroy {
     } else if (e.key === 'ArrowDown') {  // вниз
       e.preventDefault();
       e.stopPropagation();
-      const nextVisible = this.findNextItem(items, highlightedElement, true);
+      const nextVisible = this.findNextItem(items, highlightedElementIndex, true);
       if (nextVisible !== null) {
         this.scrollTo(scrollContainerBaseRef, nextVisible);
         return items[nextVisible];
@@ -430,15 +324,6 @@ export class ListItemsService implements OnInit, OnDestroy {
     return false;
   }
 
-  public findNextItem(source: Array<ListItem | AutocompleteSuggestion>,
-                      highlighted: ListItem | AutocompleteSuggestion, directionForward: boolean) {
-    return ListItemsService.findNextItem(source, highlighted, directionForward, (item: ListItem) => this.isHighlightable(item, true));
-  }
-
-  public scrollTo(scrollContainerBaseRef: ElementRef, elementIndex: number) {
-    ListItemsService.scrollTo(scrollContainerBaseRef, elementIndex);
-  }
-
   public isHighlightable(item: ListItem | AutocompleteSuggestion, fromKeyboard = false) {
     if (item instanceof ListItem) {
       const listItem = item as ListItem;
@@ -459,6 +344,21 @@ export class ListItemsService implements OnInit, OnDestroy {
     }
   }
 
+  public scrollTo(scrollContainerBaseRef: ElementRef, elementIndex: number) {
+    const scrollContainer = this.findScrollContainer(scrollContainerBaseRef);
+    if (scrollContainerBaseRef && scrollContainer) {
+      let itemElement = scrollContainerBaseRef.nativeElement.children[elementIndex];
+      if (itemElement) {
+        let height = 0;
+        while (itemElement !== null) {
+          height += itemElement.offsetHeight || 0;
+          itemElement = itemElement.previousSibling;
+        }
+        scrollContainer.scrollTop = height - 100;
+      }
+    }
+  }
+
   private addIndexToCtx(context: { [name: string]: any}, originalIndex: number) {
     const ctx = context || {};
     if (ctx.noIndex) {
@@ -471,61 +371,80 @@ export class ListItemsService implements OnInit, OnDestroy {
     return ctx;
   }
 
+  private findNextItem(source: Array<ListItem | AutocompleteSuggestion>, fromIndex: number, directionForward: boolean) {
+    if (!source || !source.length) {
+      return null;
+    }
+    const initialIndex = fromIndex === -1 && !directionForward ? 0 : fromIndex;
+    let index = initialIndex;
+    do {
+      index = directionForward ? ++index : --index;
+      if (index < 0) {
+        index = source.length - 1;
+      } else if (index >= source.length) {
+        index = 0;
+      }
+      if (this.isHighlightable(source[index], true)) {
+        return index;
+      }
+    } while (index !== initialIndex);
+    return null;
+  }
+
+  private getChildren(item: ListItem, list: Array<ListItem>, particularLevel?: number) {
+    const children = [];
+    const position = list.findIndex((someItem: ListItem) => someItem === item);
+    if (position >= 0) {
+      for (let i = position + 1; i < list.length; i++) {
+        if (list[i].groupLevel <= item.groupLevel) {
+          break;
+        } else {
+          if (particularLevel === undefined || list[i].groupLevel === particularLevel) {
+            children.push(list[i]);
+          }
+        }
+      }
+    }
+    return children;
+  }
+
+  private findScrollContainer(baseElement: ElementRef) {
+    let base = baseElement && baseElement.nativeElement;
+    let level = 0;
+    while (level < 3 && !base.classList.contains('ps')) {
+      base = base.parentElement;
+      level ++;
+    }
+    return base.classList.contains('ps') ? base : null;
+  }
 }
 
 // класс-фильтр по статичной коллекции, обеспечивает простой и постраничный поиск
 export class FixedItemsProvider implements LookupProvider<ListItem>, LookupPartialProvider<ListItem> {
 
   public fixedItems: Array<ListItem>;
-  public cachedResult: Array<ListItem>;
-  public lastQuery: string;
-
-  public static checkItem(item: ListItem, query: string, context?: { [name: string]: any }): boolean {
-    const text = item.translated || item.text || '';
-    if (context && context.searchCaseSensitive) {
-      return context.searchFromStartOnly ? text.startsWith(query) : text.includes(query);
-    } else {
-      if (context && context.searchFromStartOnly) {
-        return text.toUpperCase().startsWith(query.toUpperCase());
-      } else {
-        return text.toUpperCase().includes(query.toUpperCase());
-      }
-    }
-  }
 
   public setSource(fixedItems: Array<ListItem>): FixedItemsProvider {
     this.fixedItems = fixedItems;
-    this.clearCache();
     return this;
   }
 
-  public cacheAndReturn(query: string, result: Array<ListItem>): Observable<Array<ListItem>> {
-    this.lastQuery = query;
-    this.cachedResult = result;
-    return of(result);
-  }
-
-  public clearCache() {
-    this.lastQuery = '';
-    this.cachedResult = this.fixedItems;
-  }
-
   public search(query: string, context?: { [name: string]: any }): Observable<Array<ListItem>> {
-    if (query === this.lastQuery) {
-      return of(this.cachedResult);
-    } else if (query) {
-      let filteredItems = (this.fixedItems || []).filter((item: ListItem) => {
-        return FixedItemsProvider.checkItem(item, query, context);
-      });
-      if (HierarchyBuilder.isHierarchyList(this.fixedItems)) {
-        const filteredGroups = filteredItems.filter((filtered: ListItem) => filtered.collapsable);
-        const filteredGroupsContents = HierarchyBuilder.collectChildren(filteredGroups, this.fixedItems);
-        const groupContents = filteredGroupsContents.filter((missingItem: ListItem) => !filteredItems.includes(missingItem));
-        filteredItems = HierarchyBuilder.alignGroupsTree(filteredItems.concat(groupContents), this.fixedItems);
-      }
-      return this.cacheAndReturn(query, filteredItems);
+    if (query) {
+      return of((this.fixedItems || []).filter((item: ListItem) => {
+        const text = item.translated || item.text || '';
+        if (context && context.searchCaseSensitive) {
+          return context.searchFromStartOnly ? text.startsWith(query) : text.includes(query);
+        } else {
+          if (context && context.searchFromStartOnly) {
+            return text.toUpperCase().startsWith(query.toUpperCase());
+          } else {
+            return text.toUpperCase().includes(query.toUpperCase());
+          }
+        }
+      }));
     } else {
-      return this.cacheAndReturn(query, this.fixedItems || []);
+      return of(this.fixedItems || []);
     }
   }
 

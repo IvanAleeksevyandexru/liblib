@@ -1,5 +1,5 @@
-<div class="lookup" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside (clickOutside)="cancelSearchAndClose()" 
-  [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+<div class="lookup" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside
+     (clickOutside)="cancelSearchAndClose()">
   <div class="lookup-field" #dropdownField [ngClass]="{invalid: invalid, expanded: expanded}">
     <lib-search-bar #searchBar
       contextClass="lookup-input" 

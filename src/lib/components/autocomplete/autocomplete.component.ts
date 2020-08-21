@@ -12,7 +12,6 @@ import { Translation, LineBreak } from '../../models/common-enums';
 import { FocusManager } from '../../services/focus/focus.manager';
 import { ListItemsService } from '../../services/list-item/list-items.service';
 import { PositioningManager, PositioningRequest } from '../../services/positioning/positioning.manager';
-import { Width } from '../../models/width-height';
 import { from, Observable } from 'rxjs';
 
 @Component({
@@ -43,7 +42,6 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public maxlength?: number;
   @Input() public commitOnInput = false;
-  @Input() public width?: string | Width;
   // показ лупы
   @Input() public showMagnifyingGlass = true;
   // показ крутилки во время поиска
@@ -353,6 +351,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   }
 
   public handleKeydownNavigation(e: KeyboardEvent) {
+    const highlightedElementIndex = this.suggestions.findIndex((suggestion: AutocompleteSuggestion) => suggestion === this.highlighted);
     if (e.key === 'Tab') {  // tab
       // blur, выходим без default preventing, дропдаун прячется чтобы ползунок скролла не получил фокус
       this.closeDropdown();
