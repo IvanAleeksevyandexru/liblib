@@ -96,18 +96,18 @@ export class ValidationService {
     return control.value && new RegExp('[<>&]+').test(control.value) ? {containsEscapeSymbols: true} : null;
   }
 
-  // -> {invalid}
+  // -> {invalid}. валидность даты
   public static validDateOptional(control: AbstractControl) {
     const value = control.value;
     return !value || (value instanceof Date && !isNaN(value.getTime())) ? null : {invalid: true};
   }
 
-  // -> {invalid, required}
+  // -> {invalid, required}. валидность и наличие
   public static validDateRequired(control: AbstractControl) {
     return !control.value ? {required: true} : ValidationService.validDateOptional(control);
   }
 
-  // -> {invalid, outside}
+  // -> {invalid, outside}. валидность и вхождение в рейндж
   public static insideRangeOptional(range: RelativeRange) {
     return (control: AbstractControl) => {
       const value = control.value;
@@ -119,7 +119,7 @@ export class ValidationService {
     };
   }
 
-  // -> {invalid, required, outside}
+  // -> {invalid, required, outside}. валидность, наличие, вхождение в рейндж
   public static insideRangeRequired(range: RelativeRange) {
     const insideRangeOptional = ValidationService.insideRangeOptional(range);
     return (control: AbstractControl) => {
@@ -127,7 +127,7 @@ export class ValidationService {
     };
   }
 
-  // -> {invalid, dateBefore, dateAfter}
+  // -> {invalid, dateBefore, dateAfter}. валидность и вхождение в рейндж
   public static withinRangeOptional(range: RelativeRange) {
     const dateBefore = ValidationService.dateBeforeOptional(range.start, false);
     const dateAfter = ValidationService.dateAfterOptional(range.end, false);
@@ -140,7 +140,7 @@ export class ValidationService {
     };
   }
 
-  // -> {invalid, required, dateBefore, dateAfter}
+  // -> {invalid, required, dateBefore, dateAfter}. валидность, наличие, вхождение в рейндж
   public static withinRangeRequired(range: RelativeRange) {
     const withinRangeOptional = ValidationService.withinRangeOptional(range);
     return (control: AbstractControl) => {
@@ -148,7 +148,7 @@ export class ValidationService {
     };
   }
 
-  // -> {invalid, dateBefore}
+  // -> {invalid, dateBefore}. валидность, максимум
   public static dateBeforeOptional(date: RelativeDate | Date, including = true) {
     return (control: AbstractControl) => {
       const value = control.value ? moment(control.value) : null;
@@ -161,7 +161,7 @@ export class ValidationService {
     };
   }
 
-  // {invalid, required, dateBefore}
+  // {invalid, required, dateBefore}. валидность, наличие, максимум
   public static dateBeforeRequired(date: RelativeDate | Date, including = true) {
     const dateBeforeOptional = ValidationService.dateBeforeOptional(date, including);
     return (control: AbstractControl) => {
@@ -169,7 +169,7 @@ export class ValidationService {
     };
   }
 
-  // -> {invalid, dateAfter}
+  // -> {invalid, dateAfter}. валидность, минимум
   public static dateAfterOptional(date: RelativeDate | Date, including = true) {
     return (control: AbstractControl) => {
       const value = control.value ? moment(control.value) : null;
@@ -182,11 +182,43 @@ export class ValidationService {
     };
   }
 
-  // -> {invalid, required, dateAfter}
+  // -> {invalid, required, dateAfter}. валидность, наличие, минимум
   public static dateAfterRequired(date: RelativeDate | Date, including = true) {
     const dateAfterOptional = ValidationService.dateAfterOptional(date, including);
     return (control: AbstractControl) => {
       return !control.value ? {required: true} : dateAfterOptional(control);
+    };
+  }
+
+  // -> {invalid, outside}: dynamic. валидность, вхождение в рейндж (определяется динамически)
+  public static insideRangeDynamic(dynamicRangeEvaluator: () => RelativeRange) {
+    return (control: AbstractControl) => {
+      const range = dynamicRangeEvaluator();
+      return range ? ValidationService.insideRangeOptional(range)(control) : null;
+    };
+  }
+
+  // -> {invalid, dateBefore, dateAfter}: dynamic. валидность, вхождение в рейндж (определяется динамически)
+  public static withinRangeDynamic(dynamicRangeEvaluator: () => RelativeRange) {
+    return (control: AbstractControl) => {
+      const range = dynamicRangeEvaluator();
+      return range ? ValidationService.withinRangeOptional(range)(control) : null;
+    };
+  }
+
+  // -> {invalid, dateBefore}: dynamic. валидность, максимум (определяется динамически)
+  public static dateBeforeDynamic(dynamicDateEvaluator: () => Date | RelativeDate) {
+    return (control: AbstractControl) => {
+      const date = dynamicDateEvaluator();
+      return date ? ValidationService.dateBeforeOptional(date)(control) : null;
+    };
+  }
+
+  // -> {invalid, dateAfter}: dynamic, валидность, минимум (определяется динамически)
+  public static dateAfterDynamic(dynamicDateEvaluator: () => Date | RelativeDate) {
+    return (control: AbstractControl) => {
+      const date = dynamicDateEvaluator();
+      return date ? ValidationService.dateAfterOptional(date)(control) : null;
     };
   }
 
