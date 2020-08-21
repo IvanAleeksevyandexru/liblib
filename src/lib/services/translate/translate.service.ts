@@ -4,7 +4,10 @@ import { TranslateStore, TranslateLoader, TranslateService, TranslateFakeCompile
   TranslateDefaultParser, FakeMissingTranslationHandler } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LoadService } from '../load/load.service';
+import { HelperService } from '../helper/helper.service';
 import { ConstantsService } from '../constants.service';
+import { forkJoin, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +31,13 @@ export class LibTranslateService extends TranslateService {
     super(store, loader, compiler, parser, missingHandler, true, true);
     this.addLangs(['ru']);
     this.setDefaultLang('ru');
+  }
+
+  public static pluralizeTranslate(translate: TranslateService, quantity: number, pluralizeNouns: Array<string>): Observable<string> {
+    const observables = pluralizeNouns.map((pluralizeForm: string) => translate.get(pluralizeForm));
+    return forkJoin(observables).pipe(map((translations: Array<string>) => {
+      return HelperService.pluralize(quantity, translations);
+    }));
   }
 
   public followLanguageChange(appTranslateService: TranslateService) {

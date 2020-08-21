@@ -157,6 +157,12 @@ export class HelperService {
     return doc.body ? doc.body.textContent : '';
   }
 
+  // выбирает склонение существительного в зависимости от количества, массив pluralizeNouns всегда длины 3!
+  public static pluralize(quanity: number, pluralizeNouns: Array<string>): string {
+    const cases = [2, 0, 1, 1, 1, 2];
+    return pluralizeNouns[(quanity % 100 > 4 && quanity % 100 < 20) ? 2 : cases[(quanity % 10 < 5) ? quanity % 10 : 5]];
+  }
+
   // определяет затрагивает ли позиция курсора в пользовательском тексте верстку
   public static isTextPosition(html: string, positionFrom: number, positionTo) {
     let isText = true;

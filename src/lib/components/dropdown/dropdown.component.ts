@@ -13,7 +13,7 @@ import { ListItemsService, ListItemsOperationsContext, FixedItemsProvider } from
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { ConstantsService } from '../../services/constants.service';
 import { Translation, MultipleItemsLayout, LineBreak } from '../../models/common-enums';
-import { forkJoin } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { Width } from '../../models/width-height';
 
 /*
@@ -58,7 +58,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   @Input() public escapeHtml = false;
   // лейаут области поля для отображения множественных выбранных итемов + кастомный форматтер для специальных кейсов отображения
   @Input() public multipleItemsLayout: MultipleItemsLayout | string = MultipleItemsLayout.OVERFLOW;
-  @Input() public customMultipleItemsLayout?: (selected: Array<ListItem>, context?: { [name: string]: any }) => string;
+  @Input() public customMultipleItemsLayout?: (selected: Array<ListItem>, context?: { [name: string]: any }) => Observable<string>;
   @Input() public multipleItemsMaxSelected: number;
   // заглушка для отсутствия выбранного значения/значений
   @Input() public placeholder = '&mdash;';

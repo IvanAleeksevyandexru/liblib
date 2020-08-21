@@ -4,7 +4,7 @@
 <div class="button-container" (click)="onClick($event)">
   <button *ngIf="type === 'button'"
     [disabled]="disabled"
-    class="{{size}} {{color}} {{height}} {{type}} font-{{fontSize}}"
+    class="{{size}} {{color}} {{width}} {{height}} {{type}} font-{{fontSize}}"
     [ngClass]="{disabled: disabled, active: active}"
     tabindex="{{disabled ? -1 : 0}}">
     <ng-container *ngIf="!showLoader">
