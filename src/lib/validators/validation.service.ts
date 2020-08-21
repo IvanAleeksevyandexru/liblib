@@ -96,33 +96,18 @@ export class ValidationService {
     return control.value && new RegExp('[<>&]+').test(control.value) ? {containsEscapeSymbols: true} : null;
   }
 
-  public static dateNotLateThan(date: MomentInput) {
-    return (control: AbstractControl) => {
-      return control.value && moment(control.value, 'DD.MM.YYYY').isAfter(date, 'days') ? {dateAfter: true} : null;
-    };
-  }
-
-  public static dateLateThan(date: MomentInput) {
-    return (control: AbstractControl) => {
-      return control.value && moment(control.value, 'DD.MM.YYYY').isBefore(date, 'days') ? {dateBefore: true} : null;
-    };
-  }
-
-  public static requiredDate(control: AbstractControl) {
-    const value = (control.value ? control.value : '').toString();
-    return value && value !== 'Invalid Date' ? null : {required: true};
-  }
-
+  // -> {invalid}
   public static validDateOptional(control: AbstractControl) {
     const value = control.value;
     return !value || (value instanceof Date && !isNaN(value.getTime())) ? null : {invalid: true};
   }
 
+  // -> {invalid, required}
   public static validDate(control: AbstractControl) {
     return !control.value ? {required: true} : ValidationService.validDateOptional(control);
   }
 
-  // отдает признак outside для дат снаружи
+  // -> {invalid, outside}
   public static insideRangeOptional(range: RelativeRange) {
     return (control: AbstractControl) => {
       const value = control.value;
@@ -134,6 +119,7 @@ export class ValidationService {
     };
   }
 
+  // -> {invalid, required, outside}
   public static insideRange(range: RelativeRange) {
     const insideRangeOptional = ValidationService.insideRangeOptional(range);
     return (control: AbstractControl) => {
@@ -141,7 +127,7 @@ export class ValidationService {
     };
   }
 
-  // отдает dateBefore / dateAfter флаги для дат снаружи
+  // -> {invalid, dateBefore, dateAfter}
   public static withinRangeOptional(range: RelativeRange) {
     const dateBefore = ValidationService.dateBeforeOptional(range.start, false);
     const dateAfter = ValidationService.dateAfterOptional(range.end, false);
@@ -154,6 +140,7 @@ export class ValidationService {
     };
   }
 
+  // -> {invalid, required, dateBefore, dateAfter}
   public static withinRange(range: RelativeRange) {
     const withinRangeOptional = ValidationService.withinRangeOptional(range);
     return (control: AbstractControl) => {
@@ -161,9 +148,10 @@ export class ValidationService {
     };
   }
 
+  // -> {invalid, dateBefore}
   public static dateBeforeOptional(date: RelativeDate | Date, including = true) {
     return (control: AbstractControl) => {
-      const value = control.value ? moment(value) : null;
+      const value = control.value ? moment(control.value) : null;
       if (value) {
         const bound = date instanceof RelativeDate ? DatesHelperService.relativeDateToDate(date) : date as Date;
         const check = including ? value.isSameOrBefore : value.isBefore;
@@ -173,6 +161,7 @@ export class ValidationService {
     };
   }
 
+  // {invalid, required, dateBefore}
   public static dateBefore(date: RelativeDate | Date, including = true) {
     const dateBeforeOptional = ValidationService.dateBeforeOptional(date, including);
     return (control: AbstractControl) => {
@@ -180,9 +169,10 @@ export class ValidationService {
     };
   }
 
+  // -> {invalid, dateAfter}
   public static dateAfterOptional(date: RelativeDate | Date, including = true) {
     return (control: AbstractControl) => {
-      const value = control.value;
+      const value = control.value ? moment(control.value) : null;
       if (value) {
         const bound = date instanceof RelativeDate ? DatesHelperService.relativeDateToDate(date) : date as Date;
         const check = including ? value.isSameOrAfter : value.isAfter;
@@ -192,6 +182,7 @@ export class ValidationService {
     };
   }
 
+  // -> {invalid, required, dateAfter}
   public static dateAfter(date: RelativeDate | Date, including = true) {
     const dateAfterOptional = ValidationService.dateAfterOptional(date, including);
     return (control: AbstractControl) => {
