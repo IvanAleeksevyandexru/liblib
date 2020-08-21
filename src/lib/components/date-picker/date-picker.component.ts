@@ -27,7 +27,7 @@ const STD_SHORT_FORMAT = 'DD.MM.YY';
 const AM_DATE_FORMAT = 'MM/DD/YYYY';
 const AM_SHORT_FORMAT = 'MM/DD/YY';
 const MODEL_FORMAT = ConstantsService.CALENDAR_TEXT_MODEL_FORMAT;
-const DATE_PATTERN = /^\d\d?[\.\/]\d\d?[\.\/]\d\d\d?\d?$/;
+const DATE_PATTERN = /^\d\d?[\.\/]\d\d?[\.\/]\d\d?\d?\d?$/;
 const WEAK_DATE_PATTERN = /^([\d_][\d_]?)[\.\/]([\d_][\d_]?)[\.\/]([\d_][\d_][\d_]?[\d_]?)$/;
 const RANGE_BASE_MASK = [/\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/,
   '-', /\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];

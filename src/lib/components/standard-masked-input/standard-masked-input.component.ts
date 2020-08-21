@@ -4,7 +4,7 @@ import { ControlValueAccessor, ValidationErrors, NG_VALUE_ACCESSOR } from '@angu
 import { BaseMaskedInputComponent } from '../base-masked-input/base-masked-input.component';
 import { Focusable } from '../../services/focus/focus.manager';
 import { PipedMessage } from '../../models/piped-message';
-import { InputAutocomplete, TipDirection, MessagePosition, Translation } from '../../models/common-enums';
+import { InputAutocomplete, TipDirection, MessagePosition, Translation, RemoveMaskSymbols } from '../../models/common-enums';
 import { ValidationDetailed, ValidationShowOn, ValidationMessages } from '../../models/validation-show';
 import { HelperService } from '../../services/helper/helper.service';
 import { Width } from '../../models/width-height';
@@ -37,7 +37,7 @@ export class StandardMaskedInputComponent extends BaseMaskedInputComponent
   @Input() public commitOnInput = true;  // коммитить ли значение по input или по change
   @Input() public width?: Width | string;
 
-  @Input() public removePlaceholderSymbols = true;  // убирать ли символы плейсхолдера из значения перед коммитом
+  @Input() public removeMaskSymbols: RemoveMaskSymbols | string = RemoveMaskSymbols.PLACEHOLDERS;
   @Input() public mask: (value: string) => Array<string> | Array<string | RegExp>;
   @Input() public showConstantMaskSymbols = true;
   @Input() public placeholderSymbol = '_';
