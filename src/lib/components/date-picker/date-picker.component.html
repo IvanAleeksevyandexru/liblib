@@ -1,136 +1,139 @@
-<div class="above-info" *ngIf="validationPosition === MessagePosition.ABOVE || questionTipPosition === MessagePosition.ABOVE"
-    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
-  <div class="information text-help" 
-    *ngIf="questionTip && questionTipPosition === MessagePosition.ABOVE && (!validationOverride || !(invalidDisplayed && validationMessages))" 
-    [innerHTML]="questionTip">
-  </div>
-  <div class="validation" *ngIf="validationPosition === MessagePosition.ABOVE && invalidDisplayed && validationMessages">
-    <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages"></lib-validation-message>
-  </div>
-</div>
-<div class="date-picker" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside (clickOutside)="closeCalendar();"
-  [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
-  <div *ngIf="!asSimplePanel" class="value-field-wrapper">
-    <div class="value-field-container" #fieldContainer [ngClass]="{expanded: expanded, inconsistent: inconsistent}">
-      <lib-standard-masked-input
-        #input
-        [(ngModel)]="text"
-        contextClass="calendar-input"
-        [name]="name"
-        [tabIndex]="tabIndex"
-        [disabled]="disabled"
-        [clearable]="clearable"
-        [placeholder]="placeholder"
-        [readOnly]="!textEditable || blockMobileKeyboard || readOnly"
-        [mask]="isRange ? rangeMask : dateMask" 
-        [showConstantMaskSymbols]="true" 
-        [formatter]="dateEnteringController"
-        [removePlaceholderSymbols]="false"
-        [keepCharPositions]="true"
-        [showMaskAsPlaceholder]="true"
-        [containerOverlap]="containerOverlap"
-        (click)="toggle(true)" 
-        (change)="handleChange($event.target.value)" 
-        (focus)="handleFocus()" 
-        (blur)="handleBlur()" 
-        (cleared)="resetToEmpty()"
-        [invalid]="invalid"
-        [validation]="validation"
-        [validationShowOn]="validationShowOn"
-        [validationPosition]="validationPosition === MessagePosition.INSIDE ? validationPosition : MessagePosition.NOWHERE"
-        [validationMessages]="validationMessages"
-        [validationOverride]="validationOverride"
-        [questionTip]="questionTip"
-        [questionTipPosition]="questionTipPosition === MessagePosition.INSIDE ? questionTipPosition : MessagePosition.NOWHERE"
-      ></lib-standard-masked-input>
-      <div class="calendar-icon" (click)="toggle(false)"></div>
+<div class="width-container" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+  <div class="above-info" *ngIf="validationPosition === MessagePosition.ABOVE || questionTipPosition === MessagePosition.ABOVE">
+    <div class="information text-help" 
+      *ngIf="questionTip && questionTipPosition === MessagePosition.ABOVE && (!validationOverride || !(invalidDisplayed && validationMessages))" 
+      [innerHTML]="questionTip">
+    </div>
+    <div class="validation" *ngIf="validationPosition === MessagePosition.ABOVE && invalidDisplayed && validationMessages">
+      <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages" 
+        [translation]="validationTranslation" [escapeHtml]="validationEscapeHtml"></lib-validation-message>
     </div>
   </div>
-  <div class="calendar-wrapper" [ngClass]="{'simple-panel': asSimplePanel}">
-    <div class="calendar-container" *ngIf="expanded || asSimplePanel" #calendarContainer (scroll)="stopPropagation($event)"
-        [ngClass]="{'align-left': align === Align.LEFT, 'align-right': align === Align.RIGHT, 'adjust': align === Align.ADJUST}">
-      <div class="calendar-panel">
-        <lib-month-year-select
-          [activeMonthYear]="activeMonthYear"
-          [minDate]="minimumDate"
-          [maxDate]="maximumDate"
-          [joinedView]="rangeTypeMonthPanel"
-          [simplifiedView]="simplifiedMonthPanel"
-          (navigated)="navigateTo($event)"
-          (navigatedPrevMonth)="navigateToPreviousMonth()"
-          (navigatedNextMonth)="navigateToNextMonth()">
-        </lib-month-year-select>
+  <div class="date-picker" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside (clickOutside)="closeCalendar();">
+    <div *ngIf="!asSimplePanel" class="value-field-wrapper">
+      <div class="value-field-container" #fieldContainer [ngClass]="{expanded: expanded, inconsistent: inconsistent}">
+        <lib-standard-masked-input
+          #input
+          [(ngModel)]="text"
+          contextClass="calendar-input"
+          [name]="name"
+          [tabIndex]="tabIndex"
+          [disabled]="disabled"
+          [clearable]="clearable"
+          [placeholder]="placeholder"
+          [readOnly]="!textEditable || blockMobileKeyboard || readOnly"
+          [mask]="isRange ? rangeMask : dateMask" 
+          [showConstantMaskSymbols]="true" 
+          [formatter]="dateEnteringController"
+          [removePlaceholderSymbols]="false"
+          [keepCharPositions]="true"
+          [showMaskAsPlaceholder]="true"
+          [containerOverlap]="containerOverlap"
+          (click)="toggle(true)" 
+          (change)="handleChange($event.target.value)" 
+          (focus)="handleFocus()" 
+          (blur)="handleBlur()" 
+          (cleared)="resetToEmpty()"
+          [invalid]="invalid"
+          [validation]="validation"
+          [validationShowOn]="validationShowOn"
+          [validationPosition]="validationPosition === MessagePosition.INSIDE ? validationPosition : MessagePosition.NOWHERE"
+          [validationMessages]="validationMessages"
+          [validationOverride]="validationOverride"
+          [validationTranslation]="validationTranslation"
+          [validationEscapeHtml]="validationEscapeHtml"
+          [questionTip]="questionTip"
+          [questionTipPosition]="questionTipPosition === MessagePosition.INSIDE ? questionTipPosition : MessagePosition.NOWHERE"
+        ></lib-standard-masked-input>
+        <div class="calendar-icon" (click)="toggle(false)"></div>
       </div>
-      <div class="calendar-grid-container-wrapper">
-        <div class="calendar-grid-container" #monthsFeed [@monthsSlider]="monthShift" (@monthsSlider.done)="handleMonthNavigationAnimationDone()">
-          <div class="calendar-grid-wrap previous-month" [ngClass]="{'out-of-area': monthShift !== 'prev'}">
-            <div class="calendar-grid">
-              <div class="calendar-week-days">
-                <div class="calendar-week-day" *ngFor="let weekDay of daysOfWeek">
-                  <span class="calendar-week-day-text">{{weekDay | libTranslate}}</span>
+    </div>
+    <div class="calendar-wrapper" [ngClass]="{'simple-panel': asSimplePanel}">
+      <div class="calendar-container" *ngIf="expanded || asSimplePanel" #calendarContainer (scroll)="stopPropagation($event)"
+          [ngClass]="{'align-left': align === Align.LEFT, 'align-right': align === Align.RIGHT, 'adjust': align === Align.ADJUST}">
+        <div class="calendar-panel">
+          <lib-month-year-select
+            [activeMonthYear]="activeMonthYear"
+            [minDate]="minimumDate"
+            [maxDate]="maximumDate"
+            [joinedView]="rangeTypeMonthPanel"
+            [simplifiedView]="simplifiedMonthPanel"
+            (navigated)="navigateTo($event)"
+            (navigatedPrevMonth)="navigateToPreviousMonth()"
+            (navigatedNextMonth)="navigateToNextMonth()">
+          </lib-month-year-select>
+        </div>
+        <div class="calendar-grid-container-wrapper">
+          <div class="calendar-grid-container" #monthsFeed [@monthsSlider]="monthShift" (@monthsSlider.done)="handleMonthNavigationAnimationDone()">
+            <div class="calendar-grid-wrap previous-month" [ngClass]="{'out-of-area': monthShift !== 'prev'}">
+              <div class="calendar-grid">
+                <div class="calendar-week-days">
+                  <div class="calendar-week-day" *ngFor="let weekDay of daysOfWeek">
+                    <span class="calendar-week-day-text">{{weekDay | libTranslate}}</span>
+                  </div>
                 </div>
-              </div>
-              <div class="calendar-week" *ngFor="let week of prevWeeks">
-                <div *ngFor="let day of week" [class]="day.custom" (click)="selectDate(day)" [ngClass]="{
-                    'calendar-day': true,
-                    'today': day.today,
-                    'holiday': day.holiday,
-                    'selected': day.selected,
-                    'in-range': day.inRange,
-                    'range-start': day.rangeStart,
-                    'range-end': day.rangeEnd,
-                    'locked': day.locked,
-                    'outer': day.outer
-                  }">
-                  <span class="calendar-day-text">{{day ? day.day : ''}}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="calendar-grid-wrap current-month">
-            <div class="calendar-grid">
-              <div class="calendar-week-days">
-                <div class="calendar-week-day" *ngFor="let weekDay of daysOfWeek">
-                  <span class="calendar-week-day-text">{{weekDay | libTranslate}}</span>
-                </div>
-              </div>
-              <div class="calendar-week" *ngFor="let week of weeks">
-                <div *ngFor="let day of week" [class]="day.custom" (click)="selectDate(day)" [ngClass]="{
-                    'calendar-day': true,
-                    'today': day.today,
-                    'holiday': day.holiday,
-                    'selected': day.selected,
-                    'in-range': day.inRange,
-                    'range-start': day.rangeStart,
-                    'range-end': day.rangeEnd,
-                    'locked': day.locked,
-                    'outer': day.outer
-                  }">
-                  <span class="calendar-day-text">{{day ? day.day : ''}}</span>
+                <div class="calendar-week" *ngFor="let week of prevWeeks">
+                  <div *ngFor="let day of week" [class]="day.custom" (click)="selectDate(day)" [ngClass]="{
+                      'calendar-day': true,
+                      'today': day.today,
+                      'holiday': day.holiday,
+                      'selected': day.selected,
+                      'in-range': day.inRange,
+                      'range-start': day.rangeStart,
+                      'range-end': day.rangeEnd,
+                      'locked': day.locked,
+                      'outer': day.outer
+                    }">
+                    <span class="calendar-day-text">{{day?.day}}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="calendar-grid-wrap next-month" [ngClass]="{'out-of-area': monthShift !== 'next'}">
-            <div class="calendar-grid" >
-              <div class="calendar-week-days">
-                <div class="calendar-week-day" *ngFor="let weekDay of daysOfWeek">
-                  <span class="calendar-week-day-text">{{weekDay | libTranslate}}</span>
+            <div class="calendar-grid-wrap current-month">
+              <div class="calendar-grid">
+                <div class="calendar-week-days">
+                  <div class="calendar-week-day" *ngFor="let weekDay of daysOfWeek">
+                    <span class="calendar-week-day-text">{{weekDay | libTranslate}}</span>
+                  </div>
+                </div>
+                <div class="calendar-week" *ngFor="let week of weeks">
+                  <div *ngFor="let day of week" [class]="day.custom" (click)="selectDate(day)" [ngClass]="{
+                      'calendar-day': true,
+                      'today': day.today,
+                      'holiday': day.holiday,
+                      'selected': day.selected,
+                      'in-range': day.inRange,
+                      'range-start': day.rangeStart,
+                      'range-end': day.rangeEnd,
+                      'locked': day.locked,
+                      'outer': day.outer
+                    }">
+                    <span class="calendar-day-text">{{day?.day}}</span>
+                  </div>
                 </div>
               </div>
-              <div class="calendar-week" *ngFor="let week of nextWeeks">
-                <div *ngFor="let day of week" [class]="day.custom" (click)="selectDate(day)" [ngClass]="{
-                    'calendar-day': true,
-                    'today': day.today,
-                    'holiday': day.holiday,
-                    'selected': day.selected,
-                    'in-range': day.inRange,
-                    'range-start': day.rangeStart,
-                    'range-end': day.rangeEnd,
-                    'locked': day.locked,
-                    'outer': day.outer
-                  }">
-                  <span class="calendar-day-text">{{day ? day.day : ''}}</span>
+            </div>
+            <div class="calendar-grid-wrap next-month" [ngClass]="{'out-of-area': monthShift !== 'next'}">
+              <div class="calendar-grid" >
+                <div class="calendar-week-days">
+                  <div class="calendar-week-day" *ngFor="let weekDay of daysOfWeek">
+                    <span class="calendar-week-day-text">{{weekDay | libTranslate}}</span>
+                  </div>
+                </div>
+                <div class="calendar-week" *ngFor="let week of nextWeeks">
+                  <div *ngFor="let day of week" [class]="day.custom" (click)="selectDate(day)" [ngClass]="{
+                      'calendar-day': true,
+                      'today': day.today,
+                      'holiday': day.holiday,
+                      'selected': day.selected,
+                      'in-range': day.inRange,
+                      'range-start': day.rangeStart,
+                      'range-end': day.rangeEnd,
+                      'locked': day.locked,
+                      'outer': day.outer
+                    }">
+                    <span class="calendar-day-text">{{day?.day}}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -139,14 +142,14 @@
       </div>
     </div>
   </div>
-</div>
-<div class="below-info" *ngIf="validationPosition === MessagePosition.BELOW || questionTipPosition === MessagePosition.BELOW"
-    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
-  <div class="information text-help" 
-    *ngIf="questionTip && questionTipPosition === MessagePosition.BELOW && (!validationOverride || !(invalidDisplayed && validationMessages))" 
-    [innerHTML]="questionTip">
-  </div>
-  <div class="validation" *ngIf="validationPosition === MessagePosition.BELOW && invalidDisplayed && validationMessages">
-    <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages"></lib-validation-message>
+  <div class="below-info" *ngIf="validationPosition === MessagePosition.BELOW || questionTipPosition === MessagePosition.BELOW">
+    <div class="information text-help" 
+      *ngIf="questionTip && questionTipPosition === MessagePosition.BELOW && (!validationOverride || !(invalidDisplayed && validationMessages))" 
+      [innerHTML]="questionTip">
+    </div>
+    <div class="validation" *ngIf="validationPosition === MessagePosition.BELOW && invalidDisplayed && validationMessages">
+      <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages" 
+        [translation]="validationTranslation" [escapeHtml]="validationEscapeHtml"></lib-validation-message>
+    </div>
   </div>
 </div>

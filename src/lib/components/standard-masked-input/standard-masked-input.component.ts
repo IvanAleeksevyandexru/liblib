@@ -4,7 +4,7 @@ import { ControlValueAccessor, ValidationErrors, NG_VALUE_ACCESSOR } from '@angu
 import { BaseMaskedInputComponent } from '../base-masked-input/base-masked-input.component';
 import { Focusable } from '../../services/focus/focus.manager';
 import { PipedMessage } from '../../models/piped-message';
-import { InputAutocomplete, TipDirection, MessagePosition } from '../../models/common-enums';
+import { InputAutocomplete, TipDirection, MessagePosition, Translation } from '../../models/common-enums';
 import { ValidationDetailed, ValidationShowOn, ValidationMessages } from '../../models/validation-show';
 import { HelperService } from '../../services/helper/helper.service';
 import { Width } from '../../models/width-height';
@@ -61,6 +61,9 @@ export class StandardMaskedInputComponent extends BaseMaskedInputComponent
   @Input() public validationMessages: string | PipedMessage | ValidationMessages | { [key: string]: string | PipedMessage} = null;
   // определяет должна ли валидация скрывать информационный тип (показываться вместо) или показываться в дополнение
   @Input() public validationOverride = true;
+    // транслитерация и эскейп для валидации
+  @Input() public validationTranslation: Translation | string = Translation.APP;
+  @Input() public validationEscapeHtml = true;
   // направление бабблов информации-ошибки, для MessagePosition.INSIDE
   @Input() public tipDirection: TipDirection | string = TipDirection.RIGHT;
   // перекрытие бабблами ограничивающего контейнера, для MessagePosition.INSIDE

@@ -51,7 +51,7 @@ export class DatesHelperService {
       });
   }
 
-  public static relativeDateToDate(relativeDate: RelativeDate) {
+  public static relativeDateToDate(relativeDate: RelativeDate): Date {
     if (relativeDate === null || !relativeDate.text) {
       return moment().startOf('day').toDate();
     }
@@ -129,7 +129,12 @@ export class DatesHelperService {
     return null;
   }
 
-  public static relativeRangeToRange(relativeRange: RelativeRange, asText: boolean = false) {
+  public static isDateWithinRelativeRange(value: Date, range: RelativeRange): boolean {
+    const realRange = DatesHelperService.relativeRangeToRange(range, false);
+    return value && !isNaN(value.getTime()) && moment(value).isBetween(realRange.start, realRange.end, 'day', '[]');
+  }
+
+  public static relativeRangeToRange(relativeRange: RelativeRange, asText: boolean = false): Range<Date> | Range<string> {
     const startDate = relativeRange.start instanceof Date ?
       relativeRange.start : DatesHelperService.relativeDateToDate(relativeRange.start);
     const endDate = relativeRange.end instanceof Date ?
@@ -157,6 +162,7 @@ export class DatesHelperService {
     }
     return date;
   }
+
   public static isoToDate(value: string | Date): Date {
     if (!value || value instanceof Date) {
       return value as Date;

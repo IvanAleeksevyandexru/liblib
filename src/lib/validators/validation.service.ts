@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
-import * as moment_ from 'moment';
 import { MomentInput } from 'moment';
+import { DatesHelperService } from '../services/dates-helper/dates-helper.service';
+import { RelativeDate, RelativeRange } from '../models/date-time.model';
+import * as moment_ from 'moment';
 
 const moment = moment_;
 const GENERAL_LETTERS = 'ABCEHKMOPXYTabcehkmopxytАВСЕНКМОРХУТавсенкморхут';
@@ -109,6 +111,28 @@ export class ValidationService {
   public static requiredDate(control: AbstractControl) {
     const value = (control.value ? control.value : '').toString();
     return value && value !== 'Invalid Date' ? null : {required: true};
+  }
+
+  public static validDateOrAbsent(control: AbstractControl) {
+    const value = control.value;
+    return !value || (value instanceof Date && !isNaN(value.getTime())) ? null : {invalid: true};
+  }
+
+  public static dateWithin(control: AbstractControl, range: RelativeRange) {
+    const value = control.value;
+    return !value || (value instanceof Date && DatesHelperService.isDateWithinRelativeRange(value, range)) ? null : {outside: true};
+  }
+
+  public static dateBefore(control: AbstractControl, relative: RelativeDate) {
+    const value = control.value;
+    return !value || (value instanceof Date && moment(value).isSameOrBefore(DatesHelperService.relativeDateToDate(relative))) ?
+      null : {dateBefore: true};
+  }
+
+  public static dateAfter(control: AbstractControl, relative: RelativeDate) {
+    const value = control.value;
+    return !value || (value instanceof Date && moment(value).isSameOrAfter(DatesHelperService.relativeDateToDate(relative))) ?
+      null : {dateAfter: true};
   }
 
   public static twoCyrillicSymbols(str: string): boolean {

@@ -106,6 +106,9 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   @Input() public validationMessages: string | PipedMessage | ValidationMessages | { [key: string]: string | PipedMessage} = null;
   // определяет должна ли валидация скрывать информационный тип (показываться вместо) или показываться в дополнение
   @Input() public validationOverride = true;
+    // транслитерация и эскейп для валидации
+  @Input() public validationTranslation: Translation | string = Translation.APP;
+  @Input() public validationEscapeHtml = true;
   // направление бабблов информации-ошибки, для MessagePosition.INSIDE
   @Input() public tipDirection: TipDirection | string = TipDirection.RIGHT;
 
