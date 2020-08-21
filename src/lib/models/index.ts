@@ -19,6 +19,7 @@ export * from './esia-error-response';
 export * from './esia-user';
 export * from './feed';
 export * from './file-link';
+export * from './frame-type';
 export * from './gibdd-fine.model';
 export * from './info-card-view';
 export * from './kid';

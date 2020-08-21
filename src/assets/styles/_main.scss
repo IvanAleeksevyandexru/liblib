@@ -11,7 +11,10 @@ body {
 body {
   font-family: Helvetica, Arial, sans-serif, -apple-system;
   overflow-x: hidden;
-
+  &.app-portal {
+    font-family: Lato, Arial, sans-serif, -apple-system;
+    color: #0B1F33;
+  }
   &.menu-fixed {
     padding-top: 80px;
   }

@@ -27,7 +27,7 @@
     }
 
     .no-avatar {
-      background-color: #5479ca;
+      background-color: #D1D5DF;
       background-image: url(../../../assets/svg/no-avatar.svg);
       background-size: 100%;
 
@@ -52,8 +52,8 @@
       height: 100%;
       margin-left: 16px;
       vertical-align: top;
-      font-size: 18px;
-      line-height: 24px;
+      font-size: 14px;
+      line-height: 20px;
       word-wrap: break-word;
     }
 
@@ -86,29 +86,55 @@
     }
 
     &.active a {
-      color: #000000;
+      color: #0B1F33;
     }
 
-    a {
+    a,
+    .active-role,
+    ::ng-deep .location-select .text {
       font-size: 14px;
       line-height: 20px;
-      color: #0B40B3;
+      color: #0D4CD3;
       text-decoration: none;
 
-      &:active {
-        color: #000000;
+      &:active, &.active {
+        color: #0B1F33;
       }
 
     }
 
     &:hover {
       a {
-        color: #07266B;
-        &:active {
-          color: #07266B;
+        color: #0B40B3;
+        &:active, &.active {
+          color: #0B1F33;
         }
       }
     }
+  }
+
+  .select-role {
+    cursor: pointer;
+    user-select: none;
+    &:after {
+      display: inline-block;
+      width: 16px;
+      height: 8px;
+      content: '';
+      background: url(../../../assets/svg/triangle.svg) center no-repeat;
+      transform: rotate(180deg);
+      margin-left: 6px;
+    }
+  }
+
+  .select-role.show-roles-list {
+    &:after {
+      transform: rotate(0deg);
+    }
+  }
+
+  .roles-list {
+    margin-left: 16px;
   }
 
   .link {
@@ -150,7 +176,7 @@
 
 .user-menu .menu-desk {
   position: absolute;
-  top: -20px;
+  top: 0;
   right: -300%;
   width: 0;
   overflow-y: hidden;
@@ -160,6 +186,7 @@
   z-index: 10;
   box-shadow: 0.3em 0.3em 1em rgba(0,0,0,0.3);
   display: none;
+  border-radius: 12px;
   ::ng-deep perfect-scrollbar {
     max-height: calc(100vh - 70px);
     .ps {
@@ -187,7 +214,7 @@
 .menu-mobile {
   position: fixed;
   top: 0;
-  right: -200%;
+  right: -100vw;
   width: 0;
   height: 100%;
   max-height: calc(100vh);
@@ -217,20 +244,19 @@ $PAD: 768px;
     transition: none;
     height: auto;
     box-shadow: 0.3em 0.3em 1em rgba(0,0,0,0.3);
+    border-radius: 12px;
 
     .menu-header {
       min-height: 104px;
       padding-top: 32px;
 
+      &.not-authorized {
+        min-height: 0;
+        padding-top: 0;
+      }
+
       .name {
         min-width: 120px;
-      }
-    }
-
-    .item {
-      a {
-        font-size: 16px;
-        line-height: 24px;
       }
     }
   }

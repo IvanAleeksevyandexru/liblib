@@ -134,6 +134,10 @@ import { DynamicFormatterPipe } from './pipes/dynamic-formatter/dynamic-formatte
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { Setting } from './models/setting';
+import { LocationSelectComponent } from './components/location-select/location-select.component';
+import { HeaderComponent } from './components/header/header.component';
+import { SearchSputnikComponent } from './components/search-sputnik/search-sputnik.component';
+import { FrameComponent } from './components/frame/frame.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -153,6 +157,7 @@ registerLocaleData(localeRu, 'ru');
     FooterCmsComponent,
     FooterCopyrightComponent,
     ModalSearchComponent,
+    SearchSputnikComponent,
     ConfirmActionComponent,
     InfoCardComponent,
     SliderBannerComponent,
@@ -257,7 +262,10 @@ registerLocaleData(localeRu, 'ru');
     CapitalLetterPipe,
     LangWarnModalComponent,
     PsoComponent,
-    DynamicFormatterPipe
+    DynamicFormatterPipe,
+    LocationSelectComponent,
+    HeaderComponent,
+    FrameComponent,
   ],
   imports: [
     CommonModule,
@@ -286,6 +294,7 @@ registerLocaleData(localeRu, 'ru');
     FooterCmsComponent,
     FooterCopyrightComponent,
     ModalSearchComponent,
+    SearchSputnikComponent,
     ConfirmActionComponent,
     InfoCardComponent,
     SliderBannerComponent,
@@ -383,7 +392,10 @@ registerLocaleData(localeRu, 'ru');
     RemoveQuotesPipe,
     TimeLeftPipe,
     RemoveTagsPipe,
-    DynamicFormatterPipe
+    DynamicFormatterPipe,
+    LocationSelectComponent,
+    HeaderComponent,
+    FrameComponent,
   ],
   providers: [
     GosbarService,

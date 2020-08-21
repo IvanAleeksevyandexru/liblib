@@ -30,6 +30,7 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
   @Input() public slideShowReverse = false;
   @Input() public showArrowBtn = false;
   @Input() public showBullBtn = false;
+  @Input() public bullBtnPosition: string;
   @Input() public navBtnStyle: string;
   @Input() public needContainer = true;
 

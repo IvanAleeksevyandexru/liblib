@@ -1,6 +1,7 @@
 {
   "HEADER": {
     "PERSONAL_AREA": "Личный кабинет",
+    "LOGIN_LINK": "Войти",
     "EXIT": "Выйти",
     "ALL_ROLES": "Все мои роли",
     "MENU": {
@@ -154,6 +155,7 @@
     "CANCEL_QUIZ": "Закрыть"
   },
   "FEEDS": {
+    "EVENTS_ALL" : "Все события",
     "VIEW_ALL": "Показать все",
     "EMPTY" : {
       "EQUEUE" : {

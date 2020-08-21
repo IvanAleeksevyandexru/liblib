@@ -1,6 +1,11 @@
 .banner-inner-container {
   position: relative;
-  padding-right: 32px;
+}
+
+.closable, :host-context(.closable-group) {
+  .banner-inner-container {
+    padding-right: 32px;
+  }
 }
 
 .banner-container {

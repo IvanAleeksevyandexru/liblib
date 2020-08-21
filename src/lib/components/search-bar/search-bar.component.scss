@@ -1,22 +1,26 @@
 .search-field {
   width: 100%;
   display: inline-block;
-  background-color: white;
+  background-color: #F5F7FA;
   position: relative;
   box-sizing: border-box;
   vertical-align: bottom;
+  border-radius: 4px;
   .search-input, .static-content, .suggestion-container {
     width: 100%;
-    height: 48px;
-    border: 1px solid #A8ACB1;
+    height: 52px;
+    border: 2px solid #F5F7FA;
     border-radius: 4px;
-    font-family: Helvetica;
+    background-color: #F5F7FA;
     font-size: 16px;
     line-height: 24px;
     padding-left: 16px;
     padding-right: 16px;
     color: #393F45;
     outline: none;
+    &:focus {
+      border: 2px solid #99B1E6;
+    }
     &.shadowed { // элемент перекрыт статичным контентом и не должен быть видим
       position: absolute;
       width: 0;
@@ -27,7 +31,29 @@
       padding-top: 0;
       padding-bottom: 0;
     }
+    :host-context(.white-field) {
+      .search-input {
+        border: 2px solid #FFFFFF;
+        background-color: #FFFFFF;
+      }
+    }
   }
+
+  ::-webkit-input-placeholder {
+    color: #D1D5DF;
+  }
+  :-ms-input-placeholder {
+    color: #D1D5DF;
+  }
+  ::-moz-placeholder {
+    color: #D1D5DF;
+    opacity: 1;
+  }
+  :-moz-placeholder {
+    color: #D1D5DF;
+    opacity: 1;
+  }
+
   .search-input, .static-content {
     &:disabled {
       background-color: #E7ECF7;
@@ -47,8 +73,10 @@
   .static-content-container {
     width: 100%;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis; 
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
   }
   .suggestion-container {
     position: absolute;
@@ -70,7 +98,6 @@
     .suggestion {
       white-space: nowrap;
       padding-top: 12px;
-      font-family: Helvetica;
       font-size: 16px;
       color: #aaa;
       overflow: hidden;
@@ -78,7 +105,7 @@
   }
   &.magnifying-glass-or-throbber-shown {
     .search-input, .static-content, .suggestion-container {
-      padding-right: 52px;
+      padding-right: 50px;
     }
   }
   &.clear-shown {
@@ -93,11 +120,11 @@
   }
   .search-go {
     position: absolute;
-    width: 48px;
-    height: 48px;
-    top: 0px;
+    width: 52px;
+    height: 52px;
+    top: 0;
     right: 0;
-    background: url(../../../assets/svg/lookup-search-bar.svg) 12px 12px no-repeat;
+    background: url(../../../assets/svg/lookup-search-grey.svg) 16px 16px no-repeat;
     outline: none;
     cursor: pointer;
     border-left: solid 1px #A8ACB1;
@@ -126,9 +153,8 @@
   }
   .search-in-progress {
     position: absolute;
-    border-left: solid 1px #A8ACB1;
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     top: 0;
     right: 0;
     .search-in-progress-cell {
@@ -138,12 +164,12 @@
       height: 24px;
       top: 12px;
       left: 11px;
-      animation: rotate 1.5s linear infinite; 
+      animation: rotate 1.5s linear infinite;
     }
   }
 }
 @keyframes rotate {
-  to { 
+  to {
     transform: rotate(360deg);
   }
 }

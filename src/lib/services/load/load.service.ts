@@ -19,6 +19,8 @@ export class LoadService {
   public avatar: BehaviorSubject<Avatar>;
   public loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public initializationStarted = false;
+  private userTypeNA: BehaviorSubject<string> = new BehaviorSubject<string>('P');
+  public userTypeNA$ = this.userTypeNA.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -77,6 +79,7 @@ export class LoadService {
     }
 
     this.params = params;
+    this.setUserTypeNA();
   }
 
   public load(context: string, ignoreConfigMissing = false): Promise<any> {
@@ -120,6 +123,18 @@ export class LoadService {
 
   }
 
+  public setUserTypeNA(newType?: string): void {
+    if (!this.user.authorized) {
+      if (newType) {
+        this.userTypeNA.next(newType);
+      } else {
+        const route = location.pathname;
+        const type = route === '/legal-entity' ? 'L' : route === '/entrepreneur' ? 'B' : 'P';
+        this.userTypeNA.next(type);
+      }
+    }
+  }
+
   public setInitializationStarted() {
     this.initializationStarted = true;
   }
@@ -150,6 +165,10 @@ export class LoadService {
 
   public setAvatar(avatar: Avatar) {
     this.avatar.next(avatar);
+  }
+
+  public setUserTypeParams(newType: string) {
+    this.user.typeParams = new UserTypeParams(newType);
   }
 
 }

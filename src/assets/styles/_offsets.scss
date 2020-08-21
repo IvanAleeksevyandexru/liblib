@@ -1,5 +1,5 @@
 @mixin offsets($prefix) {
-  @for $i from 0 through 20 {
+  @for $i from 0 through 24 {
     .mt#{$prefix}-#{$i * 4} {
       margin-top: #{$i * 4}px;
     }

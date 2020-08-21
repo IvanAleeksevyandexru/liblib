@@ -45,12 +45,8 @@ export class GosbarService {
   private setLocationTitle(manager) {
 
     const onError = (err) => {
-      // if (this.cookieService.get('userSelectedRegion')) {
-      //   this.setLocationTitle(manager);
-      // } else {
         this.locationService.userSelectedRegionCode = '00000000000';
         this.setRegionFailName(manager);
-      // }
         console.error(`DetectRegion fail ${err}`);
     };
 
@@ -103,6 +99,10 @@ export class GosbarService {
     } else {
       this.unAvailableGosbar();
     }
+  }
+
+  public initLocation(manager) {
+    this.setLocationTitle(manager);
   }
 
   public getLangConfig() {

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { MenuLink } from '../../models/menu-link';
+import { Router } from '@angular/router';
 import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
-import { Category } from '../../models/category';
 import { CookieService } from '../cookie/cookie.service';
+import { Category, MenuLink, User } from "../../models";
 
 const HASH = Math.random();
 
@@ -15,7 +15,8 @@ export class MenuService {
   constructor(
     private loadService: LoadService,
     private http: HttpClient,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private router: Router
   ) {
   }
 
@@ -45,6 +46,7 @@ export class MenuService {
     let links: MenuLink[] = [];
 
     const mainHost = this.loadService.config.betaUrl;
+    const lkHost = this.loadService.config.urlLk;
     let payHost = this.loadService.config.oplataUrl;
     if (!this.cookieService.get('pay-new')) {
       payHost = this.loadService.config.baseUrl;
@@ -90,6 +92,47 @@ export class MenuService {
           title: 'HEADER.MENU.SUPPORT'
         }];
         break;
+      case 'PORTAL':
+        if (this.loadService.user.authorized) {
+          links = [{
+            url: `${lkHost}/orders/all`,
+            title: 'HEADER.MENU.ORDERS',
+            listeners: true
+          }, {
+            url: `${payHost}/pay`,
+            title: 'HEADER.MENU.PAYMENT'
+          }, {
+            url: `${lkHost}/profile/personal`,
+            title: 'HEADER.MENU.DOCS'
+          }, {
+            url: `${lkHost}/messages`,
+            title: 'HEADER.MENU.MESSAGES'
+          }, {
+            url: `${mainHost}/category`,
+            title: 'HEADER.MENU.SERVICES'
+          }, {
+            url: `${mainHost}/help/news`,
+            title: 'HEADER.MENU.BLOG'
+          }, {
+            url: `${lkHost}/permissions`,
+            title: 'HEADER.MENU.PERMISSIONS'
+          }];
+        } else {
+          links = [{
+            url: `${mainHost}/category`,
+            title: 'HEADER.MENU.SERVICES'
+          }, {
+            url: `${payHost}/pay`,
+            title: 'HEADER.MENU.PAYMENT'
+          },  {
+            url: `${mainHost}/help/news`,
+            title: 'HEADER.MENU.BLOG'
+          }, {
+            url: `${mainHost}/help`,
+            title: 'HEADER.MENU.HELP'
+          }];
+        }
+        break;
       default:
         links = [{
           url: '/category',
@@ -122,6 +165,27 @@ export class MenuService {
       'HEADER.MENU.SETTINGS': `${lkUrl}settings/account`,
       'HEADER.MENU.LOGIN_ORG': `${lkUrl}roles`
     };
+  }
+
+  public getUserRoles(user: User): any {
+    const betaUrl = this.loadService.attributes.appContext === 'PORTAL' ? '/' : this.loadService.config.betaUrl;
+    return [
+      {
+        name: 'Гражданам',
+        url: `${betaUrl}`,
+        code: 'P'
+      },
+      {
+        name: 'Юридическим лицам',
+        url: `${betaUrl}legal-entity`,
+        code: 'L'
+      },
+      {
+        name: 'Предпринимателям',
+        url: `${betaUrl}entrepreneur`,
+        code: 'B'
+      }
+    ];
   }
 
 }
