@@ -18,8 +18,8 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
   public searchItem: SearchSuggestion;
 
   public searchProvider = this.searchService;
-  public converter = new ListItemConverter<SearchSuggestion>((item: SearchSuggestion, index: number): ListItem => {
-    return new ListItem({ id: index, text: item.header, icon: item.favicon || '', url: item.url}, item);
+  public converter = new ListItemConverter<SearchSuggestion>((item: SearchSuggestion, ctx: { [name: string]: any}): ListItem => {
+    return new ListItem({ id: ctx.index, text: item.header, icon: item.favicon || '', url: item.url}, item);
   }, (item: ListItem): SearchSuggestion => {
     return item.originalItem;
   });
