@@ -113,26 +113,90 @@ export class ValidationService {
     return value && value !== 'Invalid Date' ? null : {required: true};
   }
 
-  public static validDateOrAbsent(control: AbstractControl) {
+  public static validDateOptional(control: AbstractControl) {
     const value = control.value;
     return !value || (value instanceof Date && !isNaN(value.getTime())) ? null : {invalid: true};
   }
 
-  public static dateWithin(control: AbstractControl, range: RelativeRange) {
-    const value = control.value;
-    return !value || (value instanceof Date && DatesHelperService.isDateWithinRelativeRange(value, range)) ? null : {outside: true};
+  public static validDate(control: AbstractControl) {
+    return !control.value ? {required: true} : ValidationService.validDateOptional(control);
   }
 
-  public static dateBefore(control: AbstractControl, relative: RelativeDate) {
-    const value = control.value;
-    return !value || (value instanceof Date && moment(value).isSameOrBefore(DatesHelperService.relativeDateToDate(relative))) ?
-      null : {dateBefore: true};
+  // отдает признак outside для дат снаружи
+  public static insideRangeOptional(range: RelativeRange) {
+    return (control: AbstractControl) => {
+      const value = control.value;
+      if (value) {
+        return ValidationService.validDateOptional(control)
+          || (DatesHelperService.isDateWithinRelativeRange(value, range) ? null : {outside: true});
+      }
+      return null;
+    };
   }
 
-  public static dateAfter(control: AbstractControl, relative: RelativeDate) {
-    const value = control.value;
-    return !value || (value instanceof Date && moment(value).isSameOrAfter(DatesHelperService.relativeDateToDate(relative))) ?
-      null : {dateAfter: true};
+  public static insideRange(range: RelativeRange) {
+    const insideRangeOptional = ValidationService.insideRangeOptional(range);
+    return (control: AbstractControl) => {
+      return !control.value ? {required: true} : insideRangeOptional(control);
+    };
+  }
+
+  // отдает dateBefore / dateAfter флаги для дат снаружи
+  public static withinRangeOptional(range: RelativeRange) {
+    const dateBefore = ValidationService.dateBeforeOptional(range.start, false);
+    const dateAfter = ValidationService.dateAfterOptional(range.end, false);
+    return (control: AbstractControl) => {
+      const value = control.value;
+      if (value) {
+        return ValidationService.validDateOptional(control) || dateBefore(control) || dateAfter(control);
+      }
+      return null;
+    };
+  }
+
+  public static withinRange(range: RelativeRange) {
+    const withinRangeOptional = ValidationService.withinRangeOptional(range);
+    return (control: AbstractControl) => {
+      return !control.value ? {required: true} : withinRangeOptional(control);
+    };
+  }
+
+  public static dateBeforeOptional(date: RelativeDate | Date, including = true) {
+    return (control: AbstractControl) => {
+      const value = control.value ? moment(value) : null;
+      if (value) {
+        const bound = date instanceof RelativeDate ? DatesHelperService.relativeDateToDate(date) : date as Date;
+        const check = including ? value.isSameOrBefore : value.isBefore;
+        return ValidationService.validDateOptional(control) || (check(bound, 'day') ? null : {dateBefore: true});
+      }
+      return null;
+    };
+  }
+
+  public static dateBefore(date: RelativeDate | Date, including = true) {
+    const dateBeforeOptional = ValidationService.dateBeforeOptional(date, including);
+    return (control: AbstractControl) => {
+      return !control.value ? {required: true} : dateBeforeOptional(control);
+    };
+  }
+
+  public static dateAfterOptional(date: RelativeDate | Date, including = true) {
+    return (control: AbstractControl) => {
+      const value = control.value;
+      if (value) {
+        const bound = date instanceof RelativeDate ? DatesHelperService.relativeDateToDate(date) : date as Date;
+        const check = including ? value.isSameOrAfter : value.isAfter;
+        return ValidationService.validDateOptional(control) || (check(bound, 'day') ? null : {dateAfter: true});
+      }
+      return null;
+    };
+  }
+
+  public static dateAfter(date: RelativeDate | Date, including = true) {
+    const dateAfterOptional = ValidationService.dateAfterOptional(date, including);
+    return (control: AbstractControl) => {
+      return !control.value ? {required: true} : dateAfterOptional(control);
+    };
   }
 
   public static twoCyrillicSymbols(str: string): boolean {
