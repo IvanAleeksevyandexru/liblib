@@ -103,7 +103,7 @@ export class ValidationService {
   }
 
   // -> {invalid, required}
-  public static validDate(control: AbstractControl) {
+  public static validDateRequired(control: AbstractControl) {
     return !control.value ? {required: true} : ValidationService.validDateOptional(control);
   }
 
@@ -120,7 +120,7 @@ export class ValidationService {
   }
 
   // -> {invalid, required, outside}
-  public static insideRange(range: RelativeRange) {
+  public static insideRangeRequired(range: RelativeRange) {
     const insideRangeOptional = ValidationService.insideRangeOptional(range);
     return (control: AbstractControl) => {
       return !control.value ? {required: true} : insideRangeOptional(control);
@@ -141,7 +141,7 @@ export class ValidationService {
   }
 
   // -> {invalid, required, dateBefore, dateAfter}
-  public static withinRange(range: RelativeRange) {
+  public static withinRangeRequired(range: RelativeRange) {
     const withinRangeOptional = ValidationService.withinRangeOptional(range);
     return (control: AbstractControl) => {
       return !control.value ? {required: true} : withinRangeOptional(control);
@@ -162,7 +162,7 @@ export class ValidationService {
   }
 
   // {invalid, required, dateBefore}
-  public static dateBefore(date: RelativeDate | Date, including = true) {
+  public static dateBeforeRequired(date: RelativeDate | Date, including = true) {
     const dateBeforeOptional = ValidationService.dateBeforeOptional(date, including);
     return (control: AbstractControl) => {
       return !control.value ? {required: true} : dateBeforeOptional(control);
@@ -183,7 +183,7 @@ export class ValidationService {
   }
 
   // -> {invalid, required, dateAfter}
-  public static dateAfter(date: RelativeDate | Date, including = true) {
+  public static dateAfterRequired(date: RelativeDate | Date, including = true) {
     const dateAfterOptional = ValidationService.dateAfterOptional(date, including);
     return (control: AbstractControl) => {
       return !control.value ? {required: true} : dateAfterOptional(control);
