@@ -1,7 +1,7 @@
 <div class="dropdown" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside (clickOutside)="closeDropdown(true);" (keydown)="handleKeydownNavigation($event)" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="dropdown-field" #dropdownField [ngClass]="{disabled: disabled, invalid: invalidDisplayed, expanded: expanded, multi: multi, clearable: clearable}" (click)="toggle()">
     <div class="dropdown-values" #dropdownValues [ngClass]="[multipleItemsLayout]" (click)="multipleSummaryOpenDetails($event)">
-      <div class="dropdown-values-custom" *ngIf="internalSelected && internalSelected.length && customMultipleItemsLayoutData" [innerHTML]="customMultipleItemsLayoutData | safeHtml"></div>
+      <div class="dropdown-values-custom" *ngIf="internalSelected && internalSelected.length && customMultipleItemsLayoutData" [innerHTML]="customMultipleItemsLayoutData | async | safeHtml"></div>
       <div class="dropdown-values-summary" *ngIf="internalSelected && internalSelected.length">
         {{'DROPDOWN.MULTIPLE_SUMMARY' | libTranslate | subst:(internalSelected.length | decline:['DROPDOWN.COUNT1' | libTranslate, 'DROPDOWN.COUNT2' | libTranslate, 'DROPDOWN.COUNT0' | libTranslate])}}
       </div>
