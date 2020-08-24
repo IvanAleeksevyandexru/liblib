@@ -366,6 +366,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     if (!parsingResult.inconsistent || !shouldFixBrokenValue) {
       this.commitSave(parsingResult.result, shouldFixBrokenValue);
     }
+    this.check();
   }
 
   public resetToEmpty() {
@@ -719,7 +720,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   }
 
   public check() {
-    this.invalidDisplayed = ValidationHelper.checkValidation(this, {empty: this.isModelEmpty()});
+    this.invalidDisplayed = ValidationHelper.checkValidation(this, {empty: this.isModelEmpty(), inconsistent: this.inconsistent});
     if (this.inputElement) {
       this.inputElement.ngDoCheck();
     }
@@ -957,7 +958,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
           }
         }
       }
-    } else {
+    } else if (doWriteValue) {
       this.recover();
     }
   }
