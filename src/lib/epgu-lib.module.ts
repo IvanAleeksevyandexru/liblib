@@ -132,7 +132,6 @@ import { DynamicFormatterPipe } from './pipes/dynamic-formatter/dynamic-formatte
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { Setting } from './models/setting';
-import { AccessesService } from './services/accesses/accesses.service';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -431,7 +430,6 @@ export class EpguLibModule {
         FocusManager,
         PositioningManager,
         DragDropManager,
-        AccessesService,
         {
           provide: 'notifierSetting',
           useValue: setting ? setting.notifier : {}
