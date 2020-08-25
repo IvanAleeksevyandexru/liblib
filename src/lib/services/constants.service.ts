@@ -299,7 +299,7 @@ export class ConstantsService {
     },
     {
       id: 'settings',
-      name: 'ORDERS.ASIDE.SETTINGS'
+      name: 'ORDERS.ASIDE.SETTINGS',
       url: '/settings/notifications',
       metric: {name: this.TABS_METRIC_NAME, action: 'settings', from: 'feedsOrder'}
     }
