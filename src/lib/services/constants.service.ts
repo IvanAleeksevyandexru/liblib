@@ -213,13 +213,13 @@ export class ConstantsService {
     {
       id: 'archive',
       name: 'MESSAGES.TABS.ARCHIVED',
-      url: '/messages/archive'
+      url: '/messages/archive',
+      break: 'after'
     },
     {
       id: 'blocked',
       name: 'MESSAGES.TABS.BLOCKED',
-      url: '/settings/blacklist',
-      break: 'after'
+      url: '/settings/blacklist'
     },
     {
       id: 'settings',
@@ -294,12 +294,12 @@ export class ConstantsService {
       id: 'archive',
       name: 'ORDERS.ASIDE.ARCHIVE',
       url: '/orders/archive',
-      metric: {name: this.TABS_METRIC_NAME, action: 'feedsArchive'}
+      metric: {name: this.TABS_METRIC_NAME, action: 'feedsArchive'},
+      break: 'after',
     },
     {
       id: 'settings',
-      name: 'ORDERS.ASIDE.SETTINGS',
-      break: 'after',
+      name: 'ORDERS.ASIDE.SETTINGS'
       url: '/settings/notifications',
       metric: {name: this.TABS_METRIC_NAME, action: 'settings', from: 'feedsOrder'}
     }
