@@ -4,6 +4,7 @@ import { LoadService } from '../load/load.service';
 import { Router } from '@angular/router';
 import { FeedsService } from '../feeds/feeds.service';
 import { SharedService } from '../shared/shared.service';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -78,15 +79,17 @@ export class SnippetsService {
       if (feed.data.reminder) {
         this.navigateByPath(`draft/${feed.extId}`);
       } else {
-        let param = '';
+        // let param = new HttpParams().set('billNumber', snippet.uin);
+        let param = new HttpParams();
         switch (feed.feedType) {
           case 'ORDER':
-            param = `?orderId=${feed.extId}&senderType=ORDER`;
+            param = param.set('orderId', feed.extId).set('senderType', 'ORDER');
             break;
           case 'GEPS':
-            param = '?senderType=GEPS';
+            param = param.set('senderType', 'GEPS');
             break;
         }
+        // (window as any).location = `${this.loadService.config.paymentUrl}?${param}`;
         (window as any).location = `${this.loadService.config.betaUrl}payment/${snippet.uin}${param}`;
       }
     } else if (snippet && snippet.type === 'DRAFT' && !(window as any).isOp) {

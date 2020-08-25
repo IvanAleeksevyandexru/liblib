@@ -461,6 +461,11 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     if (feed.feedType === 'ORGANIZATION' || feed.feedType === 'ACCOUNT_CHILD') {
       this.feedsService.markFeedAsRead(feed.id).subscribe();
     }
+
+    if (feed.feedType === 'PAYMENT') {
+      // this.feedsService.markFeedAsRead(feed.id).subscribe();
+      location.href = `notifications/details/PAYMENT/${feed.extId}`;
+    }
   }
 
   private yaMetricOnSearch(query: string) {
