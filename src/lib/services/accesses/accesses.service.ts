@@ -14,7 +14,13 @@ export class AccessesService {
     private loadService: LoadService,
   ) { }
 
+  public getAccessTech(): boolean {
+    const groupTech = this.user.person.groups.find((item) => {
+      return item.grp_id === 'TECH_CONSOLE';
+    });
 
+    return !!groupTech;
+  }
 
   public getAccess(type: AccessesT): boolean {
     if (!this.groupsOfAccess) {

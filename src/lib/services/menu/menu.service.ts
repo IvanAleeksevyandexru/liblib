@@ -54,26 +54,28 @@ export class MenuService {
 
     switch (this.loadService.attributes.appContext) {
       case 'PARTNERS':
-        if (this.accessesService.getAccess('ra')) {
+        if (this.accessesService.getAccessTech()) {
+          if (this.accessesService.getAccess('ra')) {
+            links.push({
+              url: '/service-centers',
+              title: 'HEADER.MENU.SERVICE_CENTERS'
+            });
+          }
           links.push({
-            url: '/service-centers',
-            title: 'HEADER.MENU.SERVICE_CENTERS'
+            url: '/powers',
+            title: 'HEADER.MENU.POWERS'
+          });
+          if (this.accessesService.getAccess('csg')) {
+            links.push({
+              url: '/access-groups',
+              title: 'HEADER.MENU.ACCESS_GROUPS'
+            });
+          }
+          links.push({
+            url: '/systems',
+            title: 'HEADER.MENU.SYSTEMS'
           });
         }
-        links.push({
-          url: '/powers',
-          title: 'HEADER.MENU.POWERS'
-        });
-        if (this.accessesService.getAccess('csg')) {
-          links.push({
-            url: '/access-groups',
-            title: 'HEADER.MENU.ACCESS_GROUPS'
-          });
-        }
-        links.push({
-          url: '/systems',
-          title: 'HEADER.MENU.SYSTEMS'
-        });
         break;
       case 'LK':
         links = [{

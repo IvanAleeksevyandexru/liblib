@@ -16,6 +16,7 @@ export interface PersonData {
   attorneys?: any[]; // TODO убрать any
   employees?: any[]; // TODO убрать any
   contacts?: Contact[];
+  categories?: CategoryUser[];
   docs?: Document[];
   groups?: Group[];
   error?: string;
@@ -153,4 +154,9 @@ export interface User {
   shortName?: string; // Фамилия И. О.
   type?: string; // Тип пользователя - ЮЛ, ИП, ОГВ, физик
   typeParams?: UserTypeParams; // Параметры в зависимости от типа пользователя
+}
+
+export interface CategoryUser {
+  id: number;
+  name: string;
 }
