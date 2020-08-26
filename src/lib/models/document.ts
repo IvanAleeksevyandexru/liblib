@@ -5,7 +5,7 @@ export type DocumentType = 'RF_DRIVING_LICENSE' | 'BRTH_CERT' | 'RF_BRTH_CERT' |
   'CERT_REG_IMM' | 'DIVORCE_CERT' | 'MARRIED_CERT' | 'FATHERHOOD_CERT' |
   'NAME_CHANGE_CERT' | 'MDCL_BRTH_CERT' | 'KID_RF_BRTH_CERT' | 'DRUGS_INQUIRY' | 'NO_CRIMINAL_INQUIRY'
   // Кастомные типы
-  | 'SNILS' | 'INN' | 'DOCS' | 'ORG_INFO' | 'BRANCH_INFO' | 'CHILD' | 'VEHICLE' | 'KID_ACT_RECORD';
+  | 'SNILS' | 'INN' | 'DOCS' | 'ORG_INFO' | 'BRANCH_INFO' | 'CHILD' | 'VEHICLE' | 'KID_ACT_RECORD' | 'SELF_EMPLOYED';
 
 export interface DocumentValue {
   number?: string;
