@@ -1,7 +1,10 @@
-.date-picker {
+.width-container {
   display: inline-block;
   width: 100%;
   position: static;
+}
+.date-picker {
+  width: 100%;
   .value-field-wrapper {
     position: static;
   }

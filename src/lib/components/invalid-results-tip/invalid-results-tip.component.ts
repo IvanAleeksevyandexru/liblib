@@ -31,7 +31,7 @@ export class InvalidResultsTipComponent extends BubbleBase implements OnInit, Af
   // либо мапа с сопоставлением кода ошибок текстам ошибок (где любой элемент может быть Piped, т.е. нести свое форматирование с собой)
   @Input() public validationMessages?: string | PipedMessage | { [key: string]: string | PipedMessage } | ValidationMessages;
 
-  @Input() public translation: Translation | string = Translation.NONE;
+  @Input() public translation: Translation | string = Translation.APP;
   @Input() public escapeHtml = true;
 
   @Input() public tipDirection: TipDirection | string = TipDirection.RIGHT;

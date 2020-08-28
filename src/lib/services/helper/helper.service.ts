@@ -180,25 +180,30 @@ export class HelperService {
     return true;
   }
 
-  // ставит курсор ввода на конец текста в текстовом элементе, при этом убирает выделение
-  public static resetSelection(inputElement: HTMLInputElement, mask: string = null) {
-    if (!inputElement || !(inputElement.type === 'text' || inputElement.type === 'password')) {
-      return;
-    }
-    const value = inputElement.value;
-    let lastCharacterPosition = (value || '').length;
+  public static findMatchEnd(text: string, mask: string): number {
+    const value = text || '';
+    let matchEnd = (value || '').length;
     if (mask && value) {
       for (let i = mask.length; i--; i >= 0) {
         if (i >= value.length) {
           continue;
         }
         if (mask[i] === value[i]) {
-          lastCharacterPosition--;
+          matchEnd--;
         } else {
           break;
         }
       }
     }
+    return matchEnd;
+  }
+
+  // ставит курсор ввода на конец текста в текстовом элементе, при этом убирает выделение
+  public static resetSelection(inputElement: HTMLInputElement, mask: string = null) {
+    if (!inputElement || !(inputElement.type === 'text' || inputElement.type === 'password')) {
+      return;
+    }
+    const lastCharacterPosition = HelperService.findMatchEnd(inputElement.value, mask);
     inputElement.setSelectionRange(lastCharacterPosition, lastCharacterPosition);
   }
 

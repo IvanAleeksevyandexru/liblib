@@ -27,7 +27,7 @@ const STD_SHORT_FORMAT = 'DD.MM.YY';
 const AM_DATE_FORMAT = 'MM/DD/YYYY';
 const AM_SHORT_FORMAT = 'MM/DD/YY';
 const MODEL_FORMAT = ConstantsService.CALENDAR_TEXT_MODEL_FORMAT;
-const DATE_PATTERN = /^\d\d?[\.\/]\d\d?[\.\/]\d\d\d?\d?$/;
+const DATE_PATTERN = /^\d\d?[\.\/]\d\d?[\.\/]\d\d?\d?\d?$/;
 const WEAK_DATE_PATTERN = /^([\d_][\d_]?)[\.\/]([\d_][\d_]?)[\.\/]([\d_][\d_][\d_]?[\d_]?)$/;
 const RANGE_BASE_MASK = [/\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/,
   '-', /\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
@@ -106,6 +106,9 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   @Input() public validationMessages: string | PipedMessage | ValidationMessages | { [key: string]: string | PipedMessage} = null;
   // определяет должна ли валидация скрывать информационный тип (показываться вместо) или показываться в дополнение
   @Input() public validationOverride = true;
+    // транслитерация и эскейп для валидации
+  @Input() public validationTranslation: Translation | string = Translation.APP;
+  @Input() public validationEscapeHtml = true;
   // направление бабблов информации-ошибки, для MessagePosition.INSIDE
   @Input() public tipDirection: TipDirection | string = TipDirection.RIGHT;
 
@@ -363,6 +366,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     if (!parsingResult.inconsistent || !shouldFixBrokenValue) {
       this.commitSave(parsingResult.result, shouldFixBrokenValue);
     }
+    this.check();
   }
 
   public resetToEmpty() {
@@ -716,7 +720,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   }
 
   public check() {
-    this.invalidDisplayed = ValidationHelper.checkValidation(this, {empty: this.isModelEmpty()});
+    this.invalidDisplayed = ValidationHelper.checkValidation(this, {empty: this.isModelEmpty(), inconsistent: this.inconsistent});
     if (this.inputElement) {
       this.inputElement.ngDoCheck();
     }
@@ -954,7 +958,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
           }
         }
       }
-    } else {
+    } else if (doWriteValue) {
       this.recover();
     }
   }
