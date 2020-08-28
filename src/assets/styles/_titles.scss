@@ -70,9 +70,11 @@
     cursor: pointer;
   }
 }
+
 .green {
   color: #317D34;
 }
+
 .white {
   color: #FFFFFF;
 }
@@ -222,6 +224,7 @@
 .green {
   color: #317d34;
 }
+
 .white {
   color: #fff;
 }
@@ -231,7 +234,7 @@
 }
 
 .white {
-  color:#fff;
+  color: #fff;
 }
 
 .uppercase {
@@ -268,6 +271,7 @@
 
 .app-portal {
   .title-h2,
+  .title-h3,
   .title-h5,
   .title-h6,
   .text-plain,
@@ -277,19 +281,31 @@
   .label-plain {
     font-family: Lato, Arial, sans-serif, -apple-system;
     color: #0B1F33;
+
+    &.red {
+      color: #DF0024;
+    }
   }
+
   .title-h5,
   .title-h6 {
     &.blue {
       color: #0D4CD3;
     }
   }
+
   .blue {
     color: #0D4CD3;
   }
+
   .gray {
     color: #66727F;
   }
+
+  .red {
+    color: #DF0024;
+  }
+
   .link-plain {
     color: #0D4CD3;
 
@@ -297,6 +313,7 @@
       color: #0B40B3;
     }
   }
+
   .title-h1, .title-h2, .title-h3, .title-h4, .title-h5, .title-h6, .title-h0, .page-title {
     font-weight: 600;
 

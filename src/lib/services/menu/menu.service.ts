@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from '../cookie/cookie.service';
-import { Category, MenuLink, User } from "../../models";
+import { Category, MenuLink, User } from '../../models';
 
 const HASH = Math.random();
 
@@ -16,7 +15,6 @@ export class MenuService {
     private loadService: LoadService,
     private http: HttpClient,
     private cookieService: CookieService,
-    private router: Router
   ) {
   }
 

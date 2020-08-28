@@ -236,7 +236,7 @@
     "CLOSE": "Закрыть",
     "CLEAR": "Скрыть все"
   },
-  "INFORMER_MAIN": {
+  "INFORMER": {
     "ERROR": {
       "TITLE": "Узнайте свои задолженности",
       "BUTTON": "Перейти"

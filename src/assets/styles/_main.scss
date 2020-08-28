@@ -189,6 +189,10 @@ b, strong, .bold {
     display: block;
   }
 
+  .inline#{$prefix} {
+    display: inline-block;
+  }
+
   .text-center#{$prefix} {
     text-align: center;
   }

@@ -1,3 +1,7 @@
+export type TypeDataOfInformers = 'ERROR' | 'NO_DEBT' | 'AL10';
+
+export type TypeStatus = 'error' | 'load' | 'debt' | 'no_debt' | 'al10';
+
 export enum TypeDebt {
   FINE = 'fine',
   FSSP = 'fssp',
