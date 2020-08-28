@@ -187,10 +187,6 @@
   }
 }
 
-.line-through {
-  text-decoration: line-through;
-}
-
 .black {
   color: #000000;
 }
@@ -244,6 +240,10 @@
 
 .normal {
   font-weight: 400;
+}
+
+.bold {
+  font-weight: 600;
 }
 
 @media all and (min-width: 768px) {
