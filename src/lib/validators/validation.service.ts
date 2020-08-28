@@ -136,6 +136,26 @@ export class ValidationService {
     };
   }
 
+  // XXX deprecated to be removed
+  public static dateNotLateThan(date: MomentInput) {
+    return (control: AbstractControl) => {
+      return control.value && moment(control.value, 'DD.MM.YYYY').isAfter(date, 'days') ? {dateAfter: true} : null;
+    };
+  }
+
+  // XXX deprecated to be removed
+  public static dateLateThan(date: MomentInput) {
+    return (control: AbstractControl) => {
+      return control.value && moment(control.value, 'DD.MM.YYYY').isBefore(date, 'days') ? {dateBefore: true} : null;
+    };
+  }
+
+  // XXX deprecated to be removed
+  public static requiredDate(control: AbstractControl) {
+    const value = (control.value ? control.value : '').toString();
+    return value && value !== 'Invalid Date' ? null : {required: true};
+  }
+
   // -> {invalid}. валидность даты
   public static validDateOptional(control: AbstractControl) {
     if (hasValue(control)) {
