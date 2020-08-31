@@ -86,7 +86,7 @@
         <a (click)="selectTab(tab)" routerLink="{{tab.url}}"
            routerLinkActive="active" class="item-tab-name">{{tab.name | appTranslate}}
         </a>
-        <lib-counter class="counter" [counter]="20"></lib-counter>
+        <lib-counter class="counter" [counter]="tab.counter"></lib-counter>
       </ng-container>
     </li>
   </ul>
