@@ -4,7 +4,7 @@
          [checked]="checked"
          [disabled]="disabled"
          [ngClass]="{'disabled': disabled}"
-         (change)="onChanged($event.target.checked)"
+         (change)="onSelected($event.target.checked)"
          [id]="radioId"
          [name]="name"
          [attr.value]="value"
