@@ -56,7 +56,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
       }
     }
   }
-r
+
   private initCard(data): void {
     this.data.idDoc = this.isIdDoc;
 

@@ -690,9 +690,11 @@ export class ProfileService {
       case this.DOCUMENT_TYPES.SELF_EMPLOYED: {
         return {
           canDetails: false,
-          canEdit: true,
+          canEdit: !object.vrfValStu,
           canDelete: false,
-          withVerificationIcon: true,
+          detailsPath: '/profile/business/self-employed',
+          canRepeat: object.vrfValStu !== 'VERIFYING' && object.updateDate !== moment().add(1, 'day').format('DD.MM.YYYY'),
+          statusMessage: object.vrfValStu && `BUSINESS.STATUS.${object.vrfValStu}`,
           empty: {
             title: 'Самозанятый',
             subtitle: 'Если вы являетесь самозанятым, добавьте информацию в личный кабинет, чтобы у вас появилась возможность подавать заявления'

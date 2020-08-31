@@ -81,7 +81,12 @@
       <a *ngIf="state === 'error'" class="link-plain add-link" (click)="repeatReq()">Повторить поиск</a>
       <a *ngIf="state === 'error'" class="link-plain add-link" (click)="toggleForm()">Ввести вручную</a>
     </ng-container>
-    <a *ngIf="data.type === 'SELF_EMPLOYED'" class="link-plain" (click)="repeatReq()">Обновить</a>
+    <ng-container *ngIf="data.type === 'SELF_EMPLOYED'">
+      <a *ngIf="object.canRepeat" class="link-plain" (click)="repeatReq()">
+        {{state === 'error' ? 'Повторить поиск' : 'Обновить'}}
+      </a>
+      <a *ngIf="state === 'error'" class="link-plain" (click)="cancelReq()">Отменить</a>
+    </ng-container>
   </div>
 </ng-template>
 
