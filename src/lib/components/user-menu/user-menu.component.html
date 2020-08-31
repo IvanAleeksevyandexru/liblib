@@ -84,10 +84,9 @@
     <li class="item" *ngFor="let tab of mainTabs.tabs">
       <ng-container *ngIf="tab.url">
         <a (click)="selectTab(tab)" routerLink="{{tab.url}}"
-           routerLinkActive="active">
-          <span class="item-tab-name">{{tab.name | appTranslate}}</span>
-          <lib-counter class="counter" [counter]="tab.counter"></lib-counter>
+           routerLinkActive="active" class="item-tab-name">{{tab.name | appTranslate}}
         </a>
+        <lib-counter class="counter" [counter]="20"></lib-counter>
       </ng-container>
     </li>
   </ul>
