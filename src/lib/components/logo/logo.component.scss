@@ -5,6 +5,8 @@
   margin-top: 3px;
   background: url(../../../assets/svg/main-logo.svg) no-repeat;
   background-size: contain;
+  text-indent: 100%;
+  overflow: hidden;
 }
 @media all and (min-width: 768px) {
   .logo {
