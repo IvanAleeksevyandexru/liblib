@@ -76,6 +76,14 @@ export class ConstantsService {
   public readonly SETTINGS_PAGE_URL = '/settings/account';
   public readonly TABS_METRIC_NAME = 'feedsOrder';
   public readonly IMPORT_UPLOAD_LIMIT = 1 * (1024 * 1024); // Лимит загрузки при импорте ТС - 1 мегабайт
+  public readonly LK_TABS_KID = new Tabs([
+    {
+      id: 'profile',
+      name: 'TABS.PROFILE.TITLE_KID',
+      url: '/profile',
+      mnemonic: 'documentsData'
+    }
+  ]);
   public readonly LK_TABS = new Tabs([
       {
       id: 'overview',

@@ -33,6 +33,14 @@
   background-image: url('../../../assets/svg/statuses/reject.svg');
 }
 
+.status-doc_done {
+  background-image: url('../../../assets/svg/statuses/doc-done.svg');
+}
+
+.status-doc_reject {
+  background-image: url('../../../assets/svg/statuses/doc-reject.svg');
+}
+
 .status-inbox, .status-new_comment {
   background-image: url('../../../assets/svg/statuses/inbox.svg');
 }

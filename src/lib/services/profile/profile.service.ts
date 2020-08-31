@@ -62,8 +62,8 @@ export class ProfileService {
         const result = {
           attrId: 'oms',
           canDetails: false,
-          canEdit: true,
-          canDelete: true,
+          canEdit: !this.loadService.user.isKid,
+          canDelete: !this.loadService.user.isKid,
           withVerificationIcon: false,
           serviceUrl: object.serviceUrl,
           empty: {
@@ -334,7 +334,18 @@ export class ProfileService {
           canDetails: object.canDetails,
           canEdit: object.canEdit,
           canDelete: object.canDelete,
-          detailsPath: `/profile/personal/birthday/${object.id ? object.id : ''}`,
+          detailsPath: this.loadService.user.isKid ? '' : `/profile/personal/birthday/${object.id ? object.id : ''}`,
+          ...(object.vrfValStu === 'VERIFICATION_FAILED' ?
+              {
+                notification: 'Не найдено в базе данных ЗАГС. Проверьте корректность данных документа',
+                warning: true
+              } : {}
+          ),
+          ...(object.vrfValStu === 'VERIFYING' ?
+              {
+                notification: 'Идет проверка по базе данных ЗАГС...',
+              } : {}
+          ),
           empty: {
             title: 'Свидетельство о рождении',
             subtitle: 'Добавьте документ, чтобы он всегда был у вас под рукой'
@@ -437,6 +448,19 @@ export class ProfileService {
           canEdit: object.vrfStu === undefined || object.vrfStu === 'NOT_VERIFIED',
           canDelete: object.vrfStu === undefined,
           canRepeat: false,
+          ...(object.vrfValStu === 'VERIFICATION_FAILED' ?
+              {
+                notification: 'Не найден в базе данных ПФР. Проверьте корректность данных документа',
+                warning: true
+              } : {}
+          ),
+          ...(object.vrfValStu === 'VERIFYING' ?
+              {
+                notification: object.number ?
+                  'Выполняется проверка номера СНИЛС ребенка в ПФР...' :
+                  'Идет поиск СНИЛС ребенка в ПФР...',
+              } : {}
+          ),
           empty: {
             title: 'Добавьте СНИЛС',
             subtitle: object.subtitle ? object.subtitle : 'он необходим для некоторых услуг и может использоваться для авторизации'
@@ -447,7 +471,7 @@ export class ProfileService {
           fields: [
             {
               title: '',
-              showEmpty: true,
+              // showEmpty: true,
               value: object.number
             }
           ]
@@ -639,9 +663,9 @@ export class ProfileService {
       }
       case this.DOCUMENT_TYPES.FATHERHOOD_CERT: {
         return {
-          canDetails: false,
-          canEdit: true,
-          canDelete: true,
+          canDetails: this.loadService.user.isKid,
+          canEdit: !this.loadService.user.isKid,
+          canDelete: !this.loadService.user.isKid,
           withVerificationIcon: false,
           detailsQueryParam: {type: 'FATHERHOOD_CERT'},
           empty: {
