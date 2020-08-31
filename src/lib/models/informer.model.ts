@@ -1,6 +1,6 @@
-export type TypeDataOfInformers = 'ERROR' | 'NO_DEBT' | 'AL10';
+export type TypeDataOfInformers = 'ERROR' | 'NO_DEBT' | 'AL10' | 'NO_RIGHTS';
 
-export type TypeStatus = 'error' | 'load' | 'debt' | 'no_debt' | 'al10';
+export type TypeStatus = 'error' | 'load' | 'debt' | 'no_debt' | 'al10' | 'no_rights';
 
 export enum TypeDebt {
   FINE = 'fine',
@@ -22,7 +22,8 @@ export enum WordsOfDebt {
 export enum TypeIcons {
   ERROR = 'search',
   NO_DEBT = 'ok',
-  AL10 = 'warn'
+  AL10 = 'warn',
+  NO_RIGHTS = 'warn'
 }
 
 export interface InformerShortInterface {

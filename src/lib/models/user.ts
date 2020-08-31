@@ -100,7 +100,9 @@ export interface User {
   activeLegalRoleCount?: string;
   assuranceLevel?: string;
   authToken?: string;
+  autorityId?: string;
   birthDate?: string;
+  branchOid?: string;
   email?: string;
   emailVerified?: boolean;
   firstName?: string;

@@ -2,7 +2,7 @@
   <div *ngIf="statusInformer === 'load'" class="loader">
     <lib-throbber-hexagon [size]="'medium big-lg'"></lib-throbber-hexagon>
   </div>
-  <div *ngIf="['error', 'no_debt', 'al10'].includes(statusInformer)"
+  <div *ngIf="['error', 'no_debt', 'al10', 'no_rights'].includes(statusInformer)"
        class="without-debt flex-container flex-column flex-row-md align-items-center">
     <div class="icon-no-debt flex-0 {{dataInformer.icon | libTranslate}}"></div>
     <div class="title-no-debt mt-16 mt-md-0 title-h6 text-center text-left-md">{{dataInformer.title | libTranslate}}</div>

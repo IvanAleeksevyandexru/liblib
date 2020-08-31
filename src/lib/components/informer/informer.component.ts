@@ -25,10 +25,11 @@ export class InformerComponent implements OnInit {
   public dataInformer = new DataInformer();
 
   private links = {
-    al10: `/profile/personal`,
-    'no_debt': `${this.loadService.config.betaUrl}pay?tab=toPay`,
+    al10: '/profile/personal',
+    no_debt: `${this.loadService.config.betaUrl}pay?tab=toPay`,
     error: `${this.loadService.config.betaUrl}pay?tab=toPay`,
-    debt: `${this.loadService.config.betaUrl}pay?tab=toPay`
+    debt: `${this.loadService.config.betaUrl}pay?tab=toPay`,
+    no_rights: '/help/faq/yuridicheskim_licam/2761'
   };
   private debtForYaMetric: DebtYaMetricInterface = {};
 
@@ -42,16 +43,33 @@ export class InformerComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.getInformerShortData();
+    if (['L', 'B'].includes(this.loadService.user.type)) {
+      this.checkRights();
+    } else {
+      this.getInformerShortData();
+    }
   }
 
   private setData(type: TypeDataOfInformers) {
-    console.log(type);
     this.dataInformer.title = `INFORMER.${type}.TITLE`;
     this.dataInformer.icon = TypeIcons[type];
     this.dataInformer.button = `INFORMER.${type}.BUTTON`;
 
     this.statusInformer = type.toLowerCase() as TypeStatus;
+  }
+
+  private checkRights(): void {
+    const rights = this.informersService.checkRightsForLAndB();
+
+    if (rights) {
+      this.getInformerShortData();
+    } else {
+      if (this.loadService.user.type === 'L' && this.informersService.checkDelegationForL()) {
+        this.getInformerShortData();
+      } else {
+        this.setData('NO_RIGHTS');
+      }
+    }
   }
 
   private getWorld(debtCount: Array<string>): string[] {
@@ -132,10 +150,13 @@ export class InformerComponent implements OnInit {
       case 'debt':
         type = 'action';
         break;
+      case 'no_rights':
+        type = 'noEnoughRights';
+        break;
     }
     this.yaMetricService.yaMetricInformerMain(type, this.debtForYaMetric);
 
-    if (this.statusInformer === 'al10') {
+    if (['al10', 'no_rights'].includes(this.statusInformer)) {
       this.router.navigate([this.links[this.statusInformer]]);
     } else {
       location.href = this.links[this.statusInformer];
