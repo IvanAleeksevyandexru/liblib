@@ -126,6 +126,15 @@ export class MultilineInputComponent
     this.focus.emit();
   }
 
+  public checkSelection() {
+    const selection = window.getSelection ? window.getSelection() : null;
+    const isInternalSelection = !selection ||
+      this.inputElement.nativeElement === selection.focusNode || this.inputElement.nativeElement.contains(selection.focusNode);
+    if (!isInternalSelection) {
+      setTimeout(() => this.setCaretPositionFromEnd(this.inputElement.nativeElement, 0));
+    }
+  }
+
   public setFocus() {
     this.inputElement.nativeElement.focus();
   }
@@ -240,7 +249,7 @@ export class MultilineInputComponent
 
   public setCaretPositionFromEnd(node: Node, caretPositionFromEnd: number) {
     if (window.getSelection && document.createRange) {
-      if (node.textContent.length > caretPositionFromEnd) {
+      if (node.textContent.length >= caretPositionFromEnd) {
         let offsetRest = caretPositionFromEnd;
         let offset = caretPositionFromEnd;
         let index = node.childNodes.length - 1;
@@ -251,8 +260,8 @@ export class MultilineInputComponent
           offset -= nodeLength;
           index--;
         }
-        const lookedUpNode = node.childNodes[++index];
-        if (lookedUpNode.nodeType === Node.TEXT_NODE) {
+        const lookedUpNode = node.childNodes.length ? node.childNodes[++index] : node;
+        if (lookedUpNode.nodeType === Node.TEXT_NODE || !node.childNodes.length) {
           const range = document.createRange();
           const selection = window.getSelection();
           range.setStart(lookedUpNode, lookedUpNode.textContent.length - offsetRest);
