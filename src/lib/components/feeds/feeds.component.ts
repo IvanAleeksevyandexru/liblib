@@ -274,14 +274,16 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public setHeader(feed: FeedModel): string {
-    if (feed.feedType === 'GEPS' || feed.feedType === 'ORDER' || feed.feedType === 'CLAIM' || feed.feedType === 'COMPLEX_ORDER') {
+    if (feed.feedType === 'GEPS' || feed.feedType === 'ORDER' || feed.feedType === 'CLAIM' ||
+      feed.feedType === 'COMPLEX_ORDER' || feed.feedType === 'BUSINESSMAN') {
       return feed.subTitle;
     }
     return feed.title;
   }
 
   public setSubHeader(feed: FeedModel): string {
-    if (feed.feedType === 'GEPS' || feed.feedType === 'ORDER' || feed.feedType === 'CLAIM' || feed.feedType === 'COMPLEX_ORDER') {
+    if (feed.feedType === 'GEPS' || feed.feedType === 'ORDER' || feed.feedType === 'CLAIM' ||
+      feed.feedType === 'COMPLEX_ORDER' || feed.feedType === 'BUSINESSMAN') {
       return feed.title;
     }
     return feed.subTitle;
