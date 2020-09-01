@@ -17,6 +17,7 @@
     padding-right: 16px;
     color: #393F45;
     outline: none;
+    text-overflow: ellipsis;
     &.shadowed { // элемент перекрыт статичным контентом и не должен быть видим
       position: absolute;
       width: 0;
@@ -48,7 +49,7 @@
     width: 100%;
     overflow: hidden;
     white-space: nowrap;
-    text-overflow: ellipsis; 
+    text-overflow: ellipsis;
   }
   .suggestion-container {
     position: absolute;
@@ -138,12 +139,12 @@
       height: 24px;
       top: 12px;
       left: 11px;
-      animation: rotate 1.5s linear infinite; 
+      animation: rotate 1.5s linear infinite;
     }
   }
 }
 @keyframes rotate {
-  to { 
+  to {
     transform: rotate(360deg);
   }
 }
