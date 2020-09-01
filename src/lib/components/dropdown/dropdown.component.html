@@ -55,7 +55,7 @@
               [class.line-before]="item.lineBreak === LineBreak.BEFORE || item.lineBreak === LineBreak.BOTH"
               [class.line-after]="item.lineBreak === LineBreak.AFTER || item.lineBreak === LineBreak.BOTH"
               [class.separator]="item.lineBreak === LineBreak.SELF">
-            <div class="structure-container">
+            <div class="structure-container" *ngIf="!item.hidden">
               <div *ngIf="multi && !item.unselectable" class="dropdown-item-checkbox-wrapper">
                 <div class="dropdown-item-checkbox"></div>
               </div>

@@ -60,7 +60,7 @@
                  [class.line-before]="item.lineBreak === LineBreak.BEFORE || item.lineBreak === LineBreak.BOTH"
                  [class.line-after]="item.lineBreak === LineBreak.AFTER || item.lineBreak === LineBreak.BOTH"
                  [class.separator]="item.lineBreak === LineBreak.SELF">
-              <div class="structure-container">
+              <div class="structure-container" *ngIf="!item.hidden">
                 <div class="item-container" [ngClass]="{truncated: truncateSubstring && !item.highlightedAll}">
                   <span *ngIf="highlightSubstring || truncateSubstring" class="lookup-item-text" [innerHTML]="item.highlightFormatted | safeHtml"></span>
                   <span *ngIf="!highlightSubstring && !truncateSubstring && escapeHtml" class="lookup-item-text">{{item.listFormatted}}</span>

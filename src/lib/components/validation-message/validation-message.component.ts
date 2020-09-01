@@ -43,7 +43,7 @@ export class ValidationMessageComponent implements OnInit, OnChanges {
   //                       (сопоставлением) какому коду ошибки должен соответствовать какой текст
   @Input() public validationMessages?: string | PipedMessage | { [key: string]: string | PipedMessage } | ValidationMessages;
 
-  @Input() public translation: Translation | string = Translation.NONE;
+  @Input() public translation: Translation | string = Translation.APP;
   @Input() public escapeHtml = true;
 
   public messages: Array<Message> = [];

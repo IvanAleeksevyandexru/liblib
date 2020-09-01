@@ -1,11 +1,20 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, ValidatorFn } from '@angular/forms';
-import * as moment_ from 'moment';
+import { AbstractControl, ValidatorFn, FormGroup } from '@angular/forms';
 import { MomentInput } from 'moment';
+import { DatesHelperService } from '../services/dates-helper/dates-helper.service';
+import { RelativeDate, RelativeRange } from '../models/date-time.model';
+import { HelperService } from '../services/helper/helper.service';
+import * as moment_ from 'moment';
 
 const moment = moment_;
 const GENERAL_LETTERS = 'ABCEHKMOPXYTabcehkmopxytАВСЕНКМОРХУТавсенкморхут';
 const CYRILLIC_LETTERS = 'а-яА-ЯёЁ';
+
+const hasValue = (control: AbstractControl) => {
+  return control && control instanceof AbstractControl && !(control instanceof FormGroup) && control.value;
+};
+
+const rechecked = [];
 
 // @dynamic
 @Injectable({
@@ -94,21 +103,183 @@ export class ValidationService {
     return control.value && new RegExp('[<>&]+').test(control.value) ? {containsEscapeSymbols: true} : null;
   }
 
+  // замена возвращаемого кода ошибки (маппинг)
+  public static map(map: { [key: string]: string}, validator: (control: AbstractControl) => any) {
+    return (control: AbstractControl) => {
+      const original = validator(control);
+      if (HelperService.isObject(original)) {
+        const result = {};
+        for (const error of Object.keys(original)) {
+          result[map[error] ? map[error] : error] = original[error];
+        }
+        return result;
+      }
+      return original;
+    };
+  }
+
+  // перепроверить другое поле в связи с валидацией данного, собственная валидация всегда валидна
+  public static recheck(linkedControlGetter: () => AbstractControl) {
+    return (control: AbstractControl) => {
+      const linkedControl = linkedControlGetter();
+      if (linkedControl && linkedControl instanceof AbstractControl && !(linkedControl instanceof FormGroup)
+          && !rechecked.includes(linkedControl)) {
+        rechecked.push(linkedControl); // блокировка бесконечного цикла если элементы чекают друг друга
+        try {
+          linkedControl.updateValueAndValidity();
+        } finally {
+          rechecked.pop();
+        }
+        // assert на выходе из первого головного вызова recheck - rechecked должен быть равен []
+      }
+      return null;
+    };
+  }
+
+  // XXX deprecated to be removed
   public static dateNotLateThan(date: MomentInput) {
     return (control: AbstractControl) => {
       return control.value && moment(control.value, 'DD.MM.YYYY').isAfter(date, 'days') ? {dateAfter: true} : null;
     };
   }
 
+  // XXX deprecated to be removed
   public static dateLateThan(date: MomentInput) {
     return (control: AbstractControl) => {
       return control.value && moment(control.value, 'DD.MM.YYYY').isBefore(date, 'days') ? {dateBefore: true} : null;
     };
   }
 
+  // XXX deprecated to be removed
   public static requiredDate(control: AbstractControl) {
     const value = (control.value ? control.value : '').toString();
     return value && value !== 'Invalid Date' ? null : {required: true};
+  }
+
+  // -> {invalid}. валидность даты
+  public static validDateOptional(control: AbstractControl) {
+    if (hasValue(control)) {
+      return (control.value instanceof Date && !isNaN(control.value.getTime())) ? null : {invalid: true};
+    }
+    return null;
+  }
+
+  // -> {invalid, required}. валидность и наличие
+  public static validDateRequired(control: AbstractControl) {
+    return hasValue(control) ? ValidationService.validDateOptional(control) : {required: true};
+  }
+
+  // -> {invalid, outside}. валидность и вхождение в рейндж
+  public static insideRange(range: RelativeRange) {
+    return (control: AbstractControl) => {
+      if (hasValue(control)) {
+        return ValidationService.validDateOptional(control)
+          || (DatesHelperService.isDateWithinRelativeRange(control.value, range) ? null : {outside: true});
+      }
+      return null;
+    };
+  }
+
+  // -> {invalid, required, outside}. валидность, наличие, вхождение в рейндж
+  public static insideRangeRequired(range: RelativeRange) {
+    const insideRangeOptional = ValidationService.insideRange(range);
+    return (control: AbstractControl) => {
+      return hasValue(control) ? insideRangeOptional(control) : {required: true};
+    };
+  }
+
+  // -> {invalid, dateBefore, dateAfter}. валидность и вхождение в рейндж
+  public static withinRange(range: RelativeRange) {
+    const dateAfter = ValidationService.dateAfter(range.start);
+    const dateBefore = ValidationService.dateBefore(range.end);
+    return (control: AbstractControl) => {
+      if (hasValue(control)) {
+        return ValidationService.validDateOptional(control) || dateBefore(control) || dateAfter(control);
+      }
+      return null;
+    };
+  }
+
+  // -> {invalid, required, dateBefore, dateAfter}. валидность, наличие, вхождение в рейндж
+  public static withinRangeRequired(range: RelativeRange) {
+    const withinRangeOptional = ValidationService.withinRange(range);
+    return (control: AbstractControl) => {
+      return hasValue(control) ? withinRangeOptional(control) : {required: true};
+    };
+  }
+
+  // -> {invalid, dateBefore}. валидность, максимум
+  public static dateBefore(date: RelativeDate | Date, including = true) {
+    return (control: AbstractControl) => {
+      if (hasValue(control)) {
+        const value = moment(control.value);
+        const bound = date instanceof RelativeDate ? DatesHelperService.relativeDateToDate(date) : date as Date;
+        const check = including ? value.isSameOrBefore : value.isBefore;
+        return ValidationService.validDateOptional(control) || (check.call(value, bound, 'day') ? null : {dateBefore: true});
+      }
+      return null;
+    };
+  }
+
+  // {invalid, required, dateBefore}. валидность, наличие, максимум
+  public static dateBeforeRequired(date: RelativeDate | Date, including = true) {
+    const dateBeforeOptional = ValidationService.dateBefore(date, including);
+    return (control: AbstractControl) => {
+      return hasValue(control) ? dateBeforeOptional(control) : {required: true};
+    };
+  }
+
+  // -> {invalid, dateAfter}. валидность, минимум
+  public static dateAfter(date: RelativeDate | Date, including = true) {
+    return (control: AbstractControl) => {
+      if (hasValue(control)) {
+        const value = moment(control.value);
+        const bound = date instanceof RelativeDate ? DatesHelperService.relativeDateToDate(date) : date as Date;
+        const check = including ? value.isSameOrAfter : value.isAfter;
+        return ValidationService.validDateOptional(control) || (check.call(value, bound, 'day') ? null : {dateAfter: true});
+      }
+      return null;
+    };
+  }
+
+  // -> {invalid, required, dateAfter}. валидность, наличие, минимум
+  public static dateAfterRequired(date: RelativeDate | Date, including = true) {
+    const dateAfterOptional = ValidationService.dateAfter(date, including);
+    return (control: AbstractControl) => {
+      return hasValue(control) ? dateAfterOptional(control) : {required: true};
+    };
+  }
+
+  // -> {invalid, outside}: dynamic. валидность, вхождение в рейндж (определяется динамически)
+  public static insideRangeDynamic(dynamicRangeEvaluator: () => RelativeRange) {
+    return (control: AbstractControl) => {
+      const range = dynamicRangeEvaluator();
+      return range ? ValidationService.insideRange(range)(control) : null;
+    };
+  }
+
+  // -> {invalid, dateBefore, dateAfter}: dynamic. валидность, вхождение в рейндж (определяется динамически)
+  public static withinRangeDynamic(dynamicRangeEvaluator: () => RelativeRange) {
+    return (control: AbstractControl) => {
+      const range = dynamicRangeEvaluator();
+      return range ? ValidationService.withinRange(range)(control) : null;
+    };
+  }
+
+  // -> {invalid, dateBefore}: dynamic. валидность, максимум (определяется динамически)
+  public static dateBeforeDynamic(dynamicDateEvaluator: () => Date | RelativeDate) {
+    return (control: AbstractControl) => {
+      const date = dynamicDateEvaluator();
+      return date ? ValidationService.dateBefore(date)(control) : null;
+    };
+  }
+
+  // -> {invalid, dateAfter}: dynamic, валидность, минимум (определяется динамически)
+  public static dateAfterDynamic(dynamicDateEvaluator: () => Date | RelativeDate) {
+    return (control: AbstractControl) => {
+      const date = dynamicDateEvaluator();
+      return date ? ValidationService.dateAfter(date)(control) : null;
+    };
   }
 
   public static twoCyrillicSymbols(str: string): boolean {

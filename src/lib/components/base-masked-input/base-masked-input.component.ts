@@ -7,7 +7,7 @@ import { conformToMask, createTextMaskInputElement } from 'text-mask-core';
 const conformToMask = conformTo.default;
 import * as createTextMask from '../../../../../../node_modules/text-mask-core/src/createTextMaskInputElement';
 const createTextMaskInputElement = createTextMask.default; */
-import { InputAutocomplete } from '../../models/common-enums';
+import { InputAutocomplete, RemoveMaskSymbols } from '../../models/common-enums';
 import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { HelperService } from '../../services/helper/helper.service';
@@ -46,7 +46,7 @@ export class BaseMaskedInputComponent
   @Input() public disabled?: boolean;
   @Input() public readOnly?: boolean;
   @Input() public commitOnInput = true;  // коммитить значение по input или по change
-  @Input() public removePlaceholderSymbols = true;  // удалять ли символы плейсхолдера из значения перед коммитом
+  @Input() public removeMaskSymbols: RemoveMaskSymbols | string = RemoveMaskSymbols.PLACEHOLDERS;
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public uppercase = false;
@@ -145,7 +145,7 @@ export class BaseMaskedInputComponent
       this.attemptToApplyValue(value);
       if (this.commitOnInput) {
         setTimeout(() => {
-          const possiblyChangedValue = this.removePlaceholderSymbolsIfNeeded(this.inputElement.nativeElement.value);
+          const possiblyChangedValue = this.removeMaskSymbolsIfNeeded(this.inputElement.nativeElement.value);
           this.commit(possiblyChangedValue);
         });
       }
@@ -156,7 +156,7 @@ export class BaseMaskedInputComponent
   public handleChange(value: string, e?: Event) {
     this.attemptToApplyValue(value);
     if (!this.commitOnInput) {
-      this.commit(this.removePlaceholderSymbolsIfNeeded(value));
+      this.commit(this.removeMaskSymbolsIfNeeded(value));
     }
     this.check();
   }
@@ -251,8 +251,15 @@ export class BaseMaskedInputComponent
     this.invalidDisplayed = ValidationHelper.checkValidation(this);
   }
 
-  private removePlaceholderSymbolsIfNeeded(value: string) {
-    return this.removePlaceholderSymbols ? value.replace(new RegExp(this.placeholderSymbol, 'g'), '') : value;
+  private removeMaskSymbolsIfNeeded(value: string) {
+    if (value && this.removeMaskSymbols === RemoveMaskSymbols.PLACEHOLDERS) {
+      return value.replace(new RegExp(this.placeholderSymbol, 'g'), '');
+    } else if (value && this.removeMaskSymbols === RemoveMaskSymbols.TRIM_END) {
+      const matchEnd = HelperService.findMatchEnd(value, this.emptyMaskedValue);
+      return (value || '').substring(matchEnd);
+    } else {
+      return value;
+    }
   }
 
   private setupMask() {
