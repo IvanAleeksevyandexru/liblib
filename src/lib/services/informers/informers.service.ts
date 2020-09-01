@@ -4,18 +4,16 @@ import { LoadService } from '../load/load.service';
 import { Observable } from 'rxjs';
 import { InformerShortInterface } from '../../models/informer.model';
 import { User } from '../../models/user';
-import { ProfileService } from '../profile/profile.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InformersService {
 
-  constructor(private http: HttpClient,
-              private loadService: LoadService,
-              private profileService: ProfileService,
+  constructor(
+    private http: HttpClient,
+    private loadService: LoadService,
   ) {
-
   }
 
   public isAL10(): boolean {
@@ -30,23 +28,6 @@ export class InformersService {
     const correctGroup = !!groups && groups.some(item => ['ESIA', 'PGU'].includes(item.itSystem) && item.grp_id === 'ORG_ADMIN');
 
     return (isChief || correctGroup) && user.authorized && !user.branchOid;
-  }
-
-  public checkDelegationForL(): boolean {
-    if (this.loadService.user.autorityId) {
-      return !!this.profileService.getDelegatedRights().subscribe(
-        (data) => {
-          return !!(data && data.authorities && data.authorities.some((elem) => {
-            return elem.mnemonic === 'INFORMER';
-          }));
-        },
-        () => {
-          return false;
-        }
-      );
-    } else {
-      return false;
-    }
   }
 
   public getDataInformer(): Observable<InformerShortInterface | ErrorEvent> {

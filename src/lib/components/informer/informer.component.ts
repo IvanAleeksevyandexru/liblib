@@ -13,6 +13,7 @@ import { DeclinePipe } from '../../pipes/decline/decline.pipe';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { LoadService } from '../../services/load/load.service';
 import { Router } from '@angular/router';
+import { ProfileService } from '../../services/profile/profile.service';
 
 @Component({
   selector: 'lib-informer',
@@ -39,6 +40,7 @@ export class InformerComponent implements OnInit {
     private yaMetricService: YaMetricService,
     private loadService: LoadService,
     private router: Router,
+    private profileService: ProfileService,
   ) {
   }
 
@@ -64,8 +66,22 @@ export class InformerComponent implements OnInit {
     if (rights) {
       this.getInformerShortData();
     } else {
-      if (this.loadService.user.type === 'L' && this.informersService.checkDelegationForL()) {
-        this.getInformerShortData();
+      if (this.loadService.user.type === 'L' && this.loadService.user.autorityId) {
+        this.profileService.getDelegatedRights().subscribe(
+          (data) => {
+            const rightsEnabled = data && data.authorities && data.authorities.some((elem) => {
+              return elem.mnemonic === 'INFORMER';
+            });
+            if (rightsEnabled) {
+              this.getInformerShortData();
+            } else {
+              this.setData('NO_RIGHTS');
+            }
+          },
+          () => {
+            this.setData('NO_RIGHTS');
+          }
+        );
       } else {
         this.setData('NO_RIGHTS');
       }
@@ -125,13 +141,11 @@ export class InformerComponent implements OnInit {
         } else {
           this.setData('ERROR');
           this.yaMetricService.yaMetricInformerMain('show');
-          console.log('getInformerShortData - error ' + response.error);
         }
       },
       (error) => {
         this.setData('ERROR');
         this.yaMetricService.yaMetricInformerMain('show');
-        console.log('getInformerShortData - error ' + error);
       });
   }
 

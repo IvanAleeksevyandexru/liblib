@@ -23,7 +23,7 @@ export enum TypeIcons {
   ERROR = 'search',
   NO_DEBT = 'ok',
   AL10 = 'warn',
-  NO_RIGHTS = 'warn'
+  NO_RIGHTS = 'search'
 }
 
 export interface InformerShortInterface {
