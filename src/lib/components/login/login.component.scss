@@ -17,6 +17,13 @@
 .link {
   position: relative;
   padding-left: 24px;
+  cursor: pointer;
+
+  &.only-icon {
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 
   &:before {
     content: '';

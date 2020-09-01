@@ -35,5 +35,6 @@
   </div>
 </div>
 <ng-template #loginLink>
-  <a [routerLink]="" (click)="login()" class="link">{{onlyIcon ? '' : ('HEADER.LOGIN_LINK' | libTranslate)}}</a>
+  <a [routerLink]="" *ngIf="!onlyIcon" (click)="login()" class="link">{{('HEADER.LOGIN_LINK' | libTranslate) || 'Войти'}}</a>
+  <div *ngIf="onlyIcon" (click)="login()" class="link"></div>
 </ng-template>

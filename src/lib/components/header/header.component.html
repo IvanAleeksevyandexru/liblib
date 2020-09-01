@@ -8,17 +8,16 @@
             'justify-between': !user.authorized,
             'justify-end': user.authorized
           }">
-      <div *ngIf="!user.authorized">
-        <div class="flex-container align-items-center justify-between">
-          <div *ngFor="let role of userRoles; let first = first">
-            <a class="link-plain" (click)="updateRole(role.code)"
-               [ngClass]="{
-                'text-plain': (role.code === activeRoleCode),
-                'link-plain': (role.code !== activeRoleCode),
-                'ml-40': !first
-               }"
-               [href]="role.url">{{role.name | libTranslate}}</a>
-          </div>
+
+      <div *ngIf="!user.authorized" class="flex-container align-items-center justify-between">
+        <div *ngFor="let role of userRoles; let first = first">
+          <a class="link-plain" (click)="updateRole(role.code)"
+             [ngClass]="{
+              'text-plain': (role.code === activeRoleCode),
+              'link-plain': (role.code !== activeRoleCode),
+              'ml-40': !first
+             }"
+             [href]="role.url">{{role.name}}</a>
         </div>
       </div>
       <div class="user-menu-wrapper">
