@@ -44,7 +44,7 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
 
   public onSelected(value: boolean) {
     // всегда true, но вызывается только для активного
-    this.checked = value; 
+    this.checked = value;
     // для остальных из данной группы синхронизация произойдет через модель
     this.commit(this.value);
     this.changed.emit(this.value);
