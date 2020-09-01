@@ -6,6 +6,15 @@
   box-sizing: border-box;
   vertical-align: bottom;
   border-radius: 4px;
+
+  .label-search-input {
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    line-height: 0;
+  }
+
   .search-input, .static-content, .suggestion-container {
     width: 100%;
     height: 52px;
