@@ -103,7 +103,7 @@ import { MapComponent } from './components/map/map.component';
 import { DadataWidgetComponent } from './components/dadata-widget/dadata-widget.component';
 import { DadataModalComponent } from './components/dadata-modal/dadata-modal.component';
 import { DisclaimerComponent } from './components/disclaimers/disclaimers.component';
-import { InformerMainComponent } from './components/informers/informer-main/informer-main.component';
+import { InformerComponent } from './components/informer/informer.component';
 import { ThrobberHexagonComponent } from './components/throbber-hexagon/throbber-hexagon.component';
 import { AddressSaveModalComponent } from './components/address-save-modal/address-save-modal.component';
 import { BetaUrlPipe } from './pipes/beta-url/beta-url.pipe';
@@ -151,7 +151,7 @@ registerLocaleData(localeRu, 'ru');
     CounterComponent,
     BreadcrumbsComponent,
     DisclaimerComponent,
-    InformerMainComponent,
+    InformerComponent,
     ThrobberHexagonComponent,
     FooterComponent,
     FooterCmsComponent,
@@ -286,7 +286,7 @@ registerLocaleData(localeRu, 'ru');
     CounterComponent,
     BreadcrumbsComponent,
     DisclaimerComponent,
-    InformerMainComponent,
+    InformerComponent,
     ThrobberHexagonComponent,
     FooterComponent,
     FormsModule,

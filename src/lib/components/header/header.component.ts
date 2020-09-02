@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CountersService, LoadService, MenuService } from '../../services';
+import { CountersService} from '../../services/counters/counters.service';
+import { LoadService } from '../../services/load/load.service';
+import { MenuService } from '../../services/menu/menu.service';
 import { UserMenuState, CounterTarget } from '../../models';
 
 @Component({
@@ -8,6 +10,7 @@ import { UserMenuState, CounterTarget } from '../../models';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+
   public user = this.loadService.user;
   public userRoles = this.menuService.getUserRoles(this.user);
   public userMenuState: UserMenuState;
@@ -52,4 +55,5 @@ export class HeaderComponent implements OnInit {
   public updateRole(code: string): void {
     this.activeRoleCode = code;
   }
+
 }

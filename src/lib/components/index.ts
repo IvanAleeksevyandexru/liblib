@@ -35,6 +35,7 @@ export * from './header/header.component';
 export * from './hidden-tooltip/hidden-tooltip.component';
 export * from './image-slider/image-slider.component';
 export * from './info-card/info-card.component';
+export * from './informer/informer.component';
 export * from './integration-base/integration-base.component';
 export * from './invalid-results-tip/invalid-results-tip.component';
 export * from './lang-warn-modal/lang-warn-modal.component';

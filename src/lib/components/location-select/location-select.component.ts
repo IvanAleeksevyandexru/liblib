@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GosbarService } from '../../services';
+import { GosbarService } from '../../services/gosbar/gosbar.service';
 
 @Component({
   selector: 'lib-location-select',
@@ -19,7 +19,7 @@ export class LocationSelectComponent implements OnInit {
     private gosbarService: GosbarService
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.gosbarService.initLocation(this.manager);
   }
 
