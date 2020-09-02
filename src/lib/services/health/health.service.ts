@@ -46,6 +46,14 @@ export class HealthService {
       }
     }
 
+    if (this.loadService.config.viewType === 'PAYMENT') {
+      if (pageId) {
+        pageId = pageId.replace('pay', 'pay_new');
+      } else {
+        pageId = 'pay_new';
+      }
+    }
+
     if (this.route.snapshot.paramMap.get('utm_source')) {
       utmSource = this.route.snapshot.paramMap.get('utm_source');
     }
