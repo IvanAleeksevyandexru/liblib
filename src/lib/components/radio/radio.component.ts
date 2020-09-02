@@ -26,6 +26,7 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
   @Input() public name: string;
   @Input() public value: string;
   @Input() public checked: boolean;
+  @Input() public labelColor = '#000';
 
   @Output() public changed = new EventEmitter<string>();
 
@@ -68,7 +69,7 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
     this.onTouchedCallback = func;
   }
 
-  public setDisabledState(disabled: boolean) {
+  public setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
   }
 

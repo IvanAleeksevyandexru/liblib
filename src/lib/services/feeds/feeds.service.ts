@@ -164,7 +164,7 @@ export class FeedsService {
   }
 
   public openDetails(feed: FeedModel): string {
-    let url = this.isLk ? '/' : this.loadService.config.lkUrl;
+    let url = (this.isLk || this.loadService.attributes.appContext === 'PARTNERS') ? '/' : this.loadService.config.lkUrl;
     switch (feed.feedType) {
       case 'FEEDBACK':
         url += `feedback/${feed.id}`;
@@ -201,6 +201,12 @@ export class FeedsService {
         break;
       case 'CLAIM':
         url += `claim/${feed.id}`;
+        break;
+      case 'PARTNERS_DRAFT':
+        url += `lk/draft/${feed.extId}`;
+        break;
+      case 'PARTNERS':
+        url += `lk/order/${feed.id}`;
         break;
       case 'BIOMETRICS':
         url += 'settings/biometry';

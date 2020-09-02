@@ -83,6 +83,9 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   // через конвертер можно использовать any
   @Input() public items: Array<ListElement | any> = [];
 
+  // отображение сообщений под списком
+  @Input() public additionalItem = false;
+
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
   // выбранное значение (или набор выбранных значений) изменилось

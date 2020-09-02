@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ThrobberHexagonComponent implements OnInit {
 
-  @Input() public size = 'small'; // 'small' | 'medium' | 'big' | те же с префиксами | несколько через запятую
+  @Input() public size = 'small'; // 'small' | 'medium' | 'big' | те же с префиксами | несколько через пробел
 
   constructor() {
   }
