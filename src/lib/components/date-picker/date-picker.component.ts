@@ -19,7 +19,7 @@ import { RelativeDate, Range, MonthYear, DateProperties, DatePropertiesPublisher
 import { Subscription, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Width } from '../../models/width-height';
-import * as moment_ from 'moment';
+import * as moment_ from 'moment/min/moment.min.js';
 const moment = moment_;
 
 const STD_DATE_FORMAT = 'DD.MM.YYYY';

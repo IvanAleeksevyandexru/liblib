@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Range, RelativeDate, RelativeRange, MonthYear } from '../../models/date-time.model';
-import * as moment_ from 'moment';
+import * as moment_ from 'moment/min/moment.min.js';
 import { DurationInputArg1, DurationInputArg2, MomentInput } from 'moment';
 import { HelperService } from '../helper/helper.service';
 const moment = moment_;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
-import * as moment_ from 'moment';
+import * as moment_ from 'moment/min/moment.min.js';
 import { MomentInput } from 'moment';
 
 const moment = moment_;
