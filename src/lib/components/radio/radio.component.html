@@ -15,7 +15,7 @@
          [attr.tabIndex]="disabled ? -1 : 0">
   <span class="radio-button"></span>
   <div class="label-wrap">
-    <span class="labelText">{{labelText}}</span>
+    <span class="labelText" [style.color]="labelColor">{{labelText}}</span>
     <div *ngIf="description || errorMessage" class="radio-description">
       <div *ngIf="!errorMessage" class="description">{{description}}</div>
       <div *ngIf="errorMessage" class="error-message">{{errorMessage}}</div>

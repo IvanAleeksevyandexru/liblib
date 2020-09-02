@@ -1,3 +1,7 @@
+:host {
+  outline: none;
+}
+
 .dadata-error {
   color: #DF0024;
   cursor: default;
@@ -57,6 +61,12 @@
   }
 }
 
+.coordinates-item {
+  &:nth-child(2) {
+    margin-bottom: 8px;
+  }
+}
+
 .dadata {
   ::ng-deep .dadata-autocomplete {
     .dadata-additional-item {
@@ -70,6 +80,20 @@
     }
   }
 }
+
+.ya-map{
+  height: 336px;
+  margin-top: 24px;
+
+  @media all and (min-width: 768px) {
+    height: 352px;
+  }
+
+  @media all and (min-width: 1140px) {
+    height: 520px;
+  }
+}
+
 
 @media all and (min-width: 768px) {
   .dadata {
@@ -119,6 +143,16 @@
   .index-item {
     max-width: 246px;
   }
+
+  .coordinates-item {
+    width: auto;
+    flex: 1;
+    margin-bottom: 8px;
+
+    &:nth-child(2) {
+      margin-right: 0 !important;
+    }
+  }
 }
 
 @media all and (min-width: 1140px){
@@ -140,6 +174,11 @@
     }
   }
 
+  .coordinates-item {
+    width: 279px;
+    margin-bottom: 8px;
+  }
+
   .address-item-with-checkbox {
     display: flex;
     align-items: center;
@@ -155,7 +194,7 @@
     }
 
     .address-item-with-checkbox {
-      width: 31%;
+      width: 48%;
     }
 
   }

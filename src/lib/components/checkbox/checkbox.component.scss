@@ -1,6 +1,10 @@
 $checkbox-default-color: #B6C6E8;
 $checkbox-active-color: #0B40B3;
 
+:host {
+  outline: none;
+}
+
 .check {
   display: flex;
   position: relative;
@@ -56,6 +60,7 @@ $checkbox-active-color: #0B40B3;
   display: inline-block;
   line-height: 19px;
   color: #515a63;
+  min-height: 24px;
 }
 
 .checkbox-description {

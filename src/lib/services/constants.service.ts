@@ -304,6 +304,22 @@ export class ConstantsService {
       metric: {name: this.TABS_METRIC_NAME, action: 'settings', from: 'feedsOrder'}
     }
   ]);
+
+  public readonly PARTNERS_ASIDE = new Tabs([
+      {
+        id: 'orders',
+        name: 'ORDERS.ASIDE.ORDERS',
+        url: '/lk/orders/all',
+        mnemonic: 'partnersFeedsOrder'
+      },
+      {
+        id: 'drafts',
+        name: 'ORDERS.ASIDE.DRAFTS',
+        url: '/lk/orders/drafts',
+        mnemonic: 'partnersFeedsDraft'
+      }
+  ]);
+
   public readonly ORDERS_CATEGORIES = [
     {
       text: 'Все',
@@ -339,8 +355,7 @@ export class ConstantsService {
   public readonly FEEDS_CATEGORIES = [
     {
       text: 'Все',
-      type:
-        'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION',
+      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION',
       id: 1,
       mnemonic: 'allEvents'
     },
@@ -713,7 +728,14 @@ export class ConstantsService {
     'house',
     'building1',
     'building2',
-    'apartment'
+    'apartment',
+    'geoLat',
+    'geoLon'
+  ];
+
+  public readonly DADATA_FULLADDRSTR_EXCLUDED_FIELDS = [
+    'geoLat',
+    'geoLon'
   ];
 
   public readonly DADATA_DEPENDENCIES = {

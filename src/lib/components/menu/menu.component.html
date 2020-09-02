@@ -3,36 +3,38 @@
     <div class="col-lg-2 logo-wrapper">
       <lib-logo></lib-logo>
     </div>
-    <div class="col-lg-10 align-items-center flex-container justify-end">
-      <div class="links-wrapper flex-container justify-end align-items-center">
-        <ul class="links hide flex-container-lg">
-          <li class="item" *ngFor="let link of links">
-            <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
-               (click)="redirect($event, link.url)"
-               [href]="link.url">{{link.title | appTranslate}}</a>
-            <ng-template #categoryLink>
-              <a class="category-link"
-                [href]="link.url"
-                (mouseenter)="openCategories()"
-                (mouseleave)="closeCategories()">{{link.title | appTranslate}}</a>
-            </ng-template>
-          </li>
-        </ul>
-        <div class="open-search-popup" (click)="popupSearch()"></div>
-      </div>
-      <div class="user-menu-wrapper">
-        <div class=" login-wrapper hide show-lg">
-          <div class="login flex-container justify-end overflow-container">
-            <lib-login [userCounter]="userCounter" (userClick)="showUserMenu(false)"></lib-login>
-          </div>
+    <ng-container *ngIf="showMenuBtns">
+      <div class="col-lg-10 align-items-center flex-container justify-end">
+        <div *ngIf="showLinks" class="links-wrapper flex-container justify-end align-items-center">
+          <ul class="links hide flex-container-lg">
+            <li class="item" *ngFor="let link of links">
+              <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
+                 (click)="redirect($event, link.url)"
+                 [href]="link.url">{{link.title | appTranslate}}</a>
+              <ng-template #categoryLink>
+                <a class="category-link"
+                   [href]="link.url"
+                   (mouseenter)="openCategories()"
+                   (mouseleave)="closeCategories()">{{link.title | appTranslate}}</a>
+              </ng-template>
+            </li>
+          </ul>
+          <div class="open-search-popup" (click)="popupSearch()"></div>
         </div>
-        <a class="open-mobile-menu hide-lg"
-           (click)="showUserMenu(true)">
-          <lib-counter class="counter-circle" [counter]="userCounter"></lib-counter>
-        </a>
-        <lib-user-menu [state]="userMenuState"></lib-user-menu>
+        <div class="user-menu-wrapper">
+          <div class="login-wrapper hide show-lg">
+            <div class="login flex-container justify-end overflow-container">
+              <lib-login [userCounter]="userCounter" (userClick)="showUserMenu(false)"></lib-login>
+            </div>
+          </div>
+          <a class="open-mobile-menu hide-lg"
+             (click)="showUserMenu(true)">
+            <lib-counter class="counter-circle" [counter]="userCounter"></lib-counter>
+          </a>
+          <lib-user-menu [state]="userMenuState"></lib-user-menu>
+        </div>
       </div>
-    </div>
+    </ng-container>
   </div>
 </div>
 <div class="categories hide show-lg"
