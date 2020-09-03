@@ -42,7 +42,7 @@ export interface GibddPhotoRequestParams {
   uin: string;
   md5: string;
   reg: string;
-  div: string;
+  div?: string;
 }
 
 export interface GibddPhotoResponse {
