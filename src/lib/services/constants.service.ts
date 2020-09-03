@@ -77,7 +77,7 @@ export class ConstantsService {
   public readonly TABS_METRIC_NAME = 'feedsOrder';
   public readonly IMPORT_UPLOAD_LIMIT = 1 * (1024 * 1024); // Лимит загрузки при импорте ТС - 1 мегабайт
   public readonly LK_TABS = new Tabs([
-      {
+    {
       id: 'overview',
       name: 'TABS.OVERVIEW.TITLE',
       url: '/overview',

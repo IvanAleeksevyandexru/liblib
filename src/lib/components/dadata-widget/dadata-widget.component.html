@@ -5,27 +5,27 @@
   </div>
   <div class="mt-8">
     <lib-autocomplete #autocomplete
-      contextClass="dadata-autocomplete"
-      [tabIndex]="0"
-      [invalid]="errorCodes.length || form.invalid"
-      [progressive]="true"
-      [disabled]="disabled"
-      [clearable]="clearable"
-      [showMagnifyingGlass]="false"
-      [searchOnFocus]="true"
-      [queryMinSymbolsCount]="queryMinSymbolsCount"
-      [(ngModel)]="query"
-      (focus)="handleFocus()"
-      (blur)="normalizeFullAddress(query); handleBlur();"
-      (autocompleted)="normalizeFullAddress(query, false)"
-      (input)="updateCanOpenFields($event.target.value)"
-      (cleared)="onClearHandler()"
-      [autocompleteSuggestionProvider]="dadataService">
-          <!--inside dropdown additional content customized-->
-          <div class="dadata-additional-item">
-            <div class="title">{{'DADATA.NO_FIND_OPTION' | libTranslate}}</div>
-            <a class="open-link" (click)="openDadataFields()">{{'DADATA.ENTER_MANUALLY' | libTranslate}}</a>
-          </div>
+                      contextClass="dadata-autocomplete"
+                      [tabIndex]="0"
+                      [invalid]="errorCodes.length || form.invalid"
+                      [progressive]="true"
+                      [disabled]="disabled"
+                      [clearable]="clearable"
+                      [showMagnifyingGlass]="false"
+                      [searchOnFocus]="true"
+                      [queryMinSymbolsCount]="queryMinSymbolsCount"
+                      [(ngModel)]="query"
+                      (focus)="handleFocus()"
+                      (blur)="normalizeFullAddress(query); handleBlur();"
+                      (autocompleted)="normalizeFullAddress(query, false)"
+                      (input)="updateCanOpenFields($event.target.value)"
+                      (cleared)="onClearHandler()"
+                      [autocompleteSuggestionProvider]="dadataService">
+      <!--inside dropdown additional content customized-->
+      <div class="dadata-additional-item">
+        <div class="title">{{'DADATA.NO_FIND_OPTION' | libTranslate}}</div>
+        <a class="open-link" (click)="openDadataFields()">{{'DADATA.ENTER_MANUALLY' | libTranslate}}</a>
+      </div>
     </lib-autocomplete>
   </div>
   <form [formGroup]="form">
@@ -96,7 +96,7 @@
             <label class="input-label" for="house">{{'DADATA.HOUSE' | libTranslate}}</label>
             <div class="small-field">
               <lib-plain-input [tabIndex]="12" [clearable]="true" [invalid]="formConfig.house.isInvalid" id="house"
-                             formControlName="house"></lib-plain-input>
+                               formControlName="house"></lib-plain-input>
             </div>
           </div>
           <div class="address-checkbox">
@@ -107,14 +107,14 @@
           <label class="input-label" for="building1">{{'DADATA.BUILDING1' | libTranslate}}</label>
           <div class="small-field">
             <lib-plain-input [tabIndex]="14" [clearable]="true" [invalid]="formConfig.building1.isInvalid" id="building1"
-                           formControlName="building1"></lib-plain-input>
+                             formControlName="building1"></lib-plain-input>
           </div>
         </div>
         <div *ngIf="formConfig.building2.visible" class="address-item">
           <label class="input-label" for="building2">{{'DADATA.BUILDING2' | libTranslate}}</label>
           <div class="small-field">
             <lib-plain-input [tabIndex]="15" [clearable]="true" [invalid]="formConfig.building2.isInvalid" id="building2"
-                           formControlName="building2"></lib-plain-input>
+                             formControlName="building2"></lib-plain-input>
           </div>
         </div>
       </div>
@@ -124,7 +124,7 @@
             <label class="input-label" for="apartment">{{'DADATA.APARTMENT' | libTranslate}}</label>
             <div class="small-field">
               <lib-plain-input [tabIndex]="16" [clearable]="true" [invalid]="formConfig.apartment.isInvalid" id="apartment"
-                             formControlName="apartment"></lib-plain-input>
+                               formControlName="apartment"></lib-plain-input>
             </div>
           </div>
           <div class="address-checkbox">
@@ -134,7 +134,7 @@
         <div class="address-item index-item">
           <label class="input-label" for="index">{{'DADATA.INDEX' | libTranslate}}</label>
           <lib-base-masked-input [mask]="validations.masks.index" tabIndex="18" [clearable]="true" [maxlength]="6" formControlName="index"
-            [invalid]="formConfig.index.isInvalid || (form.get('index').errors && form.get('index').errors['minlength'])" id="index">
+                                 [invalid]="formConfig.index.isInvalid || (form.get('index').errors && form.get('index').errors['minlength'])" id="index">
           </lib-base-masked-input>
         </div>
       </div>

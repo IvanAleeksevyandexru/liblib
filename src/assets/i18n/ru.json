@@ -18,7 +18,8 @@
       "SYSTEMS": "Мои системы",
       "ACCESS_GROUPS": "Группы доступа",
       "SERVICE_CENTERS": "Центры обслуживания",
-      "OPERATION_HISTORY": "История операций"
+      "OPERATION_HISTORY": "История операций",
+      "POWERS": "Полномочия"
     },
     "CATALOG": {
       "ALL": "Весь каталог",

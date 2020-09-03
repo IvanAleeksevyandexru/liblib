@@ -1,6 +1,6 @@
-<div class="dropdown standard-skin" [ngClass]="contextClass ? [contextClass] : []" 
-  (click)="returnFocus($event)" libClickOutside (clickOutside)="closeDropdown();" (keydown)="handleKeydownNavigation($event)" 
-  [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+<div class="dropdown standard-skin" [ngClass]="contextClass ? [contextClass] : []"
+     (click)="returnFocus($event)" libClickOutside (clickOutside)="closeDropdown();" (keydown)="handleKeydownNavigation($event)"
+     [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="dropdown-field" [ngClass]="{disabled: disabled, invalid: invalidDisplayed, expanded: expanded, clearable: clearable}" (click)="toggle()">
     <div class="dropdown-item" *ngIf="currentItem">
       <div class="dropdown-item-container">
@@ -12,13 +12,13 @@
       <div *ngIf="clearable" class="remove-item" (click)="clear($event)"></div>
     </div>
     <div *ngIf="!currentItem" class="dropdown-item empty"><span class="item-text" [innerHTML]="placeholder | safeHtml"></span></div>
-    <input #focusableInput 
-      class="focusable-input" 
-      type="text" 
-      readonly="true"
-      [attr.tabIndex]="tabIndex" 
-      (focus)="notifyFocusEvent($event)" 
-      (blur)="notifyFocusEvent($event)"/>
+    <input #focusableInput
+           class="focusable-input"
+           type="text"
+           readonly="true"
+           [attr.tabIndex]="tabIndex"
+           (focus)="notifyFocusEvent($event)"
+           (blur)="notifyFocusEvent($event)"/>
     <a class="dropdown-arrow" [ngClass]="{expanded: expanded}" tabIndex="-1"></a>
   </div>
   <div class="dropdown-list-wrapper">
@@ -26,14 +26,14 @@
       <perfect-scrollbar #scrollComponent [config]="{suppressScrollX: true}" [hidden]="customRangeSelectingMode">
         <div class="dropdown-list-area" #scrollableArea>
           <div *ngFor="let item of internalItems" class="dropdown-item" [attr.itemId]="item.id"
-              (click)="selectRange(item)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
-              [class.selected]="item === currentItem"
-              [class.highlighted]="item === highlighted"
-              [class.hidden]="item.hidden"
-              [class.unselectable]="item.unselectable"
-              [class.line-before]="item.lineBreak === LineBreak.BEFORE || item.lineBreak === LineBreak.BOTH"
-              [class.line-after]="item.lineBreak === LineBreak.AFTER || item.lineBreak === LineBreak.BOTH"
-              [class.separator]="item.lineBreak === LineBreak.SELF">
+               (click)="selectRange(item)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
+               [class.selected]="item === currentItem"
+               [class.highlighted]="item === highlighted"
+               [class.hidden]="item.hidden"
+               [class.unselectable]="item.unselectable"
+               [class.line-before]="item.lineBreak === LineBreak.BEFORE || item.lineBreak === LineBreak.BOTH"
+               [class.line-after]="item.lineBreak === LineBreak.AFTER || item.lineBreak === LineBreak.BOTH"
+               [class.separator]="item.lineBreak === LineBreak.SELF">
             <div class="dropdown-item-container">
               <span *ngIf="translation === Translation.NONE" class="item-text">{{item.text}}</span>
               <span *ngIf="translation === Translation.APP" class="item-text">{{item.text | appTranslate}}</span>
@@ -42,9 +42,9 @@
           </div>
         </div>
       </perfect-scrollbar>
-      <lib-date-picker 
-        [(ngModel)]="customRange" 
-        (ngModelChange)="handleCustomRangeSelectionEnd()" 
+      <lib-date-picker
+        [(ngModel)]="customRange"
+        (ngModelChange)="handleCustomRangeSelectionEnd()"
         [hidden]="!customRangeSelectingMode"
         [isRange]="true"
         [asSimplePanel]="true"

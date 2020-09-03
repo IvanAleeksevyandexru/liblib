@@ -251,7 +251,7 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
       this.commitEmit();
     } else {
       if (item.belongsTo(this.internalSelected) || (this.multi && this.multipleItemsMaxSelected !== undefined
-          && (this.internalSelected || []).length >= this.multipleItemsMaxSelected)) {
+        && (this.internalSelected || []).length >= this.multipleItemsMaxSelected)) {
         return;
       }
       if (this.multi) {

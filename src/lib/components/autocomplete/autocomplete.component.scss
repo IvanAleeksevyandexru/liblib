@@ -58,7 +58,7 @@
     white-space: normal;
     box-sizing: border-box;
     background-color: white;
-    
+
     &.hidden {
       display: none;
     }
@@ -161,7 +161,7 @@
     .incremental-loading-icon {
       position: absolute;
       right: 35px;
-      bottom: 5px;  
+      bottom: 5px;
     }
   }
 
@@ -170,7 +170,7 @@
       .lookup-item {
         display: table;
         width: 100%;
-        vertical-align: middle;  
+        vertical-align: middle;
         .item-container {
           display: table-cell;
           height: 46px;

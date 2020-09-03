@@ -165,7 +165,7 @@ export class ListItemsService implements OnInit, OnDestroy {
   public static scrollTo(scrollContainerBaseRef: ElementRef, elementIndex: number) {
     const scrollContainer = this.findScrollContainer(scrollContainerBaseRef);
     if (scrollContainerBaseRef && scrollContainer && elementIndex >= 0
-        && elementIndex < scrollContainerBaseRef.nativeElement.childElementCount) {
+      && elementIndex < scrollContainerBaseRef.nativeElement.childElementCount) {
       let itemElement = scrollContainerBaseRef.nativeElement.children[elementIndex];
       if (itemElement) {
         let height = 0;
@@ -444,7 +444,7 @@ export class ListItemsService implements OnInit, OnDestroy {
       const listItem = item as ListItem;
       return !listItem.hidden && (this.isSelectable(item) ||
         (fromKeyboard && this.operationsContext.collapsableGroups ? listItem.collapsable : false));
-   } else {
+    } else {
       return this.isSelectable(item);
     }
   }
