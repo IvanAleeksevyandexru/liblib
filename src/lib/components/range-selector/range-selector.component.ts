@@ -133,7 +133,7 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
     if (value) {
       if (this.listModelValue) {
         const rangeValue = value instanceof RangeListItem ? value as RangeListItem : new RangeListItem(value);
-        const selectedValue = rangeValue.findSame(this.internalItems) || rangeValue;
+        const selectedValue = rangeValue.findSame(this.internalItems) as RangeListItem || rangeValue;
         if (rangeValue.customRange) {
           if (rangeValue.relativeRange) {
             selectedValue.range = DatesHelperService.relativeRangeToRange(rangeValue.relativeRange, this.textModelValue);
