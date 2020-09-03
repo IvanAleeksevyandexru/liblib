@@ -13,7 +13,7 @@
       [clearable]="clearable"
       [showMagnifyingGlass]="false"
       [searchOnFocus]="true"
-      [queryMinSymbolsCount]="3"
+      [queryMinSymbolsCount]="queryMinSymbolsCount"
       [(ngModel)]="query"
       (focus)="handleFocus()"
       (blur)="normalizeFullAddress(query); handleBlur();"
@@ -138,6 +138,37 @@
           </lib-base-masked-input>
         </div>
       </div>
+      <div *ngIf="enabledMap" class="coordinates">
+        <div class="address-row building-container">
+          <div class="address-item coordinates-item">
+            <label class="input-label" for="geoLat">{{'DADATA.LATITUDE' | libTranslate}}</label>
+            <lib-plain-input [tabIndex]="19" [clearable]="true"  id="geoLat"
+              formControlName="geoLat" (change)="setCoordinatesMap()"></lib-plain-input>
+          </div>
+          <div class="address-item coordinates-item">
+            <label class="input-label" for="geoLon">{{'DADATA.LONGITUDE' | libTranslate}}</label>
+            <lib-plain-input [tabIndex]="20" [clearable]="true"  id="geoLon"
+              formControlName="geoLon" (change)="setCoordinatesMap()"></lib-plain-input>
+          </div>
+        </div>
+        <div class="text-sub mb-16">
+          {{'DADATA.YA_MAP_SECVICE_TEXT' | libTranslate}}
+        </div>
+        <a href="#" (click)="showMap($event)" class="link-plain">
+          {{(stateShowMap ? 'DADATA.HIDE_MAP' : 'DADATA.SHOW_MAP') | libTranslate}}
+        </a>
+
+        <div *ngIf="stateShowMap" class="ya-map">
+          <lib-map
+            [redraw]="true"
+            [center]="center"
+            [zoom]="16"
+            [elementId]="'map'"
+            [controls]="['zoomControl']"
+          ></lib-map>
+        </div>
+      </div>
+
     </div>
   </form>
 </div>

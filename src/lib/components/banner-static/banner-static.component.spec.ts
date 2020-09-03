@@ -123,7 +123,6 @@ describe('StaticBannerComponent', () => {
     const bannersContainer = fixture.nativeElement.querySelector('.banner-container');
     expect(bannersContainer.classList.contains('no-border')).toBeTruthy();
     expect(bannersContainer.classList.contains('no-border-radius')).toBeTruthy();
-    expect(bannersContainer.classList.contains('bottom-padding')).toBeFalsy();
     expect(bannersContainer.style.height).toBe('');
     component.noBorder = false;
     component.noBorderRadius = false;

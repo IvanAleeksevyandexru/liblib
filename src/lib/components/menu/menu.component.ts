@@ -23,6 +23,7 @@ const HIDE_TIMOUT = 300;
 export class MenuComponent implements OnInit, AfterViewInit {
 
   @Input() public userCounter: CounterData;
+  @Input() public showLinks = true;
 
   public categories: Category[] = [];
   public links: MenuLink[] = [];
@@ -33,6 +34,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
   public menuOffset: number;
   public user: any;
   public isFixed = false;
+  public showMenuBtns = this.loadService.config.showMenuBtns;
 
   @ViewChild('menu') public menu;
 

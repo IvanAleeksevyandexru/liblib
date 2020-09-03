@@ -1,4 +1,4 @@
-<section class="disclaimer" [ngStyle]="{borderLeft: '4px solid' + color}">
+<section class="disclaimer" [ngStyle]="{borderLeft: '4px solid ' + color}">
   <h4 *ngIf="title" class="title mb-8" [innerHTML]="title"></h4>
   <p *ngIf="text; else content" class="text-help mb-0" [innerHTML]="text"></p>
   <ng-template #content>
