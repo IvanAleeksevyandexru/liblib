@@ -5,7 +5,6 @@ import { DropdownSimpleComponent } from '../dropdown-simple/dropdown-simple.comp
 import { Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { RelativeDate, Range, RangeListItem } from '../../models/date-time.model';
-import { ListItemsService } from '../../services/list-item/list-items.service';
 import { DatesHelperService } from '../../services/dates-helper/dates-helper.service';
 import { Translation } from '../../models/common-enums';
 import { Width } from '../../models/width-height';
@@ -22,7 +21,7 @@ const STD_DATE_FORMAT = 'DD.MM.YYYY';
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => RangeSelectorComponent),
     multi: true
-  }, ListItemsService]
+  }]
 })
 export class RangeSelectorComponent extends DropdownSimpleComponent
     implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated  {
