@@ -792,6 +792,7 @@ export class ConstantsService {
     MILITARY_ID: 'MLTR_ID',
     INN: 'INN',
     SNILS: 'SNILS',
+    KID_SNILS: 'KID_SNILS',
     OTHER_DOC: 'DOCS',
     ORGANIZATION_INFO: 'ORG_INFO',
     BRANCH_INFO: 'BRANCH_INFO',

@@ -448,6 +448,28 @@ export class ProfileService {
           canEdit: object.vrfStu === undefined || object.vrfStu === 'NOT_VERIFIED',
           canDelete: object.vrfStu === undefined,
           canRepeat: false,
+          empty: {
+            title: 'Добавьте СНИЛС',
+            subtitle: object.subtitle ? object.subtitle : 'он необходим для некоторых услуг и может использоваться для авторизации'
+          },
+          full: {
+            title: 'СНИЛС'
+          },
+          fields: [
+            {
+              title: '',
+              // showEmpty: true,
+              value: object.number
+            }
+          ]
+        };
+      case this.DOCUMENT_TYPES.KID_SNILS:
+        return {
+          attrId: 'snils',
+          canDetails: false,
+          canDelete: false,
+          canEdit: object.vrfValStu === 'VERIFICATION_FAILED',
+          canRepeat: object.vrfValStu === 'VERIFICATION_FAILED',
           ...(object.vrfValStu === 'VERIFICATION_FAILED' ?
               {
                 notification: 'Не найден в базе данных ПФР. Проверьте корректность данных документа',
@@ -461,17 +483,12 @@ export class ProfileService {
                   'Идет поиск СНИЛС ребенка в ПФР...',
               } : {}
           ),
-          empty: {
-            title: 'Добавьте СНИЛС',
-            subtitle: object.subtitle ? object.subtitle : 'он необходим для некоторых услуг и может использоваться для авторизации'
-          },
           full: {
             title: 'СНИЛС'
           },
           fields: [
             {
               title: '',
-              // showEmpty: true,
               value: object.number
             }
           ]
@@ -538,6 +555,7 @@ export class ProfileService {
           },
           gender: object.gender,
           detailsPath: `/profile/family/child/${object.id || ''}/docs`,
+          statusMessage: object.statusMessage,
           fields: [
             {
               title: 'Дата рождения',

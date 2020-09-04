@@ -60,7 +60,6 @@ export class InfoCardComponent implements OnInit, OnChanges {
 
     this.object = this.profileService.createCardObject(data);
 
-
     if (data.informerStatus) {
       this.informer = {
         type: data.informerStatus,

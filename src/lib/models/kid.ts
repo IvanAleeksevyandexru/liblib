@@ -1,4 +1,5 @@
 import { Document } from './document';
+import { InfoCardState } from './info-card-view';
 
 export interface Kid {
   eTag?: string;
@@ -25,5 +26,6 @@ export interface Kid {
   type?: string;
   hasNewDoc?: boolean | string;
   hasAccount?: boolean;
-
+  state?: InfoCardState;
+  statusMessage?: string;
 }
