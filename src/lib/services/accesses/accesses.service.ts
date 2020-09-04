@@ -15,7 +15,8 @@ export class AccessesService {
   ) { }
 
   public getAccessTech(): boolean {
-    const groupTech = this.user.person.groups.find((item) => {
+    const groups = this.user.person && this.user.person.groups;
+    const groupTech = groups && groups.find((item) => {
       return item.grp_id === 'TECH_CONSOLE';
     });
 
