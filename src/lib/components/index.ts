@@ -70,3 +70,4 @@ export * from './tabs-light/tabs-light.component';
 export * from './throbber/throbber.component';
 export * from './user-menu/user-menu.component';
 export * from './validation-message/validation-message.component';
+export * from './virtual-scroll/virtual-scroll.component';
