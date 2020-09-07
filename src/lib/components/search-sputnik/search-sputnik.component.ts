@@ -13,6 +13,8 @@ import { LoadService } from '../../services/load/load.service';
 export class SearchSputnikComponent implements OnInit, AfterViewInit {
 
   @Input() public hideToIcon = false;
+  @Input() public placeholder = 'Например: пособие 3-7 лет подробнее';
+  @Input() public contextClass = '';
   public showField = true;
 
   public searchItem: SearchSuggestion;

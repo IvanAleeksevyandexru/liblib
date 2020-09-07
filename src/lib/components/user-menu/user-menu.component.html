@@ -19,6 +19,9 @@
 
   <div #menuMobile class="menu-mobile container hide-lg" [class.show]="showMobileView()">
     <ng-template *ngTemplateOutlet="menuHeader"></ng-template>
+    <div class="hide-lg show-md hide-sm menu-search-container">
+      <lib-search-sputnik contextClass="menu-search" placeholder="Поиск"></lib-search-sputnik>
+    </div>
     <ng-template *ngTemplateOutlet="menuTabs"></ng-template>
     <div class="item select-role" (click)="showRolesList = !showRolesList" [ngClass]="{'show-roles-list': showRolesList}">
       <span class="active-role">{{ (activeRole?.name) || 'Гражданам' }}</span>
@@ -81,7 +84,7 @@
 </ng-template>
 
 <ng-template #menuTabs>
-  <ul class="user-menu-tabs" *ngIf="mainTabs">
+  <ul class="user-menu-tabs" *ngIf="mainTabs?.tabs">
     <li class="item" *ngFor="let tab of mainTabs.tabs">
       <ng-container *ngIf="tab.url">
         <a (click)="selectTab(tab)" routerLink="{{tab.url}}"

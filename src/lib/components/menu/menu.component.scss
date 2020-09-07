@@ -334,9 +334,17 @@
   @media all and (min-width: 768px) and (max-width: 1140px) {
     .main-menu {
       ::ng-deep {
-        .search-container.show-field {
-          right: 64px;
-          width: calc(100% - 128px);
+        .search-container {
+          &.show-field {
+            right: 64px;
+            width: calc(100% - 128px);
+          }
+
+          &.menu-search {
+            position: relative;
+            right: 0;
+            width: 100%;
+          }
         }
       }
 

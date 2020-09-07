@@ -1,7 +1,7 @@
-<div class="flex-container align-items-center search-container" [ngClass]="{'show-field' : showField}">
+<div class="flex-container align-items-center search-container {{contextClass}}" [ngClass]="{'show-field' : showField}">
   <div *ngIf="showField" #searchBox class="search-input">
     <lib-lookup #lookup class="search"
-                [placeholder]="'Например: пособие 3-7 лет подробнее'"
+                [placeholder]="placeholder"
                 [itemsProvider]="searchProvider"
                 [queryMinSymbolsCount]="3"
                 [(ngModel)]="searchItem"

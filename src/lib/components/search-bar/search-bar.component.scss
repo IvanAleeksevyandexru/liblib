@@ -136,14 +136,13 @@
     background: url(../../../assets/svg/lookup-search-grey.svg) 16px 16px no-repeat;
     outline: none;
     cursor: pointer;
-    border-left: solid 1px #A8ACB1;
     &:hover {
-      background: url(../../../assets/svg/lookup-search-hover.svg) 12px 12px no-repeat;
+      background: url(../../../assets/svg/lookup-search-hover.svg) 16px 16px no-repeat;
     }
     &.disabled {
-      background: url(../../../assets/svg/lookup-search-disabled.svg) 12px 12px no-repeat;
+      background: url(../../../assets/svg/lookup-search-disabled.svg) 16px 16px no-repeat;
       &:hover {
-        background: url(../../../assets/svg/lookup-search-disabled.svg) 12px 12px no-repeat;
+        background: url(../../../assets/svg/lookup-search-disabled.svg) 16px 16px no-repeat;
       }
     }
   }
