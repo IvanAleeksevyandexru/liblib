@@ -7,7 +7,7 @@ import { ListItem, ListElement } from '../../models/dropdown.model';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
-import { ListItemsService } from '../../services/list-item/list-items.service';
+import { ListItemsAccessoryService } from '../../services/list-item/list-items.scroll';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { Translation, LineBreak } from '../../models/common-enums';
 import { Width } from '../../models/width-height';
@@ -145,7 +145,7 @@ export class DropdownSimpleComponent implements OnInit, AfterViewInit, OnChanges
       this.opened.emit();
       this.updateScrollBars();
       if (this.currentItem) {
-        ListItemsService.scrollTo(this.scrollableArea, this.currentItem.findIndexAmong(this.internalItems));
+        ListItemsAccessoryService.scrollTo(this.scrollableArea, this.currentItem.findIndexAmong(this.internalItems));
       }
     }
   }
@@ -226,18 +226,18 @@ export class DropdownSimpleComponent implements OnInit, AfterViewInit, OnChanges
     } else if (e.key === 'ArrowUp') {  // вверх
       e.preventDefault();
       e.stopPropagation();
-      const prevVisible = ListItemsService.findNextItem(this.internalItems, this.highlighted, false, isHighlitable);
-      if (prevVisible !== null) {
-        this.highlight(this.internalItems[prevVisible]);
-        ListItemsService.scrollTo(this.scrollableArea, prevVisible);
+      const prev = ListItemsAccessoryService.findNextItem(this.internalItems, this.highlighted, false, isHighlitable);
+      if (prev !== null) {
+        this.highlight(this.internalItems[prev]);
+        ListItemsAccessoryService.scrollTo(this.scrollableArea, prev);
       }
     } else if (e.key === 'ArrowDown') {  // вниз
       e.preventDefault();
       e.stopPropagation();
-      const nextVisible = ListItemsService.findNextItem(this.internalItems, this.highlighted, true, isHighlitable);
-      if (nextVisible !== null) {
-        this.highlight(this.internalItems[nextVisible]);
-        ListItemsService.scrollTo(this.scrollableArea, nextVisible);
+      const next = ListItemsAccessoryService.findNextItem(this.internalItems, this.highlighted, true, isHighlitable);
+      if (next !== null) {
+        this.highlight(this.internalItems[next]);
+        ListItemsAccessoryService.scrollTo(this.scrollableArea, next);
       }
     }
   }

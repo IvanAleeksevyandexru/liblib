@@ -247,7 +247,7 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
       return;
     }
     if (item.collapsable && this.virtualGroups) {
-      this.listService.getFinalItems(this.filteredItems, item).forEach((finalItem: ListItem) => this.selectItem(finalItem, false));
+      this.listService.getTerminalItems(item, this.filteredItems).forEach((finalItem: ListItem) => this.selectItem(finalItem, false));
       this.commitEmit();
     } else {
       if (item.belongsTo(this.internalSelected) || (this.multi && this.multipleItemsMaxSelected !== undefined
@@ -268,7 +268,7 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
 
   public deselectItem(item: ListItem, commitEmit = true) {
     if (item.collapsable && this.virtualGroups) {
-      this.listService.getFinalItems(this.filteredItems, item).forEach((finalItem: ListItem) => this.deselectItem(finalItem, false));
+      this.listService.getTerminalItems(item, this.filteredItems).forEach((finalItem: ListItem) => this.deselectItem(finalItem, false));
       this.commitEmit();
     } else {
       item.selected = false;

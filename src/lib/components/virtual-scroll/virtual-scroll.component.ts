@@ -3,7 +3,7 @@ import {
   ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit, OnDestroy } from '@angular/core';
 import {
   CdkVirtualScrollViewport, ScrollDispatcher, ViewportRuler,
-  FixedSizeVirtualScrollStrategy } from '@angular/cdk/scrolling';
+  FixedSizeVirtualScrollStrategy, VirtualScrollStrategy } from '@angular/cdk/scrolling';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { Subject, Observable } from 'rxjs';
 
@@ -23,7 +23,7 @@ export class VirtualScrollComponent implements AfterViewInit, OnDestroy {
   }
 
   @Input() public itemSize: number;
-  @Input() public scrollStrategy: any;
+  @Input() public scrollStrategy: VirtualScrollStrategy;
 
   public scrollViewport: CdkVirtualScrollViewport;
   public inited = new Subject<boolean>();
@@ -51,6 +51,12 @@ export class VirtualScrollComponent implements AfterViewInit, OnDestroy {
 
   public whenInited(): Observable<boolean> {
     return this.inited.asObservable();
+  }
+
+  public scrollToIndex(index: number) {
+    if (this.scrollViewport) {
+      this.scrollViewport.scrollToIndex(index);
+    }
   }
 
 }

@@ -42,41 +42,26 @@
           (cleared)="resetFilter()">
         </lib-search-bar>
       </div>
-      <perfect-scrollbar #scrollComponent [config]="{suppressScrollX: true, wheelPropagation: false}" (psYReachEnd)="loadNextPartial()">
+      <perfect-scrollbar #scrollComponent 
+          [config]="{suppressScrollX: true, wheelPropagation: false}"
+          (psYReachEnd)="loadNextPartial()"
+          *ngIf="!virtualScroll || internalDisplayed.length < 100">
         <div class="dropdown-list-area" #scrollableArea [class.multi-choise]="multi">
-          <div *ngFor="let item of internalDisplayed" class="dropdown-item " [attr.itemId]="item.id"
-              (click)="invertSelection(item)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
-              [ngClass]="[item.groupLevel ? 'group-level-' + item.groupLevel : '']"
-              [class.selected]="item.selected"
-              [class.highlighted]="item === highlighted"
-              [class.hidden]="item.hidden"
-              [class.unselectable]="item.unselectable"
-              [class.collapsable]="collapsableGroups && item.collapsable"
-              [class.line-before]="item.lineBreak === LineBreak.BEFORE || item.lineBreak === LineBreak.BOTH"
-              [class.line-after]="item.lineBreak === LineBreak.AFTER || item.lineBreak === LineBreak.BOTH"
-              [class.separator]="item.lineBreak === LineBreak.SELF">
-            <div class="structure-container" *ngIf="!item.hidden">
-              <div *ngIf="multi && !item.unselectable" class="dropdown-item-checkbox-wrapper">
-                <div class="dropdown-item-checkbox"></div>
-              </div>
-              <div class="dropdown-item-container">
-                <span *ngIf="localSearch && highlightSubstring && filteringQuery"
-                  class="dropdown-item-text" [innerHTML]="item.highlightFormatted | safeHtml"></span>
-                <span *ngIf="!(localSearch && highlightSubstring && filteringQuery) && !escapeHtml"
-                  class="dropdown-item-text" [innerHTML]="item.listFormatted | safeHtml"></span>
-                <span *ngIf="!(localSearch && highlightSubstring && filteringQuery) && escapeHtml"
-                  class="dropdown-item-text">{{item.listFormatted}}</span>
-                <div class="expand-collapse" [class.collapsed]="item.collapsed" (click)="expandCollapse(item, $event)"></div>
-              </div>
-            </div>
-          </div>
-          <div *ngIf="localSearch && !internalDisplayed.length" class="dropdown-item">
-            <div class="dropdown-item-container">
-              <span class="dropdown-item-text" [innerHTML]="'LOOKUP.NOTHING_FOUND' | libTranslate | subst:filteringQuery"></span>
-            </div>
-          </div>
+          <ng-container *ngFor="let item of internalDisplayed">
+            <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
+          </ng-container>
         </div>
       </perfect-scrollbar>
+      <lib-virtual-scroll #virtualScroll [scrollStrategy]="virtualScrollController" *ngIf="virtualScroll && internalDisplayed.length >= 100">
+        <ng-container *libVirtualFor="let item of internalDisplayed">
+          <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
+        </ng-container>
+      </lib-virtual-scroll>
+      <div *ngIf="localSearch && !internalDisplayed.length" class="dropdown-item">
+        <div class="dropdown-item-container">
+          <span class="dropdown-item-text" [innerHTML]="'LOOKUP.NOTHING_FOUND' | libTranslate | subst:filteringQuery"></span>
+        </div>
+      </div>
       <div class="additional-item" *ngIf="additionalItem">
         <div class="gray">{{'DADATA.NO_FIND_OPTION' | libTranslate}}</div>
         <div class="gray">{{additionalItem}}</div>
@@ -84,3 +69,31 @@
     </div>
   </div>
 </div>
+<ng-template #singleItem let-item="item">
+  <div class="dropdown-item " [attr.itemId]="item.id"
+      (click)="invertSelection(item)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
+      [ngClass]="[item.groupLevel ? 'group-level-' + item.groupLevel : '']"
+      [class.selected]="item.selected"
+      [class.highlighted]="item === highlighted"
+      [class.hidden]="item.hidden"
+      [class.unselectable]="item.unselectable"
+      [class.collapsable]="collapsableGroups && item.collapsable"
+      [class.line-before]="item.lineBreak === LineBreak.BEFORE || item.lineBreak === LineBreak.BOTH"
+      [class.line-after]="item.lineBreak === LineBreak.AFTER || item.lineBreak === LineBreak.BOTH"
+      [class.separator]="item.lineBreak === LineBreak.SELF">
+    <div class="structure-container" *ngIf="!item.hidden">
+      <div *ngIf="multi && !item.unselectable" class="dropdown-item-checkbox-wrapper">
+        <div class="dropdown-item-checkbox"></div>
+      </div>
+      <div class="dropdown-item-container">
+        <span *ngIf="localSearch && highlightSubstring && filteringQuery"
+          class="dropdown-item-text" [innerHTML]="item.highlightFormatted | safeHtml"></span>
+        <span *ngIf="!(localSearch && highlightSubstring && filteringQuery) && !escapeHtml"
+          class="dropdown-item-text" [innerHTML]="item.listFormatted | safeHtml"></span>
+        <span *ngIf="!(localSearch && highlightSubstring && filteringQuery) && escapeHtml"
+          class="dropdown-item-text">{{item.listFormatted}}</span>
+        <div class="expand-collapse" [class.collapsed]="item.collapsed" (click)="expandCollapse(item, $event)"></div>
+      </div>
+    </div>
+  </div>
+</ng-template>
