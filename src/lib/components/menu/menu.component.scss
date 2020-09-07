@@ -288,12 +288,21 @@
     }
 
     ::ng-deep {
-      .search-container.show-field {
-        position: absolute;
-        top: calc(50% - 26px);;
-        right: 17px;
-        width: calc(100% - 34px);
-        background-color: inherit;
+      .search-container {
+        &.show-field {
+          position: absolute;
+          top: calc(50% - 26px);;
+          right: 17px;
+          width: calc(100% - 34px);
+          background-color: inherit;
+        }
+
+        &.menu-search {
+          position: relative;
+          background-color: inherit;
+          width: 100%;
+          right: 0;
+        }
       }
     }
 
@@ -342,8 +351,9 @@
 
           &.menu-search {
             position: relative;
-            right: 0;
+            background-color: inherit;
             width: 100%;
+            right: 0;
           }
         }
       }

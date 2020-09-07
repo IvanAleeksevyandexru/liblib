@@ -286,7 +286,7 @@ export class ListItemsService implements OnInit, OnDestroy {
 
   // форматирует текст итемов, используя форматтеры (если требуется), либо .translated/.text
   public formatItems(items: Array<ListItem>, formatContext?: { [name: string]: any }): Array<ListItem> {
-    if (items) {
+    if (items && items.length) {
       const formatter = this.operationsContext.formatter;
       const listFormatter = this.operationsContext.listFormatter;
       items.forEach((item: ListItem, index: number) => {

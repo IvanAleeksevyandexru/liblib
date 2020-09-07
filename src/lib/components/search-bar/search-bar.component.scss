@@ -40,7 +40,9 @@
       padding-top: 0;
       padding-bottom: 0;
     }
-    :host-context(.white-field) {
+    :host-context(.white-field),
+    :host-context(.menu-search)
+    {
       .search-input {
         border: 2px solid #FFFFFF;
         background-color: #FFFFFF;
@@ -132,7 +134,7 @@
     width: 52px;
     height: 52px;
     top: 0;
-    right: 0;
+    right: 7px;
     background: url(../../../assets/svg/lookup-search-grey.svg) 16px 16px no-repeat;
     outline: none;
     cursor: pointer;
@@ -164,7 +166,7 @@
     width: 52px;
     height: 52px;
     top: 0;
-    right: 0;
+    right: 7px;
     .search-in-progress-cell {
       position: absolute;
       background: url(../../../assets/svg/search-loader.svg) 0 0 no-repeat;
@@ -173,6 +175,12 @@
       top: 12px;
       left: 11px;
       animation: rotate 1.5s linear infinite;
+    }
+  }
+
+  &.menu-search {
+    .search-input:focus {
+      border-color: #ffffff;
     }
   }
 }

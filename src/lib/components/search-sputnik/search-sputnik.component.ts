@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { SearchSuggestion } from '../../models/search';
 import { ListItem, ListItemConverter } from '../../models/dropdown.model';
 import { LookupComponent } from '../lookup/lookup.component';
@@ -15,6 +15,8 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
   @Input() public hideToIcon = false;
   @Input() public placeholder = 'Например: пособие 3-7 лет подробнее';
   @Input() public contextClass = '';
+  @Output() public opened = new EventEmitter();
+  @Output() public closed = new EventEmitter();
   public showField = true;
 
   public searchItem: SearchSuggestion;
@@ -74,5 +76,13 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
 
   public toggleField() {
     this.showField = !this.showField;
+  }
+
+  public toggleSearch(open: boolean): void {
+    if (open) {
+      this.opened.emit();
+    } else {
+      this.closed.emit();
+    }
   }
 }

@@ -100,4 +100,28 @@
       }
     }
   }
+
+  &.menu-search {
+    .lookup-list-container {
+      border-color: #ffffff;
+      max-height: 450px;
+      ::ng-deep .ps {
+        max-height: 400px;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 768px) and (max-width: 1140px) {
+  .lookup {
+    &.menu-search {
+      .lookup-list-container {
+        max-height: 300px;
+
+        ::ng-deep .ps {
+          max-height: 250px;
+        }
+      }
+    }
+  }
 }

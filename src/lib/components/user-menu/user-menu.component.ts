@@ -35,6 +35,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public userRoles;
   public activeRole;
   public showRolesList = false;
+  public showAllMenu = true;
 
   @Input()
   public state: UserMenuState;
