@@ -61,7 +61,7 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor {
     this.onTouchedCallback = func;
   }
 
-  public setDisabledState(disabled: boolean) {
+  public setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
   }
 

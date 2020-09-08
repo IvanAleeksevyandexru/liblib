@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -26,6 +26,9 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
   @Input() public name: string;
   @Input() public value: string;
   @Input() public checked: boolean;
+  @Input() public labelColor = '#000';
+
+  @Output() public changed = new EventEmitter<string>();
 
   private modelInitialization = true;
   private onTouchedCallback: () => void;
@@ -40,9 +43,12 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  public onChanged(value: boolean) {
+  public onSelected(value: boolean) {
+    // всегда true, но вызывается только для активного
     this.checked = value;
+    // для остальных из данной группы синхронизация произойдет через модель
     this.commit(this.value);
+    this.changed.emit(this.value);
   }
 
   // ControlValueAccessor methods
@@ -63,7 +69,7 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
     this.onTouchedCallback = func;
   }
 
-  public setDisabledState(disabled: boolean) {
+  public setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
   }
 

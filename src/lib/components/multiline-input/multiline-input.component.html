@@ -5,7 +5,8 @@
     [class.full-height-scroll]="fullHeightScroll"
     [class.with-symbols-counter]="maxlength"
     [ngClass]="contextClass ? [contextClass] : []" libStopScreenScroll
-    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}"
+    (click)="checkSelection()">
   <div class="multiline-wrapper">
     <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}" [ngStyle]="{'max-height.px': maxHeight}">
       <div class="multiline-input" #input

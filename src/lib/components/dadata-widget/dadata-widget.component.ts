@@ -63,6 +63,10 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   // массив скрытых уровней, которые не будут заполняться ни в скрытом, ни в развернутом виде
   // каждое значение - строка - значения из константы DADATA_LEVEL_MAP
   @Input() public hideLevels?: Array<string> = [];
+  @Input() public enabledMap = false;
+  @Input() public queryMinSymbolsCount = 3;
+  @Input() public validateOnSpecify = true;
+  @Input() public addrStrExcluded = this.constants.DADATA_ADDRSTR_EXCLUDED_FIELDS;
   @Input() public debounceTime = 100;
 
   @Output() public focus = new EventEmitter<any>();
@@ -76,7 +80,10 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   public controlNames: string[];
   // Поля, которые исключаются из формы для построения полного адреса
   public excluded = this.constants.DADATA_EXCLUDED_FIELDS;
-  public addrStrExcluded = this.constants.DADATA_ADDRSTR_EXCLUDED_FIELDS;
+  public fullAddrStrExcluded = this.constants.DADATA_FULLADDRSTR_EXCLUDED_FIELDS;
+  // Массив с широтой и долготой для яндекс карты
+  public center = [];
+  public stateShowMap = false;
   // проверка на множественные вызовы
   public normalizeInProcess = false;
   private query$ = new BehaviorSubject('');
@@ -183,7 +190,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
             const ctrlField = this.dadataService.prefixes[control];
             const tmpStr = (keyIndex > 0 ? ', ' : '') + (changes[control] ?
               (ctrlField.shortType || ctrlField.abbr) + ' ' + changes[control] : '');
-            fullAddress += tmpStr;
+            if (!this.fullAddrStrExcluded.includes(control)) {
+              fullAddress += tmpStr;
+            }
             if (!this.addrStrExcluded.includes(control)) {
               this.addressStr += tmpStr;
             }
@@ -271,7 +280,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     if (isOpened) {
       this.closeDadataFields();
     } else {
-      this.openDadataFields(true);
+      this.openDadataFields(this.validateOnSpecify);
     }
   }
 
@@ -306,7 +315,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public updateCanOpenFields(value: string): void {
     this.closeDadataFields();
-    if (!value) {
+    if (!value || value.length < this.queryMinSymbolsCount) {
       this.form.reset();
     }
     this.query$.next(value);
@@ -399,4 +408,15 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       }
     });
   }
+
+  public setCoordinatesMap() {
+    this.center = [this.form.get('geoLon').value, this.form.get('geoLat').value];
+  }
+
+  public showMap(e: any) {
+    e.preventDefault();
+    this.setCoordinatesMap();
+    this.stateShowMap = !this.stateShowMap;
+  }
+
 }

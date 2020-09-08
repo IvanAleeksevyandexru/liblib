@@ -98,7 +98,7 @@ export class Tabs {
 }
 
 export interface LightTab {
-  id: string;
+  id: string; // тип фильтра таба
   name: string;
   hidden?: boolean;
   active?: boolean;

@@ -173,6 +173,29 @@ b, strong, .bold {
   color: #DF0024;
 }
 
+ul.list-dotted {
+  list-style: disc;
+  margin-left: 16px;
+
+  & > li {
+    margin-top: 4px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+ul.list-decimal {
+  list-style: decimal;
+  margin-left: 18px;
+
+  // если больше 9 будет, надо будет добавить нечто следующее
+  /*& > li:nth-child(10n) {
+    margin-left: 6px;
+  }*/
+}
+
 @mixin global-classes($prefix) {
   .hide#{$prefix} {
     display: none;
@@ -214,16 +237,20 @@ b, strong, .bold {
     flex-wrap: wrap;
   }
 
+  .flex-row-wrap#{$prefix} {
+    flex-flow: row wrap;
+  }
+
   .flex-order-last#{$prefix} {
     order: 1;
   }
 
-  .justify-end#{$prefix} {
-    justify-content: flex-end;
-  }
-
   .justify-start#{$prefix} {
     justify-content: flex-start;
+  }
+
+  .justify-end#{$prefix} {
+    justify-content: flex-end;
   }
 
   .justify-center#{$prefix} {
@@ -238,8 +265,16 @@ b, strong, .bold {
     justify-content: space-around;
   }
 
+  .justify-evenly#{$prefix} {
+    justify-content: space-evenly;
+  }
+
   .align-items-center#{$prefix} {
     align-items: center;
+  }
+
+  .align-items-end#{$prefix} {
+    align-items: flex-end;
   }
 
   .align-items-start#{$prefix} {
@@ -252,6 +287,10 @@ b, strong, .bold {
 
   .align-self-end#{$prefix} {
     align-self: end;
+  }
+
+  .align-self-flex-end#{$prefix} {
+    align-self: flex-end;
   }
 
   .flex-1#{$prefix} {

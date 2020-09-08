@@ -5,7 +5,7 @@
       <div class="dropdown-values-summary" *ngIf="internalSelected && internalSelected.length">
         {{'DROPDOWN.MULTIPLE_SUMMARY' | libTranslate | subst:(internalSelected.length | decline:['DROPDOWN.COUNT1' | libTranslate, 'DROPDOWN.COUNT2' | libTranslate, 'DROPDOWN.COUNT0' | libTranslate])}}
       </div>
-      <div class="dropdown-values-container" *ngIf="internalSelected" 
+      <div class="dropdown-values-container" *ngIf="internalSelected"
         [ngClass]="{'panel-expanded': multipleItemsDetailsShown}">
         <div *ngFor="let item of internalSelected" class="dropdown-value" [attr.tooltipContent]="item.textFormatted">
           <div *ngIf="clearable" class="remove-item-wrapper"><a class="remove-item" (click)="unselect(item, $event)"></a></div>
@@ -55,16 +55,16 @@
               [class.line-before]="item.lineBreak === LineBreak.BEFORE || item.lineBreak === LineBreak.BOTH"
               [class.line-after]="item.lineBreak === LineBreak.AFTER || item.lineBreak === LineBreak.BOTH"
               [class.separator]="item.lineBreak === LineBreak.SELF">
-            <div class="structure-container">
+            <div class="structure-container" *ngIf="!item.hidden">
               <div *ngIf="multi && !item.unselectable" class="dropdown-item-checkbox-wrapper">
                 <div class="dropdown-item-checkbox"></div>
               </div>
               <div class="dropdown-item-container">
-                <span *ngIf="localSearch && highlightSubstring && filteringQuery" 
+                <span *ngIf="localSearch && highlightSubstring && filteringQuery"
                   class="dropdown-item-text" [innerHTML]="item.highlightFormatted | safeHtml"></span>
-                <span *ngIf="!(localSearch && highlightSubstring && filteringQuery) && !escapeHtml" 
+                <span *ngIf="!(localSearch && highlightSubstring && filteringQuery) && !escapeHtml"
                   class="dropdown-item-text" [innerHTML]="item.listFormatted | safeHtml"></span>
-                <span *ngIf="!(localSearch && highlightSubstring && filteringQuery) && escapeHtml" 
+                <span *ngIf="!(localSearch && highlightSubstring && filteringQuery) && escapeHtml"
                   class="dropdown-item-text">{{item.listFormatted}}</span>
                 <div class="expand-collapse" [class.collapsed]="item.collapsed" (click)="expandCollapse(item, $event)"></div>
               </div>
@@ -77,6 +77,10 @@
           </div>
         </div>
       </perfect-scrollbar>
+      <div class="additional-item" *ngIf="additionalItem">
+        <div class="gray">{{'DADATA.NO_FIND_OPTION' | libTranslate}}</div>
+        <div class="gray">{{additionalItem}}</div>
+      </div>
     </div>
   </div>
 </div>

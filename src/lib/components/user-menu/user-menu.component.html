@@ -16,7 +16,7 @@
       </ul>
       <ul class="user-menu-links">
         <li class="item">
-          <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{'HEADER.MENU.LOGIN_ORG' | libTranslate}}</a>
+          <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{titleChangeRole | libTranslate}}</a>
         </li>
       </ul>
       <ul class="user-menu-links">
@@ -43,7 +43,7 @@
     </ul>
     <ul class="links-mobile">
       <li class="item">
-        <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{'HEADER.MENU.LOGIN_ORG' | libTranslate}}</a>
+        <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{titleChangeRole | libTranslate}}</a>
       </li>
     </ul>
     <ul *ngIf="user.authorized" class="links-mobile">
@@ -59,22 +59,28 @@
 
 <ng-template #menuHeader>
   <div class="menu-header">
-    <div *ngIf="(loadService.avatar | async) as avatar" class="avatar-wrapper">
-      <img *ngIf="avatar.url && !avatarError; else noAvatar" class="avatar" [src]="avatar.url" (error)="avatarError = true" alt=""/>
-      <ng-template #noAvatar>
-        <div
-          class="no-avatar"
-          [class.female]="avatar.gender === 'F'"
-          [class.business]="user.type === 'B'"
-          [class.legal]="user.type === 'L'"
-        ></div>
-      </ng-template>
-    </div>
-    <div class="name">
-      <ng-container *ngIf="user.type === 'L'">{{(user.orgShortName || user.orgName)}}</ng-container>
-      <ng-container *ngIf="user.type === 'B'">{{(user.orgShortName || 'ИП ' + user.shortName)}}</ng-container>
-      <ng-container *ngIf="user.type !== 'B' && user.type !== 'L'">{{user.formattedName}}</ng-container>
-    </div>
+    <!-- ToDo надо убрать это будет при новом дизайне, т.к. там кнопка авторизации в другом месте -->
+    <ng-container *ngIf="user.authorized">
+      <div *ngIf="(loadService.avatar | async) as avatar" class="avatar-wrapper">
+        <img *ngIf="avatar.url && !avatarError; else noAvatar" class="avatar" [src]="avatar.url" (error)="avatarError = true" alt=""/>
+        <ng-template #noAvatar>
+          <div
+            class="no-avatar"
+            [class.female]="avatar.gender === 'F'"
+            [class.business]="user.type === 'B'"
+            [class.legal]="user.type === 'L'"
+          ></div>
+        </ng-template>
+      </div>
+      <div class="name">
+        <ng-container *ngIf="user.type === 'L'">{{(user.orgShortName || user.orgName)}}</ng-container>
+        <ng-container *ngIf="user.type === 'B'">{{(user.orgShortName || 'ИП ' + user.shortName)}}</ng-container>
+        <ng-container *ngIf="user.type !== 'B' && user.type !== 'L'">{{user.formattedName}}</ng-container>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!user.authorized">
+      <lib-login></lib-login>
+    </ng-container>
     <a class="close-menu" (click)="onClose()"></a>
   </div>
 </ng-template>

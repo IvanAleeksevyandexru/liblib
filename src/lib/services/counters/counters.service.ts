@@ -20,6 +20,7 @@ export class CountersService {
     SETTINGS: key => this.counterFilters.ACCOUNT(key) || this.counterFilters.BIOMETRY(key) || this.counterFilters.ESIGNATURE(key),
     STATEMENTS: key => key === CounterType.ORDER || key === CounterType.EQUEUE || key === CounterType.CLAIM,
     MESSAGES: key => key === CounterType.GEPS,
+    PARTNERS: key => key === CounterType.PARTNERS,
     PAYMENTS: key => false,
     ESIGNATURE: key => key === CounterType.ESIGNATURE,
     EMPTY: key => false
@@ -96,7 +97,7 @@ export class CountersService {
   // TODO: описать интерфейс
   public doCountersApiRequest(isHide?: boolean): Observable<any> {
     let params = {
-      types: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,CLAIM,PROFILE,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE',
+      types: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,CLAIM,PROFILE,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE,PARTNERS',
       isArchive: 'false',
       _: Math.random().toString()
     };

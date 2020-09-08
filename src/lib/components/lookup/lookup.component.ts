@@ -519,7 +519,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
 
   public updateFormatting() {
     this.prepareItems(this.internalFixedItems, 0, null, true);
-    this.prepareItems([this.item], null, null, true);
+    this.prepareItems(this.item ? [this.item] : [], null, null, true);
   }
 
   // конвертация, перевод, форматирование и подсветка подстроки

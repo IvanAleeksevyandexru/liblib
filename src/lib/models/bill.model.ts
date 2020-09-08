@@ -93,6 +93,7 @@ export interface BillsRequestParams {
   ipshonly?: boolean;
   epgu_id?: string;
   vehicles?: boolean;
+  interfaceTypeCode?: string;
 }
 
 export interface Bill {
@@ -180,6 +181,10 @@ export interface BillLink {
   billNumber: string;
   signature: string;
   vehicle: Vehicle;
+  serviceCategory?: {
+    code: ServiceCategoryCode;
+    name: string;
+  };
 }
 
 export interface SupplierSource {

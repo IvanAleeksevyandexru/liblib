@@ -1,6 +1,10 @@
 $radio-default-color: #B6C6E8;
 $checkbox-active-color: #0B40B3;
 
+:host {
+  outline: none;
+}
+
 .radio {
   display: flex;
   align-items: flex-start;

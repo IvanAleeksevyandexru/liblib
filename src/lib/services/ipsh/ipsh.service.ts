@@ -213,8 +213,7 @@ export class IpshService {
       fromObject: {
         uin: params.uin,
         md5: params.md5,
-        reg: params.reg,
-        div: params.div
+        reg: params.reg
       }
     });
     this.healthService.measureStart('gibdd_photo');
