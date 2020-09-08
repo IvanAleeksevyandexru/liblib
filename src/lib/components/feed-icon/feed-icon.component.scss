@@ -166,6 +166,12 @@
   }
 }
 
+.feed-ACCOUNT {
+  .status-in_progress {
+    background-image: url('../../../assets/svg/statuses/account-progress-doc.svg');
+  }
+}
+
 .feed-CLAIM{
   .status-done, .status-44, .status-6 {
     background-image: url('../../../assets/svg/statuses/done.svg');
