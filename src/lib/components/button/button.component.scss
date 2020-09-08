@@ -24,6 +24,7 @@ a, button {
     color: #ffffff;
     background-color: #07266b;
   }
+
   &.active {
     color: #ffffff;
     background-color: #07266b;
@@ -49,21 +50,6 @@ a, button {
 
   &.transparent {
     background-color: transparent;
-  }
-  &.red{
-    color: #EB5757;
-    border: 1px solid #EB5757;
-    background: #fff;
-    &.disabled{
-      opacity: .5;
-    }
-    &:hover,
-    &:focus,
-    &:active{
-      color: #EB5757;
-      border: 1px solid #EB5757;
-      background: #fff;
-    }
   }
 
   &.white {
@@ -120,11 +106,16 @@ a, button {
       }
     }
   }
+
   &.dynamic {
     padding: 15px;
     height: auto;
     white-space: unset;
     line-height: 18px;
+  }
+
+  &.loader {
+    min-width: 150px;
   }
 }
 
@@ -135,11 +126,13 @@ button::-moz-focus-inner {
 @media all and (min-width: 768px) {
   a, button {
     width: auto;
+
     &.wide {
       width: 100%;
     }
   }
 }
+
 @media all and (min-width: 1140px) {
   a, button {
     &.font-13{
