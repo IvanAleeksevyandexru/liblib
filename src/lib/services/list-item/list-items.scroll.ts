@@ -1,11 +1,10 @@
-import { ElementRef } from '@angular/core';
+import { ElementRef, NgZone } from '@angular/core';
 import { CdkVirtualScrollViewport, VirtualScrollStrategy } from '@angular/cdk/scrolling';
 import { VirtualScrollComponent } from '../../components/virtual-scroll/virtual-scroll.component';
 import { ListItem, AutocompleteSuggestion } from '../../models/dropdown.model';
-import { Subject } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-
-export const VIRTUAL_SCROLL_RENDER_BUFFER = 500;
+import { LineBreak } from '../../models/common-enums';
 
 // статика для обработки скролла и клавиатурной навигации
 export class ListItemsAccessoryService {
@@ -91,15 +90,44 @@ export class ListItemsAccessoryService {
     }
   }
 
-  public static runBackgroundSizeEstimating(items: Array<ListItem>, containerWidth: number, startIndex?: number) {
+  public static runBackgroundSizeEstimating(items: Array<ListItem>, containerWidth: number, ngZone: NgZone,
+                                            startIndex?: number, measureElement?: HTMLElement): Observable<number> {
+    const result = new Subject<number>();
     const index = startIndex || 0;
-    for (let i = index; i++; i < Math.min(items.length, index + 100)) {
-      items[i].dimensions = {width: containerWidth, height: this.measureItemHeight(items[i], containerWidth)};
-    }
-    if (items.length > index + 100) {
-      setTimeout(() => {
-        this.runBackgroundSizeEstimating(items, containerWidth, index + 100);
+    const nextIndexStop = Math.min(index + 100, items.length);
+    let measureContainer = measureElement;
+    if (!measureContainer) {
+      measureContainer = document.createElement('div');
+      Object.assign(measureContainer.style, {
+        display: 'block',
+        visibility: 'hidden',
+        position: 'absolute',
+        width: (containerWidth - 22) + 'px', // r+l padding
+        lineHeight: '24px',
+        fontSize: '16px',
+        fontFamily: 'Helvetica',
+        whiteSpace: 'wrap'
       });
+      document.body.appendChild(measureContainer);
+    }
+    let totalHeight = 0;
+    for (let i = index; i < nextIndexStop; i++) {
+      const itemEmpty = items[i].hidden || items[i].lineBreak === LineBreak.SELF;
+      measureContainer.innerHTML = items[i].listFormatted;
+      items[i].dimensions = {width: containerWidth, height: itemEmpty ? 0 : measureContainer.clientHeight + 12}; // t+b padding
+      totalHeight += items[i].dimensions.height;
+    }
+    if (items.length > nextIndexStop) {
+      ngZone.runOutsideAngular(() => {
+        setTimeout(() => {
+          const subResult = this.runBackgroundSizeEstimating(items, containerWidth, ngZone, nextIndexStop, measureContainer);
+          subResult.subscribe((furtherHeight) => result.next(totalHeight + furtherHeight));
+        });
+      });
+      return result.asObservable();
+    } else {
+      measureContainer.remove();
+      return of(totalHeight);
     }
   }
 
@@ -112,20 +140,6 @@ export class ListItemsAccessoryService {
     }
     return base.classList.contains('ps') ? base : null;
   }
-
-  private static measureItemHeight(item: ListItem, containerWidth: number) {
-    if (item.hidden) {
-      return 0;
-    }
-    const el = document.createElement('div');
-    el.style.width = containerWidth + 'px';
-    el.style.lineHeight = '24px';
-    el.style.paddingLeft = '16px';
-    el.style.paddingRight = '16px';
-    el.innerHTML = item.listFormatted;
-    return el.clientHeight + 16; // padding
-  }
-
 }
 
 // контроллер виртуального скролла для списочных элементов
@@ -145,7 +159,7 @@ export class ListItemsVirtualScrollController implements VirtualScrollStrategy {
     this.viewport = viewport;
     const data = this.acquireRenderedData();
     this.viewport.setTotalContentSize(data.reduce((acc, item) => acc + item.getItemHeight(), 0));
-    this.updateRenderedRange(this.viewport);
+    this.updateRenderedRange();
   }
 
   public detach() {
@@ -154,9 +168,7 @@ export class ListItemsVirtualScrollController implements VirtualScrollStrategy {
   }
 
   public onContentScrolled() {
-    if (this.viewport) {
-      this.updateRenderedRange(this.viewport);
-    }
+    this.updateRenderedRange();
   }
 
   public scrollToIndex(index: number, behavior: ScrollBehavior) {
@@ -169,7 +181,7 @@ export class ListItemsVirtualScrollController implements VirtualScrollStrategy {
     if (this.viewport) {
       this.viewport.setRenderedRange({start: 0, end: 0});
       this.viewport.setRenderedContentOffset(0);
-      this.index$.next(0);
+      this.updateRenderedRange();
     }
   }
 
@@ -178,39 +190,30 @@ export class ListItemsVirtualScrollController implements VirtualScrollStrategy {
 
   private getOffsetForIndex(index: number): number {
     const data = this.acquireRenderedData();
-    return data.slice(0, index).reduce((acc, item) => acc + item.getItemHeight(), 0);
+    return index === 0 ? 0 : data.slice(0, index).reduce((acc, item) => acc + item.getItemHeight(), 0);
   }
 
   private getIndexForOffset(offset: number): number {
     const data = this.acquireRenderedData();
     let i = 0;
     let left = offset;
-    while (offset > 0 && i < data.length) {
+    while (left > 0 && i < data.length) {
       left -= data[i].getItemHeight();
       i++;
     }
-    return i - 1;
+    return i;
   }
 
-  private updateRenderedRange(viewport: CdkVirtualScrollViewport) {
+  private updateRenderedRange() {
+    const viewport = this.viewport;
     const offset = viewport.measureScrollOffset();
-    const viewportSize = viewport.getViewportSize();
+    const viewportSize = 250; // высота фиксирована для выпадающих списков
     const {start, end} = viewport.getRenderedRange();
     const dataLength = viewport.getDataLength();
     const newRange = {start, end};
     const firstVisibleIndex = this.getIndexForOffset(offset);
-    const startBuffer = offset - this.getOffsetForIndex(start);
-    const buffer = VIRTUAL_SCROLL_RENDER_BUFFER;
-    if (startBuffer < buffer && start !== 0) {
-      newRange.start = Math.max(0, this.getIndexForOffset(offset - buffer * 2));
-      newRange.end = Math.min(dataLength, this.getIndexForOffset(offset + viewportSize + buffer));
-    } else {
-      const endBuffer = this.getOffsetForIndex(end) - offset - viewportSize;
-      if (endBuffer < buffer && end !== dataLength) {
-        newRange.start = Math.max(0, this.getIndexForOffset(offset - buffer));
-        newRange.end = Math.min(dataLength, this.getIndexForOffset(offset + viewportSize + buffer * 2));
-      }
-    }
+    newRange.start = Math.max(0, this.getIndexForOffset(offset - 200)); // 200 - буффер ленты в px вверх и вниз
+    newRange.end = Math.min(dataLength, this.getIndexForOffset(offset + viewportSize + 200));
     viewport.setRenderedRange(newRange);
     viewport.setRenderedContentOffset(this.getOffsetForIndex(newRange.start));
     this.index$.next(firstVisibleIndex);

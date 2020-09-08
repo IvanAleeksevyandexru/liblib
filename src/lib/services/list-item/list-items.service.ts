@@ -1,4 +1,4 @@
-import { OnInit, OnDestroy, Optional, ElementRef, Injectable } from '@angular/core';
+import { OnInit, OnDestroy, Optional, ElementRef, Injectable, NgZone } from '@angular/core';
 import { Observable, Subscription, forkJoin, of } from 'rxjs';
 import { tap, map, catchError } from 'rxjs/operators';
 import { LibTranslateService } from '../translate/translate.service';
@@ -33,7 +33,7 @@ export class ListItemsService implements OnInit, OnDestroy {
   private operationsContext = {} as ListItemsOperationsContext;
   private langSubscription: Subscription;
 
-  constructor(private libTranslate: LibTranslateService, @Optional() private appTranslate: TranslateService) {
+  constructor(private libTranslate: LibTranslateService, private ngZone: NgZone, @Optional() private appTranslate: TranslateService) {
   }
 
   public ngOnInit() {
@@ -141,11 +141,6 @@ export class ListItemsService implements OnInit, OnDestroy {
       items.forEach((item: ListItem, index: number) => {
         item.prepareFormatting(this.addIndexToCtx(formatContext, index), formatter, listFormatter);
       });
-      if (this.operationsContext.virtualScroll && items.length >= 100 && formatContext.fieldWidth) {
-        setTimeout(() => {
-          ListItemsAccessoryService.runBackgroundSizeEstimating(items, formatContext.fieldWidth);
-        });
-      }
     }
     return items;
   }
@@ -155,6 +150,10 @@ export class ListItemsService implements OnInit, OnDestroy {
     return this.translateItems(items, forceTranslate).pipe(tap((listItems: Array<ListItem>) => {
       this.formatItems(listItems, formatContext);
     }));
+  }
+
+  public evaluateItemsSizeAsync(items: Array<ListItem>, clientWidth: number): Observable<number> {
+    return ListItemsAccessoryService.runBackgroundSizeEstimating(items, clientWidth, this.ngZone);
   }
 
   // восстанавливает структуру дерева и недостающие элементы по item.groupId. меняет исходный массив!

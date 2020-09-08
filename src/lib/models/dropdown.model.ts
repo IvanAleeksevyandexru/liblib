@@ -3,7 +3,7 @@ import { LineBreak } from './common-enums';
 import { HelperService } from '../services/helper/helper.service';
 
 export const NO_ORIGINAL = {};
-export const ITEM_DEFAULT_HEIGHT = 48;
+export const ITEM_DEFAULT_HEIGHT = 36;
 
 // тип для пользовательского объекта-прототипа, "подходящего" для создания по нему списочного элемента
 // т.е. содержащий допустимые пользовательские данные, соответствующие конструкции ListItem

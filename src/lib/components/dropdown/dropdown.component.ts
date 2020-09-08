@@ -107,7 +107,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   public preventOpening = false;
   public control?: AbstractControl;
   public filteringQuery = '';
-  public virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems);
+  public virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems.bind(this));
   public LineBreak = LineBreak;
 
   // приведенный к [ListItem] входящий список итемов +форматирование
@@ -314,14 +314,27 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     this.filterItems('');
   }
 
-  public updateFormatting(forceTranslate = false) {
-    const fieldWidth = this.valuesContainer.nativeElement.outerWidth;
+  public updateFormatting(forceTranslate = false, evalDimensions = true) {
     forkJoin([
-      this.listService.translateFormat(this.internalItems, forceTranslate, {fieldWidth}),
+      this.listService.translateFormat(this.internalItems, forceTranslate),
       this.listService.translateFormat(this.internalSelected, forceTranslate)
     ]).subscribe(() => {
+      if (evalDimensions) {
+        this.evaluateItemsSizesIfNeeded();
+      }
       this.changeDetector.detectChanges();
     });
+  }
+
+  public evaluateItemsSizesIfNeeded() {
+    if (this.virtualScroll && this.internalItems.length >= 100 && this.valuesContainer) {
+      const width = this.valuesContainer.nativeElement.clientWidth;
+      this.listService.evaluateItemsSizeAsync(this.internalItems, width).subscribe((totalHeight) => {
+        if (this.virtualScrollComponent) {
+          this.virtualScrollComponent.setTotalContentSize(totalHeight);
+        }
+      });
+    }
   }
 
   public setPartialIndex(partialNumber: number) {
@@ -366,7 +379,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   }
 
   public getRenderedItems(): Array<ListItem> {
-    return this.internalDisplayed;
+    return this.internalDisplayed || [];
   }
 
   public multipleSummaryOpenDetails(e: Event) {
@@ -493,7 +506,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
       return;
     }
     this.internalSelected = this.listService.createListItems(value, {noIndex: !this.multi});
-    this.updateFormatting();
+    this.updateFormatting(false, false);
     this.consistencyCheck();
     this.synchronizeSelected();
     this.resetFilter();

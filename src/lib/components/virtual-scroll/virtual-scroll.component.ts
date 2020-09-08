@@ -59,4 +59,10 @@ export class VirtualScrollComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  public setTotalContentSize(totalContentSize: number) {
+    if (this.scrollViewport) {
+      this.scrollViewport.setTotalContentSize(totalContentSize);
+    }
+  }
+
 }
