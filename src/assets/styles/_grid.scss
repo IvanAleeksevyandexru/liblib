@@ -54,7 +54,11 @@ $col-lg-count: 12;
   grid-gap: 32px;
 
   @include grid('', $col-count);
-  @include gridIe('sm', $col-count);
+  @include gridIe('-sm', $col-count);
+}
+
+.grid-none {
+  display: block;
 }
 
 .masonry {
@@ -79,6 +83,10 @@ $col-lg-count: 12;
 
     @include grid('-md', $col-md-count);
     @include gridIe('-md', $col-md-count);
+  }
+
+  .grid-none-md {
+    display: block;
   }
 
   .masonry {
@@ -119,6 +127,10 @@ $col-lg-count: 12;
 
     @include grid('-lg', $col-lg-count);
     @include gridIe('-lg', $col-lg-count);
+  }
+
+  .grid-none-lg {
+    display: block;
   }
 
   .masonry {

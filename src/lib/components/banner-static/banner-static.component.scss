@@ -1,6 +1,9 @@
 .banner-inner-container {
   position: relative;
-  padding-right: 32px;
+
+  &.place-for-cross {
+    padding-right: 32px;
+  }
 }
 
 .banner-container {

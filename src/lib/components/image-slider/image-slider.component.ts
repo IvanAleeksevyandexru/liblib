@@ -33,6 +33,7 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
   @Input() public slidesHeight = SLIDES_HEIGHT;
 
   @Input() public images: SliderImage[] = [];
+  @Input() public links: Array<string> = [];
   @Input() public limit = 3;
   @Input() public showByIndex: number;
   @Input() public showModal = false;
@@ -40,6 +41,7 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
   @Input() public view: 'simple' | 'card' | 'logos' = 'simple';
   @Input() public showTitle = false;
   @Input() public showBullet = true;
+  @Input() public target = false;
 
   private perPage = this.limit;
   public containerTransform: string;
@@ -129,7 +131,8 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
         this.changeOffset();
       }
       // 30 - сумма padding, необходимых для отображения тени
-      const paddings = this.view === 'card' ? 30 : 0;
+      // 20 - отсупы для стрелок
+      const paddings = this.view === 'card' ? 30 : (this.view === 'logos' ? 20 : 0);
       const containerWidth = this.sliderContainer.nativeElement.offsetWidth - paddings;
       if (containerWidth < SLIDES_WIDTH) {
         this.perPage = 1;
@@ -149,7 +152,7 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
       } else {
         const sliderWrapperWidth = this.perPage * this.slidesWidth + (this.perPage - 1) * this.slidesOffset + paddings;
         if (this.view === 'logos') {
-          this.setElementWidth(this.sliderFeedWrapper.nativeElement, sliderWrapperWidth);
+          this.setElementWidth(this.sliderFeedWrapper.nativeElement, sliderWrapperWidth - paddings);
         } else {
           this.setElementWidth(this.sliderWrapper.nativeElement, sliderWrapperWidth);
         }

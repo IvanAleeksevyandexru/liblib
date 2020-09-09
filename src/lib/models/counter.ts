@@ -8,6 +8,7 @@ export interface CountersModel {
   total: number;
   counters: {
     GEPS?: CounterData;
+    PARTNERS?: CounterData;
     ORDER?: CounterData;
     CLAIM?: CounterData;
     PAYMENT?: CounterData;
@@ -22,6 +23,7 @@ export interface CountersModel {
 
 export enum CounterType {
   GEPS = 'GEPS',
+  PARTNERS = 'PARTNERS',
   ORDER = 'ORDER',
   CLAIM = 'CLAIM',
   PAYMENT = 'PAYMENT',
@@ -44,6 +46,7 @@ export enum CounterTarget {
   MESSAGES = 'MESSAGES',
   PAYMENTS = 'PAYMENTS',
   ESIGNATURE = 'ESIGNATURE',
+  PARTNERS = 'PARTNERS',
   EMPTY = 'EMPTY'
 }
 
