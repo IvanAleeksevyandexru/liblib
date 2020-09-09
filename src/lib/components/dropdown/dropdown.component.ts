@@ -108,6 +108,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   public control?: AbstractControl;
   public filteringQuery = '';
   public virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems.bind(this));
+  public VirtualScrollMinCount = ConstantsService.VIRTUAL_SCROLL_MIN_ITEMS_COUNT;
   public LineBreak = LineBreak;
 
   // приведенный к [ListItem] входящий список итемов +форматирование
@@ -327,13 +328,19 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   }
 
   public evaluateItemsSizesIfNeeded() {
-    if (this.virtualScroll && this.internalItems.length >= 100 && this.valuesContainer) {
+    if (this.virtualScroll && this.internalItems.length >= this.VirtualScrollMinCount && this.valuesContainer) {
       const width = this.valuesContainer.nativeElement.clientWidth;
-      this.listService.evaluateItemsSizeAsync(this.internalItems, width).subscribe((totalHeight) => {
-        if (this.virtualScrollComponent) {
-          this.virtualScrollComponent.setTotalContentSize(totalHeight);
-        }
+      this.listService.evaluateItemsSizeAsync(this.internalItems, width).subscribe(() => {
+        this.updateScrollHeight();
       });
+    }
+  }
+
+  public updateScrollHeight() {
+    if (this.virtualScroll && this.virtualScrollComponent) {
+      const items = this.internalDisplayed || this.internalItems || [];
+      const totalContentSize = items.reduce((acc, item) => acc + item.getItemHeight(), 0);
+      this.virtualScrollComponent.setTotalContentSize(totalContentSize);
     }
   }
 
@@ -375,6 +382,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   public publishList(items: Array<ListItem>) {
     const alignedItems = this.listService.alignGroupsTreeIfNeeded(items, this.internalItems);
     this.internalDisplayed = alignedItems;
+    this.updateScrollHeight();
     this.listed.emit(alignedItems);
   }
 

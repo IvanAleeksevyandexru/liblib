@@ -61,6 +61,8 @@ export class ConstantsService {
   public static readonly DEFAULT_DRAGDROP_ANIMATION_DURATION = 500;
   // дефолтное количество итемов для подгрузки для incrementalLoading
   public static readonly DEFAULT_ITEMS_INCREMENTAL_PAGE_SIZE = 10;
+  // минимальное количество итемов в списке для подключения virtualScroll (необходимо т.к. он уже не может в автовысоту)
+  public static readonly VIRTUAL_SCROLL_MIN_ITEMS_COUNT = 50;
 
   public readonly FIXED_MENU_HEIGHT = 80; // высота закрепленного меню
   public readonly TYPE_CONTACT_EMAIL: ContactType = 'EML';
