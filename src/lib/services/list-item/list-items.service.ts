@@ -290,7 +290,9 @@ export class ListItemsService implements OnInit, OnDestroy {
       const formatter = this.operationsContext.formatter;
       const listFormatter = this.operationsContext.listFormatter;
       items.forEach((item: ListItem, index: number) => {
-        item.prepareFormatting(this.addIndexToCtx(formatContext, index), formatter, listFormatter);
+        if (item) {
+          item.prepareFormatting(this.addIndexToCtx(formatContext, index), formatter, listFormatter);
+        }
       });
     }
     return items;

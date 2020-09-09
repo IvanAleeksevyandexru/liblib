@@ -1,3 +1,5 @@
+import { getTransformedQueryCallExpr } from '@angular/core/schematics/migrations/static-queries/transform';
+
 export * from './auth/auth.service';
 export * from './banners/banners.service';
 export * from './breadcrumbs/breadcrumbs.service';
@@ -16,6 +18,7 @@ export * from './gosbar/gosbar.service';
 export * from './health/health.service';
 export * from './helper/helper.service';
 export * from './ipsh/ipsh.service';
+export * from './knd/knd.service';
 export * from './dates-helper/dates-helper.service';
 export * from './validation-helper/validation.helper';
 export * from './load/load.service';
