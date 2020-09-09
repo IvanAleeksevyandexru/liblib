@@ -17,7 +17,7 @@
 .input-label {
   display: inline-block;
   margin-bottom: 8px;
-  font: 400 14px/20px Helvetica, sans-serif;
+  font: 400 14px/20px Lato, sans-serif;
   color: #515a63;
 
   & + .sub-label,
@@ -29,7 +29,7 @@
 .sub-label {
   display: block;
   margin: 4px 0 8px;
-  font: 400 12px/16px Helvetica, sans-serif;
+  font: 400 12px/16px Lato, sans-serif;
   color: #515a63;
 
   & + .error-label {
@@ -40,7 +40,7 @@
 .error-label {
   display: block;
   margin: 4px 0 8px;
-  font: 400 12px/16px Helvetica, sans-serif;
+  font: 400 12px/16px Lato, sans-serif;
   color: #df0024;
 }
 
