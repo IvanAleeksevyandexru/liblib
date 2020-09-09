@@ -117,15 +117,6 @@
         }
       }
     }
-    &.virtual-scroll {
-      ::ng-deep .ps {
-        height: 250px;
-      }
-    }
-    .dropdown-list-area {
-      width: 100%;
-      height: auto;
-    }
     .dropdown-item {
       display: block;
       width: 100%;

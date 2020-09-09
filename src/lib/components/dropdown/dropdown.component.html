@@ -30,7 +30,6 @@
     <div class="dropdown-list-container" #dropdownList libStopScreenScroll
         [class.expanded]="expanded"
         [class.hidden]="!expanded"
-        [class.virtual-scroll]="virtualScroll && internalDisplayed.length >= VirtualScrollMinCount"
         [class.multi-choise]="multi">
       <div *ngIf="localSearch" class="dropdown-search-input">
         <lib-search-bar #localSearchElement
@@ -46,19 +45,16 @@
           (cleared)="resetFilter()">
         </lib-search-bar>
       </div>
-      <perfect-scrollbar #scrollComponent 
+      <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll"
           [config]="{suppressScrollX: true, wheelPropagation: false}"
-          (psYReachEnd)="loadNextPartial()"
-          *ngIf="!virtualScroll || internalDisplayed.length < VirtualScrollMinCount">
-        <div class="dropdown-list-area" #scrollableArea>
-          <ng-container *ngFor="let item of internalDisplayed">
-            <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
-          </ng-container>
-        </div>
+          (psYReachEnd)="loadNextPartial()">
+        <ng-container *ngFor="let item of internalDisplayed">
+          <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
+        </ng-container>
       </perfect-scrollbar>
-      <lib-virtual-scroll #virtualScroll 
-          *ngIf="virtualScroll && internalDisplayed.length >= VirtualScrollMinCount"
-          [scrollStrategy]="virtualScrollController">
+      <lib-virtual-scroll #virtualScroll *ngIf="virtualScroll"
+          [scrollStrategy]="virtualScrollController"
+          (scrollBottomReached)="loadNextPartial()">
         <ng-container *libVirtualFor="let item of internalDisplayed">
           <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
         </ng-container>

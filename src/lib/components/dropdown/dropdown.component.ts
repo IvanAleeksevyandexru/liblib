@@ -6,6 +6,7 @@ import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCES
 import { ListItem, ListElement, ListItemConverter } from '../../models/dropdown.model';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { VirtualScrollComponent } from '../virtual-scroll/virtual-scroll.component';
+import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { PositioningManager, PositioningRequest } from '../../services/positioning/positioning.manager';
@@ -126,7 +127,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   public partialsLoaded = false;
   public multipleItemsDetailsShown = false;
 
-  @ViewChild('scrollableArea') private scrollableArea: ElementRef;
+  @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
   @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
   @ViewChild('focusableInput') private focusableInput: ElementRef;
   @ViewChild('localSearchElement') private localSearchElement: SearchBarComponent;
@@ -328,7 +329,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   }
 
   public evaluateItemsSizesIfNeeded() {
-    if (this.virtualScroll && this.internalItems.length >= this.VirtualScrollMinCount && this.valuesContainer) {
+    if (this.virtualScroll && this.valuesContainer) {
       const width = this.valuesContainer.nativeElement.clientWidth;
       this.listService.evaluateItemsSizeAsync(this.internalItems, width).subscribe(() => {
         this.updateScrollHeight();
@@ -336,7 +337,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     }
   }
 
-  public updateScrollHeight() {
+  public updateScrollHeight(preservedScrollPos?: number) {
     if (this.virtualScroll && this.virtualScrollComponent) {
       const items = this.internalDisplayed || this.internalItems || [];
       const totalContentSize = items.reduce((acc, item) => acc + item.getItemHeight(), 0);
@@ -352,15 +353,15 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
             this.listService.highlightSubstring(filteredItems, this.filteringQuery);
           }
         };
-        if (this.incrementalLoading && !this.virtualScroll) {
+        if (this.incrementalLoading) {
           this.partialPageNumber = partialNumber;
           const pageSize = this.incrementalPageSize || ConstantsService.DEFAULT_ITEMS_INCREMENTAL_PAGE_SIZE;
           this.fixedItemsProvider.searchPartial(this.filteringQuery, this.partialPageNumber, {partialPageSize: pageSize})
               .subscribe((filteredPaged: Array<ListItem>) => {
             highlightIfNeeded(filteredPaged);
             const partialedItems = partialNumber === 0 ? filteredPaged : this.internalDisplayed.concat(filteredPaged);
-            this.publishList(partialedItems);
             this.partialsLoaded = partialedItems.length === filteredAll.length;
+            this.publishList(partialedItems);
           });
         } else {
           highlightIfNeeded(filteredAll);
@@ -370,11 +371,10 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     } else {
       this.publishList(this.internalItems);
     }
-    this.changeDetector.detectChanges();
   }
 
   public loadNextPartial() {
-    if (this.incrementalLoading && !this.virtualScroll && this.expanded && !this.partialsLoaded) {
+    if (this.incrementalLoading && this.expanded && !this.partialsLoaded) {
       this.setPartialIndex(this.partialPageNumber + 1);
     }
   }
@@ -384,6 +384,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     this.internalDisplayed = alignedItems;
     this.updateScrollHeight();
     this.listed.emit(alignedItems);
+    this.changeDetector.detectChanges();
   }
 
   public getRenderedItems(): Array<ListItem> {
@@ -502,7 +503,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
       this.closeDropdown();
     } else if (this.expanded) { // стрелки
       const navResult = this.listService.handleKeyboardNavigation(e,
-        this.internalDisplayed, this.highlighted, this.virtualScrollComponent || this.scrollableArea);
+        this.internalDisplayed, this.highlighted, this.virtualScrollComponent || this.scrollComponent);
       if (navResult && navResult !== true) {
         this.highlighted = navResult as ListItem;
       }
@@ -553,7 +554,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   }
 
   private scrollTo(item: ListItem) {
-    this.listService.scrollTo(this.virtualScrollComponent || this.scrollableArea, item.findIndexAmong(this.internalDisplayed));
+    this.listService.scrollTo(this.virtualScrollComponent || this.scrollComponent, item.findIndexAmong(this.internalDisplayed));
   }
 
 }

@@ -1,6 +1,7 @@
 import { ElementRef, NgZone } from '@angular/core';
 import { CdkVirtualScrollViewport, VirtualScrollStrategy } from '@angular/cdk/scrolling';
 import { VirtualScrollComponent } from '../../components/virtual-scroll/virtual-scroll.component';
+import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { ListItem, AutocompleteSuggestion } from '../../models/dropdown.model';
 import { Subject, Observable, of } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
@@ -12,7 +13,8 @@ export class ListItemsAccessoryService {
   public static handleKeyboardNavigation(e: KeyboardEvent, items: Array<ListItem | AutocompleteSuggestion>,
                                          highlightedElement: ListItem | AutocompleteSuggestion,
                                          highlightableCheck: (ListItem) => boolean,
-                                         scrollArea: ElementRef | VirtualScrollComponent): ListItem | AutocompleteSuggestion | boolean {
+                                         scrollArea: ElementRef | PerfectScrollbarComponent | VirtualScrollComponent)
+                                         : ListItem | AutocompleteSuggestion | boolean {
     if (e.key === 'ArrowUp') {  // вверх
       e.preventDefault();
       e.stopPropagation();
@@ -69,15 +71,22 @@ export class ListItemsAccessoryService {
     return null;
   }
 
-  public static scrollTo(scrollArea: ElementRef | VirtualScrollComponent, elementIndex: number) {
-    if (scrollArea instanceof VirtualScrollComponent) {
-      (scrollArea as VirtualScrollComponent).scrollToIndex(elementIndex);
+  public static scrollTo(scrollElement: ElementRef | PerfectScrollbarComponent | VirtualScrollComponent, elementIndex: number) {
+    if (scrollElement instanceof VirtualScrollComponent) {
+      (scrollElement as VirtualScrollComponent).scrollToIndex(elementIndex);
     } else {
-      const scrollContainerBaseRef = scrollArea as ElementRef;
-      const scrollContainer = this.findScrollContainer(scrollContainerBaseRef);
-      if (scrollContainerBaseRef && scrollContainer && elementIndex >= 0
-          && elementIndex < scrollContainerBaseRef.nativeElement.childElementCount) {
-        let itemElement = scrollContainerBaseRef.nativeElement.children[elementIndex];
+      let scrollContainer;
+      let scrollArea;
+      if (scrollElement instanceof PerfectScrollbarComponent) {
+        scrollContainer = (scrollElement as PerfectScrollbarComponent).directiveRef.elementRef.nativeElement;
+        scrollArea = scrollContainer.children[0];
+      } else {
+        scrollArea = (scrollArea as ElementRef).nativeElement;
+        scrollContainer = this.findScrollContainer(scrollArea);
+      }
+      if (scrollArea && scrollContainer && elementIndex >= 0
+          && elementIndex < scrollArea.childElementCount) {
+        let itemElement = scrollArea.children[elementIndex];
         if (itemElement) {
           let height = 0;
           while (itemElement !== null) {
@@ -131,8 +140,8 @@ export class ListItemsAccessoryService {
     }
   }
 
-  private static findScrollContainer(baseElement: ElementRef) {
-    let base = baseElement && baseElement.nativeElement;
+  private static findScrollContainer(baseElement: HTMLElement) {
+    let base = baseElement;
     let level = 0;
     while (level < 3 && !base.classList.contains('ps')) {
       base = base.parentElement;

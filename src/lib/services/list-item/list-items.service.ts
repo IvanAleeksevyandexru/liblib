@@ -5,6 +5,7 @@ import { LibTranslateService } from '../translate/translate.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Translation, LineBreak } from '../../models/common-enums';
 import { VirtualScrollComponent } from '../../components/virtual-scroll/virtual-scroll.component';
+import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { ListItem, ListElement, AutocompleteSuggestion, ListItemConverter } from '../../models/dropdown.model';
 import { ListItemHierarchyService } from './list-items.hierarchy';
 import { ListItemsAccessoryService } from './list-items.scroll';
@@ -193,7 +194,8 @@ export class ListItemsService implements OnInit, OnDestroy {
 
   public handleKeyboardNavigation(e: KeyboardEvent, items: Array<ListItem | AutocompleteSuggestion>,
                                   highlightedElement: ListItem | AutocompleteSuggestion,
-                                  scrollArea: ElementRef | VirtualScrollComponent): ListItem | AutocompleteSuggestion | boolean {
+                                  scrollArea: ElementRef | VirtualScrollComponent | PerfectScrollbarComponent)
+                                  : ListItem | AutocompleteSuggestion | boolean {
     return ListItemsAccessoryService.handleKeyboardNavigation(
       e, items, highlightedElement, (item: ListItem) => this.isHighlightable(item, true), scrollArea);
   }
@@ -204,7 +206,7 @@ export class ListItemsService implements OnInit, OnDestroy {
       source, highlighted, directionForward, (item: ListItem) => this.isHighlightable(item, true));
   }
 
-  public scrollTo(scrollArea: ElementRef | VirtualScrollComponent, elementIndex: number) {
+  public scrollTo(scrollArea: ElementRef | VirtualScrollComponent | PerfectScrollbarComponent, elementIndex: number) {
     ListItemsAccessoryService.scrollTo(scrollArea, elementIndex);
   }
 

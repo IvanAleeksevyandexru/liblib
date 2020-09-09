@@ -1,5 +1,5 @@
 import {
-  Component, forwardRef, Input, ViewChild, ElementRef, NgZone,
+  Component, forwardRef, Input, Output, EventEmitter, ViewChild, ElementRef, NgZone,
   ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit, OnDestroy } from '@angular/core';
 import {
   CdkVirtualScrollViewport, ScrollDispatcher, ViewportRuler,
@@ -25,6 +25,8 @@ export class VirtualScrollComponent implements AfterViewInit, OnDestroy {
   @Input() public itemSize: number;
   @Input() public scrollStrategy: VirtualScrollStrategy;
 
+  @Output() public scrollBottomReached = new EventEmitter();
+
   public scrollViewport: CdkVirtualScrollViewport;
   public inited = new Subject<boolean>();
   @ViewChild('scrollComponent') public scrollComponent: PerfectScrollbarComponent;
@@ -43,6 +45,14 @@ export class VirtualScrollComponent implements AfterViewInit, OnDestroy {
     this.scrollViewport._contentWrapper = this.contentWrapper;
     this.inited.next(true);
     this.scrollViewport.ngOnInit();
+    this.scrollViewport.elementScrolled().subscribe((scrollEvt) => {
+      const renderedOffset = this.scrollViewport.getOffsetToRenderedContentStart();
+      const scrollCnt = scrollEvt.target as HTMLElement;
+      const scrollArea = scrollCnt.children[0];
+      if (scrollArea.clientHeight && scrollCnt.scrollTop - renderedOffset + scrollCnt.clientHeight >= scrollArea.clientHeight) {
+        this.scrollBottomReached.emit();
+      }
+    });
   }
 
   public ngOnDestroy() {
