@@ -7,6 +7,17 @@ import { Subject, Observable, of } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { LineBreak } from '../../models/common-enums';
 
+const EVAL_HEIGHT_INDEX_INCREMENT = 100;
+const EVAL_HEIGHT_MEASURE_STYLES = {
+  display: 'block',
+  visibility: 'hidden',
+  position: 'absolute',
+  lineHeight: '24px',
+  fontSize: '16px',
+  fontFamily: 'Helvetica',
+  whiteSpace: 'wrap'
+};
+
 // статика для обработки скролла и клавиатурной навигации
 export class ListItemsAccessoryService {
 
@@ -100,36 +111,30 @@ export class ListItemsAccessoryService {
   }
 
   public static runBackgroundSizeEstimating(items: Array<ListItem | AutocompleteSuggestion>, containerWidth: number, ngZone: NgZone,
-                                            startIndex?: number, measureElement?: HTMLElement): Observable<number> {
+                                            params: { [key: string]: any }, startIndex?: number, measureElement?: HTMLElement)
+                                            : Observable<number> {
     const result = new Subject<number>();
     const index = startIndex || 0;
-    const nextIndexStop = Math.min(index + 100, items.length);
+    const nextIndexStop = Math.min(index + EVAL_HEIGHT_INDEX_INCREMENT, items.length);
     let measureContainer = measureElement;
     if (!measureContainer) {
       measureContainer = document.createElement('div');
-      Object.assign(measureContainer.style, {
-        display: 'block',
-        visibility: 'hidden',
-        position: 'absolute',
-        width: (containerWidth - 22) + 'px', // r+l padding
-        lineHeight: '24px',
-        fontSize: '16px',
-        fontFamily: 'Helvetica',
-        whiteSpace: 'wrap'
-      });
+      Object.assign(measureContainer.style, EVAL_HEIGHT_MEASURE_STYLES,
+        {width: (containerWidth - 22 - (params.multi ? 34 : 0)) + 'px'}); // r+l padding
       document.body.appendChild(measureContainer);
     }
     let totalHeight = 0;
     for (let i = index; i < nextIndexStop; i++) {
-      const itemEmpty = (items[i] as any).hidden || items[i].lineBreak === LineBreak.SELF;
       measureContainer.innerHTML = items[i] instanceof ListItem ? (items[i] as ListItem).listFormatted : items[i].text;
-      items[i].dimensions = {width: containerWidth, height: itemEmpty ? 0 : measureContainer.clientHeight + 12}; // t+b padding
-      totalHeight += items[i].dimensions.height;
+      const itemEmpty = (items[i] as any).hidden || items[i].lineBreak === LineBreak.SELF;
+      const height = itemEmpty ? 0 : measureContainer.clientHeight + 12; // t+b padding
+      items[i].dimensions = {width: containerWidth, height};
+      totalHeight += height;
     }
     if (items.length > nextIndexStop) {
       ngZone.runOutsideAngular(() => {
         setTimeout(() => {
-          const subResult = this.runBackgroundSizeEstimating(items, containerWidth, ngZone, nextIndexStop, measureContainer);
+          const subResult = this.runBackgroundSizeEstimating(items, containerWidth, ngZone, params, nextIndexStop, measureContainer);
           subResult.subscribe((furtherHeight) => result.next(totalHeight + furtherHeight));
         });
       });
@@ -154,13 +159,15 @@ export class ListItemsAccessoryService {
 // контроллер виртуального скролла для списочных элементов
 export class ListItemsVirtualScrollController implements VirtualScrollStrategy {
 
-  constructor(acquireRenderedData: () => Array<ListItem | AutocompleteSuggestion>) {
+  constructor(acquireRenderedData: () => Array<ListItem | AutocompleteSuggestion>, autoDetectViewHeight?: boolean) {
     this.acquireRenderedData = acquireRenderedData;
+    this.autoDetectViewHeight = autoDetectViewHeight;
   }
 
   private index$ = new Subject<number>();
   private viewport: CdkVirtualScrollViewport | null = null;
   private acquireRenderedData: () => Array<ListItem | AutocompleteSuggestion> = null;
+  private autoDetectViewHeight = false; // ок для статичных вью
 
   public scrolledIndexChange = this.index$.pipe(distinctUntilChanged());
 
@@ -216,7 +223,7 @@ export class ListItemsVirtualScrollController implements VirtualScrollStrategy {
   private updateRenderedRange() {
     const viewport = this.viewport;
     const offset = viewport.measureScrollOffset();
-    const viewportSize = 250; // высота фиксирована для выпадающих списков
+    const viewportSize = this.autoDetectViewHeight ? this.viewport.getViewportSize() : 250;
     const {start, end} = viewport.getRenderedRange();
     const dataLength = viewport.getDataLength();
     const newRange = {start, end};

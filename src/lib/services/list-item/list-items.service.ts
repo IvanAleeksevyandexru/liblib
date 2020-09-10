@@ -153,8 +153,8 @@ export class ListItemsService implements OnInit, OnDestroy {
     }));
   }
 
-  public evaluateItemsSizeAsync(items: Array<ListItem | AutocompleteSuggestion>, clientWidth: number): Observable<number> {
-    return ListItemsAccessoryService.runBackgroundSizeEstimating(items, clientWidth, this.ngZone);
+  public evaluateItemsSizeAsync(items: Array<ListItem | AutocompleteSuggestion>, clientWidth: number, params: {}): Observable<number> {
+    return ListItemsAccessoryService.runBackgroundSizeEstimating(items, clientWidth, this.ngZone, params);
   }
 
   // восстанавливает структуру дерева и недостающие элементы по item.groupId. меняет исходный массив!

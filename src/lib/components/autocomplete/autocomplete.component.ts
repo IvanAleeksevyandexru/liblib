@@ -320,7 +320,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
     }
     const done = callback ? callback : () => {};
     if (this.virtualScroll && this.valuesContainer) {
-      return this.listService.evaluateItemsSizeAsync(newSuggestions, this.valuesContainer.nativeElement.clientWidth).subscribe(() => {
+      return this.listService.evaluateItemsSizeAsync(newSuggestions, this.valuesContainer.nativeElement.clientWidth, {}).subscribe(() => {
         this.updateScrollHeight();
         done();
       });

@@ -323,13 +323,13 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   public evaluateItemsSizesIfNeeded() {
     if (this.virtualScroll && this.valuesContainer) {
       const width = this.valuesContainer.nativeElement.clientWidth;
-      this.listService.evaluateItemsSizeAsync(this.internalItems, width).subscribe(() => {
+      this.listService.evaluateItemsSizeAsync(this.internalItems, width, {multi: this.multi}).subscribe(() => {
         this.updateScrollHeight();
       });
     }
   }
 
-  public updateScrollHeight(preservedScrollPos?: number) {
+  public updateScrollHeight() {
     if (this.virtualScroll && this.virtualScrollComponent) {
       const items = this.internalDisplayed || this.internalItems || [];
       const totalContentSize = items.reduce((acc, item) => acc + item.getItemHeight(), 0);

@@ -548,7 +548,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
         this.changeDetector.detectChanges();
       };
       if (this.virtualScroll && this.fieldContainer && refreshHeight) {
-        this.listService.evaluateItemsSizeAsync(formattedItems, this.fieldContainer.nativeElement.clientWidth).subscribe(done);
+        this.listService.evaluateItemsSizeAsync(formattedItems, this.fieldContainer.nativeElement.clientWidth, {}).subscribe(done);
       } else {
         done();
       }
