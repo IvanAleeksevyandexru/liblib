@@ -13,6 +13,7 @@
       [clearable]="clearable"
       [showMagnifyingGlass]="false"
       [searchOnFocus]="true"
+      [moveFocusToEnd]="true"
       [queryMinSymbolsCount]="queryMinSymbolsCount"
       [(ngModel)]="query"
       (focus)="handleFocus()"
@@ -35,7 +36,7 @@
         <span class="link-plain">{{specifyTitle ? (specifyTitle | appTranslate) : ('DADATA.SPECIFY' | libTranslate)}}</span>
       </a>
     </div>
-    <div *ngIf="!(isOpenedFields | async) && (widgetItemsVisibility.houseCb || widgetItemsVisibility.apartmentCb)" class="mt-32 checkbox-widget">
+    <div *ngIf="!disabled && !(isOpenedFields | async) && (widgetItemsVisibility.houseCb || widgetItemsVisibility.apartmentCb)" class="mt-32 checkbox-widget">
       <div [hidden]="hideHouseCheckbox || !widgetItemsVisibility.houseCb" class="house-checkbox">
         <lib-checkbox [tabIndex]="2" [labelText]="'DADATA.NO_HOUSE' | libTranslate" formControlName="houseCheckboxClosed"></lib-checkbox>
       </div>

@@ -392,7 +392,6 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   }
 
   public handleFocus() {
-    this.putCursorAtEnd();
     this.focus.emit();
   }
 
@@ -402,7 +401,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public ngAfterViewInit() {
     this.query$.pipe(
-      debounceTime(700),
+      debounceTime(1000),
       distinctUntilChanged(),
       takeUntil(this.destroyed$)
     ).subscribe(value => {
@@ -428,8 +427,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     if (input.setSelectionRange) {
       const len = input.value.length * 2;
       setTimeout(() => {
+        input.focus();
         input.setSelectionRange(len, len);
-      }, 1)
+      }, 1000)
     } else {
       input.value = input.value;
     }
