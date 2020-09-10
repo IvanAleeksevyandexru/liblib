@@ -170,11 +170,16 @@ export class AutocompleteSuggestion {
   public lineBreak: LineBreak | string = null;
   public highlightText: string;
   public highlightedAll: boolean;
+  public dimensions = null;
   public originalItem: any;
 
   public prepareHighlighting(query: string, caseSensitive = false, fromStartOnly = false) {
     this.highlightText = HelperService.highlightSubstring(this.text, query, caseSensitive, fromStartOnly);
     this.highlightedAll = HelperService.isAllHighlighted(this.highlightText, this.text);
+  }
+
+  public getItemHeight() {
+    return this.dimensions === null ? ITEM_DEFAULT_HEIGHT : this.dimensions.height;
   }
 }
 

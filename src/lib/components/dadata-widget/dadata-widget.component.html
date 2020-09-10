@@ -20,7 +20,7 @@
       (autocompleted)="normalizeFullAddress(query, false)"
       (input)="updateCanOpenFields($event.target.value)"
       (cleared)="onClearHandler()"
-      [autocompleteSuggestionProvider]="dadataService">
+      [suggestionsProvider]="dadataService">
           <!--inside dropdown additional content customized-->
           <div class="dadata-additional-item">
             <div class="title">{{'DADATA.NO_FIND_OPTION' | libTranslate}}</div>

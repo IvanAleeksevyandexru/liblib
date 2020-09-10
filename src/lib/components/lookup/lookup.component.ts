@@ -315,7 +315,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   }
 
   public getRenderedItems() {
-    return this.items;
+    return this.items || [];
   }
 
   public loadNextPartial() {

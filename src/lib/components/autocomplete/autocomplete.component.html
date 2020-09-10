@@ -36,26 +36,20 @@
     <div class="lookup-context-positioning" #dropdownList [class.context-positioned]="contextMenuPosition">
       <div class="lookup-context-shift">{{query}}</div>
       <div class="lookup-list-container" [ngClass]="{hidden: !expanded}" [class.incremental-loading]="partialsLoading" libStopScreenScroll>
-        <perfect-scrollbar #scrollComponent [config]="{suppressScrollX: true, wheelPropagation: false}" (psYReachEnd)="loadNextPartial()">
-          <div *ngFor="let suggestion of suggestions" class="lookup-item" 
-               (click)="selectSuggestion(suggestion)" (mouseenter)="highlight(suggestion)" (mouseleave)="highlight(null)"
-               [ngClass]="{
-                highlighted: suggestion === highlighted,
-                'unselectable': suggestion.unselectable,
-                'line-before': suggestion.lineBreak === LineBreak.BEFORE || suggestion.lineBreak === LineBreak.BOTH,
-                'line-after': suggestion.lineBreak === LineBreak.AFTER || suggestion.lineBreak === LineBreak.BOTH,
-                'separator': suggestion.lineBreak === LineBreak.SELF}">
-            <div class="structure-container">
-              <div *ngIf="highlightSubstring || truncateSubstring" class="item-container" [ngClass]="{truncated: truncateSubstring && !suggestion.highlightedAll}">
-                <span class="lookup-item-text" [innerHTML]="suggestion.highlightText"></span>
-              </div>
-              <div *ngIf="!highlightSubstring && !truncateSubstring"class="item-container">
-                <span class="lookup-item-text" *ngIf="!escapeHtml" [innerHTML]="suggestion.text"></span>
-                <span class="lookup-item-text" *ngIf="escapeHtml">{{suggestion.text}}</span>
-              </div>
-            </div>
-          </div>
+        <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll" 
+            [config]="{suppressScrollX: true, wheelPropagation: false}"
+            (psYReachEnd)="loadNextPartial()">
+          <ng-container *ngFor="let suggestion of suggestions">
+            <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{suggestion: suggestion}"></ng-container>
+          </ng-container>
         </perfect-scrollbar>
+        <lib-virtual-scroll #virtualScroll *ngIf="virtualScroll"
+            [scrollStrategy]="virtualScrollController"
+            (scrollBottomReached)="loadNextPartial()">
+          <ng-container *libVirtualFor="let suggestion of suggestions">
+            <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{suggestion: suggestion}"></ng-container>
+          </ng-container>
+        </lib-virtual-scroll>
         <div class="incremental-loading-icon" *ngIf="partialsLoading"><lib-loader size="small"></lib-loader></div>
         <div *ngIf="showNotFound && !suggestions.length" class="lookup-list-area">
           <div class="lookup-item nothing-found" (click)="closeDropdown(); returnFocus(); ">
@@ -71,3 +65,23 @@
     </div>
   </div>
 </div>
+<ng-template #singleItem let-suggestion="suggestion">
+  <div class="lookup-item" 
+       (click)="selectSuggestion(suggestion)" (mouseenter)="highlight(suggestion)" (mouseleave)="highlight(null)"
+       [class.highlighted]="suggestion === highlighted"
+       [class.unselectable]="suggestion.unselectable"
+       [class.line-before]="suggestion.lineBreak === LineBreak.BEFORE || suggestion.lineBreak === LineBreak.BOTH"
+       [class.line-after]="suggestion.lineBreak === LineBreak.AFTER || suggestion.lineBreak === LineBreak.BOTH"
+       [class.separator]="suggestion.lineBreak === LineBreak.SELF">
+    <div class="structure-container">
+      <div *ngIf="highlightSubstring || truncateSubstring" class="item-container" [class.truncated]="truncateSubstring && !suggestion.highlightedAll">
+        <span class="lookup-item-text" [innerHTML]="suggestion.highlightText"></span>
+      </div>
+      <div *ngIf="!highlightSubstring && !truncateSubstring"class="item-container">
+        <span class="lookup-item-text" *ngIf="!escapeHtml" [innerHTML]="suggestion.text"></span>
+        <span class="lookup-item-text" *ngIf="escapeHtml">{{suggestion.text}}</span>
+      </div>
+    </div>
+  </div>
+</ng-template>
+

@@ -153,7 +153,7 @@ export class ListItemsService implements OnInit, OnDestroy {
     }));
   }
 
-  public evaluateItemsSizeAsync(items: Array<ListItem>, clientWidth: number): Observable<number> {
+  public evaluateItemsSizeAsync(items: Array<ListItem | AutocompleteSuggestion>, clientWidth: number): Observable<number> {
     return ListItemsAccessoryService.runBackgroundSizeEstimating(items, clientWidth, this.ngZone);
   }
 

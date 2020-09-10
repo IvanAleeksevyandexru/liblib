@@ -99,7 +99,7 @@ export class ListItemsAccessoryService {
     }
   }
 
-  public static runBackgroundSizeEstimating(items: Array<ListItem>, containerWidth: number, ngZone: NgZone,
+  public static runBackgroundSizeEstimating(items: Array<ListItem | AutocompleteSuggestion>, containerWidth: number, ngZone: NgZone,
                                             startIndex?: number, measureElement?: HTMLElement): Observable<number> {
     const result = new Subject<number>();
     const index = startIndex || 0;
@@ -121,8 +121,8 @@ export class ListItemsAccessoryService {
     }
     let totalHeight = 0;
     for (let i = index; i < nextIndexStop; i++) {
-      const itemEmpty = items[i].hidden || items[i].lineBreak === LineBreak.SELF;
-      measureContainer.innerHTML = items[i].listFormatted;
+      const itemEmpty = (items[i] as any).hidden || items[i].lineBreak === LineBreak.SELF;
+      measureContainer.innerHTML = items[i] instanceof ListItem ? (items[i] as ListItem).listFormatted : items[i].text;
       items[i].dimensions = {width: containerWidth, height: itemEmpty ? 0 : measureContainer.clientHeight + 12}; // t+b padding
       totalHeight += items[i].dimensions.height;
     }
@@ -154,13 +154,13 @@ export class ListItemsAccessoryService {
 // контроллер виртуального скролла для списочных элементов
 export class ListItemsVirtualScrollController implements VirtualScrollStrategy {
 
-  constructor(acquireRenderedData: () => Array<ListItem>) {
+  constructor(acquireRenderedData: () => Array<ListItem | AutocompleteSuggestion>) {
     this.acquireRenderedData = acquireRenderedData;
   }
 
   private index$ = new Subject<number>();
   private viewport: CdkVirtualScrollViewport | null = null;
-  private acquireRenderedData: () => Array<ListItem> = null;
+  private acquireRenderedData: () => Array<ListItem | AutocompleteSuggestion> = null;
 
   public scrolledIndexChange = this.index$.pipe(distinctUntilChanged());
 
