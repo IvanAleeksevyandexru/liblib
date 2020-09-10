@@ -24,6 +24,9 @@ export class MenuComponent implements OnInit, AfterViewInit {
 
   @Input() public userCounter: CounterData;
   @Input() public showLinks = true;
+  @Input() public newView: boolean;
+  @Input() public background: string;
+  @Input() public showBorder = false;
 
   public categories: Category[] = [];
   public links: MenuLink[] = [];
@@ -35,6 +38,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
   public user: any;
   public isFixed = false;
   public showMenuBtns = this.loadService.config.showMenuBtns;
+  public isMainPage = this.checkMainPage();
 
   @ViewChild('menu') public menu;
 
@@ -42,11 +46,13 @@ export class MenuComponent implements OnInit, AfterViewInit {
     if (window.pageYOffset > this.menuOffset + this.menu.nativeElement.clientHeight && !this.userMenuState.isMobileView) {
       if (!this.menu.nativeElement.classList.contains('fixed') || !document.body.classList.contains('menu-fixed')) {
         this.menu.nativeElement.classList.add('fixed');
+        this.menu.nativeElement.classList.remove('white-field');
         document.body.classList.add('menu-fixed');
       }
       this.isFixed = true;
     } else {
       this.menu.nativeElement.classList.remove('fixed');
+      this.menu.nativeElement.classList.add('white-field');
       document.body.classList.remove('menu-fixed');
       this.isFixed = false;
     }
@@ -140,6 +146,10 @@ export class MenuComponent implements OnInit, AfterViewInit {
       event.stopPropagation();
       event.preventDefault();
       this.router.navigate([url]);
+    } else {
+      event.stopPropagation();
+      event.preventDefault();
+      location.href = url;
     }
   }
 
@@ -147,6 +157,10 @@ export class MenuComponent implements OnInit, AfterViewInit {
     this.modalService.popupInject(LangWarnModalComponent, this.moduleRef, {
       url, isAbs
     });
+  }
+
+  private checkMainPage() {
+    return location.pathname === '/';
   }
 
 }

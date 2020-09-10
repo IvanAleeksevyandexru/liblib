@@ -21,7 +21,7 @@ export interface PersonData {
   error?: string;
   id?: string;
   kids?: Kid[];
-  orgs?: Org[];
+  org?: Org;
   person?: Person;
   registration?: Registration;
   roles?: Role[];
@@ -100,7 +100,9 @@ export interface User {
   activeLegalRoleCount?: string;
   assuranceLevel?: string;
   authToken?: string;
+  autorityId?: string;
   birthDate?: string;
+  branchOid?: string;
   email?: string;
   emailVerified?: boolean;
   firstName?: string;

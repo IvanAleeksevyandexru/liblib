@@ -1,6 +1,7 @@
 {
   "HEADER": {
     "PERSONAL_AREA": "Личный кабинет",
+    "LOGIN_LINK": "Войти",
     "EXIT": "Выйти",
     "ALL_ROLES": "Все мои роли",
     "MENU": {
@@ -164,6 +165,7 @@
     "CANCEL_QUIZ": "Закрыть"
   },
   "FEEDS": {
+    "EVENTS_ALL" : "Все события",
     "VIEW_ALL": "Показать все",
     "EMPTY": {
       "EQUEUE": {
@@ -264,7 +266,7 @@
     "CLOSE": "Закрыть",
     "CLEAR": "Скрыть все"
   },
-  "INFORMER_MAIN": {
+  "INFORMER": {
     "ERROR": {
       "TITLE": "Узнайте свои задолженности",
       "BUTTON": "Перейти"
@@ -280,6 +282,10 @@
     "DEBT": {
       "TO_PAY": "К оплате",
       "BUTTON": "Подробнее"
+    },
+    "NO_RIGHTS": {
+      "TITLE": "Недостаточно прав для просмотра начислений",
+      "BUTTON": "О ролях в системе"
     }
   },
   "VALIDATION": {

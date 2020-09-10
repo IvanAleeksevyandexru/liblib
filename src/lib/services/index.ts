@@ -16,6 +16,7 @@ export * from './gosbar/gosbar.service';
 export * from './health/health.service';
 export * from './helper/helper.service';
 export * from './ipsh/ipsh.service';
+export * from './knd/knd.service';
 export * from './dates-helper/dates-helper.service';
 export * from './validation-helper/validation.helper';
 export * from './load/load.service';

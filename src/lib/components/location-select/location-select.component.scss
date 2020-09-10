@@ -1,0 +1,23 @@
+.location-select {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  .pin {
+    background: url('../../../assets/svg/location-pin.svg') 0 0 no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+    width: 10px;
+    height: 15px;
+    margin-right: 8px;
+  }
+
+  .text {
+    font: 16px/24px Lato, Arial, sans-serif;
+    color: #0D4CD3;
+
+    &:hover {
+      color: #0B40B3;
+    }
+  }
+}

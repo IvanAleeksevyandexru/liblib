@@ -1,7 +1,7 @@
 import { Component, Input, Output, OnInit, OnChanges, SimpleChanges, ViewChild,
   ElementRef, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { MonthYear } from '../../models/date-time.model';
-import * as moment_ from 'moment';
+import * as moment_ from 'moment/min/moment.min.js';
 const moment = moment_;
 
 @Component({

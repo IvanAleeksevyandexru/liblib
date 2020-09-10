@@ -9,7 +9,7 @@ import { ListItemsService } from '../../services/list-item/list-items.service';
 import { DatesHelperService } from '../../services/dates-helper/dates-helper.service';
 import { Translation } from '../../models/common-enums';
 import { Width } from '../../models/width-height';
-import * as moment_ from 'moment';
+import * as moment_ from 'moment/min/moment.min.js';
 const moment = moment_;
 
 const STD_DATE_FORMAT = 'DD.MM.YYYY';

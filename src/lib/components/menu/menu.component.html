@@ -1,4 +1,4 @@
-<div #menu class="menu" [ngClass]="{'show-categories': showCategories}">
+<div *ngIf="!newView" #menu class="menu" [ngClass]="{'show-categories': showCategories}">
   <div class="inner container grid-row-lg flex-container align-items-center">
     <div class="col-lg-2 logo-wrapper">
       <lib-logo></lib-logo>
@@ -57,5 +57,42 @@
         <lib-button color="white" size="lg" (click)="showCategories = false;">{{'HEADER.CATALOG.CLOSE' | libTranslate}}</lib-button>
       </div>
     </div>
+  </div>
+</div>
+
+<div *ngIf="newView" #menu class="main-menu"
+     [ngStyle]="{background: background}"
+     [ngClass]="{'main-page': isMainPage, 'bottom-border': showBorder}">
+  <div class="inner container flex-container align-items-center">
+    <div class="flex-container align-items-center">
+      <div class="logo-wrapper">
+        <lib-logo></lib-logo>
+      </div>
+
+      <div class="links-wrapper align-items-center flex-container hide show-lg">
+        <ul class="links hide flex-container-lg">
+          <li class="item" *ngFor="let link of links">
+            <a (click)="redirect($event, link.url)"
+               [href]="link.url">{{link.title | appTranslate}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="align-items-center flex-container menu-content">
+      <lib-login *ngIf="!user.authorized" [onlyIcon]="true" class="hide-lg"></lib-login>
+      <!--div *ngIf="user.authorized" class="notification-wrapper hide-lg"></div-->
+      <div class="user-menu-wrapper hide-lg">
+        <a class="open-mobile-menu"
+           (click)="showUserMenu(true)">
+          <lib-counter class="counter-circle" [counter]="userCounter"></lib-counter>
+        </a>
+        <lib-user-menu [state]="userMenuState"></lib-user-menu>
+      </div>
+      <div class="search-wrapper">
+        <lib-search-sputnik [ngStyle]="{background: background}" class="open-search" [hideToIcon]="true"></lib-search-sputnik>
+      </div>
+    </div>
+
   </div>
 </div>

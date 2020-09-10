@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { LoadService } from '../load/load.service';
 import { FeedModel, FeedsParams } from '../../models/feed';
-import * as moment_ from 'moment';
+import * as moment_ from 'moment/min/moment.min.js';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 

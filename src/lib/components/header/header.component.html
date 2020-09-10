@@ -1,0 +1,51 @@
+<div class="header hide show-lg">
+  <div class="inner container grid-row-lg flex-container align-items-center">
+    <div class="col-lg-2">
+      <lib-location-select></lib-location-select>
+    </div>
+    <div class="col-lg-10 flex-container align-items-center"
+          [ngClass]="{
+            'justify-between': !user.authorized,
+            'justify-end': user.authorized
+          }">
+
+      <div *ngIf="!user.authorized" class="flex-container align-items-center justify-between">
+        <div *ngFor="let role of userRoles; let first = first">
+          <a class="link-plain" (click)="updateRole(role.code)"
+             [ngClass]="{
+              'text-plain': (role.code === activeRoleCode),
+              'link-plain': (role.code !== activeRoleCode),
+              'ml-40': !first
+             }"
+             [href]="role.url">{{role.name}}</a>
+        </div>
+      </div>
+      <div class="user-menu-wrapper">
+        <div *ngIf="user.authorized"
+             class="notifications">
+
+          <a class="bell"
+             [class.unread]="isUnread"
+             (click)="this.showNotifications = !this.showNotifications;"
+             [title]="isUnread ? 'У вас есть непрочитанные уведомления' : 'У вас нет непрочитанных уведомлений'"></a>
+
+          <div *ngIf="showNotifications" class="notifications-list">
+            <a class="close" (click)="this.showNotifications = !this.showNotifications;"></a>
+            <h6 class="title-h6">Последние события</h6>
+             <lib-feeds
+                page="header"
+                [count]="6"
+                types="ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE"
+              ></lib-feeds>
+          </div>
+        </div>
+        <div class="login-wrapper" (click)="showUserMenu(false)">
+          <div class="login flex-container justify-end overflow-container">
+            <lib-login></lib-login>
+          </div>
+        </div>
+        <lib-user-menu [state]="userMenuState"></lib-user-menu>
+      </div>
+    </div>
+  </div>
+</div>
