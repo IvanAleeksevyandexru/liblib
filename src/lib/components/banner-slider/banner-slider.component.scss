@@ -1,3 +1,89 @@
+@mixin arrows {
+  .sliders-controls {
+    .banners-paging {
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      .prev-banner, .next-banner {
+        position: absolute;
+        width: 48px;
+        height: 48px;
+        cursor: pointer;
+        border-radius: 50%;
+        background-color: #fff;
+
+        &:hover {
+          box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        div {
+          background: url("../../../assets/svg/banner-arrow.svg") 16px 18px no-repeat;
+          background-size: 16px 12px;
+          width: 48px;
+          height: 48px;
+        }
+      }
+
+      .prev-banner {
+        div {
+          &:hover {
+            animation: arrowAnimationLeft 1.2s linear infinite alternate-reverse;
+          }
+        }
+      }
+
+      .next-banner {
+        div {
+          transform: rotate(180deg);
+
+          &:hover {
+            animation: arrowAnimationRight 1.2s linear infinite alternate-reverse;
+          }
+        }
+      }
+
+      @keyframes arrowAnimationLeft {
+        0% {
+          transition: margin-left 0.1s ease-in;
+          margin-left: -2px;
+        }
+        20% {
+          transition: margin-left 0.1s ease-in;
+          margin-left: 0px;
+        }
+        100% {
+          transition: margin-left 1s ease-in;
+          margin-left: 0px;
+        }
+      }
+
+      @keyframes arrowAnimationRight {
+        0% {
+          transition: margin-left 0.1s ease-in;
+          margin-left: 2px;
+        }
+        20% {
+          transition: margin-left 0.1s ease-in;
+          margin-left: 0px;
+        }
+        100% {
+          transition: margin-left 1s ease-in;
+          margin-left: 0px;
+        }
+      }
+    }
+
+    &.right {
+      .banners-paging {
+        justify-content: flex-start;
+      }
+    }
+  }
+}
+
 .banner-group-container {
   position: relative;
   display: block;
@@ -121,6 +207,11 @@
       justify-content: left;
       margin-left: 17px;
     }
+
+    &.after-image {
+      justify-content: left;
+      margin-left: 17px;
+    }
   }
 
   .close-banner-group {
@@ -141,6 +232,20 @@
 
 @media all and (max-width: 767px) {
   .banner-group-container {
+    &.visible-arrow {
+      .banners-feed-container {
+        width: calc(100% - 34px);
+        overflow: visible;
+        margin: auto;
+        .banners-feed {
+          .banner-wrapper {
+            padding-left: 4px;
+            padding-right: 4px;
+          }
+        }
+      }
+    }
+
     .bullet-container {
       &.top, &.right {
         position: absolute;
@@ -159,6 +264,29 @@
 
 @media all and (min-width: 768px) {
   .banner-group-container {
+    &.visible-arrow {
+      @include arrows;
+
+      .sliders-controls {
+        width: 64px;
+        .next-banner {
+          right: 8px;
+        }
+        .prev-banner {
+          left: 8px;
+        }
+      }
+
+      .banners-feed-container {
+        width: calc(100% - 128px);
+      }
+    }
+
+    .sliders-controls {
+      position: static;
+      height: inherit;
+    }
+
     .bullet-container {
       &.after-image {
         margin-left: 124px;
@@ -181,7 +309,6 @@
 
 @media all and (min-width: 1140px) {
   .banner-group-container {
-    display: flex;
 
     .banners-feed-container {
       max-width: 1216px;
@@ -196,89 +323,24 @@
       height: inherit;
     }
 
-    &:hover {
+    &.hover-arrow:hover {
+      @include arrows;
+    }
+
+    &.visible-arrow {
       .sliders-controls {
-        .banners-paging {
-          position: relative;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-
-          .prev-banner, .next-banner {
-            position: absolute;
-            width: 48px;
-            height: 48px;
-            cursor: pointer;
-            border-radius: 50%;
-            background-color: #fff;
-
-            &:hover {
-              box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
-            }
-
-            div {
-              background: url("../../../assets/svg/banner-arrow.svg") 16px 18px no-repeat;
-              background-size: 16px 12px;
-              width: 48px;
-              height: 48px;
-            }
-          }
-
-          .prev-banner {
-            div {
-              &:hover {
-                animation: arrowAnimationLeft 1.2s linear infinite alternate-reverse;
-              }
-            }
-          }
-
-          .next-banner {
-            div {
-              transform: rotate(180deg);
-
-              &:hover {
-                animation: arrowAnimationRight 1.2s linear infinite alternate-reverse;
-              }
-            }
-          }
-
-          @keyframes arrowAnimationLeft {
-            0% {
-              transition: margin-left 0.1s ease-in;
-              margin-left: -2px;
-            }
-            20% {
-              transition: margin-left 0.1s ease-in;
-              margin-left: 0px;
-            }
-            100% {
-              transition: margin-left 1s ease-in;
-              margin-left: 0px;
-            }
-          }
-
-          @keyframes arrowAnimationRight {
-            0% {
-              transition: margin-left 0.1s ease-in;
-              margin-left: 2px;
-            }
-            20% {
-              transition: margin-left 0.1s ease-in;
-              margin-left: 0px;
-            }
-            100% {
-              transition: margin-left 1s ease-in;
-              margin-left: 0px;
-            }
-          }
+        .next-banner {
+          margin-left: 32px;
+          right: auto;
         }
-
-        &.right {
-          .banners-paging {
-            justify-content: flex-start;
-          }
+        .prev-banner {
+          margin-right: 32px;
+          left: auto;
         }
+      }
+
+      .banners-feed-container {
+        margin: 0;
       }
     }
   }
