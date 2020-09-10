@@ -1,10 +1,15 @@
 <div class="banner-group-container flex-row-lg justify-center-lg"
-     [ngClass]="[path, closed ? 'hidden' : '', noBorder ? 'no-border' : '', noBorderRadius ? 'no-border-radius' : '', closeDisplay ? 'closable-group' : '']"
+     [ngClass]="[path,
+                closed ? 'hidden' : '',
+                noBorder ? 'no-border' : '',
+                noBorderRadius ? 'no-border-radius' : '',
+                closeDisplay ? 'closable-group' : '',
+                showAlwaysArrow ? 'visible-arrow' : 'hover-arrow']"
      [style.height.px]="fixedHeight ? fixedHeight : ''"
      [style.backgroundColor]="backgroundColor ? backgroundColor : ''"
      [style.borderColor]="borderColor && !noBorder ? borderColor : ''"
      [ngStyle]="backgroundImage ? {'background': backgroundImage} : {}">
-  <div class="flex-container-lg flex-row-lg slides-wrapper">
+  <div class="flex-container-md flex-row-md justify-center-md slides-wrapper">
     <div *ngIf="showArrowBtn && bannerList?.length > 1" class="sliders-controls flex-1-lg">
       <div class="banners-paging">
         <a class="prev-banner" (click)="prevBanner(true)"><div></div></a>

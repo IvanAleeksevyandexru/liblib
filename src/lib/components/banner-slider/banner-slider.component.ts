@@ -33,6 +33,7 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
   @Input() public bullBtnPosition: string;
   @Input() public navBtnStyle: string;
   @Input() public needContainer = true;
+  @Input() public showAlwaysArrow = false;
 
   public activeBanner: Banner = null; // центральный баннер
   public get activeBannerTracable() {
@@ -99,7 +100,7 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
         this.cancelSlideShow();
       }, dragRelease: (dragState: DragState) => {
         this.offset = dragState.offset;
-        this.activeBannerTracable = this.bannersFeedList[dragState.active];
+        this.activeBannerTracable = this.bannersFeedList[--dragState.active];
       }, dragEnd: (dragState: DragState) => {
         this.offset = dragState.offset;
         this.rebuildBannersFeedAccordingToActiveBanner();

@@ -7,6 +7,15 @@
     .mb#{$prefix}-#{$i * 4} {
       margin-bottom: #{$i * 4}px;
     }
+
+    .ml#{$prefix}-#{$i * 4} {
+      margin-left: #{$i * 4}px;
+    }
+
+    .mr#{$prefix}-#{$i * 4} {
+      margin-right: #{$i * 4}px;
+    }
+
   }
 }
 
