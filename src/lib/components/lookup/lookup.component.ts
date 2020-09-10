@@ -145,13 +145,11 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   public suggested: ListItem;
   public suggestionJustSelected = false;
   public virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems.bind(this));
-  public VirtualScrollMinCount = ConstantsService.VIRTUAL_SCROLL_MIN_ITEMS_COUNT;
   public LineBreak = LineBreak;
   private insureSearchActiveToken = 0;
   // компонент может работать на заданном фиксированном списке значений или не внешнем поиске
   public fixedItemsProvider = new FixedItemsProvider();
 
-  @ViewChild('scrollableArea') private scrollableArea: ElementRef;
   @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
   @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
   @ViewChild('searchBar', {static: false}) private searchBar: SearchBarComponent;
@@ -334,7 +332,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     const config = this.createSearchConfiguration(queryOrMarker === SHOW_ALL_MARKER);
     const query = queryOrMarker === SHOW_ALL_MARKER ? '' : queryOrMarker as string;
     let promiseOrObservable = null;
-    if (this.incrementalLoading && !this.virtualScroll) {
+    if (this.incrementalLoading) {
       promiseOrObservable = (provider as LookupPartialProvider).searchPartial(query, this.partialPageNumber, config);
     } else {
       promiseOrObservable = (provider as LookupProvider).search(query, config);
@@ -369,9 +367,9 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   // все что prepareItems + запись в список отображения
   public processNewItems(rootSearch: boolean, items: Array<any>) {
     this.prepareItems(items, this.items.length, this.activeQuery, false, !!this.itemsProvider, (newItems: Array<ListItem>) => {
-      if (this.incrementalLoading && !this.virtualScroll) {
+      if (this.incrementalLoading) {
         if (newItems.length) {
-          this.items = this.items.concat(newItems);
+          this.items = rootSearch ? newItems : this.items.concat(newItems);
           this.partialPageNumber++;
         } else {
           this.partialsLoaded = true;
@@ -438,7 +436,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
       this.closeDropdown();
     } else if (this.expanded) { // стрелки
       const navResult = this.listService.handleKeyboardNavigation(
-        e, this.items, this.highlighted, this.virtualScrollComponent || this.scrollableArea);
+        e, this.items, this.highlighted, this.virtualScrollComponent || this.scrollComponent);
       if (navResult && navResult !== true) {
         this.highlighted = navResult as ListItem;
       }

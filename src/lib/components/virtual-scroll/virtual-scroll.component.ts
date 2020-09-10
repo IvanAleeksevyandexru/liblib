@@ -5,7 +5,7 @@ import {
   CdkVirtualScrollViewport, ScrollDispatcher, ViewportRuler,
   FixedSizeVirtualScrollStrategy, VirtualScrollStrategy } from '@angular/cdk/scrolling';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'lib-virtual-scroll',
@@ -29,6 +29,7 @@ export class VirtualScrollComponent implements AfterViewInit, OnDestroy {
 
   public scrollViewport: CdkVirtualScrollViewport;
   public inited = new Subject<boolean>();
+  public bottomReachedSubscription: Subscription;
   @ViewChild('scrollComponent') public scrollComponent: PerfectScrollbarComponent;
   @ViewChild('contentWrapper') public contentWrapper: ElementRef;
 
@@ -45,7 +46,7 @@ export class VirtualScrollComponent implements AfterViewInit, OnDestroy {
     this.scrollViewport._contentWrapper = this.contentWrapper;
     this.inited.next(true);
     this.scrollViewport.ngOnInit();
-    this.scrollViewport.elementScrolled().subscribe((scrollEvt) => {
+    this.bottomReachedSubscription = this.scrollViewport.elementScrolled().subscribe((scrollEvt) => {
       const renderedOffset = this.scrollViewport.getOffsetToRenderedContentStart();
       const scrollCnt = scrollEvt.target as HTMLElement;
       const scrollArea = scrollCnt.children[0];
@@ -56,6 +57,7 @@ export class VirtualScrollComponent implements AfterViewInit, OnDestroy {
   }
 
   public ngOnDestroy() {
+    this.bottomReachedSubscription.unsubscribe();
     this.scrollViewport.ngOnDestroy();
   }
 

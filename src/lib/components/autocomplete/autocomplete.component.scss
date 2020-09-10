@@ -80,22 +80,12 @@
         }
       }
     }
-    &.virtual-scroll {
-      ::ng-deep .ps {
-        height: 250px;
+    &.incremental-loading {
+      .lookup-item:last .item-container {
+        padding-right: 45px;
       }
     }
     
-    .lookup-list-area {
-      width: auto;
-      height: auto;
-      &.incremental-loading {
-        .lookup-item:last .item-container {
-          padding-right: 45px;
-        }
-      }
-    }
-
     .lookup-item {
       display: block;
       width: auto;

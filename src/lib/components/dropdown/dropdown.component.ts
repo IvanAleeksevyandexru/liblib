@@ -109,7 +109,6 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   public control?: AbstractControl;
   public filteringQuery = '';
   public virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems.bind(this));
-  public VirtualScrollMinCount = ConstantsService.VIRTUAL_SCROLL_MIN_ITEMS_COUNT;
   public LineBreak = LineBreak;
 
   // приведенный к [ListItem] входящий список итемов +форматирование
@@ -150,16 +149,9 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     if (this.destroyed) {
       return;
     }
-    for (const propName of Object.keys(changes)) {
-      switch (propName) {
-        case 'formatter':
-        case 'listFormatter':
-        case 'translation':
-        case 'converter':
-        case 'items': {
-          this.update();
-        }
-      }
+    const updateKeys = ['formatter', 'listFormatter', 'translation', 'converter', 'items'];
+    if (Object.keys(changes).some((changedKey) => updateKeys.includes(changedKey))) {
+      this.update();
     }
     this.check();
   }

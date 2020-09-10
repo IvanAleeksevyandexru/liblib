@@ -45,25 +45,22 @@
     <div class="expand-collapse" *ngIf="showExpandCollapse" [ngClass]="{expanded: expanded}" (click)="lookupItemsOrClose(true)"></div>
   </div>
   <div class="lookup-list-wrapper">
-    <div class="lookup-context-positioning" #lookupList [ngClass]="{'context-positioned': contextMenuPosition}">
+    <div class="lookup-context-positioning" #lookupList [class.context-positioned]="contextMenuPosition">
       <div class="lookup-context-shift">{{query}}</div>
       <div class="lookup-list-container"
           [class.expanded]="expanded"
           [class.hidden]="!expanded"
-          [class.virtual-scroll]="virtualScroll && items.length >= VirtualScrollMinCount">
-        <perfect-scrollbar #scrollComponent 
+          [class.incremental-loading]="partialsLoading">
+        <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll" 
             [config]="{suppressScrollX: true, wheelPropagation: false}"
-            (psYReachEnd)="loadNextPartial()"
-            *ngIf="!virtualScroll || items.length < VirtualScrollMinCount">
-          <div class="lookup-list-area" #scrollableArea [class.incremental-loading]="partialsLoading">
-            <ng-container *ngFor="let item of items">
-              <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
-            </ng-container>
-          </div>
+            (psYReachEnd)="loadNextPartial()">
+          <ng-container *ngFor="let item of items">
+            <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
+          </ng-container>
         </perfect-scrollbar>
-        <lib-virtual-scroll #virtualScroll 
-            *ngIf="virtualScroll && items.length >= VirtualScrollMinCount"
-            [scrollStrategy]="virtualScrollController">
+        <lib-virtual-scroll #virtualScroll *ngIf="virtualScroll"
+            [scrollStrategy]="virtualScrollController"
+            (scrollBottomReached)="loadNextPartial()">
           <ng-container *libVirtualFor="let item of items">
             <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
           </ng-container>
