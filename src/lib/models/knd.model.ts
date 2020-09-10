@@ -1,12 +1,8 @@
 export interface KndInterface {
-  totalCurrent: number;
-  totalUpcoming: number;
-  totalLast: number;
+  totalCurrent?: number;  // текущие
+  totalUpcoming?: number; // будущие
+  totalLast?: number;     // прошедние
 }
-
-export type kndType = 'totalLast' |    // прошедние
-                      'totalCurrent' | // текущие
-                      'totalUpcoming'; // будущие
 
 export type StateKndType = 'E' | // enabled (пришли)
                            'D' | // disabled (нет проверок или выключен)

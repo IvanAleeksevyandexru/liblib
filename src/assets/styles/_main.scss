@@ -177,6 +177,10 @@ b, strong, .bold {
 }
 
 @mixin global-classes($prefix) {
+  .width-full#{$prefix} {
+    width: 100%;
+  }
+
   .hide#{$prefix} {
     display: none;
   }
