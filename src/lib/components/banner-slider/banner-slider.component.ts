@@ -8,7 +8,7 @@ import { HelperService } from '../../services/helper/helper.service';
 import { interval, Subscription } from 'rxjs';
 
 export const DEFAULT_SLIDE_SHOW_INTERVAL = 6000;
-export const DEFAULT_SLIDE_TIME = 300;
+export const DEFAULT_SLIDE_TIME = 700;
 
 @Component({
   selector: 'lib-slider-banner',
@@ -234,12 +234,18 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
     }
   }
 
-  public scrollToBanner(banner: Banner) {
+  public scrollToBanner(banner: Banner, index: number) {
     if (!this.listAndViewReady(true)) {
       return;
     }
     this.cancelSlideShow();
-    const newBannerIndex: number = this.bannersFeedList.lastIndexOf(banner);  // любой итем гарантированно присутствует в ленте
+    const activeBannerIndex: number = this.bannerList.indexOf(this.activeBanner);
+    let newBannerIndex: number;
+    if (index < activeBannerIndex) {
+      newBannerIndex = this.bannersFeedList.indexOf(banner);
+    } else {
+      newBannerIndex = this.bannersFeedList.lastIndexOf(banner);  // любой итем гарантированно присутствует в ленте
+    }
     const offsetDiff = (newBannerIndex - this.activeBannerFeedIndex) * this.stdBannerWidth();
     this.activeBannerTracable = banner;
     const animationTime = Math.max(DEFAULT_SLIDE_TIME, Math.abs(newBannerIndex - this.activeBannerFeedIndex) * 100);

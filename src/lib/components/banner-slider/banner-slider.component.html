@@ -41,10 +41,10 @@
   <div *ngIf="showBullBtn && bannerList?.length > 1"
        [ngClass]="[navBtnStyle || '', bullBtnPosition]"
        class="bullet-container">
-    <a *ngFor="let banner of bannerList"
+    <a *ngFor="let banner of bannerList; let i = index"
        class="bullet-item"
        [ngClass]="{selected: activeBanner === banner}"
-       (click)="scrollToBanner(banner)">
+       (click)="scrollToBanner(banner, i)">
     </a>
   </div>
   <div class="close-banner-group" *ngIf="closeDisplay" (click)="excludeActiveBannerOrClose()"></div>
