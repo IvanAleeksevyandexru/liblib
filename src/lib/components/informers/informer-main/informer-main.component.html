@@ -19,10 +19,10 @@
     </div>
     <div class="text-center text-right-md text-center-lg">
       <div class="price-discount title-h2 red">
-        {{dataInformer.priceDiscount | toMoney}}&nbsp;&#164; <!-- Это рубль на экибатузе -->
+        {{dataInformer.priceDiscount | toMoney}}&nbsp;₽
       </div>
       <div *ngIf="dataInformer.price" class="price small-text light-gray line-through mt-lg-4">
-        {{dataInformer.price | toMoney}}&nbsp;&#x20bd; <!-- Это рубль на хельветике -->
+        {{dataInformer.price | toMoney}}&nbsp;₽
       </div>
     </div>
     <div class="btn flex-0 mt-16 mt-md-0 mt-lg-24">
