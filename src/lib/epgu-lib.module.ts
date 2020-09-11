@@ -138,6 +138,7 @@ import { LocationSelectComponent } from './components/location-select/location-s
 import { HeaderComponent } from './components/header/header.component';
 import { SearchSputnikComponent } from './components/search-sputnik/search-sputnik.component';
 import { FrameComponent } from './components/frame/frame.component';
+import { CommonController } from "./common/common-controller";
 
 registerLocaleData(localeRu, 'ru');
 
