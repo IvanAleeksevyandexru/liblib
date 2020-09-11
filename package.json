@@ -96,6 +96,7 @@
   "peerDependencies": {
     "@angular/common": "9.0.2",
     "@angular/core": "9.0.2",
+    "@angular/cdk": "9.2.4",
     "angular2-text-mask": "9.0.0",
     "moment": "2.24.0",
     "ngx-perfect-scrollbar": "8.0.0"
