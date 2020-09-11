@@ -1,0 +1,47 @@
+<div class="popup-wrapper">
+  <div class="popup">
+    <a class="close" (click)="refuseSubscription('REMIND_LATER')"></a>
+    <div class="popup-head">
+      <h1 class="popup-title title-h1 normal white ml-40 hide show-lg">{{'MAIL_DELIVERY.POPUP_TITLE' | libTranslate}}</h1>
+    </div>
+    <div class="post-line"></div>
+    <div class="popup-body">
+      <h5 class="page-title black hide-lg mb-16">{{'MAIL_DELIVERY.POPUP_TITLE' | libTranslate}}</h5>
+      <p class="text-plain mb-16 hide show-md" [innerHTML]="hint?.popup"></p>
+      <p class="text-plain mb-16 hide-md" [innerHTML]="hint?.mobilePopup"></p>
+      <p class="small-text gray mb-24">{{'MAIL_DELIVERY.USER_AGREEMENT' | libTranslate}} <a href="{{hint?.url}}" target="_blank">{{'MAIL_DELIVERY.USER_AGREEMENT_LINK' | libTranslate}}</a></p>
+
+      <ng-container *ngIf="showCheckboxes">
+        <div *ngFor="let department of departments" class="mt-20">
+          <lib-checkbox [labelText]="department.name"
+                        (change)="checkboxChange(department.code)"></lib-checkbox>
+          <div class="small-text grey address-wrapper" *ngIf="isRussianPost(department.code)">
+            <p *ngIf="addresses.length > 1" class="bold black mb-4">{{'MAIL_DELIVERY.POST_ADDRESSES' | libTranslate}}:</p>
+            <span *ngIf="addresses.length === 1" class="bold black">{{'MAIL_DELIVERY.POST_ADDRESS' | libTranslate}}: </span>
+            <span *ngFor="let address of addresses">{{address}}<br></span>
+            <div class="mt-4">
+              <a (click)="goToSubscriptionPage()">{{'MAIL_DELIVERY.CHANGE_LINK' | libTranslate}}</a>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <section class="error mt-28 mb-32" *ngIf="showError && !loading">
+        <div class="error-icon"></div>
+        <div class="delivery-error-text text-plain dark-gray">{{'MAIL_DELIVERY.SUBSCRIBE_ERROR' | libTranslate}}</div>
+      </section>
+
+      <section class="flex-container align-items-center mt-32" *ngIf="loading">
+        <lib-throbber size="throbber-small"
+                      contextClass="feed-throbber"></lib-throbber>
+      </section>
+
+      <div class="mt-32 buttons-wrapper" *ngIf="!loading">
+        <lib-button size="md" [disabled]="!selectedDepartments.length"
+                    (click)="enableSubscriptionState()">{{'MAIL_DELIVERY.ENABLE_ONLINE_DELIVERY' | libTranslate}}</lib-button>
+        <lib-button size="md" color="white"
+                    (click)="refuseSubscription('DENY_SUBSCRIPTION')">{{'MAIL_DELIVERY.REFUSE' | libTranslate}}</lib-button>
+      </div>
+    </div>
+  </div>
+</div>

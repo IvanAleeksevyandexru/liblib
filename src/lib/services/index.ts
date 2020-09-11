@@ -21,6 +21,8 @@ export * from './validation-helper/validation.helper';
 export * from './load/load.service';
 export * from './load-async-static/load-async-static.service';
 export * from './location/location.service';
+export * from './mail-delivery/mail-delivery.service';
+export * from './mail-delivery-modal/mail-delivery-modal.service';
 export * from './main-page/main-page.service';
 export * from './menu/menu.service';
 export * from './modal/modal.service';

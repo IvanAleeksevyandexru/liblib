@@ -134,6 +134,7 @@ import { DynamicFormatterPipe } from './pipes/dynamic-formatter/dynamic-formatte
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { Setting } from './models/setting';
+import { MailDeliveryModalComponent } from './components/mail-delivery-modal/mail-delivery-modal.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -257,7 +258,8 @@ registerLocaleData(localeRu, 'ru');
     CapitalLetterPipe,
     LangWarnModalComponent,
     PsoComponent,
-    DynamicFormatterPipe
+    DynamicFormatterPipe,
+    MailDeliveryModalComponent,
   ],
   imports: [
     CommonModule,
@@ -383,7 +385,8 @@ registerLocaleData(localeRu, 'ru');
     RemoveQuotesPipe,
     TimeLeftPipe,
     RemoveTagsPipe,
-    DynamicFormatterPipe
+    DynamicFormatterPipe,
+    MailDeliveryModalComponent,
   ],
   providers: [
     GosbarService,
@@ -420,6 +423,7 @@ registerLocaleData(localeRu, 'ru');
     GibddDetailsComponent,
     SliderImagesModalComponent,
     LangWarnModalComponent,
+    MailDeliveryModalComponent,
   ]
 })
 export class EpguLibModule {
