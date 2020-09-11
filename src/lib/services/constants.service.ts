@@ -265,6 +265,13 @@ export class ConstantsService {
       access: ['AL20']
     },
     {
+      id: 'business',
+      name: 'PROFILE.TABS.BUSINESS',
+      url: '/profile/business',
+      access: ['AL20']
+    }
+    ,
+    {
       id: 'statements',
       name: 'PROFILE.TABS.STATEMENTS',
       url: '/profile/statements',
@@ -817,7 +824,8 @@ export class ConstantsService {
     NAME_CHANGE_CERT: 'NAME_CHANGE_CERT',
     FATHERHOOD_CERT: 'FATHERHOOD_CERT',
     MARRIED_CERT: 'MARRIED_CERT',
-    DIVORCE_CERT: 'DIVORCE_CERT'
+    DIVORCE_CERT: 'DIVORCE_CERT',
+    SELF_EMPLOYED: 'SELF_EMPLOYED'
   };
 
   public readonly FID_DOCUMENT_TYPES = [

@@ -687,6 +687,37 @@ export class ProfileService {
           ]
         };
       }
+      case this.DOCUMENT_TYPES.SELF_EMPLOYED: {
+        return {
+          canDetails: false,
+          canEdit: !object.vrfValStu,
+          canDelete: false,
+          detailsPath: '/profile/business/self-employed',
+          canRepeat: object.vrfValStu !== 'VERIFYING' && object.updateDate !== moment().add(1, 'day').format('DD.MM.YYYY'),
+          statusMessage: object.vrfValStu && `BUSINESS.STATUS.${object.vrfValStu}`,
+          empty: {
+            title: 'Самозанятый',
+            subtitle: 'Если вы являетесь самозанятым, добавьте информацию в личный кабинет, чтобы у вас появилась возможность подавать заявления'
+          },
+          full: {
+            title: 'Самозанятый'
+          },
+          fields: [
+            {
+              title: 'Деятельность:',
+              value: object.categories
+            },
+            {
+              title: 'ИНН: ',
+              value: object.inn
+            },
+            {
+              title: 'Обновлено: ',
+              value: object.updateDate
+            }
+          ]
+        };
+      }
       default:
         return {
           empty: {}, full: {}, fields: [], canDetails: false, canEdit: false
