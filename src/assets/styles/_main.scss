@@ -289,6 +289,10 @@ ul.list-decimal {
     align-self: end;
   }
 
+  .align-self-flex-end#{$prefix} {
+    align-self: flex-end;
+  }
+
   .flex-1#{$prefix} {
     flex: 1;
   }
