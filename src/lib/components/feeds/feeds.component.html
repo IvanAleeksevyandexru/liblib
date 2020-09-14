@@ -1,5 +1,5 @@
 <lib-throbber *ngIf="feedsIsLoading"
-              [size]="isHeader ? 'throbber-small' : undefined"
+              [size]="isHeader ? 'throbber-small' : ''"
               [defaultHeaders]="!isHeader"></lib-throbber>
 <a [routerLink]="openDetails(feed)"
    (click)="onFeedClick($event, feed)"

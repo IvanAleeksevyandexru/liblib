@@ -24,7 +24,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
 
   @Input() public userCounter: CounterData;
   @Input() public showLinks = true;
-  @Input() public newView: boolean;
+  @Input() public newView = false;
   @Input() public background: string;
   @Input() public showBorder = false;
 
@@ -160,7 +160,10 @@ export class MenuComponent implements OnInit, AfterViewInit {
   }
 
   private checkMainPage() {
-    return location.pathname === '/';
+    if (this.loadService.attributes.appContext === 'PORTAL') {
+      return location.pathname === '/';
+    }
+    return true;
   }
 
 }
