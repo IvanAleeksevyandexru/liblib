@@ -1,5 +1,5 @@
 .title-h1, .title-h2, .title-h3, .title-h4, .title-h5, .title-h6, .title-h0, .page-title {
-  font-family: ekibastuz, sans-serif;
+  font-family: Lato-Bold, Arial, sans-serif;
   font-weight: 600;
   color: #000000;
 
@@ -9,7 +9,7 @@
 }
 
 .title-h5, .title-h6 {
-  font-family: Helvetica, Arial, sans-serif, -apple-system;
+  font-family: Lato, Arial, sans-serif, -apple-system;
 
   &.blue {
     color: #0B40B3;
@@ -35,21 +35,25 @@
 }
 
 .title-h2, .page-title {
+  font-size: 32px;
+  line-height: 40px;
+}
+
+.title-h3 {
   font-size: 24px;
   line-height: 32px;
 }
 
-.title-h3 {
+.title-h4 {
   font-size: 20px;
   line-height: 24px;
 }
 
-.title-h4 {
+.title-h5 {
   font-size: 18px;
   line-height: 24px;
 }
-
-.title-h5, .title-h6 {
+.title-h6 {
   font-size: 16px;
   line-height: 24px;
 }
@@ -116,7 +120,7 @@
 .text-sub,
 .link-plain,
 .label-plain {
-  font-family: Helvetica, Arial, sans-serif, -apple-system;
+  font-family: Lato, Arial, sans-serif, -apple-system;
   font-size: 14px;
   line-height: 20px;
 

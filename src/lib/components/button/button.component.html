@@ -5,7 +5,7 @@
   <button *ngIf="type === 'button'"
     [disabled]="disabled"
     class="{{size}} {{color}} {{width}} {{height}} {{type}} font-{{fontSize}}"
-    [ngClass]="{disabled: disabled, active: active}"
+    [ngClass]="{disabled: disabled, active: active, loader: showLoader}"
     tabindex="{{disabled ? -1 : 0}}">
     <ng-container *ngIf="!showLoader">
       <ng-container *ngTemplateOutlet="content"></ng-container>
