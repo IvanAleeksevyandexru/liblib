@@ -125,6 +125,7 @@ export interface Service { // TODO: Провалидировать интерф�
     online: true;
     admLevel: string;
     results: any;
+    hrTitle: string;
     ordering: {
       url: string
       formStatus: string;
