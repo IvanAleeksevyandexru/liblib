@@ -1,7 +1,5 @@
 <div *ngIf="animationEnabled" class="throbber-svg" [ngClass]="{'inline-throbber': inlineHeader}">
   <ng-container *ngTemplateOutlet="headerPanel"></ng-container>
-  {{size}}
-  {{contextClass}}
   <div [ngClass]="[size, contextClass]">
     <svg x="0px" y="0px" width="92px" height="100px" viewBox="0 0 92 100" enable-background="new 0 0 92 100" xml:space="preserve">
       <path  fill="#00aadd" class="throbber-path" d="M81.765,82.649L56.607,97.19c-6.479,3.744-14.462,3.746-20.942,0.01L10.493,82.682
