@@ -5,7 +5,6 @@ import { DropdownSimpleComponent } from '../dropdown-simple/dropdown-simple.comp
 import { Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { RelativeDate, Range, RangeListItem } from '../../models/date-time.model';
-import { ListItemsService } from '../../services/list-item/list-items.service';
 import { DatesHelperService } from '../../services/dates-helper/dates-helper.service';
 import { Translation } from '../../models/common-enums';
 import { Width } from '../../models/width-height';
@@ -22,7 +21,7 @@ const STD_DATE_FORMAT = 'DD.MM.YYYY';
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => RangeSelectorComponent),
     multi: true
-  }, ListItemsService]
+  }]
 })
 export class RangeSelectorComponent extends DropdownSimpleComponent
   implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated  {
@@ -129,18 +128,19 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
     this.check();
   }
 
-  public writeValue(value: Range<Date> | Range<string> | any) {
+  public writeValue(value: Range<Date> | Range<string> | RangeListItem | any) {
     if (value) {
       if (this.listModelValue) {
-        const selectedValue = value.findSame(this.internalItems);
-        this.currentItem = selectedValue;
-        if (value.customRange && selectedValue.customRange) {
-          if (value.relativeRange) {
-            selectedValue.range = DatesHelperService.relativeRangeToRange(value.relativeRange, this.textModelValue);
+        const rangeValue = value instanceof RangeListItem ? value as RangeListItem : new RangeListItem(value);
+        const selectedValue = rangeValue.findSame(this.internalItems) as RangeListItem || rangeValue;
+        if (rangeValue.customRange) {
+          if (rangeValue.relativeRange) {
+            selectedValue.range = DatesHelperService.relativeRangeToRange(rangeValue.relativeRange, this.textModelValue);
           } else {
-            selectedValue.range = value.range;
+            selectedValue.range = rangeValue.range;
           }
         }
+        this.currentItem = selectedValue;
       } else {
         const nonCustomItems = (this.internalItems || []).filter((item) => !item.customRange);
         const customItem = (this.internalItems || []).find((item) => item.customRange);

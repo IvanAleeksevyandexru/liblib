@@ -22,8 +22,9 @@
       padding-left: 0;
       background-image: linear-gradient(to top, white, white, white, rgba(255,255,255,0));
       .symbols-count {
-        font-family: Helvetica;
+        font-family: Lato, Arial, sans-serif;
         font-size: 12px;
+        line-height: 16px;
         color: #747B82;
         .overloaded {
           color: #E73A3D;
@@ -66,7 +67,7 @@
 
   .multiline-input {
     outline: none;
-    font-family: Helvetica;
+    font-family: Lato, Arial, sans-serif;
     font-size: 16px;
     line-height: 24px;
     color: #393F45;
@@ -80,7 +81,7 @@
         &:before {
           content: attr(placeholderText);
           color: #777;
-          font-family: Helvetica;
+          font-family: Lato, Arial, sans-serif;
           font-size: 16px;
           line-height: 24px;
           position: absolute;

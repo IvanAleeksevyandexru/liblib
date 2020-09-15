@@ -90,7 +90,7 @@ export class SnippetsService {
             break;
         }
         // (window as any).location = `${this.loadService.config.paymentUrl}?${param}`;
-        (window as any).location = `${this.loadService.config.betaUrl}payment/${snippet.uin}${param}`;
+        (window as any).location = `${this.loadService.config.betaUrl}payment/${snippet.uin}?${param}`;
       }
     } else if (snippet && snippet.type === 'DRAFT' && !(window as any).isOp) {
       if (snippet.url.indexOf('http') !== -1) {
