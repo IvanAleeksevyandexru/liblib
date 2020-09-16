@@ -27,7 +27,7 @@ export class MailDeliveryModalService {
 
   public showSubscriptionPopup(data) {
     const curSession = this.cookieService.get('acc_t');
-    window.sessionStorage.setItem('ezpRemind', curSession);
+    this.cookieService.set('ezpRemind', curSession);
 
     this.modalService.popupInject(MailDeliveryModalComponent, this.moduleRef, {
       departments: data.items,
@@ -37,7 +37,7 @@ export class MailDeliveryModalService {
 
   public checkNeedShowPopup(): Observable<SubscriptionInfo> {
     const curSession = this.cookieService.get('acc_t');
-    const sessionOfLastShow = window.sessionStorage.getItem('ezpRemind');
+    const sessionOfLastShow = this.cookieService.get('ezpRemind');
     if (curSession === sessionOfLastShow) {
       return of(null);
     }
