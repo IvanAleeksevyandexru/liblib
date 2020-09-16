@@ -39,7 +39,7 @@
             <div *ngIf="markAsFlag(feed)" class="red-flag mt-4"></div>
             <h4 class="normal black text-plain mb-4" [ngClass]="{'bold': setUnreadFeedCls(feed)}" [innerHTML]="feed.subTitle | highlight: search"></h4>
           </div>
-          <p class="feed-subheader" [innerHTML]="feed.title | highlight: search"></p>
+          <p class="feed-subheader" [innerHTML]="(feed.status === 'outbox' && feed.data && feed.data.deptMessageType && feed.data.deptMessageType === 'ORDER'? feed.data.toName || feed.title : feed.title) | highlight: search"></p>
         </div>
       </div>
     </a>
