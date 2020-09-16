@@ -45,11 +45,17 @@ export class MailDeliveryModalComponent implements OnInit {
       const addresses = this.loadService.user.person.addresses || [];
       const plvAddress = addresses.find((item) => item.type === 'PLV');
       const prgAddress = addresses.find((item) => item.type === 'PRG');
+      let plvAddressAsString;
+      let prgAddressAsString;
       if (plvAddress) {
-        this.addresses.push(HelperService.formatMailDelivery(plvAddress));
+        plvAddressAsString = HelperService.formatMailDelivery(plvAddress);
+        this.addresses.push(plvAddressAsString);
       }
       if (prgAddress) {
-        this.addresses.push(HelperService.formatMailDelivery(prgAddress));
+        prgAddressAsString = HelperService.formatMailDelivery(prgAddress);
+        if (plvAddressAsString !== prgAddressAsString) {
+          this.addresses.push(HelperService.formatMailDelivery(prgAddress));
+        }
       }
       if (!this.addresses.length) {
         this.showCheckboxes = false;
@@ -74,7 +80,7 @@ export class MailDeliveryModalComponent implements OnInit {
     if (this.selectedDepartments.length) {
       this.showError = false;
       this.loading = true;
-      this.mailDeliveryService.updateMultiSubscriptionState(this.selectedDepartments, 'SUBSCRIBED')
+      this.mailDeliveryService.updateMultiSubscriptionState(this.selectedDepartments, 'SUBSCRIBED', this.addresses)
         .subscribe(() => {
           this.onClose();
         }, () => {

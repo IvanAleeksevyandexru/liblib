@@ -64,12 +64,12 @@
 
 <ng-template #imageBottom>
   <div class="text-center">
-    <div class="mb-32">
-      <div class="title title-h3 mb-20" [innerHTML]="title | appTranslate"></div>
-      <div *ngIf="!refUrl" class="subtitle text-plain" [innerHTML]="subTitle | appTranslate"></div>
-      <div *ngIf="refUrl" class="subtitle text-plain" [innerHTML]="subTitle | appTranslate: {currentUrl: location, href: refUrl}"></div>
+    <div class="mb-24">
+      <div class="title title-h4 mb-20" [innerHTML]="title | appTranslate"></div>
     </div>
-    <img class="error-image" [src]="staticDomainLibAssetsPath + 'svg/errors/' + errorType + '.svg'" alt="">
+    <img class="error-image mb-24" [src]="staticDomainLibAssetsPath + 'svg/errors/' + errorType + '.svg'" alt="">
+    <div *ngIf="!refUrl" class="subtitle text-plain mb-32 mb-md-24" [innerHTML]="subTitle | appTranslate"></div>
+    <div *ngIf="refUrl" class="subtitle text-plain mb-32 mb-md-24" [innerHTML]="subTitle | appTranslate: {currentUrl: location, href: refUrl}"></div>
   </div>
 </ng-template>
 

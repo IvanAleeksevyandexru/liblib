@@ -157,8 +157,7 @@ export class ConstantsService {
     {
       id: 'mail',
       name: 'SETTINGS.TABS.MAIL',
-      url: '/settings/mail',
-      access: ['AL20']
+      url: '/settings/mail'
     },
     {
       id: 'esignature',

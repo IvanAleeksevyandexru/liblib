@@ -102,9 +102,15 @@ export class MailDeliveryService {
     }
   }
 
-  public updateMultiSubscriptionState(codes: string[], newStatus: DeliverySubscribeStatus): Observable<any> {
+  public updateMultiSubscriptionState(codes: string[], newStatus: DeliverySubscribeStatus, addresses?: string[]): Observable<any> {
     const url = `${this.loadService.config.gepsApiUrl}subscription/v2`;
-    const items = codes.map(item => ({ code: item, status: newStatus }));
+    const items = codes.map(item => {
+      const requestItem: any = { code: item, status: newStatus };
+      if (newStatus === 'SUBSCRIBED' && this.isRussianPost(item) && addresses && addresses.length) {
+        requestItem.data = { addresses };
+      }
+      return requestItem;
+    });
 
     return this.http.post<any>(url, { items }, { withCredentials: true });
   }

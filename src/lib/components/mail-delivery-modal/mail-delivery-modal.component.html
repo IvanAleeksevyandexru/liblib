@@ -10,6 +10,7 @@
       <p class="text-plain mb-16 hide show-md" [innerHTML]="hint?.popup"></p>
       <p class="text-plain mb-16 hide-md" [innerHTML]="hint?.mobilePopup"></p>
       <p class="small-text gray mb-24">{{'MAIL_DELIVERY.USER_AGREEMENT' | libTranslate}} <a href="{{hint?.url}}" target="_blank">{{'MAIL_DELIVERY.USER_AGREEMENT_LINK' | libTranslate}}</a></p>
+      <p class="text-plain mb-24">{{'MAIL_DELIVERY.SELECT_SUBSCRIPTIONS' | libTranslate}}</p>
 
       <ng-container *ngIf="showCheckboxes">
         <div *ngFor="let department of departments" class="mt-20">
