@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoadService } from '../load/load.service';
 import { Observable } from 'rxjs';
-import { Passport, Service } from '../../models/service';
+import { GetPassportRequest, GetServiceRequest, Passport, Service } from '../../models/service';
 import { CookieService } from '../cookie/cookie.service';
 
 @Injectable({
@@ -19,33 +19,33 @@ export class CatalogService {
   ) {
   }
 
-  public getService(sid: string, eid = '', ignorePlatform?: boolean, oldStyle = false, isManual = false): Observable<Service> {
+  public getService(request: GetServiceRequest): Observable<Service> {
     const params = new URLSearchParams();
 
     params.set('_', String(Math.random()));
     params.set('region', this.loadService.attributes.selectedRegion);
     params.set('rUrl', this.loadService.config.urlLk + 'orders/all');
-    params.set('oldStyleCode', String(oldStyle));
-    params.set('isManual', String(isManual));
-    if (!ignorePlatform) {
+    params.set('oldStyleCode', String(request.oldStyle));
+    params.set('isManual', String(request.isManual));
+    if (!request.ignorePlatform) {
       params.set('platform', this.loadService.config.platform);
     }
 
-    return this.http.get<Service>(`${this.catalogUrl}services/${sid}_${eid}?${params}`, {
+    return this.http.get<Service>(`${this.catalogUrl}services/${request.sid}_${request.eid}?${params}`, {
       withCredentials: true
     });
   }
 
-  public getPassport(id: string, ignorePlatform?: boolean): Observable<Passport> {
+  public getPassport(request: GetPassportRequest): Observable<Passport> {
     const params = new URLSearchParams();
 
     params.set('_', String(Math.random()));
     params.set('region', this.loadService.attributes.selectedRegion);
-    if (!ignorePlatform) {
+    if (!request.ignorePlatform) {
       params.set('platform', this.loadService.config.platform);
     }
 
-    return this.http.get<Passport>(`${this.catalogUrl}passports/${id}?${params}`, {
+    return this.http.get<Passport>(`${this.catalogUrl}passports/${request.id}?${params}`, {
       withCredentials: true
     });
   }

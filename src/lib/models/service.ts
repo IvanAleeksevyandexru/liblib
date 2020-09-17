@@ -204,3 +204,42 @@ export interface IServiceDetails {
   supportsDS?: string;
   hideLinkOnServiceFeed?: boolean;
 }
+interface IGetPassportRequest {
+  id: string;
+  ignorePlatform?: boolean;
+}
+
+export class GetPassportRequest implements IGetPassportRequest {
+  public id: string;
+  public ignorePlatform: boolean;
+
+  constructor(id: string, ignorePlatform?: boolean) {
+    this.id = id;
+    this.ignorePlatform = ignorePlatform || false;
+  }
+}
+
+
+interface IGetServiceRequest {
+  sid: string;
+  eid: string;
+  ignorePlatform: boolean;
+  oldStyle: boolean;
+  isManual: boolean;
+}
+
+export class GetServiceRequest implements IGetServiceRequest {
+  public sid: string;
+  public eid: string;
+  public ignorePlatform: boolean;
+  public oldStyle: boolean;
+  public isManual: boolean;
+
+  constructor(sid: string, eid?: string, ignorePlatform?: boolean, oldStyle?: boolean, isManual?: boolean) {
+    this.sid = sid;
+    this.eid = eid || '';
+    this.ignorePlatform = ignorePlatform || false;
+    this.oldStyle = oldStyle || false;
+    this.isManual = isManual || false;
+  }
+}
