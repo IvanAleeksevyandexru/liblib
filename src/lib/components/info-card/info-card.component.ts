@@ -48,10 +48,12 @@ export class InfoCardComponent implements OnInit, OnChanges {
   }
 
   public ngOnChanges({data, cardType}: SimpleChanges): void {
-    if (data && !data.firstChange && data.currentValue) {
-      this.initCard(data.currentValue);
-    } else if (cardType && !cardType.firstChange && data.currentValue) {
-      this.initCard(data.currentValue);
+    if (data) {
+      if (!data.firstChange && data.currentValue) {
+        this.initCard(data.currentValue);
+      } else if (cardType && !cardType.firstChange && data.currentValue) {
+        this.initCard(data.currentValue);
+      }
     }
   }
 
