@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoadService } from '../load/load.service';
 import { Observable } from 'rxjs';
-import { Service } from '../../models/service';
+import { Passport, Service } from '../../models/service';
 import { CookieService } from '../cookie/cookie.service';
 
 @Injectable({
@@ -32,6 +32,20 @@ export class CatalogService {
     }
 
     return this.http.get<Service>(`${this.catalogUrl}services/${sid}_${eid}?${params}`, {
+      withCredentials: true
+    });
+  }
+
+  public getPassport(id: string, ignorePlatform?: boolean): Observable<Passport> {
+    const params = new URLSearchParams();
+
+    params.set('_', String(Math.random()));
+    params.set('region', this.loadService.attributes.selectedRegion);
+    if (!ignorePlatform) {
+      params.set('platform', this.loadService.config.platform);
+    }
+
+    return this.http.get<Passport>(`${this.catalogUrl}passports/${id}?${params}`, {
       withCredentials: true
     });
   }

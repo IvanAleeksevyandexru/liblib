@@ -21,146 +21,170 @@ export class Department {
   }
 }
 
-export interface Service { // TODO: Провалидировать интерфейс
-  error?: boolean;
-  responseType: string;
-  version: number;
-  ssn: number;
-  isInformat: false;
-  places: any[];
-  stateOrg: StateOrg[];
-  docs: {
-    scenarios: any[],
-    inDocs: any[]
-  };
-  passport: {
-    id: string;
-    epguId: string;
-    title: string;
-    updated: string
-    currentServiceTargetExtId: string;
-    epguPassport: false;
-    passportType: string;
-    shortTitle: string;
-    concentratorHabSimplePassports: {
-      responseType: string;
-      description: string;
-      shortTitle: string;
-      title: string;
-      habPassport: {
-        stateStructureTitle: string;
-        admLevelId: number;
-        stateStructureId: string;
-        passports: {
-          id: string;
-          epguId: string;
-          isHab: false;
-          catalogTitle: string;
-          pId: number;
-          passportType: string;
-          shortTitle: string;
-          title: string;
-          descr: string;
-          epguPassport: false;
-          stateStructure: string;
-          admLevel: number,
-          stateStructureId: string;
-        }[];
-      }[];
-      icons: {
-        path: string,
-        iconType: string
-      }[];
-    };
-    services: {
-      id: {
-        eid: string,
-        lid: string
-      };
-      epguId: string;
-      fullTitle: string;
-      infoFormPortalVersion: string;
-      title: string;
-      eserviceOnline: true;
-      url: string;
-      selectedByLid: true;
-      online: true;
-      serviceRecipients: string;
-      selected: true;
-      portalVersion: string;
-      hasEqueue: false;
-    }[];
-  };
-  consulting: {
-    procedureTitle: string;
-    expertComment: any;
-    legalActs: {
-      success: true;
-      items: any[];
-    };
-    admReglament: {
-      items: any[];
-    },
-    qualityIndicators: {
-      items: any[];
-    };
-    admProcedure: {
-      items: any[];
-    };
-    participants: any[];
-  };
-  description: {
-    gisDoTargetExtId: string;
-    gisDoStateStructureExtId: string;
-    gisdo: boolean;
-    isFunction: false;
-    isInteragency: false;
-    fullName: string;
-    officialName: string;
-    eserviceOnline: true;
-    procedureTitle: string;
-    recipientCodes: string[];
-    timeTerm: any;
-    recipients: any[];
-    online: true;
-    admLevel: string;
-    results: any;
-    hrTitle: string;
-    ordering: {
-      url: string
-      formStatus: string;
-      outCommForms: any[];
-      inCommForms: any[];
-    };
-    reasonsInfo: {
-      rejectReasons: {
-        grounds: any[];
-      }
-    };
-    paymentInfo: {
-      free: string;
-      description: string;
-      payments: {
-        title: string;
-        type: string;
-        value: string;
-      }[];
-    }
-  };
+export interface Passport extends CatalogMainStructure {
+  colorCode: string;
+  mnemonicDescription: string;
+}
+
+export interface Service extends CatalogMainStructure { // TODO: Провалидировать интерфейс
   habsForPassport: {
     habEpguCode: string;
     habContent: string;
     habShortTitle: string;
     habTitle: string;
-    icons: {
-      path: string;
-      iconType: string;
+    icons: Icons[];
+  }[];
+}
+
+interface CatalogMainStructure {
+  additionalAttributes: AdditionalAttributes[]
+  consulting: PassportConsulting;
+  description: PassportDescription;
+  docs: PassportDocs;
+  error?: boolean;
+  isInformat: boolean;
+  passport: InsidePassport;
+  places: any[];
+  responseType: string;
+  ssn: number;
+  stateOrg: StateOrg[];
+  version: number;
+}
+
+interface PassportConsulting {
+  procedureTitle: string;
+  expertComment: any;
+  legalActs: {
+    success: true;
+    items: any[];
+  };
+  admReglament: {
+    items: any[];
+  },
+  qualityIndicators: {
+    items: any[];
+  };
+  admProcedure: {
+    items: any[];
+  };
+  participants: any[];
+}
+
+interface AdditionalAttributes {
+  name: string;
+  value: string;
+}
+
+interface PassportDescription {
+  gisDoTargetExtId: string;
+  gisDoStateStructureExtId: string;
+  gisdo: boolean;
+  isFunction: false;
+  isInteragency: false;
+  fullName: string;
+  officialName: string;
+  eserviceOnline: true;
+  procedureTitle: string;
+  recipientCodes: string[];
+  timeTerm: any;
+  recipients: any[];
+  online: true;
+  admLevel: string;
+  results: any;
+  hrTitle: string;
+  ordering: {
+    url: string
+    formStatus: string;
+    outCommForms: any[];
+    inCommForms: any[];
+  };
+  reasonsInfo: {
+    rejectReasons: {
+      grounds: any[];
+    }
+  };
+  paymentInfo: {
+    free: string;
+    description: string;
+    payments: {
+      title: string;
+      type: string;
+      value: string;
+    }[];
+  }
+}
+
+interface PassportDocs {
+  scenarios: any[],
+  inDocs: any[],
+  docGroups?: any[]
+}
+
+export interface InsidePassport {
+  id: string;
+  epguId: string;
+  title: string;
+  updated: string
+  currentServiceTargetExtId: string;
+  epguPassport: false;
+  passportType: string;
+  shortTitle: string;
+  concentratorHabSimplePassports: InsidePassportConcentratorHabSimplePassports;
+  services: InsideServices[];
+}
+
+interface InsidePassportConcentratorHabSimplePassports {
+  responseType: string;
+  description: string;
+  shortTitle: string;
+  title: string;
+  habPassport: {
+    stateStructureTitle: string;
+    admLevelId: number;
+    stateStructureId: string;
+    passports: {
+      id: string;
+      epguId: string;
+      isHab: false;
+      catalogTitle: string;
+      pId: number;
+      passportType: string;
+      shortTitle: string;
+      title: string;
+      descr: string;
+      epguPassport: false;
+      stateStructure: string;
+      admLevel: number,
+      stateStructureId: string;
     }[];
   }[];
-  additionalAttributes: {
-    name: string;
-    value: string;
-  }[];
+  icons: Icons[];
+}
+
+export interface InsideServices {
+  id: {
+    eid: string,
+    lid: string
+  };
+  epguId: string;
+  externalUrl: string;
+  fullTitle: string;
+  infoFormPortalVersion: string;
+  title: string;
+  eserviceOnline: true;
+  url: string;
+  selectedByLid: true;
+  online: true;
+  serviceRecipients: string;
+  selected: true;
+  portalVersion: string;
+  hasEqueue: false;
+  mnemonicDescription: string;
+}
+
+interface Icons {
+  path: string,
+  iconType: string
 }
 
 export interface IServiceDetails {
