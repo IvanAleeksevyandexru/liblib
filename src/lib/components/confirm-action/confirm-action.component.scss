@@ -9,6 +9,10 @@
 
 .icon {
   text-align: center;
+
+  img {
+    max-width: 286px;
+  }
 }
 
 .description {
@@ -40,5 +44,29 @@
   .button-wrapper {
     display: inline-block;
     margin: 0 20px 0 0;
+  }
+}
+
+.popup-wrapper.above {
+  .title {
+    margin-bottom: 24px;
+    text-align: center;
+    padding-right: 0px;
+  }
+
+  .description {
+    text-align: center;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .popup-wrapper.above {
+    .icon {
+      margin-right: 0;
+
+      img {
+        max-width: 548px;
+      }
+    }
   }
 }
