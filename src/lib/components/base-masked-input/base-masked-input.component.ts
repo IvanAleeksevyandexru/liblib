@@ -51,10 +51,6 @@ export class BaseMaskedInputComponent
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public uppercase = false;
   @Input() public width?: string | Width;
-  @Input() public textBefore?: string;
-  @Input() public showTextBefore?: boolean;
-  @Input() public textAfter?: string;
-  @Input() public showTextAfter?: boolean;
 
   // маска - это массив символов и/или регэкспов, каждый ответственен за свой символ в поле
   // пример: ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
@@ -232,12 +228,6 @@ export class BaseMaskedInputComponent
       this.writeValue(null);
       this.commit(null);
       this.cleared.emit();
-      if (this.showTextBefore) {
-        this.showTextBefore = false;
-      }
-      if (this.showTextAfter) {
-        this.showTextAfter = false;
-      }
       this.returnFocus(e);
     }
     e.stopPropagation();
