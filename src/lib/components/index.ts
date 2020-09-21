@@ -45,6 +45,7 @@ export * from './map/map.component';
 export * from './menu/menu.component';
 export * from './modal-placeholder/modal-placeholder.component';
 export * from './modal-search/modal-search.component';
+export * from './month-picker/month-picker.component';
 export * from './month-year-select/month-year-select.component';
 export * from './multiline-input/multiline-input.component';
 export * from './multi-lookup/multi-lookup.component';
