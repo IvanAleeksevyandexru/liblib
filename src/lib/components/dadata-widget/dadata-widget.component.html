@@ -17,7 +17,7 @@
       [queryMinSymbolsCount]="queryMinSymbolsCount"
       [(ngModel)]="query"
       (focus)="handleFocus()"
-      (blur)="normalizeFullAddress(query); handleBlur();"
+      (blur)="normalizeFullAddress(query, false, false, true); handleBlur();"
       (autocompleted)="normalizeFullAddress(query, false)"
       (input)="updateCanOpenFields($event.target.value)"
       (cleared)="onClearHandler()"

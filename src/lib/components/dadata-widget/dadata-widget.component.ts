@@ -35,7 +35,6 @@ import { BehaviorSubject } from 'rxjs';
   selector: 'lib-dadata-widget',
   templateUrl: './dadata-widget.component.html',
   styleUrls: ['./dadata-widget.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -77,6 +76,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   public errorCodes: Array<string> = [];
   public query = '';
   public lastQuery = '';
+  public blurCall = false;
   public validationSkip = false;
   // Массив полей, по которым строится полный адрес
   public controlNames: string[];
@@ -234,11 +234,10 @@ export class DadataWidgetComponent extends CommonController implements AfterView
         this.commit(null);
         this.normalizeInProcess = false;
       }
-      if (!this.isOpenedFields.getValue() && (dadataQc === '1' || dadataQc === '2') && this.normalizedData.fiasLevel !== '-1'
+      if (this.blurCall && !this.isOpenedFields.getValue() && (dadataQc === '1' || dadataQc === '2') && this.normalizedData.fiasLevel !== '-1'
         && !this.externalApiUrl) {
         this.showWrongAddressDialog();
       }
-      this.cd.detectChanges();
     });
   }
 
@@ -286,7 +285,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     }
   }
 
-  public normalizeFullAddress(fullAddress: string, suppressValidation = false, onInitCall = false): Promise<any> {
+  public normalizeFullAddress(fullAddress: string, suppressValidation = false, onInitCall = false, blurCall = false): Promise<any> {
     if (fullAddress && !this.normalizeInProcess) {
       this.form.markAsTouched();
       // используем промис, т.к. в противном случае без сабскрайбера не вызывается сервис
@@ -294,12 +293,12 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       return this.dadataService.normalize(fullAddress).toPromise().then(res => {
         if (res) {
           this.normalizedData = res;
-          this.dadataService.resetForm();
           if (res.address && res.address.elements && res.address.elements.length) {
+            this.blurCall = blurCall;
+            this.dadataService.resetForm();
             this.dadataService.parseAddress(res, onInitCall);
             // onChange triggering guaranteed
             this.validationSkip = suppressValidation;
-            this.cd.detectChanges();
           }
         }
         return res;
@@ -313,6 +312,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     this.widgetItemsVisibility = {};
     this.form.reset();
     this.updateCanOpenFields('');
+    for (const key of Object.keys(this.form.controls)) {
+      this.form.get(key).enable({onlySelf: true});
+    }
   }
 
   public updateCanOpenFields(value: string): void {
@@ -361,7 +363,6 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     if (isDisabled) {
       this.isOpenedFields.next(false);
     }
-    this.cd.detectChanges();
   }
 
   public writeValue(obj: any): void {
@@ -401,7 +402,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public ngAfterViewInit() {
     this.query$.pipe(
-      debounceTime(1000),
+      debounceTime(2000),
       distinctUntilChanged(),
       takeUntil(this.destroyed$)
     ).subscribe(value => {
