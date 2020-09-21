@@ -63,6 +63,8 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   // массив скрытых уровней, которые не будут заполняться ни в скрытом, ни в развернутом виде
   // каждое значение - строка - значения из константы DADATA_LEVEL_MAP
   @Input() public hideLevels?: Array<string> = [];
+  @Input() public hideHouseCheckbox = false;
+  @Input() public hideApartmentCheckbox = false;
   @Input() public enabledMap = false;
   @Input() public queryMinSymbolsCount = 3;
   @Input() public validateOnSpecify = true;
@@ -399,7 +401,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public ngAfterViewInit() {
     this.query$.pipe(
-      debounceTime(700),
+      debounceTime(1000),
       distinctUntilChanged(),
       takeUntil(this.destroyed$)
     ).subscribe(value => {
@@ -417,6 +419,20 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     e.preventDefault();
     this.setCoordinatesMap();
     this.stateShowMap = !this.stateShowMap;
+  }
+
+  public putCursorAtEnd() {
+    const input = this.autocomplete.searchBar.inputElement.nativeElement;
+
+    if (input.setSelectionRange) {
+      const len = input.value.length * 2;
+      setTimeout(() => {
+        input.focus();
+        input.setSelectionRange(len, len);
+      }, 1000)
+    } else {
+      input.value = input.value;
+    }
   }
 
 }

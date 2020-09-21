@@ -49,6 +49,10 @@
       right: 12px;
       cursor: pointer;
       background: url(../../../assets/svg/calendar-icon.svg) 3px 10px no-repeat;
+
+      &.disabled {
+        cursor: default;
+      }
     }
   }
 

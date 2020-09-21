@@ -79,6 +79,8 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   // постраничная подгрузка итемов в результатах и размер блока
   @Input() public incrementalLoading = false;
   @Input() public incrementalPageSize = ConstantsService.DEFAULT_ITEMS_INCREMENTAL_PAGE_SIZE;
+  // смещение курсора в конце строки
+  @Input() public moveFocusToEnd = false;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -142,11 +144,33 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
         this.positioningManager.attach(this.positioningDescriptor);
       }
       this.updateScrollBars();
+      if (this.moveFocusToEnd) {
+        this.putCursorAtEnd();
+      }
       this.opened.emit();
     } else {
       this.changeDetector.detectChanges();
     }
   }
+
+  public putCursorAtEnd() {
+    const input = this.searchBar.inputElement.nativeElement;
+    if (input.classList.contains('focused')) {
+      input.blur();
+    }
+    if (input.setSelectionRange) {
+      const len = input.value.length * 2;
+      setTimeout(() => {
+        input.setSelectionRange(len, len);
+        input.focus();
+      }, 10)
+    } else {
+      const val = input.value;
+      input.value = '';
+      input.value = val;
+    }
+  }
+
 
   public closeDropdown() {
     this.expanded = false;
