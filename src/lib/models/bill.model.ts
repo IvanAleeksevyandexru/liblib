@@ -249,6 +249,8 @@ export interface PayOption {
   amount: number;
   cardInfo?: CardInfo;
   fee: number;
+  feeMin?: number;
+  feeMax?: number;
   hash: string;
   payMethod: PayMethod;
   payMethodGroup: PayMethodGroup;
