@@ -18,6 +18,8 @@
   position: relative;
   padding-left: 24px;
   cursor: pointer;
+  font-size: 14px;
+  line-height: 20px;
 
   &.only-icon {
     text-indent: 100%;
@@ -134,6 +136,12 @@
 @media all and (min-width: 1140px) {
   .authorized-user {
     max-width: 100%;
+  }
+  .link {
+    &:before {
+      top: 1px;
+
+    }
   }
 }
 

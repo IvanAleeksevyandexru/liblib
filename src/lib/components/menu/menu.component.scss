@@ -170,6 +170,14 @@
   }
 }
 
+.main-menu {
+  .links-wrapper {
+    a {
+      color: #0D4CD3;
+    }
+  }
+}
+
 @media all and (min-width: 768px) and (max-width: 1140px) {
   .menu {
     &.fixed{

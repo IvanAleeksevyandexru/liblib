@@ -1,4 +1,10 @@
 .header {
+  .link-plain,
+  .text-plain {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
   .inner {
     height: 56px;
   }
@@ -7,6 +13,7 @@
   }
   .user-menu-wrapper {
     position: relative;
+    margin-left: auto;
   }
 
   .notifications {

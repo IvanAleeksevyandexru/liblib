@@ -1,15 +1,14 @@
 <div class="header hide show-lg">
   <div class="inner container grid-row-lg flex-container align-items-center">
-    <div class="col-lg-2">
-      <lib-location-select></lib-location-select>
-    </div>
-    <div class="col-lg-10 flex-container align-items-center"
+    <div class="col-lg-12 flex-container align-items-center"
           [ngClass]="{
-            'justify-between': !user.authorized,
             'justify-end': user.authorized
           }">
+      <div class="mr-40">
+        <lib-location-select></lib-location-select>
+      </div>
 
-      <div *ngIf="!user.authorized" class="flex-container align-items-center justify-between">
+      <div *ngIf="!user.authorized" class="flex-container align-items-center">
         <div *ngFor="let role of userRoles; let first = first">
           <a class="link-plain" (click)="updateRole(role.code)"
              [ngClass]="{
