@@ -473,11 +473,6 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       this.feedsService.markFeedAsRead(feed.id).subscribe();
     }
 
-    if (feed.feedType === 'PAYMENT') {
-      // this.feedsService.markFeedAsRead(feed.id).subscribe();
-      location.href = `notifications/details/PAYMENT/${feed.extId}`;
-    }
-
     if (feed.feedType === 'KND_APPEAL') {
       location.href = `${this.loadService.config.kndDomain}appeal/${feed.extId}`;
     } else if (feed.feedType === 'KND_APPEAL_DRAFT') {

@@ -182,12 +182,7 @@ export class FeedsService {
         url += `draft/${feed.extId}`;
         break;
       case 'PAYMENT':
-        // редирект на новую платежку
-        // const returnUrl = encodeURIComponent(location.href);
-        // prefixUrl += `pay/details/${feed.extId}?returnUrl=${returnUrl}`;
-
-        // урл старого лк - редирект на старый лк на балансировщике
-        url += `notifications/details/PAYMENT/${feed.extId}`;
+        url += `payment/detail/paying/${feed.extId}`;
         break;
       case 'EQUEUE':
         if (feed.data && feed.data.parentOrderId) {
