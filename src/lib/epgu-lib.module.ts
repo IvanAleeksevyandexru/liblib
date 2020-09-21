@@ -59,6 +59,7 @@ import { RangeFieldComponent } from './components/range-field/range-field.compon
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { RadioComponent } from './components/radio/radio.component';
 import { PagingControlsComponent } from './components/paging-controls/paging-controls.component';
+import { VirtualScrollComponent } from './components/virtual-scroll/virtual-scroll.component';
 import { InvalidResultsTipComponent } from './components/invalid-results-tip/invalid-results-tip.component';
 import { ValidationMessageComponent } from './components/validation-message/validation-message.component';
 import { QuestionHelpTipComponent } from './components/question-help-tip/question-help-tip.component';
@@ -69,6 +70,7 @@ import { StopScreenScrollDirective } from './directives/stop-screen-scroll/stop-
 import { YaMetricDirective } from './directives/ya-metric/ya-metric.directive';
 import { OnlyNumbersDirective } from './directives/only-numbers/only-numbers.directive';
 import { DragAndDropDirective} from './directives/drag-and-drop/drag-and-drop.directive';
+import { VirtualForOfDirective } from './directives/virtual-for-of/virtual-for-of.directive';
 import { LimitNumberPipe } from './pipes/limit-number/limit-number.pipe';
 import { FormatPhonePipe } from './pipes/format-phone/format-phone.pipe';
 import { FormatTimePipe } from './pipes/format-time/format-time.pipe';
@@ -108,7 +110,7 @@ import { InformerMainComponent } from './components/informers/informer-main/info
 import { ThrobberHexagonComponent } from './components/throbber-hexagon/throbber-hexagon.component';
 import { AddressSaveModalComponent } from './components/address-save-modal/address-save-modal.component';
 import { BetaUrlPipe } from './pipes/beta-url/beta-url.pipe';
-import { ConvertSizePipe } from './pipes/convert-size.pipe';
+import { ConvertSizePipe } from './pipes/convert-size/convert-size.pipe';
 import { FileExtPipe } from './pipes/file-ext/file-ext.pipe';
 import { RemoveColonPipe } from './pipes/remove-colon/remove-colon.pipe';
 import { FileSizePipe } from './pipes/file-size/file-size.pipe';
@@ -187,6 +189,7 @@ registerLocaleData(localeRu, 'ru');
     CheckboxComponent,
     RadioComponent,
     PagingControlsComponent,
+    VirtualScrollComponent,
     InvalidResultsTipComponent,
     ValidationMessageComponent,
     QuestionHelpTipComponent,
@@ -206,6 +209,7 @@ registerLocaleData(localeRu, 'ru');
     YaMetricDirective,
     OnlyNumbersDirective,
     DragAndDropDirective,
+    VirtualForOfDirective,
     LimitNumberPipe,
     FormatPhonePipe,
     FormatTimePipe,
@@ -322,6 +326,7 @@ registerLocaleData(localeRu, 'ru');
     DatePickerComponent,
     LocationComponent,
     PagingControlsComponent,
+    VirtualScrollComponent,
     InvalidResultsTipComponent,
     ValidationMessageComponent,
     QuestionHelpTipComponent,
@@ -335,6 +340,7 @@ registerLocaleData(localeRu, 'ru');
     YaMetricDirective,
     OnlyNumbersDirective,
     DragAndDropDirective,
+    VirtualForOfDirective,
     LimitNumberPipe,
     FormatPhonePipe,
     FormatTimePipe,

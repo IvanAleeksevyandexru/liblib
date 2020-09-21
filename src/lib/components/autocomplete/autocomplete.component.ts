@@ -7,10 +7,11 @@ import { HelperService } from '../../services/helper/helper.service';
 import { ConstantsService } from '../../services/constants.service';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
+import { VirtualScrollComponent } from '../virtual-scroll/virtual-scroll.component';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { Translation, LineBreak } from '../../models/common-enums';
 import { FocusManager } from '../../services/focus/focus.manager';
-import { ListItemsService } from '../../services/list-item/list-items.service';
+import { ListItemsService, ListItemsVirtualScrollController } from '../../services/list-item/list-items.service';
 import { PositioningManager, PositioningRequest } from '../../services/positioning/positioning.manager';
 import { Width } from '../../models/width-height';
 import { from, Observable } from 'rxjs';
@@ -75,12 +76,14 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   // параметр поиска, перевод (виджет не переводит итемы, но передает провайдеру информацию о необходимости перевода)
   @Input() public translation: Translation | string = Translation.NONE;
   // источник значений для поиска
-  @Input() public autocompleteSuggestionProvider: AutocompleteSuggestionProvider | AutocompleteSuggestionPartialProvider;
+  @Input() public suggestionsProvider: AutocompleteSuggestionProvider | AutocompleteSuggestionPartialProvider;
   // постраничная подгрузка итемов в результатах и размер блока
   @Input() public incrementalLoading = false;
   @Input() public incrementalPageSize = ConstantsService.DEFAULT_ITEMS_INCREMENTAL_PAGE_SIZE;
   // смещение курсора в конце строки
   @Input() public moveFocusToEnd = false;
+  // виртуальный скролл, рендерится в dom лишь отображаемая часть списка (для больших списков)
+  @Input() public virtualScroll = false;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -93,8 +96,8 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
 
-  @ViewChild('scrollableArea', {static: false}) private scrollableArea: ElementRef;
-  @ViewChild('scrollComponent', {static: false}) private scrollComponent: PerfectScrollbarComponent;
+  @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
+  @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
   @ViewChild('searchBar', {static: false}) public searchBar: SearchBarComponent;
   @ViewChild('dropdownField', {static: false}) private valuesContainer: ElementRef;
   @ViewChild('dropdownList', {static: false}) private listContainer: ElementRef;
@@ -114,6 +117,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   public suggestionJustSelected = false;
   public control: AbstractControl;
   public positioningDescriptor: PositioningRequest = null;
+  public virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems.bind(this));
   public LineBreak = LineBreak;
   private insureSearchActiveToken = 0;
 
@@ -143,7 +147,6 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
           destroyOnScroll: true, destroyCallback: this.closeDropdown.bind(this)} as PositioningRequest;
         this.positioningManager.attach(this.positioningDescriptor);
       }
-      this.updateScrollBars();
       if (this.moveFocusToEnd) {
         this.putCursorAtEnd();
       }
@@ -264,7 +267,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
     if (this.onTouchedCallback) {
       this.onTouchedCallback();
     }
-    if (!this.autocompleteSuggestionProvider || query.length < this.queryMinSymbolsCount) {
+    if (!this.suggestionsProvider || query.length < this.queryMinSymbolsCount) {
       this.cancelSearchAndClose();
       return;
     }
@@ -294,10 +297,10 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
     const config = this.createSearchConfiguration();
     let promiseOrObservable = null;
     if (this.incrementalLoading) {
-      promiseOrObservable = (this.autocompleteSuggestionProvider as AutocompleteSuggestionPartialProvider)
+      promiseOrObservable = (this.suggestionsProvider as AutocompleteSuggestionPartialProvider)
         .searchPartial(query, this.partialPageNumber, config);
     } else {
-      promiseOrObservable = (this.autocompleteSuggestionProvider as AutocompleteSuggestionProvider).search(query, config);
+      promiseOrObservable = (this.suggestionsProvider as AutocompleteSuggestionProvider).search(query, config);
     }
     const activeSearch = promiseOrObservable instanceof Promise ?
       from(promiseOrObservable) : promiseOrObservable as Observable<Array<string | any>>;
@@ -307,10 +310,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
       activeSearch.subscribe((suggestions: Array<string | any>) => {
         this.searching = this.partialsLoading = false;
         if (this.insureSearchActiveToken === activeToken) {
-          this.processSuggestions(rootSearch, suggestions);
-          if (callback) {
-            callback();
-          }
+          this.processSuggestions(rootSearch, suggestions, callback);
         }
         this.changeDetector.detectChanges();
       }, e => {
@@ -322,7 +322,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
     this.changeDetector.detectChanges();
   }
 
-  public processSuggestions(rootSearch: boolean, suggestions: Array<string | any>) {
+  public processSuggestions(rootSearch: boolean, suggestions: Array<string | any>, callback?: () => void) {
     const newSuggestions = (suggestions || []).map((suggestion) => {
       return suggestion instanceof AutocompleteSuggestion ?
         suggestion as AutocompleteSuggestion : new AutocompleteSuggestion(suggestion, suggestion);
@@ -342,6 +342,19 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
     } else {
       this.suggestions = newSuggestions;
     }
+    const done = callback ? callback : () => {};
+    if (this.virtualScroll && this.valuesContainer) {
+      return this.listService.evaluateItemsSizeAsync(newSuggestions, this.valuesContainer.nativeElement.clientWidth, {}).subscribe(() => {
+        this.updateScrollHeight();
+        done();
+      });
+    } else {
+      done();
+    }
+  }
+
+  public getRenderedItems() {
+    return this.suggestions || [];
   }
 
   public updateSuggestion(query: string, item?: AutocompleteSuggestion) {
@@ -360,6 +373,14 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
       this.suggestion = suggestion ? suggestion.replace(/\s/g, '&nbsp;') : null;
     } else {
       this.clearTextSuggestion();
+    }
+  }
+
+  public updateScrollHeight() {
+    if (this.virtualScroll && this.virtualScrollComponent) {
+      const suggestions = this.suggestions || [];
+      const totalContentSize = suggestions.reduce((acc, item) => acc + item.getItemHeight(), 0);
+      this.virtualScrollComponent.setTotalContentSize(totalContentSize);
     }
   }
 
@@ -393,7 +414,8 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
     } else if (e.key === 'Escape') { // escape
       this.closeDropdown();
     } else if (this.expanded) { // стрелки
-      const navResult = this.listService.handleKeyboardNavigation(e, this.suggestions, this.highlighted, this.scrollableArea);
+      const navResult = this.listService.handleKeyboardNavigation(
+        e, this.suggestions, this.highlighted, this.virtualScrollComponent || this.scrollComponent);
       if (navResult && navResult !== true) {
         this.highlighted = navResult as AutocompleteSuggestion;
       }
@@ -407,6 +429,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
     } else {
       this.clearTextSuggestion();
     }
+    this.changeDetector.detectChanges();
   }
 
   public writeValue(value: string) {
@@ -439,12 +462,6 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
       queryMinSymbolsCount: this.queryMinSymbolsCount,
       partialPageSize: this.incrementalPageSize
     };
-  }
-
-  private updateScrollBars() {
-    if (this.scrollComponent) {
-      this.scrollComponent.directiveRef.update();
-    }
   }
 
 }
