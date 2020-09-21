@@ -55,6 +55,12 @@ export interface EsiaUser {
     elements: Vehicle[];
     size: number;
   };
+  selfEmployed?: {
+    confirmed: boolean;
+    confirmDate?: string;
+    vrfValStu?: string;
+  };
+
   // Кастомные поля
   level?: 1 | 2 | 3; // Уровень УЗ пользователя
   fullName?: string; // ФИО
