@@ -277,8 +277,7 @@ export class ConstantsService {
       name: 'PROFILE.TABS.BUSINESS',
       url: '/profile/business',
       access: ['AL20']
-    }
-    ,
+    },
     {
       id: 'statements',
       name: 'PROFILE.TABS.STATEMENTS',
@@ -370,8 +369,7 @@ export class ConstantsService {
   public readonly FEEDS_CATEGORIES = [
     {
       text: 'Все',
-      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,'
-        + 'APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION',
+      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN',
       id: 1,
       mnemonic: 'allEvents'
     },
@@ -401,7 +399,7 @@ export class ConstantsService {
     },
     {
       text: 'Системные',
-      type: 'BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,ELECTION_INFO,ORGANIZATION,ESIGNATURE',
+      type: 'BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE',
       id: 6,
       mnemonic: 'systemEvents'
     },
