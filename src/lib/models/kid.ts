@@ -1,4 +1,5 @@
 import { Document } from './document';
+import { InfoCardState } from './info-card-view';
 
 export interface Kid {
   eTag?: string;
@@ -14,12 +15,17 @@ export interface Kid {
   birthDate?: string;
   inn?: string;
   snils?: string;
-  birthCert?: Document;
-  type?: string;
   documents?: {
     eTag?: string;
     stateFacts?: string[];
     elements?: Document[];
     docs?: Document[];
   };
+  // кастомные поля
+  birthCert?: Document;
+  type?: string;
+  hasNewDoc?: boolean | string;
+  hasAccount?: boolean;
+  state?: InfoCardState;
+  statusMessage?: string;
 }
