@@ -1,0 +1,12 @@
+<div class="popup-wrapper">
+  <div class="popup">
+    <a class="close" (click)="onCancel()"></a>
+    <h4 class="title title-h2 mb-32" [innerHTML]="title | appTranslate"></h4>
+    <ng-container *ngFor="let item of items">
+      <div class="mb-24" *ngIf="item.value">
+        <div class="text-sub dark-gray" [innerHTML]="item.title | appTranslate"></div>
+        <div class="title-h5" [innerHTML]="item.value"></div>
+      </div>
+    </ng-container>
+  </div>
+</div>

@@ -96,6 +96,7 @@ import { SnippetsComponent } from './components/snippets/snippets.component';
 import { LimitStringPipe } from './pipes/limit-string/limit-string.pipe';
 import { DeclinePipe } from './pipes/decline/decline.pipe';
 import { ConfirmActionComponent } from './components/confirm-action/confirm-action.component';
+import { DocumentDetailsComponent } from './components/document-details/document-details.component';
 import { FeedsGepsComponent } from './components/feeds-geps/feeds-geps.component';
 import { DepartmentComponent } from './components/department/department.component';
 import { SocialShareComponent } from './components/social-share/social-share.component';
@@ -157,6 +158,7 @@ registerLocaleData(localeRu, 'ru');
     FooterCopyrightComponent,
     ModalSearchComponent,
     ConfirmActionComponent,
+    DocumentDetailsComponent,
     InfoCardComponent,
     SliderBannerComponent,
     StaticBannerComponent,
@@ -293,6 +295,7 @@ registerLocaleData(localeRu, 'ru');
     FooterCopyrightComponent,
     ModalSearchComponent,
     ConfirmActionComponent,
+    DocumentDetailsComponent,
     InfoCardComponent,
     SliderBannerComponent,
     StaticBannerComponent,
@@ -418,6 +421,7 @@ registerLocaleData(localeRu, 'ru');
     ModalSearchComponent,
     LocationComponent,
     ConfirmActionComponent,
+    DocumentDetailsComponent,
     DadataModalComponent,
     AddressSaveModalComponent,
     QuizComponent,
