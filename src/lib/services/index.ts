@@ -33,6 +33,7 @@ export * from './search/search.service';
 export * from './shared/shared.service';
 export * from './snippets/snippets.service';
 export * from './social-share/social-share.service';
+export * from './smu-events/smu-events.service';
 export * from './tabs/tabs.service';
 export * from './translate/translate.service';
 export * from './user-agent/user-agent.service';

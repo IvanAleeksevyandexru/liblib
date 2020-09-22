@@ -7,6 +7,7 @@ import { Document } from '../../models/document';
 import { Person, PersonData, User, Role } from '../../models/user';
 import { ConstantsService } from '../constants.service';
 import { HelperService } from '../helper/helper.service';
+import { SmuEventsService } from "../smu-events/smu-events.service";
 
 const EMPTY_CONFIG_STUB = {data: {user: {}}, attrs: {}, config: {}};
 
@@ -21,10 +22,12 @@ export class LoadService {
   public initializationStarted = false;
   private userTypeNA: BehaviorSubject<string> = new BehaviorSubject<string>('P');
   public userTypeNA$ = this.userTypeNA.asObservable();
+  public isEmbedded = new BehaviorSubject(false);
 
   constructor(
     private http: HttpClient,
-    private constants: ConstantsService
+    private constants: ConstantsService,
+    private smuEventsService: SmuEventsService
   ) {
   }
 
@@ -80,6 +83,8 @@ export class LoadService {
 
     this.params = params;
     this.setUserTypeNA();
+
+    this.isEmbedded.next(this.params.config.isEmbedded);
   }
 
   public load(context: string, ignoreConfigMissing = false): Promise<any> {
@@ -169,6 +174,12 @@ export class LoadService {
 
   public setUserTypeParams(newType: string) {
     this.user.typeParams = new UserTypeParams(newType);
+  }
+
+  public setIsEmbedded(val: boolean): void {
+    document.body.classList.add('web-view-mode');
+    this.smuEventsService.init();
+    this.isEmbedded.next(val);
   }
 
 }
