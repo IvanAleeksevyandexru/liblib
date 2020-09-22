@@ -278,8 +278,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         feed.feedType === 'ORDER' ||
         feed.feedType === 'CLAIM' ||
         feed.feedType === 'PARTNERS' ||
-        feed.feedType === 'COMPLEX_ORDER' ||
-        feed.feedType === 'BUSINESSMAN'
+        feed.feedType === 'COMPLEX_ORDER'
     ) {
       return feed.subTitle;
     }
@@ -291,8 +290,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         feed.feedType === 'ORDER' ||
         feed.feedType === 'CLAIM' ||
         feed.feedType === 'PARTNERS' ||
-        feed.feedType === 'COMPLEX_ORDER' ||
-        feed.feedType === 'BUSINESSMAN'
+        feed.feedType === 'COMPLEX_ORDER'
     ) {
       return feed.title;
     }
