@@ -211,6 +211,7 @@ export class FeedsService {
         url += 'settings/account';
         break;
       case 'ORGANIZATION':
+      case 'BUSINESSMAN':
         url += 'organization-feed';
         break;
       case 'ELECTION_INFO':

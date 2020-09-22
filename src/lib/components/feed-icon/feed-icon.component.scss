@@ -193,10 +193,16 @@
   }
 
   .status-executed {
-    background-image: url('../../../assets/svg/statuses/briefcase-gray.svg');
+    background-image: url('../../../assets/svg/statuses/briefcase-green.svg');
   }
 
-  .status-done {
+  .status-reject {
+    background-image: url('../../../assets/svg/statuses/briefcase-gray.svg');
+  }
+}
+
+.feed-BUSINESSMAN{
+  .status-reject {
     background-image: url('../../../assets/svg/statuses/tie-gray.svg');
   }
 }
