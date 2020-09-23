@@ -2,45 +2,45 @@
      (clickOutside)="cancelSearchAndClose()" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="lookup-field" #lookupField [ngClass]="{expanded: expanded, invalid: invalidDisplayed, 'with-expand-button': showExpandCollapse}">
     <lib-search-bar #searchBar
-      contextClass="lookup-input"
-      [tabIndex]="tabIndex"
-      [maxlength]="maxlength"
-      [disabled]="disabled"
-      [invalid]="invalid"
-      [placeholder]="htmlPlaceholder ? null : placeholder"
-      [clearable]="clearable"
-      [validationShowOn]="validationShowOn"
-      [showMagnifyingGlass]="showMagnifyingGlass"
-      [showSearching]="showSearching"
-      [queryTimeout]="queryTimeout"
-      [queryMinSymbolsCount]="queryMinSymbolsCount"
-      [parallelSearch]="false"
-      [searchOnProgrammaticChange]="false"
-      [searchOnlyIfFocused]="true"
-      [searchOnFocus]="searchOnFocus"
-      [searchByForcing]="false"
-      [searchByTextInput]="true"
-      [showStaticContent]="item || htmlPlaceholder"
-      [forceShowStaticContent]="forceShowStatic"
-      [suggestion]="showSuggestion ? suggestion : null"
-      [(ngModel)]="query"
-      (newSearch)="lookupItems($event)"
-      (forcedSearch)="forceSearch($event.query, $event.byEnter)"
-      [searching]="searching"
-      (focus)="handleFocus()"
-      (blur)="handleBlur()"
-      (click)="lookupItemsOrClose()"
-      (input)="showTextField()"
-      (keydown)="handleKeydownNavigation($event)"
-      (cleared)="clearInput()"
-      (suggestionSelected)="selectSuggestion($event)">
-        <div class="lookup-item" *ngIf="item">
-          <div *ngIf="escapeHtml" class="item-container">{{item.formatted}}</div>
-          <div *ngIf="!escapeHtml" class="item-container" [innerHTML]="item.formatted | safeHtml"></div>
-        </div>
-        <ng-container *ngIf="!item && htmlPlaceholder">
-          <div [innerHTML]="htmlPlaceholder | safeHtml"></div>
-        </ng-container>
+                    contextClass="lookup-input"
+                    [tabIndex]="tabIndex"
+                    [maxlength]="maxlength"
+                    [disabled]="disabled"
+                    [invalid]="invalid"
+                    [placeholder]="htmlPlaceholder ? null : placeholder"
+                    [clearable]="clearable"
+                    [validationShowOn]="validationShowOn"
+                    [showMagnifyingGlass]="showMagnifyingGlass"
+                    [showSearching]="showSearching"
+                    [queryTimeout]="queryTimeout"
+                    [queryMinSymbolsCount]="queryMinSymbolsCount"
+                    [parallelSearch]="false"
+                    [searchOnProgrammaticChange]="false"
+                    [searchOnlyIfFocused]="true"
+                    [searchOnFocus]="searchOnFocus"
+                    [searchByForcing]="false"
+                    [searchByTextInput]="true"
+                    [showStaticContent]="item || htmlPlaceholder"
+                    [forceShowStaticContent]="forceShowStatic"
+                    [suggestion]="showSuggestion ? suggestion : null"
+                    [(ngModel)]="query"
+                    (newSearch)="lookupItems($event)"
+                    (forcedSearch)="forceSearch($event.query, $event.byEnter)"
+                    [searching]="searching"
+                    (focus)="handleFocus()"
+                    (blur)="handleBlur()"
+                    (click)="lookupItemsOrClose()"
+                    (input)="showTextField()"
+                    (keydown)="handleKeydownNavigation($event)"
+                    (cleared)="clearInput()"
+                    (suggestionSelected)="selectSuggestion($event)">
+      <div class="lookup-item" *ngIf="item">
+        <div *ngIf="escapeHtml" class="item-container">{{item.formatted}}</div>
+        <div *ngIf="!escapeHtml" class="item-container" [innerHTML]="item.formatted | safeHtml"></div>
+      </div>
+      <ng-container *ngIf="!item && htmlPlaceholder">
+        <div [innerHTML]="htmlPlaceholder | safeHtml"></div>
+      </ng-container>
     </lib-search-bar>
     <div class="expand-collapse" *ngIf="showExpandCollapse" [ngClass]="{expanded: expanded}" (click)="lookupItemsOrClose(true)"></div>
   </div>

@@ -17,6 +17,7 @@
     padding-right: 16px;
     color: #393F45;
     outline: none;
+    text-overflow: ellipsis;
     &.shadowed { // элемент перекрыт статичным контентом и не должен быть видим
       position: absolute;
       width: 0;

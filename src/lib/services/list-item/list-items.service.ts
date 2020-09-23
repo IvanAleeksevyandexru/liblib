@@ -215,7 +215,7 @@ export class ListItemsService implements OnInit, OnDestroy {
       const listItem = item as ListItem;
       return !listItem.hidden && (this.isSelectable(item) ||
         (fromKeyboard && this.operationsContext.collapsableGroups ? listItem.collapsable : false));
-   } else {
+    } else {
       return this.isSelectable(item);
     }
   }

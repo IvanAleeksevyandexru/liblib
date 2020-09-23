@@ -2,7 +2,7 @@ import {
   Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnChanges, OnDestroy, DoCheck,
   SimpleChanges, forwardRef, ElementRef, ViewChild, ChangeDetectorRef, Optional, Host, SkipSelf } from '@angular/core';
 import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
@@ -32,7 +32,7 @@ class ScheduledSearch {
   }]
 })
 export class SearchBarComponent
-    implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated {
+  implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated {
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -172,8 +172,8 @@ export class SearchBarComponent
     this.check();
   }
 
-   // вызывается только внутри компонента
-   public runOrPostponeSearch(query: string, forcedWithKey = false, forcedWithMagnifyingGlass = false) {
+  // вызывается только внутри компонента
+  public runOrPostponeSearch(query: string, forcedWithKey = false, forcedWithMagnifyingGlass = false) {
     if (forcedWithMagnifyingGlass) {
       this.returnFocus();
     }

@@ -37,6 +37,10 @@
     width: 0;
     height: 0;
   }
+
+  &::placeholder {
+    color: #515a63;
+  }
 }
 
 input.text-input {

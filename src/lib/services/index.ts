@@ -1,3 +1,4 @@
+export * from './accesses/accesses.service';
 export * from './auth/auth.service';
 export * from './banners/banners.service';
 export * from './breadcrumbs/breadcrumbs.service';

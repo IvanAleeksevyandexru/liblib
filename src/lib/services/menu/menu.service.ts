@@ -4,6 +4,7 @@ import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
 import { Category } from '../../models/category';
 import { CookieService } from '../cookie/cookie.service';
+import { AccessesService } from '../accesses/accesses.service';
 
 const HASH = Math.random();
 
@@ -15,7 +16,8 @@ export class MenuService {
   constructor(
     private loadService: LoadService,
     private http: HttpClient,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private accessesService: AccessesService,
   ) {
   }
 
@@ -52,16 +54,28 @@ export class MenuService {
 
     switch (this.loadService.attributes.appContext) {
       case 'PARTNERS':
-        links = [{
-          url: '/service-centers',
-          title: 'HEADER.MENU.SERVICE_CENTERS'
-        }, {
-          url: '/access-groups',
-          title: 'HEADER.MENU.ACCESS_GROUPS'
-        }, {
-          url: '/systems',
-          title: 'HEADER.MENU.SYSTEMS'
-        }];
+        if (this.accessesService.getAccessTech()) {
+          if (this.accessesService.getAccess('ra')) {
+            links.push({
+              url: '/service-centers',
+              title: 'HEADER.MENU.SERVICE_CENTERS'
+            });
+          }
+          links.push({
+            url: '/powers',
+            title: 'HEADER.MENU.POWERS'
+          });
+          if (this.accessesService.getAccess('csg')) {
+            links.push({
+              url: '/access-groups',
+              title: 'HEADER.MENU.ACCESS_GROUPS'
+            });
+          }
+          links.push({
+            url: '/systems',
+            title: 'HEADER.MENU.SYSTEMS'
+          });
+        }
         break;
       case 'LK':
         links = [{
