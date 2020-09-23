@@ -63,6 +63,20 @@
     "NOVEMBER": "Ноябрь",
     "DECEMBER": "Декабрь"
   },
+  "MONTHS_SHORT": {
+    "JANUARY": "Янв",
+    "FEBRUARY": "Фев",
+    "MARCH": "Мар",
+    "APRIL": "Апр",
+    "MAY": "Май",
+    "JUNE": "Июн",
+    "JULY": "Июл",
+    "AUGUST": "Авг",
+    "SEPTEMBER": "Сен",
+    "OCTOBER": "Окт",
+    "NOVEMBER": "Ноя",
+    "DECEMBER": "Дек"
+  },
   "DADATA": {
     "SPECIFY": "Уточнить адрес",
     "DELETE": "Удалить",
@@ -303,6 +317,9 @@
   },
   "RANGE_FIELD": {
     "TITLE": "Выберите диапазон дат"
+  },
+  "MONTH_SELECT": {
+    "TILL_NOW": "По настоящее время"
   },
   "FILTERED_LIST": {
     "NOTHING_FOUND": "По запросу <b>%0</b> &mdash; ничего не найдено"

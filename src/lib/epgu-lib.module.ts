@@ -46,6 +46,7 @@ import { BaseMaskedInputComponent } from './components/base-masked-input/base-ma
 import { StandardMaskedInputComponent } from './components/standard-masked-input/standard-masked-input.component';
 import { DatePickerComponent } from './components/date-picker/date-picker.component';
 import { MonthYearSelectComponent } from './components/month-year-select/month-year-select.component';
+import { MonthPickerComponent } from './components/month-picker/month-picker.component';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { DropdownSimpleComponent } from './components/dropdown-simple/dropdown-simple.component';
 import { LookupComponent } from './components/lookup/lookup.component';
@@ -179,6 +180,7 @@ registerLocaleData(localeRu, 'ru');
     StandardMaskedInputComponent,
     DatePickerComponent,
     MonthYearSelectComponent,
+    MonthPickerComponent,
     DropdownComponent,
     DropdownSimpleComponent,
     LookupComponent,
@@ -326,6 +328,7 @@ registerLocaleData(localeRu, 'ru');
     CheckboxComponent,
     RadioComponent,
     MonthYearSelectComponent,
+    MonthPickerComponent,
     DatePickerComponent,
     LocationComponent,
     PagingControlsComponent,

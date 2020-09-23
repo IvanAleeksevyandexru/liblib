@@ -7,7 +7,7 @@ const MIN_MONTH = 0;
 const MAX_MONTH = 11;
 export const MODEL_DATE_FORMAT = ConstantsService.CALENDAR_TEXT_MODEL_FORMAT;
 const DATE_PATTERN = /(\d{1, 2})\.(\d{1, 2})\.(\d{1, 4})/;
-const MONTHS_CODES =
+export const MONTHS_CODES =
     ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY',
     'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 // рейндж для дат от..до из строкового или датного представления, строковый формат всегда дд.мм.гггг
