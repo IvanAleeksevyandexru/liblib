@@ -83,8 +83,9 @@ export class LoadService {
 
     this.params = params;
     this.setUserTypeNA();
-
-    this.isEmbedded.next(this.params.config.isEmbedded);
+    if (this.params.config.isEmbedded) {
+      this.setIsEmbedded(true);
+    }
   }
 
   public load(context: string, ignoreConfigMissing = false): Promise<any> {
