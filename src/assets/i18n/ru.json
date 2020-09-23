@@ -302,6 +302,19 @@
   "RANGE_FIELD": {
     "TITLE": "Выберите диапазон дат"
   },
+  "ROLE_CHANGE": {
+    "CURRENT" : "Текущая роль",
+    "CREATE_BUSINESS" : "Создать учетную запись предпринимателя",
+    "CREATE_AGENCY" : "Создать учетную запись организации",
+    "SEARCH" : "Поиск",
+    "EMPTY_LIST" : "По вашему запросу ничего не найдено",
+    "TYPES" : {
+      "EMPLOYEE" : "Сотрудник",
+      "PRIVATE" : "Частное лицо",
+      "SUPERVISOR" : "Руководитель",
+      "BUSINESSMAN" : "Предприниматель"
+    }
+  },
   "FILTERED_LIST": {
     "NOTHING_FOUND": "По запросу <b>%0</b> &mdash; ничего не найдено"
   },
