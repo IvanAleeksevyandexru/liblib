@@ -33,6 +33,8 @@ export class RoleChangeComponent implements OnInit {
   public total: number;
   public urlPage: string;
 
+  private appContext = this.loadService.attributes.appContext;
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -109,7 +111,7 @@ export class RoleChangeComponent implements OnInit {
         _: Math.random().toString()
       }
     }).subscribe(response => {
-      if (prevRole.type === 'PRIVATE' && role.type !== 'PRIVATE') {
+      if (prevRole.type === 'PRIVATE' && role.type !== 'PRIVATE' && this.appContext !== 'PARTNERS') {
         this.redirectsService.redirectToOrganizationView();
       } else {
         window.location.href = '/';
