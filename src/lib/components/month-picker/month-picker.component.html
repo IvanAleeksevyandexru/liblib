@@ -31,7 +31,7 @@
           <div class="item-content">{{month.text | libTranslate}}</div>
         </div>
       </div>
-      <div class="till-now-panel" *ngIf="tillNowAvailable">
+      <div class="till-now-panel" *ngIf="tillNowAvailable && !hideTillNowAvailable">
         <div class="till-now-checkbox" [class.selected]="tillNowSelected" (click)="selectTillNow()"></div>
         <div class="till-now-text">{{'MONTH_SELECT.TILL_NOW' | libTranslate}}</div>
       </div>

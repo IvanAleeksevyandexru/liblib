@@ -60,6 +60,7 @@ export class MonthPickerComponent
   @Input() public width?: Width | string;
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
+  @Input() public hideTillNowAvailable?: boolean;
 
   @Input() public align: Align | string = Align.RIGHT; // выравнивание панели если панель не равна по ширине инпуту
   @Input() public minMonth: MonthYear = MonthYear.fromDate(moment().startOf('year').toDate());
