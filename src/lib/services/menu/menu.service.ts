@@ -129,12 +129,13 @@ export class MenuService {
   }
 
   public getStaticItemUrls(): object {
-    const lkUrl = this.loadService.attributes.appContext === 'LK' ? '/' : this.loadService.config.lkUrl;
+    const appContext = this.loadService.attributes.appContext;
+    const lkUrl = appContext === 'LK' ? '/' : this.loadService.config.lkUrl;
 
     return {
       'HEADER.PERSONAL_AREA': `${lkUrl}overview`,
       'HEADER.MENU.SETTINGS': `${lkUrl}settings/account`,
-      'HEADER.MENU.LOGIN_ORG': `${lkUrl}roles`
+      'HEADER.MENU.LOGIN_ORG': `${appContext === 'PARTNERS' ? '/' : lkUrl}roles`
     };
   }
 
