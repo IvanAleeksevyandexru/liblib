@@ -470,7 +470,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
 
-    if (feed.feedType === 'ORGANIZATION' || feed.feedType === 'BUSINESSMAN' ||  feed.feedType === 'ACCOUNT_CHILD') {
+    if (['ORGANIZATION', 'BUSINESSMAN', 'ACCOUNT_CHILD', 'PAYMENT'].includes(feed.feedType)) {
       this.feedsService.markFeedAsRead(feed.id).subscribe();
     }
 
