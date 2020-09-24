@@ -59,6 +59,10 @@ export class GosbarService {
         this.popupLocation();
       } else if (regionData) {
 
+        if (manager) {
+          manager.setLocationLabel(regionData.name);
+        }
+
         this.sharedService.send('regionData', regionData);
 
         this.locationService.userSelectedRegionCode = regionData.code;
