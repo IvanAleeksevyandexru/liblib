@@ -7,6 +7,7 @@ import { Document } from '../../models/document';
 import { Person, PersonData, User, Role } from '../../models/user';
 import { ConstantsService } from '../constants.service';
 import { HelperService } from '../helper/helper.service';
+import { SmuEventsService } from "../smu-events/smu-events.service";
 
 const EMPTY_CONFIG_STUB = {data: {user: {}}, attrs: {}, config: {}};
 
@@ -19,10 +20,14 @@ export class LoadService {
   public avatar: BehaviorSubject<Avatar>;
   public loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public initializationStarted = false;
+  private userTypeNA: BehaviorSubject<string> = new BehaviorSubject<string>('P');
+  public userTypeNA$ = this.userTypeNA.asObservable();
+  public isEmbedded = new BehaviorSubject(false);
 
   constructor(
     private http: HttpClient,
-    private constants: ConstantsService
+    private constants: ConstantsService,
+    private smuEventsService: SmuEventsService
   ) {
   }
 
@@ -80,6 +85,10 @@ export class LoadService {
     }
 
     this.params = params;
+    this.setUserTypeNA();
+    if (this.params.config.isEmbedded) {
+      this.setIsEmbedded(true);
+    }
   }
 
   public load(context: string, ignoreConfigMissing = false): Promise<any> {
@@ -123,6 +132,18 @@ export class LoadService {
 
   }
 
+  public setUserTypeNA(newType?: string): void {
+    if (!this.user.authorized) {
+      if (newType) {
+        this.userTypeNA.next(newType);
+      } else {
+        const route = location.pathname;
+        const type = route === '/legal-entity' ? 'L' : route === '/entrepreneur' ? 'B' : 'P';
+        this.userTypeNA.next(type);
+      }
+    }
+  }
+
   public setInitializationStarted() {
     this.initializationStarted = true;
   }
@@ -153,6 +174,16 @@ export class LoadService {
 
   public setAvatar(avatar: Avatar) {
     this.avatar.next(avatar);
+  }
+
+  public setUserTypeParams(newType: string) {
+    this.user.typeParams = new UserTypeParams(newType);
+  }
+
+  public setIsEmbedded(val: boolean): void {
+    document.body.classList.add('web-view-mode');
+    this.smuEventsService.init();
+    this.isEmbedded.next(val);
   }
 
 }

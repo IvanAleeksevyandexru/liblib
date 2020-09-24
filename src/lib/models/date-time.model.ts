@@ -1,6 +1,6 @@
 import { ListItem } from './dropdown.model';
 import { ConstantsService } from '../services/constants.service';
-import * as moment_ from 'moment';
+import * as moment_ from 'moment/min/moment.min.js';
 
 const moment = moment_;
 const MIN_MONTH = 0;

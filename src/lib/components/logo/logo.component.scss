@@ -5,6 +5,8 @@
   margin-top: 3px;
   background: url(../../../assets/svg/main-logo.svg) no-repeat;
   background-size: contain;
+  text-indent: 100%;
+  overflow: hidden;
 }
 @media all and (min-width: 768px) {
   .logo {
@@ -16,5 +18,16 @@
 @media all and (min-width: 1140px) {
   .logo {
     margin-top: 3px;
+  }
+}
+
+:host-context(.app-portal) {
+  .logo {
+    display: block;
+    height: 32px;
+    width: 152px;
+    margin-top: 11px;
+    background: url(../../../assets/svg/main-logo.svg) no-repeat;
+    background-size: contain;
   }
 }

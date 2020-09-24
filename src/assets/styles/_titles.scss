@@ -74,9 +74,11 @@
     cursor: pointer;
   }
 }
+
 .green {
   color: #317D34;
 }
+
 .white {
   color: #FFFFFF;
 }
@@ -222,6 +224,7 @@
 .green {
   color: #317d34;
 }
+
 .white {
   color: #fff;
 }
@@ -271,5 +274,135 @@
   .small-text {
     font-size: 14px;
     line-height: 20px;
+  }
+}
+
+.app-portal {
+  .title-h2,
+  .title-h3,
+  .title-h5,
+  .title-h6,
+  .text-plain,
+  .text-help,
+  .text-sub,
+  .link-plain,
+  .label-plain {
+    font-family: Lato, Arial, sans-serif, -apple-system;
+    color: #0B1F33;
+
+    &.red {
+      color: #DF0024;
+    }
+  }
+
+  .title-h5,
+  .title-h6 {
+    &.blue {
+      color: #0D4CD3;
+    }
+  }
+
+  .blue {
+    color: #0D4CD3;
+  }
+
+  .gray {
+    color: #66727F;
+  }
+
+  .red {
+    color: #DF0024;
+  }
+
+  .link-plain {
+    color: #0D4CD3;
+
+    &:hover {
+      color: #0B40B3;
+    }
+  }
+
+  .title-h1, .title-h2, .title-h3, .title-h4, .title-h5, .title-h6, .title-h0, .page-title {
+    font-weight: 600;
+
+    &.normal {
+      font-weight: 400;
+    }
+  }
+
+  .title-h1 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .title-h2 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .title-h3 {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .title-h4, .title-h5 {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .title-h6 {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .text-plain,
+  .text-help,
+  .text-sub,
+  .link-plain,
+  .label-plain {
+    font-size: 16px;
+    line-height: 24px;
+
+    //&.big {
+    //  font-size: 16px;
+    //  line-height: 24px;
+    //}
+  }
+
+  .small-text {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .text-sub {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  @media all and (min-width: 768px) {
+    .title-h0 {
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    .title-h1 {
+      font-size: 36px;
+      line-height: 40px;
+    }
+
+    .title-h2, .page-title {
+      font-size: 32px;
+      line-height: 40px;
+    }
+
+    .title-h3 {
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    .title-h4 {
+      font-size: 20px;
+      line-height: 24px;
+    }
   }
 }

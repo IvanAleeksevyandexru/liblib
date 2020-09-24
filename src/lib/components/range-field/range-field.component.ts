@@ -14,7 +14,7 @@ import { Subscription, Observer } from 'rxjs';
 import { HelperService } from '../../services/helper/helper.service';
 import { DatesHelperService } from '../../services/dates-helper/dates-helper.service';
 import { ConstantsService } from '../../services/constants.service';
-import * as moment_ from 'moment';
+import * as moment_ from 'moment/min/moment.min.js';
 const moment = moment_;
 
 const MODEL_FORMAT = ConstantsService.CALENDAR_TEXT_MODEL_FORMAT;

@@ -4,7 +4,7 @@ import { LoadService } from '../../services/load/load.service';
 import { Router } from '@angular/router';
 import { FeedsService } from '../../services/feeds/feeds.service';
 import { SnippetsService } from '../../services/snippets/snippets.service';
-import * as moment_ from 'moment';
+import * as moment_ from 'moment/min/moment.min.js';
 import { DeclinePipe } from '../../pipes/decline/decline.pipe';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 
