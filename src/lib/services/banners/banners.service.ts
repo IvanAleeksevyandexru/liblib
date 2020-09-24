@@ -45,6 +45,18 @@ export class BannersService {
     }).pipe();
   }
 
+  public closeStaticBanner(bannerMnemonic: string): void {
+    let closedBanners = this.cookieService.get('closedBanners');
+
+    closedBanners = closedBanners ? `${closedBanners},${bannerMnemonic}` : bannerMnemonic;
+    this.cookieService.set('closedBanners', closedBanners);
+  }
+
+  public isStaticBannerClosed(bannerMnemonic: string): boolean {
+    const closedBanners = this.cookieService.get('closedBanners');
+    return closedBanners ? closedBanners.split(',').indexOf(bannerMnemonic) >= 0 : false;
+  }
+
   public buildPath(bannerPlace: string, mnemonic: string): string {
     return bannerPlace + '.' + mnemonic;
   }
