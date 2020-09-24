@@ -6,10 +6,9 @@ import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCES
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
-import { DatesHelperService } from '../../services/dates-helper/dates-helper.service';
 import { DragDropBinding, DragDropType, DragDropDirection, DragDropOffsetType, DragState } from '../../models/drag-drop.model';
 import { DragDropManager } from '../../services/drag-drop/drag-drop.manager';
-import { AnimationBuilder, AnimationPlayer, style, animate } from '@angular/animations';
+import { AnimationBuilder, style, animate } from '@angular/animations';
 import { Width } from '../../models/width-height';
 import { Align } from '../../models/common-enums';
 import { MonthYear, MONTHS_CODES } from '../../models/date-time.model';
@@ -208,6 +207,7 @@ export class MonthPickerComponent
     this.activeMonthYear = value;
     this.selectedYearChanged = false;
     this.changeDetection.detectChanges();
+    this.changed.emit(this.activeMonthYear);
     setTimeout(() => this.closeDropdown(), DELAY);
   }
 
