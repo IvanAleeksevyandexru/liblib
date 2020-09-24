@@ -8,11 +8,13 @@ import { FocusManager } from '../../services/focus/focus.manager';
 import { Translation, InconsistentReaction, LineBreak } from '../../models/common-enums';
 import { HelperService } from '../../services/helper/helper.service';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
-import { ListItemsService, FixedItemsProvider, ListItemsOperationsContext } from '../../services/list-item/list-items.service';
+import { ListItemsService, ListItemsOperationsContext,
+  FixedItemsProvider, ListItemsVirtualScrollController } from '../../services/list-item/list-items.service';
 import { ListItem, ListElement, ListItemConverter, LookupProvider, LookupPartialProvider } from '../../models/dropdown.model';
 import { ConstantsService } from '../../services/constants.service';
 import { PositioningManager, PositioningRequest } from '../../services/positioning/positioning.manager';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
+import { VirtualScrollComponent } from '../virtual-scroll/virtual-scroll.component';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { Width } from '../../models/width-height';
 
@@ -94,6 +96,8 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   // постраничная подгрузка итемов в результатах и размер блока
   @Input() public incrementalLoading = false;
   @Input() public incrementalPageSize = ConstantsService.DEFAULT_ITEMS_INCREMENTAL_PAGE_SIZE;
+  // виртуальный скролл, рендерится в dom лишь отображаемая часть списка (для больших списков)
+  @Input() public virtualScroll = false;
   // включает возможность сворачивать-разворачивать группы элементов, tree-like view
   @Input() public collapsableGroups = false;
   // включает-отключает возможность выбирать группировочные элементы
@@ -140,13 +144,14 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   public suggestion: string;
   public suggested: ListItem;
   public suggestionJustSelected = false;
+  public virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems.bind(this));
   public LineBreak = LineBreak;
   private insureSearchActiveToken = 0;
   // компонент может работать на заданном фиксированном списке значений или не внешнем поиске
   public fixedItemsProvider = new FixedItemsProvider();
 
-  @ViewChild('scrollableArea') private scrollableArea: ElementRef;
   @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
+  @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
   @ViewChild('searchBar', {static: false}) private searchBar: SearchBarComponent;
   @ViewChild('lookupField') private fieldContainer: ElementRef;
   @ViewChild('lookupList', {static: false}) private listContainer: ElementRef;
@@ -163,21 +168,13 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   }
 
   public ngOnChanges(changes: SimpleChanges) {
-    for (const propName of Object.keys(changes)) {
-      switch (propName) {
-        case 'formatter':
-        case 'listFormatter':
-        case 'converter':
-        case 'translation': {
-          this.update();
-          break;
-        }
-        case 'itemsProvider':
-        case 'fixedItems': {
-          this.setItems(this.itemsProvider ? [] : this.fixedItems, !!this.itemsProvider);
-          break;
-        }
-      }
+    const updateKeys = ['formatter', 'listFormatter', 'converter', 'translation', 'virtualScroll'];
+    const setItemsKeys = ['itemsProvider', 'fixedItems'];
+    const keys = Object.keys(changes);
+    if (updateKeys.some((updateKey) => keys.includes(updateKey))) {
+      this.update();
+    } else if (setItemsKeys.some((setItemsKey) => keys.includes(setItemsKey))) {
+      this.setItems(this.itemsProvider ? [] : this.fixedItems, !!this.itemsProvider);
     }
     this.check();
   }
@@ -192,7 +189,8 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
       highlightCaseSensitive: this.searchCaseSensitive,
       highligthFromStartOnly: this.searchFromStartOnly || this.truncateSubstring,
       collapsableGroups: this.collapsableGroups,
-      virtualGroups: this.virtualGroups
+      virtualGroups: this.virtualGroups,
+      virtualScroll: this.virtualScroll
     } as ListItemsOperationsContext);
     this.setItems(this.itemsProvider ? [] : this.fixedItems, !!this.itemsProvider);
     this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
@@ -250,7 +248,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   }
 
   public setItems(value: Array<any>, consistencyCheck = true) {
-    this.prepareItems(value, 0, null, false, (newItems: Array<ListItem>) => {
+    this.prepareItems(value, 0, null, false, true, (newItems: Array<ListItem>) => {
       this.internalFixedItems = newItems;
       this.items = [];
       if (consistencyCheck && this.item) {
@@ -316,6 +314,10 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     });
   }
 
+  public getRenderedItems() {
+    return this.items || [];
+  }
+
   public loadNextPartial() {
     if (this.incrementalLoading && !this.partialsLoaded && this.expanded) {
       this.runSearchOrIncrementalSearch(false, this.activeQuery);
@@ -364,10 +366,10 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
 
   // все что prepareItems + запись в список отображения
   public processNewItems(rootSearch: boolean, items: Array<any>) {
-    this.prepareItems(items, this.items.length, this.activeQuery, false, (newItems: Array<ListItem>) => {
+    this.prepareItems(items, this.items.length, this.activeQuery, false, !!this.itemsProvider, (newItems: Array<ListItem>) => {
       if (this.incrementalLoading) {
         if (newItems.length) {
-          this.items = this.items.concat(newItems);
+          this.items = rootSearch ? newItems : this.items.concat(newItems);
           this.partialPageNumber++;
         } else {
           this.partialsLoaded = true;
@@ -376,6 +378,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
         this.items = newItems;
       }
       this.listService.alignGroupsTreeIfNeeded(this.items, this.itemsProvider ? this.items : this.internalFixedItems);
+      this.updateScrollHeight();
       this.listed.emit(this.items);
     });
   }
@@ -390,7 +393,6 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
           destroyOnScroll: true, destroyCallback: this.closeDropdown.bind(this)} as PositioningRequest;
         this.positioningManager.attach(this.positioningDescriptor);
       }
-      this.updateScrollBars();
       this.opened.emit();
     }
   }
@@ -433,7 +435,8 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     } else if (e.key === 'Escape') { // escape
       this.closeDropdown();
     } else if (this.expanded) { // стрелки
-      const navResult = this.listService.handleKeyboardNavigation(e, this.items, this.highlighted, this.scrollableArea);
+      const navResult = this.listService.handleKeyboardNavigation(
+        e, this.items, this.highlighted, this.virtualScrollComponent || this.scrollComponent);
       if (navResult && navResult !== true) {
         this.highlighted = navResult as ListItem;
       }
@@ -494,7 +497,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     this.clearSuggestion();
     if (value) {
       this.item = this.listService.createListItem(value);
-      this.prepareItems([this.item], null, null, true, () => {
+      this.prepareItems([this.item], null, null, true, false, () => {
         this.restoreQuery();
       });
     } else {
@@ -518,22 +521,37 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   }
 
   public updateFormatting() {
-    this.prepareItems(this.internalFixedItems, 0, null, true);
+    this.prepareItems(this.internalFixedItems, 0, null, true, true);
     this.prepareItems(this.item ? [this.item] : [], null, null, true);
+  }
+
+  public updateScrollHeight() {
+    if (this.virtualScroll && this.virtualScrollComponent) {
+      const items = this.items || [];
+      const totalContentSize = items.reduce((acc, item) => acc + item.getItemHeight(), 0);
+      this.virtualScrollComponent.setTotalContentSize(totalContentSize);
+    }
   }
 
   // конвертация, перевод, форматирование и подсветка подстроки
   private prepareItems(items: Array<any | ListItem>, initialIndex = 0, highlightQuery: string | {} | null,
-                       forceTranslate = false, callback?: (items?: Array<ListItem>) => void) {
+                       forceTranslate = false, refreshHeight = false, callback?: (items?: Array<ListItem>) => void) {
     const query = highlightQuery === null ? null : (highlightQuery === SHOW_ALL_MARKER ? '' : highlightQuery as string);
     const indexing = {noIndex: initialIndex === null, indexBase: initialIndex || undefined};
     const newItems = this.listService.createListItems(items, indexing);
     this.listService.translateFormat(newItems, forceTranslate, indexing).subscribe((formattedItems: Array<ListItem>) => {
       this.listService.highlightSubstring(formattedItems, query);
-      if (callback) {
-        callback(formattedItems);
+      const done = () => {
+        if (callback) {
+          callback(formattedItems);
+        }
+        this.changeDetector.detectChanges();
+      };
+      if (this.virtualScroll && this.fieldContainer && refreshHeight) {
+        this.listService.evaluateItemsSizeAsync(formattedItems, this.fieldContainer.nativeElement.clientWidth, {}).subscribe(done);
+      } else {
+        done();
       }
-      this.changeDetector.detectChanges();
     });
   }
 
@@ -545,12 +563,6 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     this.restoreQuery();
     if (this.query !== query && this.clearInconsistent === InconsistentReaction.RESET) {
       this.selectItem(null, true);  // сбрасываем итем если текст был изменен и более не соответствует модельному итему
-    }
-  }
-
-  private updateScrollBars() {
-    if (this.scrollComponent) {
-      this.scrollComponent.directiveRef.update();
     }
   }
 

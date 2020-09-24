@@ -76,6 +76,9 @@ export class LoadService {
           user.level = 1;
         }
       }
+
+      user.isKid = user.type === 'K' || user.personType === 'KD' || user.assuranceLevel === 'AL13';
+
     } else {
       user.authorized = false;
       user.typeParams = new UserTypeParams('');

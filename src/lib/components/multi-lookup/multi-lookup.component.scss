@@ -103,8 +103,11 @@
       }
       .search-field {
         margin-top: 5px;
-        ::ng-deep .search-field.lookup-input .search-input {
-          padding-left: 0;
+        ::ng-deep .search-field.lookup-input {
+          display: block;
+          .search-input {
+            padding-left: 0;
+          }
         }
       }
       .dropdown-value:nth-last-child(2) {

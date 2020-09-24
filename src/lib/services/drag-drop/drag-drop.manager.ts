@@ -99,9 +99,9 @@ export class DragDropManager {
       request.dragStart(state);
     }
     this.createTemporaryListeners(mouseInitiated, state);
-    const evt = mouseEvt || touchEvt;
-    evt.preventDefault();
-    evt.stopPropagation();
+    // const evt = mouseEvt || touchEvt;
+    // evt.preventDefault();
+    // evt.stopPropagation();
   }
 
   private createTemporaryListeners(mouseInitiated: boolean, state: DragState) {

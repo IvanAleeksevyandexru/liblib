@@ -278,10 +278,10 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   public setHeader(feed: FeedModel): string {
     if (feed.feedType === 'GEPS' ||
-      feed.feedType === 'ORDER' ||
-      feed.feedType === 'CLAIM' ||
-      feed.feedType === 'PARTNERS' ||
-      feed.feedType === 'COMPLEX_ORDER'
+        feed.feedType === 'ORDER' ||
+        feed.feedType === 'CLAIM' ||
+        feed.feedType === 'PARTNERS' ||
+        feed.feedType === 'COMPLEX_ORDER'
     ) {
       return feed.subTitle;
     }
@@ -290,10 +290,11 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   public setSubHeader(feed: FeedModel): string {
     if (feed.feedType === 'GEPS' ||
-      feed.feedType === 'ORDER' ||
-      feed.feedType === 'CLAIM' ||
-      feed.feedType === 'PARTNERS' ||
-      feed.feedType === 'COMPLEX_ORDER') {
+        feed.feedType === 'ORDER' ||
+        feed.feedType === 'CLAIM' ||
+        feed.feedType === 'PARTNERS' ||
+        feed.feedType === 'COMPLEX_ORDER'
+    ) {
       return feed.title;
     }
     return feed.subTitle;
@@ -472,13 +473,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
 
-    if (feed.feedType === 'ORGANIZATION' || feed.feedType === 'ACCOUNT_CHILD') {
+    if (feed.feedType === 'ORGANIZATION' || feed.feedType === 'BUSINESSMAN' ||  feed.feedType === 'ACCOUNT_CHILD') {
       this.feedsService.markFeedAsRead(feed.id).subscribe();
-    }
-
-    if (feed.feedType === 'PAYMENT') {
-      // this.feedsService.markFeedAsRead(feed.id).subscribe();
-      location.href = `notifications/details/PAYMENT/${feed.extId}`;
     }
 
     if (feed.feedType === 'KND_APPEAL') {

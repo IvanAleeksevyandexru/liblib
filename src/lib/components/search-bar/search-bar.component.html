@@ -39,7 +39,7 @@
     <div class="suggestion-spacer">{{query}}</div>
     <div class="suggestion" [innerHTML]="suggestion | safeHtml"></div>
   </div>
-  <div class="search-clear" [hidden]="!clearable || !query" [ngClass]="{'align-right': !showMagnifyingGlass && !searching}" (click)="clearSearch($event)"></div>
+  <div class="search-clear" [hidden]="disabled || !clearable || !query" [ngClass]="{'align-right': !showMagnifyingGlass && !searching}" (click)="clearSearch($event)"></div>
   <div class="search-go" [hidden]="!showMagnifyingGlass || searching" (click)="runOrPostponeSearch(query, false, true)" [ngClass]="{disabled: disabled}"></div>
   <div class="search-in-progress" *ngIf="searching && showSearching">
     <div class="search-in-progress-cell"></div>

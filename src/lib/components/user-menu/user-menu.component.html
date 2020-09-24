@@ -9,7 +9,7 @@
           <lib-counter class="counter" [counter]="settingsCounter"></lib-counter>
         </li>
       </ul>
-      <ul class="user-menu-links">
+      <ul class="user-menu-links" *ngIf="!user.isKid">
         <li class="item">
           <a [href]="" (click)="logout()">{{'HEADER.EXIT' | libTranslate}}</a>
         </li>
@@ -34,12 +34,12 @@
            [href]="role.url">{{role.name | libTranslate}}</a>
       </li>
     </ul>
-    <ul class="links-mobile">
+    <ul class="links-mobile" *ngIf="!user.isKid">
       <li class="item" *ngFor="let link of links">
         <a [href]="" (click)="menuItemClick(link.url, link.mnemonic)">{{link.title | appTranslate}}</a>
       </li>
     </ul>
-    <ul class="links-mobile">
+    <ul class="links-mobile" *ngIf="!user.isKid">
       <li class="item" *ngIf="user.authorized">
         <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{'HEADER.MENU.LOGIN_ORG' | libTranslate}}</a>
       </li>
@@ -49,6 +49,11 @@
       <li class="item" *ngIf="user.authorized">
         <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.SETTINGS', 'settingsSecurity')">{{'HEADER.MENU.SETTINGS' | libTranslate}}</a>
         <lib-counter class="counter" [counter]="settingsCounter"></lib-counter>
+      </li>
+    </ul>
+    <ul class="links-mobile" *ngIf="!user.isKid">
+      <li class="item">
+        <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{titleChangeRole | libTranslate}}</a>
       </li>
     </ul>
     <ul *ngIf="user.authorized" class="links-mobile">

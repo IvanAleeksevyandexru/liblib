@@ -45,32 +45,26 @@
     <div class="expand-collapse" *ngIf="showExpandCollapse" [ngClass]="{expanded: expanded}" (click)="lookupItemsOrClose(true)"></div>
   </div>
   <div class="lookup-list-wrapper">
-    <div class="lookup-context-positioning" #lookupList [ngClass]="{'context-positioned': contextMenuPosition}">
+    <div class="lookup-context-positioning" #lookupList [class.context-positioned]="contextMenuPosition">
       <div class="lookup-context-shift">{{query}}</div>
-      <div class="lookup-list-container" [class.hidden]="!expanded" libStopScreenScroll>
-        <perfect-scrollbar #scrollComponent [config]="{suppressScrollX: true, wheelPropagation: false}" *ngIf="items.length" (psYReachEnd)="loadNextPartial()">
-          <div class="lookup-list-area" #scrollableArea [class.incremental-loading]="partialsLoading">
-            <div *ngFor="let item of items" class="lookup-item" [attr.itemId]="item.id"
-                 (click)="selectItem(item)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
-                 [ngClass]="[item.groupLevel ? 'group-level-' + item.groupLevel : '']"
-                 [class.highlighted]="item === highlighted"
-                 [class.hidden]="item.hidden"
-                 [class.unselectable]="item.unselectable"
-                 [class.collapsable]="item.collapsable"
-                 [class.line-before]="item.lineBreak === LineBreak.BEFORE || item.lineBreak === LineBreak.BOTH"
-                 [class.line-after]="item.lineBreak === LineBreak.AFTER || item.lineBreak === LineBreak.BOTH"
-                 [class.separator]="item.lineBreak === LineBreak.SELF">
-              <div class="structure-container" *ngIf="!item.hidden">
-                <div class="item-container" [ngClass]="{truncated: truncateSubstring && !item.highlightedAll}">
-                  <span *ngIf="highlightSubstring || truncateSubstring" class="lookup-item-text" [innerHTML]="item.highlightFormatted | safeHtml"></span>
-                  <span *ngIf="!highlightSubstring && !truncateSubstring && escapeHtml" class="lookup-item-text">{{item.listFormatted}}</span>
-                  <span *ngIf="!highlightSubstring && !truncateSubstring && !escapeHtml" class="lookup-item-text" [innerHTML]="item.listFormatted | safeHtml"></span>
-                  <div *ngIf="collapsableGroups && item.collapsable" class="expand-collapse" [class.collapsed]="item.collapsed" (click)="expandCollapse(item, $event)"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="lookup-list-container"
+          [class.expanded]="expanded"
+          [class.hidden]="!expanded"
+          [class.incremental-loading]="partialsLoading">
+        <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll" 
+            [config]="{suppressScrollX: true, wheelPropagation: false}"
+            (psYReachEnd)="loadNextPartial()">
+          <ng-container *ngFor="let item of items">
+            <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
+          </ng-container>
         </perfect-scrollbar>
+        <lib-virtual-scroll #virtualScroll *ngIf="virtualScroll"
+            [scrollStrategy]="virtualScrollController"
+            (scrollBottomReached)="loadNextPartial()">
+          <ng-container *libVirtualFor="let item of items">
+            <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
+          </ng-container>
+        </lib-virtual-scroll>
         <div class="incremental-loading-icon" *ngIf="partialsLoading"><lib-loader size="small"></lib-loader></div>
         <div *ngIf="showNotFound && !items.length" class="lookup-list-area">
           <div class="lookup-item nothing-found" (click)="closeDropdown(); returnFocus(); ">
@@ -83,4 +77,25 @@
     </div>
   </div>
 </div>
+<ng-template #singleItem let-item="item">
+  <div class="lookup-item" [attr.itemId]="item.id"
+       (click)="selectItem(item)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
+       [ngClass]="[item.groupLevel ? 'group-level-' + item.groupLevel : '']"
+       [class.highlighted]="item === highlighted"
+       [class.hidden]="item.hidden"
+       [class.unselectable]="item.unselectable"
+       [class.collapsable]="item.collapsable"
+       [class.line-before]="item.lineBreak === LineBreak.BEFORE || item.lineBreak === LineBreak.BOTH"
+       [class.line-after]="item.lineBreak === LineBreak.AFTER || item.lineBreak === LineBreak.BOTH"
+       [class.separator]="item.lineBreak === LineBreak.SELF">
+    <div class="structure-container" *ngIf="!item.hidden">
+      <div class="item-container" [ngClass]="{truncated: truncateSubstring && !item.highlightedAll}">
+        <span *ngIf="highlightSubstring || truncateSubstring" class="lookup-item-text" [innerHTML]="item.highlightFormatted | safeHtml"></span>
+        <span *ngIf="!highlightSubstring && !truncateSubstring && escapeHtml" class="lookup-item-text">{{item.listFormatted}}</span>
+        <span *ngIf="!highlightSubstring && !truncateSubstring && !escapeHtml" class="lookup-item-text" [innerHTML]="item.listFormatted | safeHtml"></span>
+        <div *ngIf="collapsableGroups && item.collapsable" class="expand-collapse" [class.collapsed]="item.collapsed" (click)="expandCollapse(item, $event)"></div>
+      </div>
+    </div>
+  </div>
+</ng-template>
 
