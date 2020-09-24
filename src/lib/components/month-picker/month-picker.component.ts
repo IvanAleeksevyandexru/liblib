@@ -2,7 +2,7 @@ import {
   Component, ViewChild, Input, Output, ElementRef, EventEmitter, SimpleChanges, forwardRef,
   OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, Optional, Host, SkipSelf, ChangeDetectorRef
 } from '@angular/core';
-import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR, FormControl } from '@angular/forms';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
@@ -50,6 +50,7 @@ export class MonthPickerComponent
     protected animationBuilder: AnimationBuilder,
     @Optional() @Host() @SkipSelf() protected controlContainer: ControlContainer) {}
 
+  @Input() public formControl?: FormControl;
   @Input() public formControlName?: string;
   @Input() public contextClass?: string;  // класс разметки для deep стилей
   @Input() public tabIndex?: string | number;
@@ -208,6 +209,9 @@ export class MonthPickerComponent
     this.selectedYearChanged = false;
     this.changeDetection.detectChanges();
     this.changed.emit(this.activeMonthYear);
+    if (this.formControl) {
+      this.formControl.setValue(this.activeMonthYear);
+    }
     setTimeout(() => this.closeDropdown(), DELAY);
   }
 
