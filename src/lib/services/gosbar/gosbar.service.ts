@@ -8,6 +8,7 @@ import { LocationService } from '../location/location.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { SharedService } from '../shared/shared.service';
 
 @Injectable({
   providedIn: 'root'
@@ -32,8 +33,10 @@ export class GosbarService {
     private locationService: LocationService,
     private translateService: TranslateService,
     private router: Router,
-    public  cookieService: CookieService
+    public  cookieService: CookieService,
+    private sharedService: SharedService
   ) {
+    this.getLocation();
   }
 
   private setRegionFailName(manager) {
@@ -42,7 +45,7 @@ export class GosbarService {
     });
   }
 
-  private setLocationTitle(manager) {
+  private getLocation(manager?) {
 
     const onError = (err) => {
         this.locationService.userSelectedRegionCode = '00000000000';
@@ -55,7 +58,9 @@ export class GosbarService {
         this.setRegionFailName(manager);
         this.popupLocation();
       } else if (regionData) {
-        manager.setLocationLabel(regionData.name);
+
+        this.sharedService.send('regionData', regionData);
+
         this.locationService.userSelectedRegionCode = regionData.code;
         this.locationService.userSelectedRegionName = regionData.name;
         this.locationService.userSelectedRegionPath = regionData.path;
@@ -63,6 +68,7 @@ export class GosbarService {
         onError('empty response');
       }
     }, (err) => {
+      this.sharedService.send('regionData', null);
       onError(err);
     });
 
@@ -91,7 +97,7 @@ export class GosbarService {
               this.popupLocation();
             });
           };
-          this.setLocationTitle(manager);
+          this.getLocation(manager);
         }, () => {
           this.unAvailableGosbar();
         }
@@ -99,10 +105,6 @@ export class GosbarService {
     } else {
       this.unAvailableGosbar();
     }
-  }
-
-  public initLocation(manager) {
-    this.setLocationTitle(manager);
   }
 
   public getLangConfig() {
