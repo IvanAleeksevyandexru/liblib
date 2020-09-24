@@ -11,8 +11,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./breadcrumbs.component.scss']
 })
 export class BreadcrumbsComponent {
-  public links$: Observable<Link[]> = this.breadcrumbsService.links$.pipe(
-    filter((links: Link[]) => Array.isArray(links) && links.length > 0));
+  public links$: Observable<Link[]> = this.breadcrumbsService.links$;
 
   constructor(private breadcrumbsService: BreadcrumbsService) { }
 
