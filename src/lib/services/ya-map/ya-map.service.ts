@@ -9,6 +9,7 @@ export class YaMapService {
   private isLoaded = false;
   public map: any;
   public address = new BehaviorSubject('');
+  public mapSubject = new BehaviorSubject(null);
 
   constructor() {
   }
@@ -40,6 +41,7 @@ export class YaMapService {
         }
       }
       this.map = map;
+      this.mapSubject.next(map);
       return map;
     }
   }

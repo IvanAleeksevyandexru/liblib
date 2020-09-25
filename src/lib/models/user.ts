@@ -148,6 +148,7 @@ export interface User {
   userName?: string;
   userType?: string;
   // Кастомные поля
+  isKid?: boolean; // Флаг принадлежности УЗ к типу "Ребенок"
   authorized?: boolean; // Флаг наличия авторизации
   level?: 1 | 2 | 3; // Уровень УЗ пользователя
   fullName?: string; // Фамилия Имя Отчество

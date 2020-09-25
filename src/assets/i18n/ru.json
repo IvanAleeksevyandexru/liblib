@@ -63,6 +63,20 @@
     "NOVEMBER": "Ноябрь",
     "DECEMBER": "Декабрь"
   },
+  "MONTHS_SHORT": {
+    "JANUARY": "Янв",
+    "FEBRUARY": "Фев",
+    "MARCH": "Мар",
+    "APRIL": "Апр",
+    "MAY": "Май",
+    "JUNE": "Июн",
+    "JULY": "Июл",
+    "AUGUST": "Авг",
+    "SEPTEMBER": "Сен",
+    "OCTOBER": "Окт",
+    "NOVEMBER": "Ноя",
+    "DECEMBER": "Дек"
+  },
   "DADATA": {
     "SPECIFY": "Уточнить адрес",
     "DELETE": "Удалить",
@@ -248,7 +262,7 @@
         "TITLE": "У вас пока нет новых событий",
         "SUBTITLE": "Если что-то произойдет, здесь появится уведомление об этом"
       },
-      "BIOMETRICS,ACCOUNT,PROFILE,ORGANIZATION,ESIGNATURE": {
+      "BIOMETRICS,ACCOUNT,PROFILE,ORGANIZATION,BUSINESSMAN,ESIGNATURE": {
         "TITLE": "У вас пока нет новых событий",
         "SUBTITLE": "Если что-то произойдет, здесь появится уведомление об этом"
       },
@@ -301,6 +315,9 @@
   },
   "RANGE_FIELD": {
     "TITLE": "Выберите диапазон дат"
+  },
+  "MONTH_SELECT": {
+    "TILL_NOW": "По настоящее время"
   },
   "ROLE_CHANGE": {
     "CURRENT" : "Текущая роль",

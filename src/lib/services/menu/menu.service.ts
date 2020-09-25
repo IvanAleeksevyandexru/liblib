@@ -91,6 +91,11 @@ export class MenuService {
           title: 'HEADER.MENU.SUPPORT',
           mnemonic: 'support'
         }];
+
+        if (this.loadService.user.isKid) {
+          links.splice(0, 2);
+        }
+
         break;
       case 'PAYMENT':
         links = [{

@@ -88,6 +88,8 @@ export class MultiLookupComponent implements OnInit, AfterViewInit, OnChanges, D
   @Input() public collapsableGroups = false;
   // включает-отключает возможность выбирать группировочные элементы
   @Input() public virtualGroups = true;
+  // виртуальный скролл, рендерится в dom лишь отображаемая часть списка (для больших списков)
+  @Input() public virtualScroll = false;
 
   // источник значений в виде фиксированного списка
   @Input() public fixedItems: Array<any> = [];

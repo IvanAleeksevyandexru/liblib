@@ -13,19 +13,20 @@
                       [clearable]="clearable"
                       [showMagnifyingGlass]="false"
                       [searchOnFocus]="true"
+                      [moveFocusToEnd]="true"
                       [queryMinSymbolsCount]="queryMinSymbolsCount"
                       [(ngModel)]="query"
                       (focus)="handleFocus()"
-                      (blur)="normalizeFullAddress(query); handleBlur();"
+                      (blur)="normalizeFullAddress(query, false, false, true); handleBlur();"
                       (autocompleted)="normalizeFullAddress(query, false)"
                       (input)="updateCanOpenFields($event.target.value)"
                       (cleared)="onClearHandler()"
-                      [autocompleteSuggestionProvider]="dadataService">
-      <!--inside dropdown additional content customized-->
-      <div class="dadata-additional-item">
-        <div class="title">{{'DADATA.NO_FIND_OPTION' | libTranslate}}</div>
-        <a class="open-link" (click)="openDadataFields()">{{'DADATA.ENTER_MANUALLY' | libTranslate}}</a>
-      </div>
+                      [suggestionsProvider]="dadataService">
+          <!--inside dropdown additional content customized-->
+          <div class="dadata-additional-item">
+            <div class="title">{{'DADATA.NO_FIND_OPTION' | libTranslate}}</div>
+            <a class="open-link" (click)="openDadataFields()">{{'DADATA.ENTER_MANUALLY' | libTranslate}}</a>
+          </div>
     </lib-autocomplete>
   </div>
   <form [formGroup]="form">
@@ -35,11 +36,11 @@
         <span class="link-plain">{{specifyTitle ? (specifyTitle | appTranslate) : ('DADATA.SPECIFY' | libTranslate)}}</span>
       </a>
     </div>
-    <div *ngIf="!(isOpenedFields | async) && (widgetItemsVisibility.houseCb || widgetItemsVisibility.apartmentCb)" class="mt-32 checkbox-widget">
-      <div [hidden]="!widgetItemsVisibility.houseCb" class="house-checkbox">
+    <div *ngIf="!disabled && !(isOpenedFields | async) && (widgetItemsVisibility.houseCb || widgetItemsVisibility.apartmentCb)" class="mt-32 checkbox-widget">
+      <div [hidden]="hideHouseCheckbox || !widgetItemsVisibility.houseCb" class="house-checkbox">
         <lib-checkbox [tabIndex]="2" [labelText]="'DADATA.NO_HOUSE' | libTranslate" formControlName="houseCheckboxClosed"></lib-checkbox>
       </div>
-      <div [hidden]="!widgetItemsVisibility.apartmentCb">
+      <div [hidden]="hideApartmentCheckbox || !widgetItemsVisibility.apartmentCb">
         <lib-checkbox [tabIndex]="3" [labelText]="'DADATA.NO_APARTMENT' | libTranslate" formControlName="apartmentCheckboxClosed"></lib-checkbox>
       </div>
     </div>
@@ -99,7 +100,7 @@
                                formControlName="house"></lib-plain-input>
             </div>
           </div>
-          <div class="address-checkbox">
+          <div class="address-checkbox" [hidden]="hideHouseCheckbox">
             <lib-checkbox [tabIndex]="13" [labelText]="'DADATA.NO_HOUSE' | libTranslate" formControlName="houseCheckbox"></lib-checkbox>
           </div>
         </div>
@@ -127,7 +128,7 @@
                                formControlName="apartment"></lib-plain-input>
             </div>
           </div>
-          <div class="address-checkbox">
+          <div class="address-checkbox" [hidden]="hideApartmentCheckbox">
             <lib-checkbox [tabIndex]="17" [labelText]="'DADATA.NO_APARTMENT' | libTranslate" formControlName="apartmentCheckbox"></lib-checkbox>
           </div>
         </div>

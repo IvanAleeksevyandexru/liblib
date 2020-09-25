@@ -19,6 +19,7 @@ export interface BannerInterface {
 export interface BannerItemInterface {
   bgImage: string;
   closable: boolean;
+  closed: boolean;
   content: string;
   mnemonic: string;
   orderNumber: number;
@@ -29,6 +30,7 @@ export class Banner implements BannerItemInterface {
   constructor(plain: any) {
     this.bgImage = plain.bgImage;
     this.closable = plain.closable;
+    this.closed = !!plain.closed;
     this.content = plain.content;
     this.mnemonic = plain.mnemonic;
     this.orderNumber = plain.orderNumber;
@@ -36,6 +38,7 @@ export class Banner implements BannerItemInterface {
 
   public bgImage: string;
   public closable: boolean;
+  public closed: boolean;
   public content: string;
   public mnemonic: string;
   public orderNumber: number;
