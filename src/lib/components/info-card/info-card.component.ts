@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { ProfileService } from '../../services/profile/profile.service';
 import { LoadService } from '../../services/load/load.service';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
-import { InfoCardView } from '../../models/info-card-view';
+import { InfoCardState, InfoCardView } from '../../models/info-card-view';
 import { Router } from '@angular/router';
 import { ConstantsService } from '../../services';
 
@@ -15,7 +15,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
 
   @Input() public data: any = {}; // Входные данные. TODO: описать интерфейс
   @Input() public cardType: 'common' | 'empty' | 'modify' = 'common';
-  @Input() public state: '' | 'process' | 'verified' | 'error' | 'success'| 'refreshError' = '';
+  @Input() public state: InfoCardState = '';
   @Input() public addPath: string;
   @Input() public editPath: string;
   @Input() public editQueryParam: { [key: string]: string };
@@ -23,7 +23,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
   @Input() public refreshError: boolean;
   @Input() public stateText: string;
   @Input() public isIdDoc: boolean;
-  @Input() public isNew = false;
+  @Input() public isNew: boolean | string = false;
   @Output() public deleteEmitter = new EventEmitter();
   @Output() public changeTypeEmitter = new EventEmitter();
   @Output() public cancelReqEmitter = new EventEmitter();
@@ -50,10 +50,12 @@ export class InfoCardComponent implements OnInit, OnChanges {
   }
 
   public ngOnChanges({data, cardType}: SimpleChanges): void {
-    if (data && !data.firstChange && data.currentValue) {
-      this.initCard(data.currentValue);
-    } else if (cardType && !cardType.firstChange && data.currentValue) {
-      this.initCard(data.currentValue);
+    if (data) {
+      if (!data.firstChange && data.currentValue) {
+        this.initCard(data.currentValue);
+      } else if (data && cardType && !cardType.firstChange && data.currentValue) {
+        this.initCard(data.currentValue);
+      }
     }
   }
 
@@ -61,7 +63,6 @@ export class InfoCardComponent implements OnInit, OnChanges {
     this.data.idDoc = this.isIdDoc;
 
     this.object = this.profileService.createCardObject(data);
-
 
     if (data.informerStatus) {
       this.informer = {
@@ -96,7 +97,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
 
   public showDetailButton(): boolean {
     if (this.object.type !== 'RF_PASSPORT') {
-      return this.object.canDetails && this.state !== 'process' && this.state !== 'error';
+      return this.object.canDetails && this.state !== 'process' && this.state !== 'error' && !!this.object.detailsPath;
     } else {
       return this.state !== 'process' && this.state !== 'error' && !this.object.notification;
     }
@@ -170,6 +171,10 @@ export class InfoCardComponent implements OnInit, OnChanges {
     setTimeout(() => { // данные должны успеть попасть в метрику
       window.location.href = this.loadService.config.betaUrl + this.object.serviceUrl;
     });
+  }
+
+  public typeOf(input: any): string {
+    return typeof input;
   }
 
 }

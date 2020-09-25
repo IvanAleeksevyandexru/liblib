@@ -9,7 +9,7 @@ body {
 }
 
 body {
-  font-family: Helvetica, Arial, sans-serif, -apple-system;
+  font-family: Lato, Arial, sans-serif, -apple-system;
   overflow-x: hidden;
 
   &.menu-fixed {
@@ -47,14 +47,19 @@ a {
 // TODO: Убрать глобальный стиль кнопки
 .button-base {
   display: inline-block;
-  height: 54px;
+  height: 48px;
   border-radius: 4px;
-  padding: 0 25px;
+  padding: 0 17px;
   font-size: 17px;
   line-height: 54px;
   color: #ffffff;
   background: #0b40b3;
   cursor: pointer;
+
+  &.wide {
+    width: 100%;
+    text-align: center;
+  }
 
   &:hover {
     color: #ffffff;
