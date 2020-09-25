@@ -57,7 +57,6 @@ export class ProfileService {
   }
 
   private static getFidDocNotification(fidDoc): string {
-    console.log(1);
     if (ProfileService.isExpiredForeignPassport(fidDoc)) {
       return  'PROFILE.FID_DOC.EXPIRED_WARNING_SHORT';
     } else if (ProfileService.isExpiredSoonForeignPassport(fidDoc)) {
@@ -187,6 +186,7 @@ export class ProfileService {
 
         return {
           attrId: 'ident',
+          type: object.type,
           canDetails: true,
           canEdit: true,
           detailsPath: '/profile/personal/id-doc',

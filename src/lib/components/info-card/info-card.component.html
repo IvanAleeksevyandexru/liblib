@@ -68,7 +68,7 @@
       <a *ngIf="showDetailButton()"
          class="link-plain"
          [routerLink]="object.detailsPath"
-      >{{!isNotificationShow() || object.type === 'FRGN_PASS' ? 'Подробнее' : 'Редактировать'}}</a>
+      >{{!isNotificationShow() || object.type === 'FRGN_PASS' || isExpiredDocDetails() ? 'Подробнее' : 'Редактировать'}}</a>
       <a *ngIf="state === 'process'" class="link-plain add-link" (click)="cancelReq()">Отменить
         проверку</a>
       <a *ngIf="showRepeatButton()" class="link-plain add-link" (click)="repeatReq()">Повторить
