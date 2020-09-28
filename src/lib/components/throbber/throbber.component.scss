@@ -70,6 +70,7 @@
 }
 
 .throbber-svg{
+  text-align: center;
   svg{
     padding: 2px;
     -webkit-animation: throbberRotateX 1.5s infinite cubic-bezier(.8, 0, 0, .8);

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { SearchSuggestion } from '../../models/search';
+import { SearchSuggestion, SimpleSputnikSuggest } from '../../models/search';
 import { ListItem, ListItemConverter } from '../../models/dropdown.model';
 import { LookupComponent } from '../lookup/lookup.component';
 import { SearchService } from '../../services/search/search.service';
@@ -14,18 +14,20 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
 
   @Input() public hideToIcon = false;
   @Input() public placeholder = 'Например: пособие 3-7 лет подробнее';
+  @Input() public useGlobalPlaceholder = false;
   @Input() public contextClass = '';
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
   public showField = true;
 
-  public searchItem: SearchSuggestion;
+  public searchItem: SimpleSputnikSuggest;
 
   public searchProvider = this.searchService;
-  public converter = new ListItemConverter<SearchSuggestion>((item: SearchSuggestion, ctx: { [name: string]: any}): ListItem => {
-    return new ListItem({ id: ctx.index, text: item.header, icon: item.favicon || '', url: item.url}, item);
-  }, (item: ListItem): SearchSuggestion => {
-    return item.originalItem;
+  public showMagnifyingGlass = true;
+  public converter = new ListItemConverter<SimpleSputnikSuggest>((item: SimpleSputnikSuggest, ctx: { [name: string]: any}): ListItem => {
+    return new ListItem({ id: ctx.index, text: item.name, icon: 'TEST', url: item.link}, item);
+  }, (item: ListItem): SimpleSputnikSuggest => {
+    return (item?.originalItem) || null;
   });
 
   @ViewChild('searchBox') private searchBox;
@@ -44,9 +46,19 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
     if (this.hideToIcon) {
       this.showField = false;
     }
+    if (this.useGlobalPlaceholder) {
+      this.searchService.globalSearchPlaceholder$.subscribe((placeholder: string) => {
+        this.placeholder = placeholder;
+      });
+    }
   }
 
   public ngAfterViewInit() {
+  }
+
+  public toggleMagnifyingGlass() {
+    const query = this.lookup.query ? this.lookup.query.trim() : '';
+    this.showMagnifyingGlass = !query.length
   }
 
   public formatter(item) {
@@ -67,10 +79,12 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
 
   public onSearch() {
     const query = this.lookup.query ? this.lookup.query.trim() : '';
-    if (this.searchItem && this.searchItem.url && query === this.searchItem.header) {
-      document.location.href = this.searchItem.url;
-    } else {
-      document.location.href = this.loadService.config.betaUrl + '/search?query=' + encodeURIComponent(query);
+    if (query) {
+      if (this.searchItem && this.searchItem.link) {
+        document.location.href = this.searchItem.link;
+      } else {
+        document.location.href = this.loadService.config.betaUrl + '/search?query=' + encodeURIComponent(query);
+      }
     }
   }
 
