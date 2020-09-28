@@ -8,7 +8,7 @@ import { RelativeDate, Range, RangeListItem } from '../../models/date-time.model
 import { DatesHelperService } from '../../services/dates-helper/dates-helper.service';
 import { Translation } from '../../models/common-enums';
 import { Width } from '../../models/width-height';
-import * as moment_ from 'moment/min/moment.min.js';
+import * as moment_ from 'moment';
 const moment = moment_;
 
 const STD_DATE_FORMAT = 'DD.MM.YYYY';

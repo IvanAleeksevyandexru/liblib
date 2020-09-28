@@ -14,7 +14,7 @@ import { FeedBannerModel, FeedItemModel, FeedModel, FeedsModel } from '../../mod
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { FeedsService } from '../../services/feeds/feeds.service';
 import { LoadService } from '../../services/load/load.service';
-import * as moment_ from 'moment/min/moment.min.js';
+import * as moment_ from 'moment';
 import { Banner, BannerGroup } from '../../models/main-page.model';
 import { BannersService } from '../../services/banners/banners.service';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
