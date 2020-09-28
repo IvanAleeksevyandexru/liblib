@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { YaMetricService } from '../ya-metric/ya-metric.service';
-import * as moment_ from 'moment/min/moment.min.js';
+import * as moment_ from 'moment';
 
 const moment = moment_;
 

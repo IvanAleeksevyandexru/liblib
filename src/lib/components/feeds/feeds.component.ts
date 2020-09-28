@@ -14,7 +14,7 @@ import { FeedsService } from '../../services/feeds/feeds.service';
 import { FeedModel, FeedsModel, SnippetModel } from '../../models/feed';
 import { LoadService } from '../../services/load/load.service';
 import { User } from '../../models/user';
-import * as moment_ from 'moment/min/moment.min.js';
+import * as moment_ from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { NotifierService } from '../../services/notifier/notifier.service';

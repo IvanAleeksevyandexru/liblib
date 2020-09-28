@@ -3,7 +3,7 @@ import { Modal } from '../../models/modal-container';
 import { MessageDetails } from '../../models/feed';
 import { IpshService } from '../../services/ipsh/ipsh.service';
 import { GibddDetails } from '../../models/gibdd-fine.model';
-import * as moment_ from 'moment/min/moment.min.js';
+import * as moment_ from 'moment';
 import { AddressToCoords } from '../../models/location';
 import { LocationService } from '../../services/location/location.service';
 import { SliderImage } from '../../models/slider-image';

@@ -21,7 +21,7 @@ import { HealthService } from '../health/health.service';
 import { YaMetricService } from '../ya-metric/ya-metric.service';
 import { Vehicle } from '../../models/vehicle';
 import { SliderImage } from '../../models';
-import * as moment_ from 'moment/min/moment.min.js';
+import * as moment_ from 'moment';
 const moment = moment_;
 
 @Injectable({

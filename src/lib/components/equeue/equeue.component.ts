@@ -2,7 +2,7 @@ import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { User } from '../../models/user';
 import { FeedsService } from '../../services/feeds/feeds.service';
 import { FeedModel, FeedsModel, SnippetModel } from '../../models/feed';
-import * as moment_ from 'moment/min/moment.min.js';
+import * as moment_ from 'moment';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { LoadService } from '../../services/load/load.service';
 

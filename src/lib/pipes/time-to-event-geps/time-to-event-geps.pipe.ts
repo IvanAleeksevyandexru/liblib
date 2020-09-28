@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as moment_ from 'moment/min/moment.min.js';
+import * as moment_ from 'moment';
 
 const moment = moment_;
 
