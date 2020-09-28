@@ -5,14 +5,16 @@
                 [contextClass]="contextClass"
                 [itemsProvider]="searchProvider"
                 [queryMinSymbolsCount]="3"
+                [maxlength]="400"
                 [(ngModel)]="searchItem"
                 clearInconsistent="ignore"
-                [showMagnifyingGlass]="true"
-                [clearable]="false"
+                [showMagnifyingGlass]="showMagnifyingGlass"
+                [clearable]="true"
                 (opened)="toggleSearch(true)"
                 (closed)="toggleSearch(false)"
                 [converter]="converter"
                 (changed)="onSearch()"
+                (input)="toggleMagnifyingGlass()"
                 ngDefaultControl>
     </lib-lookup>
     <div class="close-search-popup"></div>

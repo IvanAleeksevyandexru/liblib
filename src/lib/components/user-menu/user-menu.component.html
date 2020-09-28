@@ -30,7 +30,8 @@
   <div #menuMobile class="menu-mobile container hide-lg" [class.hide-menu-when-search]="!showAllMenu" [class.show]="showMobileView()">
     <ng-template *ngTemplateOutlet="menuHeader"></ng-template>
     <div class="hide-lg show-md hide-sm menu-search-container">
-      <lib-search-sputnik (opened)="showAllMenu = false" (closed)="showAllMenu = true" contextClass="menu-search" placeholder="Поиск"></lib-search-sputnik>
+      <lib-search-sputnik (opened)="showAllMenu = false" (closed)="showAllMenu = true" contextClass="menu-search"
+                          placeholder="Поиск" [useGlobalPlaceholder]="true"></lib-search-sputnik>
     </div>
     <ng-container *ngIf="showAllMenu">
     <ng-template *ngTemplateOutlet="menuTabs"></ng-template>

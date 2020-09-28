@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { LoadService } from '../load/load.service';
 import { CookieService } from '../cookie/cookie.service';
+import { SearchService } from '../search/search.service';
 import { FrameType, MainPageContentInterface } from '../../models';
 
 @Injectable({
@@ -19,7 +20,8 @@ export class MainPageService {
 
   constructor(private http: HttpClient,
               private loadService: LoadService,
-              private cookieService: CookieService) {
+              private cookieService: CookieService,
+              private searchService: SearchService) {
   }
 
   public getAll() {
@@ -51,6 +53,9 @@ export class MainPageService {
       params
     }).subscribe(res => {
       this.mainPageData.next(res);
+      if (res?.searchConfig?.placeholder) {
+        this.searchService.setGlobalSearchPlaceholder(res.searchConfig.placeholder);
+      }
     });
   }
 
