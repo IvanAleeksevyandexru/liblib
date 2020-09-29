@@ -107,13 +107,13 @@ export class SearchBarComponent
 
   public ngOnInit() {
     this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
+    if (!this.id) {
+      this.id = 'search-input-' + Math.random().toString(16).slice(2);
+    }
   }
 
   public ngAfterViewInit() {
     this.focusManager.register(this);
-    if (!this.id) {
-        this.id = 'search-input-' + Math.random().toString(16).slice(2);
-    }
   }
 
   public ngOnChanges(changes: SimpleChanges) {
