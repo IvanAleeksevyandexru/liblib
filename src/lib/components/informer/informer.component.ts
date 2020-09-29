@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { InformersService } from '../../services/informers/informers.service';
 import { DataInformer,
   InformerShortInterface,
@@ -21,6 +21,9 @@ import { ProfileService } from '../../services/profile/profile.service';
   styleUrls: ['./informer.component.scss']
 })
 export class InformerComponent implements OnInit {
+
+  // отображение в сжатом состоянии
+  @Input() public isMini = false;
 
   public statusInformer: TypeStatus = 'load';
   public dataInformer = new DataInformer();

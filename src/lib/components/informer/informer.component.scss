@@ -77,8 +77,64 @@
       width: auto;
     }
   }
+
+  .mini {
+    &.informer-main {
+
+      .without-debt {
+        .icon-no-debt {
+          width: 60px;
+          height: 40px;
+          margin-right: 20px;
+        }
+      }
+      .debt {
+        .price, .btn  {
+          margin-left: 24px;
+        }
+
+        .price-discount {
+          margin-left: 20px;
+        }
+      }
+    }
+  }
+}
+
+.mini {
+  &.informer-main {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
 }
 
 @media all and (min-width: 1140px) {
+  .mini {
+    &.informer-main {
+      min-height: 204px;
+      height: auto;
 
+      .without-debt {
+        .icon-no-debt {
+          width: 64px;
+          height: 64px;
+          margin-right: 0;
+        }
+
+        .title-no-debt {
+          padding-right: 0;
+        }
+      }
+
+      .debt {
+        .btn, .price-discount, .price {
+          margin-left: 0;
+        }
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  }
 }
