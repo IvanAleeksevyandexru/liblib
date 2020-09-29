@@ -88,5 +88,8 @@
       }
     }
   },
-  "defaultProject": "epgu-lib"
+  "defaultProject": "epgu-lib",
+  "cli": {
+    "analytics": false
+  }
 }
