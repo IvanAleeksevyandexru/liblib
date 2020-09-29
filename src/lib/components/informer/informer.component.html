@@ -1,24 +1,28 @@
-<div class="informer-main flex-container justify-center" (click)="redirectAndSendYaMetric()">
+<div class="informer-main flex-container justify-center" [class.mini]="isMini" (click)="redirectAndSendYaMetric()">
   <div *ngIf="statusInformer === 'load'" class="loader">
     <lib-throbber-hexagon [size]="'medium big-lg'"></lib-throbber-hexagon>
   </div>
   <div *ngIf="['error', 'no_debt', 'al10', 'no_rights'].includes(statusInformer)"
-       class="without-debt flex-container flex-column flex-row-md align-items-center">
+       class="without-debt flex-container flex-column flex-row-md align-items-center"
+       [ngClass]="{'flex-column-lg': isMini}">
     <div class="icon-no-debt flex-0 {{dataInformer.icon | libTranslate}}"></div>
-    <div class="title-no-debt mt-16 mt-md-0 title-h6 text-center text-left-md">{{dataInformer.title | libTranslate}}</div>
-    <div class="btn flex-0 mt-24 mt-md-0">
+    <div class="title-no-debt mt-16 mt-md-0 title-h6 text-center text-left-md"
+         [ngClass]="{'mt-lg-16 text-center-lg': isMini}">{{dataInformer.title | libTranslate}}</div>
+    <div class="btn flex-0 mt-24 mt-md-0" [ngClass]="{'mt-lg-24': isMini}">
       <lib-button [color]="'white'" [size]="'md'" [width]="'wide'" (click)="redirectAndSendYaMetric()">
         {{dataInformer.button | libTranslate}}
       </lib-button>
     </div>
   </div>
   <div *ngIf="statusInformer === 'debt'"
-       class="debt flex-container flex-column flex-row-md justify-between-md align-items-center">
-    <div class="docs mb-16 mb-md-0 title-h6 text-center text-left-md">
+       class="debt flex-container flex-column flex-row-md justify-between-md align-items-center"
+       [ngClass]="{'flex-column-lg': isMini}">
+    <div class="docs mb-16 mb-md-0 title-h6 text-center text-left-md"
+         [ngClass]="{'mb-lg-24 text-center-lg': isMini}">
       {{'INFORMER.DEBT.TO_PAY' | libTranslate }} {{dataInformer.docs}}
     </div>
     <div class="prices text-center">
-      <div class="text-right-md inline-md">
+      <div class="text-right-md inline-md" [ngClass]="{'text-center-lg': isMini}">
         <div class="price-discount title-h3 red">
           {{dataInformer.priceDiscount | toMoney}}&nbsp;&#8381;
         </div>
@@ -27,7 +31,7 @@
         </div>
       </div>
     </div>
-    <div class="btn flex-0 mt-24 mt-md-0">
+    <div class="btn flex-0 mt-24 mt-md-0" [ngClass]="{'mt-lg-24': isMini}">
       <lib-button [size]="'md'" [width]="'wide'" (click)="redirectAndSendYaMetric()">
         {{dataInformer.button | libTranslate}}
       </lib-button>
