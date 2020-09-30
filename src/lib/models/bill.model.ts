@@ -248,7 +248,7 @@ export interface BillResponseError {
 export interface PayOption {
   amount: number;
   cardInfo?: CardInfo;
-  fee: number;
+  fee?: number;
   feeMin?: number;
   feeMax?: number;
   hash: string;
@@ -268,7 +268,7 @@ export interface CardInfo {
 export interface PayMethod {
   code: PayMethodCode;
   name: string;
-  value: string;
+  value?: string;
 }
 
 export interface PayMethodGroup {
@@ -307,4 +307,14 @@ export interface ErrorInfo {
   billNumber?: string;
   date?: string;
   supplier?: string;
+}
+
+export interface ICommissionResult {
+  error: {
+    errorCode: number;
+    errorMessage: string;
+  };
+  payOptions: {
+    payOptions: PayOption[];
+  };
 }

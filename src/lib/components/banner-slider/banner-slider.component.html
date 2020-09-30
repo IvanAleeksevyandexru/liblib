@@ -1,10 +1,15 @@
 <div class="banner-group-container flex-row-lg justify-center-lg"
-     [ngClass]="[path, closed ? 'hidden' : '', noBorder ? 'no-border' : '', noBorderRadius ? 'no-border-radius' : '']"
+     [ngClass]="[path,
+                closed ? 'hidden' : '',
+                noBorder ? 'no-border' : '',
+                noBorderRadius ? 'no-border-radius' : '',
+                closeDisplay ? 'closable-group' : '',
+                showAlwaysArrow ? 'visible-arrow' : 'hover-arrow']"
      [style.height.px]="fixedHeight ? fixedHeight : ''"
      [style.backgroundColor]="backgroundColor ? backgroundColor : ''"
      [style.borderColor]="borderColor && !noBorder ? borderColor : ''"
      [ngStyle]="backgroundImage ? {'background': backgroundImage} : {}">
-  <div class="flex-container-lg flex-row-lg">
+  <div class="flex-container-md flex-row-md justify-center-md slides-wrapper">
     <div *ngIf="showArrowBtn && bannerList?.length > 1" class="sliders-controls flex-1-lg">
       <div class="banners-paging">
         <a class="prev-banner" (click)="prevBanner(true)"><div></div></a>
@@ -34,12 +39,12 @@
     </div>
   </div>
   <div *ngIf="showBullBtn && bannerList?.length > 1"
-       [ngClass]="[navBtnStyle || '']"
+       [ngClass]="[navBtnStyle || '', bullBtnPosition]"
        class="bullet-container">
-    <a *ngFor="let banner of bannerList"
+    <a *ngFor="let banner of bannerList; let i = index"
        class="bullet-item"
        [ngClass]="{selected: activeBanner === banner}"
-       (click)="scrollToBanner(banner)">
+       (click)="scrollToBanner(banner, i)">
     </a>
   </div>
   <div class="close-banner-group" *ngIf="closeDisplay" (click)="excludeActiveBannerOrClose()"></div>

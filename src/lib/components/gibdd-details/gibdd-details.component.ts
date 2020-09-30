@@ -66,9 +66,9 @@ export class GibddDetailsComponent implements OnInit {
             }))
             .subscribe((photos: SliderImage[]) => {
               this.photos = photos;
-          });
+            });
         }
-    });
+      });
   }
 
   public formatDate(): string {

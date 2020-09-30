@@ -281,7 +281,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     if (isOpened) {
       this.closeDadataFields();
     } else {
-      this.openDadataFields(this.validateOnSpecify);
+      this.openDadataFields(true);
     }
   }
 
@@ -319,7 +319,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public updateCanOpenFields(value: string): void {
     this.closeDadataFields();
-    if (!value || value.length < this.queryMinSymbolsCount) {
+    if (!value) {
       this.form.reset();
     }
     this.query$.next(value);

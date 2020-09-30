@@ -97,7 +97,7 @@
             <label class="input-label" for="house">{{'DADATA.HOUSE' | libTranslate}}</label>
             <div class="small-field">
               <lib-plain-input [tabIndex]="12" [clearable]="true" [invalid]="formConfig.house.isInvalid" id="house"
-                             formControlName="house"></lib-plain-input>
+                               formControlName="house"></lib-plain-input>
             </div>
           </div>
           <div class="address-checkbox" [hidden]="hideHouseCheckbox">
@@ -108,14 +108,14 @@
           <label class="input-label" for="building1">{{'DADATA.BUILDING1' | libTranslate}}</label>
           <div class="small-field">
             <lib-plain-input [tabIndex]="14" [clearable]="true" [invalid]="formConfig.building1.isInvalid" id="building1"
-                           formControlName="building1"></lib-plain-input>
+                             formControlName="building1"></lib-plain-input>
           </div>
         </div>
         <div *ngIf="formConfig.building2.visible" class="address-item">
           <label class="input-label" for="building2">{{'DADATA.BUILDING2' | libTranslate}}</label>
           <div class="small-field">
             <lib-plain-input [tabIndex]="15" [clearable]="true" [invalid]="formConfig.building2.isInvalid" id="building2"
-                           formControlName="building2"></lib-plain-input>
+                             formControlName="building2"></lib-plain-input>
           </div>
         </div>
       </div>
@@ -125,7 +125,7 @@
             <label class="input-label" for="apartment">{{'DADATA.APARTMENT' | libTranslate}}</label>
             <div class="small-field">
               <lib-plain-input [tabIndex]="16" [clearable]="true" [invalid]="formConfig.apartment.isInvalid" id="apartment"
-                             formControlName="apartment"></lib-plain-input>
+                               formControlName="apartment"></lib-plain-input>
             </div>
           </div>
           <div class="address-checkbox" [hidden]="hideApartmentCheckbox">
@@ -135,7 +135,7 @@
         <div class="address-item index-item">
           <label class="input-label" for="index">{{'DADATA.INDEX' | libTranslate}}</label>
           <lib-base-masked-input [mask]="validations.masks.index" tabIndex="18" [clearable]="true" [maxlength]="6" formControlName="index"
-            [invalid]="formConfig.index.isInvalid || (form.get('index').errors && form.get('index').errors['minlength'])" id="index">
+                                 [invalid]="formConfig.index.isInvalid || (form.get('index').errors && form.get('index').errors['minlength'])" id="index">
           </lib-base-masked-input>
         </div>
       </div>

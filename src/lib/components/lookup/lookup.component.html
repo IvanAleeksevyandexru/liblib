@@ -2,7 +2,7 @@
      (clickOutside)="cancelSearchAndClose()" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="lookup-field" #lookupField [ngClass]="{expanded: expanded, invalid: invalidDisplayed, 'with-expand-button': showExpandCollapse}">
     <lib-search-bar #searchBar
-      contextClass="lookup-input"
+      [contextClass]="'lookup-input ' + contextClass"
       [tabIndex]="tabIndex"
       [maxlength]="maxlength"
       [disabled]="disabled"
@@ -51,7 +51,7 @@
           [class.expanded]="expanded"
           [class.hidden]="!expanded"
           [class.incremental-loading]="partialsLoading">
-        <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll" 
+        <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll"
             [config]="{suppressScrollX: true, wheelPropagation: false}"
             (psYReachEnd)="loadNextPartial()">
           <ng-container *ngFor="let item of items">

@@ -12,4 +12,5 @@ export interface Org {
   shortName?: string;
   staffCount?: number;
   type?: string;
+  fts?: Array<string>;
 }

@@ -85,7 +85,7 @@ export class ConstantsService {
     }
   ]);
   public readonly LK_TABS = new Tabs([
-      {
+    {
       id: 'overview',
       name: 'TABS.OVERVIEW.TITLE',
       url: '/overview',

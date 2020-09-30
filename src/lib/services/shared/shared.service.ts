@@ -20,7 +20,7 @@ export class SharedService {
   public on(key: any) {
     return this.eventMessage.pipe(
         filter(event => {
-          return event.key === key;
+          return event && event.key === key;
         }),
         map(event => event.data)
       );
