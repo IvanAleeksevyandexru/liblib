@@ -1,5 +1,5 @@
 $radio-default-color: #B6C6E8;
-$checkbox-active-color: #0B40B3;
+$checkbox-active-color: #0D4CD3;
 
 :host {
   outline: none;
@@ -19,40 +19,48 @@ $checkbox-active-color: #0B40B3;
   display: none;
   position: absolute;
 
-  &:focus:disabled + .radio-button {
-    border: none;
-    background: $radio-default-color;
-  }
-
   &:hover + .radio-button {
-    border: 6px solid $radio-default-color;
+    background-color: #E5EAF5;
+    box-shadow: 0 0 0 2px $checkbox-active-color;
   }
 
   &:focus + .radio-button {
-    border: 6px solid $radio-default-color;
+    background-color: $checkbox-active-color;
+    border: 4px solid #fff;
+    box-shadow: 0 0 0 2px $checkbox-active-color;
   }
 
   &:checked + .radio-button,
   &:active + .radio-button,
   &:checked:hover + .radio-button {
-    border: 6px solid $checkbox-active-color;
+    background-color: $checkbox-active-color;
+    border: 4px solid #fff;
+    box-shadow: 0 0 0 2px $checkbox-active-color;
   }
 
-  &:disabled + .radio-button {
+  &:disabled + .radio-button,
+  &:disabled:hover + .radio-button{
+    box-shadow: 0 0 0 2px #828C9A;
+    background: #E5EAF5;
     border: none;
-    background: $radio-default-color;
+  }
+
+  &:disabled:checked + .radio-button {
+    background-color: #828C9A;
+    border: 4px solid #E5EAF5;
+    box-shadow: 0 0 0 2px #828C9A;
   }
 }
 
 .radio-button {
   position: absolute;
-  top: -4px;
-  width: 24px;
-  height: 24px;
-  margin-left: -38px;
-  border: 2px solid $radio-default-color;
   box-sizing: border-box;
   border-radius: 100%;
+  box-shadow: 0 0 0 2px $checkbox-active-color;
+  width: 20px;
+  height: 20px;
+  margin-left: -36px;
+  top: -2px;
 }
 
 .label-wrap {
