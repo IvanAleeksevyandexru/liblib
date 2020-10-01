@@ -69,12 +69,12 @@
 
   .search-input, .static-content {
     &:disabled {
-      background-color: #E7ECF7;
-      color: #A8ACB1;
+      background-color: #D1D5DF;
+      color: #66727F;
     }
     &.disabled {
-      background-color: #E7ECF7;
-      color: #A8ACB1;
+      background-color: #D1D5DF;
+      color: #66727F;
     }
     &.invalid {
       border: 1px solid #DF0024;
