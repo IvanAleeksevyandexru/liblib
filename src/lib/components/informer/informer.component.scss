@@ -1,0 +1,140 @@
+.informer-main {
+  background-color: #fff;
+  box-shadow: 0px 24px 48px rgba(230, 235, 245, 0.4);
+  padding: 24px;
+  border-radius: 12px;
+  cursor: pointer;
+
+  .loader {
+    align-self: center;
+  }
+
+  .without-debt {
+    width: 100%;
+
+    .icon-no-debt {
+      width: 48px;
+      height: 48px;
+    }
+
+    .search {
+      background: url("../../../assets/svg/search-icons/gray_search_in_circle.svg") 0 0 no-repeat;
+      background-size: contain;
+    }
+
+    .ok {
+      background: url("../../../assets/svg/notification/success/green_tick_in_circle.svg") 0 0 no-repeat;
+      background-size: contain;
+    }
+
+    .warn {
+      background: url("../../../assets/svg/notification/warn/yellow_warn_in_circle.svg") 0 0 no-repeat;
+      background-size: contain;
+    }
+  }
+
+  .debt {
+    width: 100%;
+  }
+
+  .prices {
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .informer-main {
+    height: 96px;
+
+    .without-debt {
+      .icon-no-debt {
+        width: 48px;
+        height: 48px;
+        margin-right: 24px;
+      }
+
+      .title-no-debt {
+        padding-right: 24px;
+        width: 100%;
+      }
+    }
+
+    .debt {
+      .docs {
+        width: 100%;
+      }
+
+      .prices {
+        margin: 0 24px;
+      }
+    }
+
+    .btn {
+      width: auto;
+    }
+  }
+
+  .mini {
+    &.informer-main {
+
+      .without-debt {
+        .icon-no-debt {
+          width: 60px;
+          height: 40px;
+          margin-right: 20px;
+        }
+      }
+      .debt {
+        .price, .btn  {
+          margin-left: 24px;
+        }
+
+        .price-discount {
+          margin-left: 20px;
+        }
+      }
+    }
+  }
+}
+
+.mini {
+  &.informer-main {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .mini {
+    &.informer-main {
+      min-height: 204px;
+      height: auto;
+
+      .without-debt {
+        .icon-no-debt {
+          width: 64px;
+          height: 64px;
+          margin-right: 0;
+        }
+
+        .title-no-debt {
+          padding-right: 0;
+        }
+      }
+
+      .debt {
+        .btn, .price-discount, .price {
+          margin-left: 0;
+        }
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+}

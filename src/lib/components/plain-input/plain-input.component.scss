@@ -1,6 +1,6 @@
 .text-input {
   width: 100%;
-  border: 1px solid #A8ACB1;
+  border: none;
   border-radius: 4px;
   font-family: Lato, Arial, sans-serif;
   font-size: 16px;
@@ -10,6 +10,7 @@
   color: #000000;
   box-sizing: border-box;
   outline: none;
+  background: #F5F7FA;
   &.uppercase {
     text-transform: uppercase;
   }
@@ -22,14 +23,14 @@
     height: 0;
   }
   &.focused {
-    border: 1px solid #0B40B3;
+    padding-left: 14px;
+    border: 2px solid #99B1E6;
   }
   &.invalid {
-    border: 1px solid #DF0024;
+    background: rgba(238, 63, 88, 0.16);
   }
   &[disabled], &.disabled, &[readonly] {
-    background-color: #E7ECF7;
-    border: 1px solid #CBCDD0;
+    background: #D1D5DF;
     color: #A8ACB1;
   }
   &::-ms-clear {

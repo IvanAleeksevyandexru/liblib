@@ -4,13 +4,14 @@ import {
 import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { FocusManager, Focusable } from '../../services/focus/focus.manager';
-import { Validated, ValidationShowOn } from '../../models/validation-show';
-import { SearchSyncControl } from '../../models/common-enums';
-import { HelperService } from '../../services/helper/helper.service';
-import { ValidationHelper } from '../../services/validation-helper/validation.helper';
-import { ConstantsService } from '../../services/constants.service';
-import { Width } from '../../models/width-height';
+import { Focusable, FocusManager } from "../../services/focus/focus.manager";
+import { Validated, ValidationShowOn } from "../../models/validation-show";
+import { Width } from "../../models/width-height";
+import { ConstantsService } from "../../services/constants.service";
+import { SearchSyncControl } from "../../models/common-enums";
+import { HelperService } from "../../services/helper/helper.service";
+import { ValidationHelper } from "../../services/validation-helper/validation.helper";
+
 
 class ScheduledSearch {
   public constructor(query: string, token: number) {
@@ -106,6 +107,9 @@ export class SearchBarComponent
 
   public ngOnInit() {
     this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
+    if (!this.id) {
+      this.id = 'search-input-' + Math.random().toString(16).slice(2);
+    }
   }
 
   public ngAfterViewInit() {

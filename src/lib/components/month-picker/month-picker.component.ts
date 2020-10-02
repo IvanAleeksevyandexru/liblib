@@ -2,14 +2,13 @@ import {
   Component, ViewChild, Input, Output, ElementRef, EventEmitter, SimpleChanges, forwardRef,
   OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, Optional, Host, SkipSelf, ChangeDetectorRef
 } from '@angular/core';
-import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR, FormControl } from '@angular/forms';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
-import { DatesHelperService } from '../../services/dates-helper/dates-helper.service';
 import { DragDropBinding, DragDropType, DragDropDirection, DragDropOffsetType, DragState } from '../../models/drag-drop.model';
 import { DragDropManager } from '../../services/drag-drop/drag-drop.manager';
-import { AnimationBuilder, AnimationPlayer, style, animate } from '@angular/animations';
+import { AnimationBuilder, style, animate } from '@angular/animations';
 import { Width } from '../../models/width-height';
 import { Align } from '../../models/common-enums';
 import { MonthYear, MONTHS_CODES } from '../../models/date-time.model';
@@ -51,6 +50,7 @@ export class MonthPickerComponent
     protected animationBuilder: AnimationBuilder,
     @Optional() @Host() @SkipSelf() protected controlContainer: ControlContainer) {}
 
+  @Input() public formControl?: FormControl;
   @Input() public formControlName?: string;
   @Input() public contextClass?: string;  // класс разметки для deep стилей
   @Input() public tabIndex?: string | number;
@@ -60,6 +60,7 @@ export class MonthPickerComponent
   @Input() public width?: Width | string;
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
+  @Input() public hideTillNowAvailable?: boolean;
 
   @Input() public align: Align | string = Align.RIGHT; // выравнивание панели если панель не равна по ширине инпуту
   @Input() public minMonth: MonthYear = MonthYear.fromDate(moment().startOf('year').toDate());
@@ -207,6 +208,10 @@ export class MonthPickerComponent
     this.activeMonthYear = value;
     this.selectedYearChanged = false;
     this.changeDetection.detectChanges();
+    this.changed.emit(this.activeMonthYear);
+    if (this.formControl) {
+      this.formControl.setValue(this.activeMonthYear);
+    }
     setTimeout(() => this.closeDropdown(), DELAY);
   }
 
