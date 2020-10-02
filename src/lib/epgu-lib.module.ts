@@ -46,6 +46,7 @@ import { BaseMaskedInputComponent } from './components/base-masked-input/base-ma
 import { StandardMaskedInputComponent } from './components/standard-masked-input/standard-masked-input.component';
 import { DatePickerComponent } from './components/date-picker/date-picker.component';
 import { MonthYearSelectComponent } from './components/month-year-select/month-year-select.component';
+import { MonthPickerComponent } from './components/month-picker/month-picker.component';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { DropdownSimpleComponent } from './components/dropdown-simple/dropdown-simple.component';
 import { LookupComponent } from './components/lookup/lookup.component';
@@ -58,6 +59,7 @@ import { RangeFieldComponent } from './components/range-field/range-field.compon
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { RadioComponent } from './components/radio/radio.component';
 import { PagingControlsComponent } from './components/paging-controls/paging-controls.component';
+import { VirtualScrollComponent } from './components/virtual-scroll/virtual-scroll.component';
 import { InvalidResultsTipComponent } from './components/invalid-results-tip/invalid-results-tip.component';
 import { ValidationMessageComponent } from './components/validation-message/validation-message.component';
 import { QuestionHelpTipComponent } from './components/question-help-tip/question-help-tip.component';
@@ -68,6 +70,7 @@ import { StopScreenScrollDirective } from './directives/stop-screen-scroll/stop-
 import { YaMetricDirective } from './directives/ya-metric/ya-metric.directive';
 import { OnlyNumbersDirective } from './directives/only-numbers/only-numbers.directive';
 import { DragAndDropDirective} from './directives/drag-and-drop/drag-and-drop.directive';
+import { VirtualForOfDirective } from './directives/virtual-for-of/virtual-for-of.directive';
 import { LimitNumberPipe } from './pipes/limit-number/limit-number.pipe';
 import { FormatPhonePipe } from './pipes/format-phone/format-phone.pipe';
 import { FormatTimePipe } from './pipes/format-time/format-time.pipe';
@@ -93,6 +96,7 @@ import { SnippetsComponent } from './components/snippets/snippets.component';
 import { LimitStringPipe } from './pipes/limit-string/limit-string.pipe';
 import { DeclinePipe } from './pipes/decline/decline.pipe';
 import { ConfirmActionComponent } from './components/confirm-action/confirm-action.component';
+import { DocumentDetailsComponent } from './components/document-details/document-details.component';
 import { FeedsGepsComponent } from './components/feeds-geps/feeds-geps.component';
 import { DepartmentComponent } from './components/department/department.component';
 import { SocialShareComponent } from './components/social-share/social-share.component';
@@ -103,11 +107,11 @@ import { MapComponent } from './components/map/map.component';
 import { DadataWidgetComponent } from './components/dadata-widget/dadata-widget.component';
 import { DadataModalComponent } from './components/dadata-modal/dadata-modal.component';
 import { DisclaimerComponent } from './components/disclaimers/disclaimers.component';
-import { InformerMainComponent } from './components/informers/informer-main/informer-main.component';
+import { InformerComponent } from './components/informer/informer.component';
 import { ThrobberHexagonComponent } from './components/throbber-hexagon/throbber-hexagon.component';
 import { AddressSaveModalComponent } from './components/address-save-modal/address-save-modal.component';
 import { BetaUrlPipe } from './pipes/beta-url/beta-url.pipe';
-import { ConvertSizePipe } from './pipes/convert-size.pipe';
+import { ConvertSizePipe } from './pipes/convert-size/convert-size.pipe';
 import { FileExtPipe } from './pipes/file-ext/file-ext.pipe';
 import { RemoveColonPipe } from './pipes/remove-colon/remove-colon.pipe';
 import { FileSizePipe } from './pipes/file-size/file-size.pipe';
@@ -134,6 +138,11 @@ import { DynamicFormatterPipe } from './pipes/dynamic-formatter/dynamic-formatte
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { Setting } from './models/setting';
+import { LocationSelectComponent } from './components/location-select/location-select.component';
+import { HeaderComponent } from './components/header/header.component';
+import { SearchSputnikComponent } from './components/search-sputnik/search-sputnik.component';
+import { FrameComponent } from './components/frame/frame.component';
+import { CommonController } from "./common/common-controller";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -147,13 +156,15 @@ registerLocaleData(localeRu, 'ru');
     CounterComponent,
     BreadcrumbsComponent,
     DisclaimerComponent,
-    InformerMainComponent,
+    InformerComponent,
     ThrobberHexagonComponent,
     FooterComponent,
     FooterCmsComponent,
     FooterCopyrightComponent,
     ModalSearchComponent,
+    SearchSputnikComponent,
     ConfirmActionComponent,
+    DocumentDetailsComponent,
     InfoCardComponent,
     SliderBannerComponent,
     StaticBannerComponent,
@@ -173,6 +184,7 @@ registerLocaleData(localeRu, 'ru');
     StandardMaskedInputComponent,
     DatePickerComponent,
     MonthYearSelectComponent,
+    MonthPickerComponent,
     DropdownComponent,
     DropdownSimpleComponent,
     LookupComponent,
@@ -185,6 +197,7 @@ registerLocaleData(localeRu, 'ru');
     CheckboxComponent,
     RadioComponent,
     PagingControlsComponent,
+    VirtualScrollComponent,
     InvalidResultsTipComponent,
     ValidationMessageComponent,
     QuestionHelpTipComponent,
@@ -204,6 +217,7 @@ registerLocaleData(localeRu, 'ru');
     YaMetricDirective,
     OnlyNumbersDirective,
     DragAndDropDirective,
+    VirtualForOfDirective,
     LimitNumberPipe,
     FormatPhonePipe,
     FormatTimePipe,
@@ -257,7 +271,10 @@ registerLocaleData(localeRu, 'ru');
     CapitalLetterPipe,
     LangWarnModalComponent,
     PsoComponent,
-    DynamicFormatterPipe
+    DynamicFormatterPipe,
+    LocationSelectComponent,
+    HeaderComponent,
+    FrameComponent,
   ],
   imports: [
     CommonModule,
@@ -278,7 +295,7 @@ registerLocaleData(localeRu, 'ru');
     CounterComponent,
     BreadcrumbsComponent,
     DisclaimerComponent,
-    InformerMainComponent,
+    InformerComponent,
     ThrobberHexagonComponent,
     FooterComponent,
     FormsModule,
@@ -286,7 +303,9 @@ registerLocaleData(localeRu, 'ru');
     FooterCmsComponent,
     FooterCopyrightComponent,
     ModalSearchComponent,
+    SearchSputnikComponent,
     ConfirmActionComponent,
+    DocumentDetailsComponent,
     InfoCardComponent,
     SliderBannerComponent,
     StaticBannerComponent,
@@ -316,9 +335,11 @@ registerLocaleData(localeRu, 'ru');
     CheckboxComponent,
     RadioComponent,
     MonthYearSelectComponent,
+    MonthPickerComponent,
     DatePickerComponent,
     LocationComponent,
     PagingControlsComponent,
+    VirtualScrollComponent,
     InvalidResultsTipComponent,
     ValidationMessageComponent,
     QuestionHelpTipComponent,
@@ -332,6 +353,7 @@ registerLocaleData(localeRu, 'ru');
     YaMetricDirective,
     OnlyNumbersDirective,
     DragAndDropDirective,
+    VirtualForOfDirective,
     LimitNumberPipe,
     FormatPhonePipe,
     FormatTimePipe,
@@ -383,7 +405,10 @@ registerLocaleData(localeRu, 'ru');
     RemoveQuotesPipe,
     TimeLeftPipe,
     RemoveTagsPipe,
-    DynamicFormatterPipe
+    DynamicFormatterPipe,
+    LocationSelectComponent,
+    HeaderComponent,
+    FrameComponent,
   ],
   providers: [
     GosbarService,
@@ -409,6 +434,7 @@ registerLocaleData(localeRu, 'ru');
     ModalSearchComponent,
     LocationComponent,
     ConfirmActionComponent,
+    DocumentDetailsComponent,
     DadataModalComponent,
     AddressSaveModalComponent,
     QuizComponent,

@@ -52,13 +52,14 @@
     max-height: 300px;
     display: block;
     border-style: none solid solid solid;
-    border-color: #A7A7AB;
-    border-width: 1px;
+    border-color: #99B1E6;
+    border-width: 2px;
     border-radius: 0 0 4px 4px;
     overflow: hidden;
     white-space: normal;
     box-sizing: border-box;
     background-color: white;
+    overflow: hidden;
 
     &.hidden {
       display: none;
@@ -66,95 +67,89 @@
 
     ::ng-deep .ps {
       max-height: 250px;
-
       &.ps--active-y {
         .ps__rail-y {
           opacity: 1;
           background-color: white;
-          width: 8px;
+          width: 10px;
+          border-left: 1px solid #A8ACB1;
           .ps__thumb-y {
             width: 7px;
-            right: 0;
             background-color: #E9ECEE;
+            right: 1px;
           }
-        }
-
-        .lookup-list-area {
-          width: calc(100% - 8px);
-          border-right: solid 1px #A7A7AB;
         }
       }
     }
+    &.incremental-loading {
+      .lookup-item:last .item-container {
+        padding-right: 45px;
+      }
+    }
 
-    .lookup-list-area {
+    .lookup-item {
+      display: block;
       width: auto;
-      height: auto;
-      overlow-x: hidden;
+      cursor: pointer;
+      .structure-container {
+        display: table;
+        width: 100%;
+      }
+      .item-container {
+        padding: 15px 0 15px 16px;
+        min-height: 54px;
+        border-bottom: 1px solid #E1E1E1;
+        font-size: 16px;
+        line-height: 24px;
 
-      .lookup-item {
-        display: block;
-        width: auto;
-        padding: 6px 6px 6px 16px;
-        cursor: pointer;
-        .structure-container {
-          display: table;
-          width: 100%;
-        }
-        .item-container {
-          .lookup-item-text {
-            font-family: Lato, Arial, sans-serif;
-            font-size: 16px;
-            line-height: 24px;
-            color: #515A63;
-          }
-        }
-        &.highlighted {
-          background-color: #E7ECF7;
-        }
-        &.unselectable {
-          .dropdown-item-text {
-            color: #A8ACB1;
-            cursor: default;
-          }
-          &.highlighted {
-            background-color: unset;
-          }
-        }
-        &.line-before {
-          .structure-container {
-            border-top: 1px solid #A8ACB1;
-            padding-top: 6px;
-          }
-          padding-top: 0;
-        }
-        &.line-after {
-          .structure-container {
-            border-bottom: 1px solid #A8ACB1;
-            padding-bottom: 6px;
-          }
-          padding-bottom: 0;
-          &+.line-before {
-            .structure-container {
-              border-top: none;
-              padding-top: 0;
-            }
-            padding-top: 6px;
-          }
-        }
-        &.separator {
-          .item-container {
-            display: none;
-          }
-          .structure-container {
-            height: 0;
-            padding: 0;
-            border-bottom: 3px double #A8ACB1;
-          }
+        .lookup-item-text {
+          font-family: Lato, Arial, sans-serif;
+          font-size: 16px;
+          line-height: 24px;
+          color: #515A63;
         }
       }
-      &.incremental-loading {
-        .lookup-item:last .item-container {
-          padding-right: 45px;
+      &.highlighted {
+        background-color: #F5F7FA;
+      }
+      &.unselectable {
+        .dropdown-item-text {
+          color: #A8ACB1;
+          cursor: default;
+        }
+        &.highlighted {
+          background-color: unset;
+        }
+      }
+      &.line-before {
+        .structure-container {
+          border-top: 1px solid #A8ACB1;
+          padding-top: 6px;
+        }
+        padding-top: 0;
+      }
+      &.line-after {
+        .structure-container {
+          border-bottom: 1px solid #A8ACB1;
+          padding-bottom: 6px;
+        }
+        padding-bottom: 0;
+        &+.line-before {
+          .structure-container {
+            border-top: none;
+            padding-top: 0;
+          }
+          padding-top: 6px;
+        }
+      }
+      &.separator {
+        .item-container {
+          display: none;
+        }
+        .structure-container {
+          height: 0;
+          padding: 0;
+          border-bottom: 3px double #A8ACB1;
         }
       }
     }
@@ -187,7 +182,7 @@
       }
     }
   }
-  .lookup-list-container .lookup-list-area {
+  .lookup-list-container {
     ::ng-deep {
       .lookup-item {
         .item-container {

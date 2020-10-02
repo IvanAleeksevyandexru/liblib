@@ -24,7 +24,7 @@ const STD_DATE_FORMAT = 'DD.MM.YYYY';
   }]
 })
 export class RangeSelectorComponent extends DropdownSimpleComponent
-    implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated  {
+  implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated  {
 
   // свойства для дропдауна
   @Input() public contextClass?: string;  // класс разметки для deep стилей

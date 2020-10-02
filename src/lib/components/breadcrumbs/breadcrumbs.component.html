@@ -1,5 +1,5 @@
 <div class="breadcrumbs" *ngIf="links$ | async as links">
-  <div class="items container hide show-md">
+  <div class="items container hide show-md" *ngIf="links.length">
     <ng-container *ngFor="let link of links; let last = last">
       <ng-container *ngIf="last || !link.url; else link.isAbs ? absUrl : relUrl">
         <span *ngIf="translation === Translation.NONE" class="text-overflow">{{link.name}}</span>

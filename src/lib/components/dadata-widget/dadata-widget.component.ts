@@ -35,7 +35,6 @@ import { BehaviorSubject } from 'rxjs';
   selector: 'lib-dadata-widget',
   templateUrl: './dadata-widget.component.html',
   styleUrls: ['./dadata-widget.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -63,6 +62,8 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   // массив скрытых уровней, которые не будут заполняться ни в скрытом, ни в развернутом виде
   // каждое значение - строка - значения из константы DADATA_LEVEL_MAP
   @Input() public hideLevels?: Array<string> = [];
+  @Input() public hideHouseCheckbox = false;
+  @Input() public hideApartmentCheckbox = false;
   @Input() public enabledMap = false;
   @Input() public queryMinSymbolsCount = 3;
   @Input() public validateOnSpecify = true;
@@ -75,6 +76,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   public errorCodes: Array<string> = [];
   public query = '';
   public lastQuery = '';
+  public blurCall = false;
   public validationSkip = false;
   // Массив полей, по которым строится полный адрес
   public controlNames: string[];
@@ -232,11 +234,10 @@ export class DadataWidgetComponent extends CommonController implements AfterView
         this.commit(null);
         this.normalizeInProcess = false;
       }
-      if (!this.isOpenedFields.getValue() && (dadataQc === '1' || dadataQc === '2') && this.normalizedData.fiasLevel !== '-1'
+      if (this.blurCall && !this.isOpenedFields.getValue() && (dadataQc === '1' || dadataQc === '2') && this.normalizedData.fiasLevel !== '-1'
         && !this.externalApiUrl) {
         this.showWrongAddressDialog();
       }
-      this.cd.detectChanges();
     });
   }
 
@@ -280,11 +281,11 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     if (isOpened) {
       this.closeDadataFields();
     } else {
-      this.openDadataFields(this.validateOnSpecify);
+      this.openDadataFields(true);
     }
   }
 
-  public normalizeFullAddress(fullAddress: string, suppressValidation = false, onInitCall = false): Promise<any> {
+  public normalizeFullAddress(fullAddress: string, suppressValidation = false, onInitCall = false, blurCall = false): Promise<any> {
     if (fullAddress && !this.normalizeInProcess) {
       this.form.markAsTouched();
       // используем промис, т.к. в противном случае без сабскрайбера не вызывается сервис
@@ -292,12 +293,12 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       return this.dadataService.normalize(fullAddress).toPromise().then(res => {
         if (res) {
           this.normalizedData = res;
-          this.dadataService.resetForm();
           if (res.address && res.address.elements && res.address.elements.length) {
+            this.blurCall = blurCall;
+            this.dadataService.resetForm();
             this.dadataService.parseAddress(res, onInitCall);
             // onChange triggering guaranteed
             this.validationSkip = suppressValidation;
-            this.cd.detectChanges();
           }
         }
         return res;
@@ -311,11 +312,14 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     this.widgetItemsVisibility = {};
     this.form.reset();
     this.updateCanOpenFields('');
+    for (const key of Object.keys(this.form.controls)) {
+      this.form.get(key).enable({onlySelf: true});
+    }
   }
 
   public updateCanOpenFields(value: string): void {
     this.closeDadataFields();
-    if (!value || value.length < this.queryMinSymbolsCount) {
+    if (!value) {
       this.form.reset();
     }
     this.query$.next(value);
@@ -359,7 +363,6 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     if (isDisabled) {
       this.isOpenedFields.next(false);
     }
-    this.cd.detectChanges();
   }
 
   public writeValue(obj: any): void {
@@ -399,7 +402,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public ngAfterViewInit() {
     this.query$.pipe(
-      debounceTime(700),
+      debounceTime(2000),
       distinctUntilChanged(),
       takeUntil(this.destroyed$)
     ).subscribe(value => {
@@ -417,6 +420,20 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     e.preventDefault();
     this.setCoordinatesMap();
     this.stateShowMap = !this.stateShowMap;
+  }
+
+  public putCursorAtEnd() {
+    const input = this.autocomplete.searchBar.inputElement.nativeElement;
+
+    if (input.setSelectionRange) {
+      const len = input.value.length * 2;
+      setTimeout(() => {
+        input.focus();
+        input.setSelectionRange(len, len);
+      }, 1000)
+    } else {
+      input.value = input.value;
+    }
   }
 
 }

@@ -13,14 +13,15 @@
       [clearable]="clearable"
       [showMagnifyingGlass]="false"
       [searchOnFocus]="true"
+      [moveFocusToEnd]="true"
       [queryMinSymbolsCount]="queryMinSymbolsCount"
       [(ngModel)]="query"
       (focus)="handleFocus()"
-      (blur)="normalizeFullAddress(query); handleBlur();"
+      (blur)="normalizeFullAddress(query, false, false, true); handleBlur();"
       (autocompleted)="normalizeFullAddress(query, false)"
       (input)="updateCanOpenFields($event.target.value)"
       (cleared)="onClearHandler()"
-      [autocompleteSuggestionProvider]="dadataService">
+      [suggestionsProvider]="dadataService">
           <!--inside dropdown additional content customized-->
           <div class="dadata-additional-item">
             <div class="title">{{'DADATA.NO_FIND_OPTION' | libTranslate}}</div>
@@ -35,11 +36,11 @@
         <span class="link-plain">{{specifyTitle ? (specifyTitle | appTranslate) : ('DADATA.SPECIFY' | libTranslate)}}</span>
       </a>
     </div>
-    <div *ngIf="!(isOpenedFields | async) && (widgetItemsVisibility.houseCb || widgetItemsVisibility.apartmentCb)" class="mt-32 checkbox-widget">
-      <div [hidden]="!widgetItemsVisibility.houseCb" class="house-checkbox">
+    <div *ngIf="!disabled && !(isOpenedFields | async) && (widgetItemsVisibility.houseCb || widgetItemsVisibility.apartmentCb)" class="mt-32 checkbox-widget">
+      <div [hidden]="hideHouseCheckbox || !widgetItemsVisibility.houseCb" class="house-checkbox">
         <lib-checkbox [tabIndex]="2" [labelText]="'DADATA.NO_HOUSE' | libTranslate" formControlName="houseCheckboxClosed"></lib-checkbox>
       </div>
-      <div [hidden]="!widgetItemsVisibility.apartmentCb">
+      <div [hidden]="hideApartmentCheckbox || !widgetItemsVisibility.apartmentCb">
         <lib-checkbox [tabIndex]="3" [labelText]="'DADATA.NO_APARTMENT' | libTranslate" formControlName="apartmentCheckboxClosed"></lib-checkbox>
       </div>
     </div>
@@ -96,10 +97,10 @@
             <label class="input-label" for="house">{{'DADATA.HOUSE' | libTranslate}}</label>
             <div class="small-field">
               <lib-plain-input [tabIndex]="12" [clearable]="true" [invalid]="formConfig.house.isInvalid" id="house"
-                             formControlName="house"></lib-plain-input>
+                               formControlName="house"></lib-plain-input>
             </div>
           </div>
-          <div class="address-checkbox">
+          <div class="address-checkbox" [hidden]="hideHouseCheckbox">
             <lib-checkbox [tabIndex]="13" [labelText]="'DADATA.NO_HOUSE' | libTranslate" formControlName="houseCheckbox"></lib-checkbox>
           </div>
         </div>
@@ -107,14 +108,14 @@
           <label class="input-label" for="building1">{{'DADATA.BUILDING1' | libTranslate}}</label>
           <div class="small-field">
             <lib-plain-input [tabIndex]="14" [clearable]="true" [invalid]="formConfig.building1.isInvalid" id="building1"
-                           formControlName="building1"></lib-plain-input>
+                             formControlName="building1"></lib-plain-input>
           </div>
         </div>
         <div *ngIf="formConfig.building2.visible" class="address-item">
           <label class="input-label" for="building2">{{'DADATA.BUILDING2' | libTranslate}}</label>
           <div class="small-field">
             <lib-plain-input [tabIndex]="15" [clearable]="true" [invalid]="formConfig.building2.isInvalid" id="building2"
-                           formControlName="building2"></lib-plain-input>
+                             formControlName="building2"></lib-plain-input>
           </div>
         </div>
       </div>
@@ -124,17 +125,17 @@
             <label class="input-label" for="apartment">{{'DADATA.APARTMENT' | libTranslate}}</label>
             <div class="small-field">
               <lib-plain-input [tabIndex]="16" [clearable]="true" [invalid]="formConfig.apartment.isInvalid" id="apartment"
-                             formControlName="apartment"></lib-plain-input>
+                               formControlName="apartment"></lib-plain-input>
             </div>
           </div>
-          <div class="address-checkbox">
+          <div class="address-checkbox" [hidden]="hideApartmentCheckbox">
             <lib-checkbox [tabIndex]="17" [labelText]="'DADATA.NO_APARTMENT' | libTranslate" formControlName="apartmentCheckbox"></lib-checkbox>
           </div>
         </div>
         <div class="address-item index-item">
           <label class="input-label" for="index">{{'DADATA.INDEX' | libTranslate}}</label>
           <lib-base-masked-input [mask]="validations.masks.index" tabIndex="18" [clearable]="true" [maxlength]="6" formControlName="index"
-            [invalid]="formConfig.index.isInvalid || (form.get('index').errors && form.get('index').errors['minlength'])" id="index">
+                                 [invalid]="formConfig.index.isInvalid || (form.get('index').errors && form.get('index').errors['minlength'])" id="index">
           </lib-base-masked-input>
         </div>
       </div>

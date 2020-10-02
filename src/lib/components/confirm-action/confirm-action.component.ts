@@ -17,6 +17,7 @@ export class ConfirmActionComponent implements OnInit {
   public checkboxConfirm: boolean;
   public isChecked: boolean;
   public image: string;
+  public closeButton = true;
   public imagesPosition: 'left' | 'above' = 'left';
   public maxWidth: number;
   public buttons: {

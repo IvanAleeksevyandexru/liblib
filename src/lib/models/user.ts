@@ -16,12 +16,13 @@ export interface PersonData {
   attorneys?: any[]; // TODO убрать any
   employees?: any[]; // TODO убрать any
   contacts?: Contact[];
+  categories?: CategoryUser[];
   docs?: Document[];
   groups?: Group[];
   error?: string;
   id?: string;
   kids?: Kid[];
-  orgs?: Org[];
+  org?: Org;
   person?: Person;
   registration?: Registration;
   roles?: Role[];
@@ -100,7 +101,9 @@ export interface User {
   activeLegalRoleCount?: string;
   assuranceLevel?: string;
   authToken?: string;
+  autorityId?: string;
   birthDate?: string;
+  branchOid?: string;
   email?: string;
   emailVerified?: boolean;
   firstName?: string;
@@ -147,10 +150,16 @@ export interface User {
   userName?: string;
   userType?: string;
   // Кастомные поля
+  isKid?: boolean; // Флаг принадлежности УЗ к типу "Ребенок"
   authorized?: boolean; // Флаг наличия авторизации
   level?: 1 | 2 | 3; // Уровень УЗ пользователя
   fullName?: string; // Фамилия Имя Отчество
   shortName?: string; // Фамилия И. О.
   type?: string; // Тип пользователя - ЮЛ, ИП, ОГВ, физик
   typeParams?: UserTypeParams; // Параметры в зависимости от типа пользователя
+}
+
+export interface CategoryUser {
+  id: number;
+  name: string;
 }

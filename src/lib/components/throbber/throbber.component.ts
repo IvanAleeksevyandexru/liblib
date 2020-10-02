@@ -27,6 +27,7 @@ export class ThrobberComponent extends Throbber implements OnInit  {
   public ngOnInit() {
     this.animationEnabled = true;
     this.setDefaultHeaders();
+
   }
 
   public setDefaultHeaders(): void {
