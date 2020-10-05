@@ -1,6 +1,6 @@
 {
   "name": "epgu-lib",
-  "version": "0.0.573",
+  "version": "0.0.574",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -72,7 +72,7 @@
     "codelyzer": "^5.1.2",
     "copy-webpack-plugin": "5.0.4",
     "cpx": "^1.5.0",
-    "epgu-lib": "^0.0.571",
+    "epgu-lib": "^0.0.574",
     "extract-text-webpack-plugin": "4.0.0-beta.0",
     "html-webpack-plugin": "3.2.0",
     "html-webpack-pug-plugin": "2.0.0",
