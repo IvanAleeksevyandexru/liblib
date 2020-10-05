@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -78,7 +79,9 @@ export class YaMapService {
       this.initMap(el, params, marks);
     } else {
       this.loadYMaps(params);
-      this.ymaps$.subscribe(() => {
+      this.ymaps$.pipe(
+        filter((ymap) => ymap)
+      ).subscribe(() => {
         this.initMap(el, params, marks);
       });
     }
