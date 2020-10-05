@@ -11,6 +11,7 @@
     position: relative;
     height: 48px;
     color: #0B1F33;
+    box-sizing: border-box;
     &.invalid {
       border-color: #DF0024;
     }
