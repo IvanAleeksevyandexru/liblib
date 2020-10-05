@@ -28,7 +28,7 @@ export class SearchService implements LookupProvider<SimpleSputnikSuggest> {
   // }
 
   public search(query: string, configuration?: { [name: string]: any }) {
-    return this.http.get(`${this.loadService.config.searchSpuntnikApiUrl}`, {
+    return this.http.get(`${this.loadService.config.searchSputnikApiUrl}`, {
         withCredentials: true,
         params: {
           _: `${Math.random()}`,
