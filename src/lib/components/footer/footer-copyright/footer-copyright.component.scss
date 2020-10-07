@@ -4,10 +4,6 @@
   font: 14px/ 20px Lato, Arial, "sans-serif";
   min-height: 176px;
 
-  &__text, .logo-mks, .logo-rostelek {
-    position: absolute;
-  }
-
   .logo-mks, .logo-rostelek {
     height: 64px;
     bottom: 24px;
@@ -35,46 +31,45 @@
     width: 100%;
   }
 }
-.simple-footer {
-  .footer-info {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    margin: 0 auto;
-    min-height: 64px;
 
-    &__text, .logo-mks, .logo-rostelek {
-      position: static;
-      font-size: 12px;
-      line-height: 16px;
-    }
+.footer-info {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  min-height: 64px;
 
-    .logo-mks, .logo-rostelek {
-      flex: 0 0 auto;
-      bottom: 0;
-    }
-
-    &__text {
-      width: 230px;
-    }
-
-    .logo-mks {
-      width: 28px;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position-y: center;
-    }
-
-    .logo-rostelek {
-      width: 30px;
-    }
-
-    &__text {
-      margin-bottom: 0;
-    }
+  &__text, .logo-mks, .logo-rostelek {
+    position: static;
+    font-size: 12px;
+    line-height: 16px;
   }
 
+  .logo-mks, .logo-rostelek {
+    flex: 0 0 auto;
+    bottom: 0;
+  }
+
+  &__text {
+    width: 230px;
+  }
+
+  .logo-mks {
+    width: 28px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-y: center;
+  }
+
+  .logo-rostelek {
+    width: 30px;
+  }
+
+  &__text {
+    margin-bottom: 0;
+  }
 }
+
 
 @media all and (min-width: 768px) {
   .footer-wrapper {
@@ -107,23 +102,27 @@
   .simple-footer {
     .footer-wrapper {
       border-top: none;
+    }
+  }
 
-      .footer-info {
-        padding: 0;
-        min-height: 112px;
-        max-width: 600px;
+  .footer-wrapper {
 
-        &__text, .logo-mks, .logo-rostelek {
-          position: static;
-          font-size: 16px;
-        }
-        &__text {
-          width: 100%;
-        }
+    .footer-info {
+      padding: 0;
+      min-height: 112px;
+      max-width: 600px;
 
-        .logo-mks, .logo-rostelek {
-          width: 50px;
-        }
+      &__text, .logo-mks, .logo-rostelek {
+        position: static;
+        font-size: 16px;
+      }
+
+      &__text {
+        width: 100%;
+      }
+
+      .logo-mks, .logo-rostelek {
+        width: 50px;
       }
     }
   }
