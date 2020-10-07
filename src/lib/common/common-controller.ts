@@ -1,6 +1,7 @@
-import { EventEmitter, OnDestroy } from '@angular/core';
+import { Component, Directive, EventEmitter, OnDestroy } from '@angular/core';
 
-export abstract class CommonController implements OnDestroy {
+@Directive()
+export class CommonController implements OnDestroy {
   protected destroyed$ = new EventEmitter<void>();
 
   public ngOnDestroy() {

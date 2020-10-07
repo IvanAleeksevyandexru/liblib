@@ -1,4 +1,6 @@
-<lib-throbber *ngIf="feedsIsLoading" [defaultHeaders]="true"></lib-throbber>
+<lib-throbber *ngIf="feedsIsLoading"
+              [size]="isHeader ? 'throbber-small' : ''"
+              [defaultHeaders]="!isHeader"></lib-throbber>
 <a [routerLink]="openDetails(feed)"
    (click)="onFeedClick($event, feed)"
    class="feed-item"
@@ -58,7 +60,7 @@
         </div>
       </div>
     </div>
-    <div class="flex-1-0-md flex-1-0-lg remove-feed-wrap">
+    <div class="flex-1-0-md flex-1-0-lg remove-feed-wrap" *ngIf="!isHeader">
       <div class="feed-item-controls mt-8">
         <div class="flex-container feed-item-controls-buttons align-items-center">
           <div *ngIf="isUpdated(feed)" class="updated">
@@ -87,11 +89,19 @@
   </ng-container>
 </a>
 
-<div *ngIf="enableShowMoreButton()" class="show-more">
-  <a *ngIf="page === 'overview' else additionalFeeds" class="small-text blue" (click)="onShowMoreClick($event)" routerLink="/notifications">{{'FEEDS.VIEW_ALL' | libTranslate}}</a>
-  <ng-template #additionalFeeds>
-    <span *ngIf="hasMore" class="small-text blue link-underline" (click)="showMore($event)" >Показать еще</span>
-  </ng-template>
+<div *ngIf="enableShowMoreButton()" [ngClass]="{
+    'mt-32': !isHeader,
+    'mt-16': isHeader
+    }">
+
+    <a *ngIf="(page === 'overview') else additionalFeeds" class="small-text blue" (click)="onShowMoreClick($event)" routerLink="/notifications">{{'FEEDS.VIEW_ALL' | libTranslate}}</a>
+    <ng-template #additionalFeeds>
+      <span *ngIf="hasMore" class="small-text blue link-underline" (click)="showMore($event)" >Показать еще</span>
+    </ng-template>
+
+  <p class="text-center" *ngIf="isHeader">
+    <a class="small-text blue" (click)="onShowMoreClick($event)" routerLink="/notifications">{{'FEEDS.EVENTS_ALL' | libTranslate}}</a>
+  </p>
 </div>
 
 <lib-throbber *ngIf="addFeedsIsLoading" [defaultHeaders]="true"></lib-throbber>

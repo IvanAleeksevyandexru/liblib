@@ -170,6 +170,14 @@
   }
 }
 
+.main-menu {
+  .links-wrapper {
+    a {
+      color: #0D4CD3;
+    }
+  }
+}
+
 @media all and (min-width: 768px) and (max-width: 1140px) {
   .menu {
     &.fixed{
@@ -244,5 +252,168 @@
 
   &:hover {
     cursor: pointer;
+  }
+}
+
+:host-context(.app-portal) {
+  .main-menu {
+    position: relative;
+    width: 100%;
+    background-color: #F6F7F7;
+
+    &.fixed {
+      background-color: #FFFFFF!important;
+      z-index: 10;
+      position: fixed;
+      top: 0;
+      left: 0;
+
+      .inner {
+        height: 64px;
+        padding-top: 0;
+      }
+
+      ::ng-deep {
+        .search-container.show-field {
+          background-color: #FFFFFF;
+        }
+      }
+
+      .notification-wrapper {
+        display: none;
+      }
+    }
+
+    .inner {
+      justify-content: space-between;
+      height: 88px;
+      padding-top: 16px;
+      position: relative;
+    }
+
+    &.bottom-border {
+      border-bottom: 1px solid rgba(29, 93, 235, 0.18);
+    }
+
+    ::ng-deep {
+      .search-container {
+        &.show-field {
+          position: absolute;
+          top: calc(50% - 26px);;
+          right: 17px;
+          width: calc(100% - 34px);
+          background-color: inherit;
+        }
+
+        &.menu-search {
+          position: relative;
+          background-color: inherit;
+          width: 100%;
+          right: 0;
+        }
+      }
+    }
+
+    .open-mobile-menu {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      margin-left: 8px;
+      background: url(../../../assets/svg/menu-new.svg) right center no-repeat;
+      background-size: 20px 16px;
+      padding-right: 32px;
+    }
+
+    .links-wrapper {
+      display: flex;
+      flex-grow: 2;
+    }
+
+    .user-menu-wrapper {
+      position: relative;
+    }
+
+    .login-wrapper {
+      margin-left: 24px;
+    }
+
+    .search-wrapper {
+      display: none;
+    }
+    &.main-page.fixed {
+      .search-wrapper {
+        display: block;
+      }
+    }
+
+  }
+
+  @media all and (min-width: 768px) and (max-width: 1140px) {
+    .main-menu {
+      ::ng-deep {
+        .search-container {
+          &.show-field {
+            right: 64px;
+            width: calc(100% - 128px);
+          }
+
+          &.menu-search {
+            position: relative;
+            background-color: inherit;
+            width: 100%;
+            right: 0;
+          }
+        }
+      }
+
+    }
+  }
+
+  @media all and (min-width: 1140px) {
+    .main-menu {
+      .logo-wrapper {
+        margin-right: 72px;
+      }
+
+      .inner {
+        padding-top: 0;
+      }
+
+      .links {
+        .item {
+          margin-right: 40px;
+          &:last-child{
+            margin-right: 32px;
+          }
+        }
+      }
+
+      .login-wrapper {
+        margin-left: 0;
+      }
+
+      ::ng-deep {
+        .search-container.show-field {
+          right: 75px;
+          width: calc(100% - 367px);
+        }
+      }
+
+      .ie-grid {
+        &.grid-row, &.grid-row-lg {
+          display: flex;
+        }
+      }
+
+      .search-wrapper {
+        display: block;
+      }
+      &.main-page:not(.fixed) {
+        .search-wrapper {
+          display: none;
+        }
+      }
+
+    }
   }
 }

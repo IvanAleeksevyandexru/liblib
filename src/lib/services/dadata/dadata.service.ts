@@ -165,7 +165,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
   private initCheckboxChange(checkboxName: string, field: string): void {
     this.form.get(checkboxName + 'Checkbox').valueChanges.subscribe((checked: boolean) => {
       const control = this.getFormControlByName(checkboxName);
-      if (checked) {
+      if (checked || checked === null) {
         field = control.value;
         control.setValue('');
         control.disable({onlySelf: true});

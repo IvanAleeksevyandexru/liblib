@@ -12,6 +12,7 @@ import { User } from '../../models/user';
 export class LoginComponent implements OnInit {
 
   @Input() public userCounter: CounterData;
+  @Input() public onlyIcon: boolean;
 
   public user: User;
   public avatarError = false;

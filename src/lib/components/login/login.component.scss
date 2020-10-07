@@ -16,22 +16,31 @@
 
 .link {
   position: relative;
-  padding-left: 23px;
+  padding-left: 24px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 20px;
+
+  &.only-icon {
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 
   &:before {
     content: '';
     display: block;
     position: absolute;
     left: 0;
-    width: 14px;
-    height: 9px;
-    top: 3px;
-    background: url(../../../assets/svg/key.svg) 0 0 no-repeat;
+    top: -10px;
+    width: 16px;
+    height: 16px;
+    background: url(../../../assets/svg/login.svg) 0 0 no-repeat;
     background-size: 100%;
   }
 
   &:hover:before {
-    background-image: url(../../../assets/svg/key-hover.svg);
+    background-image: url(../../../assets/svg/login-hover.svg);
   }
 
   &.logout:before {
@@ -56,7 +65,7 @@
 
     .counter-circle {
       top: -2px;
-      left: 28px;
+      left: 20px;
     }
 
     .avatar-wrapper {
@@ -77,22 +86,31 @@
     }
 
     .no-avatar {
-      background-color: #5479ca;
+      background-color: #D1D5DF;
       background-image: url(../../../assets/svg/no-avatar.svg);
       background-size: 100%;
 
-      &.female {
-        background-image: url(../../../assets/svg/no-avatar-f.svg);
+      &.female{
+        background-image: url(../../../assets/svg/avatars/default-avatar-f.svg);
+      }
+      &.male{
+        background-image: url(../../../assets/svg/avatars/default-avatar-m.svg);
       }
 
       &.business {
         background-color: transparent;
-        background-image: url(../../../assets/svg/avatar-business.svg);
+        background-image: url(../../../assets/svg/avatars/default-avatar-ip-m.svg);
+        &.female{
+          background-image: url(../../../assets/svg/avatars/default-avatar-ip-f.svg);
+        }
+        &.male{
+          background-image: url(../../../assets/svg/avatars/default-avatar-ip-m.svg);
+        }
       }
 
       &.legal {
         background-color: transparent;
-        background-image: url(../../../assets/svg/avatar-legal.svg);
+        background-image: url(../../../assets/svg/avatars/default-avatar-ul.svg);
       }
     }
 
@@ -127,5 +145,21 @@
 @media all and (min-width: 1140px) {
   .authorized-user {
     max-width: 100%;
+  }
+  .link {
+    &:before {
+      top: 1px;
+
+    }
+  }
+}
+
+:host-context(.main-menu) {
+  .link {
+    line-height: 20px;
+    &:before {
+      width: 20px;
+      height: 20px;
+    }
   }
 }

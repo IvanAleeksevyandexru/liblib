@@ -1,6 +1,6 @@
 <div class="footer-wrapper" id="footer-wrapper">
-  <div [hidden]="translate.currentLang !== 'ru'">
+  <div [hidden]="translate.currentLang !== 'ru' || hideCmsFooter">
     <ng-template #footerCms></ng-template>
   </div>
-  <lib-footer-copyright></lib-footer-copyright>
+  <lib-footer-copyright [classes]="hideCmsFooter ? 'simple-footer' : ''"></lib-footer-copyright>
 </div>

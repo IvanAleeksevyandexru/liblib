@@ -1,29 +1,29 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InformerMainComponent } from './informer-main.component';
-import { ToMoneyPipe } from '../../../pipes/to-money/to-money.pipe';
-import { DeclinePipe } from '../../../pipes/decline/decline.pipe';
-import { LibTranslateService } from '../../../services/translate/translate.service';
-import { LibTranslateServiceStub } from '../../../mocks/translate.service.stub';
-import { LibTranslatePipe } from '../../../pipes/translate/translate.pipe';
-import { YaMetricService } from '../../../services/ya-metric/ya-metric.service';
-import { LoadService } from '../../../services/load/load.service';
-import { LoadServiceStub } from '../../../mocks/load.service.stub';
+import { InformerComponent } from './informer.component';
+import { ToMoneyPipe } from '../../pipes/to-money/to-money.pipe';
+import { DeclinePipe } from '../../pipes/decline/decline.pipe';
+import { LibTranslateService } from '../../services/translate/translate.service';
+import { LibTranslateServiceStub } from '../../mocks/translate.service.stub';
+import { LibTranslatePipe } from '../../pipes/translate/translate.pipe';
+import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
+import { LoadService } from '../../services/load/load.service';
+import { LoadServiceStub } from '../../mocks/load.service.stub';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
-import { RouterStub } from '../../../mocks/router.stub';
+import { RouterStub } from '../../mocks/router.stub';
 
-import { MockComponent } from '../../../mocks/mock.component';
+import { MockComponent } from '../../mocks/mock.component';
 
 describe('InformerMainComponent', () => {
-  let component: InformerMainComponent;
-  let fixture: ComponentFixture<InformerMainComponent>;
+  let component: InformerComponent;
+  let fixture: ComponentFixture<InformerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [
-        InformerMainComponent,
+        InformerComponent,
         MockComponent({selector: 'lib-button', inputs: ['color', 'size', 'width']}),
         MockComponent({selector: 'lib-throbber-hexagon', inputs: ['size']}),
         ToMoneyPipe,
@@ -41,7 +41,7 @@ describe('InformerMainComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InformerMainComponent);
+    fixture = TestBed.createComponent(InformerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
