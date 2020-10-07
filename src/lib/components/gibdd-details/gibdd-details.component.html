@@ -55,7 +55,7 @@
           <p class="text-plain black bold mb-16">
             {{(message.addParams.linksFkNumber ? 'GIBDD.AMOUNT_DEBT' : 'GIBDD.AMOUNT_PENALTY') | libTranslate}}
           </p>
-          <p class="title-h3 black">{{bill.amount | toMoney}} &#164;</p>
+          <p class="title-h3 black">{{bill.amount | toMoney}} &#8381;</p>
         </div>
       </ng-container>
       <div *ngIf="showError" class="mt-24 mt-md-40">
