@@ -41,7 +41,9 @@ export class GosbarService {
 
   private setRegionFailName(manager) {
     this.translateService.get('LOCATION.FAIL').subscribe((res: string) => {
-      manager.setLocationLabel(res);
+      if (manager) {
+        manager.setLocationLabel(res);
+      }
     });
   }
 

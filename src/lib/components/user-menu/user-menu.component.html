@@ -4,19 +4,12 @@
       <ng-template *ngTemplateOutlet="menuHeader"></ng-template>
       <ng-template *ngTemplateOutlet="menuTabs"></ng-template>
       <ul class="user-menu-links">
-        <li class="item" *ngFor="let link of links">
-          <a [href]="link.url">{{link.title | libTranslate}}</a>
+        <li class="item" *ngIf="!user.isKid">
+          <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{titleChangeRole | libTranslate}}</a>
         </li>
-      </ul>
-      <ul class="user-menu-links">
         <li class="item">
           <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.SETTINGS', 'settingsSecurity')">{{'HEADER.MENU.SETTINGS' | libTranslate}}</a>
           <lib-counter class="counter" [counter]="settingsCounter"></lib-counter>
-        </li>
-      </ul>
-      <ul class="user-menu-links" *ngIf="!user.isKid">
-        <li class="item">
-          <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{titleChangeRole | libTranslate}}</a>
         </li>
       </ul>
       <ul class="user-menu-links" *ngIf="!user.isKid">
@@ -35,7 +28,7 @@
     </div>
     <ng-container *ngIf="showAllMenu">
     <ng-template *ngTemplateOutlet="menuTabs"></ng-template>
-    <div class="item select-role" (click)="showRolesList = !showRolesList" [ngClass]="{'show-roles-list': showRolesList}">
+    <div class="item select-role" *ngIf="user.authorized" (click)="showRolesList = !showRolesList" [ngClass]="{'show-roles-list': showRolesList}">
       <span class="active-role">{{ (activeRole?.name) || 'Гражданам' }}</span>
     </div>
     <ul *ngIf="showRolesList" class="roles-list">
@@ -60,11 +53,6 @@
       <li class="item" *ngIf="user.authorized">
         <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.SETTINGS', 'settingsSecurity')">{{'HEADER.MENU.SETTINGS' | libTranslate}}</a>
         <lib-counter class="counter" [counter]="settingsCounter"></lib-counter>
-      </li>
-    </ul>
-    <ul class="links-mobile" *ngIf="!user.isKid">
-      <li class="item">
-        <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{titleChangeRole | libTranslate}}</a>
       </li>
     </ul>
     <ul *ngIf="user.authorized" class="links-mobile">
