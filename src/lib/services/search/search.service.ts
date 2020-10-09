@@ -45,12 +45,12 @@ export class SearchService implements LookupProvider<SimpleSputnikSuggest> {
 
   private handleSputnikResults(results: SearchSputnikSuggests): SimpleSputnikSuggest[] {
     function makeTitleWithIconClass(title: string, category: string): string {
-      const categoriesWithIcon = {services: 'services', departments: 'departments', suggests: 'suggests'};
+      const categoriesWithIcon = {service: 'services', structure: 'departments', suggest: 'suggests'};
       const className: string = categoriesWithIcon[category] || 'info';
       return `<div class="icon ${className}">${title}</div>`
     }
 
-    const categories: string[] = ['services', 'info', 'situations', 'departments', 'news', 'other', 'suggests'];
+    const categories: string[] = ['service', 'help', 'situation', 'structure', 'other', 'suggest'];
     let suggestions: SimpleSputnikSuggest[] = [];
     categories.forEach(category => {
       const resultInCategory = results[category];

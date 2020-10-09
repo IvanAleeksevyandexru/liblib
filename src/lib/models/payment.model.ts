@@ -8,6 +8,7 @@ import {
 } from './bill.model';
 import { ExtendedGibddDetails } from './gibdd-fine.model';
 import { Vehicle } from './vehicle';
+import { Observable } from 'rxjs';
 
 export type PaymentStatus = 'NEW' | 'PAY_SERVICE_CONFIRMATION' | 'PAY_SERVICE_CONFIRMED' | 'BANK_PAY_ORDER_CONFIRMATION' |
   'BANK_PAY_ORDER_CONFIRMED' | 'SERVICE_PROVIDER_CONFIRMATION' | 'SERVICE_PROVIDER_CONFIRMED' | 'BANK_PAY_CONFIRMATION' |
@@ -143,7 +144,7 @@ export interface PaymentDetails extends PaymentItems {
 }
 
 export interface ExtendedPayment extends Payment {
-  statusComment?: StatusComment;
+  statusComment?: Observable<StatusComment>;
   statusColor?: StatusColors;
 }
 
