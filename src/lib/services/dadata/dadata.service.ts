@@ -18,9 +18,12 @@ export class DadataService implements AutocompleteSuggestionProvider {
   private simpleMode = false;
   private externalUrl = '';
   private hideLevels = [];
+  public suggestionsLength = 0;
   public canOpenFields = new BehaviorSubject<boolean>(false);
   public isOpenedFields = new BehaviorSubject<boolean>(false);
   public isWidgetVisible = new BehaviorSubject<boolean>(false);
+
+  public kladrCode = '';
 
   public prefixes = {
     region: {
@@ -189,7 +192,8 @@ export class DadataService implements AutocompleteSuggestionProvider {
         q: query
       }
     }).pipe(map(res => {
-      if (res.suggestions.addresses.length) {
+      this.suggestionsLength = res.suggestions.addresses.length;
+      if (this.suggestionsLength) {
         return res.suggestions.addresses.map((suggestion) => new AutocompleteSuggestion(suggestion.address, suggestion));
       } else {
         this.qc = '6';
@@ -233,6 +237,8 @@ export class DadataService implements AutocompleteSuggestionProvider {
       this.setVisibilityByLevel(level);
 
       if (index === arr.length - 1) {
+        this.kladrCode = elem.kladrCode;
+
         const houseControl = this.getFormControlByName('house');
         const houseCheckbox = this.getFormControlByName('houseCheckbox');
         const apartmentControl = this.getFormControlByName('apartment');
