@@ -80,6 +80,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   public errorCodes: Array<string> = [];
   public query = '';
   public lastQuery = '';
+  public needReplaceQuery = false;
   public blurCall = false;
   public validationSkip = false;
   // Массив полей, по которым строится полный адрес
@@ -209,8 +210,6 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           }
         }
       });
-      this.lastQuery = this.query;
-      this.query = fullAddress;
       if (fullAddress) {
         if (this.validationSkip) {
           this.errorCodes = [];
@@ -218,10 +217,14 @@ export class DadataWidgetComponent extends CommonController implements AfterView
         } else {
           this.revalidate();
         }
-        this.widgetItemsVisibility = this.dadataService.validateCheckboxes();
-        if (dadataQc === '0' && !this.errorCodes.length) {
-            this.autocomplete.cancelSearchAndClose();
+        this.lastQuery = this.query;
+        if (this.needReplaceQuery) {
+          this.query = fullAddress;
+          this.widgetItemsVisibility = this.dadataService.validateCheckboxes();
         }
+        // if (dadataQc === '0' && !this.errorCodes.length) {
+        //     this.autocomplete.cancelSearchAndClose();
+        // }
         const commitValue: DadataResult = {
           ...this.form.getRawValue(),
           fullAddress,
@@ -230,7 +233,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           lng: this.normalizedData.geo_lon,
           fiasCode: this.normalizedData.address.fiasCode,
           okato: this.normalizedData.okato,
-          hasErrors: this.errorCodes.length
+          hasErrors: this.errorCodes.length,
+          kladrCode: this.dadataService.kladrCode,
+          regionCode: (this.dadataService.kladrCode && this.dadataService.kladrCode.substring(0, 2)) || ''
         };
         this.commit(commitValue);
         this.normalizeInProcess = false;
@@ -240,8 +245,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
         this.commit(null);
         this.normalizeInProcess = false;
       }
-      if (this.blurCall && !this.isOpenedFields.getValue() && (dadataQc === '1' || dadataQc === '2') && this.normalizedData.fiasLevel !== '-1'
-        && !this.externalApiUrl) {
+      if (this.blurCall && !this.isOpenedFields.getValue() && (dadataQc === '1' || dadataQc === '2') && this.normalizedData.fiasLevel !== '-1') {
         this.showWrongAddressDialog();
       }
     });
@@ -280,6 +284,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public closeDadataFields() {
     this.isOpenedFields.next(false);
+    if (!this.normalizeInProcess) {
+      this.widgetItemsVisibility = this.dadataService.validateCheckboxes();
+    }
   }
 
   public toggleDadataFields() {
@@ -291,7 +298,11 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     }
   }
 
-  public normalizeFullAddress(fullAddress: string, suppressValidation = false, onInitCall = false, blurCall = false): Promise<any> {
+  public normalizeFullAddress(fullAddress: string,
+                              suppressValidation = false,
+                              onInitCall = false,
+                              blurCall = false,
+                              selectAddress = false): Promise<any> {
     if (fullAddress && !this.normalizeInProcess) {
       this.form.markAsTouched();
       // используем промис, т.к. в противном случае без сабскрайбера не вызывается сервис
@@ -300,11 +311,16 @@ export class DadataWidgetComponent extends CommonController implements AfterView
         if (res) {
           this.normalizedData = res;
           if (res.address && res.address.elements && res.address.elements.length) {
+            this.needReplaceQuery = this.dadataService.suggestionsLength === 1 || blurCall || onInitCall;
             this.blurCall = blurCall;
             this.dadataService.resetForm();
             this.dadataService.parseAddress(res, onInitCall);
             // onChange triggering guaranteed
-            this.validationSkip = suppressValidation;
+            if (selectAddress) {
+              this.validationSkip = false;
+            } else {
+              this.validationSkip = !this.needReplaceQuery || suppressValidation
+            }
           }
         }
         return res;
@@ -318,6 +334,8 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     this.widgetItemsVisibility = {};
     this.form.reset();
     this.errorCodes = [];
+    this.needReplaceQuery = false;
+    this.query = '';
     this.canOpenFields.next(false);
     this.updateCanOpenFields('');
     for (const key of Object.keys(this.form.controls)) {
@@ -326,7 +344,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   }
 
   public updateCanOpenFields(value: string): void {
-    this.closeDadataFields();
+    if (this.isOpenedFields.getValue()) {
+      this.closeDadataFields();
+    }
     if (!value) {
       this.form.reset();
     }
@@ -416,13 +436,10 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public ngAfterViewInit() {
     this.query$.pipe(
-      debounceTime(2000),
       distinctUntilChanged(),
       takeUntil(this.destroyed$)
     ).subscribe(value => {
-      if (value) {
-        this.normalizeFullAddress(value, false);
-      }
+      this.errorCodes = [];
     });
   }
 
