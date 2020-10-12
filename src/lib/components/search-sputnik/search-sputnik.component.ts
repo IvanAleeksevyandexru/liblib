@@ -58,7 +58,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
 
   public toggleMagnifyingGlass() {
     const query = this.lookup.query ? this.lookup.query.trim() : '';
-    this.showMagnifyingGlass = !query.length
+    this.showMagnifyingGlass = !query.length;
   }
 
   public formatter(item) {
