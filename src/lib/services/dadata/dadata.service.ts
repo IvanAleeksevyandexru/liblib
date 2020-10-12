@@ -355,8 +355,8 @@ export class DadataService implements AutocompleteSuggestionProvider {
       this.isWidgetVisible.next(false);
     } else if (!openedFields) {
       this.isWidgetVisible.next(true);
-      houseCb = !houseHiddenByDefault || (!house.value && !houseCheckbox.value);
-      apartmentCb = !apartmentHiddenByDefault || (!apartmentCheckbox.value && !apartment.value);
+      houseCb = !houseHiddenByDefault && (!house.value && !houseCheckbox.value);
+      apartmentCb = !apartmentHiddenByDefault && (!apartmentCheckbox.value && !apartment.value);
     }
     return {houseCb, apartmentCb};
   }

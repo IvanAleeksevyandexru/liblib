@@ -280,6 +280,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public closeDadataFields() {
     this.isOpenedFields.next(false);
+    if (!this.normalizeInProcess) {
+      this.widgetItemsVisibility = this.dadataService.validateCheckboxes();
+    }
   }
 
   public toggleDadataFields() {
@@ -326,7 +329,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   }
 
   public updateCanOpenFields(value: string): void {
-    this.closeDadataFields();
+    if (this.isOpenedFields.getValue()) {
+      this.closeDadataFields();
+    }
     if (!value) {
       this.form.reset();
     }
