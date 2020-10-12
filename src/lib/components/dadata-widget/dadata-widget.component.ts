@@ -284,6 +284,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public closeDadataFields() {
     this.isOpenedFields.next(false);
+    if (!this.normalizeInProcess) {
+      this.widgetItemsVisibility = this.dadataService.validateCheckboxes();
+    }
   }
 
   public toggleDadataFields() {
