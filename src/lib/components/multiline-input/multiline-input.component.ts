@@ -20,7 +20,7 @@ import { Width } from '../../models/width-height';
   }]
 })
 export class MultilineInputComponent
-    implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated {
+  implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated {
 
   constructor(protected focusManager: FocusManager, @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
 

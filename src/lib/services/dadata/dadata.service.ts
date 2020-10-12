@@ -70,6 +70,18 @@ export class DadataService implements AutocompleteSuggestionProvider {
     apartment: {
       abbr: 'кв.',
       shortType: ''
+    },
+    index: {
+      abbr: 'инд.',
+      shortType: ''
+    },
+    geoLat: {
+      abbr: 'шир.',
+      shortType: ''
+    },
+    geoLon: {
+      abbr: 'долг.',
+      shortType: ''
     }
   };
 
@@ -141,6 +153,8 @@ export class DadataService implements AutocompleteSuggestionProvider {
       apartmentCheckbox: new FormControl(false),
       apartmentCheckboxClosed: new FormControl(false),
       index: new FormControl('', [Validators.maxLength(6), Validators.minLength(6)]),
+      geoLat: new FormControl(''),
+      geoLon: new FormControl(''),
     });
 
     this.initCheckboxChange('house', this.lastHouseValue);
@@ -151,7 +165,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
   private initCheckboxChange(checkboxName: string, field: string): void {
     this.form.get(checkboxName + 'Checkbox').valueChanges.subscribe((checked: boolean) => {
       const control = this.getFormControlByName(checkboxName);
-      if (checked) {
+      if (checked || checked === null) {
         field = control.value;
         control.setValue('');
         control.disable({onlySelf: true});
@@ -253,6 +267,9 @@ export class DadataService implements AutocompleteSuggestionProvider {
     });
     if (data.address.postIndex) {
       this.setValueByLevel(100, data.address.postIndex);
+    }
+    if (data.geo_lat && data.geo_lon) {
+      this.form.patchValue({geoLat: data.geo_lat, geoLon: data.geo_lon});
     }
   }
 

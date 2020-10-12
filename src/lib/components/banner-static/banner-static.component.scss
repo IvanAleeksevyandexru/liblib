@@ -1,6 +1,15 @@
 .banner-inner-container {
   position: relative;
-  padding-right: 32px;
+
+  &.place-for-cross {
+    padding-right: 32px;
+  }
+}
+
+.closable, :host-context(.closable-group) {
+  .banner-inner-container {
+    padding-right: 32px;
+  }
 }
 
 .banner-container {
@@ -39,6 +48,12 @@
     transform: translateY(-50%);
     right: 0;
     cursor: pointer;
+
+    &.top {
+      top: 12px;
+      right: 12px;
+      transform: none;
+    }
   }
 
 }

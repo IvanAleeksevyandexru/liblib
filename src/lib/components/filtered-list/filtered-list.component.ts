@@ -6,9 +6,12 @@ import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCES
 import { ListItem, ListElement, ListItemConverter } from '../../models/dropdown.model';
 import { of, forkJoin } from 'rxjs';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
+import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
+import { VirtualScrollComponent } from '../virtual-scroll/virtual-scroll.component';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
-import { ListItemsService, FixedItemsProvider, ListItemsOperationsContext } from '../../services/list-item/list-items.service';
+import { ListItemsService, FixedItemsProvider,
+  ListItemsOperationsContext, ListItemsVirtualScrollController } from '../../services/list-item/list-items.service';
 import { ConstantsService } from '../../services/constants.service';
 import { Translation, LineBreak } from '../../models/common-enums';
 import { Width, Height } from '../../models/width-height';
@@ -71,6 +74,8 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
   @Input() public collapsableGroups = false;
   // определяет отношение к итемам-группам (заголовкам, элементам структуры) - можно ли их выбирать как обычные элементы
   @Input() public virtualGroups = true;
+  // виртуальный скролл, рендерится в dom лишь отображаемая часть списка (для больших списков)
+  @Input() public virtualScroll = false;
 
   // ожидание (мс) до срабатывания поиска с последнего ввода символа
   @Input() public queryTimeout = ConstantsService.DEFAULT_QUERY_DEBOUNCE;
@@ -95,6 +100,7 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
   public touched = false;
   public invalidDisplayed = false;
   public control?: AbstractControl;
+  public virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems.bind(this), true);
   public query = '';
   public activeQuery = '';
   public LineBreak = LineBreak;
@@ -105,9 +111,10 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
   public filteredItems: Array<ListItem> = [];
   public internalSelected: Array<ListItem> = [];
 
+  @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
+  @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
   @ViewChild('searchBar') private searchBar: SearchBarComponent;
   @ViewChild('itemsArea') private itemsArea: ElementRef;
-  @ViewChild('scrollableArea') private scrollableArea: ElementRef;
 
   private onTouchedCallback: () => void;
   protected commit(value: Array<any> | any) {}
@@ -119,25 +126,17 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
   public ngAfterViewInit() {
     if (this.itemsArea) {
       this.itemsArea.nativeElement.querySelector('.ps__thumb-y').tabIndex = -1;
+      this.evaluateItemsSizesIfNeeded(); // itemsArea до этого не появляется
     }
     this.check();
   }
 
   public ngOnChanges(changes: SimpleChanges) {
-    for (const propName of Object.keys(changes)) {
-      switch (propName) {
-        case 'formatter':
-        case 'listFormatter':
-        case 'translation':
-        case 'converter': {
-          this.update();
-          break;
-        }
-        case 'items': {
-          this.setItems(this.items);
-          break;
-        }
-      }
+    const updateKeys = ['formatter', 'listFormatter', 'translation', 'converter'];
+    if (Object.keys(changes).some((changedKey) => updateKeys.includes(changedKey))) {
+      this.update();
+    } else if (Object.keys(changes).includes('items')) {
+      this.setItems(this.items);
     }
     this.check();
   }
@@ -171,6 +170,10 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
     this.synchronizeSelected();
     this.resetFilter();
     this.changeDetector.detectChanges();
+  }
+
+  public getRenderedItems() {
+    return this.filteredItems || [];
   }
 
   public consistencyCheck() {
@@ -214,6 +217,7 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
         [].concat(this.internalSelected.filter((listItem: ListItem) => !listItem.belongsTo(items))).concat(items) : items;
       this.listService.highlightSubstring(filteredList, query);
       this.filteredItems = this.listService.alignGroupsTreeIfNeeded(filteredList, this.internalItems);
+      this.updateScrollHeight();
       this.listed.emit(this.filteredItems);
     });
     this.highlighted = null;
@@ -247,11 +251,11 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
       return;
     }
     if (item.collapsable && this.virtualGroups) {
-      this.listService.getFinalItems(this.filteredItems, item).forEach((finalItem: ListItem) => this.selectItem(finalItem, false));
+      this.listService.getTerminalItems(item, this.filteredItems).forEach((finalItem: ListItem) => this.selectItem(finalItem, false));
       this.commitEmit();
     } else {
       if (item.belongsTo(this.internalSelected) || (this.multi && this.multipleItemsMaxSelected !== undefined
-          && (this.internalSelected || []).length >= this.multipleItemsMaxSelected)) {
+        && (this.internalSelected || []).length >= this.multipleItemsMaxSelected)) {
         return;
       }
       if (this.multi) {
@@ -268,7 +272,7 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
 
   public deselectItem(item: ListItem, commitEmit = true) {
     if (item.collapsable && this.virtualGroups) {
-      this.listService.getFinalItems(this.filteredItems, item).forEach((finalItem: ListItem) => this.deselectItem(finalItem, false));
+      this.listService.getTerminalItems(item, this.filteredItems).forEach((finalItem: ListItem) => this.deselectItem(finalItem, false));
       this.commitEmit();
     } else {
       item.selected = false;
@@ -292,7 +296,8 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
       e.preventDefault();
       e.stopPropagation();
     } else { // стрелки
-      const navResult = this.listService.handleKeyboardNavigation(e, this.filteredItems, this.highlighted, this.scrollableArea);
+      const navResult = this.listService.handleKeyboardNavigation(
+        e, this.filteredItems, this.highlighted, this.virtualScrollComponent || this.scrollComponent);
       if (navResult && navResult !== true) {
         this.highlighted = navResult as ListItem;
       }
@@ -301,7 +306,7 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
 
   public writeValue(value: Array<any> | any) {
     this.internalSelected = this.listService.createListItems(value);
-    this.updateFormatting();
+    this.updateFormatting(false, false);
     this.consistencyCheck();
     this.synchronizeSelected();
     this.applyFilter(this.activeQuery);
@@ -322,13 +327,32 @@ export class FilteredListComponent implements OnInit, AfterViewInit, OnChanges, 
     this.check();
   }
 
-  public updateFormatting(forceTranslate = false) {
+  public updateFormatting(forceTranslate = false, evalDimensions = true) {
     forkJoin([
       this.listService.translateFormat(this.internalItems, forceTranslate),
       this.listService.translateFormat(this.internalSelected, forceTranslate)
     ]).subscribe(() => {
+      if (evalDimensions) {
+        this.evaluateItemsSizesIfNeeded();
+      }
       this.changeDetector.detectChanges();
     });
+  }
+
+  public evaluateItemsSizesIfNeeded() {
+    if (this.virtualScroll && this.itemsArea) {
+      const width = this.itemsArea.nativeElement.clientWidth;
+      this.listService.evaluateItemsSizeAsync(this.internalItems, width, {multi: true}).subscribe(() => {
+        this.updateScrollHeight();
+      });
+    }
+  }
+
+  public updateScrollHeight() {
+    if (this.virtualScroll && this.virtualScrollComponent) {
+      const totalContentSize = (this.filteredItems || []).reduce((acc, item) => acc + item.getItemHeight(), 0);
+      this.virtualScrollComponent.setTotalContentSize(totalContentSize);
+    }
   }
 
   public check(): void {

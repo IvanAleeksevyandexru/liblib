@@ -10,19 +10,19 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import {FeedsService} from '../../services/feeds/feeds.service';
-import {FeedModel, FeedsModel, SnippetModel} from '../../models/feed';
-import {LoadService} from '../../services/load/load.service';
-import {User} from '../../models/user';
+import { FeedsService } from '../../services/feeds/feeds.service';
+import { FeedModel, FeedsModel, SnippetModel } from '../../models/feed';
+import { LoadService } from '../../services/load/load.service';
+import { User } from '../../models/user';
 import * as moment_ from 'moment';
-import {TranslateService} from '@ngx-translate/core';
-import {Subscription} from 'rxjs';
-import {NotifierService} from '../../services/notifier/notifier.service';
-import {switchMap} from 'rxjs/operators';
-import {SharedService} from '../../services/shared/shared.service';
-import {HelperService} from '../../services/helper/helper.service';
-import {YaMetricService} from '../../services/ya-metric/ya-metric.service';
-import {CountersService} from '../../services/counters/counters.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { NotifierService } from '../../services/notifier/notifier.service';
+import { switchMap } from 'rxjs/operators';
+import { SharedService } from '../../services/shared/shared.service';
+import { HelperService } from '../../services/helper/helper.service';
+import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
+import { CountersService } from '../../services/counters/counters.service';
 import { Router } from '@angular/router';
 
 const moment = moment_;
@@ -63,6 +63,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   private isLk = (this.loadService.attributes.appContext || this.loadService.config.viewType) === 'LK';
   private loadedFeedsCount = 0;
   private showMoreCount = 0;
+  public isHeader: boolean;
 
   constructor(
     private router: Router,
@@ -82,6 +83,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     this.getUserData();
     this.getFeeds();
     this.updateFeeds();
+    this.isHeader = this.page === 'header';
   }
 
   public ngOnChanges(changes: SimpleChanges) {
@@ -172,12 +174,13 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     return [feed.data.imOrgName ? 'feed-im' : '',
       'feed-' + feed.feedType, 'feed-' + this.page,
       feed.removeInProgress ? 'feed-remove-in-progress' : '',
-      this.isUpdated(feed) ? 'is-updated' : ''
+      this.isUpdated(feed) ? 'is-updated' : '',
+      this.setUnreadFeedCls(feed) && this.isHeader ? 'feed-header-unread' : ''
     ];
   }
 
   public setUnreadFeedCls(feed: FeedModel): boolean {
-    return feed.unread && feed.feedType !== 'DRAFT';
+    return feed.unread && feed.feedType !== 'DRAFT' && feed.feedType !== 'PARTNERS_DRAFT';
   }
 
   public markAsFlag(feed: FeedModel): boolean {
@@ -274,14 +277,24 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public setHeader(feed: FeedModel): string {
-    if (feed.feedType === 'GEPS' || feed.feedType === 'ORDER' || feed.feedType === 'CLAIM' || feed.feedType === 'COMPLEX_ORDER') {
+    if (feed.feedType === 'GEPS' ||
+        feed.feedType === 'ORDER' ||
+        feed.feedType === 'CLAIM' ||
+        feed.feedType === 'PARTNERS' ||
+        feed.feedType === 'COMPLEX_ORDER'
+    ) {
       return feed.subTitle;
     }
     return feed.title;
   }
 
   public setSubHeader(feed: FeedModel): string {
-    if (feed.feedType === 'GEPS' || feed.feedType === 'ORDER' || feed.feedType === 'CLAIM' || feed.feedType === 'COMPLEX_ORDER') {
+    if (feed.feedType === 'GEPS' ||
+        feed.feedType === 'ORDER' ||
+        feed.feedType === 'CLAIM' ||
+        feed.feedType === 'PARTNERS' ||
+        feed.feedType === 'COMPLEX_ORDER'
+    ) {
       return feed.title;
     }
     return feed.subTitle;
@@ -343,16 +356,18 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public showRemoveFeedButton(feed: FeedModel): boolean {
-    return (this.page === 'overview' || this.page === 'events' || this.page === 'drafts') && !feed.data.reminder;
+    return (this.page === 'overview' || this.page === 'events' ||
+            this.page === 'drafts' || this.page === 'partners_drafts') && !feed.data.reminder;
   }
 
   public getIsArchive(): boolean {
-    return this.selectedTypes === 'DRAFT' ? undefined : this.isArchive;
+    return (this.selectedTypes === 'DRAFT' || this.selectedTypes === 'PARTNERS_DRAFT') ? undefined : this.isArchive;
   }
 
   public isUpdated(feed: FeedModel): boolean {
-    return (feed.feedType === 'ORDER' || feed.feedType === 'COMPLEX_ORDER'
-      || feed.feedType === 'EQUEUE' || feed.feedType === 'CLAIM') && feed.unread;
+    return (feed.feedType === 'PARTNERS' || feed.feedType === 'ORDER' ||
+      feed.feedType === 'COMPLEX_ORDER' || feed.feedType === 'EQUEUE' ||
+      feed.feedType === 'CLAIM') && feed.unread;
   }
 
   public isEqueueEvent(feed: FeedModel): boolean {
@@ -458,13 +473,14 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
 
-    if (feed.feedType === 'ORGANIZATION' || feed.feedType === 'ACCOUNT_CHILD') {
+    if (['ORGANIZATION', 'BUSINESSMAN', 'ACCOUNT_CHILD', 'PAYMENT'].includes(feed.feedType)) {
       this.feedsService.markFeedAsRead(feed.id).subscribe();
     }
 
-    if (feed.feedType === 'PAYMENT') {
-      // this.feedsService.markFeedAsRead(feed.id).subscribe();
-      location.href = `notifications/details/PAYMENT/${feed.extId}`;
+    if (feed.feedType === 'KND_APPEAL') {
+      location.href = `${this.loadService.config.kndDomain}appeal/${feed.extId}`;
+    } else if (feed.feedType === 'KND_APPEAL_DRAFT') {
+      location.href = `${this.loadService.config.kndDomain}form/appeal/${feed.extId}`;
     }
   }
 

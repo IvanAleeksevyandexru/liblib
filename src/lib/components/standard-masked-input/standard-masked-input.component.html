@@ -1,11 +1,11 @@
 <div class="width-container" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="above-info" *ngIf="validationPosition === MessagePosition.ABOVE || questionTipPosition === MessagePosition.ABOVE">
-    <div class="information text-help" 
-      *ngIf="questionTip && questionTipPosition === MessagePosition.ABOVE && (!validationOverride || !(invalidDisplayed && validationMessages))" 
+    <div class="information text-help"
+      *ngIf="questionTip && questionTipPosition === MessagePosition.ABOVE && (!validationOverride || !(invalidDisplayed && validationMessages))"
       [innerHTML]="questionTip">
     </div>
     <div class="validation" *ngIf="validationPosition === MessagePosition.ABOVE && invalidDisplayed && validationMessages">
-      <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages" 
+      <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages"
         [translation]="validationTranslation" [escapeHtml]="validationEscapeHtml"></lib-validation-message>
     </div>
   </div>
@@ -38,20 +38,20 @@
     <div class="buttons-container">
       <div *ngIf="clearable && !disabled && !empty && !readOnly" (click)="clearValue($event)" class="clear-button"></div>
       <div class="validation-container" *ngIf="validationPosition === MessagePosition.INSIDE && invalidDisplayed && validationMessages">
-        <lib-invalid-results-tip  
+        <lib-invalid-results-tip
           [invalid]="invalid"
-          [validation]="validation" 
-          [validationMessages]="validationMessages" 
+          [validation]="validation"
+          [validationMessages]="validationMessages"
           [tipDirection]="tipDirection"
           [containerOverlap]="containerOverlap"
           [translation]="validationTranslation"
           [escapeHtml]="validationEscapeHtml"
         ></lib-invalid-results-tip>
       </div>
-      <div class="tip-container" 
+      <div class="tip-container"
           *ngIf="questionTip && questionTipPosition === MessagePosition.INSIDE && (!validationOverride || !(invalidDisplayed && validationMessages))">
-        <lib-question-help-tip 
-          [tipDirection]="tipDirection" 
+        <lib-question-help-tip
+          [tipDirection]="tipDirection"
           [questionTip]="questionTip"
           [containerOverlap]="containerOverlap"
         ></lib-question-help-tip>
@@ -59,12 +59,12 @@
     </div>
   </div>
   <div class="below-info" *ngIf="validationPosition === MessagePosition.BELOW || questionTipPosition === MessagePosition.BELOW">
-    <div class="information text-help" 
-      *ngIf="questionTip && questionTipPosition === MessagePosition.BELOW && (!validationOverride || !(invalidDisplayed && validationMessages))" 
+    <div class="information text-help"
+      *ngIf="questionTip && questionTipPosition === MessagePosition.BELOW && (!validationOverride || !(invalidDisplayed && validationMessages))"
       [innerHTML]="questionTip">
     </div>
     <div class="validation" *ngIf="validationPosition === MessagePosition.BELOW && invalidDisplayed && validationMessages">
-      <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages" 
+      <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages"
         [translation]="validationTranslation" [escapeHtml]="validationEscapeHtml"></lib-validation-message>
     </div>
   </div>

@@ -33,6 +33,14 @@
   background-image: url('../../../assets/svg/statuses/reject.svg');
 }
 
+.status-doc_done {
+  background-image: url('../../../assets/svg/statuses/doc-done.svg');
+}
+
+.status-doc_reject {
+  background-image: url('../../../assets/svg/statuses/doc-reject.svg');
+}
+
 .status-inbox, .status-new_comment {
   background-image: url('../../../assets/svg/statuses/inbox.svg');
 }
@@ -166,6 +174,12 @@
   }
 }
 
+.feed-ACCOUNT {
+  .status-in_progress {
+    background-image: url('../../../assets/svg/statuses/account-progress-doc.svg');
+  }
+}
+
 .feed-CLAIM{
   .status-done, .status-44, .status-6 {
     background-image: url('../../../assets/svg/statuses/done.svg');
@@ -187,10 +201,16 @@
   }
 
   .status-executed {
-    background-image: url('../../../assets/svg/statuses/briefcase-gray.svg');
+    background-image: url('../../../assets/svg/statuses/briefcase-green.svg');
   }
 
-  .status-done {
+  .status-reject {
+    background-image: url('../../../assets/svg/statuses/briefcase-gray.svg');
+  }
+}
+
+.feed-BUSINESSMAN{
+  .status-reject {
     background-image: url('../../../assets/svg/statuses/tie-gray.svg');
   }
 }

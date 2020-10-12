@@ -93,6 +93,7 @@ export interface BillsRequestParams {
   ipshonly?: boolean;
   epgu_id?: string;
   vehicles?: boolean;
+  interfaceTypeCode?: string;
 }
 
 export interface Bill {
@@ -180,6 +181,10 @@ export interface BillLink {
   billNumber: string;
   signature: string;
   vehicle: Vehicle;
+  serviceCategory?: {
+    code: ServiceCategoryCode;
+    name: string;
+  };
 }
 
 export interface SupplierSource {
@@ -243,7 +248,9 @@ export interface BillResponseError {
 export interface PayOption {
   amount: number;
   cardInfo?: CardInfo;
-  fee: number;
+  fee?: number;
+  feeMin?: number;
+  feeMax?: number;
   hash: string;
   payMethod: PayMethod;
   payMethodGroup: PayMethodGroup;
@@ -261,7 +268,7 @@ export interface CardInfo {
 export interface PayMethod {
   code: PayMethodCode;
   name: string;
-  value: string;
+  value?: string;
 }
 
 export interface PayMethodGroup {
@@ -300,4 +307,14 @@ export interface ErrorInfo {
   billNumber?: string;
   date?: string;
   supplier?: string;
+}
+
+export interface ICommissionResult {
+  error: {
+    errorCode: number;
+    errorMessage: string;
+  };
+  payOptions: {
+    payOptions: PayOption[];
+  };
 }

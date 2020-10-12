@@ -13,7 +13,8 @@
       "PROFILE": "Profile",
       "SETTINGS": "Settings and Security",
       "LOGIN_IE": "Login as businessman",
-      "LOGIN_ORG": "Login as organization"
+      "LOGIN_ORG": "Login as organization",
+      "CHANGE_ROLE": "Change role"
     },
     "CATALOG": {
       "ALL": "Catalog all",
@@ -83,7 +84,9 @@
     "WRONG_COUNTRY": "Specify address in Russia, no foreign address is allowed",
     "NEED_REGION": "Region name is required",
     "NEED_CITY": "City name is required",
+    "NEED_CITY_OTHER_CASE": "Check if the city name is correct",
     "NEED_DISTRICT": "District name is required",
+    "NEED_DISTRICT_OTHER_CASE": "Check if the district name is correct",
     "NEED_TOWN": "Locality name is required",
     "NEED_IN_CITY_DIST": "District name in the city is required",
     "NEED_STREET": "Street name is required",
@@ -96,6 +99,7 @@
     "NEED_APARTMENT": "Apartment number is required",
     "NEED_APARTMENT_OTHER_CASE": "Office (suite) number is required",
     "NEED_INDEX": "Postal code (index) is required",
+    "NEED_INDEX_OTHER_CASE": "Check if the postal code (index) name is correct",
     "MODAL": {
       "TITLE": "Impossible to save",
       "SIMPLE_TEXT": "The address is missing from",

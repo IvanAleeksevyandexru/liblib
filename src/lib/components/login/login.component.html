@@ -6,6 +6,7 @@
       <div
         class="no-avatar"
         [class.female]="avatar.gender === 'F'"
+        [class.male]="avatar.gender === 'M'"
         [class.business]="user.type === 'B'"
         [class.legal]="user.type === 'L'"
       ></div>
@@ -35,5 +36,6 @@
   </div>
 </div>
 <ng-template #loginLink>
-  <a [routerLink]="" (click)="login()" class="link">{{'HEADER.PERSONAL_AREA' | libTranslate}}</a>
+  <a [routerLink]="" *ngIf="!onlyIcon" (click)="login()" class="link">{{('HEADER.LOGIN_LINK' | libTranslate) || 'Войти'}}</a>
+  <div *ngIf="onlyIcon" (click)="login()" class="link"></div>
 </ng-template>

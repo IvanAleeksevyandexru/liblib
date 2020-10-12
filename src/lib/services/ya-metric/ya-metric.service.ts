@@ -208,4 +208,24 @@ export class YaMetricService {
 
     this.callReachGoal('overviewInformer', params);
   }
+
+  public kndMainPortal(type: 'Show' | 'Action', additions: Array<object>): void {
+    let params = {};
+    if (type === 'Show') {
+      params = {
+        informerKNDShow: {
+          ...additions
+        }
+      };
+    } else {
+      params = {
+        informerKNDAction: {
+          ...additions
+        }
+      };
+    }
+
+    this.callReachGoal(`informerKND${type}`, params);
+  }
+
 }

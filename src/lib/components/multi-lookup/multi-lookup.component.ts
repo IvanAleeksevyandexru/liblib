@@ -88,6 +88,8 @@ export class MultiLookupComponent implements OnInit, AfterViewInit, OnChanges, D
   @Input() public collapsableGroups = false;
   // включает-отключает возможность выбирать группировочные элементы
   @Input() public virtualGroups = true;
+  // виртуальный скролл, рендерится в dom лишь отображаемая часть списка (для больших списков)
+  @Input() public virtualScroll = false;
 
   // источник значений в виде фиксированного списка
   @Input() public fixedItems: Array<any> = [];
@@ -172,7 +174,7 @@ export class MultiLookupComponent implements OnInit, AfterViewInit, OnChanges, D
     const providerProxy = this.itemsProvider || new FixedItemsProvider().setSource(this.internalFixedItems);
     const filterUnique = (promiseOrObservable: Promise<Array<any>> | Observable<Array<any>>) => {
       const observable = promiseOrObservable instanceof Promise ?
-          from(promiseOrObservable) : promiseOrObservable as Observable<Array<any>>;
+        from(promiseOrObservable) : promiseOrObservable as Observable<Array<any>>;
       return observable.pipe(
         map((items: Array<any | ListItem>) => {
           return this.listService.createListItems(items).filter((listItem: ListItem) => !listItem.belongsTo(this.internalSelected));

@@ -128,7 +128,7 @@ export class PsoService {
     const legalPages = ['/search', '/foreign-citizen', '/entrepreneur', '/legal-entity'];
     const config = this.loadService.config;
     const device = this.loadService.attributes.deviceType;
-    if (path === '/' && (config.excludePsoFromMain || !this.loadService.user.authorized)) {
+    if (path === '/' && (config.excludePsoFromMain || !this.loadService.user.authorized || this.loadService.user.isKid)) {
       isRequired = false;
     }
     if (legalPages.includes(path)) {

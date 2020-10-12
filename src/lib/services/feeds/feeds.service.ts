@@ -164,7 +164,7 @@ export class FeedsService {
   }
 
   public openDetails(feed: FeedModel): string {
-    let url = this.isLk ? '/' : this.loadService.config.lkUrl;
+    let url = (this.isLk || this.loadService.attributes.appContext === 'PARTNERS') ? '/' : this.loadService.config.lkUrl;
     switch (feed.feedType) {
       case 'FEEDBACK':
         url += `feedback/${feed.id}`;
@@ -182,12 +182,7 @@ export class FeedsService {
         url += `draft/${feed.extId}`;
         break;
       case 'PAYMENT':
-        // редирект на новую платежку
-        // const returnUrl = encodeURIComponent(location.href);
-        // prefixUrl += `pay/details/${feed.extId}?returnUrl=${returnUrl}`;
-
-        // урл старого лк - редирект на старый лк на балансировщике
-        url += `notifications/details/PAYMENT/${feed.extId}`;
+        url += `payment/detail/paying/${feed.extId}`;
         break;
       case 'EQUEUE':
         if (feed.data && feed.data.parentOrderId) {
@@ -202,6 +197,12 @@ export class FeedsService {
       case 'CLAIM':
         url += `claim/${feed.id}`;
         break;
+      case 'PARTNERS_DRAFT':
+        url += `lk/draft/${feed.extId}`;
+        break;
+      case 'PARTNERS':
+        url += `lk/order/${feed.id}`;
+        break;
       case 'BIOMETRICS':
         url += 'settings/biometry';
         break;
@@ -210,6 +211,7 @@ export class FeedsService {
         url += 'settings/account';
         break;
       case 'ORGANIZATION':
+      case 'BUSINESSMAN':
         url += 'organization-feed';
         break;
       case 'ELECTION_INFO':

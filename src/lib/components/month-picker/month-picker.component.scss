@@ -1,0 +1,214 @@
+.month-picker {
+  position: static;
+  width: 100%;
+  box-sizing: border-box;
+  .month-picker-field {
+    background-color: #F5F7FA;
+    border: 2px solid #F5F7FA;
+    border-radius: 4px;
+    width: 100%;
+    padding: 10px 44px 10px 16px;
+    position: relative;
+    height: 48px;
+    color: #0B1F33;
+    box-sizing: border-box;
+    &.invalid {
+      border-color: #DF0024;
+    }
+    &.focused {
+      border-color: #99B1E6;
+    }
+    &.disabled {
+      background-color: #D1D5DF;
+      border-color: #D1D5DF;
+      color: #66727F;
+      .month-picker-text, .month-picker-placeholder {
+        color: #66727F;
+      }
+      .month-picker-icon {
+        background-image: url(../../../assets/svg/calendar-icon-gray.svg);
+      }
+      .icon {
+        cursor: default;
+      }
+    }
+    .month-picker-text, .month-picker-placeholder {
+      font-family: Helvetica;
+      font-size: 16px;
+      line-height: 24px;
+      white-space: nowrap;
+    }
+    .month-picker-placeholder {
+      color: #757575;
+    }
+    .icon {
+      position: absolute;
+      display: block;
+      width: 22px;
+      height: 40px;
+      top: 2px;
+      cursor: pointer;
+    }
+    .month-picker-icon {
+      right: 12px;
+      background: url(../../../assets/svg/calendar-icon.svg) 2px 8px no-repeat;
+    }
+    .clear-icon {
+      right: 40px;
+      outline: none;
+      background: url(../../../assets/svg/input-clean.svg) 3px 11px no-repeat;
+    }
+    .focusable-input {
+      position: absolute;
+      width: 0;
+      height: 0;
+      opacity: 0;
+      border: none;
+      outline: none;
+    }
+  }
+  .month-picker-container-wrapper {
+    position: relative;
+  }
+  .month-picker-container {
+    position: absolute;
+    top: 4px;
+    display: none;
+    flex-flow: column;
+    width: 280px;
+    height: auto;
+    border: 2px solid #99B1E6;
+    border-radius: 8px;
+    background-color: white;
+    z-index: 7;
+    &.expanded {
+      display: flex;
+    }
+    &.adjust {
+      width: 100%;
+    }
+    &.align-left {
+      left: 0;
+    }
+    &.align-right {
+      right: 0;
+    }
+    .year-panel, .month-panel, .till-now-panel {
+      width: 100%;
+      height: auto;
+      &::selection {
+        background-color: white;
+      }
+    }
+    .year-panel {
+      display: flex;
+      flex-flow: row;
+      flex-wrap: nowrap;
+      border-bottom: 1px solid #99B1E6;
+      align-items: center;
+      padding: 0px 11px;
+    }
+    .years-container {
+      flex-grow: 1;
+      overflow: hidden;
+      min-width: 140px;
+    }
+    .years-feed {
+      position: relative;
+      display: flex;
+      flex-flow: row;
+      flex-wrap: nowrap;
+      padding: 14px 0;
+    }
+    .prev-year, .next-year {
+      flex-shrink: 0;
+      width: 18px;
+      height: 24px;
+      cursor: pointer;
+    }
+    .prev-year {
+      background: url(../../../assets/svg/month-picker-prev-month.svg) 3px 3px no-repeat;
+      &.disabled {
+        background: url(../../../assets/svg/month-picker-prev-month-disabled.svg) 3px 3px no-repeat;
+      }
+    }
+    .next-year {
+      background: url(../../../assets/svg/month-picker-next-month.svg) 5px 3px no-repeat;
+      &.disabled {
+        background: url(../../../assets/svg/month-picker-next-month-disabled.svg) 5px 3px no-repeat;
+      }
+    }
+    .month-panel {
+      display: flex;
+      flex-flow: row;
+      flex-wrap: wrap;
+      padding: 6px 6px;  // 4px 6px
+    }
+    .month-item, .year-item {
+      .item-content {
+        font-size: 16px;
+        line-height: 24px;
+        font-family: Helvetica;
+        color: #66727F;
+        text-align: center;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        cursor: pointer;
+      }
+      &.disabled .item-content {
+        color: #66727F;
+        cursor: default;
+      }
+      &.selected .item-content {
+        background-color: #0D4CD3;
+        color: white;
+        border-radius: 8px;
+      }
+    }
+    .month-item {
+      padding: 6px 2px; // 8px 2px;
+      width: 33%;
+      .item-content {
+        padding: 8px 0;
+      }
+    }
+    .year-item {
+      margin: 0 2px;
+      width: 70px;
+      overflow: hidden;
+      flex-shrink: 0;
+      flex-grow: 0;
+      .item-content {
+        padding: 4px 16px;
+      }
+      &:first-child {
+        margin-left: 0;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+    .till-now-panel {
+      padding: 12px;
+      display: flex;
+      flex-flow: row;
+      border-top: 1px solid #99B1E6;
+    }
+    .till-now-checkbox {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #1D5DEB;
+      border-radius: 4px;
+      display: inline-block;
+      &.selected {
+        background: url(../../../assets/svg/month-picker-checkbox-checked.svg) 3px 3px no-repeat;
+      }
+    }
+    .till-now-text {
+      margin-left: 16px;
+      line-height: 24px;
+      font-size: 16px;
+      font-family: Helvetica;
+    }
+  }
+}

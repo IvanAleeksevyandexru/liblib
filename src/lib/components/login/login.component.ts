@@ -12,6 +12,7 @@ import { User } from '../../models/user';
 export class LoginComponent implements OnInit {
 
   @Input() public userCounter: CounterData;
+  @Input() public onlyIcon: boolean;
 
   public user: User;
   public avatarError = false;
@@ -34,8 +35,8 @@ export class LoginComponent implements OnInit {
         window.location = resp;
       });
     } else {
-      window.location.href = '/node-api/login/?redirectPage=' + window.location.pathname +
-        window.location.search + window.location.hash;
+      window.location.href = '/node-api/login/?redirectPage=' +
+        encodeURIComponent(window.location.pathname + window.location.search + window.location.hash);
     }
   }
 

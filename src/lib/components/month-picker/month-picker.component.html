@@ -1,0 +1,40 @@
+<div class="month-picker" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}" (click)="returnFocus()" libClickOutside (clickOutside)="closeDropdown()">
+  <div class="month-picker-field" [class.invalid]="invalidDisplayed" [class.disabled]="disabled" [class.focused]="focused" (click)="toggle($event)">
+    <div class="month-picker-value">
+      <div class="month-picker-text" *ngIf="activeMonthYear && !selectedYearChanged">
+        {{'MONTHS.' + activeMonthYear.monthCode | libTranslate}}, {{activeMonthYear.year}}
+      </div>
+      <div class="month-picker-text" *ngIf="selectedYearChanged">______, {{selectedYear}}</div>
+      <div class="month-picker-placeholder" *ngIf="!activeMonthYear && !selectedYearChanged" [innerHTML]="placeholder"></div>
+      <div class="month-picker-icon icon"></div>
+      <div class="clear-icon icon" *ngIf="clearable && activeMonthYear" (click)="clearValue($event)"></div>
+      <input #focusableInput class="focusable-input" type="text" readonly="true"
+        [attr.tabIndex]="tabIndex" (focus)="notifyFocusEvent($event)"(blur)="notifyFocusEvent($event)"/>
+    </div>
+  </div>
+  <div class="month-picker-container-wrapper">
+    <div class="month-picker-container" [class.hidden]="!expanded" [class.expanded]="expanded"
+      [class.align-left]="align === Align.LEFT" [class.align-right]="align === Align.RIGHT" [class.adjust]="align === Align.ADJUST">
+      <div class="year-panel">
+        <div class="prev-year" [class.disabled]="!prevYearAvailable" (click)="selectPrevYear()"></div>
+        <div class="years-container" #yearsContainer>
+          <div class="years-feed" #yearsFeed [style.left.px]="yearsFeedOffset">
+            <div class="year-item" *ngFor="let year of years" [class.disabled]="year.disabled" [class.selected]="year.selected" (click)="selectYear(year)">
+              <div class="item-content">{{year.number}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="next-year" [class.disabled]="!nextYearAvailable" (click)="selectNextYear()"></div>
+      </div>
+      <div class="month-panel">
+        <div class="month-item" *ngFor="let month of monthes" [class.disabled]="month.disabled" [class.selected]="month.selected" (click)="selectMonth(month)">
+          <div class="item-content">{{month.text | libTranslate}}</div>
+        </div>
+      </div>
+      <div class="till-now-panel" *ngIf="tillNowAvailable && !hideTillNowAvailable">
+        <div class="till-now-checkbox" [class.selected]="tillNowSelected" (click)="selectTillNow()"></div>
+        <div class="till-now-text">{{'MONTH_SELECT.TILL_NOW' | libTranslate}}</div>
+      </div>
+    </div>
+  </div>
+</div>

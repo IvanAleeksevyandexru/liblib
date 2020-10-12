@@ -62,8 +62,8 @@ export class ProfileService {
         const result = {
           attrId: 'oms',
           canDetails: false,
-          canEdit: true,
-          canDelete: true,
+          canEdit: !this.loadService.user.isKid,
+          canDelete: !this.loadService.user.isKid,
           withVerificationIcon: false,
           serviceUrl: object.serviceUrl,
           empty: {
@@ -334,7 +334,18 @@ export class ProfileService {
           canDetails: object.canDetails,
           canEdit: object.canEdit,
           canDelete: object.canDelete,
-          detailsPath: `/profile/personal/birthday/${object.id ? object.id : ''}`,
+          detailsPath: this.loadService.user.isKid ? '' : `/profile/personal/birthday/${object.id ? object.id : ''}`,
+          ...(object.vrfValStu === 'VERIFICATION_FAILED' ?
+              {
+                notification: 'Не найдено в базе данных ЗАГС. Проверьте корректность данных документа',
+                warning: true
+              } : {}
+          ),
+          ...(object.vrfValStu === 'VERIFYING' ?
+              {
+                notification: 'Идет проверка по базе данных ЗАГС...',
+              } : {}
+          ),
           empty: {
             title: 'Свидетельство о рождении',
             subtitle: 'Добавьте документ, чтобы он всегда был у вас под рукой'
@@ -447,7 +458,37 @@ export class ProfileService {
           fields: [
             {
               title: '',
-              showEmpty: true,
+              // showEmpty: true,
+              value: object.number
+            }
+          ]
+        };
+      case this.DOCUMENT_TYPES.KID_SNILS:
+        return {
+          attrId: 'snils',
+          canDetails: false,
+          canDelete: false,
+          canEdit: object.vrfValStu === 'VERIFICATION_FAILED',
+          canRepeat: object.vrfValStu === 'VERIFICATION_FAILED',
+          ...(object.vrfValStu === 'VERIFICATION_FAILED' ?
+              {
+                notification: 'Не найден в базе данных ПФР. Проверьте корректность данных документа',
+                warning: true
+              } : {}
+          ),
+          ...(object.vrfValStu === 'VERIFYING' ?
+              {
+                notification: object.number ?
+                  'Выполняется проверка номера СНИЛС ребенка в ПФР...' :
+                  'Идет поиск СНИЛС ребенка в ПФР...',
+              } : {}
+          ),
+          full: {
+            title: 'СНИЛС'
+          },
+          fields: [
+            {
+              title: '',
               value: object.number
             }
           ]
@@ -514,6 +555,7 @@ export class ProfileService {
           },
           gender: object.gender,
           detailsPath: `/profile/family/child/${object.id || ''}/docs`,
+          statusMessage: object.statusMessage,
           fields: [
             {
               title: 'Дата рождения',
@@ -639,9 +681,9 @@ export class ProfileService {
       }
       case this.DOCUMENT_TYPES.FATHERHOOD_CERT: {
         return {
-          canDetails: false,
-          canEdit: true,
-          canDelete: true,
+          canDetails: this.loadService.user.isKid,
+          canEdit: !this.loadService.user.isKid,
+          canDelete: !this.loadService.user.isKid,
           withVerificationIcon: false,
           detailsQueryParam: {type: 'FATHERHOOD_CERT'},
           empty: {
@@ -683,6 +725,37 @@ export class ProfileService {
             {
               title: 'Дата и время рождения',
               value: object.nbInfo.birthDate
+            }
+          ]
+        };
+      }
+      case this.DOCUMENT_TYPES.SELF_EMPLOYED: {
+        return {
+          canDetails: false,
+          canEdit: !object.vrfValStu,
+          canDelete: false,
+          detailsPath: '/profile/business/self-employed',
+          canRepeat: object.vrfValStu !== 'VERIFYING' && object.updateDate !== moment().add(1, 'day').format('DD.MM.YYYY'),
+          statusMessage: object.vrfValStu && `BUSINESS.STATUS.${object.vrfValStu}`,
+          empty: {
+            title: 'Самозанятый',
+            subtitle: 'Если вы являетесь самозанятым, добавьте информацию в личный кабинет, чтобы у вас появилась возможность подавать заявления'
+          },
+          full: {
+            title: 'Самозанятый'
+          },
+          fields: [
+            {
+              title: 'Деятельность:',
+              value: object.categories
+            },
+            {
+              title: 'ИНН: ',
+              value: object.inn
+            },
+            {
+              title: 'Обновлено: ',
+              value: object.updateDate
             }
           ]
         };

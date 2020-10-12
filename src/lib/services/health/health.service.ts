@@ -46,6 +46,14 @@ export class HealthService {
       }
     }
 
+    if (this.loadService.config.viewType === 'PAYMENT') {
+      if (pageId) {
+        pageId = pageId.replace('pay', 'pay_new');
+      } else {
+        pageId = 'pay_new';
+      }
+    }
+
     if (this.route.snapshot.paramMap.get('utm_source')) {
       utmSource = this.route.snapshot.paramMap.get('utm_source');
     }
@@ -79,18 +87,18 @@ export class HealthService {
     }
   }
 
-  public measureDomEvents(id) {
+  public measureDomEvents(id, eventInfo = {}) {
     // tslint:disable-next-line:deprecation
     if (window.performance && window.performance.timing) {
       // tslint:disable-next-line:deprecation
       const timingApiObj = window.performance.timing;
       const dcl = timingApiObj.domContentLoadedEventEnd - timingApiObj.navigationStart;
       const complete = timingApiObj.loadEventEnd - timingApiObj.navigationStart;
-      this.send(id, dcl, 0);
-      this.send(id, complete, 0);
+      this.send(id, dcl, 0, eventInfo);
+      this.send(id, complete, 0, eventInfo);
     } else {
       // если браузер не подерживает performance
-      this.send(id, 'NotSupportedPerfomanceBrowser', 1);
+      this.send(id, 'NotSupportedPerfomanceBrowser', 1, eventInfo);
     }
   }
 

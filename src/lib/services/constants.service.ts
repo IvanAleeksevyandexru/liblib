@@ -76,8 +76,16 @@ export class ConstantsService {
   public readonly SETTINGS_PAGE_URL = '/settings/account';
   public readonly TABS_METRIC_NAME = 'feedsOrder';
   public readonly IMPORT_UPLOAD_LIMIT = 1 * (1024 * 1024); // Лимит загрузки при импорте ТС - 1 мегабайт
+  public readonly LK_TABS_KID = new Tabs([
+    {
+      id: 'profile',
+      name: 'TABS.PROFILE.TITLE_KID',
+      url: '/profile',
+      mnemonic: 'documentsData'
+    }
+  ]);
   public readonly LK_TABS = new Tabs([
-      {
+    {
       id: 'overview',
       name: 'TABS.OVERVIEW.TITLE',
       url: '/overview',
@@ -265,6 +273,12 @@ export class ConstantsService {
       access: ['AL20']
     },
     {
+      id: 'business',
+      name: 'PROFILE.TABS.BUSINESS',
+      url: '/profile/business',
+      access: ['AL20']
+    },
+    {
       id: 'statements',
       name: 'PROFILE.TABS.STATEMENTS',
       url: '/profile/statements',
@@ -304,6 +318,22 @@ export class ConstantsService {
       metric: {name: this.TABS_METRIC_NAME, action: 'settings', from: 'feedsOrder'}
     }
   ]);
+
+  public readonly PARTNERS_ASIDE = new Tabs([
+      {
+        id: 'orders',
+        name: 'ORDERS.ASIDE.ORDERS',
+        url: '/lk/orders/all',
+        mnemonic: 'partnersFeedsOrder'
+      },
+      {
+        id: 'drafts',
+        name: 'ORDERS.ASIDE.DRAFTS',
+        url: '/lk/orders/drafts',
+        mnemonic: 'partnersFeedsDraft'
+      }
+  ]);
+
   public readonly ORDERS_CATEGORIES = [
     {
       text: 'Все',
@@ -339,8 +369,7 @@ export class ConstantsService {
   public readonly FEEDS_CATEGORIES = [
     {
       text: 'Все',
-      type:
-        'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION',
+      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN',
       id: 1,
       mnemonic: 'allEvents'
     },
@@ -370,7 +399,7 @@ export class ConstantsService {
     },
     {
       text: 'Системные',
-      type: 'BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,ELECTION_INFO,ORGANIZATION,ESIGNATURE',
+      type: 'BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE',
       id: 6,
       mnemonic: 'systemEvents'
     },
@@ -713,7 +742,14 @@ export class ConstantsService {
     'house',
     'building1',
     'building2',
-    'apartment'
+    'apartment',
+    'geoLat',
+    'geoLon'
+  ];
+
+  public readonly DADATA_FULLADDRSTR_EXCLUDED_FIELDS = [
+    'geoLat',
+    'geoLon'
   ];
 
   public readonly DADATA_DEPENDENCIES = {
@@ -784,6 +820,7 @@ export class ConstantsService {
     MILITARY_ID: 'MLTR_ID',
     INN: 'INN',
     SNILS: 'SNILS',
+    KID_SNILS: 'KID_SNILS',
     OTHER_DOC: 'DOCS',
     ORGANIZATION_INFO: 'ORG_INFO',
     BRANCH_INFO: 'BRANCH_INFO',
@@ -794,7 +831,8 @@ export class ConstantsService {
     NAME_CHANGE_CERT: 'NAME_CHANGE_CERT',
     FATHERHOOD_CERT: 'FATHERHOOD_CERT',
     MARRIED_CERT: 'MARRIED_CERT',
-    DIVORCE_CERT: 'DIVORCE_CERT'
+    DIVORCE_CERT: 'DIVORCE_CERT',
+    SELF_EMPLOYED: 'SELF_EMPLOYED'
   };
 
   public readonly FID_DOCUMENT_TYPES = [

@@ -32,6 +32,11 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public avatarError = false;
   public mainTabs: Tabs = null;
   public tabsSubscription: Subscription;
+  public titleChangeRole: string;
+  public userRoles;
+  public activeRole;
+  public showRolesList = false;
+  public showAllMenu = true;
 
   @Input()
   public state: UserMenuState;
@@ -71,6 +76,8 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public ngOnInit() {
     this.links = this.menuService.getUserMenuLinks();
     this.user = this.loadService.user as User;
+    this.userRoles = this.menuService.getUserRoles(this.user);
+    this.activeRole = this.userRoles.find((role) => role.isActive);
     this.staticUrls = this.menuService.getStaticItemUrls();
     this.countersService.counters$.subscribe(_ => {
       this.settingsCounter = this.countersService.getCounter(CounterTarget.SETTINGS);
@@ -79,6 +86,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       this.mainTabs = tabs;
       this.changeDetector.detectChanges();
     });
+    this.getTitleChangeRole();
   }
 
   public ngAfterViewInit() {
@@ -149,4 +157,13 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
         choice: linkName
       });
   }
+
+  private getTitleChangeRole(): void {
+    if (['B', 'L'].includes(this.user.type)) {
+      this.titleChangeRole = 'HEADER.MENU.CHANGE_ROLE';
+    } else {
+      this.titleChangeRole = 'HEADER.MENU.LOGIN_ORG';
+    }
+  }
+
 }

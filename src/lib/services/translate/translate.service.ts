@@ -28,7 +28,7 @@ export class LibTranslateService extends TranslateService {
     }
     const assetsLocationAndPath = libAssetsLocation + ConstantsService.TRANSLATIONS_PATH;
     const loader: TranslateLoader = new TranslateHttpLoader(httpClient, assetsLocationAndPath, '.json');
-    super(store, loader, compiler, parser, missingHandler, true, true);
+    super(store, loader, compiler, parser, missingHandler, true, true, true, 'ru');
     this.addLangs(['ru']);
     this.setDefaultLang('ru');
   }

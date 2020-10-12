@@ -5,7 +5,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { StandardMaskedInputComponent } from '../standard-masked-input/standard-masked-input.component';
 import { PipedMessage } from '../../models/piped-message';
 import { HorizontalAlign } from '../../models/positioning';
-import { Translation, Align, TipDirection, BrokenDateFixStrategy, MessagePosition } from '../../models/common-enums';
+import { Translation, Align, TipDirection, BrokenDateFixStrategy, MessagePosition, RemoveMaskSymbols } from '../../models/common-enums';
 import { ValidationDetailed, ValidationShowOn, ValidationMessages } from '../../models/validation-show';
 import { FocusManager } from '../../services/focus/focus.manager';
 import { DatesHelperService } from '../../services/dates-helper/dates-helper.service';
@@ -157,6 +157,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   public control: AbstractControl;
   public Align = Align;
   public MessagePosition = MessagePosition;
+  public RemoveMaskSymbols = RemoveMaskSymbols;
 
   public expanded = false;
   public inconsistent = false;

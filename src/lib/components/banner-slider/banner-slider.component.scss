@@ -1,3 +1,89 @@
+@mixin arrows {
+  .sliders-controls {
+    .banners-paging {
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      .prev-banner, .next-banner {
+        position: absolute;
+        width: 48px;
+        height: 48px;
+        cursor: pointer;
+        border-radius: 50%;
+        background-color: #fff;
+
+        &:hover {
+          box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        div {
+          background: url("../../../assets/svg/banner-arrow.svg") 16px 18px no-repeat;
+          background-size: 16px 12px;
+          width: 48px;
+          height: 48px;
+        }
+      }
+
+      .prev-banner {
+        div {
+          &:hover {
+            animation: arrowAnimationLeft 1.2s linear infinite alternate-reverse;
+          }
+        }
+      }
+
+      .next-banner {
+        div {
+          transform: rotate(180deg);
+
+          &:hover {
+            animation: arrowAnimationRight 1.2s linear infinite alternate-reverse;
+          }
+        }
+      }
+
+      @keyframes arrowAnimationLeft {
+        0% {
+          transition: margin-left 0.1s ease-in;
+          margin-left: -2px;
+        }
+        20% {
+          transition: margin-left 0.1s ease-in;
+          margin-left: 0px;
+        }
+        100% {
+          transition: margin-left 1s ease-in;
+          margin-left: 0px;
+        }
+      }
+
+      @keyframes arrowAnimationRight {
+        0% {
+          transition: margin-left 0.1s ease-in;
+          margin-left: 2px;
+        }
+        20% {
+          transition: margin-left 0.1s ease-in;
+          margin-left: 0px;
+        }
+        100% {
+          transition: margin-left 1s ease-in;
+          margin-left: 0px;
+        }
+      }
+    }
+
+    &.right {
+      .banners-paging {
+        justify-content: flex-start;
+      }
+    }
+  }
+}
+
 .banner-group-container {
   position: relative;
   display: block;
@@ -53,6 +139,7 @@
     display: flex;
     justify-content: center;
     margin-top: 16px;
+    width: 100%;
 
     .bullet-item {
       width: 6px;
@@ -90,7 +177,38 @@
       }
     }
 
+    &.new-view {
+      .bullet-item {
+        width: 6px;
+        height: 6px;
+        background-color: #0B40B3;
+        opacity: .2;
+        margin: 4px;
+        position: relative;
+
+        &.selected {
+          background: url("../../../assets/svg/bullet.svg");
+          width: 14px;
+          height: 14px;
+          opacity: 1;
+          margin: 0;
+        }
+
+        & + .bullet-item {
+          margin-left: 14px;
+        }
+        & + .bullet-item.selected {
+          margin-left: 10px;
+        }
+      }
+    }
+
     &.left {
+      justify-content: left;
+      margin-left: 17px;
+    }
+
+    &.after-image {
       justify-content: left;
       margin-left: 17px;
     }
@@ -107,14 +225,61 @@
     cursor: pointer;
   }
 
+  &.main_banner_top_slider {
+    max-width: calc(100vw - 34px);
+  }
 }
 
-@media all and (min-width: 1140px) {
+@media all and (max-width: 767px) {
   .banner-group-container {
-    display: flex;
+    &.visible-arrow {
+      .banners-feed-container {
+        width: calc(100% - 34px);
+        overflow: visible;
+        margin: auto;
+        .banners-feed {
+          .banner-wrapper {
+            padding-left: 4px;
+            padding-right: 4px;
+          }
+        }
+      }
+    }
 
-    .banners-feed-container {
-      max-width: 1216px;
+    .bullet-container {
+      &.top, &.right {
+        position: absolute;
+      }
+      &.top {
+        top: 0;
+        margin-top: 0;
+      }
+      &.right {
+        right: 0;
+        justify-content: flex-end;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 768px) {
+  .banner-group-container {
+    &.visible-arrow {
+      @include arrows;
+
+      .sliders-controls {
+        width: 64px;
+        .next-banner {
+          right: 8px;
+        }
+        .prev-banner {
+          left: 8px;
+        }
+      }
+
+      .banners-feed-container {
+        width: calc(100% - 128px);
+      }
     }
 
     .sliders-controls {
@@ -122,89 +287,70 @@
       height: inherit;
     }
 
-    &:hover {
+    .bullet-container {
+      &.after-image {
+        margin-left: 124px;
+      }
+
+      &.top-md, &.right-md {
+        position: absolute;
+      }
+      &.top-md {
+        top: 0;
+        margin-top: 0;
+      }
+      &.right-md {
+        right: 0;
+        justify-content: flex-end;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 768px) {
+  .banner-group-container {
+    .bullet-container {
+      &.after-image  {
+        margin-left: 124px;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .banner-group-container {
+
+    .banners-feed-container {
+      max-width: 1216px;
+    }
+
+    &.main_banner_top_slider {
+      max-width: 592px;
+    }
+
+    .sliders-controls {
+      position: static;
+      height: inherit;
+    }
+
+    &.hover-arrow:hover {
+      @include arrows;
+    }
+
+    &.visible-arrow {
       .sliders-controls {
-        .banners-paging {
-          position: relative;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-
-          .prev-banner, .next-banner {
-            position: absolute;
-            width: 48px;
-            height: 48px;
-            cursor: pointer;
-            border-radius: 50%;
-            background-color: #fff;
-
-            &:hover {
-              box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
-            }
-
-            div {
-              background: url("../../../assets/svg/banner-arrow.svg") 16px 18px no-repeat;
-              background-size: 16px 12px;
-              width: 48px;
-              height: 48px;
-            }
-          }
-
-          .prev-banner {
-            div {
-              &:hover {
-                animation: arrowAnimationLeft 1.2s linear infinite alternate-reverse;
-              }
-            }
-          }
-
-          .next-banner {
-            div {
-              transform: rotate(180deg);
-
-              &:hover {
-                animation: arrowAnimationRight 1.2s linear infinite alternate-reverse;
-              }
-            }
-          }
-
-          @keyframes arrowAnimationLeft {
-            0% {
-              transition: margin-left 0.1s ease-in;
-              margin-left: -2px;
-            }
-            20% {
-              transition: margin-left 0.1s ease-in;
-              margin-left: 0px;
-            }
-            100% {
-              transition: margin-left 1s ease-in;
-              margin-left: 0px;
-            }
-          }
-
-          @keyframes arrowAnimationRight {
-            0% {
-              transition: margin-left 0.1s ease-in;
-              margin-left: 2px;
-            }
-            20% {
-              transition: margin-left 0.1s ease-in;
-              margin-left: 0px;
-            }
-            100% {
-              transition: margin-left 1s ease-in;
-              margin-left: 0px;
-            }
-          }
+        .next-banner {
+          margin-left: 32px;
+          right: auto;
         }
-
-        &.right {
-          .banners-paging {
-            justify-content: flex-start;
-          }
+        .prev-banner {
+          margin-right: 32px;
+          left: auto;
         }
+      }
+
+      .banners-feed-container {
+        margin: 0;
       }
     }
   }

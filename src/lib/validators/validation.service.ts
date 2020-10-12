@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, ValidatorFn, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, ValidatorFn } from '@angular/forms';
+import * as moment_ from 'moment';
 import { MomentInput } from 'moment';
 import { DatesHelperService } from '../services/dates-helper/dates-helper.service';
 import { RelativeDate, RelativeRange } from '../models/date-time.model';
 import { HelperService } from '../services/helper/helper.service';
-import * as moment_ from 'moment';
 
 const moment = moment_;
 const GENERAL_LETTERS = 'ABCEHKMOPXYTabcehkmopxytАВСЕНКМОРХУТавсенкморхут';
@@ -346,4 +346,23 @@ export class ValidationService {
     };
   }
 
+  public static formArrayValidator(control: AbstractControl): { [key: string]: any } | null {
+    const someControlValid = (control as FormArray).controls.some((nestedControl: AbstractControl) => nestedControl.valid);
+    return someControlValid ? null : { formArrayInvalid: true };
+  }
+
+  public static secureUrlValidator(hostnameMinLength = 5): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const urlValidationRe = /^\s*(?:https:\/\/)([^-][a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*[^-])+)(?:\?(?:[a-zA-Z0-9_\-._~:/?#[\]@!$&'()*+,;=]*))?$|^(?:https:\/\/)([^-][а-яА-Я0-9_-]*(?:\.[а-яА-Я0-9_-]*[^-])+)(?:\?(?:[a-zA-Zа-яА-Я0-9_\-._~:/?#[\]@!$&'()*+,;=]*))?\s*$/gm;
+      const result = urlValidationRe.exec(control.value);
+      return result && ((result[1] && result[1].length >= hostnameMinLength) || (result[2] && result[2].length >= hostnameMinLength))
+        ? null
+        : { urlInvalid: true };
+    };
+  }
+
+  public static mnemonicValidator(control: AbstractControl): { [key: string]: any } | null {
+    const mnemonicValidationRe = /^\s*[A-Z-_0-9]+\s*$/gm;
+    return mnemonicValidationRe.test(control.value) ? null : { mnemonicInvalid: true };
+  }
 }

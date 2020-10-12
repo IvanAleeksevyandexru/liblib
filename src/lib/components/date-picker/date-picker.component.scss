@@ -19,9 +19,9 @@
         }
         &.text-control {
           .text-input.focused {
-            border: 1px solid #A8ACB1;
+            border: 2px solid #99B1E6;
             &.invalid {
-              border: 1px solid #DF0024;
+              background: rgba(238, 63, 88, 0.16);
             }
           }
           .buttons-container {
@@ -35,7 +35,7 @@
         border-radius: 4px 4px 0 0;
         &.focused {
           &.invalid {
-            border: 1px solid #A8ACB1;
+            border: 2px solid #99B1E6;
           }
         }
       }
@@ -49,6 +49,10 @@
       right: 12px;
       cursor: pointer;
       background: url(../../../assets/svg/calendar-icon.svg) 3px 10px no-repeat;
+
+      &.disabled {
+        cursor: default;
+      }
     }
   }
 
@@ -119,7 +123,7 @@
           text-align: center;
           padding: 10px;
           .calendar-week-day-text {
-            font-family: Helvetica;
+            font-family: Lato, Arial, sans-serif;
             font-size: 14px;
             line-height: 20px;
             color: #626A73;
@@ -137,7 +141,7 @@
           cursor: pointer;
           box-sizing: border-box;
           .calendar-day-text {
-            font-family: Helvetica;
+            font-family: Lato, Arial, sans-serif;
             font-size: 14px;
             line-height: 20px;
             color: #101214;

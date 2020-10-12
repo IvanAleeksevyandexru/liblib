@@ -90,12 +90,18 @@ export class DragDropManager {
       state.containerDimension = request.containerDimension || feed.parentElement.clientHeight;
       state.feedDimension = feed.scrollHeight;
     }
+    state.itemDimension = request.itemDimension || state.containerDimension;
+    state.frameDimension = (state.containerDimension - state.itemDimension) / 2;
+    state.initiallySelected = this.getSelectedIndex(state.initialOffset, state);
     this.updateShift(mouseEvt, touchEvt, state, true);
     this.renderState(state);
     if (request.dragStart) {
       request.dragStart(state);
     }
     this.createTemporaryListeners(mouseInitiated, state);
+    // const evt = mouseEvt || touchEvt;
+    // evt.preventDefault();
+    // evt.stopPropagation();
   }
 
   private createTemporaryListeners(mouseInitiated: boolean, state: DragState) {
@@ -154,8 +160,7 @@ export class DragDropManager {
         position = Math.min(Math.max(position, lowerBound), upperBound);
       }
       state.shift = state.dragStartPosition - position;
-      const dist = state.request.itemsDistance || 0;
-      state.relativeShift = (state.shift + dist) / (state.containerDimension + dist);
+      state.relativeShift = this.shiftToRelativeShift(state.shift, state);
       state.dragForward = state.shift > 0;
     }
     state.offset = state.initialOffset - state.shift;
@@ -171,13 +176,9 @@ export class DragDropManager {
       (state.animatedForward ? Math.ceil : Math.floor) :
       (state.animatedForward ? Math.floor : Math.ceil);
     state.relativeShift = rounding(state.relativeShift);
-    const containerDimensionWithGap = state.containerDimension + (state.request.itemsDistance || 0);
-    const initialOffsetRelative = state.initialOffset / containerDimensionWithGap;
-    const initialOffsetRounded = Math.round(initialOffsetRelative);
-    // в норме эта поправка равна 0, корректирует начальное смещение если оно было не кратно контейнеру
-    const initialOffsetCorrection = state.initialOffset - initialOffsetRounded * containerDimensionWithGap;
-    state.shift = initialOffsetCorrection + state.relativeShift * containerDimensionWithGap;
-    state.offset = state.initialOffset - state.shift;
+    state.selected = state.initiallySelected + state.relativeShift;
+    state.offset = this.getShiftForIndex(state.selected, state);
+    state.shift = state.initialOffset - state.offset;
     const feed = state.request.feedElement.nativeElement;
     if (state.request.offsetType === DragDropOffsetType.SCROLL) {
       // для скролла анимация не работает через AnimationBuilder, довольствуемся цсс скролом (не на SF/IE)
@@ -187,7 +188,7 @@ export class DragDropManager {
       if (animationTime > 0) {
         const initialAnimationStyle = this.createStyle(state, animationInitialOffset, 'px');
         const initialAnimationPosition = {[initialAnimationStyle.property]: initialAnimationStyle.value};
-        const finalAnimationStyle = this.createStyle(state, state.initialOffset - state.shift, 'px');
+        const finalAnimationStyle = this.createStyle(state, state.offset, 'px');
         const finalAnimationPosition = {[finalAnimationStyle.property]: finalAnimationStyle.value};
         const animationPlayer = this.animationBuilder.build([
           style(initialAnimationPosition), animate(animationTime, style(finalAnimationPosition))
@@ -201,6 +202,23 @@ export class DragDropManager {
         this.finalizeDragging(state);
       }
     }
+  }
+
+  private shiftToRelativeShift(shift: number, state: DragState): number {
+    const itemWithGap = state.itemDimension + (state.request.itemsDistance || 0);
+    const shiftWithGap = shift + (state.request.itemsDistance || 0);
+    return Math.abs(shift) <= state.itemDimension ? shift / state.itemDimension : shiftWithGap / itemWithGap;
+  }
+
+  private getSelectedIndex(offset: number, state: DragState): number {
+    const feedToContainerCenter = state.containerDimension / 2 - offset;
+    const itemWithGap = state.itemDimension + (state.request.itemsDistance || 0);
+    return Math.max(0, Math.ceil(feedToContainerCenter / itemWithGap) - 1);
+  }
+
+  private getShiftForIndex(index: number, state: DragState): number {
+    const itemWithGap = state.itemDimension + (state.request.itemsDistance || 0);
+    return Math.min(-(itemWithGap * index) + state.frameDimension, 0);
   }
 
   private finalizeDragging(state: DragState) {
@@ -253,15 +271,16 @@ export class DragDropManager {
       }
     });
     state.visible = [];
-    state.active = null;
+    state.active = [];
     visibility.forEach((visibilityExtent, index) => {
       if (visibilityExtent > 0) {
         state.visible.push(index);
-        if (state.active === null || visibilityExtent > visibility[state.active]) {
-          state.active = index;
+        if (visibilityExtent > 0.9999) {
+          state.active.push(index);
         }
       }
     });
+    state.selected = this.getSelectedIndex(state.offset, state);
   }
 
   private createStyle(state: DragState, valueDimensionless: number, units: string) {

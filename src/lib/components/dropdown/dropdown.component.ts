@@ -4,12 +4,14 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListItem, ListElement, ListItemConverter } from '../../models/dropdown.model';
-import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
+import { VirtualScrollComponent } from '../virtual-scroll/virtual-scroll.component';
+import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { PositioningManager, PositioningRequest } from '../../services/positioning/positioning.manager';
-import { ListItemsService, ListItemsOperationsContext, FixedItemsProvider } from '../../services/list-item/list-items.service';
+import { ListItemsService, ListItemsOperationsContext,
+  FixedItemsProvider, ListItemsVirtualScrollController } from '../../services/list-item/list-items.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { ConstantsService } from '../../services/constants.service';
 import { Translation, MultipleItemsLayout, LineBreak } from '../../models/common-enums';
@@ -74,6 +76,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   // постраничная подгрузка итемов в результатах и размер блока
   @Input() public incrementalLoading = false;
   @Input() public incrementalPageSize = ConstantsService.DEFAULT_ITEMS_INCREMENTAL_PAGE_SIZE;
+  // виртуальный скролл, рендерится в dom лишь отображаемая часть списка (для больших списков)
+  @Input() public virtualScroll = false;
   // включает поле поиска в выпадающую область, позволяет фильтровать отображаемые значения
   @Input() public localSearch = false;
   @Input() public highlightSubstring = true;
@@ -82,6 +86,9 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   // стандарт - использование элементов ListElement которые будут автоматически приведены к ListItem
   // через конвертер можно использовать any
   @Input() public items: Array<ListElement | any> = [];
+
+  // отображение сообщений под списком
+  @Input() public additionalItem = false;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -101,6 +108,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   public preventOpening = false;
   public control?: AbstractControl;
   public filteringQuery = '';
+  public virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems.bind(this));
   public LineBreak = LineBreak;
 
   // приведенный к [ListItem] входящий список итемов +форматирование
@@ -118,8 +126,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   public partialsLoaded = false;
   public multipleItemsDetailsShown = false;
 
-  @ViewChild('scrollableArea') private scrollableArea: ElementRef;
   @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
+  @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
   @ViewChild('focusableInput') private focusableInput: ElementRef;
   @ViewChild('localSearchElement') private localSearchElement: SearchBarComponent;
   @ViewChild('dropdownField', {static: false}) private valuesContainer: ElementRef;
@@ -141,16 +149,9 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     if (this.destroyed) {
       return;
     }
-    for (const propName of Object.keys(changes)) {
-      switch (propName) {
-        case 'formatter':
-        case 'listFormatter':
-        case 'translation':
-        case 'converter':
-        case 'items': {
-          this.update();
-        }
-      }
+    const updateKeys = ['formatter', 'listFormatter', 'translation', 'converter', 'items'];
+    if (Object.keys(changes).some((changedKey) => updateKeys.includes(changedKey))) {
+      this.update();
     }
     this.check();
   }
@@ -176,6 +177,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
       highlightSubstring: this.highlightSubstring,
       collapsableGroups: this.collapsableGroups,
       virtualGroups: this.virtualGroups ? (this.multi ? true : null) : false,
+      virtualScroll: this.virtualScroll,
       onLanguageChange: () => this.updateFormatting(true)
     } as ListItemsOperationsContext);
     this.setItems(this.items);
@@ -235,7 +237,6 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
           destroyOnScroll: true, destroyCallback: this.closeDropdown.bind(this)} as PositioningRequest;
         this.positioningManager.attach(this.positioningDescriptor);
       }
-      this.updateScrollBars();
       if (this.internalSelected.length) {
         this.scrollTo(this.internalSelected[0]);
       }
@@ -307,13 +308,33 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     this.filterItems('');
   }
 
-  public updateFormatting(forceTranslate = false) {
+  public updateFormatting(forceTranslate = false, evalDimensions = true) {
     forkJoin([
       this.listService.translateFormat(this.internalItems, forceTranslate),
       this.listService.translateFormat(this.internalSelected, forceTranslate)
     ]).subscribe(() => {
+      if (evalDimensions) {
+        this.evaluateItemsSizesIfNeeded();
+      }
       this.changeDetector.detectChanges();
     });
+  }
+
+  public evaluateItemsSizesIfNeeded() {
+    if (this.virtualScroll && this.valuesContainer) {
+      const width = this.valuesContainer.nativeElement.clientWidth;
+      this.listService.evaluateItemsSizeAsync(this.internalItems, width, {multi: this.multi}).subscribe(() => {
+        this.updateScrollHeight();
+      });
+    }
+  }
+
+  public updateScrollHeight() {
+    if (this.virtualScroll && this.virtualScrollComponent) {
+      const items = this.internalDisplayed || this.internalItems || [];
+      const totalContentSize = items.reduce((acc, item) => acc + item.getItemHeight(), 0);
+      this.virtualScrollComponent.setTotalContentSize(totalContentSize);
+    }
   }
 
   public setPartialIndex(partialNumber: number) {
@@ -331,8 +352,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
               .subscribe((filteredPaged: Array<ListItem>) => {
             highlightIfNeeded(filteredPaged);
             const partialedItems = partialNumber === 0 ? filteredPaged : this.internalDisplayed.concat(filteredPaged);
-            this.publishList(partialedItems);
             this.partialsLoaded = partialedItems.length === filteredAll.length;
+            this.publishList(partialedItems);
           });
         } else {
           highlightIfNeeded(filteredAll);
@@ -342,7 +363,6 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     } else {
       this.publishList(this.internalItems);
     }
-    this.changeDetector.detectChanges();
   }
 
   public loadNextPartial() {
@@ -354,7 +374,13 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   public publishList(items: Array<ListItem>) {
     const alignedItems = this.listService.alignGroupsTreeIfNeeded(items, this.internalItems);
     this.internalDisplayed = alignedItems;
+    this.updateScrollHeight();
     this.listed.emit(alignedItems);
+    this.changeDetector.detectChanges();
+  }
+
+  public getRenderedItems(): Array<ListItem> {
+    return this.internalDisplayed || [];
   }
 
   public multipleSummaryOpenDetails(e: Event) {
@@ -398,7 +424,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     }
     if (item.collapsable && this.virtualGroups) {
       if (this.multi) {
-        this.listService.getFinalItems(this.internalDisplayed, item).forEach((finalItem: ListItem) => this.selectItem(finalItem, false));
+        this.listService.getTerminalItems(item, this.internalDisplayed).forEach((listItem: ListItem) => this.selectItem(listItem, false));
         this.commitEmit();
       } else {
         return false;
@@ -428,7 +454,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   public deselectItem(item: ListItem, commitEmit = true) {
     if (item.collapsable && this.virtualGroups) {
       if (this.multi) {
-        this.listService.getFinalItems(this.internalDisplayed, item).forEach((finalItem: ListItem) => this.deselectItem(finalItem, false));
+        this.listService.getTerminalItems(item, this.internalDisplayed).forEach((listItem: ListItem) => this.deselectItem(listItem, false));
         this.commitEmit();
       }
     } else {
@@ -468,7 +494,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     } else if (e.key === 'Escape') { // esc
       this.closeDropdown();
     } else if (this.expanded) { // стрелки
-      const navResult = this.listService.handleKeyboardNavigation(e, this.internalDisplayed, this.highlighted, this.scrollableArea);
+      const navResult = this.listService.handleKeyboardNavigation(e,
+        this.internalDisplayed, this.highlighted, this.virtualScrollComponent || this.scrollComponent);
       if (navResult && navResult !== true) {
         this.highlighted = navResult as ListItem;
       }
@@ -480,7 +507,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
       return;
     }
     this.internalSelected = this.listService.createListItems(value, {noIndex: !this.multi});
-    this.updateFormatting();
+    this.updateFormatting(false, false);
     this.consistencyCheck();
     this.synchronizeSelected();
     this.resetFilter();
@@ -518,14 +545,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     this.check();
   }
 
-  private updateScrollBars() {
-    if (this.scrollComponent) {
-      this.scrollComponent.directiveRef.update();
-    }
-  }
-
   private scrollTo(item: ListItem) {
-    this.listService.scrollTo(this.scrollableArea, item.findIndexAmong(this.internalDisplayed));
+    this.listService.scrollTo(this.virtualScrollComponent || this.scrollComponent, item.findIndexAmong(this.internalDisplayed));
   }
 
 }

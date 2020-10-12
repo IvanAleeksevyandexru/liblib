@@ -1,5 +1,8 @@
 import { Component, forwardRef, Input, OnInit, } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ValidationShowOn } from '../../models/common-enums';
+import { ValidationHelper } from '../../services/validation-helper/validation.helper';
+import { Validated } from '../../models/validation-show';
 
 @Component({
   selector: 'lib-checkbox',
@@ -13,7 +16,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     }
   ]
 })
-export class CheckboxComponent implements OnInit, ControlValueAccessor {
+export class CheckboxComponent implements OnInit, ControlValueAccessor, Validated {
 
   public static idCounter = 1;
 
@@ -25,6 +28,10 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor {
   @Input() public disabled: boolean;
   @Input() public checked: boolean;
 
+  @Input() public invalid = false;
+  @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
+
+  public invalidDisplayed: boolean;
   private modelInitialization = true;
   private onTouchedCallback: () => void;
   private commit(value: any) {}
@@ -40,6 +47,7 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor {
 
   public onChecked(value: boolean) {
     this.checked = value;
+    this.check();
     this.commit(value);
   }
 
@@ -61,8 +69,13 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor {
     this.onTouchedCallback = func;
   }
 
-  public setDisabledState(disabled: boolean) {
+  public setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
+    this.check();
+  }
+
+  public check() {
+    this.invalidDisplayed = ValidationHelper.checkValidation(this, {touched: true});
   }
 
 }

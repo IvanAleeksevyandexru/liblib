@@ -1,11 +1,11 @@
 <div class="width-container" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="above-info" *ngIf="validationPosition === MessagePosition.ABOVE || questionTipPosition === MessagePosition.ABOVE">
-    <div class="information text-help" 
-      *ngIf="questionTip && questionTipPosition === MessagePosition.ABOVE && (!validationOverride || !(invalidDisplayed && validationMessages))" 
+    <div class="information text-help"
+      *ngIf="questionTip && questionTipPosition === MessagePosition.ABOVE && (!validationOverride || !(invalidDisplayed && validationMessages))"
       [innerHTML]="questionTip">
     </div>
     <div class="validation" *ngIf="validationPosition === MessagePosition.ABOVE && invalidDisplayed && validationMessages">
-      <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages" 
+      <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages"
         [translation]="validationTranslation" [escapeHtml]="validationEscapeHtml"></lib-validation-message>
     </div>
   </div>
@@ -22,17 +22,17 @@
           [clearable]="clearable"
           [placeholder]="placeholder"
           [readOnly]="!textEditable || blockMobileKeyboard || readOnly"
-          [mask]="isRange ? rangeMask : dateMask" 
-          [showConstantMaskSymbols]="true" 
+          [mask]="isRange ? rangeMask : dateMask"
+          [showConstantMaskSymbols]="true"
           [formatter]="dateEnteringController"
-          [removeMaskSymbols]="skip"
+          [removeMaskSymbols]="RemoveMaskSymbols.SKIP"
           [keepCharPositions]="true"
           [showMaskAsPlaceholder]="true"
           [containerOverlap]="containerOverlap"
-          (click)="toggle(true)" 
-          (change)="handleChange($event.target.value)" 
-          (focus)="handleFocus()" 
-          (blur)="handleBlur()" 
+          (click)="toggle(true)"
+          (change)="handleChange($event.target.value)"
+          (focus)="handleFocus()"
+          (blur)="handleBlur()"
           (cleared)="resetToEmpty()"
           [invalid]="invalid"
           [validation]="validation"
@@ -45,7 +45,7 @@
           [questionTip]="questionTip"
           [questionTipPosition]="questionTipPosition === MessagePosition.INSIDE ? questionTipPosition : MessagePosition.NOWHERE"
         ></lib-standard-masked-input>
-        <div class="calendar-icon" (click)="toggle(false)"></div>
+        <div class="calendar-icon" [class.disabled]="disabled" (click)="toggle(false)"></div>
       </div>
     </div>
     <div class="calendar-wrapper" [ngClass]="{'simple-panel': asSimplePanel}">
@@ -143,12 +143,12 @@
     </div>
   </div>
   <div class="below-info" *ngIf="validationPosition === MessagePosition.BELOW || questionTipPosition === MessagePosition.BELOW">
-    <div class="information text-help" 
-      *ngIf="questionTip && questionTipPosition === MessagePosition.BELOW && (!validationOverride || !(invalidDisplayed && validationMessages))" 
+    <div class="information text-help"
+      *ngIf="questionTip && questionTipPosition === MessagePosition.BELOW && (!validationOverride || !(invalidDisplayed && validationMessages))"
       [innerHTML]="questionTip">
     </div>
     <div class="validation" *ngIf="validationPosition === MessagePosition.BELOW && invalidDisplayed && validationMessages">
-      <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages" 
+      <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages"
         [translation]="validationTranslation" [escapeHtml]="validationEscapeHtml"></lib-validation-message>
     </div>
   </div>
