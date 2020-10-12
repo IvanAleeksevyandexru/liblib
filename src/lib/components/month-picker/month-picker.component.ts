@@ -151,7 +151,7 @@ export class MonthPickerComponent
       const month = parseInt(dateArr[0], 10) - 1;
       const year = parseInt(dateArr[1], 10);
 
-      if (typeof month === 'number' && month >= 0) {
+      if (typeof month === 'number' && month >= 0 && month < 12) {
         this.monthes.forEach((item: Month) => {
           item.selected = item.number === month;
         });
@@ -167,8 +167,12 @@ export class MonthPickerComponent
         });
       }
 
-      if (typeof month === 'number' && month >= 0 && year && year.toString().length === 4) {
+      if (typeof month === 'number' && month >= 0 && month < 12 && year && year.toString().length === 4) {
+        this.check();
         this.writeValue(new MonthYear(month, year));
+        if (this.formControl) {
+          this.formControl.setValue(new MonthYear(month, year));
+        }
       }
     }
   }
