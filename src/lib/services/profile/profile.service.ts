@@ -483,6 +483,10 @@ export class ProfileService {
                   'Идет поиск СНИЛС ребенка в ПФР...',
               } : {}
           ),
+          empty: {
+            title: 'Добавьте СНИЛС',
+            subtitle: object.subtitle ? object.subtitle : 'он необходим для некоторых услуг и может использоваться для авторизации'
+          },
           full: {
             title: 'СНИЛС'
           },
