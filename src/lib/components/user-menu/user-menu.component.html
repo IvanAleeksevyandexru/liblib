@@ -90,7 +90,7 @@
 </ng-template>
 
 <ng-template #menuTabs>
-  <ul class="user-menu-tabs" *ngIf="mainTabs?.tabs?.length">
+  <ul class="user-menu-tabs" *ngIf="mainTabs?.tabs?.length && showMenuTabs()">
     <li class="item" *ngFor="let tab of mainTabs.tabs">
       <ng-container *ngIf="tab.url">
         <a (click)="selectTab(tab)" routerLink="{{tab.url}}"
