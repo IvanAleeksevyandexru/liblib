@@ -112,40 +112,40 @@ export class MenuService {
       case 'PORTAL':
         if (this.loadService.user.authorized) {
           links = [{
-            url: `${lkHost}/orders/all`,
+            url: `${lkHost}orders/all`,
             title: 'HEADER.MENU.ORDERS',
             listeners: true
           }, {
             url: `${payHost}/pay`,
             title: 'HEADER.MENU.PAYMENT'
           }, {
-            url: `${lkHost}/profile/personal`,
+            url: `${lkHost}profile/personal`,
             title: 'HEADER.MENU.DOCS'
           }, {
-            url: `${lkHost}/messages`,
+            url: `${lkHost}messages`,
             title: 'HEADER.MENU.MESSAGES'
           }, {
-            url: `${mainHost}/category`,
+            url: `${mainHost}category`,
             title: 'HEADER.MENU.SERVICES'
           }, {
-            url: `${mainHost}/help/news`,
+            url: `${mainHost}help/news`,
             title: 'HEADER.MENU.BLOG'
           }, {
-            url: `${lkHost}/permissions`,
+            url: `${lkHost}permissions`,
             title: 'HEADER.MENU.PERMISSIONS'
           }];
         } else {
           links = [{
-            url: `${mainHost}/category`,
+            url: `${mainHost}category`,
             title: 'HEADER.MENU.SERVICES'
           }, {
             url: `${payHost}/pay`,
             title: 'HEADER.MENU.PAYMENT'
           },  {
-            url: `${mainHost}/help/news`,
+            url: `${mainHost}help/news`,
             title: 'HEADER.MENU.BLOG'
           }, {
-            url: `${mainHost}/help`,
+            url: `${mainHost}help`,
             title: 'HEADER.MENU.HELP'
           }];
         }

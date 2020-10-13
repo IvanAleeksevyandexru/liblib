@@ -20,7 +20,12 @@
       "ACCESS_GROUPS": "Группы доступа",
       "SERVICE_CENTERS": "Центры обслуживания",
       "OPERATION_HISTORY": "История операций",
-      "POWERS": "Полномочия"
+      "POWERS": "Полномочия",
+      "ORDERS": "Заявления",
+      "MESSAGES": "Госпочта",
+      "BLOG": "Блог",
+      "PERMISSIONS": "Согласия",
+      "HELP": "Помощь"
     },
     "CATALOG": {
       "ALL": "Весь каталог",

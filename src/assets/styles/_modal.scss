@@ -8,7 +8,9 @@ html.modal-opened {
   left: 0;
   min-width: 100%;
   min-height: 100%;
-  background: rgba(0, 0, 0, .5);
+  background: rgba(11, 31, 51, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   transition: background .25s;
   z-index: 2147473648; // значение, перекрывающее z-index госбара на 1
 }

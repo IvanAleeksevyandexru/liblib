@@ -11,6 +11,7 @@
     position: relative;
     height: 48px;
     color: #0B1F33;
+    box-sizing: border-box;
     &.invalid {
       border-color: #DF0024;
     }
@@ -18,11 +19,17 @@
       border-color: #99B1E6;
     }
     &.disabled {
-      background-color: #E7ECF7;
-      border-color: #CBCDD0;
-      color: #A8ACB1;
+      background-color: #D1D5DF;
+      border-color: #D1D5DF;
+      color: #66727F;
       .month-picker-text, .month-picker-placeholder {
-        color: #A8ACB1;
+        color: #66727F;
+      }
+      .month-picker-icon {
+        background-image: url(../../../assets/svg/calendar-icon-gray.svg);
+      }
+      .icon {
+        cursor: default;
       }
     }
     .month-picker-text, .month-picker-placeholder {
@@ -173,7 +180,7 @@
       flex-grow: 0;
       .item-content {
         padding: 4px 16px;
-      }      
+      }
       &:first-child {
         margin-left: 0;
       }
