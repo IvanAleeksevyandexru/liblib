@@ -222,9 +222,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           this.query = fullAddress;
           this.widgetItemsVisibility = this.dadataService.validateCheckboxes();
         }
-        // if (dadataQc === '0' && !this.errorCodes.length) {
-        //     this.autocomplete.cancelSearchAndClose();
-        // }
+        if (dadataQc === '0' && !this.errorCodes.length) {
+            this.autocomplete.cancelSearchAndClose();
+        }
         const commitValue: DadataResult = {
           ...this.form.getRawValue(),
           fullAddress,
@@ -245,7 +245,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
         this.commit(null);
         this.normalizeInProcess = false;
       }
-      if (this.blurCall && !this.isOpenedFields.getValue() && (dadataQc === '1' || dadataQc === '2') && this.normalizedData.fiasLevel !== '-1') {
+      if (this.blurCall && !this.isOpenedFields.getValue() && (dadataQc === '1' || dadataQc === '2') && this.normalizedData.fiasLevel !== '-1' && !this.externalApiUrl) {
         this.showWrongAddressDialog();
       }
     });
@@ -307,7 +307,11 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       this.form.markAsTouched();
       // используем промис, т.к. в противном случае без сабскрайбера не вызывается сервис
       this.normalizeInProcess = true;
-      return this.dadataService.normalize(fullAddress).toPromise().then(res => {
+      let query = fullAddress;
+      if (blurCall) {
+        query = this.dadataService.firstInSuggestion.address;
+      }
+      return this.dadataService.normalize(query).toPromise().then(res => {
         if (res) {
           this.normalizedData = res;
           if (res.address && res.address.elements && res.address.elements.length) {

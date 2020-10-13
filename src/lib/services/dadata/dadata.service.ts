@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
-import { FormConfig, NormalizedAddressElement, NormalizedData, SuggestionsResponse } from '../../models/dadata';
+import {
+  Addresses,
+  FormConfig,
+  NormalizedAddressElement,
+  NormalizedData,
+  SuggestionsResponse
+} from '../../models/dadata';
 import { AutocompleteSuggestion, AutocompleteSuggestionProvider } from '../../models/dropdown.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -19,6 +25,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
   private externalUrl = '';
   private hideLevels = [];
   public suggestionsLength = 0;
+  public firstInSuggestion: Addresses = null;
   public canOpenFields = new BehaviorSubject<boolean>(false);
   public isOpenedFields = new BehaviorSubject<boolean>(false);
   public isWidgetVisible = new BehaviorSubject<boolean>(false);
@@ -194,8 +201,10 @@ export class DadataService implements AutocompleteSuggestionProvider {
     }).pipe(map(res => {
       this.suggestionsLength = res.suggestions.addresses.length;
       if (this.suggestionsLength) {
+        this.firstInSuggestion = res.suggestions.addresses[0];
         return res.suggestions.addresses.map((suggestion) => new AutocompleteSuggestion(suggestion.address, suggestion));
       } else {
+        this.firstInSuggestion = null;
         this.qc = '6';
         this.isWidgetVisible.next(false);
         return [];
