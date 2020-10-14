@@ -6,6 +6,12 @@
   }
 }
 
+.closable, :host-context(.closable-group) {
+  .banner-inner-container {
+    padding-right: 32px;
+  }
+}
+
 .banner-container {
 	position: relative;
 	width: 100%;

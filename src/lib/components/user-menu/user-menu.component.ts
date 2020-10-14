@@ -33,9 +33,14 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public mainTabs: Tabs = null;
   public tabsSubscription: Subscription;
   public titleChangeRole: string;
+  public userRoles;
+  public activeRole;
+  public showRolesList = false;
+  public showAllMenu = true;
 
-  @Input()
-  public state: UserMenuState;
+  @Input() public state: UserMenuState;
+  @Input() public rolesListEnabled = false;
+  @Input() public searchSputnikEnabled = false;
 
   @ViewChild('menuDesk') public menuDesk;
   @ViewChild('menuMobile') public menuMobile;
@@ -72,6 +77,8 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public ngOnInit() {
     this.links = this.menuService.getUserMenuLinks();
     this.user = this.loadService.user as User;
+    this.userRoles = this.menuService.getUserRoles(this.user);
+    this.activeRole = this.userRoles.find((role) => role.isActive);
     this.staticUrls = this.menuService.getStaticItemUrls();
     this.countersService.counters$.subscribe(_ => {
       this.settingsCounter = this.countersService.getCounter(CounterTarget.SETTINGS);

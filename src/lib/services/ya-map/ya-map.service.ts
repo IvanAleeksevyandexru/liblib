@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -7,9 +8,12 @@ import { BehaviorSubject } from 'rxjs';
 export class YaMapService {
 
   private isLoaded = false;
+  private loading = false;
   public map: any;
   public address = new BehaviorSubject('');
   public mapSubject = new BehaviorSubject(null);
+  public ymaps = new BehaviorSubject(null);
+  public ymaps$ = this.ymaps.asObservable();
 
   constructor() {
   }
@@ -71,26 +75,43 @@ export class YaMapService {
   }
 
   public loadMap(el: string, params, marks) {
-    const scriptYmaps = document.createElement('script');
-    const urlPart = '2.1/?coordorder=longlat&lang=ru-RU';
-    let host = '//api-maps.yandex.ru/' + urlPart;
-
-    if (params.enterpriseYandexMapsEnabled && params.yandexMapsApiKey) {
-      host = '//enterprise.api-maps.yandex.ru/' + urlPart + '&apikey=' + params.yandexMapsApiKey;
-    }
-
-    scriptYmaps.src = host;
-    if (!this.map) {
-      document.head.appendChild(scriptYmaps);
+    if (this.isLoaded) {
+      this.initMap(el, params, marks);
     } else {
-      this.map.destroy();
-      this.createMap(el, params, marks);
-    }
-    scriptYmaps.onload = () => {
-      (window as any).ymaps.ready(() => {
-        this.createMap(el, params, marks);
-        this.isLoaded = true;
+      this.loadYMaps(params);
+      this.ymaps$.pipe(
+        filter((ymap) => ymap)
+      ).subscribe(() => {
+        this.initMap(el, params, marks);
       });
-    };
+    }
+  };
+
+  private initMap(el: string, params, marks) {
+    if (this.map) {
+      this.map.destroy();
+    }
+    this.createMap(el, params, marks);
+  }
+
+  public loadYMaps(params): void {
+    if (!this.loading) {
+      this.loading = true;
+      const scriptYmaps = document.createElement('script');
+      const urlPart = '2.1/?coordorder=longlat&lang=ru-RU';
+      let host = '//api-maps.yandex.ru/' + urlPart;
+
+      if (params.enterpriseYandexMapsEnabled && params.yandexMapsApiKey) {
+        host = '//enterprise.api-maps.yandex.ru/' + urlPart + '&apikey=' + params.yandexMapsApiKey;
+      }
+      document.head.appendChild(scriptYmaps);
+      scriptYmaps.src = host;
+      scriptYmaps.onload = () => {
+        (window as any).ymaps.ready(() => {
+          this.ymaps.next((window as any).ymaps);
+          this.isLoaded = true;
+        });
+      }
+    }
   }
 }

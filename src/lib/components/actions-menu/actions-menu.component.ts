@@ -11,6 +11,7 @@ export class ActionsMenuComponent implements OnInit {
   @Input() public actions: Action[] = []; // Входной массив с элементами меню
   @Input() public countOutside = 2; // Количество элементов вне меню на десктопе
   @Input() public showMenu = false; // Состояние меню
+  @Input() public disabled = false; // Активность меню
 
   @HostListener('document:click', ['$event']) public onClick(event) {
     const target = event.target;

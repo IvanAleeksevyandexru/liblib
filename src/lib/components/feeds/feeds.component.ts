@@ -63,6 +63,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   private isLk = (this.loadService.attributes.appContext || this.loadService.config.viewType) === 'LK';
   private loadedFeedsCount = 0;
   private showMoreCount = 0;
+  public isHeader: boolean;
 
   constructor(
     private router: Router,
@@ -82,6 +83,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     this.getUserData();
     this.getFeeds();
     this.updateFeeds();
+    this.isHeader = this.page === 'header';
   }
 
   public ngOnChanges(changes: SimpleChanges) {
@@ -172,7 +174,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     return [feed.data.imOrgName ? 'feed-im' : '',
       'feed-' + feed.feedType, 'feed-' + this.page,
       feed.removeInProgress ? 'feed-remove-in-progress' : '',
-      this.isUpdated(feed) ? 'is-updated' : ''
+      this.isUpdated(feed) ? 'is-updated' : '',
+      this.setUnreadFeedCls(feed) && this.isHeader ? 'feed-header-unread' : ''
     ];
   }
 
@@ -470,7 +473,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
 
-    if (feed.feedType === 'ORGANIZATION' || feed.feedType === 'BUSINESSMAN' ||  feed.feedType === 'ACCOUNT_CHILD') {
+    if (['ORGANIZATION', 'BUSINESSMAN', 'ACCOUNT_CHILD', 'PAYMENT'].includes(feed.feedType)) {
       this.feedsService.markFeedAsRead(feed.id).subscribe();
     }
 

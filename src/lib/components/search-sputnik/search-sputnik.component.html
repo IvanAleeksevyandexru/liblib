@@ -1,0 +1,26 @@
+<div class="flex-container align-items-center search-container" [class]="contextClass" [ngClass]="{'show-field' : showField}">
+  <div *ngIf="showField" #searchBox class="search-input">
+    <lib-lookup #lookup class="search"
+                [placeholder]="placeholder"
+                [contextClass]="contextClass"
+                [itemsProvider]="searchProvider"
+                [queryMinSymbolsCount]="3"
+                [maxlength]="400"
+                [(ngModel)]="searchItem"
+                clearInconsistent="ignore"
+                [showMagnifyingGlass]="showMagnifyingGlass"
+                [clearable]="true"
+                (opened)="toggleSearch(true)"
+                (closed)="toggleSearch(false)"
+                [converter]="converter"
+                (changed)="onSearch()"
+                (input)="toggleMagnifyingGlass()"
+                ngDefaultControl>
+    </lib-lookup>
+    <div class="close-search-popup"></div>
+  </div>
+
+  <div *ngIf="hideToIcon"
+       (click)="toggleField()"
+       [ngClass]="[showField ? 'close-icon' : 'search-icon']"></div>
+</div>

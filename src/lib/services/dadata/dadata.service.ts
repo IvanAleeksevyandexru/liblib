@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
-import { FormConfig, NormalizedAddressElement, NormalizedData, SuggestionsResponse } from '../../models/dadata';
+import {
+  Addresses,
+  FormConfig,
+  NormalizedAddressElement,
+  NormalizedData,
+  SuggestionsResponse
+} from '../../models/dadata';
 import { AutocompleteSuggestion, AutocompleteSuggestionProvider } from '../../models/dropdown.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -18,9 +24,13 @@ export class DadataService implements AutocompleteSuggestionProvider {
   private simpleMode = false;
   private externalUrl = '';
   private hideLevels = [];
+  public suggestionsLength = 0;
+  public firstInSuggestion: Addresses = null;
   public canOpenFields = new BehaviorSubject<boolean>(false);
   public isOpenedFields = new BehaviorSubject<boolean>(false);
   public isWidgetVisible = new BehaviorSubject<boolean>(false);
+
+  public kladrCode = '';
 
   public prefixes = {
     region: {
@@ -165,7 +175,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
   private initCheckboxChange(checkboxName: string, field: string): void {
     this.form.get(checkboxName + 'Checkbox').valueChanges.subscribe((checked: boolean) => {
       const control = this.getFormControlByName(checkboxName);
-      if (checked) {
+      if (checked || checked === null) {
         field = control.value;
         control.setValue('');
         control.disable({onlySelf: true});
@@ -189,9 +199,12 @@ export class DadataService implements AutocompleteSuggestionProvider {
         q: query
       }
     }).pipe(map(res => {
-      if (res.suggestions.addresses.length) {
+      this.suggestionsLength = res.suggestions.addresses.length;
+      if (this.suggestionsLength) {
+        this.firstInSuggestion = res.suggestions.addresses[0];
         return res.suggestions.addresses.map((suggestion) => new AutocompleteSuggestion(suggestion.address, suggestion));
       } else {
+        this.firstInSuggestion = null;
         this.qc = '6';
         this.isWidgetVisible.next(false);
         return [];
@@ -233,6 +246,8 @@ export class DadataService implements AutocompleteSuggestionProvider {
       this.setVisibilityByLevel(level);
 
       if (index === arr.length - 1) {
+        this.kladrCode = elem.kladrCode;
+
         const houseControl = this.getFormControlByName('house');
         const houseCheckbox = this.getFormControlByName('houseCheckbox');
         const apartmentControl = this.getFormControlByName('apartment');
@@ -355,8 +370,8 @@ export class DadataService implements AutocompleteSuggestionProvider {
       this.isWidgetVisible.next(false);
     } else if (!openedFields) {
       this.isWidgetVisible.next(true);
-      houseCb = !houseHiddenByDefault || (!house.value && !houseCheckbox.value);
-      apartmentCb = !apartmentHiddenByDefault || (!apartmentCheckbox.value && !apartment.value);
+      houseCb = !houseHiddenByDefault && (!house.value && !houseCheckbox.value);
+      apartmentCb = !apartmentHiddenByDefault && (!apartmentCheckbox.value && !apartment.value);
     }
     return {houseCb, apartmentCb};
   }

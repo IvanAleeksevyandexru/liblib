@@ -108,7 +108,7 @@ import { MapComponent } from './components/map/map.component';
 import { DadataWidgetComponent } from './components/dadata-widget/dadata-widget.component';
 import { DadataModalComponent } from './components/dadata-modal/dadata-modal.component';
 import { DisclaimerComponent } from './components/disclaimers/disclaimers.component';
-import { InformerMainComponent } from './components/informers/informer-main/informer-main.component';
+import { InformerComponent } from './components/informer/informer.component';
 import { ThrobberHexagonComponent } from './components/throbber-hexagon/throbber-hexagon.component';
 import { AddressSaveModalComponent } from './components/address-save-modal/address-save-modal.component';
 import { BetaUrlPipe } from './pipes/beta-url/beta-url.pipe';
@@ -139,6 +139,11 @@ import { DynamicFormatterPipe } from './pipes/dynamic-formatter/dynamic-formatte
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { Setting } from './models/setting';
+import { LocationSelectComponent } from './components/location-select/location-select.component';
+import { HeaderComponent } from './components/header/header.component';
+import { SearchSputnikComponent } from './components/search-sputnik/search-sputnik.component';
+import { FrameComponent } from './components/frame/frame.component';
+import { CommonController } from "./common/common-controller";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -152,12 +157,13 @@ registerLocaleData(localeRu, 'ru');
     CounterComponent,
     BreadcrumbsComponent,
     DisclaimerComponent,
-    InformerMainComponent,
+    InformerComponent,
     ThrobberHexagonComponent,
     FooterComponent,
     FooterCmsComponent,
     FooterCopyrightComponent,
     ModalSearchComponent,
+    SearchSputnikComponent,
     ConfirmActionComponent,
     DocumentDetailsComponent,
     InfoCardComponent,
@@ -267,7 +273,10 @@ registerLocaleData(localeRu, 'ru');
     CapitalLetterPipe,
     LangWarnModalComponent,
     PsoComponent,
-    DynamicFormatterPipe
+    DynamicFormatterPipe,
+    LocationSelectComponent,
+    HeaderComponent,
+    FrameComponent,
   ],
   imports: [
     CommonModule,
@@ -288,7 +297,7 @@ registerLocaleData(localeRu, 'ru');
     CounterComponent,
     BreadcrumbsComponent,
     DisclaimerComponent,
-    InformerMainComponent,
+    InformerComponent,
     ThrobberHexagonComponent,
     FooterComponent,
     FormsModule,
@@ -296,6 +305,7 @@ registerLocaleData(localeRu, 'ru');
     FooterCmsComponent,
     FooterCopyrightComponent,
     ModalSearchComponent,
+    SearchSputnikComponent,
     ConfirmActionComponent,
     DocumentDetailsComponent,
     InfoCardComponent,
@@ -398,7 +408,10 @@ registerLocaleData(localeRu, 'ru');
     RemoveQuotesPipe,
     TimeLeftPipe,
     RemoveTagsPipe,
-    DynamicFormatterPipe
+    DynamicFormatterPipe,
+    LocationSelectComponent,
+    HeaderComponent,
+    FrameComponent,
   ],
   providers: [
     GosbarService,
