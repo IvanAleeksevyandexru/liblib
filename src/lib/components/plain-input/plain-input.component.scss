@@ -32,7 +32,8 @@
   &[disabled], &.disabled, &[readonly] {
     background: #D1D5DF;
     color: #66727F;
-  }
+    -webkit-text-fill-color: #66727F;
+    opacity: 1;  }
   &::-ms-clear {
     display: none;
     width: 0;
