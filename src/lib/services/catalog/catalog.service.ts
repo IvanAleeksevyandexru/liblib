@@ -59,7 +59,8 @@ export class CatalogService {
   public checkMfcRegion() {
     const region = this.cookieService.get('userSelectedRegion') || '00000000000';
     return this.http.get(`${this.loadService.config.catalogApiUrl}mfc/config/${region}`, {
-      withCredentials: true
+      withCredentials: true,
+      params: { _: String(Math.random()) }
     });
   }
 }
