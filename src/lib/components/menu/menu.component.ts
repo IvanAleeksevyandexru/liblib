@@ -27,6 +27,8 @@ export class MenuComponent implements OnInit, AfterViewInit {
   @Input() public newView = false;
   @Input() public background: string;
   @Input() public showBorder = false;
+  @Input() public rolesListEnabled = false;
+  @Input() public searchSputnikEnabled = false;
 
   public categories: Category[] = [];
   public links: MenuLink[] = [];

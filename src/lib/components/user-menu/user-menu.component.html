@@ -4,12 +4,12 @@
       <ng-template *ngTemplateOutlet="menuHeader"></ng-template>
       <ng-template *ngTemplateOutlet="menuTabs"></ng-template>
       <ul class="user-menu-links">
+        <li class="item">
+          <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.SETTINGS_MENU', 'settingsSecurity')">{{'HEADER.MENU.SETTINGS_MENU' | libTranslate}}</a>
+          <lib-counter class="counter" [counter]="settingsCounter"></lib-counter>
+        </li>
         <li class="item" *ngIf="!user.isKid">
           <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{titleChangeRole | libTranslate}}</a>
-        </li>
-        <li class="item">
-          <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.SETTINGS', 'settingsSecurity')">{{'HEADER.MENU.SETTINGS' | libTranslate}}</a>
-          <lib-counter class="counter" [counter]="settingsCounter"></lib-counter>
         </li>
       </ul>
       <ul class="user-menu-links" *ngIf="!user.isKid">
@@ -22,13 +22,18 @@
 
   <div #menuMobile class="menu-mobile container hide-lg" [class.hide-menu-when-search]="!showAllMenu" [class.show]="showMobileView()">
     <ng-template *ngTemplateOutlet="menuHeader"></ng-template>
-    <div class="hide-lg show-md hide-sm menu-search-container">
-      <lib-search-sputnik (opened)="showAllMenu = false" (closed)="showAllMenu = true" contextClass="menu-search"
-                          placeholder="Поиск" [useGlobalPlaceholder]="true"></lib-search-sputnik>
+    <div *ngIf="searchSputnikEnabled" class="hide-lg show-md hide-sm menu-search-container">
+      <lib-search-sputnik
+        (opened)="showAllMenu = false"
+        (closed)="showAllMenu = true"
+        contextClass="menu-search"
+        placeholder="Поиск"
+        [useGlobalPlaceholder]="false">
+      </lib-search-sputnik>
     </div>
     <ng-container *ngIf="showAllMenu">
     <ng-template *ngTemplateOutlet="menuTabs"></ng-template>
-    <div class="item select-role" *ngIf="user.authorized" (click)="showRolesList = !showRolesList" [ngClass]="{'show-roles-list': showRolesList}">
+    <div class="item select-role" *ngIf="!user.authorized && rolesListEnabled" (click)="showRolesList = !showRolesList" [ngClass]="{'show-roles-list': showRolesList}">
       <span class="active-role">{{ (activeRole?.name) || 'Гражданам' }}</span>
     </div>
     <ul *ngIf="showRolesList" class="roles-list">
@@ -45,14 +50,14 @@
     </ul>
     <ul class="links-mobile" *ngIf="!user.isKid">
       <li class="item" *ngIf="user.authorized">
-        <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{'HEADER.MENU.LOGIN_ORG' | libTranslate}}</a>
+        <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.SETTINGS_MENU', 'settingsSecurity')">{{'HEADER.MENU.SETTINGS_MENU' | libTranslate}}</a>
+        <lib-counter class="counter" [counter]="settingsCounter"></lib-counter>
       </li>
       <li class="item">
         <lib-location-select (click)="onClose()"></lib-location-select>
       </li>
       <li class="item" *ngIf="user.authorized">
-        <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.SETTINGS', 'settingsSecurity')">{{'HEADER.MENU.SETTINGS' | libTranslate}}</a>
-        <lib-counter class="counter" [counter]="settingsCounter"></lib-counter>
+        <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{'HEADER.MENU.LOGIN_ORG' | libTranslate}}</a>
       </li>
     </ul>
     <ul *ngIf="user.authorized" class="links-mobile">
@@ -94,10 +99,9 @@
     <li class="item" *ngFor="let tab of mainTabs.tabs">
       <ng-container *ngIf="tab.url">
         <a (click)="selectTab(tab)" routerLink="{{tab.url}}"
-           routerLinkActive="active">
-          <span class="item-tab-name">{{tab.name | appTranslate}}</span>
-          <lib-counter class="counter" [counter]="tab.counter"></lib-counter>
+           routerLinkActive="active" class="item-tab-name">{{tab.name | appTranslate}}
         </a>
+        <lib-counter class="counter" [counter]="tab.counter"></lib-counter>
       </ng-container>
     </li>
   </ul>
