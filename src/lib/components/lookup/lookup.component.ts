@@ -49,6 +49,8 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Input() public placeholder?: string;
   @Input() public width?: Width | string;
   @Input() public cachedResponse?: boolean;
+  @Input() public staticList?: boolean;
+
 
   // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
   @Input() public formatter?: (item: ListItem, context: { [name: string]: any }) => string;
@@ -234,7 +236,6 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   public handleBlur() {
     this.cancelSearchAndClose();
     this.resetItemIfNotConsistent();
-    console.log(this.prevQuery);
     this.blur.emit();
   }
 
@@ -243,7 +244,6 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     if (this.onTouchedCallback) {
       this.onTouchedCallback();
     }
-    console.log(this.prevQuery);
 
     this.focus.emit();
   }

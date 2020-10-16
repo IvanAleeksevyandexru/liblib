@@ -83,6 +83,7 @@
     border: solid #E1E1E1;
     border-width: 1px 0 0 0;
   }
+
   &-links, &-tabs {
     margin-right: 20px;
   }
@@ -188,8 +189,11 @@
   border-top: 1px solid #E1E1E1;
   margin-left: -17px;
   margin-right: -17px;
-  border-bottom: 1px solid #E1E1E1;
   margin-bottom: 20px;
+
+  &.static {
+    height: auto;
+  }
 }
 
 
@@ -200,8 +204,8 @@
   width: 0;
   overflow-y: hidden;
   padding-left: 32px;
-  background: #ffffff;
-  border-top: 1px solid #eeeeee;
+  background: #fff;
+  border-top: 1px solid #eee;
   z-index: 10;
   box-shadow: 0.3em 0.3em 1em rgba(0,0,0,0.3);
   display: none;
@@ -238,10 +242,14 @@
   height: 100%;
   max-height: calc(100vh);
   overflow-y: auto;
-  background: #ffffff;
-  border-top: 1px solid #eeeeee;
+  background: #fff;
+  border-top: 1px solid #eee;
   transition: right .5s ease;
   z-index: 2147473649;
+
+  .opened-search {
+    margin-bottom: 0;
+  }
 
 }
 
@@ -265,8 +273,9 @@ $PAD: 768px;
     box-shadow: 0.3em 0.3em 1em rgba(0,0,0,0.3);
     border-radius: 12px;
 
-    &.hide-menu-when-search {
-      min-height: 380px;
+    .ul-list .links-mobile:first-child {
+      border-top: none;
+      padding-top: 0;
     }
 
     .menu-header {
@@ -288,6 +297,10 @@ $PAD: 768px;
 /* iphone */
 @media only all and (max-width: $PAD - 1) {
   .user-menu {
+    .ul-list .links-mobile:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
     .content-overlay {
       opacity: 0.1;
     }

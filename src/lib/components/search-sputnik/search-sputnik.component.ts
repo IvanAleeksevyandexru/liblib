@@ -17,6 +17,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
   @Input() public useGlobalPlaceholder = false;
   @Input() public contextClass = '';
   @Input() public cachedResponse?: boolean;
+  @Input() public staticList?: boolean;
 
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
