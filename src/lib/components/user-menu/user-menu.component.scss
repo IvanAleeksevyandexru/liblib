@@ -2,28 +2,28 @@
   width: 100%;
 
   .container {
-    padding: 0 17px;
+    padding: 0 13px;
   }
 
   .menu-header {
     display: flex;
     position: relative;
     min-height: 72px;
-    padding-top: 32px;
-    padding-bottom: 24px;
+    padding-top: 40px;
+    padding-bottom: 20px;
 
     .avatar-wrapper {
       display: inline-block;
       overflow: hidden;
-      width: 48px;
-      height: 48px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
     }
 
     .no-avatar,
     .avatar {
-      width: 48px;
-      height: 48px;
+      width: 28px;
+      height: 28px;
     }
 
     .no-avatar {
@@ -69,7 +69,7 @@
     .close-menu {
       position: absolute;
       top: 30px;
-      right: -7px;
+      right: 8px;
       width: 14px;
       height: 14px;
       background: url(../../../assets/svg/close.svg) center no-repeat;
@@ -79,7 +79,7 @@
 
   &-links, &-tabs,
   .links-mobile {
-    padding-top: 24px;
+    padding-top: 20px;
     border: solid #E1E1E1;
     border-width: 1px 0 0 0;
   }
@@ -92,7 +92,7 @@
     display: block;
     margin-bottom: 20px;
     &:last-child {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     &.active a {
@@ -153,7 +153,7 @@
 
   &.show {
     .menu-desk.show {
-      width: 368px;
+      width: 280px;
       right: -28px;
       display: block;
     }
@@ -207,7 +207,7 @@
   background: #fff;
   border-top: 1px solid #eee;
   z-index: 10;
-  box-shadow: 0.3em 0.3em 1em rgba(0,0,0,0.3);
+  box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
   display: none;
   border-radius: 12px;
   ::ng-deep perfect-scrollbar {
@@ -227,9 +227,13 @@
     }
   }
   &.container {
-    padding-right: 6px;
-    .menu-header .close-menu {
-      right: 20px;
+    padding-right: 13px;
+    .menu-header {
+      padding-top: 20px;
+      .close-menu {
+        right: 0;
+        top: 13px;
+      }
     }
   }
 }
@@ -259,10 +263,11 @@ $PAD: 768px;
   .user-menu {
     &.show {
       .menu-mobile.show {
-        padding: 0 32px;
+        padding: 0 13px 0 20px;
         width: 320px;
         right: -4px;
         top: -4px;
+        overflow-x: hidden;
       }
     }
   }
@@ -270,7 +275,7 @@ $PAD: 768px;
     position: absolute;
     transition: none;
     height: auto;
-    box-shadow: 0.3em 0.3em 1em rgba(0,0,0,0.3);
+    box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
     border-radius: 12px;
 
     .ul-list .links-mobile:first-child {
