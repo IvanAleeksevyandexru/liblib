@@ -48,6 +48,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Input() public maxlength?: number;
   @Input() public placeholder?: string;
   @Input() public width?: Width | string;
+  @Input() public cachedResponse?: boolean;
 
   // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
   @Input() public formatter?: (item: ListItem, context: { [name: string]: any }) => string;
@@ -149,6 +150,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   private insureSearchActiveToken = 0;
   // компонент может работать на заданном фиксированном списке значений или не внешнем поиске
   public fixedItemsProvider = new FixedItemsProvider();
+  public prevQuery: string;
 
   @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
   @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
@@ -232,6 +234,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   public handleBlur() {
     this.cancelSearchAndClose();
     this.resetItemIfNotConsistent();
+    console.log(this.prevQuery);
     this.blur.emit();
   }
 
@@ -240,6 +243,8 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     if (this.onTouchedCallback) {
       this.onTouchedCallback();
     }
+    console.log(this.prevQuery);
+
     this.focus.emit();
   }
 
@@ -328,6 +333,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     if (rootSearch && this.searching || !rootSearch && (this.searching || this.partialsLoading)) {
       return;
     }
+
     const provider = this.itemsProvider ? this.itemsProvider : this.fixedItemsProvider.setSource(this.internalFixedItems);
     const config = this.createSearchConfiguration(queryOrMarker === SHOW_ALL_MARKER);
     const query = queryOrMarker === SHOW_ALL_MARKER ? '' : queryOrMarker as string;
@@ -335,6 +341,10 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     if (this.incrementalLoading) {
       promiseOrObservable = (provider as LookupPartialProvider).searchPartial(query, this.partialPageNumber, config);
     } else {
+      if (this.prevQuery === this.query && this.cachedResponse) {
+        this.openDropdown();
+        return;
+      }
       promiseOrObservable = (provider as LookupProvider).search(query, config);
     }
     const activeSearch = promiseOrObservable instanceof Promise ?
@@ -347,6 +357,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     }
     ((activeToken) => {
       activeSearch.subscribe((items: Array<any>) => {
+        this.prevQuery = this.query;
         this.searching = this.partialsLoading = false;
         if (this.insureSearchActiveToken === activeToken) {
           this.processNewItems(rootSearch, items);

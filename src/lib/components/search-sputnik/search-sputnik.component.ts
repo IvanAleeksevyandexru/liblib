@@ -16,6 +16,8 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
   @Input() public placeholder = 'Например: пособие 3-7 лет подробнее';
   @Input() public useGlobalPlaceholder = false;
   @Input() public contextClass = '';
+  @Input() public cachedResponse?: boolean;
+
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
   public showField = true;
@@ -43,6 +45,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
               private loadService: LoadService) { }
 
   public ngOnInit() {
+
     if (this.hideToIcon) {
       this.showField = false;
     }
