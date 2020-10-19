@@ -70,6 +70,8 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   @Input() public validateOnSpecify = true;
   @Input() public addrStrExcluded = this.constants.DADATA_ADDRSTR_EXCLUDED_FIELDS;
   @Input() public debounceTime = 100;
+  // флаг для отображения другой ошибки для поля квартира
+  @Input() public isOrg = false;
 
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
@@ -141,7 +143,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   public widgetItemsVisibility: { [key: string]: boolean } = {};
   public form: FormGroup;
   // Объект, который отвечает за видимость и валидность полей
-  public formConfig = this.dadataService.formConfig;
+  public formConfig = null;
   public canOpenFields = this.dadataService.canOpenFields;
   public isOpenedFields = this.dadataService.isOpenedFields;
   @ViewChild('autocomplete', {static: false}) public autocomplete: AutocompleteComponent;
@@ -176,6 +178,8 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   }
 
   private init(): void {
+
+    this.formConfig = this.dadataService.initFormConfig(this.isOrg);
 
     this.dadataService.initForm(this.simpleMode);
 
@@ -308,7 +312,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       // используем промис, т.к. в противном случае без сабскрайбера не вызывается сервис
       this.normalizeInProcess = true;
       let query = fullAddress;
-      if (blurCall) {
+      if (blurCall && this.dadataService.firstInSuggestion) {
         query = this.dadataService.firstInSuggestion.address;
       }
       return this.dadataService.normalize(query).toPromise().then(res => {
@@ -375,7 +379,11 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       // ошибки полей
       for (const c in this.formConfig) {
         if (this.formConfig[c].isInvalid && this.formConfig[c].visible) {
-          errorMessageCodes.push(this.dadataService.unparsed ? this.formConfig[c].code + '_OTHER_CASE' : this.formConfig[c].code);
+          if (c === 'apartment') {
+            errorMessageCodes.push(this.formConfig[c].code);
+          } else {
+            errorMessageCodes.push(this.dadataService.unparsed ? this.formConfig[c].code + '_OTHER_CASE' : this.formConfig[c].code);
+          }
         }
       }
     }

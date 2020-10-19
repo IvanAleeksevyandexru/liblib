@@ -111,7 +111,7 @@ export class FormConfig {
   public index: FormState;
 
 
-  constructor() {
+  constructor(isOrg: boolean) {
     this.region = Object.assign({...this.defaultState, code: 'DADATA.NEED_REGION'});
     this.city = Object.assign({...this.defaultState, code: 'DADATA.NEED_CITY'});
     this.district = Object.assign({...this.defaultState, code: 'DADATA.NEED_DISTRICT'});
@@ -128,7 +128,7 @@ export class FormConfig {
     this.building1 = Object.assign({...this.defaultState, code: 'DADATA.NEED_BUILDING1'});
     this.building2 = Object.assign({...this.defaultState, code: 'DADATA.NEED_BUILDING2'});
     this.apartment = Object.assign({
-      ...this.defaultState, code: 'DADATA.NEED_APARTMENT', unparsed: true
+      ...this.defaultState, code: isOrg ? 'DADATA.NEED_APARTMENT_OTHER_CASE' : 'DADATA.NEED_APARTMENT', unparsed: true
     });
     this.index = Object.assign({...this.defaultState, code: 'DADATA.NEED_INDEX'});
   }
