@@ -33,11 +33,6 @@
     background: #D1D5DF;
     color: #66727F;
   }
-  &::-ms-clear {
-    display: none;
-    width: 0;
-    height: 0;
-  }
 
   &::placeholder {
     color: #515a63;
@@ -67,8 +62,6 @@ textarea.text-input {
     cursor: pointer;
   }
   &.multiline {
-    padding-top: 16px;
-    padding-bottom: 16px;
     border: 1px solid #A8ACB1;
     border-radius: 4px;
     &.focused {
@@ -83,9 +76,10 @@ textarea.text-input {
       color: #A8ACB1;
     }
     .text-input {
+      display: block;
+      padding-top: 16px;
+      padding-bottom: 16px;
       border: none;
-      padding-top: 0;
-      padding-bottom: 0;
       &.clearable {
         padding-right: 22px;
       }
