@@ -4,11 +4,13 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AuthService } from '../../services/auth/auth.service';
+import { CookieService } from '../../services/cookie/cookie.service';
 
 @Injectable()
 export class UserAuthInterceptor implements HttpInterceptor {
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private cookieService: CookieService
   ) {
   }
 
@@ -20,6 +22,7 @@ export class UserAuthInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         // обрабатываем 401 и 624 статусы и ведем на авторизацию
         if (error.status === 401 || error.status === 624) {
+          this.cookieService.remove('acc_t');
           if (isDevMode()) {
             this.authService.login().subscribe((resp) => {
               window.location = resp;
