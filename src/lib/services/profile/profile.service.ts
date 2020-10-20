@@ -472,7 +472,7 @@ export class ProfileService {
           canRepeat: object.vrfValStu === 'VERIFICATION_FAILED',
           ...(object.vrfValStu === 'VERIFICATION_FAILED' ?
               {
-                notification: 'Не найден в базе данных ПФР. Проверьте корректность данных ребенка',
+                notification: 'Не найден в базе данных ПФР. Проверьте корректность введенных данных ребенка',
                 warning: true
               } : {}
           ),
