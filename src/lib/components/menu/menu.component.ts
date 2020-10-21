@@ -1,4 +1,15 @@
-import { AfterViewInit, Component, HostListener, Input, isDevMode, NgModuleRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  isDevMode,
+  NgModuleRef,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { MenuService } from '../../services/menu/menu.service';
 import { LoadService } from '../../services/load/load.service';
 import { ModalService } from '../../services/modal/modal.service';
@@ -29,6 +40,8 @@ export class MenuComponent implements OnInit, AfterViewInit {
   @Input() public showBorder = false;
   @Input() public rolesListEnabled = false;
   @Input() public searchSputnikEnabled = false;
+
+  @Output() public clickMenuItem = new EventEmitter<any>();
 
   public categories: Category[] = [];
   public links: MenuLink[] = [];
@@ -140,6 +153,13 @@ export class MenuComponent implements OnInit, AfterViewInit {
 
   public redirect(event, url): void {
     const isAbsUrl = /^(http|\/\/)/.test(url);
+    if (this.clickMenuItem.observers.length) {
+      event.stopPropagation();
+      event.preventDefault();
+      this.clickMenuItem.emit(url);
+      return;
+    }
+
     if (url && this.translate.currentLang !== 'ru') {
       event.stopPropagation();
       event.preventDefault();
