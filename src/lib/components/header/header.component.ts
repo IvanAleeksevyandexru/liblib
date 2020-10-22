@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CountersService} from '../../services/counters/counters.service';
 import { LoadService } from '../../services/load/load.service';
 import { MenuService } from '../../services/menu/menu.service';
@@ -10,6 +10,10 @@ import { UserMenuState, CounterTarget } from '../../models';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+
+  @Input() public comingSoon?: boolean;
+
+  @Output() public backClick = new EventEmitter<any>();
 
   public user = this.loadService.user;
   public userRoles = this.menuService.getUserRoles(this.user);
@@ -54,6 +58,10 @@ export class HeaderComponent implements OnInit {
 
   public updateRole(code: string): void {
     this.activeRoleCode = code;
+  }
+
+  public backClickHandler(): void {
+    this.backClick.emit();
   }
 
 }
