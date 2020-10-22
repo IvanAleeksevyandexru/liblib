@@ -31,4 +31,7 @@ $default: #FFFFFF;
   &.business {
     background: $business;
   }
+  &.disable {
+    background: #fff url(../../../assets/svg/coming_soon_service.svg) no-repeat right 12px top 12px;
+  }
 }
