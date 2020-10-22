@@ -78,7 +78,10 @@ export class MailDeliveryService {
     return this.http.get<AllSubscriptionResponse>(`${this.loadService.config.gepsApiUrl}subscription/v2/`,
       {
         withCredentials: true,
-        params: {region}
+        params: {
+          region,
+          _: String(Math.random())
+        }
       }).pipe(
       tap(response => {
         if (response) {
