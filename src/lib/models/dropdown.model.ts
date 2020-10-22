@@ -3,6 +3,7 @@ import { LineBreak } from './common-enums';
 import { HelperService } from '../services/helper/helper.service';
 
 export const NO_ORIGINAL = {};
+export const ITEM_DEFAULT_HEIGHT = 36;
 
 // тип для пользовательского объекта-прототипа, "подходящего" для создания по нему списочного элемента
 // т.е. содержащий допустимые пользовательские данные, соответствующие конструкции ListItem
@@ -73,6 +74,8 @@ export class ListItem implements ListElement {
   public collapsable = false;                  // [X] заполняется системой если список с группировкой (есть итемы с groupId)
   // состояние свертки при наличиии collapsable
   public collapsed = false;                    // [X] заполняется системой при свертке-развертке сворачиваемых узлов
+  // предварительные оценочные габариты элемента для virtualScroll, вычисляются до его рендера в фоне
+  public dimensions = null;                    // [X] заполняется системой
   // ссылка на оригинал объекта (объект-прототип), который пойдет в модель
   public originalItem: any;                    // [X] заполняется системой
 
@@ -137,12 +140,20 @@ export class ListItem implements ListElement {
     this.highlightedAll = false;
   }
 
+  // будут определены динамически
+  public expand() {}
+  public collapse() {}
+
   public setNoOriginal() {
     this.originalItem = NO_ORIGINAL;
   }
 
   public hasNoOriginal() {
     return this.originalItem === NO_ORIGINAL;
+  }
+
+  public getItemHeight() {
+    return this.dimensions === null ? ITEM_DEFAULT_HEIGHT : this.dimensions.height;
   }
 }
 
@@ -159,11 +170,16 @@ export class AutocompleteSuggestion {
   public lineBreak: LineBreak | string = null;
   public highlightText: string;
   public highlightedAll: boolean;
+  public dimensions = null;
   public originalItem: any;
 
   public prepareHighlighting(query: string, caseSensitive = false, fromStartOnly = false) {
     this.highlightText = HelperService.highlightSubstring(this.text, query, caseSensitive, fromStartOnly);
     this.highlightedAll = HelperService.isAllHighlighted(this.highlightText, this.text);
+  }
+
+  public getItemHeight() {
+    return this.dimensions === null ? ITEM_DEFAULT_HEIGHT : this.dimensions.height;
   }
 }
 

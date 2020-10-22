@@ -8,13 +8,13 @@
           <a [href]="link.url">{{link.title | libTranslate}}</a>
         </li>
       </ul>
-      <ul class="user-menu-links">
+      <ul class="user-menu-links" *ngIf="!user.isKid">
         <li class="item">
           <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.SETTINGS', 'settingsSecurity')">{{'HEADER.MENU.SETTINGS' | libTranslate}}</a>
           <lib-counter class="counter" [counter]="settingsCounter"></lib-counter>
         </li>
       </ul>
-      <ul class="user-menu-links">
+      <ul class="user-menu-links" *ngIf="!user.isKid">
         <li class="item">
           <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{titleChangeRole | libTranslate}}</a>
         </li>
@@ -35,13 +35,13 @@
         <a [href]="" (click)="menuItemClick(link.url, link.mnemonic)">{{link.title | appTranslate}}</a>
       </li>
     </ul>
-    <ul class="links-mobile">
+    <ul class="links-mobile" *ngIf="!user.isKid">
       <li class="item">
         <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.SETTINGS', 'settingsSecurity')">{{'HEADER.MENU.SETTINGS' | libTranslate}}</a>
         <lib-counter class="counter" [counter]="settingsCounter"></lib-counter>
       </li>
     </ul>
-    <ul class="links-mobile">
+    <ul class="links-mobile" *ngIf="!user.isKid">
       <li class="item">
         <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{titleChangeRole | libTranslate}}</a>
       </li>
@@ -67,6 +67,7 @@
           <div
             class="no-avatar"
             [class.female]="avatar.gender === 'F'"
+            [class.male]="avatar.gender === 'M'"
             [class.business]="user.type === 'B'"
             [class.legal]="user.type === 'L'"
           ></div>

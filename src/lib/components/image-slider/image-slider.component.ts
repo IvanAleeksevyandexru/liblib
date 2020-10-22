@@ -90,12 +90,12 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
         this.renderer.addClass(this.sliderFeedContainer.nativeElement, 'no-transition');
       },
       dragProgress: (dragState: DragState) => {
-        this.currentIndex = dragState.active || 0;
+        this.currentIndex = dragState.selected;
         this.offset = dragState.offset;
       },
       dragEnd: (dragState: DragState) => {
         this.renderer.removeClass(this.sliderFeedContainer.nativeElement, 'no-transition');
-        this.currentIndex = dragState.active || 0;
+        this.currentIndex = dragState.selected;
         this.offset = dragState.offset;
         this.changeOffset();
       }

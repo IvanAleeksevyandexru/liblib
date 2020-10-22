@@ -14,11 +14,13 @@ export class StaticBannerComponent implements OnInit, OnChanges {
   @Input() public banners: Array<BannerGroup> = [];
   @Input() public path = '';
   @Input() public closable = undefined;
+  @Input() public closePosition: 'top' | '' = '';
 
   @Input() public fixedHeight?: number = undefined;
   @Input() public noBorder = true;
   @Input() public noBorderRadius = true;
   @Input() public noPadding = true;
+  @Input() public innerPadding = '0 0 0 32px';
   @Input() public needContainer = true;
   @Input() public borderColor = '';
   @Input() public isGeps = false;
@@ -39,6 +41,7 @@ export class StaticBannerComponent implements OnInit, OnChanges {
   public set activeBannerTracable(value: Banner) {
     this.activeBanner = value;
     this.content = value ? value.content : '';
+    this.closed = value ? value.closed : false;
     if (value && value.bgImage) {
       if (value.bgImage.indexOf('http') !== -1) {
         this.backgroundImage = (value.bgImage.indexOf('url') !== -1 ? value.bgImage : 'url(' + value.bgImage + ')') + ' 0 0 / cover no-repeat';

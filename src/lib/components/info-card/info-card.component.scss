@@ -62,13 +62,18 @@
       border-bottom: 1px solid #E7ECF7;
 
       &.F {
-        background: url(../../../assets/svg/girl.svg) right 24px top 24px no-repeat;
+        background: url(../../../assets/svg/girl.svg) right 24px top 20px no-repeat;
         padding-right: 48px;
       }
 
       &.M {
-        background: url(../../../assets/svg/boy.svg) right 24px top 24px no-repeat;
+        background: url(../../../assets/svg/boy.svg) right 24px top 20px no-repeat;
         padding-right: 48px;
+      }
+
+      &.F .confirm,
+      &.M .confirm {
+        right: 64px;
       }
 
       .title {
@@ -94,6 +99,7 @@
           background: url(../../../assets/svg/doc-state-error.svg) no-repeat center;
         }
 
+        &.verifying,
         &.process {
           background: url(../../../assets/svg/doc-state-process.svg) no-repeat center;
         }
@@ -102,6 +108,7 @@
           background: url(../../../assets/svg/doc-state-notification.svg) no-repeat center;
         }
 
+        &.failed,
         &.notification-red {
           background: url(../../../assets/svg/doc-state-notification-red.svg) no-repeat center;
         }
@@ -109,6 +116,10 @@
         &.verified,
         &.success {
           background: url(../../../assets/svg/doc-state-verified.svg) no-repeat center;
+        }
+
+        &.new {
+          background: url(../../../assets/svg/warn-yellow.svg) no-repeat center;
         }
       }
     }

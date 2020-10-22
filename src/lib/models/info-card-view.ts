@@ -41,3 +41,5 @@ export interface InfoCardView {
     }
   };
 }
+
+export type InfoCardState = '' | 'process' | 'verified' | 'error' | 'success' | 'failed' | 'verifying';
