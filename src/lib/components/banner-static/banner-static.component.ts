@@ -20,7 +20,7 @@ export class StaticBannerComponent implements OnInit, OnChanges {
   @Input() public noBorder = true;
   @Input() public noBorderRadius = true;
   @Input() public noPadding = true;
-  @Input() public innerPadding = '0 0 0 32px';
+  @Input() public innerPadding = '';
   @Input() public needContainer = true;
   @Input() public borderColor = '';
   @Input() public isGeps = false;

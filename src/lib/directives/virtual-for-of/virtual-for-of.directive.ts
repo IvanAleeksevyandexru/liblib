@@ -2,7 +2,7 @@ import {
   Directive, HostListener, Input, SkipSelf, ViewContainerRef, OnChanges, DoCheck, OnDestroy,
   TemplateRef, NgIterable, IterableDiffers, TrackByFunction, NgZone } from '@angular/core';
 import { CdkVirtualForOf, CdkVirtualForOfContext } from '@angular/cdk/scrolling';
-import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
+import { _RecycleViewRepeaterStrategy, CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
 import { Subject, Observable } from 'rxjs';
 import { VirtualScrollComponent } from '../../components/virtual-scroll/virtual-scroll.component';
 
@@ -13,7 +13,8 @@ import { VirtualScrollComponent } from '../../components/virtual-scroll/virtual-
 // остается не применять директиву до тех пор пока не будет создан CdkVirtualScrollViewport на правильном элементе
 // это приводит к тому что VirtualForOfDirective имеет отложенное действие и содержит CdkVirtualForOf а не является ей что было бы логичней
 @Directive({
-  selector: '[libVirtualFor][libVirtualForOf]'
+  selector: '[libVirtualFor][libVirtualForOf]',
+  providers: [_RecycleViewRepeaterStrategy]
 })
 export class VirtualForOfDirective<T> implements CollectionViewer, DoCheck, OnDestroy {
 
@@ -21,6 +22,7 @@ export class VirtualForOfDirective<T> implements CollectionViewer, DoCheck, OnDe
       public viewContainerRef: ViewContainerRef,
       public template: TemplateRef<CdkVirtualForOfContext<T>>,
       public differs: IterableDiffers,
+      public viewRepeater: _RecycleViewRepeaterStrategy<T, T, CdkVirtualForOfContext<T>>,
       @SkipSelf() public viewport: VirtualScrollComponent,
       public ngZone: NgZone) {
     viewport.whenInited().subscribe(() => {
@@ -28,9 +30,11 @@ export class VirtualForOfDirective<T> implements CollectionViewer, DoCheck, OnDe
         viewContainerRef,
         template,
         differs,
+        viewRepeater,
         viewport.scrollViewport,
         ngZone
       );
+
       this.viewChange.subscribe(this.originalDirective.viewChange);
       this.inited = true;
       this.libVirtualForOf = this.libVirtualForOfInternal;
