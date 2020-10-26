@@ -6,6 +6,7 @@
   <label [attr.for]="id" class="label-search-input">{{placeholder}}</label>
   <input #input
          type="text"
+         autocomplete="off"
          [attr.id]="id ? id : null"
          [attr.name]="name ? name : null"
          [attr.tabIndex]="tabIndex ? tabIndex : '0'"

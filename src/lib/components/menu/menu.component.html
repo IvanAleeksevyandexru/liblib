@@ -31,7 +31,11 @@
              (click)="showUserMenu(true)">
             <lib-counter class="counter-circle" [counter]="userCounter"></lib-counter>
           </a>
-          <lib-user-menu [state]="userMenuState"></lib-user-menu>
+          <lib-user-menu
+            [rolesListEnabled]="rolesListEnabled"
+            [searchSputnikEnabled]="searchSputnikEnabled"
+            [state]="userMenuState">
+          </lib-user-menu>
         </div>
       </div>
     </ng-container>
@@ -87,7 +91,11 @@
            (click)="showUserMenu(true)">
           <lib-counter class="counter-circle" [counter]="userCounter"></lib-counter>
         </a>
-        <lib-user-menu [state]="userMenuState"></lib-user-menu>
+        <lib-user-menu
+          [rolesListEnabled]="rolesListEnabled"
+          [searchSputnikEnabled]="searchSputnikEnabled"
+          [state]="userMenuState">
+        </lib-user-menu>
       </div>
       <div class="search-wrapper">
         <lib-search-sputnik [ngStyle]="{background: background}" class="open-search" [hideToIcon]="true"

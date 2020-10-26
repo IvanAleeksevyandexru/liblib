@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { LoadService } from '../../services/load/load.service';
 
 @Component({
   selector: 'lib-throbber-hexagon',
@@ -9,7 +10,9 @@ export class ThrobberHexagonComponent implements OnInit {
 
   @Input() public size = 'small'; // 'small' | 'medium' | 'big' | те же с префиксами | несколько через пробел
 
-  constructor() {
+  public staticDomainLibAssetsPath = this.loadService.config.staticDomainLibAssetsPath;
+
+  constructor(private loadService: LoadService) {
   }
 
   public ngOnInit() {

@@ -268,11 +268,11 @@ export class ProfileService {
           canDelete: false,
           detailsPath: `/profile/family/child/${object.kidId}/birthday`,
           empty: {
-            title: 'Свидетельство о рождении',
+            title: 'Свидетельство о рождении ребенка',
             subtitle: 'Добавьте документ, чтобы он всегда был у вас под рукой'
           },
           full: {
-            title: 'Свидетельство о рождении'
+            title: 'Свидетельство о рождении ребенка',
           },
           fields: [
             {
@@ -483,6 +483,10 @@ export class ProfileService {
                   'Идет поиск СНИЛС ребенка в ПФР...',
               } : {}
           ),
+          empty: {
+            title: 'Добавьте СНИЛС',
+            subtitle: object.subtitle ? object.subtitle : 'он необходим для некоторых услуг и может использоваться для авторизации'
+          },
           full: {
             title: 'СНИЛС'
           },

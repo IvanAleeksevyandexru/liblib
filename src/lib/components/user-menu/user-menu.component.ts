@@ -38,9 +38,11 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public activeRole;
   public showRolesList = false;
   public showAllMenu = true;
+  public staticList = true;
 
-  @Input()
-  public state: UserMenuState;
+  @Input() public state: UserMenuState;
+  @Input() public rolesListEnabled = false;
+  @Input() public searchSputnikEnabled = false;
 
   @ViewChild('menuDesk') public menuDesk;
   @ViewChild('menuMobile') public menuMobile;

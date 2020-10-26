@@ -181,6 +181,7 @@ export class MenuService {
     return {
       'HEADER.PERSONAL_AREA': `${lkUrl}overview`,
       'HEADER.MENU.SETTINGS': `${lkUrl}settings/account`,
+      'HEADER.MENU.SETTINGS_MENU': `${lkUrl}settings/account`,
       'HEADER.MENU.LOGIN_ORG': `${appContext === 'PARTNERS' ? '/' : lkUrl}roles`
     };
   }
