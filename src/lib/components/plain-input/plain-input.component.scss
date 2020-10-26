@@ -7,7 +7,7 @@
   line-height: 24px;
   padding-left: 16px;
   padding-right: 16px;
-  color: #000000;
+  color: #0B1F33;
   box-sizing: border-box;
   outline: none;
   background: #F5F7FA;
@@ -32,7 +32,8 @@
   &[disabled], &.disabled, &[readonly] {
     background: #D1D5DF;
     color: #66727F;
-  }
+    -webkit-text-fill-color: #66727F;
+    opacity: 1;  }
   &::-ms-clear {
     display: none;
     width: 0;

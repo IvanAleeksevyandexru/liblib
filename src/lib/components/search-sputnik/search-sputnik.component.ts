@@ -16,6 +16,9 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
   @Input() public placeholder = 'Например: пособие 3-7 лет подробнее';
   @Input() public useGlobalPlaceholder = false;
   @Input() public contextClass = '';
+  @Input() public cachedResponse?: boolean;
+  @Input() public staticList?: boolean;
+
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
   public showField = true;
@@ -43,6 +46,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
               private loadService: LoadService) { }
 
   public ngOnInit() {
+
     if (this.hideToIcon) {
       this.showField = false;
     }
@@ -58,7 +62,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
 
   public toggleMagnifyingGlass() {
     const query = this.lookup.query ? this.lookup.query.trim() : '';
-    this.showMagnifyingGlass = !query.length
+    this.showMagnifyingGlass = !query.length;
   }
 
   public formatter(item) {

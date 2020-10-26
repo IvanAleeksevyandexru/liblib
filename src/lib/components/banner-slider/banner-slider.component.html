@@ -39,7 +39,7 @@
     </div>
   </div>
   <div *ngIf="showBullBtn && bannerList?.length > 1"
-       [ngClass]="[navBtnStyle || '', bullBtnPosition]"
+       [ngClass]="[navBtnStyle || '', bullBtnPosition || '']"
        class="bullet-container">
     <a *ngFor="let banner of bannerList; let i = index"
        class="bullet-item"
