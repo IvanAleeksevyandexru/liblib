@@ -30,9 +30,9 @@ export class InformerComponent implements OnInit {
 
   private links = {
     al10: '/profile/personal',
-    no_debt: `${this.loadService.config.betaUrl}pay?tab=toPay`,
-    error: `${this.loadService.config.betaUrl}pay?tab=toPay`,
-    debt: `${this.loadService.config.betaUrl}pay?tab=toPay`,
+    no_debt: `${this.loadService.config.oplataUrl}pay`,
+    error: `${this.loadService.config.oplataUrl}pay`,
+    debt: `${this.loadService.config.oplataUrl}pay`,
     no_rights: '/help/faq/yuridicheskim_licam/2761'
   };
   private debtForYaMetric: DebtYaMetricInterface = {};
