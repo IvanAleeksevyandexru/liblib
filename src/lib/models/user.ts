@@ -157,6 +157,7 @@ export interface User {
   shortName?: string; // Фамилия И. О.
   type?: string; // Тип пользователя - ЮЛ, ИП, ОГВ, физик
   typeParams?: UserTypeParams; // Параметры в зависимости от типа пользователя
+  error?: boolean;
 }
 
 export interface CategoryUser {
