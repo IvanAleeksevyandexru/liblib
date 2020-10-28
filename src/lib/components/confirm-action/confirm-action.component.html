@@ -1,9 +1,10 @@
-<div class="popup-wrapper">
+<div class="popup-wrapper {{imagesPosition}}">
   <div class="popup" [style.max-width.px]="maxWidth">
     <a class="close" *ngIf="closeButton" (click)="onCancel()"></a>
-    <h4 class="title title-h2 mb-32" [innerHTML]="title | appTranslate"></h4>
-    <div class="flex-container-md align-items-center-md mb-32 mb-lg-40">
-      <div *ngIf="image" class="icon mb-24 mb-md-0">
+    <h4 class="title {{imagesPosition === 'above' ? 'title-h4 mt-20 mt-md-0' : 'title-h2'}} mb-32"
+        [innerHTML]="title | appTranslate"></h4>
+    <div class="flex-container-md align-items-center-md mb-32 mb-lg-40" [ngClass]="{'flex-column-md': imagesPosition === 'above'}">
+      <div *ngIf="image" class="icon mb-24" [ngClass]="{'mb-md-0': imagesPosition !== 'above'}">
         <img [src]="image" alt="">
       </div>
       <div class="description" [class.reduce-width]="image">
