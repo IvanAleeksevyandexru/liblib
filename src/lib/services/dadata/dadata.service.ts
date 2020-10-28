@@ -99,9 +99,17 @@ export class DadataService implements AutocompleteSuggestionProvider {
   public errorDependencyFields = this.constants.DADATA_ERROR_DEPENDENCIES;
   public levelMap = this.constants.DADATA_LEVEL_MAP;
   public excludeToDisableFields = [11, 12, 13, 14];
-  public formConfig = new FormConfig();
+  public formConfig = null;
   public form: FormGroup;
   private sixthLevelData = '';
+
+  public initFormConfig(isOrg: boolean): FormConfig {
+    this.formConfig = new FormConfig(isOrg);
+    if (isOrg) {
+      this.prefixes.apartment.abbr = 'оф.'
+    }
+    return this.formConfig;
+  }
 
   public get qc(): string {
     return this.qcComplete;

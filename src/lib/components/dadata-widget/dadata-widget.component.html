@@ -42,7 +42,7 @@
         <lib-checkbox [tabIndex]="2" [labelText]="'DADATA.NO_HOUSE' | libTranslate" formControlName="houseCheckboxClosed"></lib-checkbox>
       </div>
       <div [hidden]="hideApartmentCheckbox || !widgetItemsVisibility.apartmentCb">
-        <lib-checkbox [tabIndex]="3" [labelText]="'DADATA.NO_APARTMENT' | libTranslate" formControlName="apartmentCheckboxClosed"></lib-checkbox>
+        <lib-checkbox [tabIndex]="3" [labelText]="(isOrg ? 'DADATA.NO_OFFICE' : 'DADATA.NO_APARTMENT') | libTranslate" formControlName="apartmentCheckboxClosed"></lib-checkbox>
       </div>
     </div>
     <div *ngIf="isOpenedFields | async" class="mt-32">
@@ -123,14 +123,14 @@
       <div class="address-row">
         <div *ngIf="formConfig.apartment.visible" class="address-item address-item-with-checkbox">
           <div class="simple-field">
-            <label class="input-label" for="apartment">{{'DADATA.APARTMENT' | libTranslate}}</label>
+            <label class="input-label" for="apartment">{{(isOrg ? 'DADATA.OFFICE' : 'DADATA.APARTMENT') | libTranslate}}</label>
             <div class="small-field">
               <lib-plain-input [tabIndex]="16" [clearable]="true" [invalid]="formConfig.apartment.isInvalid" id="apartment"
                                formControlName="apartment"></lib-plain-input>
             </div>
           </div>
           <div class="address-checkbox" [hidden]="hideApartmentCheckbox">
-            <lib-checkbox [tabIndex]="17" [labelText]="'DADATA.NO_APARTMENT' | libTranslate" formControlName="apartmentCheckbox"></lib-checkbox>
+            <lib-checkbox [tabIndex]="17" [labelText]="(isOrg ? 'DADATA.NO_OFFICE' : 'DADATA.NO_APARTMENT') | libTranslate" formControlName="apartmentCheckbox"></lib-checkbox>
           </div>
         </div>
         <div class="address-item index-item">
