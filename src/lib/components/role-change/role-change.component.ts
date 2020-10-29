@@ -1,10 +1,7 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { BreadcrumbsService } from '../../services/breadcrumbs/breadcrumbs.service';
-import { HelperService } from '../../services/helper/helper.service';
 import { LoadService } from '../../services/load/load.service';
-import { TabsService } from '../../services/tabs/tabs.service';
 import { User, Role } from '../../models/user';
 import { TranslateService } from '@ngx-translate/core';
 import { RedirectsService } from '../../services/redirects/redirects.service';
@@ -62,11 +59,17 @@ export class RoleChangeComponent implements OnInit {
 
       // Добавляем к имеющимся ролям еще роль физика, чтобы в списке была, как один из пунктов
       // с типом PRIVATE
+      const isLegalEntity = 'orgOid' in this.loadService.user;
       const privatePerson: Role = {
         shortName: this.user.formattedName,
         type: 'PRIVATE',
-        current: true
+        current: !isLegalEntity
       };
+
+      if (isLegalEntity) {
+        this.roles.forEach(role => role.current = (role.oid === Number(this.loadService.user.orgOid)));
+      }
+
       this.roles.unshift(privatePerson);
 
       this.filterRoles(this.query, this.activePage);
@@ -107,7 +110,7 @@ export class RoleChangeComponent implements OnInit {
     this.http.get(`${this.loadService.config.lkApiUrl}users/switch`, {
       withCredentials: true,
       params: {
-        orgId: role.oid,
+        orgId: String(role.oid),
         _: Math.random().toString()
       }
     }).subscribe(response => {
