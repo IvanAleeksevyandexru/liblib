@@ -46,15 +46,15 @@
         </lib-search-bar>
       </div>
       <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll"
-          [config]="{suppressScrollX: true, wheelPropagation: false}"
-          (psYReachEnd)="loadNextPartial()">
+                         [config]="{suppressScrollX: true, wheelPropagation: false}"
+                         (psYReachEnd)="loadNextPartial()">
         <ng-container *ngFor="let item of internalDisplayed">
           <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
         </ng-container>
       </perfect-scrollbar>
       <lib-virtual-scroll #virtualScroll *ngIf="virtualScroll"
-          [scrollStrategy]="virtualScrollController"
-          (scrollBottomReached)="loadNextPartial()">
+                          [scrollStrategy]="virtualScrollController"
+                          (scrollBottomReached)="loadNextPartial()">
         <ng-container *libVirtualFor="let item of internalDisplayed">
           <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
         </ng-container>
