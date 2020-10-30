@@ -59,14 +59,14 @@ export class RoleChangeComponent implements OnInit {
 
       // Добавляем к имеющимся ролям еще роль физика, чтобы в списке была, как один из пунктов
       // с типом PRIVATE
-      const isLegalEntity = 'orgOid' in this.loadService.user;
+      const isPrivatePerson = this.loadService.user.userType === 'P';
       const privatePerson: Role = {
         shortName: this.user.formattedName,
         type: 'PRIVATE',
-        current: !isLegalEntity
+        current: isPrivatePerson,
       };
 
-      if (isLegalEntity) {
+      if (!isPrivatePerson) {
         this.roles.forEach(role => role.current = (role.oid === Number(this.loadService.user.orgOid)));
       }
 
