@@ -9,7 +9,7 @@
           <ul class="links hide flex-container-lg">
             <li class="item" *ngFor="let link of links">
               <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
-                 (click)="redirect($event, link.url)"
+                 (click)="redirect($event, link)"
                  [href]="link.url">{{link.title | appTranslate}}</a>
               <ng-template #categoryLink>
                 <a class="category-link"
@@ -34,7 +34,8 @@
           <lib-user-menu
             [rolesListEnabled]="rolesListEnabled"
             [searchSputnikEnabled]="searchSputnikEnabled"
-            [state]="userMenuState">
+            [state]="userMenuState"
+            [links]="links">
           </lib-user-menu>
         </div>
       </div>
@@ -76,7 +77,7 @@
       <div class="links-wrapper align-items-center flex-container hide show-lg">
         <ul class="links hide flex-container-lg">
           <li class="item" *ngFor="let link of links">
-            <a (click)="redirect($event, link.url)"
+            <a (click)="redirect($event, link)"
                [href]="link.url">{{link.title | appTranslate}}</a>
           </li>
         </ul>
@@ -94,7 +95,8 @@
         <lib-user-menu
           [rolesListEnabled]="rolesListEnabled"
           [searchSputnikEnabled]="searchSputnikEnabled"
-          [state]="userMenuState">
+          [state]="userMenuState"
+          [links]="links">
         </lib-user-menu>
       </div>
       <div class="search-wrapper">
