@@ -51,7 +51,7 @@
         </ul>
         <ul class="links-mobile" *ngIf="!user.isKid">
           <li class="item" *ngFor="let link of links">
-            <a [href]="" (click)="menuItemClick(link.url, link.mnemonic)">{{link.title | appTranslate}}</a>
+            <a [href]="" (click)="menuItemClick(link)">{{link.title | appTranslate}}</a>
           </li>
         </ul>
         <ul class="links-mobile" *ngIf="!user.isKid">
