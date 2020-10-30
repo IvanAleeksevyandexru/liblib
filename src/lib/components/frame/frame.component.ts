@@ -9,6 +9,7 @@ import { FrameType } from '../../models/frame-type';
 export class FrameComponent implements OnInit {
   @Input() public noEffects = false;
   @Input() public bgType: FrameType = 'default';
+  @Input() public disable?: boolean;
   constructor() { }
 
   public ngOnInit(): void {
