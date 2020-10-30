@@ -3,4 +3,5 @@ export interface MenuLink {
   title: string;
   listeners?: boolean;
   mnemonic?: string;
+  handler?: (MenuLink) => void;
 }

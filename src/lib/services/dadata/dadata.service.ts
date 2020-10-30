@@ -253,8 +253,11 @@ export class DadataService implements AutocompleteSuggestionProvider {
       this.setDisabledByLevel(level);
       this.setVisibilityByLevel(level);
 
-      if (index === arr.length - 1) {
+      if (elem.kladrCode) {
         this.kladrCode = elem.kladrCode;
+      }
+
+      if (index === arr.length - 1) {
 
         const houseControl = this.getFormControlByName('house');
         const houseCheckbox = this.getFormControlByName('houseCheckbox');
