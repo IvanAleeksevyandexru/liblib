@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CountersService} from '../../services/counters/counters.service';
 import { LoadService } from '../../services/load/load.service';
 import { MenuService } from '../../services/menu/menu.service';
-import { UserMenuState, CounterTarget } from '../../models';
+import { UserMenuState, CounterTarget, MenuLink } from '../../models';
 
 @Component({
   selector: 'lib-header',
@@ -12,6 +12,7 @@ import { UserMenuState, CounterTarget } from '../../models';
 export class HeaderComponent implements OnInit {
 
   @Input() public comingSoon?: boolean;
+  @Input() public links?: MenuLink[] = [];
 
   @Output() public backClick = new EventEmitter<any>();
 

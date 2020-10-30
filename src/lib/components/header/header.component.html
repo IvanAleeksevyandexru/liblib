@@ -5,7 +5,7 @@
             'justify-end': user.authorized
           }">
       <div *ngIf="comingSoon">
-        <a href="" class="back-to-portal" (click)="backClickHandler()">вернуться на старую главную</a>
+        <a href="" class="back-to-portal" (click)="backClickHandler()">Вернуться к старой версии</a>
       </div>
       <div class="mr-40">
         <lib-location-select></lib-location-select>
@@ -46,7 +46,7 @@
             <lib-login></lib-login>
           </div>
         </div>
-        <lib-user-menu [state]="userMenuState"></lib-user-menu>
+        <lib-user-menu [state]="userMenuState" [links]="links"></lib-user-menu>
       </div>
     </div>
   </div>
