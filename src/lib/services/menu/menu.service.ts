@@ -175,7 +175,8 @@ export class MenuService {
   }
 
   public getStaticItemUrls(): object {
-    const lkUrl = this.loadService.attributes.appContext === 'LK' ? '/' : this.loadService.config.lkUrl;
+    const appContext = this.loadService.attributes.appContext;
+    const lkUrl = appContext === 'LK' ? '/' : this.loadService.config.lkUrl;
 
     return {
       'HEADER.PERSONAL_AREA': `${lkUrl}overview`,

@@ -180,7 +180,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public setUnreadFeedCls(feed: FeedModel): boolean {
-    return feed.unread && feed.feedType !== 'DRAFT' && feed.feedType !== 'PARTNERS_DRAFT';
+    return feed.unread && feed.feedType !== 'DRAFT' && feed.feedType !== 'PARTNERS_DRAFT' && feed.feedType !== 'KND_APPEAL_DRAFT';
   }
 
   public markAsFlag(feed: FeedModel): boolean {
@@ -356,12 +356,11 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public showRemoveFeedButton(feed: FeedModel): boolean {
-    return (this.page === 'overview' || this.page === 'events' ||
-            this.page === 'drafts' || this.page === 'partners_drafts') && !feed.data.reminder;
+    return ['overview', 'events', 'drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder;
   }
 
   public getIsArchive(): boolean {
-    return (this.selectedTypes === 'DRAFT' || this.selectedTypes === 'PARTNERS_DRAFT') ? undefined : this.isArchive;
+    return ['DRAFT', 'PARTNERS_DRAFT', 'KND_APPEAL_DRAFT'].includes(this.selectedTypes) ? undefined : this.isArchive;
   }
 
   public isUpdated(feed: FeedModel): boolean {
