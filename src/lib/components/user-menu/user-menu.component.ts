@@ -25,7 +25,6 @@ import { AccessesService } from '../../services/accesses/accesses.service';
 })
 export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public categories: Category[] = [];
-  public links: MenuLink[] = [];
   public menuOffset: number;
   public user: User;
   public staticUrls: object;
@@ -43,6 +42,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() public state: UserMenuState;
   @Input() public rolesListEnabled = false;
   @Input() public searchSputnikEnabled = false;
+  @Input() public links: MenuLink[] = [];
 
   @ViewChild('menuDesk') public menuDesk;
   @ViewChild('menuMobile') public menuMobile;
@@ -78,7 +78,9 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this.links = this.menuService.getUserMenuLinks();
+    if (!this.links.length) {
+      this.links = this.menuService.getUserMenuLinks();
+    }
     this.user = this.loadService.user as User;
     this.userRoles = this.menuService.getUserRoles(this.user);
     this.activeRole = this.userRoles.find((role) => role.isActive);
@@ -129,14 +131,18 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.state.active && this.state.isMobileView;
   }
 
-  public menuItemClick(url: string, mnemonic: string) {
-    this.sendYaMetric(mnemonic);
-    this.helperService.navigate(url);
+  public menuItemClick(link: MenuLink): void {
+    this.sendYaMetric(link.mnemonic);
+    if (link.handler) {
+      link.handler(link);
+    } else {
+      this.helperService.navigate(link.url);
+    }
   }
 
-  public menuStaticItemClick(itemName: string, mnemonic) {
+  public menuStaticItemClick(itemName: string, mnemonic): void {
     const staticUrl = this.getUrl(itemName);
-    return this.menuItemClick(staticUrl, mnemonic);
+    return this.menuItemClick({url: staticUrl, mnemonic: mnemonic} as MenuLink);
   }
 
   public selectTab(tab: Tab) {
