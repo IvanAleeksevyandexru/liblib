@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { LoadService } from '../../services/load/load.service';
 import { User, Role } from '../../models/user';
 import { TranslateService } from '@ngx-translate/core';
@@ -108,15 +108,13 @@ export class RoleChangeComponent implements OnInit {
     }
     const prevRole = this.roles.find((someRole) => someRole.current);
 
-    const httpParams = new HttpParams();
+    let params = {_: Math.random().toString()};
     if (role.oid) {
-      httpParams.append('orgId', String(role.oid));
+      params = Object.assign(params, {orgId: role.oid.toString()});
     }
-    httpParams.append('_', String(Math.random()));
-
     this.http.get(`${this.loadService.config.lkApiUrl}users/switch`, {
       withCredentials: true,
-      params: httpParams
+      params
     }).subscribe(response => {
       if (prevRole.type === 'PRIVATE' && role.type !== 'PRIVATE' && this.appContext !== 'PARTNERS') {
         this.redirectsService.redirectToOrganizationView();
