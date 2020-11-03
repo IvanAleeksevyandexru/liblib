@@ -94,13 +94,13 @@
     'mt-16': isHeader
     }">
 
-    <a *ngIf="(page === 'overview') else additionalFeeds" class="small-text blue" (click)="onShowMoreClick($event)" routerLink="/notifications">{{'FEEDS.VIEW_ALL' | libTranslate}}</a>
+    <a *ngIf="(page === 'overview') else additionalFeeds" class="small-text blue" (click)="onShowMoreClick($event)">{{'FEEDS.VIEW_ALL' | libTranslate}}</a>
     <ng-template #additionalFeeds>
       <span *ngIf="hasMore" class="small-text blue link-underline" (click)="showMore($event)" >Показать еще</span>
     </ng-template>
 
   <p class="text-center" *ngIf="isHeader">
-    <a class="small-text blue" (click)="onShowMoreClick($event)" routerLink="/notifications">{{'FEEDS.EVENTS_ALL' | libTranslate}}</a>
+    <a class="small-text blue" (click)="onShowMoreClick($event)">{{'FEEDS.EVENTS_ALL' | libTranslate}}</a>
   </p>
 </div>
 

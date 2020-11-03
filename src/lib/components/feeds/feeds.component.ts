@@ -450,6 +450,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
     if (!this.isLk) {
       location.href = `${this.loadService.config.urlLk}` + 'notifications';
+    } else {
+      this.router.navigate(['/notifications']);
     }
   }
 
@@ -488,7 +490,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (!this.isLk) {
-      location.href = `${this.loadService.config.urlLk}` + this.openDetails(feed);
+      location.href = this.openDetails(feed);
     }
   }
 
