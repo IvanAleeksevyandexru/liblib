@@ -118,6 +118,8 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onClose() {
+    const html = document.getElementsByTagName('html')[0];
+    html.classList.remove('disable-scroll');
     this.state.active = false;
   }
 
