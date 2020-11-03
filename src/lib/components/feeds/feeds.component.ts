@@ -58,9 +58,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public allFeedsLoaded = false;
   public hasMore: boolean;
   public removeInProgress: boolean;
+  public isLk = (this.loadService.attributes.appContext || this.loadService.config.viewType) === 'LK';
   private feedsSubscription: Subscription;
   private feedsUpdateSubscription: Subscription;
-  private isLk = (this.loadService.attributes.appContext || this.loadService.config.viewType) === 'LK';
   private loadedFeedsCount = 0;
   private showMoreCount = 0;
   public isHeader: boolean;
@@ -456,8 +456,6 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public onFeedClick(event: Event, feed: FeedModel): void {
-    event.preventDefault();
-    event.stopPropagation();
     if (this.page === 'overview') {
       this.yaMetricService.callReachGoal('overviewEvents', {
         from: 'overview',
@@ -481,16 +479,6 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
     if (['ORGANIZATION', 'BUSINESSMAN', 'ACCOUNT_CHILD', 'PAYMENT'].includes(feed.feedType)) {
       this.feedsService.markFeedAsRead(feed.id).subscribe();
-    }
-
-    if (feed.feedType === 'KND_APPEAL') {
-      location.href = `${this.loadService.config.kndDomain}appeal/${feed.extId}`;
-    } else if (feed.feedType === 'KND_APPEAL_DRAFT') {
-      location.href = `${this.loadService.config.kndDomain}form/appeal/${feed.extId}`;
-    }
-
-    if (!this.isLk) {
-      location.href = this.openDetails(feed);
     }
   }
 
