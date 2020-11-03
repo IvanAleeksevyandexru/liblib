@@ -447,6 +447,10 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         screen: this.loadService.attributes.deviceType
       });
     }
+
+    if (!this.isLk) {
+      location.href = `${this.loadService.config.urlLk}` + 'notifications';
+    }
   }
 
   public onFeedClick(event: Event, feed: FeedModel): void {
@@ -481,6 +485,10 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       location.href = `${this.loadService.config.kndDomain}appeal/${feed.extId}`;
     } else if (feed.feedType === 'KND_APPEAL_DRAFT') {
       location.href = `${this.loadService.config.kndDomain}form/appeal/${feed.extId}`;
+    }
+
+    if (!this.isLk) {
+      location.href = `${this.loadService.config.urlLk}` + this.openDetails(feed);
     }
   }
 
