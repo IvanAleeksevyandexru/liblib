@@ -84,6 +84,8 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   @Input() public moveFocusToEnd = false;
   // виртуальный скролл, рендерится в dom лишь отображаемая часть списка (для больших списков)
   @Input() public virtualScroll = false;
+  // отключение закрытия списка по повторному клику, если список открыт
+  @Input() public disableClickClosing = false;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -147,32 +149,12 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
           destroyOnScroll: true, destroyCallback: this.closeDropdown.bind(this)} as PositioningRequest;
         this.positioningManager.attach(this.positioningDescriptor);
       }
-      if (this.moveFocusToEnd) {
-        this.putCursorAtEnd();
-      }
       this.opened.emit();
     } else {
       this.changeDetector.detectChanges();
     }
   }
 
-  public putCursorAtEnd() {
-    const input = this.searchBar.inputElement.nativeElement;
-    if (input.classList.contains('focused')) {
-      input.blur();
-    }
-    if (input.setSelectionRange) {
-      const len = input.value.length * 2;
-      setTimeout(() => {
-        input.setSelectionRange(len, len);
-        input.focus();
-      }, 10)
-    } else {
-      const val = input.value;
-      input.value = '';
-      input.value = val;
-    }
-  }
 
 
   public closeDropdown() {
@@ -250,11 +232,16 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   }
 
   public lookupItemsOrClose() {
+    if (this.moveFocusToEnd && !this.expanded && !this.disabled) {
+      this.searchBar.putCursorAtEnd();
+    }
     if (this.focusManager.isJustFocused(this.searchBar)) {
       return;  // будет обработано focus обработчиком ИЛИ была кликнута иконка
     }
     if (this.expanded) {
-      this.closeDropdown();
+      if (!this.disableClickClosing) {
+        this.closeDropdown();
+      }
     } else {
       if (!this.disabled) {
         this.lookupItems(this.query);
