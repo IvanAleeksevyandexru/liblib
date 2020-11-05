@@ -65,12 +65,12 @@ export class MenuService {
             url: '/powers',
             title: 'HEADER.MENU.POWERS'
           });
-          if (this.accessesService.getAccess('csg')) {
-            links.push({
-              url: '/access-groups',
-              title: 'HEADER.MENU.ACCESS_GROUPS'
-            });
-          }
+          // if (this.accessesService.getAccess('csg')) {
+          links.push({
+            url: '/access-groups',
+            title: 'HEADER.MENU.ACCESS_GROUPS'
+          });
+          // }
           links.push({
             url: '/systems',
             title: 'HEADER.MENU.SYSTEMS'
