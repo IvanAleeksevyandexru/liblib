@@ -56,6 +56,7 @@ import { AutocompleteComponent } from './components/autocomplete/autocomplete.co
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { RangeSelectorComponent } from './components/range-selector/range-selector.component';
 import { RangeFieldComponent } from './components/range-field/range-field.component';
+import { RoleChangeComponent } from './components/role-change/role-change.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { RadioComponent } from './components/radio/radio.component';
 import { PagingControlsComponent } from './components/paging-controls/paging-controls.component';
@@ -194,6 +195,7 @@ registerLocaleData(localeRu, 'ru');
     SearchBarComponent,
     RangeSelectorComponent,
     RangeFieldComponent,
+    RoleChangeComponent,
     CheckboxComponent,
     RadioComponent,
     PagingControlsComponent,
@@ -332,6 +334,7 @@ registerLocaleData(localeRu, 'ru');
     SearchBarComponent,
     RangeSelectorComponent,
     RangeFieldComponent,
+    RoleChangeComponent,
     CheckboxComponent,
     RadioComponent,
     MonthYearSelectComponent,
