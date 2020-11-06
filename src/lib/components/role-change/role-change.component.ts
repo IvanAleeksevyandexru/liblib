@@ -1,10 +1,7 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { BreadcrumbsService } from '../../services/breadcrumbs/breadcrumbs.service';
-import { HelperService } from '../../services/helper/helper.service';
 import { LoadService } from '../../services/load/load.service';
-import { TabsService } from '../../services/tabs/tabs.service';
 import { User, Role } from '../../models/user';
 import { TranslateService } from '@ngx-translate/core';
 import { RedirectsService } from '../../services/redirects/redirects.service';
@@ -62,11 +59,17 @@ export class RoleChangeComponent implements OnInit {
 
       // Добавляем к имеющимся ролям еще роль физика, чтобы в списке была, как один из пунктов
       // с типом PRIVATE
+      const isPrivatePerson = this.loadService.user.userType === 'P';
       const privatePerson: Role = {
         shortName: this.user.formattedName,
         type: 'PRIVATE',
-        current: true
+        current: isPrivatePerson,
       };
+
+      if (!isPrivatePerson) {
+        this.roles.forEach(role => role.current = (role.oid === Number(this.loadService.user.orgOid)));
+      }
+
       this.roles.unshift(privatePerson);
 
       this.filterRoles(this.query, this.activePage);
@@ -104,12 +107,14 @@ export class RoleChangeComponent implements OnInit {
       return;
     }
     const prevRole = this.roles.find((someRole) => someRole.current);
+
+    let params = {_: Math.random().toString()};
+    if (role.oid) {
+      params = Object.assign(params, {orgId: role.oid.toString()});
+    }
     this.http.get(`${this.loadService.config.lkApiUrl}users/switch`, {
       withCredentials: true,
-      params: {
-        orgId: role.oid,
-        _: Math.random().toString()
-      }
+      params
     }).subscribe(response => {
       if (prevRole.type === 'PRIVATE' && role.type !== 'PRIVATE' && this.appContext !== 'PARTNERS') {
         this.redirectsService.redirectToOrganizationView();
