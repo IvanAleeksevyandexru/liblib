@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
-import { CookieService } from '../cookie/cookie.service';
 import { AccessesService } from '../accesses/accesses.service';
 import { Category, MenuLink, User } from '../../models';
 
@@ -15,7 +14,6 @@ export class MenuService {
   constructor(
     private loadService: LoadService,
     private http: HttpClient,
-    private cookieService: CookieService,
     private accessesService: AccessesService,
   ) {
   }
@@ -47,10 +45,7 @@ export class MenuService {
 
     const mainHost = this.loadService.config.betaUrl;
     const lkHost = this.loadService.config.urlLk;
-    let payHost = this.loadService.config.oplataUrl;
-    if (!this.cookieService.get('pay-new')) {
-      payHost = this.loadService.config.baseUrl;
-    }
+    const payHost = this.loadService.config.oplataUrl;
 
     switch (this.loadService.attributes.appContext) {
       case 'PARTNERS':
@@ -83,7 +78,7 @@ export class MenuService {
           title: 'HEADER.MENU.SERVICES',
           mnemonic: 'servises'
         }, {
-          url: `${payHost}/pay`,
+          url: `${payHost}pay`,
           title: 'HEADER.MENU.PAYMENT',
           mnemonic: 'defrayal'
         }, {
@@ -116,7 +111,7 @@ export class MenuService {
             title: 'HEADER.MENU.ORDERS',
             listeners: true
           }, {
-            url: `${payHost}/pay`,
+            url: `${payHost}pay`,
             title: 'HEADER.MENU.PAYMENT'
           }, {
             url: `${lkHost}profile/personal`,
@@ -139,7 +134,7 @@ export class MenuService {
             url: `${mainHost}category`,
             title: 'HEADER.MENU.SERVICES'
           }, {
-            url: `${payHost}/pay`,
+            url: `${payHost}pay`,
             title: 'HEADER.MENU.PAYMENT'
           },  {
             url: `${mainHost}help/news`,
@@ -156,7 +151,7 @@ export class MenuService {
           title: 'HEADER.MENU.SERVICES',
           listeners: true
         }, {
-          url: '/pay',
+          url: `${payHost}pay`,
           title: 'HEADER.MENU.PAYMENT'
         }, {
           url: '/help',
