@@ -26,6 +26,7 @@ export class StandardMaskedInputComponent extends BaseMaskedInputComponent
   @Input() public name?: string;
   @Input() public formControlName?: string;
   @Input() public id?: string;
+  @Input() public type = 'text'; // password, email, number итд
   @Input() public contextClass?: string;  // класс-маркер разметки для deep стилей
   @Input() public placeholder?: string;
   @Input() public autocomplete?: InputAutocomplete | string;
