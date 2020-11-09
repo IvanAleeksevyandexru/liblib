@@ -65,12 +65,12 @@ export class MenuService {
             url: '/powers',
             title: 'HEADER.MENU.POWERS'
           });
-          if (this.accessesService.getAccess('csg')) {
-            links.push({
-              url: '/access-groups',
-              title: 'HEADER.MENU.ACCESS_GROUPS'
-            });
-          }
+          // if (this.accessesService.getAccess('csg')) {
+          links.push({
+            url: '/access-groups',
+            title: 'HEADER.MENU.ACCESS_GROUPS'
+          });
+          // }
           links.push({
             url: '/systems',
             title: 'HEADER.MENU.SYSTEMS'
@@ -175,13 +175,14 @@ export class MenuService {
   }
 
   public getStaticItemUrls(): object {
-    const lkUrl = this.loadService.attributes.appContext === 'LK' ? '/' : this.loadService.config.lkUrl;
+    const appContext = this.loadService.attributes.appContext;
+    const lkUrl = appContext === 'LK' ? '/' : this.loadService.config.lkUrl;
 
     return {
       'HEADER.PERSONAL_AREA': `${lkUrl}overview`,
       'HEADER.MENU.SETTINGS': `${lkUrl}settings/account`,
       'HEADER.MENU.SETTINGS_MENU': `${lkUrl}settings/account`,
-      'HEADER.MENU.LOGIN_ORG': `${lkUrl}roles`
+      'HEADER.MENU.LOGIN_ORG': `${appContext === 'PARTNERS' ? '/' : lkUrl}roles`
     };
   }
 

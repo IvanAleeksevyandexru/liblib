@@ -19,7 +19,6 @@ import { MenuLink } from '../../models/menu-link';
 import { AuthService } from '../../services/auth/auth.service';
 import { UserMenuState } from '../../models/user-menu';
 import { CounterData } from '../../models/counter';
-import { UserAgentService } from '../../services/user-agent/user-agent.service';
 import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -40,11 +39,11 @@ export class MenuComponent implements OnInit, AfterViewInit {
   @Input() public showBorder = false;
   @Input() public rolesListEnabled = false;
   @Input() public searchSputnikEnabled = false;
+  @Input() public links: MenuLink[] = [];
 
   @Output() public clickMenuItem = new EventEmitter<any>();
 
   public categories: Category[] = [];
-  public links: MenuLink[] = [];
   public showCategories = false;
   public emptyCategories = true;
   public userMenuState: UserMenuState;
@@ -94,7 +93,9 @@ export class MenuComponent implements OnInit, AfterViewInit {
   ) { }
 
   public ngOnInit() {
-    this.links = this.menuService.getLinks();
+    if (!this.links.length) {
+      this.links = this.menuService.getLinks();
+    }
     this.user = this.loadService.user;
     this.initUserMenuState();
   }
@@ -151,14 +152,16 @@ export class MenuComponent implements OnInit, AfterViewInit {
     } as UserMenuState;
   }
 
-  public redirect(event, url): void {
-    const isAbsUrl = /^(http|\/\/)/.test(url);
-    if (this.clickMenuItem.observers.length) {
+  public redirect(event: Event, link: MenuLink): void {
+    if (link.handler) {
       event.stopPropagation();
       event.preventDefault();
-      this.clickMenuItem.emit(url);
+      link.handler(link);
       return;
     }
+
+    const url = link.url;
+    const isAbsUrl = /^(http|\/\/)/.test(url);
 
     if (url && this.translate.currentLang !== 'ru') {
       event.stopPropagation();
