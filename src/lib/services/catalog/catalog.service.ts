@@ -50,6 +50,15 @@ export class CatalogService {
     });
   }
 
+  public checkPermissions(passportId: string, targetId: string): Observable<any> {
+    return this.http.get(`${this.loadService.config.catalogApiUrl}service/${passportId + '_' + targetId}/check`, {
+      params: {
+        platform: this.loadService.config.platform
+      },
+      withCredentials: true
+    });
+  }
+
   public getOrderNames(frguCodes: number[]) {
     return this.http.post(`${this.loadService.config.catalogApiUrl}passportsByExtId`, frguCodes, {
       withCredentials: true
