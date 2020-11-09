@@ -3,3 +3,11 @@
   z-index: 2147473647 !important;
 }
 
+@media all and (min-width: 768px) {
+  #pso-widget-container {
+    position: relative;
+    z-index: 3;
+  }
+
+}
+
