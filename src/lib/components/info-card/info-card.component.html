@@ -14,7 +14,7 @@
   <div class="subtitle mt-16">{{object.empty?.subtitle}}</div>
   <div class="actions mt-16">
     <span *ngIf="!externalLink && !addPath" class="link-plain add-link" (click)="toggleForm()">Добавить</span>
-    <a *ngIf="externalLink && !addPath" class="link-plain add-link" [href]="externalLink">Добавить</a>
+    <a *ngIf="externalLink && !addPath" class="link-plain add-link" [routerLink]="[externalLink]">Добавить</a>
     <a *ngIf="addPath" class="link-plain add-link" [routerLink]="addPath">Добавить</a>
     <a *ngIf="object.serviceUrl" class="link-plain" (click)="toOrder()">Заказать услугу</a>
   </div>
