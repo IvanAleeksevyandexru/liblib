@@ -330,6 +330,12 @@ ul.list-decimal {
   cursor: pointer;
 }
 
+.list-style-disc {
+  list-style: disc;
+  text-align: left;
+  margin-left: 20px;
+}
+
 @include global-classes('');
 
 @media all and (min-width: 768px) {
