@@ -143,6 +143,11 @@ export class MenuComponent implements OnInit, AfterViewInit {
       active: true,
       isMobileView
     } as UserMenuState;
+
+    if (isMobileView) {
+      const html = document.getElementsByTagName('html')[0];
+      html.classList.add('disable-scroll');
+    }
   }
 
   public initUserMenuState(): void {

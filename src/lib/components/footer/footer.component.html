@@ -1,4 +1,4 @@
-<div class="footer-wrapper" id="footer-wrapper">
+<div class="footer-wrapper" id="footer-wrapper" [class.mobile-hide]="hideFooter">
   <div [hidden]="translate.currentLang !== 'ru' || hideCmsFooter">
     <ng-template #footerCms></ng-template>
   </div>
