@@ -16,6 +16,7 @@
                       [searchOnFocus]="true"
                       [moveFocusToEnd]="true"
                       [queryMinSymbolsCount]="queryMinSymbolsCount"
+                      [disableClickClosing]="true"
                       [(ngModel)]="query"
                       (focus)="handleFocus()"
                       (blur)="normalizeFullAddress(query, false, false, true); handleBlur();"
