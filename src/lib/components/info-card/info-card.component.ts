@@ -4,6 +4,7 @@ import { LoadService } from '../../services/load/load.service';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { InfoCardState, InfoCardView } from '../../models/info-card-view';
 import { Router } from '@angular/router';
+import { ConstantsService } from '../../services';
 
 @Component({
   selector: 'lib-info-card',
@@ -40,7 +41,8 @@ export class InfoCardComponent implements OnInit, OnChanges {
   constructor(public loadService: LoadService,
               public profileService: ProfileService,
               private router: Router,
-              private yaMetricService: YaMetricService) {
+              private yaMetricService: YaMetricService,
+              private constants: ConstantsService) {
   }
 
   public ngOnInit() {
@@ -77,6 +79,11 @@ export class InfoCardComponent implements OnInit, OnChanges {
     if (this.state !== 'process' && this.state !== 'error') {
       return !!this.object.notification;
     }
+  }
+
+  public isExpiredDocDetails(): boolean {
+    const typeArray: string[] = this.constants.FID_DOCUMENT_TYPES;
+    return typeArray.includes(this.object.type);
   }
 
   public isPassportNotification(): boolean {
