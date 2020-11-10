@@ -4,7 +4,7 @@ import { LoadService } from '../../services/load/load.service';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { InfoCardState, InfoCardView } from '../../models/info-card-view';
 import { Router } from '@angular/router';
-import { ConstantsService } from '../../services';
+import { ConstantsService } from '../../services/constants.service';
 
 @Component({
   selector: 'lib-info-card',
