@@ -79,8 +79,7 @@ export class SnippetsService {
       if (feed.data.reminder) {
         this.navigateByPath(`draft/${feed.extId}`);
       } else {
-        // let param = new HttpParams().set('billNumber', snippet.uin);
-        let param = new HttpParams();
+        let param = new HttpParams().set('billNumber', snippet.uin);
         switch (feed.feedType) {
           case 'ORDER':
             param = param.set('orderId', feed.extId).set('senderType', 'ORDER');
@@ -89,8 +88,7 @@ export class SnippetsService {
             param = param.set('senderType', 'GEPS');
             break;
         }
-        // (window as any).location = `${this.loadService.config.paymentUrl}?${param}`;
-        (window as any).location = `${this.loadService.config.betaUrl}payment/${snippet.uin}?${param}`;
+        (window as any).location = `${this.loadService.config.paymentUrl}?${param}`;
       }
     } else if (snippet && snippet.type === 'DRAFT' && !(window as any).isOp) {
       if (snippet.url.indexOf('http') !== -1) {
