@@ -84,6 +84,10 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   @Input() public moveFocusToEnd = false;
   // виртуальный скролл, рендерится в dom лишь отображаемая часть списка (для больших списков)
   @Input() public virtualScroll = false;
+  // блокировка открытия выпадающего списка по блюру для дадаты
+  @Input() public disableOpening = false;
+  // при слабом коннекте запускать поиск последнего введенного значения #dadata
+  @Input() public searchLastValue = false;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -95,6 +99,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   @Output() public forcedSearch = new EventEmitter();
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
+  @Output() public fetched = new EventEmitter();
 
   @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
   @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
@@ -120,6 +125,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   public virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems.bind(this));
   public LineBreak = LineBreak;
   private insureSearchActiveToken = 0;
+  public modelChanged = false;
 
   private onTouchedCallback: () => void;
   private commit(value: any) {}
@@ -138,7 +144,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   }
 
   public openDropdown() {
-    if (!this.disabled && !this.expanded && (this.suggestions.length || this.showNotFound)) {
+    if (!this.disableOpening && !this.disabled && !this.expanded && (this.suggestions.length || this.showNotFound)) {
       this.expanded = true;
       this.highlighted = null;
       this.changeDetector.detectChanges();
@@ -151,6 +157,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
         this.putCursorAtEnd();
       }
       this.opened.emit();
+      this.modelChanged = false;
     } else {
       this.changeDetector.detectChanges();
     }
@@ -267,6 +274,15 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
     if (this.onTouchedCallback) {
       this.onTouchedCallback();
     }
+    // не делать запрос, если не изменилась модель
+    if (!this.modelChanged) {
+      if (this.suggestions.length || this.showNotFound) {
+        this.openDropdown();
+      } else {
+        this.closeDropdown();
+      }
+      return;
+    }
     if (!this.suggestionsProvider || query.length < this.queryMinSymbolsCount) {
       this.cancelSearchAndClose();
       return;
@@ -311,6 +327,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
         this.searching = this.partialsLoading = false;
         if (this.insureSearchActiveToken === activeToken) {
           this.processSuggestions(rootSearch, suggestions, callback);
+          this.fetched.emit();
         }
         this.changeDetector.detectChanges();
       }, e => {
@@ -434,6 +451,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
 
   public writeValue(value: string) {
     this.query = value === null || value === undefined ? '' : value;
+    this.modelChanged = true;
     this.changeDetector.detectChanges();
     if (this.expanded) {
       this.lookupItems(this.query);
