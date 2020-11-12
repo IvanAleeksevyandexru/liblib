@@ -1,8 +1,8 @@
 <div class="search-field"
-    [ngClass]="[contextClass ? contextClass : '']"
-    [class.magnifying-glass-or-throbber-shown]="showMagnifyingGlass || searching"
-    [class.clear-shown]="clearable && query"
-    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+     [ngClass]="[contextClass ? contextClass : '']"
+     [class.magnifying-glass-or-throbber-shown]="showMagnifyingGlass || searching"
+     [class.clear-shown]="clearable && query"
+     [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <label [attr.for]="id" class="label-search-input">{{placeholder}}</label>
   <input #input
          type="text"
