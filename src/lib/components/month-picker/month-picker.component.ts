@@ -77,7 +77,6 @@ export class MonthPickerComponent
   public expanded = false;
   public selectedYear: number;
   public selectedYearChanged = false;
-  public invalidDisplayed = false;
   public activeMonthYear: MonthYear;
   public prevYearAvailable = true;
   public nextYearAvailable = true;
@@ -107,18 +106,15 @@ export class MonthPickerComponent
 
   public ngAfterViewInit() {
     this.focusManager.register(this);
-    this.check();
   }
 
   public ngOnChanges(changes: SimpleChanges) {
-    this.check();
   }
 
   public ngDoCheck() {
     if (this.control) {
       this.touched = this.control.touched;
     }
-    this.check();
   }
 
   public ngOnDestroy() {
@@ -140,8 +136,8 @@ export class MonthPickerComponent
     } else {
       this.activeMonthYear = null;
       this.selectDate = '';
+      this.monthes.forEach(item => item.selected = false);
     }
-    this.check();
     this.changeDetection.detectChanges();
   }
 
@@ -161,18 +157,21 @@ export class MonthPickerComponent
         this.years.forEach((item: Year) => {
           item.selected = false;
           if (item.number === year) {
-            this.slideTo(item);
-            item.selected = true;
+            this.selectYear(item);
           }
         });
       }
 
       if (typeof month === 'number' && month >= 0 && month < 12 && year && year.toString().length === 4) {
-        this.check();
         this.writeValue(new MonthYear(month, year));
         if (this.formControl) {
           this.formControl.setValue(new MonthYear(month, year));
         }
+      }
+    } else {
+      this.writeValue(null);
+      if (this.formControl) {
+        this.formControl.setValue(null);
       }
     }
   }
@@ -205,7 +204,6 @@ export class MonthPickerComponent
     if (!this.expanded) {
       this.openDropdown();
     }
-    this.check();
     this.focus.emit();
   }
 
@@ -217,7 +215,6 @@ export class MonthPickerComponent
       }
       this.closeDropdown();
     }, 100);
-    this.check();
     this.changeDetection.detectChanges();
     this.blur.emit();
   }
@@ -331,7 +328,7 @@ export class MonthPickerComponent
     this.monthes.forEach((month: Month) => {
       const monthYear = new MonthYear(month.number, selectedYear);
       month.disabled = monthYear.firstDay() < this.minimum.firstDay() || monthYear.lastDay() > this.maximum.lastDay();
-      month.selected = MonthYear.equals(monthYear, this.activeMonthYear);
+      month.selected = monthYear.month === this.activeMonthYear.month;
     });
     this.changeDetection.detectChanges();
   }
@@ -419,10 +416,5 @@ export class MonthPickerComponent
 
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
-    this.check();
-  }
-
-  public check() {
-    this.invalidDisplayed = ValidationHelper.checkValidation(this, {empty: !!this.activeMonthYear});
   }
 }

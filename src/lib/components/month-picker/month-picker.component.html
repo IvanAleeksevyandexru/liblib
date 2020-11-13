@@ -1,5 +1,5 @@
 <div class="month-picker" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}" (click)="returnFocus()">
-  <div class="month-picker-field" [class.invalid]="invalidDisplayed" [class.disabled]="disabled" [class.focused]="focused" (click)="toggle($event)">
+  <div class="month-picker-field" [class.invalid]="invalid" [class.disabled]="disabled" [class.focused]="focused" (click)="toggle($event)">
     <div class="month-picker-value">
       <div class="month-picker-icon icon"></div>
       <div class="clear-icon icon" *ngIf="clearable && activeMonthYear" (click)="clearValue($event)"></div>
