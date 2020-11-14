@@ -8,12 +8,16 @@ app-footer {
 }
 
 .footer-wrapper {
-  display: none;
+  &.mobile-hide {
+    display: none;
+  }
 }
 
 @media all and (min-width: 768px) {
   .footer-wrapper {
-    display: block;
+    &.mobile-hide {
+      display: block;
+    }
   }
 }
 
