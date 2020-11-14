@@ -1,6 +1,10 @@
 html {
   height: 100%;
   overflow-x: hidden;
+
+  &.disable-scroll {
+    overflow: hidden;
+  }
 }
 
 body {
@@ -324,6 +328,12 @@ ul.list-decimal {
 
 .pointer {
   cursor: pointer;
+}
+
+.list-style-disc {
+  list-style: disc;
+  text-align: left;
+  margin-left: 20px;
 }
 
 @include global-classes('');

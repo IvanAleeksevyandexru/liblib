@@ -101,6 +101,7 @@ export class SearchBarComponent
   private querySubscription = this.refreshDebouncedSubscription();
   private searchQueue: Array<string> = [];
   private forcedSearchPrevent = false;
+  private isIos = navigator.userAgent.match(/iPhone|iPad|iPod/i);
 
   private onTouchedCallback: () => void;
   protected commit(value: string) {}
@@ -242,6 +243,24 @@ export class SearchBarComponent
     } else if (this.searchSyncControl === SearchSyncControl.BLOCK) {
       // маловероятная ситуация программного изменения значения в BLOCK режиме во время поиска
       this.searchQueue = [search];
+    }
+  }
+
+  public putCursorAtEnd() {
+    const input = this.inputElement.nativeElement;
+    if (!this.isIos && input.classList.contains('focused')) {
+      input.blur();
+    }
+    if (input.setSelectionRange) {
+      const len = input.value.length * 2;
+      setTimeout(() => {
+        input.setSelectionRange(len, len);
+        input.focus();
+      }, 1)
+    } else {
+      const val = input.value;
+      input.value = '';
+      input.value = val;
     }
   }
 

@@ -91,9 +91,7 @@ export class GibddDetailsComponent implements OnInit {
   }
 
   public goToPayment(billId: string): void {
-    (window as any).location = `${this.loadService.config.betaUrl}payment/${billId}?details=1`;
-    // Сделать этот редирект после открытия новой платежки
-    // (window as any).location = `${this.loadService.config.paymentUrl}?billIds=${billId}`;
+    (window as any).location = `${this.loadService.config.paymentUrl}?billIds=${billId}`;
   }
 
   public onCancel(): void {
