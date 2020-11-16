@@ -2,7 +2,14 @@ import {
   Component, ViewChild, Input, Output, ElementRef, EventEmitter, SimpleChanges, forwardRef,
   OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, Optional, Host, SkipSelf, ChangeDetectorRef
 } from '@angular/core';
-import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR, FormControl } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  ControlContainer,
+  AbstractControl,
+  NG_VALUE_ACCESSOR,
+  FormControl,
+  ValidationErrors
+} from '@angular/forms';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
@@ -77,6 +84,7 @@ export class MonthPickerComponent
   public expanded = false;
   public selectedYear: number;
   public selectedYearChanged = false;
+  public invalidDisplayed = false;
   public activeMonthYear: MonthYear;
   public prevYearAvailable = true;
   public nextYearAvailable = true;
@@ -106,15 +114,18 @@ export class MonthPickerComponent
 
   public ngAfterViewInit() {
     this.focusManager.register(this);
+    this.check();
   }
 
   public ngOnChanges(changes: SimpleChanges) {
+    this.check();
   }
 
   public ngDoCheck() {
     if (this.control) {
       this.touched = this.control.touched;
     }
+    this.check();
   }
 
   public ngOnDestroy() {
@@ -138,6 +149,7 @@ export class MonthPickerComponent
       this.selectDate = '';
       this.monthes.forEach(item => item.selected = false);
     }
+    this.check();
     this.changeDetection.detectChanges();
   }
 
@@ -166,6 +178,11 @@ export class MonthPickerComponent
         this.writeValue(new MonthYear(month, year));
         if (this.formControl) {
           this.formControl.setValue(new MonthYear(month, year));
+          this.formControl.setErrors(null);
+        }
+      } else {
+        if (this.formControl) {
+          this.formControl.setErrors({incorrectDate: true});
         }
       }
     } else {
@@ -204,6 +221,7 @@ export class MonthPickerComponent
     if (!this.expanded) {
       this.openDropdown();
     }
+    this.check();
     this.focus.emit();
   }
 
@@ -215,6 +233,7 @@ export class MonthPickerComponent
       }
       this.closeDropdown();
     }, 100);
+    this.check();
     this.changeDetection.detectChanges();
     this.blur.emit();
   }
@@ -328,7 +347,7 @@ export class MonthPickerComponent
     this.monthes.forEach((month: Month) => {
       const monthYear = new MonthYear(month.number, selectedYear);
       month.disabled = monthYear.firstDay() < this.minimum.firstDay() || monthYear.lastDay() > this.maximum.lastDay();
-      month.selected = monthYear.month === this.activeMonthYear.month;
+      month.selected = this.activeMonthYear ? monthYear.month === this.activeMonthYear.month : false;
     });
     this.changeDetection.detectChanges();
   }
@@ -416,5 +435,10 @@ export class MonthPickerComponent
 
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
+    this.check();
+  }
+
+  public check() {
+    this.invalidDisplayed = ValidationHelper.checkValidation(this, {required: !!this.selectDate || this.selectDate?.indexOf('_') > -1});
   }
 }
