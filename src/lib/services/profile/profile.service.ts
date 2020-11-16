@@ -90,7 +90,7 @@ export class ProfileService {
           attrId: 'ident',
           canDetails: true,
           canEdit: false,
-          canRepeat: false,
+          canRepeat: true,
           vrfStu: object.vrfStu,
           type: object.type,
           serviceUrl: '10052/1',
