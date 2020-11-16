@@ -95,7 +95,7 @@
             </div>
           </div>
           <ng-template #showAnotherFeeds>
-            <ng-container *ngIf="(feed.feedType !== 'DRAFT' && feed.feedType !== 'PARTNERS_DRAFT') else draftFeed">
+            <ng-container *ngIf="!['DRAFT', 'PARTNERS_DRAFT', 'KND_APPEAL_DRAFT'].includes(feed.feedType) else draftFeed">
               <ng-container *ngIf="feed.feedType !== 'FEEDBACK' else feedbackFeed">
                 <div class="flex-container">
                   <div *ngIf="markAsFlag(feed)" class="red-flag"></div>

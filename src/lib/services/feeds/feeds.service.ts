@@ -13,9 +13,11 @@ const moment = moment_;
   providedIn: 'root'
 })
 export class FeedsService {
+
   public lastQueryOrderType = '';
   public lastQueryArchiveType = '';
   private isLk = (this.loadService.attributes.appContext || this.loadService.config.viewType) === 'LK';
+  private config = this.loadService.config;
 
   constructor(
     private http: HttpClient,
@@ -231,6 +233,12 @@ export class FeedsService {
         break;
       case 'ACCOUNT_CHILD':
         url += `profile/family/child/${feed.extId}/docs`;
+        break;
+      case 'KND_APPEAL':
+        url = `${this.config.kndDomain}appeal/${feed.extId}`;
+        break;
+      case 'KND_APPEAL_DRAFT':
+        url = `${this.config.kndDomain}form/appeal/${feed.extId}`;
         break;
     }
 
