@@ -167,19 +167,18 @@ export class MonthPickerComponent
 
       if (year && year.toString().length === 4) {
         this.years.forEach((item: Year) => {
-          item.selected = false;
-          if (item.number === year) {
-            this.selectYear(item);
-          }
+          item.selected = item.number === year;
         });
       }
 
       if (typeof month === 'number' && month >= 0 && month < 12 && year && year.toString().length === 4) {
-        this.writeValue(new MonthYear(month, year));
+        const my = new MonthYear(month, year);
+        this.writeValue(my);
         if (this.formControl) {
-          this.formControl.setValue(new MonthYear(month, year));
+          this.formControl.setValue(my);
           this.formControl.setErrors(null);
         }
+        this.selectYear(this.years.find(item => item.selected));
       } else {
         if (this.formControl) {
           this.formControl.setErrors({incorrectDate: true});
