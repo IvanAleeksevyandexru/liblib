@@ -19,8 +19,10 @@
       [searchOnFocus]="searchOnFocus"
       [searchByForcing]="false"
       [searchByTextInput]="true"
+      [searchLastValue]="searchLastValue"
       [suggestion]="showSuggestion ? suggestion : null"
       [(ngModel)]="query"
+      (ngModelChange)="modelChanged = true"
       [searching]="searching"
       (newSearch)="lookupItems($event)"
       (input)="handleInput($event)"
@@ -29,7 +31,7 @@
       (click)="lookupItemsOrClose()"
       (focus)="handleFocus()"
       (blur)="handleBlur()"
-      (cleared)="cleared.emit($event)"
+      (cleared)="cleared.emit($event); modelChanged = false"
       (suggestionSelected)="selectTextSuggestion($event)"></lib-search-bar>
   </div>
   <div class="lookup-list-wrapper">

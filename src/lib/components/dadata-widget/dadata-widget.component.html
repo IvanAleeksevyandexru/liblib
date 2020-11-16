@@ -15,14 +15,18 @@
                       [showMagnifyingGlass]="false"
                       [searchOnFocus]="true"
                       [moveFocusToEnd]="true"
+                      [disableOpening]="disableOpening"
                       [queryMinSymbolsCount]="queryMinSymbolsCount"
                       [disableClickClosing]="true"
+                      [searchLastValue]="true"
                       [(ngModel)]="query"
+                      (ngModelChange)="normalizeInProcess = false"
                       (focus)="handleFocus()"
                       (blur)="normalizeFullAddress(query, false, false, true); handleBlur();"
                       (autocompleted)="normalizeFullAddress(query, false, false, false, true)"
                       (input)="updateCanOpenFields($event.target.value)"
                       (cleared)="onClearHandler()"
+                      (fetched)="dadataService.resetSearchComplete(true)"
                       [suggestionsProvider]="dadataService">
           <!--inside dropdown additional content customized-->
           <div class="dadata-additional-item">
