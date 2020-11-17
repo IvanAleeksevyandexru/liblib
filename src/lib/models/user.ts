@@ -79,7 +79,7 @@ export interface Role {
   email?: string;
   fullName?: string;
   ogrn?: string;
-  oid?: string;
+  oid?: number;
   phone?: string;
   shortName?: string;
   type?: 'PRIVATE' | 'BUSINESS' | 'LEGAL' | 'AGENCY';

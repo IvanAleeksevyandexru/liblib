@@ -7,7 +7,7 @@
       <div class="col-lg-10 align-items-center flex-container justify-end">
         <div *ngIf="showLinks" class="links-wrapper flex-container justify-end align-items-center">
           <ul class="links hide flex-container-lg">
-            <li class="item" *ngFor="let link of links">
+            <li class="item flex-container align-items-center" *ngFor="let link of links">
               <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
                  (click)="redirect($event, link)"
                  [href]="link.url">{{link.title | appTranslate}}</a>
