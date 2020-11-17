@@ -141,10 +141,12 @@
   }
 }
 
-@media all and (min-width: 1139) {
+@media all and (max-width: 1139px) {
   .link{
     &.partners_link{
-      top: 1px
+      &:before{
+        top: 1px
+      }
     }
   }
 }
