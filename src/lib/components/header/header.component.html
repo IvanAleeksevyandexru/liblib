@@ -31,14 +31,18 @@
              (click)="this.showNotifications = !this.showNotifications;"
              [title]="isUnread ? 'У вас есть непрочитанные уведомления' : 'У вас нет непрочитанных уведомлений'"></a>
 
-          <div *ngIf="showNotifications" class="notifications-list">
+          <div *ngIf="showNotifications" class="notifications-list" libStopScreenScroll>
             <a class="close" (click)="this.showNotifications = !this.showNotifications;"></a>
             <h6 class="title-h6">Последние события</h6>
-             <lib-feeds
+            <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}"
+                               (psYReachEnd)="feedsComponent.showMore()">
+              <lib-feeds
                 page="header"
-                [count]="6"
+                [autoload]="true"
+                [count]="10"
                 types="ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE"
               ></lib-feeds>
+            </perfect-scrollbar>
           </div>
         </div>
         <div class="login-wrapper" (click)="showUserMenu(false)">
