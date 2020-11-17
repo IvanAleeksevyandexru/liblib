@@ -5,7 +5,7 @@ import { LoadService } from '../../services/load/load.service';
 import { User, Role } from '../../models/user';
 import { TranslateService } from '@ngx-translate/core';
 import { RedirectsService } from '../../services/redirects/redirects.service';
-import { EsiaApiLibService } from '../../services/esia-api/esia-api-lib.service';
+import { EsiaApiService } from '../../services/esia-api/esia-api.service';
 
 const COUNT_ROLES_PER_ADD_BUTTON = 3;
 const PAGE_SIZE = 5;
@@ -36,7 +36,7 @@ export class RoleChangeComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private http: HttpClient,
-    private esiaApi: EsiaApiLibService,
+    private esiaApi: EsiaApiService,
     private loadService: LoadService,
     private redirectsService: RedirectsService,
     public translate: TranslateService
