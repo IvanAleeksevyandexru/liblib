@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoadService } from '../load/load.service';
 import { Observable } from 'rxjs';
-import { GetPassportRequest, GetServiceRequest, Passport, Service } from '../../models/service';
+import { GetPassportRequest, GetServiceRequest, Passport, Service, ServicePermission } from '../../models/service';
 import { CookieService } from '../cookie/cookie.service';
 
 @Injectable({
@@ -46,6 +46,15 @@ export class CatalogService {
     }
 
     return this.http.get<Passport>(`${this.catalogUrl}passports/${request.id}?${params}`, {
+      withCredentials: true
+    });
+  }
+
+  public checkPermissions(passportId: string, targetId: string): Observable<Array<ServicePermission>> {
+    return this.http.get<Array<ServicePermission>>(`${this.loadService.config.catalogApiUrl}services/${passportId + '_' + targetId}/check?_=${Math.random()}`, {
+      params: {
+        platform: this.loadService.config.platform
+      },
       withCredentials: true
     });
   }

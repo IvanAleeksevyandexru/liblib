@@ -1,0 +1,161 @@
+.grid-row {
+  grid-gap: 24px;
+}
+
+.role {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 24px;
+
+  &.clickable {
+    cursor: pointer;
+  }
+
+  .role-item {
+    width: 100%;
+  }
+
+  .role-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 32px;
+    background-color: #F3F5FB;
+    margin-right: 24px;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    img {
+      margin-top: -1px;
+      margin-left: -1px;
+      width: 64px;
+    }
+    &.LEGAL,
+    &.AGENCY {
+      background-image: url(../../../assets/svg/roles-icons/briefcase.svg);
+    }
+    &.employees {
+      background-image: url(../../../assets/svg/roles-icons/employee.svg);
+    }
+    &.no-avatar {
+      border: 1px solid #5479ca;
+      background: #5479ca url(../../../assets/svg/roles-icons/no-avatar.svg) no-repeat center;
+      background-size: 64px;
+
+      &.F {
+        background-image: url(../../../assets/svg/roles-icons/no-avatar-f.svg);
+      }
+    }
+  }
+
+  h4 {
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .subheader {
+    color: #515A63;
+  }
+
+  .current {
+    display: inline-block;
+    background: #F3F5FB;
+    border-radius: 4px;
+    padding: 10px 24px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #515A63;
+  }
+
+  .arrow {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: url(../../../assets/svg/arrows/light_blue_circle_blue_arrow.svg) no-repeat;
+  }
+}
+
+.empty-list {
+  border-top: 1px solid #CED9F0;
+  padding-top: 24px;
+}
+
+.role-create {
+  display: block;
+  position: relative;
+  background: #F3F5FB;
+  border: 1px dashed #CED9F0;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 24px;
+  padding: 72px 32px 24px 32px;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin-left: -20px;
+    background: #fff url(../../../assets/svg/pluses/blue-plus.svg) no-repeat center center;
+    border-radius: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .status {
+    display: flex;
+    text-align: right;
+    align-items: center;
+
+    .status-container {
+      display: block;
+      width: 100%;
+      margin-left: 40px;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .page-controls {
+    justify-content: center;
+  }
+  .role {
+    .role-icon {
+      width: 40px;
+      height: 40px;
+      img {
+        width: 40px;
+      }
+      &.LEGAL,
+      &.AGENCY {
+        background-size: 21px 20px;
+      }
+      &.employees {
+        background-size: 20px;
+      }
+      &.no-avatar {
+        background-size: 40px;
+      }
+    }
+    h4 {
+      font-family: Lato, 'sans-serif';
+      margin-bottom: 4px;
+    }
+    .current {
+      margin-top: 16px;
+    }
+
+    .arrow {
+      display: none;
+    }
+  }
+}
+
+@media (min-width: 1140px) {
+  .pagination {
+    margin-top: 24px;
+  }
+}

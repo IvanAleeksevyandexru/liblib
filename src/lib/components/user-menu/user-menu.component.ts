@@ -16,6 +16,7 @@ import { TabsService } from '../../services/tabs/tabs.service';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { HelperService } from '../../services/helper/helper.service';
 import { Subscription } from 'rxjs';
+import { AccessesService } from '../../services/accesses/accesses.service';
 
 @Component({
   selector: 'lib-user-menu',
@@ -71,7 +72,8 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private changeDetector: ChangeDetectorRef,
     private yaMetricService: YaMetricService,
-    private helperService: HelperService
+    private helperService: HelperService,
+    private accessesService: AccessesService,
   ) {
   }
 
@@ -118,6 +120,8 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onClose() {
+    const html = document.getElementsByTagName('html')[0];
+    html.classList.remove('disable-scroll');
     this.state.active = false;
   }
 
@@ -164,6 +168,15 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
         type: this.loadService.attributes.deviceType,
         choice: linkName
       });
+  }
+
+  public showMenuTabs(): boolean {
+    let show = true;
+    if (this.loadService.attributes.appContext === 'PARTNERS') {
+      show = this.accessesService.getAccessTech();
+    }
+
+    return show;
   }
 
   private getTitleChangeRole(): void {

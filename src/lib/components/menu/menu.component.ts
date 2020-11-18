@@ -19,7 +19,6 @@ import { MenuLink } from '../../models/menu-link';
 import { AuthService } from '../../services/auth/auth.service';
 import { UserMenuState } from '../../models/user-menu';
 import { CounterData } from '../../models/counter';
-import { UserAgentService } from '../../services/user-agent/user-agent.service';
 import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -144,6 +143,11 @@ export class MenuComponent implements OnInit, AfterViewInit {
       active: true,
       isMobileView
     } as UserMenuState;
+
+    if (isMobileView) {
+      const html = document.getElementsByTagName('html')[0];
+      html.classList.add('disable-scroll');
+    }
   }
 
   public initUserMenuState(): void {

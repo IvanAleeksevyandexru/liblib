@@ -835,7 +835,7 @@ export class ConstantsService {
     SELF_EMPLOYED: 'SELF_EMPLOYED'
   };
 
-  public readonly FID_DOCUMENT_TYPES = [
+  public readonly FID_DOCUMENT_TYPES: DocumentType[] = [
     this.DOCUMENT_TYPES.FID_DOC, this.DOCUMENT_TYPES.RSDNC_PERMIT,
     this.DOCUMENT_TYPES.RFG_CERT, this.DOCUMENT_TYPES.CERT_REG_IMM
   ];
