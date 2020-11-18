@@ -1,7 +1,12 @@
 .disclaimers {
   .disclaimer {
     padding: 24px 0;
-
+    &.main-page.page{
+      display: block;
+    }
+    &.page{
+      display: none;
+    }
     &.info {
       background: #EAF2EB;
     }
