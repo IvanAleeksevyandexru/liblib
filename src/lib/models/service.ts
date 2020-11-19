@@ -37,7 +37,7 @@ export interface Service extends CatalogMainStructure { // TODO: Провали�
 }
 
 interface CatalogMainStructure {
-  additionalAttributes: AdditionalAttributes[]
+  additionalAttributes: AdditionalAttribute[];
   consulting: PassportConsulting;
   description: PassportDescription;
   docs: PassportDocs;
@@ -46,6 +46,7 @@ interface CatalogMainStructure {
   passport: InsidePassport;
   places: any[];
   responseType: string;
+  roleMessages: RoleMessage[]
   ssn: number;
   stateOrg: StateOrg[];
   version: number;
@@ -70,12 +71,12 @@ interface PassportConsulting {
   participants: any[];
 }
 
-interface AdditionalAttributes {
+export interface AdditionalAttribute {
   name: string;
-  value: string;
+  value: string | boolean | number;
 }
 
-interface PassportDescription {
+export interface PassportDescription {
   gisDoTargetExtId: string;
   gisDoStateStructureExtId: string;
   gisdo: boolean;
@@ -114,7 +115,7 @@ interface PassportDescription {
   }
 }
 
-interface PassportDocs {
+export interface PassportDocs {
   scenarios: any[],
   inDocs: any[],
   docGroups?: any[]
@@ -131,6 +132,7 @@ export interface InsidePassport {
   shortTitle: string;
   concentratorHabSimplePassports: InsidePassportConcentratorHabSimplePassports;
   services: InsideServices[];
+  icons: Icons[];
 }
 
 interface InsidePassportConcentratorHabSimplePassports {
@@ -180,6 +182,8 @@ export interface InsideServices {
   portalVersion: string;
   hasEqueue: false;
   mnemonicDescription: string;
+  manualCard?: ManualCardStep[]
+  colorCode: string;
 }
 
 interface Icons {
@@ -242,6 +246,22 @@ export class GetServiceRequest implements IGetServiceRequest {
     this.oldStyle = oldStyle || false;
     this.isManual = isManual || false;
   }
+}
+
+export interface ManualCardStep {
+  type: string;
+  title?: string;
+  html?: string;
+  group?: string;
+  orderType?: string;
+}
+
+export interface RoleMessage {
+  code: string;
+  data: {
+    hint: string;
+    message: string;
+  }[]
 }
 
 export interface ServicePermission {
