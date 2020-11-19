@@ -80,6 +80,8 @@ export class SearchBarComponent
   @Input() public searchByForcing = true;
   // позволяет отменить срабатывание поиска по текстовому вводу, только по ентеру и иконке
   @Input() public searchByTextInput = !HelperService.isTouchDevice();
+  // при слабом коннекте запускать поиск последнего введенного значения #dadata
+  @Input() public searchLastValue = false;
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
@@ -182,7 +184,7 @@ export class SearchBarComponent
     if (forcedWithMagnifyingGlass) {
       this.returnFocus();
     }
-    if (this.disabled || this.isBlocked() || this.searchOnlyIfFocused && !this.focused) {
+    if (this.disabled || this.isBlocked() || this.searchOnlyIfFocused && !this.focused && !this.searchLastValue) {
       this.cancelSearch();
       return;
     } else if (this.suggestion && forcedWithKey) {
@@ -363,7 +365,7 @@ export class SearchBarComponent
       this.querySubscription.unsubscribe();
     }
     return this.queryDebounce.pipe(debounceTime(this.queryTimeout)).subscribe((search: ScheduledSearch) => {
-      if (search.token === this.insureSearchActiveToken && this.searchByTextInput) {
+      if ((this.searchLastValue || search.token === this.insureSearchActiveToken) && this.searchByTextInput) {
         this.runOrPostponeSearch(search.query);
       }
     });
