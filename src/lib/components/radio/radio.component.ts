@@ -1,6 +1,6 @@
 import { Component, forwardRef, Input, Output, OnInit, EventEmitter, AfterViewInit, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Focusable, FocusManager } from '../../services';
+import { Focusable, FocusManager } from '../../services/focus/focus.manager';
 
 @Component({
   selector: 'lib-radio',

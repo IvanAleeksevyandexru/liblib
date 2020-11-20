@@ -6,7 +6,7 @@
          [ngClass]="{'disabled': disabled}"
          (change)="onSelected($event.target.checked)"
          (focus)="notifyFocusEvent($event, radioId)"
-         (blur)="notifyFocusEvent($event)"
+         (blur)="notifyFocusEvent($event, radioId)"
          [id]="radioId"
          [name]="name"
          [attr.value]="value"
