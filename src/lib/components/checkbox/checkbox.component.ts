@@ -3,7 +3,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ValidationShowOn } from '../../models/common-enums';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { Validated } from '../../models/validation-show';
-import { FocusManager, Focusable } from '../../services';
+import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 
 @Component({
   selector: 'lib-checkbox',
