@@ -60,26 +60,28 @@ textarea.text-input {
   .clear-button {
     position: absolute;
     width: 24px;
-    height: 48px;
+    height: 52px;
     top: 0;
     right: 12px;
     outline: none;
-    background: url(../../../assets/svg/input-clean.svg) 4px 16px no-repeat;
+    background: url(../../../assets/svg/input-clean.svg) 4px 18px no-repeat;
     cursor: pointer;
   }
   &.multiline {
-    border: 1px solid #A8ACB1;
+    border: 2px solid #F5F7FA;
     border-radius: 4px;
     &.focused {
-      border: 1px solid #0B40B3;
+      border: 2px solid #99B1E6;
     }
     &.invalid {
-      border: 1px solid #DF0024;
+      background: rgba(238, 63, 88, 0.16);
+      border-color: rgba(238, 63, 88, 0.16);
     }
-    &.disabled {
-      background-color: #E7ECF7;
-      border: 1px solid #CBCDD0;
-      color: #A8ACB1;
+    &[disabled], &.disabled, &[readonly] {
+      background: #D1D5DF;
+      color: #66727F;
+      -webkit-text-fill-color: #66727F;
+      opacity: 1;
     }
     .text-input {
       display: block;
