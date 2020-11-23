@@ -9,6 +9,40 @@ $col-count: 3;
 $col-md-count: 6;
 $col-lg-count: 12;
 
+@mixin childForIE($columns, $elements) {
+  $row: 1;
+  $col: 1;
+
+  @for $i from 1 through $elements {
+    :nth-child(#{$i}) {
+      -ms-grid-row: $row !important;
+      -ms-grid-column: $col !important;
+      @if $col == $columns {
+        $row: $row + 1;
+        $col: $columns - $col;
+      }
+      $col: $col + 1;
+    }
+  }
+}
+
+@mixin onlyForIE($column, $elements) {
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    @if $column == 3 {
+      -ms-grid-columns: 1fr 1fr 1fr;
+    } @if $column == 2 {
+      -ms-grid-columns: 1fr 1fr;
+    } @if $column == 1 {
+      -ms-grid-columns: 1fr;
+    }
+    .col-lg-4 {
+      margin: 16px;
+      -ms-grid-column-span: 1;
+    }
+    @include childForIE($column, $elements);
+  }
+}
+
 @mixin grid($prefix, $col-count) {
   @for $i from 1 through $col-count {
     .col#{$prefix}-#{$i} {
@@ -55,6 +89,7 @@ $col-lg-count: 12;
 
   @include grid('', $col-count);
   @include gridIe('-sm', $col-count);
+  @include onlyForIE(1, 10);
 }
 
 .grid-none {
@@ -83,6 +118,7 @@ $col-lg-count: 12;
 
     @include grid('-md', $col-md-count);
     @include gridIe('-md', $col-md-count);
+    @include onlyForIE(2, 10);
   }
 
   .grid-none-md {
@@ -127,6 +163,7 @@ $col-lg-count: 12;
 
     @include grid('-lg', $col-lg-count);
     @include gridIe('-lg', $col-lg-count);
+    @include onlyForIE(3, 10);
   }
 
   .grid-none-lg {
