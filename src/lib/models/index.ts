@@ -37,6 +37,7 @@ export * from './piped-message';
 export * from './pso.model';
 export * from './quiz';
 export * from './payment.model';
+export * from './permission.model';
 export * from './pso.model';
 export * from './reg-context-confirm-state';
 export * from './region-check';

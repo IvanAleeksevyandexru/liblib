@@ -36,6 +36,11 @@
   </div>
 </div>
 <ng-template #loginLink>
-  <a [routerLink]="" *ngIf="!onlyIcon" (click)="login()" class="link">{{('HEADER.LOGIN_LINK' | libTranslate) || 'Войти'}}</a>
+  <a
+    [routerLink]=""
+    *ngIf="!onlyIcon"
+    (click)="login()"
+    [class.partners_link]="loadService.config.viewType === 'PARTNERS'"
+    class="link">{{('HEADER.LOGIN_LINK' | libTranslate) || 'Войти'}}</a>
   <div *ngIf="onlyIcon" (click)="login()" class="link"></div>
 </ng-template>
