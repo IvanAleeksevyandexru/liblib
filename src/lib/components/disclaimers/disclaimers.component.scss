@@ -1,6 +1,9 @@
 .disclaimers {
   .disclaimer {
     padding: 24px 0;
+    &.hide{
+      display: none!important;
+    }
     &.main-page.page{
       display: block;
     }
