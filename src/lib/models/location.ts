@@ -35,6 +35,7 @@ export interface RegionMfc {
   region: string;
   routeCode: string;
   equeueAllowed: boolean;
-  expressDelivery: boolean;
-  active: boolean;
+  isActive: boolean;
+  getResult: boolean;
+  headStructureId: string;
 }
