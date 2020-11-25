@@ -778,6 +778,43 @@ export class ProfileService {
           ]
         };
       }
+      case this.DOCUMENT_TYPES.DISABLED_PERSON: {
+        return {
+          canDetails: true,
+          detailsPath: '/profile/health/disabled',
+          canEdit: false,
+          canDelete: false,
+          withVerificationIcon: false,
+          serviceUrl: object.serviceUrl,
+          canRepeat: true,
+          empty: {
+            title: 'Сведения об инвалидности',
+            subtitle: object.subtitle,
+          },
+          full: {
+            title: 'Сведения об инвалидности'
+          },
+          ...(object.status === 'update' ? {
+            notification: 'Идет поиск в реестре инвалидов ПФР...',
+            fields: []
+          } : {
+            fields: [
+              {
+                title: 'Серия и номер справки МСЭ',
+                value: `${object.serCertificateMSE} ${object.numCertificateMSE}`
+              },
+              {
+                title: 'Группа инвалидности',
+                value: object.disabledGroup
+              },
+              {
+                title: 'Следующее освидетельствование',
+                value: moment(object.dateOfNextCheck).format('DD.MM.YYYY')
+              }
+            ]
+          })
+        };
+      }
       default:
         return {
           empty: {}, full: {}, fields: [], canDetails: false, canEdit: false

@@ -255,6 +255,12 @@ export class ConstantsService {
       access: ['AL15', 'AL20']
     },
     {
+      id: 'health',
+      name: 'PROFILE.TABS.HEALTH',
+      url: '/profile/health',
+      access: ['AL20']
+    },
+    {
       id: 'property',
       name: 'PROFILE.TABS.PROPERTY',
       url: '/profile/property',
@@ -839,7 +845,8 @@ export class ConstantsService {
     FATHERHOOD_CERT: 'FATHERHOOD_CERT',
     MARRIED_CERT: 'MARRIED_CERT',
     DIVORCE_CERT: 'DIVORCE_CERT',
-    SELF_EMPLOYED: 'SELF_EMPLOYED'
+    SELF_EMPLOYED: 'SELF_EMPLOYED',
+    DISABLED_PERSON: 'DISABLED_PERSON'
   };
 
   public readonly FID_DOCUMENT_TYPES: DocumentType[] = [
