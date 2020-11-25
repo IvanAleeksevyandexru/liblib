@@ -20,6 +20,9 @@ export class UserAuthInterceptor implements HttpInterceptor {
         return event;
       }),
       catchError((error: HttpErrorResponse) => {
+        if(error.status === 401 && request.url.indexOf('api/pay/v1/informer/fetch') !== -1) {
+          return next.handle(request);
+        }
         // обрабатываем 401 и 624 статусы и ведем на авторизацию
         if (error.status === 401 || error.status === 624) {
           this.cookieService.remove('acc_t');

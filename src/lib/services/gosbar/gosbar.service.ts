@@ -184,16 +184,19 @@ export class GosbarService {
       }
     ];
 
-    if (this.config.partnersUrl) {
-      config.push(
-        {
-          text: 'Для партнеров',
-          url: this.config.partnersUrl,
-          userType: 'PA',
-          onItemSelect: () => {
-            window.location = this.config.partnersUrl;
-          }
-        });
+    const partnersPickerConfig =  {
+      text: 'Для партнеров',
+      url: this.config.partnersUrl,
+      userType: 'PA',
+      onItemSelect: () => {
+        window.location = this.config.partnersUrl;
+      }
+    }
+
+    if (this.config.viewType === 'PARTNERS') {
+      config.unshift(partnersPickerConfig);
+    } else if (this.config.partnersUrl) {
+      config.push(partnersPickerConfig);
     }
     return config;
   }

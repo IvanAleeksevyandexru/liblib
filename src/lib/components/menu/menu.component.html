@@ -22,12 +22,16 @@
           <div class="open-search-popup" (click)="popupSearch()"></div>
         </div>
         <div class="user-menu-wrapper">
-          <div class="login-wrapper hide show-lg">
+          <div
+            [class.partners-menu]="loadService.config.viewType === 'PARTNERS' && !user.authorized"
+            class="login-wrapper hide show-lg">
             <div class="login flex-container justify-end overflow-container">
               <lib-login [userCounter]="userCounter" (userClick)="showUserMenu(false)"></lib-login>
             </div>
           </div>
-          <a class="open-mobile-menu hide-lg"
+          <a
+            [class.partners-menu]="loadService.config.viewType === 'PARTNERS' && !user.authorized"
+            class="open-mobile-menu hide-lg"
              (click)="showUserMenu(true)">
             <lib-counter class="counter-circle" [counter]="userCounter"></lib-counter>
           </a>

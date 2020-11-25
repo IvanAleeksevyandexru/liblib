@@ -65,13 +65,18 @@ export class ModalSearchComponent implements OnInit, AfterViewInit {
     }
     if (item.originalItem.favicon) {
       return `<div class="item-wrapper">
-        <div class="icon" style="background-image: url(${item.originalItem.favicon});"></div>
-        <div class="suggestion with-icon">${item.text}</div>
-      </div>`;
+                <div class="icon" style="background-image: url(${item.originalItem.favicon});"></div>
+                <div class="suggestion with-icon">${item.text}</div>
+              </div>`;
+    } if (item.originalItem.name) {
+      return `<div class="item-wrapper">
+                <div *ngIf="item.originalItem.image" class="icon" style="background-image: url(${item.originalItem.image});"></div>
+                <div class="suggestion with-icon with-original-name">${item.originalItem.name}</div>
+              </div>`;
     } else {
       return `<div class="item-wrapper">
-  <div class="suggestion">${item.text}</div>
-  </div>`;
+                    <div class="suggestion">${item.text}</div>
+              </div>`;
     }
   }
 
