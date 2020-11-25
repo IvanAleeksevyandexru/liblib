@@ -113,7 +113,10 @@ export class TabsComponent implements OnInit, OnChanges, OnDestroy {
         }
       };
       if (selectedTab.metric && this.yaMetricService) {
-        this.yaMetricService.callReachGoalParamsAsMap(selectedTab.metric).then(proceed);
+        this.yaMetricService.callReachGoalParamsAsMap(selectedTab.metric);
+        setTimeout(() => {
+          proceed();
+        }, 200)
       } else {
         proceed();
       }
