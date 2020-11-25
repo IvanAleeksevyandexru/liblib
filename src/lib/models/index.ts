@@ -49,6 +49,7 @@ export * from './security';
 export * from './service';
 export * from './setting';
 export * from './slider-image';
+export * from './smu';
 export * from './social';
 export * from './tabs';
 export * from './throbber';

@@ -129,6 +129,7 @@ export interface InsidePassport {
   currentServiceTargetExtId: string;
   epguPassport: false;
   passportType: string;
+  hrTitle: string;
   shortTitle: string;
   concentratorHabSimplePassports: InsidePassportConcentratorHabSimplePassports;
   services: InsideServices[];
