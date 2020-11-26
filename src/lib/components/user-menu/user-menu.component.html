@@ -51,7 +51,7 @@
         </ul>
         <ul class="links-mobile" *ngIf="!user.isKid">
           <li class="item" *ngFor="let link of links">
-            <a [href]="" (click)="menuItemClick(link.url, link.mnemonic)">{{link.title | appTranslate}}</a>
+            <a [href]="" (click)="menuItemClick(link)">{{link.title | appTranslate}}</a>
           </li>
         </ul>
         <ul class="links-mobile" *ngIf="!user.isKid">
@@ -102,7 +102,7 @@
 </ng-template>
 
 <ng-template #menuTabs>
-  <ul class="user-menu-tabs" *ngIf="mainTabs?.tabs?.length">
+  <ul class="user-menu-tabs" *ngIf="mainTabs?.tabs?.length && showMenuTabs()">
     <li class="item" *ngFor="let tab of mainTabs.tabs">
       <ng-container *ngIf="tab.url">
         <a (click)="selectTab(tab)" routerLink="{{tab.url}}"

@@ -243,3 +243,10 @@ export class GetServiceRequest implements IGetServiceRequest {
     this.isManual = isManual || false;
   }
 }
+
+export interface ServicePermission {
+  code: string;
+  hint: string;
+  internalCode: string;
+  message: string;
+}

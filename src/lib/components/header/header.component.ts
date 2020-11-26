@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CountersService} from '../../services/counters/counters.service';
 import { LoadService } from '../../services/load/load.service';
 import { MenuService } from '../../services/menu/menu.service';
-import { UserMenuState, CounterTarget } from '../../models';
+import { FeedsComponent } from '../feeds/feeds.component';
+import { UserMenuState, CounterTarget, MenuLink } from '../../models';
 
 @Component({
   selector: 'lib-header',
@@ -11,7 +12,10 @@ import { UserMenuState, CounterTarget } from '../../models';
 })
 export class HeaderComponent implements OnInit {
 
+  @ViewChild(FeedsComponent) public feedsComponent: FeedsComponent;
+
   @Input() public comingSoon?: boolean;
+  @Input() public links?: MenuLink[] = [];
 
   @Output() public backClick = new EventEmitter<any>();
 
@@ -63,5 +67,4 @@ export class HeaderComponent implements OnInit {
   public backClickHandler(): void {
     this.backClick.emit();
   }
-
 }

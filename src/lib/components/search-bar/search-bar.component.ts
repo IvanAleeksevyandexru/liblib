@@ -80,6 +80,8 @@ export class SearchBarComponent
   @Input() public searchByForcing = true;
   // позволяет отменить срабатывание поиска по текстовому вводу, только по ентеру и иконке
   @Input() public searchByTextInput = !HelperService.isTouchDevice();
+  // при слабом коннекте запускать поиск последнего введенного значения #dadata
+  @Input() public searchLastValue = false;
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
@@ -101,6 +103,7 @@ export class SearchBarComponent
   private querySubscription = this.refreshDebouncedSubscription();
   private searchQueue: Array<string> = [];
   private forcedSearchPrevent = false;
+  private isIos = navigator.userAgent.match(/iPhone|iPad|iPod/i);
 
   private onTouchedCallback: () => void;
   protected commit(value: string) {}
@@ -181,7 +184,7 @@ export class SearchBarComponent
     if (forcedWithMagnifyingGlass) {
       this.returnFocus();
     }
-    if (this.disabled || this.isBlocked() || this.searchOnlyIfFocused && !this.focused) {
+    if (this.disabled || this.isBlocked() || this.searchOnlyIfFocused && !this.focused && !this.searchLastValue) {
       this.cancelSearch();
       return;
     } else if (this.suggestion && forcedWithKey) {
@@ -242,6 +245,24 @@ export class SearchBarComponent
     } else if (this.searchSyncControl === SearchSyncControl.BLOCK) {
       // маловероятная ситуация программного изменения значения в BLOCK режиме во время поиска
       this.searchQueue = [search];
+    }
+  }
+
+  public putCursorAtEnd() {
+    const input = this.inputElement.nativeElement;
+    if (!this.isIos && input.classList.contains('focused')) {
+      input.blur();
+    }
+    if (input.setSelectionRange) {
+      const len = input.value.length * 2;
+      setTimeout(() => {
+        input.setSelectionRange(len, len);
+        input.focus();
+      }, 1)
+    } else {
+      const val = input.value;
+      input.value = '';
+      input.value = val;
     }
   }
 
@@ -344,7 +365,7 @@ export class SearchBarComponent
       this.querySubscription.unsubscribe();
     }
     return this.queryDebounce.pipe(debounceTime(this.queryTimeout)).subscribe((search: ScheduledSearch) => {
-      if (search.token === this.insureSearchActiveToken && this.searchByTextInput) {
+      if ((this.searchLastValue || search.token === this.insureSearchActiveToken) && this.searchByTextInput) {
         this.runOrPostponeSearch(search.query);
       }
     });

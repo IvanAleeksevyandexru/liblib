@@ -5,7 +5,8 @@ import { Coords, Region, RegionSuggestion } from '../../models/location';
 import { LookupProvider } from '../../models/dropdown.model';
 import { PlatformLocation } from '@angular/common';
 import { CountersService } from '../counters/counters.service';
-import { Observable } from 'rxjs';
+import { of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,8 @@ export class LocationService {
     latitude: 0,
     longitude: 0
   };
+
+  private savedDetectRegion: Region;
 
   constructor(
     private http: HttpClient,
@@ -52,9 +55,16 @@ export class LocationService {
   }
 
   public detectRegion() {
+    if (this.savedDetectRegion) {
+      return of(this.savedDetectRegion);
+    }
     return this.http.get<Region>(`${this.loadService.config.nsiApiUrl}epgu/detectRegion?_=${Math.random()}`, {
       withCredentials: true
-    });
+    }).pipe(
+      tap((response) => {
+        this.savedDetectRegion = response;
+      })
+    );
   }
 
   public getCurrentLocation(params: any) {

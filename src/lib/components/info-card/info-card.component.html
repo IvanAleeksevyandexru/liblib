@@ -78,7 +78,7 @@
       <a *ngIf="showDetailButton()"
          class="link-plain"
          [routerLink]="object.detailsPath"
-      >{{!isNotificationShow() ? 'Подробнее' : 'Редактировать'}}</a>
+      >{{!isNotificationShow() || object.type === 'FRGN_PASS' || isExpiredDocDetails() ? 'Подробнее' : 'Редактировать'}}</a>
       <a *ngIf="object.canDetails && !object.detailsPath" (click)="toggleForm()">Подробнее</a>
       <a *ngIf="state === 'process'" class="link-plain add-link" (click)="cancelReq()">Отменить
         проверку</a>

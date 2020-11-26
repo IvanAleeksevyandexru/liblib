@@ -1,8 +1,8 @@
 <div class="search-field"
-    [ngClass]="[contextClass ? contextClass : '']"
-    [class.magnifying-glass-or-throbber-shown]="showMagnifyingGlass || searching"
-    [class.clear-shown]="clearable && query"
-    [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+     [ngClass]="[contextClass ? contextClass : '']"
+     [class.magnifying-glass-or-throbber-shown]="showMagnifyingGlass || searching"
+     [class.clear-shown]="clearable && query"
+     [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <label [attr.for]="id" class="label-search-input">{{placeholder}}</label>
   <input #input
          type="text"
@@ -35,10 +35,6 @@
     <div class="static-content-container">
       <ng-content></ng-content>
     </div>
-  </div>
-  <div class="suggestion-container" *ngIf="suggestion && focused && !forceShowStaticContent">
-    <div class="suggestion-spacer">{{query}}</div>
-    <div class="suggestion" [innerHTML]="suggestion | safeHtml"></div>
   </div>
   <div class="search-clear" [hidden]="disabled || !clearable || !query" [ngClass]="{'align-right': !showMagnifyingGlass && !searching}" (click)="clearSearch($event)"></div>
   <div class="search-go" [hidden]="!showMagnifyingGlass || searching" (click)="runOrPostponeSearch(query, false, true)" [ngClass]="{disabled: disabled}"></div>
