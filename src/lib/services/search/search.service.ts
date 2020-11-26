@@ -44,10 +44,23 @@ export class SearchService implements LookupProvider<SimpleSputnikSuggest> {
   }
 
   private handleSputnikResults(results: SearchSputnikSuggests): SimpleSputnikSuggest[] {
-    function makeTitleWithIconClass(title: string, category: string): string {
+    function makeTitleWithIconClass(title: string, category: string, isChild: boolean): string {
       const categoriesWithIcon = {service: 'services', structure: 'departments', suggest: 'suggests'};
-      const className: string = categoriesWithIcon[category] || 'info';
+      const className: string = isChild ? 'child' : (categoriesWithIcon[category] || 'info');
       return `<div class="icon ${className}">${title}</div>`;
+    }
+
+    function handleItems(items: SimpleSputnikSuggest[], category: string, isChilds?: boolean): SimpleSputnikSuggest[] {
+      const result = [];
+      items.forEach(item => {
+        item.name = makeTitleWithIconClass(item.name, category, isChilds);
+        result.push(item);
+        if (item.children?.length) {
+          const childs = handleItems(item.children, category, true);
+          result.push(...childs);
+        }
+      });
+      return result;
     }
 
     const categories: string[] = ['service', 'help', 'situation', 'structure', 'other', 'suggest'];
@@ -55,10 +68,9 @@ export class SearchService implements LookupProvider<SimpleSputnikSuggest> {
     categories.forEach(category => {
       const resultInCategory = results[category];
       if (resultInCategory?.length) {
-        suggestions = suggestions.concat(resultInCategory.slice(0, 3).map(item => {
-          item.name = makeTitleWithIconClass(item.name, category);
-          return item;
-        }));
+        const items = resultInCategory.slice(0, 3);
+        const result = handleItems(items, category);
+        suggestions = suggestions.concat(result);
       }
     });
     return suggestions;

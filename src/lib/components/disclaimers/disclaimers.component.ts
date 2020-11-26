@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DisclaimerService } from '../../services/disclaimers/disclaimers.service';
 import { CookieService } from '../../services/cookie/cookie.service';
 import { LoadService } from '../../services/load/load.service';
@@ -12,7 +12,10 @@ import { Disclaimer, DisclaimerInterface } from '../../models/disclaimer.model';
 })
 export class DisclaimerComponent implements OnInit {
 
-  public disclaimerPack: [Disclaimer[], Disclaimer[]] = [[], []];
+  @Input() isPortal = false;
+  @Input() isMainPage = false;
+
+  public disclaimerPack: [Disclaimer[], Disclaimer[], Disclaimer[]] = [[], [], []];
   private user = this.loadService.user;
   private config = this.loadService.config;
   public emailsFormGroup: FormGroup[] = [];
@@ -27,24 +30,36 @@ export class DisclaimerComponent implements OnInit {
 
   public ngOnInit() {
 
+    if(this.isPortal) {
+      this.disclaimerService.disclaimersMainPage.subscribe((data: DisclaimerInterface[]) => {
+        const newData: Disclaimer[] = data.map((el: DisclaimerInterface): Disclaimer => {
+          return new Disclaimer(el);
+        });
+        this.disclaimerPack[0] = newData;
+        this.checkDisclaimers(this.disclaimerPack[0]);
+      });
+    }
+
     // Получаем общие дисклеймеры. Они должны быть всегда первыми
     this.disclaimerService.disclaimersMain.subscribe((data: DisclaimerInterface[]) => {
       const newData: Disclaimer[] = data.map((el: DisclaimerInterface): Disclaimer => {
         return new Disclaimer(el);
       });
-      this.disclaimerPack[0] = newData;
-      this.checkDisclaimers(this.disclaimerPack[0]);
+      let mainDisclaimerPosition = this.isPortal ? 1: 0;
+      this.disclaimerPack[mainDisclaimerPosition] = newData;
+      this.checkDisclaimers(this.disclaimerPack[mainDisclaimerPosition]);
     });
 
     // Получаем доп.дисклеймеры
     this.disclaimerService.disclaimersAdditional.subscribe((data: DisclaimerInterface[]) => {
+      let additionalDisclaimerPosition = this.isPortal ? 2: 1;
       if (data === null) { // при очистке срабатывает
-        this.disclaimerPack[1] = [];
+        this.disclaimerPack[additionalDisclaimerPosition] = [];
       } else if (data.length) {
         data.forEach((elem: DisclaimerInterface) => {
-          this.disclaimerPack[1].push(new Disclaimer(elem));
+          this.disclaimerPack[additionalDisclaimerPosition].push(new Disclaimer(elem));
         });
-        this.checkDisclaimers(this.disclaimerPack[1]);
+        this.checkDisclaimers(this.disclaimerPack[additionalDisclaimerPosition]);
       }
     });
 
@@ -102,6 +117,7 @@ export class DisclaimerComponent implements OnInit {
     if (!this.havePriority && priority) { // не будет вызываться при закрытии обычных дисклеймеров
       this.checkDisclaimers(this.disclaimerPack[0]);
       this.checkDisclaimers(this.disclaimerPack[1]);
+      this.checkDisclaimers(this.disclaimerPack[2]);
     }
   }
 
