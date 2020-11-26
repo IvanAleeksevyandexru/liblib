@@ -63,6 +63,7 @@ export class TabsComponent implements OnInit, OnChanges, OnDestroy {
   public showMobTabs = false;
   private tabsSubscription: Subscription = null;
   private activeTabSubscription: Subscription = null;
+  public isMozilla = navigator.userAgent.match(/Mozilla/i);
 
   public ngOnInit() {
     if (this.control === ModelControl.LOCAL) {
@@ -113,10 +114,14 @@ export class TabsComponent implements OnInit, OnChanges, OnDestroy {
         }
       };
       if (selectedTab.metric && this.yaMetricService) {
-        this.yaMetricService.callReachGoalParamsAsMap(selectedTab.metric);
-        setTimeout(() => {
-          proceed();
-        }, 200)
+        if (this.isMozilla) {
+          this.yaMetricService.callReachGoalParamsAsMap(selectedTab.metric);
+          setTimeout(() => {
+            proceed();
+          }, 100)
+        } else {
+          this.yaMetricService.callReachGoalParamsAsMap(selectedTab.metric).then(proceed)
+        }
       } else {
         proceed();
       }
