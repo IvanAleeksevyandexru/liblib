@@ -267,6 +267,12 @@ export class ConstantsService {
       access: ['AL20']
     },
     {
+      id: 'privileges',
+      name: 'PROFILE.TABS.PRIVILEGES',
+      url: '/profile/privileges',
+      access: ['AL20']
+    },
+    {
       id: 'taxes',
       name: 'PROFILE.TABS.TAXES',
       url: '/profile/taxes',
