@@ -7,7 +7,7 @@
     <lib-autocomplete #autocomplete
                       contextClass="dadata-autocomplete"
                       [tabIndex]="0"
-                      [invalid]="!!errorCodes.length || form.invalid || invalid"
+                      [invalid]="!!errorCodes.length || form.invalid || (invalid && !normalizeInProcess)"
                       [validationShowOn]="validationShowOn"
                       [progressive]="true"
                       [disabled]="disabled"

@@ -314,8 +314,8 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
         this.searching = this.partialsLoading = false;
         if (this.insureSearchActiveToken === activeToken) {
           this.processSuggestions(rootSearch, suggestions, callback);
-          this.fetched.emit();
         }
+        this.fetched.emit();
         this.changeDetector.detectChanges();
       }, e => {
         console.error(e);
