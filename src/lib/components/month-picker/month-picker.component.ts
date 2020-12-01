@@ -2,17 +2,22 @@ import {
   Component, ViewChild, Input, Output, ElementRef, EventEmitter, SimpleChanges, forwardRef,
   OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, Optional, Host, SkipSelf, ChangeDetectorRef
 } from '@angular/core';
-import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  AbstractControl,
+  ControlContainer,
+  ControlValueAccessor,
+  FormControl,
+  NG_VALUE_ACCESSOR
+} from '@angular/forms';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
-import { FocusManager, Focusable } from '../../services/focus/focus.manager';
+import { Focusable, FocusManager } from '../../services/focus/focus.manager';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
-import { DatesHelperService } from '../../services/dates-helper/dates-helper.service';
 import { DragDropBinding, DragDropType, DragDropDirection, DragDropOffsetType, DragState } from '../../models/drag-drop.model';
 import { DragDropManager } from '../../services/drag-drop/drag-drop.manager';
-import { AnimationBuilder, AnimationPlayer, style, animate } from '@angular/animations';
+import { animate, AnimationBuilder, style } from '@angular/animations';
 import { Width } from '../../models/width-height';
 import { Align } from '../../models/common-enums';
-import { MonthYear, MONTHS_CODES } from '../../models/date-time.model';
+import { MONTHS_CODES, MonthYear } from '../../models/date-time.model';
 import * as moment_ from 'moment';
 
 const moment = moment_;
@@ -51,6 +56,7 @@ export class MonthPickerComponent
     protected animationBuilder: AnimationBuilder,
     @Optional() @Host() @SkipSelf() protected controlContainer: ControlContainer) {}
 
+  @Input() public formControl?: FormControl;
   @Input() public formControlName?: string;
   @Input() public contextClass?: string;  // класс разметки для deep стилей
   @Input() public tabIndex?: string | number;
@@ -60,6 +66,7 @@ export class MonthPickerComponent
   @Input() public width?: Width | string;
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
+  @Input() public hideTillNowAvailable?: boolean;
 
   @Input() public align: Align | string = Align.RIGHT; // выравнивание панели если панель не равна по ширине инпуту
   @Input() public minMonth: MonthYear = MonthYear.fromDate(moment().startOf('year').toDate());
@@ -70,6 +77,7 @@ export class MonthPickerComponent
   @Output() public blur = new EventEmitter<any>();
   @Output() public changed = new EventEmitter<any>();
 
+  public dateMask = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
   public focused = false;
   public touched = false;
   public expanded = false;
@@ -90,6 +98,8 @@ export class MonthPickerComponent
   public maximum: MonthYear;
   public dragDropDescriptor: DragDropBinding = null;
   public Align = Align;
+  public selectDate: string;
+
   @ViewChild('focusableInput') protected inputElement: ElementRef<HTMLInputElement>;
   @ViewChild('yearsFeed') protected yearsFeed: ElementRef;
   @ViewChild('yearsContainer') protected yearsContainer: ElementRef;
@@ -123,14 +133,83 @@ export class MonthPickerComponent
 
   public writeValue(value: MonthYear | Date | null) {
     if (value && value instanceof MonthYear) {
+      const monthNum = value.month + 1;
+      const month = monthNum < 10 ? ('0' + monthNum) : monthNum;
+
       this.activeMonthYear = value;
+      this.selectDate = month + '.' + value.year;
+
     } else if (value && value instanceof Date) {
       this.activeMonthYear = MonthYear.fromDate(value);
+      this.selectDate = (value.getMonth() + 1) + '.' + value.getFullYear();
+
     } else {
       this.activeMonthYear = null;
+      this.selectDate = '';
+      this.monthes.forEach(item => item.selected = false);
     }
     this.check();
     this.changeDetection.detectChanges();
+  }
+
+  public changeDate(str): void {
+    if (str) {
+      const dateArr = str.split('.');
+      let month = parseInt(dateArr[0], 10) - 1;
+      let year = parseInt(dateArr[1], 10);
+
+      if (typeof month === 'number' && month >= 0 && month < 12 && year && year.toString().length === 4) {
+        const {month: m, year: y} = this.processFullDate(month, year);
+        month = m;
+        year = y;
+      } else if (this.formControl) {
+        this.formControl.setErrors({incorrectDate: true});
+      }
+
+      if (typeof month === 'number' && month >= 0 && month < 12) {
+        this.monthes.forEach((item: Month) => {
+          item.selected = item.number === month && !item.disabled;
+        });
+      }
+
+      if (year && year.toString().length === 4) {
+        this.years.forEach((item: Year) => {
+          item.selected = item.number === year && !item.disabled;
+        });
+      }
+    } else {
+      this.writeValue(null);
+      if (this.formControl) {
+        this.formControl.setValue(null);
+      }
+    }
+  }
+
+  private processFullDate(month: number, year: number): MonthYear {
+    const {year: minYear, month: minMonth} = this.minimum;
+    const {year: maxYear, month: maxMonth} = this.maximum;
+    const my = new MonthYear(month, year);
+    if (my.year > maxYear) {
+      my.year = maxYear;
+    }
+    if (my.year === maxYear && my.month > maxMonth) {
+      my.month = maxMonth;
+    }
+    if (my.year < minYear) {
+      my.year = minYear;
+    }
+    if (my.year === minYear && my.month < minMonth) {
+      my.month = minMonth;
+    }
+    const selected = this.years.find(item => item.number === my.year);
+    this.selectYear(selected, false);
+
+    this.writeValue(my);
+    if (this.formControl) {
+      this.formControl.setValue(my);
+      this.formControl.setErrors(null);
+    }
+    return my;
   }
 
   public clearValue(e: Event) {
@@ -167,7 +246,12 @@ export class MonthPickerComponent
 
   public handleBlur() {
     this.focused = false;
-    this.closeDropdown();
+    setTimeout(() => {
+      if (this.focused) {
+        return;
+      }
+      this.closeDropdown();
+    }, 100);
     this.check();
     this.changeDetection.detectChanges();
     this.blur.emit();
@@ -204,9 +288,16 @@ export class MonthPickerComponent
   }
 
   public commitAndClose(value: MonthYear) {
+    const monthNum = value.month + 1;
+    const month = monthNum < 10 ? ('0' + monthNum) : monthNum;
     this.activeMonthYear = value;
     this.selectedYearChanged = false;
     this.changeDetection.detectChanges();
+    this.changed.emit(this.activeMonthYear);
+    if (this.formControl) {
+      this.formControl.setValue(this.activeMonthYear);
+    }
+    this.selectDate = month + '.' + this.activeMonthYear.year;
     setTimeout(() => this.closeDropdown(), DELAY);
   }
 
@@ -275,7 +366,7 @@ export class MonthPickerComponent
     this.monthes.forEach((month: Month) => {
       const monthYear = new MonthYear(month.number, selectedYear);
       month.disabled = monthYear.firstDay() < this.minimum.firstDay() || monthYear.lastDay() > this.maximum.lastDay();
-      month.selected = MonthYear.equals(monthYear, this.activeMonthYear);
+      month.selected = this.activeMonthYear ? monthYear.month === this.activeMonthYear.month : false;
     });
     this.changeDetection.detectChanges();
   }
@@ -367,6 +458,6 @@ export class MonthPickerComponent
   }
 
   public check() {
-    this.invalidDisplayed = ValidationHelper.checkValidation(this, {empty: !!this.activeMonthYear});
+    this.invalidDisplayed = ValidationHelper.checkValidation(this, {required: !!this.selectDate || this.selectDate?.indexOf('_') > -1});
   }
 }

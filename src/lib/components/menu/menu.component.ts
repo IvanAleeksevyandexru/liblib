@@ -1,4 +1,15 @@
-import { AfterViewInit, Component, HostListener, Input, isDevMode, NgModuleRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  isDevMode,
+  NgModuleRef,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { MenuService } from '../../services/menu/menu.service';
 import { LoadService } from '../../services/load/load.service';
 import { ModalService } from '../../services/modal/modal.service';
@@ -8,7 +19,6 @@ import { MenuLink } from '../../models/menu-link';
 import { AuthService } from '../../services/auth/auth.service';
 import { UserMenuState } from '../../models/user-menu';
 import { CounterData } from '../../models/counter';
-import { UserAgentService } from '../../services/user-agent/user-agent.service';
 import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -24,9 +34,16 @@ export class MenuComponent implements OnInit, AfterViewInit {
 
   @Input() public userCounter: CounterData;
   @Input() public showLinks = true;
+  @Input() public newView = false;
+  @Input() public background: string;
+  @Input() public showBorder = false;
+  @Input() public rolesListEnabled = false;
+  @Input() public searchSputnikEnabled = false;
+  @Input() public links: MenuLink[] = [];
+
+  @Output() public clickMenuItem = new EventEmitter<any>();
 
   public categories: Category[] = [];
-  public links: MenuLink[] = [];
   public showCategories = false;
   public emptyCategories = true;
   public userMenuState: UserMenuState;
@@ -35,6 +52,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
   public user: any;
   public isFixed = false;
   public showMenuBtns = this.loadService.config.showMenuBtns;
+  public isMainPage = this.checkMainPage();
 
   @ViewChild('menu') public menu;
 
@@ -42,11 +60,13 @@ export class MenuComponent implements OnInit, AfterViewInit {
     if (window.pageYOffset > this.menuOffset + this.menu.nativeElement.clientHeight && !this.userMenuState.isMobileView) {
       if (!this.menu.nativeElement.classList.contains('fixed') || !document.body.classList.contains('menu-fixed')) {
         this.menu.nativeElement.classList.add('fixed');
+        this.menu.nativeElement.classList.remove('white-field');
         document.body.classList.add('menu-fixed');
       }
       this.isFixed = true;
     } else {
       this.menu.nativeElement.classList.remove('fixed');
+      this.menu.nativeElement.classList.add('white-field');
       document.body.classList.remove('menu-fixed');
       this.isFixed = false;
     }
@@ -73,7 +93,9 @@ export class MenuComponent implements OnInit, AfterViewInit {
   ) { }
 
   public ngOnInit() {
-    this.links = this.menuService.getLinks();
+    if (!this.links.length) {
+      this.links = this.menuService.getLinks();
+    }
     this.user = this.loadService.user;
     this.initUserMenuState();
   }
@@ -121,6 +143,11 @@ export class MenuComponent implements OnInit, AfterViewInit {
       active: true,
       isMobileView
     } as UserMenuState;
+
+    if (isMobileView) {
+      const html = document.getElementsByTagName('html')[0];
+      html.classList.add('disable-scroll');
+    }
   }
 
   public initUserMenuState(): void {
@@ -130,8 +157,17 @@ export class MenuComponent implements OnInit, AfterViewInit {
     } as UserMenuState;
   }
 
-  public redirect(event, url): void {
+  public redirect(event: Event, link: MenuLink): void {
+    if (link.handler) {
+      event.stopPropagation();
+      event.preventDefault();
+      link.handler(link);
+      return;
+    }
+
+    const url = link.url;
     const isAbsUrl = /^(http|\/\/)/.test(url);
+
     if (url && this.translate.currentLang !== 'ru') {
       event.stopPropagation();
       event.preventDefault();
@@ -140,6 +176,10 @@ export class MenuComponent implements OnInit, AfterViewInit {
       event.stopPropagation();
       event.preventDefault();
       this.router.navigate([url]);
+    } else {
+      event.stopPropagation();
+      event.preventDefault();
+      location.href = url;
     }
   }
 
@@ -147,6 +187,13 @@ export class MenuComponent implements OnInit, AfterViewInit {
     this.modalService.popupInject(LangWarnModalComponent, this.moduleRef, {
       url, isAbs
     });
+  }
+
+  private checkMainPage() {
+    if (this.loadService.attributes.appContext === 'PORTAL') {
+      return location.pathname === '/';
+    }
+    return true;
   }
 
 }

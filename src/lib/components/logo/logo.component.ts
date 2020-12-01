@@ -8,6 +8,7 @@ import { LoadService } from '../../services/load/load.service';
 })
 export class LogoComponent implements OnInit {
   public url: string;
+  public viewType = this.loadService.config.viewType;
 
   constructor(private loadService: LoadService) { }
 

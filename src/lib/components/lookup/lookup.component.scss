@@ -1,8 +1,15 @@
 @import '../autocomplete/autocomplete.component.scss';
 .lookup {
   position: relative;
+  .static-list {
+    position: static !important;
+
+    &.lookup-list-container {
+      max-height: none;
+    }
+  }
   .lookup-field {
-    height: 48px;
+    height: 52px;
     &.expanded {
       ::ng-deep .search-field {
         .search-input, .static-content {
@@ -88,6 +95,54 @@
     }
     &.hidden {
       display: none;
+    }
+  }
+
+  .lookup-list-container .lookup-list-area {
+    ::ng-deep {
+      .lookup-item .item-container .lookup-item-text {
+        &.highlight-part {
+          color: #0D4CD3;
+        }
+      }
+    }
+  }
+
+  &.menu-search {
+    .lookup-list-container {
+      border-color: #ffffff;
+      max-height: 450px;
+      ::ng-deep .ps {
+        max-height: 400px;
+      }
+    }
+  }
+}
+
+@media all and (max-width: 767px) {
+  .static-list {
+    border-top: 1px solid #e1e1e1;
+    .lookup-item {
+      .item-container {
+        border: none !important;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 768px) and (max-width: 1140px) {
+  .static-list {
+    position: static !important;
+    border-top: 1px solid #e1e1e1;
+
+    .lookup-list-container {
+      max-height: none !important;
+    }
+
+    .lookup-item {
+      .item-container {
+        border: none !important;
+      }
     }
   }
 }

@@ -8,6 +8,8 @@ import { SocialShareService } from '../../services/social-share/social-share.ser
 })
 export class SocialShareComponent implements OnInit {
   @Input() public url?: string;
+  @Input() public isNewDesign = false;
+  @Input() public isNewDesignDisabled = true;
 
   constructor(
     private socialShareService: SocialShareService
@@ -17,6 +19,9 @@ export class SocialShareComponent implements OnInit {
   }
 
   public share(channel: 'vkontakte' | 'facebook' | 'odnoklassniki' | 'twitter') {
+    if (this.isNewDesign && this.isNewDesignDisabled) {
+      return;
+    }
     const location = (window as any).location.href;
 
     switch (channel) {

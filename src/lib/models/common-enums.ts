@@ -98,8 +98,3 @@ export enum ModelControl {
   LOCAL = 'local', // локальное инпут свойство
   SERVICE = 'service' // глобальный сервис
 }
-
-
-
-
-

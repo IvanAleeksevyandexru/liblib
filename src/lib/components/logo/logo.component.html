@@ -1,3 +1,8 @@
 <div class="logo-wrapper">
-  <a href="{{url}}" class="logo"></a>
+  <ng-container *ngIf="viewType === 'PORTAL'; else otherViewType">
+    <a href="/" class="logo">Главная</a>
+  </ng-container>
+  <ng-template #otherViewType>
+    <a href="{{url}}" class="logo">Главная</a>
+  </ng-template>
 </div>

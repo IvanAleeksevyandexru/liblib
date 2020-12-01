@@ -1,9 +1,82 @@
-<lib-throbber *ngIf="feedsIsLoading" [defaultHeaders]="true"></lib-throbber>
-<a [routerLink]="openDetails(feed)"
-   (click)="onFeedClick($event, feed)"
-   class="feed-item"
-   [ngClass]="setFeedItemCls(feed)"
-   *ngFor="let feed of feeds ; trackBy: trackById; let i = index; ">
+<lib-throbber *ngIf="feedsIsLoading"
+              [size]="isHeader ? 'throbber-small' : ''"
+              [defaultHeaders]="!isHeader"></lib-throbber>
+
+<ng-container *ngIf="isLk">
+  <a [routerLink]="openDetails(feed)"
+     (click)="onFeedClick($event, feed)"
+     class="feed-item"
+     [ngClass]="setFeedItemCls(feed)"
+     *ngFor="let feed of feeds ; trackBy: trackById; let i = index; ">
+
+    <ng-container
+      [ngTemplateOutlet]="feedTemplate"
+      [ngTemplateOutletContext]="{feed: feed, i: i}"></ng-container>
+  </a>
+</ng-container>
+
+<ng-container *ngIf="!isLk">
+  <a [href]="openDetails(feed)"
+     (click)="onFeedClick($event, feed)"
+     class="feed-item"
+     [ngClass]="setFeedItemCls(feed)"
+     *ngFor="let feed of feeds ; trackBy: trackById; let i = index; ">
+
+    <ng-container
+      [ngTemplateOutlet]="feedTemplate"
+      [ngTemplateOutletContext]="{feed: feed, i: i}"></ng-container>
+
+  </a>
+</ng-container>
+
+
+<div *ngIf="enableShowMoreButton()" [ngClass]="{ 'mt-32': !isHeader, 'mt-16 text-center': isHeader }">
+
+    <div class="mb-16" *ngIf="autoload && hasMore">
+      <lib-loader></lib-loader>
+    </div>
+
+    <a *ngIf="(page === 'overview' || isHeader) else additionalFeeds"
+       class="small-text blue"
+       (click)="onShowMoreClick($event)">
+      {{'FEEDS.EVENTS_ALL' | libTranslate}}
+    </a>
+
+    <ng-template #additionalFeeds>
+      <span *ngIf="hasMore && !isHeader" class="small-text blue link-underline" (click)="showMore($event)" >Показать еще</span>
+    </ng-template>
+</div>
+
+<lib-throbber *ngIf="addFeedsIsLoading" [defaultHeaders]="true"></lib-throbber>
+
+<div *ngIf="isFeedsEmpty()" [ngClass]="{'empty-feeds-overview': page === 'overview'}" class="empty-feeds text-plain black">
+  <div class="title">
+    <ng-container *ngIf="page === 'events'; else otherTitle">
+      {{'FEEDS.EMPTY.EVENTS.TITLE' | libTranslate}}
+    </ng-container>
+    <ng-template #otherTitle>
+      {{'FEEDS.EMPTY.' + (getIsArchive() ? 'ARCHIVE' : (defaultTypesSelected ? 'DEFAULT' : selectedTypes)) + '.TITLE' | libTranslate}}
+    </ng-template>
+  </div>
+  <div class="subtitle">
+
+    <ng-container *ngIf="page === 'events'; else otherSubtitle">
+      {{'FEEDS.EMPTY.EVENTS.SUBTITLE' | libTranslate}}
+    </ng-container>
+    <ng-template #otherSubtitle>
+      {{'FEEDS.EMPTY.' + (getIsArchive() ? 'ARCHIVE' : (defaultTypesSelected ? 'DEFAULT' : selectedTypes)) + '.SUBTITLE' | libTranslate}}
+    </ng-template>
+      <p class="mt-32" *ngIf="!defaultTypesSelected && page !== 'events'">
+        <lib-button size="lg" (click)="clickButton()">
+          {{'FEEDS.EMPTY.' + (getIsArchive() ? 'ARCHIVE' : (defaultTypesSelected ? 'DEFAULT' : selectedTypes)) + '.BUTTON' | libTranslate}}
+        </lib-button>
+      </p>
+<!--    </ng-template>-->
+  </div>
+</div>
+
+
+<ng-template #feedTemplate let-feed="feed" let-i="i">
   <div class="flex-container-md flex-container-lg align-items-center-lg feed-item-content">
     <div class="feed-link flex-container">
       <lib-feed-icon [ipshStatus]="getIpshStatus(feed)" [title]="feed.title" [status]="feed.status"></lib-feed-icon>
@@ -24,7 +97,7 @@
             </div>
           </div>
           <ng-template #showAnotherFeeds>
-            <ng-container *ngIf="(feed.feedType !== 'DRAFT' && feed.feedType !== 'PARTNERS_DRAFT') else draftFeed">
+            <ng-container *ngIf="!['DRAFT', 'PARTNERS_DRAFT', 'KND_APPEAL_DRAFT'].includes(feed.feedType) else draftFeed">
               <ng-container *ngIf="feed.feedType !== 'FEEDBACK' else feedbackFeed">
                 <div class="flex-container">
                   <div *ngIf="markAsFlag(feed)" class="red-flag"></div>
@@ -58,7 +131,7 @@
         </div>
       </div>
     </div>
-    <div class="flex-1-0-md flex-1-0-lg remove-feed-wrap">
+    <div class="flex-1-0-md flex-1-0-lg remove-feed-wrap" *ngIf="!isHeader">
       <div class="feed-item-controls mt-8">
         <div class="flex-container feed-item-controls-buttons align-items-center">
           <div *ngIf="isUpdated(feed)" class="updated">
@@ -85,51 +158,7 @@
       </lib-snippets>
     </div>
   </ng-container>
-</a>
-
-<div *ngIf="enableShowMoreButton()" class="show-more">
-  <a *ngIf="page === 'overview' else additionalFeeds" class="small-text blue" (click)="onShowMoreClick($event)" routerLink="/notifications">{{'FEEDS.VIEW_ALL' | libTranslate}}</a>
-  <ng-template #additionalFeeds>
-    <span *ngIf="hasMore" class="small-text blue link-underline" (click)="showMore($event)" >Показать еще</span>
-  </ng-template>
-</div>
-
-<lib-throbber *ngIf="addFeedsIsLoading" [defaultHeaders]="true"></lib-throbber>
-
-<div *ngIf="isFeedsEmpty()" [ngClass]="{'empty-feeds-overview': page === 'overview'}" class="empty-feeds text-plain black">
-  <div class="title">
-    <ng-container *ngIf="page === 'events'; else otherTitle">
-      {{'FEEDS.EMPTY.EVENTS.TITLE' | libTranslate}}
-    </ng-container>
-    <ng-template #otherTitle>
-      {{'FEEDS.EMPTY.' + (getIsArchive() ? 'ARCHIVE' : (defaultTypesSelected ? 'DEFAULT' : selectedTypes)) + '.TITLE' | libTranslate}}
-    </ng-template>
-  </div>
-  <div class="subtitle">
-
-    <ng-container *ngIf="page === 'events'; else otherSubtitle">
-      {{'FEEDS.EMPTY.EVENTS.SUBTITLE' | libTranslate}}
-    </ng-container>
-    <ng-template #otherSubtitle>
-      {{'FEEDS.EMPTY.' + (getIsArchive() ? 'ARCHIVE' : (defaultTypesSelected ? 'DEFAULT' : selectedTypes)) + '.SUBTITLE' | libTranslate}}
-    </ng-template>
-
-<!--    <ng-container *ngIf="types === 'APPEAL'; else actionButton">-->
-<!--      <p class="mt-32">-->
-<!--        <lib-button size="lg" (click)="appealButton()">-->
-<!--          {{'FEEDS.EMPTY.APPEAL.BUTTON' | libTranslate}}-->
-<!--        </lib-button>-->
-<!--      </p>-->
-<!--    </ng-container>-->
-<!--    <ng-template #actionButton>-->
-      <p class="mt-32" *ngIf="!defaultTypesSelected && page !== 'events'">
-        <lib-button size="lg" (click)="clickButton()">
-          {{'FEEDS.EMPTY.' + (getIsArchive() ? 'ARCHIVE' : (defaultTypesSelected ? 'DEFAULT' : selectedTypes)) + '.BUTTON' | libTranslate}}
-        </lib-button>
-      </p>
-<!--    </ng-template>-->
-  </div>
-</div>
+</ng-template>
 
 <ng-template #author let-feed="feed">
   <div *ngIf="isFormattedLoginName(feed)">

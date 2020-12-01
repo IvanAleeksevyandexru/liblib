@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
-import { FormConfig, NormalizedAddressElement, NormalizedData, SuggestionsResponse } from '../../models/dadata';
+import {
+  Addresses,
+  FormConfig,
+  NormalizedAddressElement,
+  NormalizedData,
+  SuggestionsResponse
+} from '../../models/dadata';
 import { AutocompleteSuggestion, AutocompleteSuggestionProvider } from '../../models/dropdown.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -18,9 +24,14 @@ export class DadataService implements AutocompleteSuggestionProvider {
   private simpleMode = false;
   private externalUrl = '';
   private hideLevels = [];
+  public suggestionsLength = 0;
+  public firstInSuggestion: Addresses = null;
+  public searchComplete = new BehaviorSubject<boolean>(false);
   public canOpenFields = new BehaviorSubject<boolean>(false);
   public isOpenedFields = new BehaviorSubject<boolean>(false);
   public isWidgetVisible = new BehaviorSubject<boolean>(false);
+
+  public kladrCode = '';
 
   public prefixes = {
     region: {
@@ -89,9 +100,17 @@ export class DadataService implements AutocompleteSuggestionProvider {
   public errorDependencyFields = this.constants.DADATA_ERROR_DEPENDENCIES;
   public levelMap = this.constants.DADATA_LEVEL_MAP;
   public excludeToDisableFields = [11, 12, 13, 14];
-  public formConfig = new FormConfig();
+  public formConfig = null;
   public form: FormGroup;
   private sixthLevelData = '';
+
+  public initFormConfig(isOrg: boolean): FormConfig {
+    this.formConfig = new FormConfig(isOrg);
+    if (isOrg) {
+      this.prefixes.apartment.abbr = 'оф.'
+    }
+    return this.formConfig;
+  }
 
   public get qc(): string {
     return this.qcComplete;
@@ -165,7 +184,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
   private initCheckboxChange(checkboxName: string, field: string): void {
     this.form.get(checkboxName + 'Checkbox').valueChanges.subscribe((checked: boolean) => {
       const control = this.getFormControlByName(checkboxName);
-      if (checked) {
+      if (checked || checked === null) {
         field = control.value;
         control.setValue('');
         control.disable({onlySelf: true});
@@ -182,6 +201,8 @@ export class DadataService implements AutocompleteSuggestionProvider {
   }
 
   public search(query: string) {
+    this.firstInSuggestion = null;
+    this.resetSearchComplete(false);
     this.qc = '';
     const url = `${this.externalApiUrl ? this.externalApiUrl : this.loadService.config.nsiApiUrl}dadata/suggestions`;
     return this.http.get<SuggestionsResponse>(url, {
@@ -189,13 +210,15 @@ export class DadataService implements AutocompleteSuggestionProvider {
         q: query
       }
     }).pipe(map(res => {
-      if (res.suggestions.addresses.length) {
-        return res.suggestions.addresses.map((suggestion) => new AutocompleteSuggestion(suggestion.address, suggestion));
+      this.suggestionsLength = res.suggestions.addresses.length;
+      if (this.suggestionsLength) {
+        this.firstInSuggestion = res.suggestions.addresses[0];
       } else {
+        this.firstInSuggestion = null;
         this.qc = '6';
         this.isWidgetVisible.next(false);
-        return [];
       }
+      return this.suggestionsLength ? res.suggestions.addresses.map((suggestion) => new AutocompleteSuggestion(suggestion.address, suggestion)) : []
     }));
   }
 
@@ -232,7 +255,12 @@ export class DadataService implements AutocompleteSuggestionProvider {
       this.setDisabledByLevel(level);
       this.setVisibilityByLevel(level);
 
+      if (elem.kladrCode) {
+        this.kladrCode = elem.kladrCode;
+      }
+
       if (index === arr.length - 1) {
+
         const houseControl = this.getFormControlByName('house');
         const houseCheckbox = this.getFormControlByName('houseCheckbox');
         const apartmentControl = this.getFormControlByName('apartment');
@@ -355,8 +383,8 @@ export class DadataService implements AutocompleteSuggestionProvider {
       this.isWidgetVisible.next(false);
     } else if (!openedFields) {
       this.isWidgetVisible.next(true);
-      houseCb = !houseHiddenByDefault || (!house.value && !houseCheckbox.value);
-      apartmentCb = !apartmentHiddenByDefault || (!apartmentCheckbox.value && !apartment.value);
+      houseCb = !houseHiddenByDefault && (!house.value && !houseCheckbox.value);
+      apartmentCb = !apartmentHiddenByDefault && (!apartmentCheckbox.value && !apartment.value);
     }
     return {houseCb, apartmentCb};
   }
@@ -441,6 +469,10 @@ export class DadataService implements AutocompleteSuggestionProvider {
     this.hiddenLevels.forEach(key => {
       this.formConfig[key].visible = false;
     });
+  }
+
+  public resetSearchComplete(value: boolean): void {
+    this.searchComplete.next(value);
   }
 
 }

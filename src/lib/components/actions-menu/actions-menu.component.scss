@@ -16,6 +16,10 @@
   &.active {
     display: block;
   }
+
+  &.disabled a {
+    color: #a8acb1;
+  }
 }
 
 .actions-menu-button {
@@ -47,6 +51,12 @@
   &:after {
     top: 12px;
   }
+
+  &.disabled,
+  &.disabled:before,
+  &.disabled:after {
+    background-color: #a8acb1;
+  }
 }
 
 @media all and (min-width: 1140px) {
@@ -58,6 +68,10 @@
 
     a + a {
       margin-left: 16px;
+    }
+
+    &.disabled a {
+      color: #a8acb1;
     }
   }
 

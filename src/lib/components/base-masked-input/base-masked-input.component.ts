@@ -172,10 +172,19 @@ export class BaseMaskedInputComponent
   }
 
   public notifyFocusEvent(e: Event) {
+    const inp = this.inputElement.nativeElement;
+
     this.focusManager.notifyFocusMayChanged(this, e.type === 'focus');
-    const valueChangedOnBlur = e.type !== 'focus' && this.inputElement.nativeElement.value !== this.valueOnFocus;
+    const valueChangedOnBlur = e.type !== 'focus' && inp.value !== this.valueOnFocus;
     if ((HelperService.isSafari() || HelperService.isIE()) && valueChangedOnBlur) {
       this.forceChange();
+    }
+
+    if (e.type === 'focus' && !this.removeMaskSymbolsIfNeeded(inp.value) && inp.setSelectionRange) {
+      setTimeout(() => {
+        inp.setSelectionRange(0, 0);
+        inp.focus();
+      });
     }
   }
 

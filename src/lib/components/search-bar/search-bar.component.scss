@@ -1,22 +1,42 @@
 .search-field {
   width: 100%;
   display: inline-block;
-  background-color: white;
+  //background-color: #F5F7FA;
   position: relative;
   box-sizing: border-box;
   vertical-align: bottom;
+  border-radius: 4px;
+
+  .label-search-input {
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    line-height: 0;
+  }
+
+  .search-input {
+    padding: 0;
+  }
+
   .search-input, .static-content, .suggestion-container {
     width: 100%;
-    height: 48px;
-    border: 1px solid #A8ACB1;
+    min-height: 52px;
+    border: none;
     border-radius: 4px;
     font-family: Lato, Arial, sans-serif;
+    background-color: #F5F7FA;
     font-size: 16px;
     line-height: 24px;
-    padding-left: 16px;
     padding-right: 16px;
-    color: #393F45;
+    color: #0B1F33;
     outline: none;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    padding-left: 18px;
+    &:focus {
+      border: 2px solid #99B1E6;
+    }
     &.shadowed { // элемент перекрыт статичным контентом и не должен быть видим
       position: absolute;
       width: 0;
@@ -26,22 +46,56 @@
       outline: none;
       padding-top: 0;
       padding-bottom: 0;
+      padding-left: 16px;
+    }
+    :host-context(.white-field),
+    :host-context(.menu-search)
+    {
+      .search-input {
+        border: 2px solid #FFFFFF;
+        background-color: #FFFFFF;
+      }
     }
   }
+
+  ::-webkit-input-placeholder {
+    color: #D1D5DF;
+  }
+  :-ms-input-placeholder {
+    color: #D1D5DF;
+  }
+  ::-moz-placeholder {
+    color: #D1D5DF;
+    opacity: 1;
+  }
+  :-moz-placeholder {
+    color: #D1D5DF;
+    opacity: 1;
+  }
+
   .search-input, .static-content {
     &:disabled {
-      background-color: #E7ECF7;
-      color: #A8ACB1;
+      background-color: #D1D5DF;
+      color: #66727F;
     }
     &.disabled {
-      background-color: #E7ECF7;
-      color: #A8ACB1;
+      background-color: #D1D5DF;
+      color: #66727F;
     }
     &.invalid {
-      border: 1px solid #DF0024;
+      background: rgba(238, 63, 88, 0.16);
+      border-color: rgba(238, 63, 88, 0.16);
     }
-    &::-ms-clear {
-      display: none; width : 0; height: 0;
+    &[disabled], &.disabled, &[readonly] {
+      background: #D1D5DF;
+      color: #66727F;
+      -webkit-text-fill-color: #66727F;
+      opacity: 1;  }
+  }
+  .search-input {
+    &.focused {
+      border: 2px solid #99B1E6;
+      padding-left: 16px;
     }
   }
   .static-content-container {
@@ -79,7 +133,7 @@
   }
   &.magnifying-glass-or-throbber-shown {
     .search-input, .static-content, .suggestion-container {
-      padding-right: 52px;
+      padding-right: 50px;
     }
   }
   &.clear-shown {
@@ -94,21 +148,20 @@
   }
   .search-go {
     position: absolute;
-    width: 48px;
-    height: 48px;
-    top: 0px;
-    right: 0;
-    background: url(../../../assets/svg/lookup-search-bar.svg) 12px 12px no-repeat;
+    width: 52px;
+    height: 52px;
+    top: 0;
+    right: 7px;
+    background: url(../../../assets/svg/lookup-search-grey.svg) 16px 16px no-repeat;
     outline: none;
     cursor: pointer;
-    border-left: solid 1px #A8ACB1;
     &:hover {
-      background: url(../../../assets/svg/lookup-search-hover.svg) 12px 12px no-repeat;
+      background: url(../../../assets/svg/lookup-search-hover.svg) 16px 16px no-repeat;
     }
     &.disabled {
-      background: url(../../../assets/svg/lookup-search-disabled.svg) 12px 12px no-repeat;
+      background: url(../../../assets/svg/lookup-search-disabled.svg) 16px 16px no-repeat;
       &:hover {
-        background: url(../../../assets/svg/lookup-search-disabled.svg) 12px 12px no-repeat;
+        background: url(../../../assets/svg/lookup-search-disabled.svg) 16px 16px no-repeat;
       }
     }
   }
@@ -127,11 +180,10 @@
   }
   .search-in-progress {
     position: absolute;
-    border-left: solid 1px #A8ACB1;
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     top: 0;
-    right: 0;
+    right: 7px;
     .search-in-progress-cell {
       position: absolute;
       background: url(../../../assets/svg/search-loader.svg) 0 0 no-repeat;
@@ -140,6 +192,12 @@
       top: 12px;
       left: 11px;
       animation: rotate 1.5s linear infinite;
+    }
+  }
+
+  &.menu-search {
+    .search-input:focus {
+      border-color: #ffffff;
     }
   }
 }

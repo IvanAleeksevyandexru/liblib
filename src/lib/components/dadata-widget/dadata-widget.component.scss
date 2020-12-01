@@ -9,9 +9,10 @@
 
 .specify {
   padding-bottom: 3px;
+  outline: none;
 
   .link-plain {
-    font-size: 12px;
+    font-size: 14px;
     line-height: 16px;
   }
 
@@ -31,6 +32,10 @@
 
 }
 
+.extended-fields {
+  max-width: 592px;
+}
+
 .simple-field,
 .address-item {
   margin-bottom: 20px;
@@ -41,7 +46,7 @@
 }
 
 .small-field {
-  max-width: 107px;
+  max-width: 124px;
 }
 
 .checkbox-widget {
@@ -61,6 +66,10 @@
   }
 }
 
+.index-item {
+  max-width: 188px;
+}
+
 .coordinates-item {
   &:nth-child(2) {
     margin-bottom: 8px;
@@ -78,6 +87,15 @@
         color: #515a63;
       }
     }
+  }
+}
+
+.address-item-with-checkbox {
+  display: flex;
+  align-items: center;
+
+  .simple-field {
+    margin-right: 16px;
   }
 }
 
@@ -110,13 +128,60 @@
   }
 }
 
-@media all and (min-width: 768px) and (max-width: 1140px) {
+@media all and (min-width: 768px) {
+
+
+  .address-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .address-item {
+    margin-bottom: 16px;
+  }
+
+  .address-item {
+    &:nth-child(1) {
+      width: 48%;
+    }
+    &:nth-child(2) {
+      width: 48%;
+    }
+    &:nth-child(n + 3) {
+      width: 100%;
+    }
+    //background: black;
+  }
+
   .building-container {
     display: flex;
+    justify-content: flex-start;
 
     .address-item {
       margin-bottom: 0;
     }
+  }
+
+  .index-container {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .index-item {
+    margin-right: 16px;
+  }
+
+  .building-container {
+    .address-item {
+      width: auto;
+      margin-right: 16px;
+    }
+
+    .address-item-with-checkbox {
+      width: 48%;
+    }
+
   }
 
   .address-item-with-checkbox {
@@ -124,25 +189,19 @@
     align-items: center;
 
     .simple-field {
-      margin-right: 32px;
+      margin-right: 16px;
     }
   }
 
   .building-container .address-item {
-    margin-right: 32px;
+    margin-right: 16px;
   }
 
   .address-checkbox {
     margin-top: 8px;
   }
 
-  .address-item {
-    margin-bottom: 16px;
-  }
 
-  .index-item {
-    max-width: 246px;
-  }
 
   .coordinates-item {
     width: auto;
@@ -157,22 +216,6 @@
 
 @media all and (min-width: 1140px){
 
-  .address-row {
-    display: flex;
-  }
-
-  .address-item {
-    margin-right: 32px;
-    width: 31%;
-
-    &.additional-street {
-      width: 40%;
-    }
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
 
   .coordinates-item {
     width: 279px;
@@ -182,22 +225,17 @@
   .address-item-with-checkbox {
     display: flex;
     align-items: center;
+    flex: 1 0 31%;
     //width: auto;
 
     .simple-field {
-      margin-right: 32px;
+      margin-right: 16px;
     }
   }
-  .building-container {
-    .address-item {
-      width: auto;
-    }
 
-    .address-item-with-checkbox {
-      width: 48%;
-    }
 
-  }
+
+
 
 }
 

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { MenuLink } from '../../models/menu-link';
 import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
-import { Category } from '../../models/category';
-import { CookieService } from '../cookie/cookie.service';
+import { AccessesService } from '../accesses/accesses.service';
+import { Category, MenuLink, User } from '../../models';
 
 const HASH = Math.random();
 
@@ -15,7 +14,7 @@ export class MenuService {
   constructor(
     private loadService: LoadService,
     private http: HttpClient,
-    private cookieService: CookieService
+    private accessesService: AccessesService,
   ) {
   }
 
@@ -45,23 +44,33 @@ export class MenuService {
     let links: MenuLink[] = [];
 
     const mainHost = this.loadService.config.betaUrl;
-    let payHost = this.loadService.config.oplataUrl;
-    if (!this.cookieService.get('pay-new')) {
-      payHost = this.loadService.config.baseUrl;
-    }
+    const lkHost = this.loadService.config.urlLk;
+    const payHost = this.loadService.config.oplataUrl;
 
     switch (this.loadService.attributes.appContext) {
       case 'PARTNERS':
-        links = [{
-          url: '/service-centers',
-          title: 'HEADER.MENU.SERVICE_CENTERS'
-        }, {
-          url: '/access-groups',
-          title: 'HEADER.MENU.ACCESS_GROUPS'
-        }, {
-          url: '/systems',
-          title: 'HEADER.MENU.SYSTEMS'
-        }];
+        if (this.accessesService.getAccessTech()) {
+          if (this.accessesService.getAccess('ra')) {
+            links.push({
+              url: '/service-centers',
+              title: 'HEADER.MENU.SERVICE_CENTERS'
+            });
+          }
+          links.push({
+            url: '/powers',
+            title: 'HEADER.MENU.POWERS'
+          });
+          // if (this.accessesService.getAccess('csg')) {
+          links.push({
+            url: '/access-groups',
+            title: 'HEADER.MENU.ACCESS_GROUPS'
+          });
+          // }
+          links.push({
+            url: '/systems',
+            title: 'HEADER.MENU.SYSTEMS'
+          });
+        }
         break;
       case 'LK':
         links = [{
@@ -69,7 +78,7 @@ export class MenuService {
           title: 'HEADER.MENU.SERVICES',
           mnemonic: 'servises'
         }, {
-          url: `${payHost}/pay`,
+          url: `${payHost}pay`,
           title: 'HEADER.MENU.PAYMENT',
           mnemonic: 'defrayal'
         }, {
@@ -95,13 +104,54 @@ export class MenuService {
           title: 'HEADER.MENU.SUPPORT'
         }];
         break;
+      case 'PORTAL':
+        if (this.loadService.user.authorized) {
+          links = [{
+            url: `${lkHost}orders/all`,
+            title: 'HEADER.MENU.ORDERS',
+            listeners: true
+          }, {
+            url: `${payHost}pay`,
+            title: 'HEADER.MENU.PAYMENT'
+          }, {
+            url: `${lkHost}profile/personal`,
+            title: 'HEADER.MENU.DOCS'
+          }, {
+            url: `${lkHost}messages`,
+            title: 'HEADER.MENU.MESSAGES'
+          }, {
+            url: `${mainHost}category`,
+            title: 'HEADER.MENU.SERVICES'
+          }, {
+            url: `${mainHost}help/news`,
+            title: 'HEADER.MENU.BLOG'
+          }, {
+            url: `${lkHost}permissions`,
+            title: 'HEADER.MENU.PERMISSIONS'
+          }];
+        } else {
+          links = [{
+            url: `${mainHost}category`,
+            title: 'HEADER.MENU.SERVICES'
+          }, {
+            url: `${payHost}pay`,
+            title: 'HEADER.MENU.PAYMENT'
+          },  {
+            url: `${mainHost}help/news`,
+            title: 'HEADER.MENU.BLOG'
+          }, {
+            url: `${mainHost}help`,
+            title: 'HEADER.MENU.HELP'
+          }];
+        }
+        break;
       default:
         links = [{
           url: '/category',
           title: 'HEADER.MENU.SERVICES',
           listeners: true
         }, {
-          url: '/pay',
+          url: `${payHost}pay`,
           title: 'HEADER.MENU.PAYMENT'
         }, {
           url: '/help',
@@ -120,13 +170,36 @@ export class MenuService {
   }
 
   public getStaticItemUrls(): object {
-    const lkUrl = this.loadService.attributes.appContext === 'LK' ? '/' : this.loadService.config.lkUrl;
+    const appContext = this.loadService.attributes.appContext;
+    const lkUrl = appContext === 'LK' ? '/' : this.loadService.config.lkUrl;
 
     return {
       'HEADER.PERSONAL_AREA': `${lkUrl}overview`,
       'HEADER.MENU.SETTINGS': `${lkUrl}settings/account`,
-      'HEADER.MENU.LOGIN_ORG': `${lkUrl}roles`
+      'HEADER.MENU.SETTINGS_MENU': `${lkUrl}settings/account`,
+      'HEADER.MENU.LOGIN_ORG': `${appContext === 'PARTNERS' ? '/' : lkUrl}roles`
     };
+  }
+
+  public getUserRoles(user: User): any {
+    const betaUrl = this.loadService.attributes.appContext === 'PORTAL' ? '/' : this.loadService.config.betaUrl;
+    return [
+      {
+        name: 'Гражданам',
+        url: `${betaUrl}`,
+        code: 'P'
+      },
+      {
+        name: 'Юридическим лицам',
+        url: `${betaUrl}legal-entity`,
+        code: 'L'
+      },
+      {
+        name: 'Предпринимателям',
+        url: `${betaUrl}entrepreneur`,
+        code: 'B'
+      }
+    ];
   }
 
 }

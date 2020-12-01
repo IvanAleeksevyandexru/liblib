@@ -115,9 +115,9 @@ export class ListItem implements ListElement {
 
   // подготоваливает форматирование итема для вывода используя форматтеры компонента
   public prepareFormatting(
-      context?: { [name: string]: any },
-      formatter?: (item: ListItem, context: { [name: string]: any }) => string,
-      listFormatter?: (item: ListItem, context: { [name: string]: any }) => string): void {
+    context?: { [name: string]: any },
+    formatter?: (item: ListItem, context: { [name: string]: any }) => string,
+    listFormatter?: (item: ListItem, context: { [name: string]: any }) => string): void {
     // как итем будет выводиться в поле инпута как хтмл
     // если виджет поддерживает вывод значения выбранного итема в хтмл формате, он должен использовать это поле
     this.formatted = formatter ? formatter(this, context) : (this.translated || this.text);

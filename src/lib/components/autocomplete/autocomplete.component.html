@@ -1,8 +1,8 @@
-<div class="lookup" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside (clickOutside)="cancelSearchAndClose()" 
+<div class="lookup" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside (clickOutside)="cancelSearchAndClose()"
   [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="lookup-field" #dropdownField [ngClass]="{invalid: invalid, expanded: expanded}">
     <lib-search-bar #searchBar
-      contextClass="lookup-input" 
+      contextClass="lookup-input"
       [tabIndex]="tabIndex"
       [disabled]="disabled"
       [maxlength]="maxlength"
@@ -19,8 +19,10 @@
       [searchOnFocus]="searchOnFocus"
       [searchByForcing]="false"
       [searchByTextInput]="true"
+      [searchLastValue]="searchLastValue"
       [suggestion]="showSuggestion ? suggestion : null"
       [(ngModel)]="query"
+      (ngModelChange)="modelChanged = true"
       [searching]="searching"
       (newSearch)="lookupItems($event)"
       (input)="handleInput($event)"
@@ -29,14 +31,14 @@
       (click)="lookupItemsOrClose()"
       (focus)="handleFocus()"
       (blur)="handleBlur()"
-      (cleared)="cleared.emit($event)"
+      (cleared)="cleared.emit($event); modelChanged = false"
       (suggestionSelected)="selectTextSuggestion($event)"></lib-search-bar>
   </div>
   <div class="lookup-list-wrapper">
     <div class="lookup-context-positioning" #dropdownList [class.context-positioned]="contextMenuPosition">
       <div class="lookup-context-shift">{{query}}</div>
       <div class="lookup-list-container" [ngClass]="{hidden: !expanded}" [class.incremental-loading]="partialsLoading" libStopScreenScroll>
-        <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll" 
+        <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll"
             [config]="{suppressScrollX: true, wheelPropagation: false}"
             (psYReachEnd)="loadNextPartial()">
           <ng-container *ngFor="let suggestion of suggestions">
@@ -66,7 +68,7 @@
   </div>
 </div>
 <ng-template #singleItem let-suggestion="suggestion">
-  <div class="lookup-item" 
+  <div class="lookup-item"
        (click)="selectSuggestion(suggestion)" (mouseenter)="highlight(suggestion)" (mouseleave)="highlight(null)"
        [class.highlighted]="suggestion === highlighted"
        [class.unselectable]="suggestion.unselectable"

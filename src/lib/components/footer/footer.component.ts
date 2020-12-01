@@ -1,6 +1,8 @@
 import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FooterCmsComponent } from './footer-cms/footer-cms.component';
 import { TranslateService } from '@ngx-translate/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'lib-footer',
@@ -10,10 +12,21 @@ import { TranslateService } from '@ngx-translate/core';
 export class FooterComponent implements OnInit {
   @ViewChild('footerCms', { read: ViewContainerRef, static: true }) private viewContainerRef;
 
+  public hideCmsFooter: boolean;
+  public hideFooter: boolean;
+
   constructor(
     private cfr: ComponentFactoryResolver,
-    public translate: TranslateService
-  ) { }
+    public translate: TranslateService,
+    private router: Router
+  ) {
+    router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    )
+      .subscribe((event: any) => {
+        this.hideFooter = this.hideCmsFooter = event.url.indexOf('/form') >= 0;
+      });
+  }
 
   public ngOnInit() {
     const cf = this.cfr.resolveComponentFactory(FooterCmsComponent);

@@ -1,9 +1,23 @@
-app-footer{
+app-footer {
   flex: 0 0 auto;
 }
 
 .footer-wrapper {
   background-color: #EEEFEF;
   width: 100%;
+}
+
+.footer-wrapper {
+  &.mobile-hide {
+    display: none;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .footer-wrapper {
+    &.mobile-hide {
+      display: block;
+    }
+  }
 }
 

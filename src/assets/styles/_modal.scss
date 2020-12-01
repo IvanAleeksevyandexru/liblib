@@ -8,7 +8,9 @@ html.modal-opened {
   left: 0;
   min-width: 100%;
   min-height: 100%;
-  background: rgba(0, 0, 0, .5);
+  background: rgba(11, 31, 51, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   transition: background .25s;
   z-index: 2147473648; // значение, перекрывающее z-index госбара на 1
 }
@@ -21,6 +23,8 @@ html.modal-opened {
   width: 100%;
   height: 100%;
   overflow-y: auto;
+  background: rgba(11, 31, 51, 0.62);
+  backdrop-filter: blur(24px);
 }
 
 .popup {
@@ -28,6 +32,7 @@ html.modal-opened {
   min-height: 100%;
   padding: 48px 17px;
   background: #ffffff;
+  border-radius: 12px;
 
   .close {
     position: absolute;
@@ -81,7 +86,7 @@ html.modal-opened {
     max-width: 864px;
     min-height: auto;
     max-height: 100%;
-    padding: 48px 32px 37px 32px;
+    padding: 48px 32px 32px 32px;
     transform: translate3d(-50%, -50%, 0);
 
     &.popup-scroll {

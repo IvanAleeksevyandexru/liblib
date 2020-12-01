@@ -1,4 +1,4 @@
-<div class="filtered-list" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" (keydown)="handleKeydownNavigation($event)" 
+<div class="filtered-list" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" (keydown)="handleKeydownNavigation($event)"
   [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max,
               height: $any(height)?.base || height, 'min-height': $any(height)?.min, 'max-height': $any(height)?.max}">
   <div class="search-field" [ngClass]="{disabled: disabled, invalid: invalidDisplayed}">

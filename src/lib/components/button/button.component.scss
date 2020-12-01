@@ -3,7 +3,7 @@ a, button {
   font-family: Lato, Arial, sans-serif;
   width: 100%;
   outline: none;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   border-radius: 8px;
   padding: 12px 24px;
   text-align: center;
@@ -40,31 +40,47 @@ a, button {
     background-color: transparent;
   }
 
+  &.red{
+    color: #EB5757;
+    border: 2px solid #EB5757;
+    background: #fff;
+    &.disabled{
+      opacity: .5;
+    }
+    &:hover,
+    &:focus,
+    &:active{
+      color: #EB5757;
+      border: 2px solid #EB5757;
+      background: #fff;
+    }
+  }
+
   &.white {
     border: 2px solid #0D4CD3;
     color: #0D4CD3;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
 
     &:hover,
     &:focus {
-      border: 2px solid #1D5DEB;
+      border-color: #1D5DEB;
       color: #1D5DEB;
       background-color: #F5F7FA;
     }
 
     &:active {
-      border: 2px solid #0B40B3;
+      border-color: #0B40B3;
       color: #0B40B3;
       background-color: #F5F7FA;
     }
     &.active {
-      border: 2px solid #0B40B3;
+      border-color: #0B40B3;
       color: #0B40B3;
       background-color: #F5F7FA;
     }
 
     &.disabled {
-      border: 2px solid #E5EAF5;
+      border-color: #E5EAF5;
       color: #828C9A;
       background-color: #E5EAF5;
     }

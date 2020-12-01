@@ -8,6 +8,7 @@ import { LocationService } from '../location/location.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { SharedService } from '../shared/shared.service';
 
 @Injectable({
   providedIn: 'root'
@@ -32,25 +33,25 @@ export class GosbarService {
     private locationService: LocationService,
     private translateService: TranslateService,
     private router: Router,
-    public  cookieService: CookieService
+    public  cookieService: CookieService,
+    private sharedService: SharedService
   ) {
+    this.getLocation();
   }
 
   private setRegionFailName(manager) {
     this.translateService.get('LOCATION.FAIL').subscribe((res: string) => {
-      manager.setLocationLabel(res);
+      if (manager) {
+        manager.setLocationLabel(res);
+      }
     });
   }
 
-  private setLocationTitle(manager) {
+  private getLocation(manager?) {
 
     const onError = (err) => {
-      // if (this.cookieService.get('userSelectedRegion')) {
-      //   this.setLocationTitle(manager);
-      // } else {
         this.locationService.userSelectedRegionCode = '00000000000';
         this.setRegionFailName(manager);
-      // }
         console.error(`DetectRegion fail ${err}`);
     };
 
@@ -59,7 +60,13 @@ export class GosbarService {
         this.setRegionFailName(manager);
         this.popupLocation();
       } else if (regionData) {
-        manager.setLocationLabel(regionData.name);
+
+        if (manager) {
+          manager.setLocationLabel(regionData.name);
+        }
+
+        this.sharedService.send('regionData', regionData);
+
         this.locationService.userSelectedRegionCode = regionData.code;
         this.locationService.userSelectedRegionName = regionData.name;
         this.locationService.userSelectedRegionPath = regionData.path;
@@ -67,6 +74,7 @@ export class GosbarService {
         onError('empty response');
       }
     }, (err) => {
+      this.sharedService.send('regionData', null);
       onError(err);
     });
 
@@ -95,7 +103,7 @@ export class GosbarService {
               this.popupLocation();
             });
           };
-          this.setLocationTitle(manager);
+          this.getLocation(manager);
         }, () => {
           this.unAvailableGosbar();
         }
@@ -176,16 +184,19 @@ export class GosbarService {
       }
     ];
 
-    if (this.config.partnersUrl) {
-      config.push(
-        {
-          text: 'Для партнеров',
-          url: this.config.partnersUrl,
-          userType: 'PA',
-          onItemSelect: () => {
-            window.location = this.config.partnersUrl;
-          }
-        });
+    const partnersPickerConfig =  {
+      text: 'Для партнеров',
+      url: this.config.partnersUrl,
+      userType: 'PA',
+      onItemSelect: () => {
+        window.location = this.config.partnersUrl;
+      }
+    }
+
+    if (this.config.viewType === 'PARTNERS') {
+      config.unshift(partnersPickerConfig);
+    } else if (this.config.partnersUrl) {
+      config.push(partnersPickerConfig);
     }
     return config;
   }

@@ -1,4 +1,4 @@
-<div #menu class="menu" [ngClass]="{'show-categories': showCategories}">
+<div *ngIf="!newView" #menu class="menu" [ngClass]="{'show-categories': showCategories}">
   <div class="inner container grid-row-lg flex-container align-items-center">
     <div class="col-lg-2 logo-wrapper">
       <lib-logo></lib-logo>
@@ -7,9 +7,9 @@
       <div class="col-lg-10 align-items-center flex-container justify-end">
         <div *ngIf="showLinks" class="links-wrapper flex-container justify-end align-items-center">
           <ul class="links hide flex-container-lg">
-            <li class="item" *ngFor="let link of links">
+            <li class="item flex-container align-items-center" *ngFor="let link of links">
               <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
-                 (click)="redirect($event, link.url)"
+                 (click)="redirect($event, link)"
                  [href]="link.url">{{link.title | appTranslate}}</a>
               <ng-template #categoryLink>
                 <a class="category-link"
@@ -22,16 +22,25 @@
           <div class="open-search-popup" (click)="popupSearch()"></div>
         </div>
         <div class="user-menu-wrapper">
-          <div class="login-wrapper hide show-lg">
+          <div
+            [class.partners-menu]="loadService.config.viewType === 'PARTNERS' && !user.authorized"
+            class="login-wrapper hide show-lg">
             <div class="login flex-container justify-end overflow-container">
               <lib-login [userCounter]="userCounter" (userClick)="showUserMenu(false)"></lib-login>
             </div>
           </div>
-          <a class="open-mobile-menu hide-lg"
+          <a
+            [class.partners-menu]="loadService.config.viewType === 'PARTNERS' && !user.authorized"
+            class="open-mobile-menu hide-lg"
              (click)="showUserMenu(true)">
             <lib-counter class="counter-circle" [counter]="userCounter"></lib-counter>
           </a>
-          <lib-user-menu [state]="userMenuState"></lib-user-menu>
+          <lib-user-menu
+            [rolesListEnabled]="rolesListEnabled"
+            [searchSputnikEnabled]="searchSputnikEnabled"
+            [state]="userMenuState"
+            [links]="links">
+          </lib-user-menu>
         </div>
       </div>
     </ng-container>
@@ -57,5 +66,48 @@
         <lib-button color="white" size="lg" (click)="showCategories = false;">{{'HEADER.CATALOG.CLOSE' | libTranslate}}</lib-button>
       </div>
     </div>
+  </div>
+</div>
+
+<div *ngIf="newView" #menu class="main-menu"
+     [ngStyle]="{background: background}"
+     [ngClass]="{'main-page': isMainPage, 'bottom-border': showBorder}">
+  <div class="inner container flex-container align-items-center">
+    <div class="flex-container align-items-center">
+      <div class="logo-wrapper">
+        <lib-logo></lib-logo>
+      </div>
+
+      <div class="links-wrapper align-items-center flex-container hide show-lg">
+        <ul class="links hide flex-container-lg">
+          <li class="item" *ngFor="let link of links">
+            <a (click)="redirect($event, link)"
+               [href]="link.url">{{link.title | appTranslate}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="align-items-center flex-container menu-content">
+      <lib-login *ngIf="!user.authorized" [onlyIcon]="true" class="hide-lg"></lib-login>
+      <!--div *ngIf="user.authorized" class="notification-wrapper hide-lg"></div-->
+      <div class="user-menu-wrapper hide-lg">
+        <a class="open-mobile-menu"
+           (click)="showUserMenu(true)">
+          <lib-counter class="counter-circle" [counter]="userCounter"></lib-counter>
+        </a>
+        <lib-user-menu
+          [rolesListEnabled]="rolesListEnabled"
+          [searchSputnikEnabled]="searchSputnikEnabled"
+          [state]="userMenuState"
+          [links]="links">
+        </lib-user-menu>
+      </div>
+      <div class="search-wrapper">
+        <lib-search-sputnik [ngStyle]="{background: background}" class="open-search" [hideToIcon]="true"
+                            [useGlobalPlaceholder]="true"></lib-search-sputnik>
+      </div>
+    </div>
+
   </div>
 </div>

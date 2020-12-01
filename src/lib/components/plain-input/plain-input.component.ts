@@ -21,7 +21,7 @@ import { Width } from '../../models/width-height';
   }]
 })
 export class PlainInputComponent
-    implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated {
+  implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated {
 
   constructor(
     protected focusManager: FocusManager,
@@ -132,7 +132,11 @@ export class PlainInputComponent
 
   public handleBlur() {
     this.focused = false;
+    if (this.onTouchedCallback) {
+      this.onTouchedCallback();
+    }
     this.check();
+
     this.blur.emit();
     this.changeDetection.detectChanges();
   }

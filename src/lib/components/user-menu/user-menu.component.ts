@@ -16,6 +16,7 @@ import { TabsService } from '../../services/tabs/tabs.service';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { HelperService } from '../../services/helper/helper.service';
 import { Subscription } from 'rxjs';
+import { AccessesService } from '../../services/accesses/accesses.service';
 
 @Component({
   selector: 'lib-user-menu',
@@ -24,7 +25,6 @@ import { Subscription } from 'rxjs';
 })
 export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public categories: Category[] = [];
-  public links: MenuLink[] = [];
   public menuOffset: number;
   public user: User;
   public staticUrls: object;
@@ -33,9 +33,16 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public mainTabs: Tabs = null;
   public tabsSubscription: Subscription;
   public titleChangeRole: string;
+  public userRoles;
+  public activeRole;
+  public showRolesList = false;
+  public showAllMenu = true;
+  public staticList = true;
 
-  @Input()
-  public state: UserMenuState;
+  @Input() public state: UserMenuState;
+  @Input() public rolesListEnabled = false;
+  @Input() public searchSputnikEnabled = false;
+  @Input() public links: MenuLink[] = [];
 
   @ViewChild('menuDesk') public menuDesk;
   @ViewChild('menuMobile') public menuMobile;
@@ -65,13 +72,18 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private changeDetector: ChangeDetectorRef,
     private yaMetricService: YaMetricService,
-    private helperService: HelperService
+    private helperService: HelperService,
+    private accessesService: AccessesService,
   ) {
   }
 
   public ngOnInit() {
-    this.links = this.menuService.getUserMenuLinks();
+    if (!this.links.length) {
+      this.links = this.menuService.getUserMenuLinks();
+    }
     this.user = this.loadService.user as User;
+    this.userRoles = this.menuService.getUserRoles(this.user);
+    this.activeRole = this.userRoles.find((role) => role.isActive);
     this.staticUrls = this.menuService.getStaticItemUrls();
     this.countersService.counters$.subscribe(_ => {
       this.settingsCounter = this.countersService.getCounter(CounterTarget.SETTINGS);
@@ -108,6 +120,8 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onClose() {
+    const html = document.getElementsByTagName('html')[0];
+    html.classList.remove('disable-scroll');
     this.state.active = false;
   }
 
@@ -119,14 +133,18 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.state.active && this.state.isMobileView;
   }
 
-  public menuItemClick(url: string, mnemonic: string) {
-    this.sendYaMetric(mnemonic);
-    this.helperService.navigate(url);
+  public menuItemClick(link: MenuLink): void {
+    this.sendYaMetric(link.mnemonic);
+    if (link.handler) {
+      link.handler(link);
+    } else {
+      this.helperService.navigate(link.url);
+    }
   }
 
-  public menuStaticItemClick(itemName: string, mnemonic) {
+  public menuStaticItemClick(itemName: string, mnemonic): void {
     const staticUrl = this.getUrl(itemName);
-    return this.menuItemClick(staticUrl, mnemonic);
+    return this.menuItemClick({url: staticUrl, mnemonic: mnemonic} as MenuLink);
   }
 
   public selectTab(tab: Tab) {
@@ -150,6 +168,15 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
         type: this.loadService.attributes.deviceType,
         choice: linkName
       });
+  }
+
+  public showMenuTabs(): boolean {
+    let show = true;
+    if (this.loadService.attributes.appContext === 'PARTNERS') {
+      show = this.accessesService.getAccessTech();
+    }
+
+    return show;
   }
 
   private getTitleChangeRole(): void {

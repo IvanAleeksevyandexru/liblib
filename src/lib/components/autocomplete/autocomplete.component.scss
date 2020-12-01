@@ -52,8 +52,8 @@
     max-height: 300px;
     display: block;
     border-style: none solid solid solid;
-    border-color: #A7A7AB;
-    border-width: 1px;
+    border-color: #99B1E6;
+    border-width: 2px;
     border-radius: 0 0 4px 4px;
     overflow: hidden;
     white-space: normal;
@@ -90,13 +90,18 @@
     .lookup-item {
       display: block;
       width: auto;
-      padding: 6px 6px 6px 16px;
       cursor: pointer;
       .structure-container {
         display: table;
         width: 100%;
       }
       .item-container {
+        padding: 15px 0 15px 16px;
+        min-height: 54px;
+        border-bottom: 1px solid #E1E1E1;
+        font-size: 16px;
+        line-height: 24px;
+
         .lookup-item-text {
           font-family: Lato, Arial, sans-serif;
           font-size: 16px;
@@ -105,7 +110,7 @@
         }
       }
       &.highlighted {
-        background-color: #E7ECF7;
+        background-color: #F5F7FA;
       }
       &.unselectable {
         .dropdown-item-text {
@@ -159,14 +164,10 @@
   .lookup-field {
     ::ng-deep {
       .lookup-item {
-        display: table;
-        width: 100%;
-        vertical-align: middle;
+        display: flex;
+        height: 52px;
+        align-items: center;
         .item-container {
-          display: table-cell;
-          height: 46px;
-          vertical-align: middle;
-          padding: 0;
           .looiup-item-text {
             font-family: Lato, Arial, sans-serif;
             font-size: 16px;

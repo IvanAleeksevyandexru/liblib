@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoadService } from '../load/load.service';
 import { Observable } from 'rxjs';
-import { Service } from '../../models/service';
+import { GetPassportRequest, GetServiceRequest, Passport, Service, ServicePermission } from '../../models/service';
 import { CookieService } from '../cookie/cookie.service';
 
 @Injectable({
@@ -19,19 +19,42 @@ export class CatalogService {
   ) {
   }
 
-  public getService(sid: string, eid = '', ignorePlatform?: boolean, oldStyle = false, isManual = false): Observable<Service> {
+  public getService(request: GetServiceRequest): Observable<Service> {
     const params = new URLSearchParams();
 
     params.set('_', String(Math.random()));
     params.set('region', this.loadService.attributes.selectedRegion);
     params.set('rUrl', this.loadService.config.urlLk + 'orders/all');
-    params.set('oldStyleCode', String(oldStyle));
-    params.set('isManual', String(isManual));
-    if (!ignorePlatform) {
+    params.set('oldStyleCode', String(request.oldStyle));
+    params.set('isManual', String(request.isManual));
+    if (!request.ignorePlatform) {
       params.set('platform', this.loadService.config.platform);
     }
 
-    return this.http.get<Service>(`${this.catalogUrl}services/${sid}_${eid}?${params}`, {
+    return this.http.get<Service>(`${this.catalogUrl}services/${request.sid}_${request.eid}?${params}`, {
+      withCredentials: true
+    });
+  }
+
+  public getPassport(request: GetPassportRequest): Observable<Passport> {
+    const params = new URLSearchParams();
+
+    params.set('_', String(Math.random()));
+    params.set('region', this.loadService.attributes.selectedRegion);
+    if (!request.ignorePlatform) {
+      params.set('platform', this.loadService.config.platform);
+    }
+
+    return this.http.get<Passport>(`${this.catalogUrl}passports/${request.id}?${params}`, {
+      withCredentials: true
+    });
+  }
+
+  public checkPermissions(passportId: string, targetId: string): Observable<Array<ServicePermission>> {
+    return this.http.get<Array<ServicePermission>>(`${this.loadService.config.catalogApiUrl}services/${passportId + '_' + targetId}/check?_=${Math.random()}`, {
+      params: {
+        platform: this.loadService.config.platform
+      },
       withCredentials: true
     });
   }
@@ -45,7 +68,8 @@ export class CatalogService {
   public checkMfcRegion() {
     const region = this.cookieService.get('userSelectedRegion') || '00000000000';
     return this.http.get(`${this.loadService.config.catalogApiUrl}mfc/config/${region}`, {
-      withCredentials: true
+      withCredentials: true,
+      params: { _: String(Math.random()) }
     });
   }
 }
