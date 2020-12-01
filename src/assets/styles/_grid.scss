@@ -28,13 +28,16 @@ $col-lg-count: 12;
 
 @mixin onlyForIE($column, $elements) {
   @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-    @if $column == 3 {
+    @if $column == "three" {
+      $column: 3;
       -ms-grid-columns: 1fr 1fr 1fr;
-    } @if $column == 2 {
-      -ms-grid-columns: 1fr 1fr;
-    } @if $column == 1 {
-      -ms-grid-columns: 1fr;
-    }
+    } @if $column == "two" {
+    $column: 2;
+    -ms-grid-columns: 1fr 1fr;
+  } @if $column == "one" {
+    $column: 1;
+    -ms-grid-columns: 1fr;
+  }
     .col-lg-4 {
       margin: 16px;
       -ms-grid-column-span: 1;
@@ -89,7 +92,7 @@ $col-lg-count: 12;
 
   @include grid('', $col-count);
   @include gridIe('-sm', $col-count);
-  @include onlyForIE(1, 10);
+  @include onlyForIE("one", 10);
 }
 
 .grid-none {
@@ -118,7 +121,7 @@ $col-lg-count: 12;
 
     @include grid('-md', $col-md-count);
     @include gridIe('-md', $col-md-count);
-    @include onlyForIE(2, 10);
+    @include onlyForIE("two", 10);
   }
 
   .grid-none-md {
@@ -163,7 +166,7 @@ $col-lg-count: 12;
 
     @include grid('-lg', $col-lg-count);
     @include gridIe('-lg', $col-lg-count);
-    @include onlyForIE(3, 10);
+    @include onlyForIE("three", 10);
   }
 
   .grid-none-lg {
