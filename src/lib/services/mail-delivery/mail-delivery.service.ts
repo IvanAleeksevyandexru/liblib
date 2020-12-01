@@ -58,6 +58,16 @@ export class MailDeliveryService {
       });
   }
 
+  public updateGepsStatusAndAddress(addresses: GepsUpdateAddresses): Observable<any> {
+    return this.http.post<any>(
+      `${this.loadService.config.gepsApiUrl}rp/json/data?_=${Math.random()}`,
+      addresses,
+      {
+        withCredentials: true
+      }
+    );
+  }
+
   public updateGepsAddresses(addresses: GepsUpdateAddresses): Observable<any> {
     return this.http.post<any>(this.loadService.config.gepsApiUrl + `rp/json/addresses`, addresses,
       {
