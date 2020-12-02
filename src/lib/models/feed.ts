@@ -61,6 +61,10 @@ export interface FeedDataModel {
   needConfirm?: boolean;
   messageType?: string;
   draftAutoDeleted?: string;
+  ppzType?: string;
+  ppzNum?: string;
+  ppzRegion?: string;
+  mfcName?: string;
 }
 
 export interface BranchModel {
