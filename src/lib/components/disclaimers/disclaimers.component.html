@@ -2,9 +2,9 @@
   <ng-container *ngFor="let disclaimerGroup of disclaimerPack; let lastGroup = last">
     <ng-container *ngFor="let disclaimer of disclaimerGroup; let last = last">
       <div *ngIf="showDisclaimer(disclaimer)"
-           class="disclaimer {{disclaimer.level}}"
+           class="disclaimer {{disclaimer.level}} {{disclaimer.mnemonic}}"
            id="disclaimer_{{disclaimer.id}}"
-           [ngClass]="{'mb-4': !(lastGroup && last)}">
+           [ngClass]="{'mb-4': !(lastGroup && last), 'main-page': isMainPage}">
         <div class="container">
           <div class="level-icon-{{disclaimer.level}}">
             <div class="close" (click)="closeDisclaimer(disclaimer.id, disclaimer.isPriority);"></div>

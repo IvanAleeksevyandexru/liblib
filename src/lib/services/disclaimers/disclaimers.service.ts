@@ -10,9 +10,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class DisclaimerService {
 
   private config = this.loadService.config;
+  private region = this.loadService.attributes.selectedRegion;
   private urlDisclaimer = `${this.config.cmsUrl}disclaimers/`;
   private urlDisclaimerV2 = `${this.config.cmsUrlV2}disclaimers/`;
   public disclaimersMain: BehaviorSubject<DisclaimerInterface[]> = new BehaviorSubject<DisclaimerInterface[]>([]);
+  public disclaimersMainPage: BehaviorSubject<DisclaimerInterface[]> = new BehaviorSubject<DisclaimerInterface[]>([]);
   public disclaimersAdditional: BehaviorSubject<DisclaimerInterface[]> = new BehaviorSubject<DisclaimerInterface[]>([]);
 
   constructor(private http: HttpClient, private loadService: LoadService) {
@@ -25,8 +27,23 @@ export class DisclaimerService {
       this.disclaimersAdditional.next(null);
     } else { // 'all'
       this.disclaimersMain.next([]);
+      this.disclaimersMainPage.next([]);
       this.disclaimersAdditional.next(null);
     }
+  }
+
+  public getMainPageDisclaimers(): void {
+    this.http.get<DisclaimerInterface[]>(`${this.urlDisclaimer}page`, {
+      withCredentials: true,
+      params: {
+        region: this.region,
+        page: 'main_v2',
+        _: Math.random().toString(),
+
+      }
+    }).subscribe((data: DisclaimerInterface[]) => {
+      this.disclaimersMainPage.next(data);
+    });
   }
 
   public getMainDisclaimers(): void {

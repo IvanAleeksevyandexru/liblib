@@ -555,7 +555,10 @@ export class HelperService {
     } else {
       if (HelperService.isInternalUrl(baseUrl) && !newTab) {
         const relativeUrl = HelperService.internalUrlToRelative(baseUrl);
-        this.router.navigateByUrl(relativeUrl, urlIsCompound ? {queryParams: compoundQueryParams} : {});
+        this.router.navigateByUrl(
+          this.router.createUrlTree(
+          [relativeUrl], urlIsCompound ? {queryParams: compoundQueryParams} : {}
+        ));
       } else {
         const absoluteUrl = HelperService.appendQueryParams(baseUrl, compoundQueryParams);
         if (newTab) {
