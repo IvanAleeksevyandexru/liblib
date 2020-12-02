@@ -80,6 +80,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public errorCodes: Array<string> = [];
   public query = '';
+  public historyQuery = '';
   public lastQuery = '';
   public needReplaceQuery = false;
   public blurCall = false;
@@ -339,17 +340,23 @@ export class DadataWidgetComponent extends CommonController implements AfterView
         this.dadataService.searchComplete.pipe(filter(res => !!res), take(1),
           switchMap(data => {
             query = this.dadataService.firstInSuggestion ? this.dadataService.firstInSuggestion.address : query;
-            return this.dadataService.normalize(query).pipe(take(1), finalize(() => this.disableOpening = false));
+            return this.dadataService.normalize(query).pipe(
+              take(1),
+              finalize(() => this.disableOpening = false));
           }))
           .subscribe(res => {
             success(res);
             return res;
+          }, error => {
+            this.normalizeInProcess = false;
           });
         return Promise.resolve()
       }
       return this.dadataService.normalize(query).toPromise().then(res => {
         success(res);
         return res;
+      }, err => {
+        this.normalizeInProcess = false;
       });
     } else {
       return Promise.resolve();
