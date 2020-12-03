@@ -155,7 +155,7 @@ export class IpshService {
     let date: string;
     let supplier: string;
     if (errorType === BillsErrors.BillsDateEvaluated) {
-      date = response.error.message.match(/\d\d.\d\d.\d\d\d\d/)[0];
+      date = response.error.message.match(/\d\d\.\d\d\.\d\d\d\d/)[0];
     }
     if (errorType === BillsErrors.BillsHasUnidentifiedBills) {
       supplier = response && response.response.bills && response.response.bills[0] && response.response.bills[0].addAttrs &&
