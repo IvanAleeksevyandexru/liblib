@@ -325,7 +325,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           this.needReplaceQuery = this.dadataService.suggestionsLength === 1 || blurCall || onInitCall;
           this.blurCall = blurCall;
           this.dadataService.resetForm();
-          this.dadataService.parseAddress(res, onInitCall);
+          this.dadataService.parseAddress(res, onInitCall, this.hideHouseCheckbox, this.hideApartmentCheckbox);
           // onChange triggering guaranteed
           if (selectAddress) {
             this.validationSkip = false;

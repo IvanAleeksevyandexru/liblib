@@ -233,7 +233,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
     });
   }
 
-  public parseAddress(data: NormalizedData, onInitCall: boolean) {
+  public parseAddress(data: NormalizedData, onInitCall: boolean, hideHouseCb: boolean, hideApartCb: boolean) {
     const needSkipStreet = !!data.address.elements.find(item => item.level === 4 && this.skipStreetFias.includes(item.fiasCode))
     data.address.elements.forEach((elem, index, arr) => {
       let level = elem.level;
@@ -285,10 +285,10 @@ export class DadataService implements AutocompleteSuggestionProvider {
         }
 
         if (onInitCall) {
-          if (!houseControl.value) {
+          if (!houseControl.value && !hideHouseCb) {
             houseCheckbox.setValue(true);
           }
-          if (!apartmentControl.value) {
+          if (!apartmentControl.value && !!hideApartCb) {
             apartmentCheckbox.setValue(true);
           }
         }

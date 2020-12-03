@@ -43,15 +43,11 @@ export class ListItemsAccessoryService {
         return items[nextVisible];
       }
     } else if (e.key === 'ArrowLeft') {
-      e.preventDefault();
-      e.stopPropagation();
       if (highlightedElement instanceof ListItem) {
         (highlightedElement as ListItem).collapse();
         return true;
       }
     } else if (e.key === 'ArrowRight') {
-      e.preventDefault();
-      e.stopPropagation();
       if (highlightedElement instanceof ListItem) {
         (highlightedElement as ListItem).expand();
         return true;
