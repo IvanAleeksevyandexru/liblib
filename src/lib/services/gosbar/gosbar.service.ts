@@ -7,7 +7,7 @@ import { LocationComponent } from '../../components/location/location.component'
 import { LocationService } from '../location/location.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
 
 @Injectable({
@@ -23,6 +23,9 @@ export class GosbarService {
 
   private selectedLang = new BehaviorSubject<string>(null);
   public selectedLang$ = this.selectedLang.asObservable();
+
+  private isLoading = new BehaviorSubject<boolean>(true);
+  public isLoading$ = this.isLoading.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -104,6 +107,7 @@ export class GosbarService {
             });
           };
           this.getLocation(manager);
+          this.isLoading.next(false);
         }, () => {
           this.unAvailableGosbar();
         }
@@ -208,6 +212,7 @@ export class GosbarService {
   public unAvailableGosbar = () => {
     this.geoPin = true;
     this.asyncLoad = true;
+    this.isLoading.next(false);
     // TODO: при клике на geopin вызвать this.popupLocation();
   }
 
