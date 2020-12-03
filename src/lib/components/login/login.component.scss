@@ -48,7 +48,6 @@
     background-image: url(../../../assets/svg/logout.svg);
   }
 }
-
 @media all and (min-width: 768px) {
   .authorized-user {
     position: relative;
@@ -138,6 +137,16 @@
       font-size: 12px;
       line-height: 20px;
       color: #a5aeb3;
+    }
+  }
+}
+
+@media all and (max-width: 1139px) {
+  .link{
+    &.partners_link{
+      &:before{
+        top: 1px
+      }
     }
   }
 }

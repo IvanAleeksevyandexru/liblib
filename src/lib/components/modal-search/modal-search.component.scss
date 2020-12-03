@@ -43,6 +43,12 @@
           height: 30px;
           flex-shrink: 0;
         }
+        .with-original-name{
+          .icon{
+            width: auto;
+            height: auto;
+          }
+        }
         .suggestion {
           display: inline-block;
           line-height: 40px;
@@ -100,6 +106,14 @@
       padding: 20px 0;
       .search-input {
         ::ng-deep {
+          .with-original-name{
+            .icon{
+              width: auto;
+              height: auto;
+              padding-right: 10px;
+              line-height: 24px;
+            }
+          }
           .lookup-field .search-field {
             .search-input, .search-in-progress {
               height: 40px;
@@ -118,7 +132,7 @@
         width: 40px;
         height: 40px;
         margin-left: 12px;
-        background-position: 15px 10px;
+        background-position: 10px 10px;
         background-size: 20px 20px;
       }
       .close-search-popup {

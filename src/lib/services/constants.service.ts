@@ -267,6 +267,12 @@ export class ConstantsService {
       access: ['AL20']
     },
     {
+      id: 'privileges',
+      name: 'PROFILE.TABS.PRIVILEGES',
+      url: '/profile/privileges',
+      access: ['AL20']
+    },
+    {
       id: 'taxes',
       name: 'PROFILE.TABS.TAXES',
       url: '/profile/taxes',
@@ -369,7 +375,7 @@ export class ConstantsService {
   public readonly FEEDS_CATEGORIES = [
     {
       text: 'Все',
-      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN',
+      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,KND_APPEAL',
       id: 1,
       mnemonic: 'allEvents'
     },
@@ -420,6 +426,13 @@ export class ConstantsService {
       type: 'FEEDBACK',
       id: 9,
       mnemonic: 'feedbackEvents'
+    },
+    {
+      text: 'Досудебное обжалование КНД',
+      type: 'KND_APPEAL',
+      id: 10,
+      mnemonic: 'kndAppealEvents'
+
     }
   ];
   public readonly NOTIFICATION_PERIOD_TIMEZONE: NotificationPeriodItem[] = [

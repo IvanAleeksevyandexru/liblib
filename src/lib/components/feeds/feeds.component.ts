@@ -45,6 +45,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public count = 0;
   @Input() public types: string | null;
   @Input() public page = 'overview';
+  @Input() public autoload: boolean;
   @Output() public emptyFeeds: EventEmitter<boolean> = new EventEmitter();
   @Output() public searching = new EventEmitter<boolean>();
   @Output() public serviceError = new EventEmitter<boolean>();
@@ -111,13 +112,16 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public showMore($evt): void {
-    if (this.feeds && this.feeds.length) {
+  public showMore($evt?): void {
+    if (this.feeds && this.feeds.length && this.hasMore) {
       this.addFeedsIsLoading = true;
       const last = this.feeds[this.feeds.length - 1];
       const date = last.date;
       this.getFeeds(last.id, date ? moment(date).toDate() : '', this.search);
-      this.onShowMoreClick($evt);
+
+      if ($evt) {
+        this.onShowMoreClick($evt);
+      }
     }
   }
 
@@ -180,7 +184,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public setUnreadFeedCls(feed: FeedModel): boolean {
-    return feed.unread && feed.feedType !== 'DRAFT' && feed.feedType !== 'PARTNERS_DRAFT';
+    return feed.unread && feed.feedType !== 'DRAFT' && feed.feedType !== 'PARTNERS_DRAFT' && feed.feedType !== 'KND_APPEAL_DRAFT';
   }
 
   public markAsFlag(feed: FeedModel): boolean {
@@ -356,12 +360,11 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public showRemoveFeedButton(feed: FeedModel): boolean {
-    return (this.page === 'overview' || this.page === 'events' ||
-            this.page === 'drafts' || this.page === 'partners_drafts') && !feed.data.reminder;
+    return ['overview', 'events', 'drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder;
   }
 
   public getIsArchive(): boolean {
-    return (this.selectedTypes === 'DRAFT' || this.selectedTypes === 'PARTNERS_DRAFT') ? undefined : this.isArchive;
+    return ['DRAFT', 'PARTNERS_DRAFT', 'KND_APPEAL_DRAFT'].includes(this.selectedTypes) ? undefined : this.isArchive;
   }
 
   public isUpdated(feed: FeedModel): boolean {
@@ -418,7 +421,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public onShowMoreClick($evt): void {
+  public onShowMoreClick($evt?): void {
     $evt.stopPropagation();
     if (this.page === 'overview') {
       this.yaMetricService.callReachGoal('overviewEvents', {

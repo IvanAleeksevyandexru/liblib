@@ -1,6 +1,5 @@
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -13,7 +12,7 @@ import {
 } from '@angular/core';
 import { DadataService } from '../../services/dadata/dadata.service';
 import { DadataResult, NormalizedData } from '../../models/dadata';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, finalize, switchMap, take, takeUntil } from 'rxjs/operators';
 import { ConstantsService } from '../../services/constants.service';
 import {
   AbstractControl,
@@ -81,17 +80,25 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public errorCodes: Array<string> = [];
   public query = '';
+  public historyQuery = '';
   public lastQuery = '';
   public needReplaceQuery = false;
   public blurCall = false;
   public validationSkip = false;
+
+  // для onBlur нормализации отменяет показ списка саджестов
+  public disableOpening = false;
+
   // Массив полей, по которым строится полный адрес
   public controlNames: string[];
+
   // Поля, которые исключаются из формы для построения полного адреса
   public excluded = this.constants.DADATA_EXCLUDED_FIELDS;
+
   public fullAddrStrExcluded = this.constants.DADATA_FULLADDRSTR_EXCLUDED_FIELDS;
   // Массив с широтой и долготой для яндекс карты
   public center = [];
+
   public stateShowMap = false;
   // проверка на множественные вызовы
   public normalizeInProcess = false;
@@ -222,10 +229,8 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           this.revalidate();
         }
         this.lastQuery = this.query;
-        if (this.needReplaceQuery) {
-          this.query = fullAddress;
-          this.widgetItemsVisibility = this.dadataService.validateCheckboxes();
-        }
+        this.query = fullAddress;
+        this.widgetItemsVisibility = this.dadataService.validateCheckboxes();
         if (dadataQc === '0' && !this.errorCodes.length) {
             this.autocomplete.cancelSearchAndClose();
         }
@@ -241,13 +246,13 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           kladrCode: this.dadataService.kladrCode,
           regionCode: (this.dadataService.kladrCode && this.dadataService.kladrCode.substring(0, 2)) || ''
         };
-        this.commit(commitValue);
         this.normalizeInProcess = false;
+        this.commit(commitValue);
       } else {
         this.errorCodes = [];
         this.widgetItemsVisibility = {};
-        this.commit(null);
         this.normalizeInProcess = false;
+        this.commit(null);
       }
       if (this.blurCall && !this.isOpenedFields.getValue() && (dadataQc === '1' || dadataQc === '2') && this.normalizedData.fiasLevel !== '-1' && !this.externalApiUrl) {
         this.showWrongAddressDialog();
@@ -307,31 +312,51 @@ export class DadataWidgetComponent extends CommonController implements AfterView
                               onInitCall = false,
                               blurCall = false,
                               selectAddress = false): Promise<any> {
+    const success = (res) => {
+      if (res) {
+        this.normalizedData = res;
+        if (res.address && res.address.elements && res.address.elements.length) {
+          this.needReplaceQuery = this.dadataService.suggestionsLength === 1 || blurCall || onInitCall;
+          this.blurCall = blurCall;
+          this.dadataService.resetForm();
+          this.dadataService.parseAddress(res, onInitCall);
+          // onChange triggering guaranteed
+          if (selectAddress) {
+            this.validationSkip = false;
+          } else {
+            this.validationSkip = !this.needReplaceQuery || suppressValidation
+          }
+        }
+      }
+    }
     if (fullAddress && !this.normalizeInProcess) {
       this.form.markAsTouched();
       // используем промис, т.к. в противном случае без сабскрайбера не вызывается сервис
       this.normalizeInProcess = true;
+      this.commit(null);
       let query = fullAddress;
-      if (blurCall && this.dadataService.firstInSuggestion) {
-        query = this.dadataService.firstInSuggestion.address;
+      if (blurCall) {
+        this.disableOpening = true;
+        this.dadataService.searchComplete.pipe(filter(res => !!res), take(1),
+          switchMap(data => {
+            query = this.dadataService.firstInSuggestion ? this.dadataService.firstInSuggestion.address : query;
+            return this.dadataService.normalize(query).pipe(
+              take(1),
+              finalize(() => this.disableOpening = false));
+          }))
+          .subscribe(res => {
+            success(res);
+            return res;
+          }, error => {
+            this.normalizeInProcess = false;
+          });
+        return Promise.resolve()
       }
       return this.dadataService.normalize(query).toPromise().then(res => {
-        if (res) {
-          this.normalizedData = res;
-          if (res.address && res.address.elements && res.address.elements.length) {
-            this.needReplaceQuery = this.dadataService.suggestionsLength === 1 || blurCall || onInitCall;
-            this.blurCall = blurCall;
-            this.dadataService.resetForm();
-            this.dadataService.parseAddress(res, onInitCall);
-            // onChange triggering guaranteed
-            if (selectAddress) {
-              this.validationSkip = false;
-            } else {
-              this.validationSkip = !this.needReplaceQuery || suppressValidation
-            }
-          }
-        }
+        success(res);
         return res;
+      }, err => {
+        this.normalizeInProcess = false;
       });
     } else {
       return Promise.resolve();
@@ -352,6 +377,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   }
 
   public updateCanOpenFields(value: string): void {
+    this.dadataService.resetSearchComplete(false);
     if (this.isOpenedFields.getValue()) {
       this.closeDadataFields();
     }
@@ -424,6 +450,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   }
 
   public validate(control: AbstractControl): ValidationErrors | null {
+    if (this.normalizeInProcess) {
+      return {inProcess: true};
+    }
     if (this.form.invalid || this.errorCodes.length || !this.query || !this.normalizedData) {
       if (this.normalizeOnInit && !this.normalizedData) {
         this.normalizeFullAddress(this.query, true);

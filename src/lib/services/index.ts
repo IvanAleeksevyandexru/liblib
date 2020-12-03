@@ -10,7 +10,7 @@ export * from './disclaimers/disclaimers.service';
 export * from './ds-widget/ds.widget';
 export * from './ds-widget/ds.plugin';
 export * from './ds-widget/ifc.service';
-export * from './esia-api/esia-api-lib.service';
+export * from './esia-api/esia-api.service';
 export * from './feeds/feeds.service';
 export * from './focus/focus.manager';
 export * from './gisgmp-subscribe/gisgmp-subscribe.service';
