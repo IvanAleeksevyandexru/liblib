@@ -217,6 +217,9 @@ export class FeedsService {
       case 'BIOMETRICS':
         url += 'settings/biometry';
         break;
+      case 'LINKED_ACCOUNT':
+        url += 'settings/social';
+        break;
       case 'ACCOUNT':
       case 'PROFILE':
         url += 'settings/account';
