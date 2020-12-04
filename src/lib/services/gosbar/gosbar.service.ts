@@ -7,7 +7,7 @@ import { LocationComponent } from '../../components/location/location.component'
 import { LocationService } from '../location/location.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
 
 @Injectable({
