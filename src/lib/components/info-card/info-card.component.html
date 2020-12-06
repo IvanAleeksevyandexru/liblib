@@ -30,8 +30,9 @@
       <a class="link-plain add-link" (click)="repeatReq()">Запросить</a>
       <a class="link-plain add-link" (click)="repeatReq()">У меня нет полиса</a>
     </ng-container>
-    <ng-container *ngIf="data.type === 'MEDICAL_ORG'">
-<!--      <a class="link-plain add-link" (click)="repeatReq()">Обновить</a>-->
+    <ng-container *ngIf="data.type === 'MEDICAL_ORG' && data.vrfStu === 'NOT_VERIFIED'">
+<!--      <a class="link-plain add-link" [routerLink]="object.detailsPath">Выбрать</a>-->
+      <a class="link-plain add-link" (click)="repeatReq()">Обновить</a>
     </ng-container>
   </div>
 </ng-template>

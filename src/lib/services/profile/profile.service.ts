@@ -824,6 +824,7 @@ export class ProfileService {
           canEdit: false,
           canDelete: true,
           withVerificationIcon: false,
+          vrfStu: object.vrfStu,
           serviceUrl: object.serviceUrl,
           canRepeat: true,
           empty: {
@@ -844,10 +845,6 @@ export class ProfileService {
               },
               {
                 title: object.medicalAddress,
-                value: ''
-              },
-              {
-                title: `Прикрепление от ${object.attachDate}`,
                 value: ''
               }
             ]
