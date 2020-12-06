@@ -645,11 +645,11 @@ export class ProfileService {
         return {
           canDetails: true,
           canEdit: false,
-          canDelete: true,
-          withVerificationIcon: false,
-          detailsPath: `/profile/cert/${object.id ? object.id : ''}`,
-          detailsLinkTitle: `Редактировать`,
+          canDelete: !object.actRecordFound,
+          withVerificationIcon: object.actRecordFound,
+          detailsPath: `/profile/cert${object.actRecordFound ? '-extended' : ''}/${object.id ? object.id : ''}`,
           detailsQueryParam: {type: 'MARRIED_CERT'},
+          detailsLinkTitle: object.actRecordFound ? 'Подробнее' : 'Редактировать',
           empty: {
             title: 'Свидетельство о браке',
             subtitle: 'Добавьте документ, чтобы он всегда был у вас под рукой',
@@ -673,11 +673,11 @@ export class ProfileService {
         return {
           canDetails: true,
           canEdit: false,
-          canDelete: true,
-          withVerificationIcon: false,
-          detailsPath: `/profile/cert/${object.id ? object.id : ''}`,
+          canDelete: !object.actRecordFound,
+          withVerificationIcon: object.actRecordFound,
+          detailsPath: `/profile/cert${object.actRecordFound ? '-extended' : ''}/${object.id ? object.id : ''}`,
           detailsQueryParam: {type: 'DIVORCE_CERT'},
-          detailsLinkTitle: `Редактировать`,
+          detailsLinkTitle: object.actRecordFound ? 'Подробнее' : 'Редактировать',
           empty: {
             title: 'Свидетельство о разводе',
             subtitle: 'Добавьте документ, чтобы он всегда был у вас под рукой'

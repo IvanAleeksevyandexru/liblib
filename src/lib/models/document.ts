@@ -55,6 +55,7 @@ export interface CommonCert {
   departmentDoc?: string;
   getDateDoc?: string;
   actNo?: string;
+  actRecordFound?: boolean;
   recordDate?: string | Date;
   issuedBy?: string;
 }
