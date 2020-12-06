@@ -114,7 +114,7 @@ export class InformerComponent implements OnInit {
   private getInformerShortData() {
     this.informersService.getDataInformer().subscribe(
       (response: InformerShortInterface) => {
-        if (response.result) {
+        if (response && response.result) {
           // есть начисления
           if (response.result.total) {
             const res = response.result;

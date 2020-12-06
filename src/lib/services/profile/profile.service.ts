@@ -71,14 +71,16 @@ export class ProfileService {
       case this.DOCUMENT_TYPES.MEDICAL_POLICY: {
         const result = {
           attrId: 'oms',
-          canDetails: false,
+          canDetails: true,
           canEdit: !this.loadService.user.isKid,
           canDelete: !this.loadService.user.isKid,
+          vrfStu: object.vrfStu,
+          detailsPath: '/profile/health/medical-policy',
           withVerificationIcon: false,
           serviceUrl: object.serviceUrl,
           empty: {
             title: 'Полис ОМС',
-            subtitle: 'Необходим для записи на прием в поликлиники и больницы',
+            subtitle: 'Запросите полис, чтобы прикрепиться к поликлинике, записаться на прием или вызвать врача на дом',
           },
           full: {
             title: 'Полис ОМС'
@@ -810,6 +812,43 @@ export class ProfileService {
               {
                 title: 'Следующее освидетельствование',
                 value: moment(object.dateOfNextCheck).format('DD.MM.YYYY')
+              }
+            ]
+          })
+        };
+      }
+      case this.DOCUMENT_TYPES.MEDICAL_ORG: {
+        return {
+          canDetails: true,
+          detailsPath: '/profile/health/medical-org',
+          canEdit: false,
+          canDelete: true,
+          withVerificationIcon: false,
+          serviceUrl: object.serviceUrl,
+          canRepeat: true,
+          empty: {
+            title: 'Моя поликлиника',
+            subtitle: 'Добавьте полис ОМС, чтобы просмотреть, изменить, или выбрать прикрепление к медорганизации',
+          },
+          full: {
+            title: 'Моя поликлиника'
+          },
+          ...(object.status === 'process' ? {
+            notification: 'Идет поиск полиса в реестре ФОМС...',
+            fields: []
+          } : {
+            fields: [
+              {
+                title: '',
+                value: object.medicalOrgName
+              },
+              {
+                title: object.medicalAddress,
+                value: ''
+              },
+              {
+                title: `Прикрепление от ${object.attachDate}`,
+                value: ''
               }
             ]
           })

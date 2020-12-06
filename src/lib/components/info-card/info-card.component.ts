@@ -138,6 +138,10 @@ export class InfoCardComponent implements OnInit, OnChanges {
     }
   }
 
+  public toggleEditForm(): void {
+    this.changeTypeEmitter.emit();
+  }
+
   public editableInternal(): boolean {
     return this.object.canEdit && !this.externalLink;
   }

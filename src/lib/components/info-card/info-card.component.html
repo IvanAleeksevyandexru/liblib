@@ -12,8 +12,11 @@
 <ng-template #empty>
   <div class="title">{{object.empty?.title}}</div>
   <div class="subtitle mt-16" [innerHTML]="object.empty?.subtitle"></div>
+  <div *ngIf="data.type === 'MDCL_PLCY'" class="info-action mt-16">
+    <a class="link-plain add-link" (click)="repeatReq()">Узнать больше</a>
+  </div>
   <div class="actions mt-16">
-    <ng-container *ngIf="data.type !== 'DISABLED_PERSON'">
+    <ng-container *ngIf="data.type !== 'DISABLED_PERSON' && data.type !== 'MDCL_PLCY' && data.type !== 'MEDICAL_ORG'">
       <span *ngIf="!externalLink && !addPath" class="link-plain add-link" (click)="toggleForm()">Добавить</span>
       <a *ngIf="externalLink && !addPath" class="link-plain add-link" [href]="externalLink">Добавить</a>
       <a *ngIf="addPath" class="link-plain add-link" [routerLink]="addPath">Добавить</a>
@@ -22,6 +25,13 @@
     <ng-container *ngIf="data.type === 'DISABLED_PERSON'">
       <a class="link-plain add-link" (click)="repeatReq()">{{data.status ? 'Обновить' : 'Запросить'}}</a>
       <a *ngIf="data.status === 'error_found'" class="link-plain add-link" [href]="object.serviceUrl">Сообщить об ошибке в ПФР</a>
+    </ng-container>
+    <ng-container *ngIf="data.type === 'MDCL_PLCY'">
+      <a class="link-plain add-link" (click)="repeatReq()">Запросить</a>
+      <a class="link-plain add-link" (click)="repeatReq()">У меня нет полиса</a>
+    </ng-container>
+    <ng-container *ngIf="data.type === 'MEDICAL_ORG'">
+<!--      <a class="link-plain add-link" (click)="repeatReq()">Обновить</a>-->
     </ng-container>
   </div>
 </ng-template>
@@ -58,13 +68,13 @@
       </ng-container>
     </div>
   </div>
-  <div class="card-actions">
+  <div *ngIf="data.type !== 'MDCL_PLCY' && data.type !== 'MEDICAL_ORG'" class="card-actions">
     <ng-container *ngIf="state === '' || data.type === 'CHILD'">
       <a
         *ngIf="object.canDetails && object.detailsPath"
         class="link-plain"
         [queryParams]="object.detailsQueryParam ? object.detailsQueryParam : {}"
-         [routerLink]="object.detailsPath"
+        [routerLink]="object.detailsPath"
       >{{object.detailsLinkTitle ? object.detailsLinkTitle : 'Подробнее'}}</a>
       <a *ngIf="object.canDetails && !object.detailsPath" (click)="toggleForm()">Подробнее</a>
       <a *ngIf="object.canEdit && !editPath" class="link-plain" (click)="toggleForm()">Редактировать</a>
@@ -110,6 +120,28 @@
     </ng-container>
     <ng-container *ngIf="data.type === 'DISABLED_PERSON' && state === ''">
       <a class="link-plain" (click)="repeatReq()">Обновить</a>
+    </ng-container>
+  </div>
+<!--  TODO перенести после добавления возможности передачи кастомных шаблонов в карточку-->
+  <div *ngIf="data.type === 'MDCL_PLCY'" class="card-actions">
+    <ng-container *ngIf="state === 'process'">
+      <a class="link-plain" (click)="cancelReq()">Отменить поиск</a>
+    </ng-container>
+    <ng-container *ngIf="state === ''">
+      <a *ngIf="data.vrfStu !== 'VERIFIED'" class="link-plain" (click)="repeatReq()">Обновить</a>
+      <a *ngIf="data.vrfStu !== 'VERIFIED'" class="link-plain" (click)="toggleEditForm()">Редактировать</a>
+    </ng-container>
+    <ng-container *ngIf="state === 'verified'">
+      <a *ngIf="data.vrfStu === 'VERIFIED'" [routerLink]="object.detailsPath" class="link-plain">Подробнее</a>
+    </ng-container>
+    <ng-container *ngIf="state === 'error'">
+      <a class="link-plain" (click)="toggleEditForm()">Добавить вручную</a>
+      <a class="link-plain" (click)="repeatReq()">Повторить поиск</a>
+    </ng-container>
+  </div>
+  <div *ngIf="data.type === 'MEDICAL_ORG'" class="card-actions">
+    <ng-container *ngIf="state === 'verified'">
+      <a [routerLink]="object.detailsPath" class="link-plain">Подробнее</a>
     </ng-container>
   </div>
 </ng-template>
