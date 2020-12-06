@@ -48,13 +48,13 @@
     "FAIL": "Выберите регион"
   },
   "WEEKDAYS": {
-    "MONDAY": "Пн",
-    "TUESDAY": "Вт",
-    "WEDNESDAY": "Ср",
-    "THURSDAY": "Чт",
-    "FRIDAY": "Пт",
-    "SATURDAY": "Сб",
-    "SUNDAY": "Вс"
+    "MONDAY": "пн",
+    "TUESDAY": "вт",
+    "WEDNESDAY": "ср",
+    "THURSDAY": "чт",
+    "FRIDAY": "пт",
+    "SATURDAY": "сб",
+    "SUNDAY": "вс"
   },
   "MONTHS": {
     "JANUARY": "Январь",

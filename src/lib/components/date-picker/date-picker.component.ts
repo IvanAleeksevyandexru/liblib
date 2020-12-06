@@ -332,7 +332,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   public selectDate(dateItem: DateProperties) {
     this.suppressMobileKeyboard();
     this.returnFocus(); // предотвращает handleFocus после выбора если календарь был открыт программно без фокусировки на поле
-    if (dateItem.locked) {
+    if (dateItem.locked || !dateItem.day) {
       return;
     }
     const date = dateItem.date;
@@ -535,6 +535,12 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
 
   public isDateOutOfMonth(date: Date, monthShift: number) {
     return date && moment(date).month() !== this.activeMonthYear.month + monthShift;
+  }
+
+  public isEmptyDayInRange(day: DateProperties) {
+    return !day.day && day.inRange
+      && (!day.rangeStart || moment(day.date).endOf('month').isSame(day.date, 'day'))
+      && (!day.rangeEnd || moment(day.date).startOf('month').isSame(day.date, 'day'));
   }
 
   public checkAndCorrectNavigation() {
@@ -744,8 +750,9 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     output.push([]);
     if (firstDayOfWeekInMonth > 1) {
       for (let i = 1; i < firstDayOfWeekInMonth; i++) {
-        const date = moment(firstDayOfMonth).add(i - firstDayOfWeekInMonth, 'day');
-        output[0].push({day: date.date(), date: date.toDate()});
+        // const date = moment(firstDayOfMonth).add(i - firstDayOfWeekInMonth, 'day');
+        // output[0].push({day: date.date(), date: date.toDate()});
+        output[0].push({day: null, date: moment(firstDayOfMonth).toDate()});
       }
     }
     for (let i = 0; i < daysInMonth; i++) {
@@ -756,10 +763,12 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       const date = moment(firstDayOfMonth).add(i, 'day');
       output[week].push({day: date.date(), date: date.toDate()});
     }
-    let days = 0;
+    // let days = 0;
+    const lastMonthDate = output[week][output[week].length - 1].date;
     while (output[week].length < 7) {
-      const date = moment(firstDayOfMonth).add(1, 'month').add(days++, 'day');
-      output[week].push({day: date.date(), date: date.toDate()});
+      // const date = moment(firstDayOfMonth).add(1, 'month').add(days++, 'day');
+      // output[week].push({day: date.date(), date: date.toDate()});
+      output[week].push({day: null, date: lastMonthDate});
     }
     this.updateDateItemProperties(output, monthShift);
   }
@@ -775,6 +784,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         day.rangeEnd = this.isRangeEnd(day.date, this.rangeStart);
         day.locked = this.isDateLocked(day.date);
         day.outer = this.isDateOutOfMonth(day.date, monthShift);
+        day.emptyInRange = this.isEmptyDayInRange(day);
         // повзоляет вносить коррективы снаружи для любых отрендеренных дней
         if (this.externalDatePropertiesPublisher) {
           this.externalDatePropertiesPublisher.publish(day);

@@ -106,7 +106,9 @@
                       'range-start': day.rangeStart,
                       'range-end': day.rangeEnd,
                       'locked': day.locked,
-                      'outer': day.outer
+                      'outer': day.outer,
+                      'empty-day': !day.day,
+                      'empty-in-range': day.emptyInRange
                     }">
                     <span class="calendar-day-text">{{day?.day}}</span>
                   </div>

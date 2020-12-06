@@ -32,7 +32,6 @@
     }
     &.expanded {
       ::ng-deep .calendar-input .text-input {
-        border-radius: 4px 4px 0 0;
         &.focused {
           &.invalid {
             border: 2px solid #99B1E6;
@@ -67,7 +66,9 @@
   }
   .calendar-container {
     width: 280px;
-    border: 1px solid #CED9F0;
+    top: 4px;
+    border: 2px solid #99B1E6;
+    border-radius: 8px;
     box-sizing: border-box;
     overflow: hidden;
     position: absolute;
@@ -84,6 +85,7 @@
     }
     .calendar-panel {
       width: 100%;
+      border-bottom: 1px solid #99B1E6;
     }
     .calendar-grid-container-wrapper {
       width: 100%;
@@ -98,7 +100,6 @@
       width: 100%;
       min-width: 100%;
       flex-shrink: 0;
-      max-height: auto;
       &.next-month {
         border-left: solid 1px #DCDEE0;
       }
@@ -112,112 +113,132 @@
       }
     }
     .calendar-grid {
-      display: table;
+      padding: 12px 16px 16px;
       width: 100%;
       .calendar-week-days {
-        display: table-row;
+        display: flex;
+        justify-content: space-between;
         width: 100%;
+        margin-bottom: 12px;
         .calendar-week-day {
-          display: table-cell;
-          width: 14.28%; // 1/7
+          height: 20px;
+          width: calc(100% / 7);
           text-align: center;
-          padding: 10px;
           .calendar-week-day-text {
             font-family: Lato, Arial, sans-serif;
             font-size: 14px;
             line-height: 20px;
-            color: #626A73;
+            color: #66727F;
           }
         }
       }
       .calendar-week {
-        display: table-row;
+        display: flex;
+        justify-content: space-between;
         width: 100%;
         .calendar-day {
-          display: table-cell;
-          width: 14.28%; // 1/7
+          height: 28px;
+          width: calc(100% / 7);
+          margin: 4px 0;
           text-align: center;
-          padding: 10px;
           cursor: pointer;
           box-sizing: border-box;
           .calendar-day-text {
             font-family: Lato, Arial, sans-serif;
-            font-size: 14px;
-            line-height: 20px;
-            color: #101214;
+            font-size: 16px;
+            line-height: 28px;
+            color: #0B1F33;
           }
           &.today {
-            position: relative;
             .calendar-day-text {
-            }
-            :after {
-              content: '*';
-              color: #B2001D;
-              position: absolute;
-              right: 3px;
-              top: 3px;
-            }
-            &:hover {
-              :after {
-                content: '*';
-                color: #B2001D;
-                position: absolute;
-                right: 1px;
-                top: 1px;
-              }
+              color: #FF8A00;
+              font-weight: bold;
             }
           }
-          &.holiday {
-            .calendar-day-text {
-              color: #B2001D;
-            }
-          }
-          &:hover {
-            border: 2px solid #CED9F0;
-            padding: 8px;
+          &:not(.in-range):hover {
+            background: rgba(29, 93, 235, 0.18);
+            border-radius: 8px;
           }
           &.locked {
-            background-color: #EEEFEF;
             cursor: default;
             &:hover {
-              border: none;
+              background: #FFFFFF;
             }
             .calendar-day-text {
-              color: #A8ACB1;
+              color: #D1D5DF;
             }
-          }
-          &.outer {
           }
           &.in-range {
-            background-color: #E7ECF7;
-            border-bottom: solid 1px #0B40B3;
-            padding-bottom: 9px;
+            position: relative;
+            background-color: #1D5DEB;
             .calendar-day-text {
-              color: #0B40B3;
+              color: #FFFFFF;
             }
-            &.holiday {
+            &.today {
               .calendar-day-text {
-                color: #B2001D;
+                color: #F8B200;
+              }
+            }
+
+            &.range-start, &:first-of-type {
+              border-top-left-radius: 8px;
+              border-bottom-left-radius: 8px;
+            }
+            &.range-end, &:last-child {
+              border-top-right-radius: 8px;
+              border-bottom-right-radius: 8px;
+            }
+          }
+          &.selected {
+            background-color: #1D5DEB;
+            border-radius: 8px;
+            &:hover {
+              background-color: #1D5DEB;
+            }
+            .calendar-day-text {
+              color: #FFFFFF;
+            }
+            &.today {
+              .calendar-day-text {
+                color: #F8B200;
               }
             }
           }
-          &.range-start {
-            background-image: url(../../../assets/svg/calendar-range-start.svg);
-            background-repeat: no-repeat;
-            background-position: bottom left;
-          }
-          &.range-end {
-            background-image: url(../../../assets/svg/calendar-range-end.svg);
-            background-repeat: no-repeat;
-            background-position: bottom right;
-          }
-          &.selected {
-            background-color: #0B40B3;
-            &:hover {
-              border: none;
+          &.empty-day {
+            cursor: default;
+            border-radius: 0!important;
+            &.empty-in-range {
+              background: #1D5DEB;
             }
-            .calendar-day-text {
-              color: white;
+            &:not(.empty-in-range) {
+              background: #FFFFFF;
+            }
+          }
+        }
+
+        &:last-of-type {
+          .calendar-day:last-of-type.in-range:not(.range-end) {
+            border-radius: 0;
+            &:after {
+              content: '';
+              background-color: #1D5DEB;
+              height: 28px;
+              width: 16px;
+              position: absolute;
+              right: -16px;
+            }
+          }
+        }
+        &:nth-child(2) {
+          .calendar-day:first-child.in-range:not(.range-start) {
+            border-radius: 0;
+            &:before {
+              content: '';
+              background-color: #1D5DEB;
+              height: 28px;
+              width: 16px;
+              position: absolute;
+              left: -16px;
             }
           }
         }
