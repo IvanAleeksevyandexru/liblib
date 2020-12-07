@@ -339,7 +339,34 @@ export class ConstantsService {
         mnemonic: 'partnersFeedsDraft'
       }
   ]);
-
+  public readonly PAYMENT_TABS = new Tabs([
+    {
+      id: 'overview',
+      name: 'TABS.OVERVIEW.TITLE',
+      url: '/overview',
+      metric: {name: this.TABS_METRIC_NAME, action: 'overview'}
+    }, {
+      id: 'statements',
+      name: 'TABS.ORDERS.TITLE',
+      url: '/orders',
+      metric: {name: this.TABS_METRIC_NAME, action: 'myOrders'}
+    }, {
+      id: 'profile',
+      name: 'TABS.PROFILE.TITLE',
+      url: '/profile',
+      metric: {name: this.TABS_METRIC_NAME, action: 'documentsData'}
+    }, {
+      id: 'messages',
+      name: 'TABS.MESSAGES.TITLE',
+      url: '/messages',
+      metric: {name: this.TABS_METRIC_NAME, action: 'messages'}
+    }, {
+      id: 'permissions',
+      name: 'TABS.PERMISSIONS.TITLE',
+      url: '/permissions',
+      metric: {name: this.TABS_METRIC_NAME, action: 'permissions'}
+    }
+  ]);
   public readonly ORDERS_CATEGORIES = [
     {
       text: 'Все',
