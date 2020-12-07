@@ -232,7 +232,7 @@ export class ConstantsService {
     {
       id: 'settings',
       name: 'MESSAGES.TABS.SETTINGS',
-      url: '/settings/notifications'
+      url: '/settings/mail'
     }
   ]);
 
