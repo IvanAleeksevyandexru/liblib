@@ -231,6 +231,8 @@ interface IGetServiceRequest {
   ignorePlatform: boolean;
   oldStyle: boolean;
   isManual: boolean;
+  ext_id?: string;
+  mfcCode?: string;
 }
 
 export class GetServiceRequest implements IGetServiceRequest {
@@ -239,13 +241,17 @@ export class GetServiceRequest implements IGetServiceRequest {
   public ignorePlatform: boolean;
   public oldStyle: boolean;
   public isManual: boolean;
+  public ext_id: string;
+  public mfcCode: string;
 
-  constructor(sid: string, eid?: string, ignorePlatform?: boolean, oldStyle?: boolean, isManual?: boolean) {
+  constructor(sid: string, eid?: string, ignorePlatform?: boolean, oldStyle?: boolean, isManual?: boolean, ext_id?: string, mfcCode?: string) {
     this.sid = sid;
     this.eid = eid || '';
     this.ignorePlatform = ignorePlatform || false;
     this.oldStyle = oldStyle || false;
     this.isManual = isManual || false;
+    this.ext_id = ext_id || '';
+    this.mfcCode = mfcCode || '';
   }
 }
 
