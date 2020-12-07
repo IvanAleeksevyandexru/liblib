@@ -245,5 +245,11 @@
       }
     }
   }
+
+  &.date-picker-in-dropdown {
+    .calendar-container {
+      border-color: #FFFFFF;
+    }
+  }
 }
 
