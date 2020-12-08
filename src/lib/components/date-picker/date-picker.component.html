@@ -82,7 +82,9 @@
                       'range-start': day.rangeStart,
                       'range-end': day.rangeEnd,
                       'locked': day.locked,
-                      'outer': day.outer
+                      'outer': day.outer,
+                      'empty-day': !day.day,
+                      'empty-in-range': day.emptyInRange
                     }">
                     <span class="calendar-day-text">{{day?.day}}</span>
                   </div>
@@ -96,13 +98,16 @@
                     <span class="calendar-week-day-text">{{weekDay | libTranslate}}</span>
                   </div>
                 </div>
-                <div class="calendar-week" *ngFor="let week of weeks">
-                  <div *ngFor="let day of week" [class]="day.custom" (click)="selectDate(day)" [ngClass]="{
+                <div (mouseleave)="leaveCalendar()">
+                  <div class="calendar-week" *ngFor="let week of weeks">
+                    <div *ngFor="let day of week" [class]="day.custom"
+                         (click)="selectDate(day)" (mouseenter)="enterInCalendar($event, day)" [ngClass]="{
                       'calendar-day': true,
                       'today': day.today,
                       'holiday': day.holiday,
                       'selected': day.selected,
                       'in-range': day.inRange,
+                      'in-preview-range': day.inPreviewRange,
                       'range-start': day.rangeStart,
                       'range-end': day.rangeEnd,
                       'locked': day.locked,
@@ -110,7 +115,8 @@
                       'empty-day': !day.day,
                       'empty-in-range': day.emptyInRange
                     }">
-                    <span class="calendar-day-text">{{day?.day}}</span>
+                      <span class="calendar-day-text">{{day?.day}}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -132,7 +138,9 @@
                       'range-start': day.rangeStart,
                       'range-end': day.rangeEnd,
                       'locked': day.locked,
-                      'outer': day.outer
+                      'outer': day.outer,
+                      'empty-day': !day.day,
+                      'empty-in-range': day.emptyInRange
                     }">
                     <span class="calendar-day-text">{{day?.day}}</span>
                   </div>

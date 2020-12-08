@@ -189,6 +189,9 @@
               border-bottom-right-radius: 8px;
             }
           }
+          &.in-preview-range {
+            background: rgba(29, 93, 235, 0.18);
+          }
           &.selected {
             background-color: #1D5DEB;
             border-radius: 8px;
@@ -229,7 +232,7 @@
             }
           }
         }
-        &:nth-child(2) {
+        &:first-of-type {
           .calendar-day:first-child.in-range:not(.range-start) {
             border-radius: 0;
             &:before {

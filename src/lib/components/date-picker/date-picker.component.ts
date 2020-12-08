@@ -537,6 +537,39 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     return date && moment(date).month() !== this.activeMonthYear.month + monthShift;
   }
 
+  public isInPreviewRange(date: Date, rangeStart, rangeEnd) {
+    return moment(date).isBetween(rangeStart, rangeEnd) || moment(date).isBetween(rangeEnd, rangeStart);
+  }
+
+  public clearPreviewRange() {
+    this.weeks.forEach((week: DateProperties[]) => {
+      week.forEach((item: DateProperties) => {
+        item.inPreviewRange = false;
+      });
+    });
+  }
+
+  public enterInCalendar(event, hoverDay) {
+    if (!this.rangeStart) {
+      return;
+    }
+    if (hoverDay.locked || !hoverDay.day) {
+      this.clearPreviewRange();
+    } else {
+      this.weeks.forEach((week: DateProperties[]) => {
+        week.forEach((item: DateProperties) => {
+          item.inPreviewRange = this.isInPreviewRange(item.date, this.rangeStart, hoverDay.date);
+        });
+      });
+    }
+  }
+
+  public leaveCalendar() {
+    if (this.rangeStart) {
+      this.clearPreviewRange();
+    }
+  }
+
   public isEmptyDayInRange(day: DateProperties) {
     return !day.day && day.inRange
       && (!day.rangeStart || moment(day.date).endOf('month').isSame(day.date, 'day'))
@@ -785,6 +818,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         day.locked = this.isDateLocked(day.date);
         day.outer = this.isDateOutOfMonth(day.date, monthShift);
         day.emptyInRange = this.isEmptyDayInRange(day);
+        day.inPreviewRange = false;
         // повзоляет вносить коррективы снаружи для любых отрендеренных дней
         if (this.externalDatePropertiesPublisher) {
           this.externalDatePropertiesPublisher.publish(day);
