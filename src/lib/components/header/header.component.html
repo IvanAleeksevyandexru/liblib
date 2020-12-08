@@ -1,4 +1,4 @@
-<div class="header">
+<div class="header" [ngClass]="{'hide show-lg': !comingSoon}">
   <div class="inner container grid-row-lg flex-container align-items-center">
     <div class="col-lg-12 flex-container align-items-center"
           [ngClass]="{
@@ -11,15 +11,17 @@
         <lib-location-select></lib-location-select>
       </div>
 
-      <div *ngIf="!user.authorized && !comingSoon" class="flex-container align-items-center hide show-lg">
-        <div *ngFor="let role of userRoles; let first = first">
-          <a class="link-plain" (click)="updateRole(role.code)"
-             [ngClass]="{
+      <div *ngIf="!user.authorized && !comingSoon" class="hide show-lg">
+        <div class="flex-container align-items-center">
+          <div *ngFor="let role of userRoles; let first = first">
+            <a class="link-plain" (click)="updateRole(role.code)"
+               [ngClass]="{
               'text-plain': (role.code === activeRoleCode),
               'link-plain': (role.code !== activeRoleCode),
               'ml-40': !first
              }"
-             [href]="role.url">{{role.name}}</a>
+               [href]="role.url">{{role.name}}</a>
+          </div>
         </div>
       </div>
       <div class="user-menu-wrapper hide show-lg">
