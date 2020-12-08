@@ -75,6 +75,7 @@ export class ProfileService {
           canEdit: !this.loadService.user.isKid,
           canDelete: !this.loadService.user.isKid,
           vrfStu: object.vrfStu,
+          number: object.number,
           detailsPath: '/profile/health/medical-policy',
           withVerificationIcon: false,
           serviceUrl: object.serviceUrl,
@@ -93,7 +94,10 @@ export class ProfileService {
           ]
         };
         if (object.expiryDate) {
-          result.fields.push({title: 'Действителен до', value: object.expiryDate});
+          result.fields.push({
+            title: DatesHelperService.isExpiredDate(object.expiryDate) ? 'Полис недействителен с' : 'Действителен до',
+            value: object.expiryDate
+          });
         }
         return result;
       }

@@ -12,25 +12,25 @@
 <ng-template #empty>
   <div class="title">{{object.empty?.title}}</div>
   <div class="subtitle mt-16" [innerHTML]="object.empty?.subtitle"></div>
-  <div *ngIf="data.type === 'MDCL_PLCY'" class="info-action mt-16">
+  <div *ngIf="data?.type === 'MDCL_PLCY'" class="info-action mt-16">
     <a class="link-plain add-link" (click)="repeatReq()">Узнать больше</a>
   </div>
   <div class="actions mt-16">
-    <ng-container *ngIf="data.type !== 'DISABLED_PERSON' && data.type !== 'MDCL_PLCY' && data.type !== 'MEDICAL_ORG'">
+    <ng-container *ngIf="data?.type !== 'DISABLED_PERSON' && data?.type !== 'MDCL_PLCY' && data?.type !== 'MEDICAL_ORG'">
       <span *ngIf="!externalLink && !addPath" class="link-plain add-link" (click)="toggleForm()">Добавить</span>
       <a *ngIf="externalLink && !addPath" class="link-plain add-link" [href]="externalLink">Добавить</a>
       <a *ngIf="addPath" class="link-plain add-link" [routerLink]="addPath">Добавить</a>
       <a *ngIf="object.serviceUrl" class="link-plain" (click)="toOrder()">Заказать услугу</a>
     </ng-container>
-    <ng-container *ngIf="data.type === 'DISABLED_PERSON'">
+    <ng-container *ngIf="data?.type === 'DISABLED_PERSON'">
       <a class="link-plain add-link" (click)="repeatReq()">{{data.status ? 'Обновить' : 'Запросить'}}</a>
       <a *ngIf="data.status === 'error_found'" class="link-plain add-link" [href]="object.serviceUrl">Сообщить об ошибке в ПФР</a>
     </ng-container>
-    <ng-container *ngIf="data.type === 'MDCL_PLCY'">
+    <ng-container *ngIf="data?.type === 'MDCL_PLCY'">
       <a class="link-plain add-link" (click)="repeatReq()">Запросить</a>
-      <a class="link-plain add-link" (click)="repeatReq()">У меня нет полиса</a>
+      <a class="link-plain add-link" [href]="loadService.config.betaUrl + object.serviceUrl">У меня нет полиса</a>
     </ng-container>
-    <ng-container *ngIf="data.type === 'MEDICAL_ORG' && data.vrfStu === 'NOT_VERIFIED'">
+    <ng-container *ngIf="data?.type === 'MEDICAL_ORG' && data.vrfStu === 'NOT_VERIFIED'">
 <!--      <a class="link-plain add-link" [routerLink]="object.detailsPath">Выбрать</a>-->
       <a class="link-plain add-link" (click)="repeatReq()">Обновить</a>
     </ng-container>
@@ -41,7 +41,7 @@
   <div class="header {{['failed', 'process'].indexOf(state) === -1 && object.gender ? object.gender : ''}}">
     <div class="title">{{object.full.title}}</div>
     <div *ngIf="isNotificationShow()" [ngClass]="object.warning ? 'notification-red': 'notification'" class="confirm"></div>
-    <div *ngIf="!isNew && (object.withVerificationIcon || state)" class="confirm {{state}}"></div>
+    <div *ngIf="!isNew && (object.withVerificationIcon || state) && state !== 'update-error'" class="confirm {{state}}"></div>
     <div *ngIf="isNew && !isNotificationShow()" class="confirm new"></div>
   </div>
   <div class="fields mt-24 mt-md-28 mb-16" *ngIf="object.fields">
@@ -135,9 +135,10 @@
     <ng-container *ngIf="state === 'verified'">
       <a *ngIf="data.vrfStu === 'VERIFIED'" [routerLink]="object.detailsPath" class="link-plain">Подробнее</a>
     </ng-container>
-    <ng-container *ngIf="state === 'error'">
-      <a class="link-plain" (click)="toggleEditForm()">Добавить вручную</a>
+    <ng-container *ngIf="state === 'update-error'">
+      <a *ngIf="!data.number" class="link-plain" (click)="toggleEditForm()">Добавить вручную</a>
       <a class="link-plain" (click)="repeatReq()">Повторить поиск</a>
+      <a *ngIf="data.number" class="link-plain" (click)="toggleEditForm()">Редактировать</a>
     </ng-container>
   </div>
   <div *ngIf="data.type === 'MEDICAL_ORG'" class="card-actions">

@@ -76,7 +76,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
   }
 
   public isNotificationShow(): boolean {
-    if (this.state !== 'process' && this.state !== 'error') {
+    if (this.state !== 'process' && this.state !== 'error' && this.state !== 'update-error') {
       return !!this.object.notification;
     }
   }
