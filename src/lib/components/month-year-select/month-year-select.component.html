@@ -68,13 +68,13 @@
         <div class="field-arrow"></div>
       </div>
       <div class="field-list dropdown" [ngClass]="{expanded: yearExpanded}">
-        <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}">
-          <div class="field-overlay" (click)="close();">
-            <div class="select-field">
-              <div class="field-label label">{{activeMonthYear?.year}}</div>
-              <div class="field-arrow"></div>
-            </div>
+        <div class="field-overlay" (click)="close();">
+          <div class="select-field">
+            <div class="field-label label">{{activeMonthYear?.year}}</div>
+            <div class="field-arrow"></div>
           </div>
+        </div>
+        <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}">
           <div class="items-list">
             <div *ngFor="let year of yearsList" class="item" (click)="setYear(year)"
               [ngClass]="{selected: year === activeMonthYear?.year}" >

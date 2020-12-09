@@ -132,120 +132,202 @@
           }
         }
       }
-      .calendar-week {
-        display: flex;
-        justify-content: space-between;
+      .calendar-week-wrapper {
         width: 100%;
+        border-collapse: unset;
+      }
+
+      .calendar-week {
         .calendar-day {
-          height: 28px;
           width: calc(100% / 7);
-          margin: 4px 0;
+          border-bottom: 4px solid #FFFFFF;
+          border-top: 4px solid #FFFFFF;
+          padding: 0 2px;
           text-align: center;
           cursor: pointer;
           box-sizing: border-box;
+
+          .calendar-day-content {
+            border-radius: 8px;
+          }
+
           .calendar-day-text {
             font-family: Lato, Arial, sans-serif;
             font-size: 16px;
             line-height: 28px;
             color: #0B1F33;
           }
+
           &.today {
             .calendar-day-text {
               color: #FF8A00;
               font-weight: bold;
             }
+            &.selected, &.in-range, &.range-start, &.range-end {
+              .calendar-day-text {
+                color: #F8B200!important;
+              }
+            }
           }
-          &:not(.in-range):hover {
-            background: rgba(29, 93, 235, 0.18);
-            border-radius: 8px;
+
+          &:hover {
+            .calendar-day-content {
+              background: #D6E2FB;
+            }
           }
+
           &.locked {
             cursor: default;
-            &:hover {
-              background: #FFFFFF;
-            }
             .calendar-day-text {
               color: #D1D5DF;
             }
-          }
-          &.in-range {
-            position: relative;
-            background-color: #1D5DEB;
-            .calendar-day-text {
-              color: #FFFFFF;
-            }
-            &.today {
-              .calendar-day-text {
-                color: #F8B200;
-              }
-            }
-
-            &.range-start, &:first-of-type {
-              border-top-left-radius: 8px;
-              border-bottom-left-radius: 8px;
-            }
-            &.range-end, &:last-child {
-              border-top-right-radius: 8px;
-              border-bottom-right-radius: 8px;
-            }
-          }
-          &.in-preview-range {
-            background: rgba(29, 93, 235, 0.18);
-          }
-          &.selected {
-            background-color: #1D5DEB;
-            border-radius: 8px;
             &:hover {
-              background-color: #1D5DEB;
+              .calendar-day-content {
+                background: #FFFFFF;
+              }
+            }
+          }
+
+          &.selected {
+            .calendar-day-content {
+              background: #1D5DEB!important;
             }
             .calendar-day-text {
               color: #FFFFFF;
             }
-            &.today {
-              .calendar-day-text {
-                color: #F8B200;
-              }
-            }
           }
-          &.empty-day {
-            cursor: default;
-            border-radius: 0!important;
-            &.empty-in-range {
+
+          &.in-range {
+            background: #1D5DEB;
+            .calendar-day-content,
+            &:hover .calendar-day-content {
               background: #1D5DEB;
             }
-            &:not(.empty-in-range) {
+            .calendar-day-text {
+              color: #FFFFFF;
+            }
+          }
+          &.range-start, &.in-range:first-of-type {
+            background: linear-gradient(to right, #FFFFFF 50%, #1D5DEB 50%);
+            .calendar-day-content {
+              background: #1D5DEB;
+              .calendar-day-text {
+                color: #FFFFFF;
+              }
+            }
+          }
+          &.range-end, &.in-range:last-of-type {
+            background: linear-gradient(to right, #1D5DEB 50%, #FFFFFF 50%);
+            .calendar-day-content {
+              background: #1D5DEB;
+              .calendar-day-text {
+                color: #FFFFFF;
+              }
+            }
+          }
+          &:last-of-type.range-start,
+          &:first-of-type.range-end,
+          &.range-start.range-end
+          {
+            background: #FFFFFF;
+          }
+
+          &.in-preview-range {
+            background: #D6E2FB;
+          }
+          &.preview-range-start, &.in-preview-range:first-of-type {
+            background: linear-gradient(to right, #FFFFFF 50%, #D6E2FB 50%);
+            .calendar-day-content {
+              background: #D6E2FB;
+            }
+          }
+          &.preview-range-end, &.in-preview-range:last-of-type {
+            background: linear-gradient(to right, #D6E2FB 50%, #FFFFFF 50%);
+            .calendar-day-content {
+              background: #D6E2FB;
+            }
+          }
+          &:last-of-type.preview-range-start,
+          &:first-of-type.preview-range-end {
+            background: #FFFFFF;
+          }
+
+          &.empty-day {
+            cursor: default;
+            &.range-start, &.range-end {
               background: #FFFFFF;
+            }
+            &.in-range {
+              background: #1D5DEB;
+            }
+            &.in-preview-range {
+              background: #D6E2FB
+            }
+          }
+
+        }
+
+        &:first-of-type {
+          .calendar-day:first-of-type {
+            &.in-preview-range, &.preview-range-end, &.in-range, &.range-end {
+              .calendar-day-content {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                position: relative;
+                &:before {
+                  position: absolute;
+                  width: 18px;
+                  height: 28px;
+                  left: -18px;
+                  top: 0;
+                  content: '';
+                }
+              }
+            }
+            &.in-preview-range, &.preview-range-end {
+              .calendar-day-content:before {
+                background: #D6E2FB;
+              }
+            }
+            &.in-range, &.range-end {
+              .calendar-day-content:before {
+                background: #1D5DEB;
+              }
             }
           }
         }
 
         &:last-of-type {
-          .calendar-day:last-of-type.in-range:not(.range-end) {
-            border-radius: 0;
-            &:after {
-              content: '';
-              background-color: #1D5DEB;
-              height: 28px;
-              width: 16px;
-              position: absolute;
-              right: -16px;
+          .calendar-day:last-of-type {
+            &.in-preview-range, &.preview-range-start, &.in-range, &.range-start {
+              .calendar-day-content {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                position: relative;
+                &:after {
+                  position: absolute;
+                  width: 18px;
+                  height: 28px;
+                  right: -18px;
+                  top: 0;
+                  content: '';
+                }
+              }
             }
-          }
-        }
-        &:first-of-type {
-          .calendar-day:first-child.in-range:not(.range-start) {
-            border-radius: 0;
-            &:before {
-              content: '';
-              background-color: #1D5DEB;
-              height: 28px;
-              width: 16px;
-              position: absolute;
-              left: -16px;
+            &.in-preview-range, &.preview-range-start {
+              .calendar-day-content:after {
+                background: #D6E2FB;
+              }
+            }
+            &.in-range, &.range-start {
+              .calendar-day-content:after {
+                background: #1D5DEB;
+              }
             }
           }
         }
       }
+
     }
   }
 

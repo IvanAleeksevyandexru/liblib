@@ -96,9 +96,10 @@ export interface DateProperties {
   selected?: boolean;
   inRange?: boolean;
   inPreviewRange?: boolean;
-  emptyInRange?: boolean;
   rangeStart?: boolean;
   rangeEnd?: boolean;
+  previewRangeStart?: boolean;
+  previewRangeEnd?: boolean;
   outer?: boolean;
   locked?: boolean;
   custom?: string;

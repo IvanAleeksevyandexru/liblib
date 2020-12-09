@@ -516,8 +516,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
 
   // текущий рейндж не должен подсвечиваться если уже новый rangeStart выбран
   public isInRange(date: Date, rangeStart?: Date) {
-    return date && !rangeStart && (moment(date).isBetween(this.range.start, this.range.end)
-        || this.isRangeStart(date) || this.isRangeEnd(date));
+    return date && !rangeStart && (moment(date).isBetween(this.range.start, this.range.end));
   }
 
   public isRangeStart(date: Date, rangeStart?: Date) {
@@ -537,14 +536,20 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     return date && moment(date).month() !== this.activeMonthYear.month + monthShift;
   }
 
-  public isInPreviewRange(date: Date, rangeStart, rangeEnd) {
-    return moment(date).isBetween(rangeStart, rangeEnd) || moment(date).isBetween(rangeEnd, rangeStart);
+  public isInPreviewRange(day: DateProperties, rangeStart: Date, rangeEnd: Date) {
+    return moment(day.date).isBetween(rangeStart, rangeEnd) || moment(day.date).isBetween(rangeEnd, rangeStart);
+  }
+
+  public isPreviewRangeStart(date: Date) {
+    return !!this.rangeStart && moment(date).isBefore(this.rangeStart, 'day');
   }
 
   public clearPreviewRange() {
     this.weeks.forEach((week: DateProperties[]) => {
       week.forEach((item: DateProperties) => {
         item.inPreviewRange = false;
+        item.previewRangeStart = false;
+        item.previewRangeEnd = false;
       });
     });
   }
@@ -556,9 +561,19 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     if (hoverDay.locked || !hoverDay.day) {
       this.clearPreviewRange();
     } else {
+      hoverDay.previewRangeStart = this.isPreviewRangeStart(hoverDay.date);
+      hoverDay.previewRangeEnd = !hoverDay.previewRangeStart;
       this.weeks.forEach((week: DateProperties[]) => {
         week.forEach((item: DateProperties) => {
-          item.inPreviewRange = this.isInPreviewRange(item.date, this.rangeStart, hoverDay.date);
+          item.inPreviewRange = this.isInPreviewRange(item, this.rangeStart, hoverDay.date);
+          if (item.date !== hoverDay.date) {
+            item.previewRangeStart = false;
+            item.previewRangeEnd = false;
+          }
+          if (item.date === this.rangeStart) {
+            item.previewRangeStart = !hoverDay.previewRangeStart;
+            item.previewRangeEnd = !hoverDay.previewRangeEnd;
+          }
         });
       });
     }
@@ -568,12 +583,6 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     if (this.rangeStart) {
       this.clearPreviewRange();
     }
-  }
-
-  public isEmptyDayInRange(day: DateProperties) {
-    return !day.day && day.inRange
-      && (!day.rangeStart || moment(day.date).endOf('month').isSame(day.date, 'day'))
-      && (!day.rangeEnd || moment(day.date).startOf('month').isSame(day.date, 'day'));
   }
 
   public checkAndCorrectNavigation() {
@@ -783,9 +792,10 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     output.push([]);
     if (firstDayOfWeekInMonth > 1) {
       for (let i = 1; i < firstDayOfWeekInMonth; i++) {
+        const firstDayOfMonthForEmpty = moment(firstDayOfMonth).subtract(1, 'hour').toDate();
+        output[0].push({day: null, date: firstDayOfMonthForEmpty});
         // const date = moment(firstDayOfMonth).add(i - firstDayOfWeekInMonth, 'day');
         // output[0].push({day: date.date(), date: date.toDate()});
-        output[0].push({day: null, date: moment(firstDayOfMonth).toDate()});
       }
     }
     for (let i = 0; i < daysInMonth; i++) {
@@ -798,10 +808,11 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     }
     // let days = 0;
     const lastMonthDate = output[week][output[week].length - 1].date;
+    const lastMonthDateForEmpty = moment(lastMonthDate).add(1, 'hour').toDate();
     while (output[week].length < 7) {
+      output[week].push({day: null, date: lastMonthDateForEmpty});
       // const date = moment(firstDayOfMonth).add(1, 'month').add(days++, 'day');
       // output[week].push({day: date.date(), date: date.toDate()});
-      output[week].push({day: null, date: lastMonthDate});
     }
     this.updateDateItemProperties(output, monthShift);
   }
@@ -817,8 +828,9 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         day.rangeEnd = this.isRangeEnd(day.date, this.rangeStart);
         day.locked = this.isDateLocked(day.date);
         day.outer = this.isDateOutOfMonth(day.date, monthShift);
-        day.emptyInRange = this.isEmptyDayInRange(day);
         day.inPreviewRange = false;
+        day.previewRangeStart = false;
+        day.previewRangeEnd = false;
         // повзоляет вносить коррективы снаружи для любых отрендеренных дней
         if (this.externalDatePropertiesPublisher) {
           this.externalDatePropertiesPublisher.publish(day);
