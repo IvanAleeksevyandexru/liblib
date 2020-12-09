@@ -792,10 +792,11 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     output.push([]);
     if (firstDayOfWeekInMonth > 1) {
       for (let i = 1; i < firstDayOfWeekInMonth; i++) {
+        // Заполняем пустые клетки в начале и в конце месяца днями, у которых пустой day (текст который выводится),
+        // но есть date, которая отличается от крайних дней месяца на один час,
+        // чтобы при проверке вхождения дня в диапазон пустые клетки отмечались свойством inRange и подсвечилась
         const firstDayOfMonthForEmpty = moment(firstDayOfMonth).subtract(1, 'hour').toDate();
         output[0].push({day: null, date: firstDayOfMonthForEmpty});
-        // const date = moment(firstDayOfMonth).add(i - firstDayOfWeekInMonth, 'day');
-        // output[0].push({day: date.date(), date: date.toDate()});
       }
     }
     for (let i = 0; i < daysInMonth; i++) {
@@ -806,13 +807,10 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       const date = moment(firstDayOfMonth).add(i, 'day');
       output[week].push({day: date.date(), date: date.toDate()});
     }
-    // let days = 0;
     const lastMonthDate = output[week][output[week].length - 1].date;
     const lastMonthDateForEmpty = moment(lastMonthDate).add(1, 'hour').toDate();
     while (output[week].length < 7) {
       output[week].push({day: null, date: lastMonthDateForEmpty});
-      // const date = moment(firstDayOfMonth).add(1, 'month').add(days++, 'day');
-      // output[week].push({day: date.date(), date: date.toDate()});
     }
     this.updateDateItemProperties(output, monthShift);
   }

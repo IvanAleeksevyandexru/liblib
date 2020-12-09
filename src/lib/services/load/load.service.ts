@@ -91,9 +91,9 @@ export class LoadService {
     }
   }
 
-  public load(context: string, ignoreConfigMissing = false): Promise<any> {
+  public load(context: string, ignoreConfigMissing = false, ignoreDevMode = false): Promise<any> {
     this.setInitializationStarted();
-    if (isDevMode()) {
+    if (isDevMode() && !ignoreDevMode) {
       return new Promise((resolve, reject) => {
         this.http
           .get(`/node-api/${context}`, {withCredentials: true})
