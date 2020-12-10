@@ -1,11 +1,12 @@
-import {Directive, ElementRef, Output, EventEmitter, HostListener} from '@angular/core';
+import { Directive, ElementRef, Output, EventEmitter, HostListener, NgZone } from '@angular/core';
 
 @Directive({
     selector: '[libClickOutside]'
 })
 export class ClickOutsideDirective {
 
-  constructor(elementRef: ElementRef) {
+  constructor(elementRef: ElementRef,
+              private ngZone: NgZone) {
     this.elementRef = elementRef;
   }
 
@@ -16,9 +17,11 @@ export class ClickOutsideDirective {
 
   @HostListener('document:click', ['$event'])
   public onClick(e: Event) {
-    const clickedInside = this.elementRef.nativeElement.contains(e.target);
-    if (!clickedInside) {
-      this.clickOutside.emit(e);
-    }
+    this.ngZone.runOutsideAngular(() => {
+      const clickedInside = this.elementRef.nativeElement.contains(e.target);
+      if (!clickedInside) {
+        this.clickOutside.emit(e);
+      }
+    });
   }
 }

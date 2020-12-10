@@ -189,12 +189,13 @@ export interface BillLink {
 
 export interface SupplierSource {
   sourceApplication: string;
-  sourceFullName: string;
-  sourcePhone: string;
+  sourceFullName?: string;
+  sourcePhone?: string;
   sourceShortName: string;
-  sourceURL: string;
+  sourceURL?: string;
   nameSourceApplication: string;
   isGibdd: boolean;
+  sourceCode: string;
 }
 
 export interface FkPayment {
