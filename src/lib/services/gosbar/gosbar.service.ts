@@ -24,6 +24,9 @@ export class GosbarService {
   private selectedLang = new BehaviorSubject<string>(null);
   public selectedLang$ = this.selectedLang.asObservable();
 
+  private isLoading = new BehaviorSubject<boolean>(true);
+  public isLoading$ = this.isLoading.asObservable();
+
   constructor(
     private http: HttpClient,
     private loadService: LoadService,
@@ -104,6 +107,7 @@ export class GosbarService {
             });
           };
           this.getLocation(manager);
+          this.isLoading.next(false);
         }, () => {
           this.unAvailableGosbar();
         }
@@ -184,16 +188,19 @@ export class GosbarService {
       }
     ];
 
-    if (this.config.partnersUrl) {
-      config.push(
-        {
-          text: 'Для партнеров',
-          url: this.config.partnersUrl,
-          userType: 'PA',
-          onItemSelect: () => {
-            window.location = this.config.partnersUrl;
-          }
-        });
+    const partnersPickerConfig =  {
+      text: 'Для партнеров',
+      url: this.config.partnersUrl,
+      userType: 'PA',
+      onItemSelect: () => {
+        window.location = this.config.partnersUrl;
+      }
+    }
+
+    if (this.config.viewType === 'PARTNERS') {
+      config.unshift(partnersPickerConfig);
+    } else if (this.config.partnersUrl) {
+      config.push(partnersPickerConfig);
     }
     return config;
   }
@@ -205,6 +212,7 @@ export class GosbarService {
   public unAvailableGosbar = () => {
     this.geoPin = true;
     this.asyncLoad = true;
+    this.isLoading.next(false);
     // TODO: при клике на geopin вызвать this.popupLocation();
   }
 

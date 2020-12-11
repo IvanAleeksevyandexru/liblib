@@ -13,6 +13,7 @@ export class FooterComponent implements OnInit {
   @ViewChild('footerCms', { read: ViewContainerRef, static: true }) private viewContainerRef;
 
   public hideCmsFooter: boolean;
+  public hideFooter: boolean;
 
   constructor(
     private cfr: ComponentFactoryResolver,
@@ -23,9 +24,7 @@ export class FooterComponent implements OnInit {
       filter(event => event instanceof NavigationEnd)
     )
       .subscribe((event: any) => {
-        if (event.url.indexOf('/form') !== -1) {
-          this.hideCmsFooter = true;
-        }
+        this.hideFooter = this.hideCmsFooter = event.url.indexOf('/form') >= 0;
       });
   }
 

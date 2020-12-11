@@ -13,9 +13,11 @@ const moment = moment_;
   providedIn: 'root'
 })
 export class FeedsService {
+
   public lastQueryOrderType = '';
   public lastQueryArchiveType = '';
   private isLk = (this.loadService.attributes.appContext || this.loadService.config.viewType) === 'LK';
+  private config = this.loadService.config;
 
   constructor(
     private http: HttpClient,
@@ -165,12 +167,21 @@ export class FeedsService {
 
   public openDetails(feed: FeedModel): string {
     let url = (this.isLk || this.loadService.attributes.appContext === 'PARTNERS') ? '/' : this.loadService.config.lkUrl;
+
+    if (feed.feedType === 'KND_APPEAL' || feed.feedType === 'KND_APPEAL_DRAFT') {
+      url = this.loadService.config.kndDomain;
+    }
+
     switch (feed.feedType) {
       case 'FEEDBACK':
         url += `feedback/${feed.id}`;
         break;
+      case 'KND_APPEAL':
       case 'APPEAL':
         url += `appeal/${feed.id}`;
+        break;
+      case 'KND_APPEAL_DRAFT':
+        url += `form/appeal//${feed.id}`;
         break;
       case 'COMPLEX_ORDER':
         url += this.getComplexOrderUrl(feed);
@@ -222,6 +233,12 @@ export class FeedsService {
         break;
       case 'ACCOUNT_CHILD':
         url += `profile/family/child/${feed.extId}/docs`;
+        break;
+      case 'KND_APPEAL':
+        url = `${this.config.kndDomain}appeal/${feed.extId}`;
+        break;
+      case 'KND_APPEAL_DRAFT':
+        url = `${this.config.kndDomain}form/appeal/${feed.extId}`;
         break;
     }
 

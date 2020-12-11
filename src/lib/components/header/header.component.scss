@@ -5,6 +5,14 @@
     line-height: 20px;
   }
 
+  .back-to-portal {
+    background: url(../../../assets/svg/arrows/arrow_back.svg) no-repeat 0 center;
+    padding-left: 40px;
+    font-size: 14px;
+    line-height: 20px;
+    margin-right: 90px;
+  }
+
   .inner {
     height: 56px;
   }
@@ -57,7 +65,6 @@
       box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
       border-radius: 12px;
       padding: 20px 13px 20px 8px;
-
       h6 {
         padding-left: 12px;
       }
@@ -74,6 +81,9 @@
 
       .all-notifications {
         text-align: center;
+      }
+      perfect-scrollbar {
+        max-height: 524px;
       }
     }
   }

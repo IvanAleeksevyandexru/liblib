@@ -2,7 +2,12 @@
   position: relative;
   -webkit-tap-highlight-color: transparent;
 }
-
+.partners-menu.login-wrapper{
+  display: block!important;
+}
+.partners-menu.open-mobile-menu{
+  display: none!important;
+}
 .content-overlay {
   position: fixed;
   z-index: 9;
@@ -76,6 +81,7 @@
 
     .item {
       margin-right: 24px;
+      text-align: center;
     }
   }
 

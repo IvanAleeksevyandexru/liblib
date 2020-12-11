@@ -56,6 +56,16 @@ export class ProfileService {
     }
   }
 
+  private static getFidDocNotification(fidDoc): string {
+    if (ProfileService.isExpiredForeignPassport(fidDoc)) {
+      return  'PROFILE.FID_DOC.EXPIRED_WARNING_SHORT';
+    } else if (ProfileService.isExpiredSoonForeignPassport(fidDoc)) {
+      return 'PROFILE.FID_DOC.EXPIRED_3M_SHORT';
+    } else {
+      return '';
+    }
+  }
+
   public createCardObject(object: any): InfoCardView {
     switch (object.type) {
       case this.DOCUMENT_TYPES.MEDICAL_POLICY: {
@@ -176,9 +186,13 @@ export class ProfileService {
 
         return {
           attrId: 'ident',
+          type: object.type,
           canDetails: true,
           canEdit: true,
           detailsPath: '/profile/personal/id-doc',
+          warning: ProfileService.isExpiredForeignPassport(object),
+          notification: ProfileService.getFidDocNotification(object),
+          expired: ProfileService.isExpiredForeignPassport(object),
           empty: {
             title: 'Добавьте основной документ',
             subtitle: 'он необходим для получения большинства услуг на портале'
@@ -483,6 +497,10 @@ export class ProfileService {
                   'Идет поиск СНИЛС ребенка в ПФР...',
               } : {}
           ),
+          empty: {
+            title: 'Добавьте СНИЛС',
+            subtitle: object.subtitle ? object.subtitle : 'он необходим для некоторых услуг и может использоваться для авторизации'
+          },
           full: {
             title: 'СНИЛС'
           },

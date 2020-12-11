@@ -1,25 +1,30 @@
-<div class="header hide show-lg">
+<div class="header" [ngClass]="{'hide show-lg': !comingSoon}">
   <div class="inner container grid-row-lg flex-container align-items-center">
     <div class="col-lg-12 flex-container align-items-center"
           [ngClass]="{
             'justify-end': user.authorized
           }">
-      <div class="mr-40">
+      <div *ngIf="comingSoon">
+        <a href="" class="back-to-portal" (click)="backClickHandler()">Вернуться к старой версии</a>
+      </div>
+      <div class="mr-40 hide show-lg">
         <lib-location-select></lib-location-select>
       </div>
 
-      <div *ngIf="!user.authorized" class="flex-container align-items-center">
-        <div *ngFor="let role of userRoles; let first = first">
-          <a class="link-plain" (click)="updateRole(role.code)"
-             [ngClass]="{
+      <div *ngIf="!user.authorized && !comingSoon" class="hide show-lg">
+        <div class="flex-container align-items-center">
+          <div *ngFor="let role of userRoles; let first = first">
+            <a class="link-plain" (click)="updateRole(role.code)"
+               [ngClass]="{
               'text-plain': (role.code === activeRoleCode),
               'link-plain': (role.code !== activeRoleCode),
               'ml-40': !first
              }"
-             [href]="role.url">{{role.name}}</a>
+               [href]="role.url">{{role.name}}</a>
+          </div>
         </div>
       </div>
-      <div class="user-menu-wrapper">
+      <div class="user-menu-wrapper hide show-lg">
         <div *ngIf="user.authorized"
              class="notifications">
 
@@ -28,14 +33,18 @@
              (click)="this.showNotifications = !this.showNotifications;"
              [title]="isUnread ? 'У вас есть непрочитанные уведомления' : 'У вас нет непрочитанных уведомлений'"></a>
 
-          <div *ngIf="showNotifications" class="notifications-list">
+          <div *ngIf="showNotifications" class="notifications-list" libStopScreenScroll>
             <a class="close" (click)="this.showNotifications = !this.showNotifications;"></a>
             <h6 class="title-h6">Последние события</h6>
-             <lib-feeds
+            <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}"
+                               (psYReachEnd)="feedsComponent.showMore()">
+              <lib-feeds
                 page="header"
-                [count]="6"
-                types="ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE"
+                [autoload]="true"
+                [count]="10"
+                types="ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE,KND_APPEAL"
               ></lib-feeds>
+            </perfect-scrollbar>
           </div>
         </div>
         <div class="login-wrapper" (click)="showUserMenu(false)">
@@ -43,7 +52,7 @@
             <lib-login></lib-login>
           </div>
         </div>
-        <lib-user-menu [state]="userMenuState"></lib-user-menu>
+        <lib-user-menu [state]="userMenuState" [links]="links"></lib-user-menu>
       </div>
     </div>
   </div>

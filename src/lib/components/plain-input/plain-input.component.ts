@@ -132,7 +132,11 @@ export class PlainInputComponent
 
   public handleBlur() {
     this.focused = false;
+    if (this.onTouchedCallback) {
+      this.onTouchedCallback();
+    }
     this.check();
+
     this.blur.emit();
     this.changeDetection.detectChanges();
   }

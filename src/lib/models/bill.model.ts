@@ -49,7 +49,7 @@ export enum PaySystemCode {
   PPS_MTS_TINKOFF = 'pps_mts_tinkoff',
   PPS_MTS_YOTA = 'pps_mts_yota',
   PPS_MTS_BEELINE = 'pps_mts_beeline',
-  PPS_MTS_MOTIVE = 'pps_mts_motiv',
+  PPS_MTS_MOTIV = 'pps_mts_motiv',
   QIWI = 'QIWI',
   YADENGI = 'YADENGI',
   elplat = 'pps_elplat',
@@ -189,12 +189,13 @@ export interface BillLink {
 
 export interface SupplierSource {
   sourceApplication: string;
-  sourceFullName: string;
-  sourcePhone: string;
+  sourceFullName?: string;
+  sourcePhone?: string;
   sourceShortName: string;
-  sourceURL: string;
+  sourceURL?: string;
   nameSourceApplication: string;
   isGibdd: boolean;
+  sourceCode: string;
 }
 
 export interface FkPayment {

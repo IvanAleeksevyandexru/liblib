@@ -26,6 +26,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
   private hideLevels = [];
   public suggestionsLength = 0;
   public firstInSuggestion: Addresses = null;
+  public searchComplete = new BehaviorSubject<boolean>(false);
   public canOpenFields = new BehaviorSubject<boolean>(false);
   public isOpenedFields = new BehaviorSubject<boolean>(false);
   public isWidgetVisible = new BehaviorSubject<boolean>(false);
@@ -99,9 +100,17 @@ export class DadataService implements AutocompleteSuggestionProvider {
   public errorDependencyFields = this.constants.DADATA_ERROR_DEPENDENCIES;
   public levelMap = this.constants.DADATA_LEVEL_MAP;
   public excludeToDisableFields = [11, 12, 13, 14];
-  public formConfig = new FormConfig();
+  public formConfig = null;
   public form: FormGroup;
   private sixthLevelData = '';
+
+  public initFormConfig(isOrg: boolean): FormConfig {
+    this.formConfig = new FormConfig(isOrg);
+    if (isOrg) {
+      this.prefixes.apartment.abbr = 'оф.'
+    }
+    return this.formConfig;
+  }
 
   public get qc(): string {
     return this.qcComplete;
@@ -192,6 +201,8 @@ export class DadataService implements AutocompleteSuggestionProvider {
   }
 
   public search(query: string) {
+    this.firstInSuggestion = null;
+    this.resetSearchComplete(false);
     this.qc = '';
     const url = `${this.externalApiUrl ? this.externalApiUrl : this.loadService.config.nsiApiUrl}dadata/suggestions`;
     return this.http.get<SuggestionsResponse>(url, {
@@ -202,13 +213,12 @@ export class DadataService implements AutocompleteSuggestionProvider {
       this.suggestionsLength = res.suggestions.addresses.length;
       if (this.suggestionsLength) {
         this.firstInSuggestion = res.suggestions.addresses[0];
-        return res.suggestions.addresses.map((suggestion) => new AutocompleteSuggestion(suggestion.address, suggestion));
       } else {
         this.firstInSuggestion = null;
         this.qc = '6';
         this.isWidgetVisible.next(false);
-        return [];
       }
+      return this.suggestionsLength ? res.suggestions.addresses.map((suggestion) => new AutocompleteSuggestion(suggestion.address, suggestion)) : []
     }));
   }
 
@@ -245,8 +255,11 @@ export class DadataService implements AutocompleteSuggestionProvider {
       this.setDisabledByLevel(level);
       this.setVisibilityByLevel(level);
 
-      if (index === arr.length - 1) {
+      if (elem.kladrCode) {
         this.kladrCode = elem.kladrCode;
+      }
+
+      if (index === arr.length - 1) {
 
         const houseControl = this.getFormControlByName('house');
         const houseCheckbox = this.getFormControlByName('houseCheckbox');
@@ -456,6 +469,10 @@ export class DadataService implements AutocompleteSuggestionProvider {
     this.hiddenLevels.forEach(key => {
       this.formConfig[key].visible = false;
     });
+  }
+
+  public resetSearchComplete(value: boolean): void {
+    this.searchComplete.next(value);
   }
 
 }

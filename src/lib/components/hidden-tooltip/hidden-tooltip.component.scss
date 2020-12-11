@@ -5,6 +5,11 @@
   padding-left: 17px;
   user-select: none;
 
+  &.large {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
   &:before {
     content: '';
     position: absolute;
@@ -22,15 +27,83 @@
   }
 }
 
+.hidden-content {
+  display: none;
+}
+
 .content {
   padding-left: 17px;
+  position: relative;
 
   &.no-offset {
     padding-left: 0;
     margin-top: 0;
   }
+
+  &.beautiful {
+    background: #EDF2FD;
+    border-radius: 4px;
+    padding: 16px 44px 16px 16px;
+    border-top: 4px solid #0D4CD3;
+  }
+  .close {
+    cursor: pointer;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 12px;
+    height: 12px;
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: 16px;
+      background: #0D4CD3;
+      transform: rotate(45deg);
+    }
+
+    &:before {
+      transform: rotate(45deg);
+    }
+
+    &:after {
+      transform: rotate(-45deg);
+    }
+  }
 }
 
-.hidden-content {
-  display: none;
+.question {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background: url(../../../assets/svg/question-blue-in-gray-circle.svg) no-repeat center;
+  vertical-align: middle;
+  cursor: pointer;
+  position: relative;
+  .content {
+    display: none;
+  }
+
+  &.hovered .content {
+    display: block;
+    position: absolute;
+    z-index: 1;
+    min-width: 220px;
+    max-width: 520px;
+    width: max-content;
+    text-align: left;
+    top: 22px;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .caption {
+    &.large {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
 }

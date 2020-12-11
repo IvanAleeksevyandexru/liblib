@@ -135,6 +135,7 @@ export interface PaymentDetails extends PaymentItems {
     ip?: string;
     id?: string;
     billLinks?: BillLink[];
+    debtText?: string;
   };
   stateDuty?: {
     orderId: string;

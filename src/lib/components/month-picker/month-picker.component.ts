@@ -2,16 +2,22 @@ import {
   Component, ViewChild, Input, Output, ElementRef, EventEmitter, SimpleChanges, forwardRef,
   OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, Optional, Host, SkipSelf, ChangeDetectorRef
 } from '@angular/core';
-import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR, FormControl } from '@angular/forms';
+import {
+  AbstractControl,
+  ControlContainer,
+  ControlValueAccessor,
+  FormControl,
+  NG_VALUE_ACCESSOR
+} from '@angular/forms';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
-import { FocusManager, Focusable } from '../../services/focus/focus.manager';
+import { Focusable, FocusManager } from '../../services/focus/focus.manager';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { DragDropBinding, DragDropType, DragDropDirection, DragDropOffsetType, DragState } from '../../models/drag-drop.model';
 import { DragDropManager } from '../../services/drag-drop/drag-drop.manager';
-import { AnimationBuilder, style, animate } from '@angular/animations';
+import { animate, AnimationBuilder, style } from '@angular/animations';
 import { Width } from '../../models/width-height';
 import { Align } from '../../models/common-enums';
-import { MonthYear, MONTHS_CODES } from '../../models/date-time.model';
+import { MONTHS_CODES, MonthYear } from '../../models/date-time.model';
 import * as moment_ from 'moment';
 
 const moment = moment_;
@@ -140,6 +146,7 @@ export class MonthPickerComponent
     } else {
       this.activeMonthYear = null;
       this.selectDate = '';
+      this.monthes.forEach(item => item.selected = false);
     }
     this.check();
     this.changeDetection.detectChanges();
@@ -148,33 +155,61 @@ export class MonthPickerComponent
   public changeDate(str): void {
     if (str) {
       const dateArr = str.split('.');
-      const month = parseInt(dateArr[0], 10) - 1;
-      const year = parseInt(dateArr[1], 10);
+      let month = parseInt(dateArr[0], 10) - 1;
+      let year = parseInt(dateArr[1], 10);
+
+      if (typeof month === 'number' && month >= 0 && month < 12 && year && year.toString().length === 4) {
+        const {month: m, year: y} = this.processFullDate(month, year);
+        month = m;
+        year = y;
+      } else if (this.formControl) {
+        this.formControl.setErrors({incorrectDate: true});
+      }
 
       if (typeof month === 'number' && month >= 0 && month < 12) {
         this.monthes.forEach((item: Month) => {
-          item.selected = item.number === month;
+          item.selected = item.number === month && !item.disabled;
         });
       }
 
       if (year && year.toString().length === 4) {
         this.years.forEach((item: Year) => {
-          item.selected = false;
-          if (item.number === year) {
-            this.slideTo(item);
-            item.selected = true;
-          }
+          item.selected = item.number === year && !item.disabled;
         });
       }
-
-      if (typeof month === 'number' && month >= 0 && month < 12 && year && year.toString().length === 4) {
-        this.check();
-        this.writeValue(new MonthYear(month, year));
-        if (this.formControl) {
-          this.formControl.setValue(new MonthYear(month, year));
-        }
+    } else {
+      this.writeValue(null);
+      if (this.formControl) {
+        this.formControl.setValue(null);
       }
     }
+  }
+
+  private processFullDate(month: number, year: number): MonthYear {
+    const {year: minYear, month: minMonth} = this.minimum;
+    const {year: maxYear, month: maxMonth} = this.maximum;
+    const my = new MonthYear(month, year);
+    if (my.year > maxYear) {
+      my.year = maxYear;
+    }
+    if (my.year === maxYear && my.month > maxMonth) {
+      my.month = maxMonth;
+    }
+    if (my.year < minYear) {
+      my.year = minYear;
+    }
+    if (my.year === minYear && my.month < minMonth) {
+      my.month = minMonth;
+    }
+    const selected = this.years.find(item => item.number === my.year);
+    this.selectYear(selected, false);
+
+    this.writeValue(my);
+    if (this.formControl) {
+      this.formControl.setValue(my);
+      this.formControl.setErrors(null);
+    }
+    return my;
   }
 
   public clearValue(e: Event) {
@@ -331,7 +366,7 @@ export class MonthPickerComponent
     this.monthes.forEach((month: Month) => {
       const monthYear = new MonthYear(month.number, selectedYear);
       month.disabled = monthYear.firstDay() < this.minimum.firstDay() || monthYear.lastDay() > this.maximum.lastDay();
-      month.selected = MonthYear.equals(monthYear, this.activeMonthYear);
+      month.selected = this.activeMonthYear ? monthYear.month === this.activeMonthYear.month : false;
     });
     this.changeDetection.detectChanges();
   }
@@ -423,6 +458,6 @@ export class MonthPickerComponent
   }
 
   public check() {
-    this.invalidDisplayed = ValidationHelper.checkValidation(this, {empty: !!this.activeMonthYear});
+    this.invalidDisplayed = ValidationHelper.checkValidation(this, {required: !!this.selectDate || this.selectDate?.indexOf('_') > -1});
   }
 }

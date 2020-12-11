@@ -53,6 +53,7 @@
   font-size: 18px;
   line-height: 24px;
 }
+
 .title-h6 {
   font-size: 16px;
   line-height: 24px;
@@ -225,16 +226,8 @@
   color: #317d34;
 }
 
-.white {
-  color: #fff;
-}
-
 .red {
   color: #DF0024;
-}
-
-.white {
-  color: #fff;
 }
 
 .yellow {
@@ -293,12 +286,20 @@
     &.red {
       color: #DF0024;
     }
+
+    &.white {
+      color: #FFFFFF;
+    }
+
+    &.indigo {
+      color: #1D5DEB;
+    }
   }
 
   .title-h5,
   .title-h6 {
     &.blue {
-      color: #0D4CD3;
+      color: #0d4cd3;
     }
   }
 

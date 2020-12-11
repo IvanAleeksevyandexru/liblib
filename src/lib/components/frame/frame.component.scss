@@ -6,10 +6,11 @@ $default: #FFFFFF;
 .frame {
   padding: 24px;
   border-radius: 12px;
-  cursor: pointer;
+  cursor: default;
 
   &.effects {
     box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+    cursor: pointer;
 
     &:hover {
       box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
@@ -30,5 +31,8 @@ $default: #FFFFFF;
 
   &.business {
     background: $business;
+  }
+  &.disable {
+    background: #fff url(../../../assets/svg/coming_soon_service.svg) no-repeat right 12px top 12px;
   }
 }
