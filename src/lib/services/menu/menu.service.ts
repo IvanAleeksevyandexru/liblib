@@ -3,6 +3,7 @@ import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
 import { AccessesService } from '../accesses/accesses.service';
 import { Category, MenuLink, User } from '../../models';
+import { CookieService } from '../cookie/cookie.service';
 
 const HASH = Math.random();
 
@@ -15,6 +16,7 @@ export class MenuService {
     private loadService: LoadService,
     private http: HttpClient,
     private accessesService: AccessesService,
+    private cookieService: CookieService,
   ) {
   }
 
@@ -56,10 +58,12 @@ export class MenuService {
               title: 'HEADER.MENU.SERVICE_CENTERS'
             });
           }
-          links.push({
-            url: '/powers',
-            title: 'HEADER.MENU.POWERS'
-          });
+          if (this.cookieService.get('access_poweratt') === '1') {
+            links.push({
+              url: '/powers',
+              title: 'HEADER.MENU.POWERS'
+            });
+          }
           // if (this.accessesService.getAccess('csg')) {
           links.push({
             url: '/access-groups',
