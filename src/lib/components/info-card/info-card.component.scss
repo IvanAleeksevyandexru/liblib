@@ -94,7 +94,6 @@
         margin-top: -12px;
         background: url(../../../assets/svg/doc-state-verified.svg) no-repeat center;
 
-
         &.error {
           background: url(../../../assets/svg/doc-state-error.svg) no-repeat center;
         }
@@ -120,6 +119,10 @@
 
         &.new {
           background: url(../../../assets/svg/warn-yellow.svg) no-repeat center;
+        }
+
+        &.failed_notification {
+          background: none;
         }
       }
     }
