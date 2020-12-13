@@ -6,7 +6,6 @@ import { NotificationPeriodItem } from '../models/notifications';
 import { DocumentType } from '../models/document';
 import { HorizontalAlign, VerticalAlign } from '../models/positioning';
 import { VrfStu, VrfValStu } from '../models/verifying-status';
-import { LoadService } from './load/load.service';
 
 @Injectable(
   {
@@ -340,34 +339,7 @@ export class ConstantsService {
         mnemonic: 'partnersFeedsDraft'
       }
   ]);
-  public readonly PAYMENT_TABS = new Tabs([
-    {
-      id: 'overview',
-      name: 'TABS.OVERVIEW.TITLE',
-      url: `${this.loadService.config.lkApiUrl}overview`,
-      metric: {name: this.TABS_METRIC_NAME, action: 'overview'}
-    }, {
-      id: 'statements',
-      name: 'TABS.ORDERS.TITLE',
-      url: `${this.loadService.config.lkApiUrl}orders`,
-      metric: {name: this.TABS_METRIC_NAME, action: 'myOrders'}
-    }, {
-      id: 'profile',
-      name: 'TABS.PROFILE.TITLE',
-      url: `${this.loadService.config.lkApiUrl}profile`,
-      metric: {name: this.TABS_METRIC_NAME, action: 'documentsData'}
-    }, {
-      id: 'messages',
-      name: 'TABS.MESSAGES.TITLE',
-      url: `${this.loadService.config.lkApiUrl}messages`,
-      metric: {name: this.TABS_METRIC_NAME, action: 'messages'}
-    }, {
-      id: 'permissions',
-      name: 'TABS.PERMISSIONS.TITLE',
-      url: `${this.loadService.config.lkApiUrl}permissions`,
-      metric: {name: this.TABS_METRIC_NAME, action: 'permissions'}
-    }
-  ]);
+
   public readonly ORDERS_CATEGORIES = [
     {
       text: 'Все',
@@ -966,8 +938,4 @@ export class ConstantsService {
     'application/x-tar': 'TAR',
     'text/plain': 'TXT',
   };
-
-  constructor(
-    private loadService: LoadService
-  ) {}
 }
