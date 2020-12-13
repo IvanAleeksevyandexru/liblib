@@ -6,7 +6,6 @@ import { NotificationPeriodItem } from '../models/notifications';
 import { DocumentType } from '../models/document';
 import { HorizontalAlign, VerticalAlign } from '../models/positioning';
 import { VrfStu, VrfValStu } from '../models/verifying-status';
-import { LoadService } from './load/load.service';
 
 @Injectable(
   {
