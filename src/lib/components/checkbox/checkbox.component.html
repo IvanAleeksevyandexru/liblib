@@ -1,17 +1,19 @@
 <label class="check" [for]="checkboxId" [class.invalid]="invalidDisplayed">
   <input class="check-input"
-         type="checkbox"
-         [checked]="checked"
-         [disabled]="disabled"
-         [ngClass]="{'disabled': disabled}"
-         (change)="onChecked($event.target.checked)"
-         [id]="checkboxId"
-         [attr.labelText]="labelText || null"
-         [attr.description]="description"
-         [attr.errorMessage]="errorMessage"
-         [required]="required"
-         [attr.tabIndex]="disabled ? -1 : 0">
-  <span class="checkbox"></span>
+    type="checkbox"
+    (focus)="notifyFocusEvent($event)"
+    (blur)="notifyFocusEvent($event)"
+    [checked]="checked"
+    [disabled]="disabled"
+    [ngClass]="{'disabled': disabled}"
+    (change)="onChecked($event.target.checked)"
+    [id]="checkboxId"
+    [attr.labelText]="labelText || null"
+    [attr.description]="description"
+    [attr.errorMessage]="errorMessage"
+    [required]="required"
+    [attr.tabIndex]="disabled ? -1 : 0">
+  <span class="checkbox" [class.focused]="focused"></span>
 <!--  {{labelText}}-->
   <div class="labelText">{{labelText}}</div>
   <ng-content></ng-content>

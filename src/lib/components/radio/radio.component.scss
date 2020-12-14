@@ -1,5 +1,5 @@
-$radio-default-color: #B6C6E8;
-$checkbox-active-color: #0D4CD3;
+$radio-color: #B6C6E8;
+$radio-active-color: #0B40B3;
 
 :host {
   outline: none;
@@ -16,51 +16,58 @@ $checkbox-active-color: #0D4CD3;
 }
 
 .radio-input {
-  display: none;
+  opacity: 0;
   position: absolute;
 
-  &:hover + .radio-button {
-    background-color: #E5EAF5;
-    box-shadow: 0 0 0 2px $checkbox-active-color;
+  &:checked + .mark-wrap,
+  &:checked:hover + .mark-wrap {
+    .radio-button {
+      background-color: $radio-active-color;
+      border: 4px solid #fff;
+    }
+  }
+  &:checked:disabled + .mark-wrap,
+  &:checked:disabled:hover + .mark-wrap,
+  &:checked:hover + .mark-wrap {
+    .radio-button {
+      background-color: $radio-color;
+      border: 4px solid #fff;
+    }
   }
 
-  &:focus + .radio-button {
-    background-color: $checkbox-active-color;
-    border: 4px solid #fff;
-    box-shadow: 0 0 0 2px $checkbox-active-color;
+  &:disabled + .mark-wrap,
+  &:disabled:hover + .mark-wrap {
+    .radio-button {
+      background-color: $radio-color;
+      border: none;
+    }
   }
 
-  &:checked + .radio-button,
-  &:active + .radio-button,
-  &:checked:hover + .radio-button {
-    background-color: $checkbox-active-color;
-    border: 4px solid #fff;
-    box-shadow: 0 0 0 2px $checkbox-active-color;
+  &:hover + .mark-wrap {
+    .radio-button {
+      background-color: $radio-color;
+      border: 4px solid #fff;
+    }
   }
+}
 
-  &:disabled + .radio-button,
-  &:disabled:hover + .radio-button{
-    box-shadow: 0 0 0 2px #828C9A;
-    background: #E5EAF5;
-    border: none;
-  }
+.mark-wrap {
+  position: absolute;
+  margin-left: -38px;
+  top: -4px;
+  border-radius: 100%;
+  border: 2px solid $radio-color;
 
-  &:disabled:checked + .radio-button {
-    background-color: #828C9A;
-    border: 4px solid #E5EAF5;
-    box-shadow: 0 0 0 2px #828C9A;
+  &.focused {
+    border: 2px dotted $radio-active-color;
   }
 }
 
 .radio-button {
-  position: absolute;
   box-sizing: border-box;
   border-radius: 100%;
-  box-shadow: 0 0 0 2px $checkbox-active-color;
   width: 20px;
   height: 20px;
-  margin-left: -36px;
-  top: -2px;
 }
 
 .label-wrap {

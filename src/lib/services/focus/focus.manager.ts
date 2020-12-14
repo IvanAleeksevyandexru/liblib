@@ -82,7 +82,7 @@ export class FocusManager {
     }
   }
 
-  public subscribe(observer: Observer<any>) {
+  public subscribe(observer: Observer<FocusState>) {
     return this.focusedComponentNotifier.subscribe(observer);
   }
 
