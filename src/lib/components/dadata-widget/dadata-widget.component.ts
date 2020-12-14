@@ -75,6 +75,8 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
 
+  @Input() public skipStreetFias: string[] = ['ec44c0ee-bf24-41c8-9e1c-76136ab05cbf'];
+
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
 
@@ -180,6 +182,10 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     }
     if (this.hideLevels) {
       this.dadataService.hiddenLevels = this.hideLevels;
+    }
+
+    if (this.skipStreetFias.length) {
+      this.dadataService.skipStreetFias = this.skipStreetFias;
     }
     this.init();
   }
@@ -319,7 +325,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           this.needReplaceQuery = this.dadataService.suggestionsLength === 1 || blurCall || onInitCall;
           this.blurCall = blurCall;
           this.dadataService.resetForm();
-          this.dadataService.parseAddress(res, onInitCall);
+          this.dadataService.parseAddress(res, onInitCall, this.hideHouseCheckbox, this.hideApartmentCheckbox);
           // onChange triggering guaranteed
           if (selectAddress) {
             this.validationSkip = false;
@@ -388,7 +394,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   }
 
   private revalidate() {
-    this.dadataService.setErrorsByLevel(1);
+    const needSkipStreet = this.normalizedData ?
+      !!this.normalizedData.address.elements.find(item => item.level === 4 && this.skipStreetFias.includes(item.fiasCode)) : false;
+    this.dadataService.setErrorsByLevel(1, needSkipStreet);
     this.errorCodes = this.getErrorMessageCodes();
   }
 
