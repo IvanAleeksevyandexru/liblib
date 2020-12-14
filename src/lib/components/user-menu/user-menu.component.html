@@ -105,15 +105,7 @@
   <ul class="user-menu-tabs" *ngIf="mainTabs?.tabs?.length && showMenuTabs()">
     <li class="item" *ngFor="let tab of mainTabs.tabs">
       <ng-container *ngIf="tab.url">
-        <a *ngIf="tab.url.indexOf('http') === -1; else externalLink"
-           (click)="selectTab(tab)" [routerLink]="tab.url" routerLinkActive="active" class="item-tab-name">
-          {{tab.name | appTranslate}}
-        </a>
-        <ng-template #externalLink>
-          <a (click)="selectTab(tab)" [href]="tab.url" class="item-tab-name">
-            {{tab.name | appTranslate}}
-          </a>
-        </ng-template>
+        <a (click)="selectTab(tab)" routerLinkActive="active" class="item-tab-name">{{tab.name | appTranslate}}</a>
         <lib-counter class="counter" [counter]="tab.counter"></lib-counter>
       </ng-container>
     </li>
