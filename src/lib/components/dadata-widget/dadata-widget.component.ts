@@ -457,7 +457,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       if (this.normalizeOnInit && !this.normalizedData) {
         this.normalizeFullAddress(this.query, true);
       }
-      if (this.errorCodes.length) {
+      if (this.errorCodes.length || this.form.invalid) {
         return {incorrect: true}
       }
       return undefined;
