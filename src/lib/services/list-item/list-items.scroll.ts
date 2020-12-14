@@ -140,7 +140,9 @@ export class ListItemsAccessoryService {
       });
       return result.asObservable();
     } else {
-      measureContainer.remove();
+      if (measureContainer) {
+        measureContainer.parentNode.removeChild(measureContainer);
+      }
       return of(totalHeight);
     }
   }
