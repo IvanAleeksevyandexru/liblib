@@ -938,5 +938,4 @@ export class ConstantsService {
     'application/x-tar': 'TAR',
     'text/plain': 'TXT',
   };
-
 }
