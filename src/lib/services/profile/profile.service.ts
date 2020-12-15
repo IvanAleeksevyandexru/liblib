@@ -646,7 +646,7 @@ export class ProfileService {
           canDetails: true,
           canEdit: false,
           canDelete: !object.actRecordFound,
-          withVerificationIcon: object.actRecordFound,
+          withVerificationIcon: object.status === 'verified_by_request' || object.status === 'verified_by_push',
           detailsPath: `/profile/cert${object.actRecordFound ? '-extended' : ''}/${object.id ? object.id : ''}`,
           detailsQueryParam: {type: 'MARRIED_CERT'},
           detailsLinkTitle: object.actRecordFound ? 'Подробнее' : 'Редактировать',
