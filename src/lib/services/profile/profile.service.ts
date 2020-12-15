@@ -103,10 +103,10 @@ export class ProfileService {
           canRepeat: true,
           vrfStu: object.vrfStu,
           type: object.type,
-          serviceUrl: '10052/1',
+          // serviceUrl: '10052/1',
           empty: {
-            title: 'Добавьте паспорт',
-            subtitle: 'он необходим для получения большинства услуг на портале'
+            title: 'Паспорт РФ',
+            subtitle: 'Необходим для получения большинства услуг на портале'
           },
           full: {
             title: 'Паспорт РФ',
