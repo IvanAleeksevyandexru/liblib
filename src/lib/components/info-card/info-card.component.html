@@ -133,7 +133,7 @@
       <a *ngIf="data.vrfStu !== 'VERIFIED'" class="link-plain" (click)="toggleEditForm()">Редактировать</a>
     </ng-container>
     <ng-container *ngIf="state === 'verified'">
-      <a *ngIf="data.vrfStu === 'VERIFIED'" [routerLink]="object.detailsPath" class="link-plain">Подробнее</a>
+      <a *ngIf="data.vrfStu === 'VERIFIED'" [routerLink]="editPath ? editPath : object.detailsPath" class="link-plain">Подробнее</a>
     </ng-container>
     <ng-container *ngIf="state === 'update-error'">
       <a *ngIf="!data.number" class="link-plain" (click)="toggleEditForm()">Добавить вручную</a>
@@ -143,7 +143,7 @@
   </div>
   <div *ngIf="data.type === 'MEDICAL_ORG'" class="card-actions">
     <ng-container *ngIf="state === 'verified'">
-      <a [routerLink]="object.detailsPath" class="link-plain">Подробнее</a>
+      <a [routerLink]="editPath ? editPath : object.detailsPath" class="link-plain">Подробнее</a>
     </ng-container>
   </div>
 </ng-template>
