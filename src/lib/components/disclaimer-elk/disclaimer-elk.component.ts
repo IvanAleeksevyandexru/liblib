@@ -9,7 +9,9 @@ export class DisclaimerElkComponent implements OnInit {
 
   @Input() public text: string;
   @Input() public title: string;
-  @Input() public color: string;
+  @Input() public color?: string;
+  @Input() public noBorder = false;
+  @Input() public horizontalLine = false;
 
   constructor() { }
 
