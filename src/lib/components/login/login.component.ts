@@ -41,13 +41,7 @@ export class LoginComponent implements OnInit {
   }
 
   public logout() {
-    if (isDevMode()) {
-      this.authService.logout().subscribe((resp) => {
-        window.location = resp;
-      });
-    } else {
-      window.location.href = this.loadService.config.betaUrl + 'auth-provider/logout';
-    }
+    this.loadService.logout();
   }
 
   public userClicked() {
