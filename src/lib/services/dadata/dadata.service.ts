@@ -96,6 +96,8 @@ export class DadataService implements AutocompleteSuggestionProvider {
     }
   };
 
+  public skipStreetFias: string[] = [];
+
   public dependencyFields = this.constants.DADATA_DEPENDENCIES;
   public errorDependencyFields = this.constants.DADATA_ERROR_DEPENDENCIES;
   public levelMap = this.constants.DADATA_LEVEL_MAP;
@@ -231,7 +233,8 @@ export class DadataService implements AutocompleteSuggestionProvider {
     });
   }
 
-  public parseAddress(data: NormalizedData, onInitCall: boolean) {
+  public parseAddress(data: NormalizedData, onInitCall: boolean, hideHouseCb: boolean, hideApartCb: boolean) {
+    const needSkipStreet = !!data.address.elements.find(item => item.level === 4 && this.skipStreetFias.includes(item.fiasCode))
     data.address.elements.forEach((elem, index, arr) => {
       let level = elem.level;
       let strData = elem.data;
@@ -282,14 +285,14 @@ export class DadataService implements AutocompleteSuggestionProvider {
         }
 
         if (onInitCall) {
-          if (!houseControl.value) {
+          if (!houseControl.value && !hideHouseCb) {
             houseCheckbox.setValue(true);
           }
-          if (!apartmentControl.value) {
+          if (!apartmentControl.value && !!hideApartCb) {
             apartmentCheckbox.setValue(true);
           }
         }
-        this.setErrorsByLevel(level);
+        this.setErrorsByLevel(level, needSkipStreet);
         this.setValidByQcCompete(data.dadataQcComplete, data.unparsedParts);
       }
     });
@@ -389,7 +392,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
     return {houseCb, apartmentCb};
   }
 
-  public setErrorsByLevel(level: number): void {
+  public setErrorsByLevel(level: number, needSkipStreet: boolean = false): void {
     const errorFields = this.errorDependencyFields[level];
     if (errorFields && errorFields.length) {
       errorFields.forEach((key) => {
@@ -409,11 +412,17 @@ export class DadataService implements AutocompleteSuggestionProvider {
             isInvalid = isHiddenLvl ? false :
               this.getFormControlByLevel(3).value ? !control.value : false;
             break;
-          case 7:
-            isInvalid = isHiddenLvl ? false :
-              this.getFormControlByLevel(4).value ?
-                (this.getFormControlByLevel(6).value ? false : !control.value) : false;
+            // Улица
+          case 7: {
+            if (needSkipStreet) {
+              isInvalid = false;
+            } else {
+              isInvalid = isHiddenLvl ? false :
+                this.getFormControlByLevel(4).value ?
+                  (this.getFormControlByLevel(6).value ? false : !control.value) : false;
+            }
             break;
+          }
           case 11: {
             const houseCheckbox = this.form.get('houseCheckbox');
             isInvalid = isHiddenLvl || houseCheckbox.value ? false : !control.value;
