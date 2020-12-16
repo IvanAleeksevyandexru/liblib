@@ -1,6 +1,10 @@
-<section class="disclaimer" [ngStyle]="{borderLeft: '4px solid ' + color}">
-  <h4 *ngIf="title" class="title mb-8" [innerHTML]="title"></h4>
-  <p *ngIf="text; else content" class="text-help mb-0" [innerHTML]="text"></p>
+<section class="disclaimer" [ngClass]="{'shadow': noBorder}"
+         [style.borderLeft]="!noBorder ? '4px solid ' + color : 'none'">
+  <div class="flex-container align-items-center mb-8">
+    <div *ngIf="horizontalLine" class="line mr-8" [style.backgroundColor]="color"></div>
+    <h4 *ngIf="title" class="title" [innerHTML]="title"></h4>
+  </div>
+  <p *ngIf="text; else content" class="text-help gray mb-0" [innerHTML]="text"></p>
   <ng-template #content>
     <ng-content></ng-content>
   </ng-template>
