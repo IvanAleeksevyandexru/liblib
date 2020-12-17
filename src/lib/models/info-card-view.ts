@@ -42,4 +42,4 @@ export interface InfoCardView {
   };
 }
 
-export type InfoCardState = '' | 'process' | 'verified' | 'error' | 'success' | 'failed' | 'verifying';
+export type InfoCardState = '' | 'process' | 'verified' | 'error' | 'success' | 'failed' | 'failed_notification' | 'verifying';
