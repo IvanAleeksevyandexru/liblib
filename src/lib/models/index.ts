@@ -14,6 +14,7 @@ export * from './date-time.model';
 export * from './disclaimer.model';
 export * from './document';
 export * from './dropdown.model';
+export * from './drag-drop.model';
 export * from './ds.plugin.model';
 export * from './esia-error-response';
 export * from './esia-user';
