@@ -17,6 +17,60 @@
 
   .search-input {
     padding: 0;
+    margin: 0;
+  }
+
+  &.main-page-new {
+    box-sizing: border-box;
+    box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+
+    .search-input {
+      min-height: 90px;
+      font-size: 24px;
+      line-height: 32px;
+      border: 4px solid #e4ecfd;
+      border-radius: 12px;
+      padding-left: 75px;
+
+      &:focus,
+      &.focused {
+        border-width: 4px;
+        padding-left: 75px;
+      }
+    }
+
+    .search-go,
+    .search-clear,
+    .search-in-progress {
+      background-size: 100%;
+      height: 32px;
+      background-position: 0 0;
+      width: 32px;
+      top: 28px;
+
+      &:hover {
+        background-size: 100%;
+        background-position: 0 0;
+      }
+    }
+
+    .search-clear {
+      background: url(../../../assets/svg/circle_close.svg) 0 0 no-repeat;
+      background-size: 100%;
+      right: 32px;
+      &.align-right {
+        right: 32px;
+      }
+    }
+
+    .search-go {
+      left: 28px;
+    }
+
+    .search-in-progress {
+      top: 20px;
+      right: 39px;
+    }
   }
 
   .search-input, .static-content, .suggestion-container {

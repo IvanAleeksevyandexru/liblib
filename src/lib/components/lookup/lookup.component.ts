@@ -111,6 +111,8 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Input() public fixedItems: Array<ListElement | any> = [];
   // источник значений в виде внешнего провайдера с полностью независимой возможно асинхронной логикой работы
   @Input() public itemsProvider: LookupProvider<ListElement | any> | LookupPartialProvider<ListElement | any>;
+  // новый вид для ультрановой главной
+  @Input() public mainPageStyle: boolean = false;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
