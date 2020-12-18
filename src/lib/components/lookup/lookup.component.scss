@@ -71,7 +71,7 @@
 
   &.main-page-new {
     .lookup-field {
-      height: 90px;
+      height: 64px;
 
       &.expanded {
         ::ng-deep .search-field {
@@ -147,6 +147,16 @@
     .lookup-item {
       .item-container {
         border: none !important;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 768px) {
+  .lookup {
+    &.main-page-new {
+      .lookup-field {
+        height: 90px;
       }
     }
   }
