@@ -1,4 +1,6 @@
-<div class="lookup" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside
+<div class="lookup" [ngClass]="contextClass ? [contextClass] : []"
+     [class.main-page-new]="mainPageStyle"
+     (click)="returnFocus($event)" libClickOutside
      (clickOutside)="cancelSearchAndClose()" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="lookup-field" #lookupField [ngClass]="{expanded: expanded, invalid: invalidDisplayed, 'with-expand-button': showExpandCollapse}">
     <lib-search-bar #searchBar
@@ -23,6 +25,7 @@
       [showStaticContent]="item || htmlPlaceholder"
       [forceShowStaticContent]="forceShowStatic"
       [suggestion]="showSuggestion ? suggestion : null"
+      [mainPageStyle]="mainPageStyle"
       [(ngModel)]="query"
       (newSearch)="lookupItems($event)"
       (forcedSearch)="forceSearch($event.query, $event.byEnter)"

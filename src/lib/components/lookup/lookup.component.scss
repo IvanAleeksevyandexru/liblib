@@ -65,7 +65,29 @@
         }
       }
     }
+
+
   }
+
+  &.main-page-new {
+    .lookup-field {
+      height: 90px;
+
+      &.expanded {
+        ::ng-deep .search-field {
+          .search-input, .static-content {
+            border-radius: 12px;
+          }
+        }
+      }
+    }
+    .lookup-list-container {
+      margin-top: 12px;
+      border-top-style: solid;
+      border-radius: 4px;
+    }
+  }
+
   .lookup-list-container .lookup-item {
     .expand-collapse {
       display: none;
