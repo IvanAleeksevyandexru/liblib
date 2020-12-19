@@ -113,6 +113,8 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Input() public itemsProvider: LookupProvider<ListElement | any> | LookupPartialProvider<ListElement | any>;
   // новый вид для ультрановой главной
   @Input() public mainPageStyle: boolean = false;
+  // скрывать результат поиска в независимости от наличия ответа
+  @Input() public hideSearchResult: boolean = false;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -125,6 +127,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
   @Output() public listed = new EventEmitter<Array<ListItem>>();
+  @Output() public queryChanged = new EventEmitter<string>();
 
   public internalFixedItems: Array<ListItem> = [];
   public internalItem: ListItem;
@@ -210,6 +213,9 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
       this.searchBar.check();
     }
     this.htmlPlaceholder = /<|>/.test(this.placeholder) ? this.placeholder : null;
+  }
+
+  public modelChange(): void {
   }
 
   public clearInput(): void {
@@ -312,6 +318,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     this.partialPageNumber = 0;
     this.partialsLoaded = false;
     this.runSearchOrIncrementalSearch(true, queryOrMarker, () => {
+      this.queryChanged.emit(this.searchBar.query);
       if (this.items.length || this.showNotFound) {
         this.updateSuggestion(queryOrMarker);
         this.openDropdown();

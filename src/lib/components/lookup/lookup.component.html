@@ -27,6 +27,7 @@
       [suggestion]="showSuggestion ? suggestion : null"
       [mainPageStyle]="mainPageStyle"
       [(ngModel)]="query"
+      (ngModelChange)="modelChange()"
       (newSearch)="lookupItems($event)"
       (forcedSearch)="forceSearch($event.query, $event.byEnter)"
       [searching]="searching"
@@ -47,7 +48,7 @@
     </lib-search-bar>
     <div class="expand-collapse" *ngIf="showExpandCollapse" [ngClass]="{expanded: expanded}" (click)="lookupItemsOrClose(true)"></div>
   </div>
-  <div class="lookup-list-wrapper">
+  <div class="lookup-list-wrapper" *ngIf="!hideSearchResult">
     <div class="lookup-context-positioning" [class.static-list]="staticList" #lookupList [class.context-positioned]="contextMenuPosition">
       <div class="lookup-context-shift">{{query}}</div>
       <div class="lookup-list-container"

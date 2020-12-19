@@ -19,10 +19,12 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
   @Input() public cachedResponse?: boolean;
   @Input() public staticList?: boolean;
   @Input() public mainPageStyle?: boolean;
+  @Input() public hideSearchResult?: boolean;
 
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
   @Output() public focused = new EventEmitter();
+  @Output() public searchChanged = new EventEmitter();
   public showField = true;
 
   public searchItem: SimpleSputnikSuggest;
@@ -108,6 +110,10 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
 
   public focusEvent(): void {
     this.focused.emit();
+  }
+
+  public searchChangeHandler(searchQuery: string): void {
+    this.searchChanged.emit(searchQuery);
   }
 
 }
