@@ -64,9 +64,9 @@
           [path]="path + '.' + banner.mnemonic"
           [closable]="false"
           [noBorder]="true"
-          [noBorderRadius]="false"
+          [noBorderRadius]="templateType === 'portal-main-page-lower' ? false : true"
           [noPadding]="true"
-          [needContainer]="false"
+          [needContainer]="needContainer"
           [templateType]="templateType"
         ></lib-static-banner>
       </div>
