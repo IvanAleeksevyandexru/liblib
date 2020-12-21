@@ -53,7 +53,6 @@
       <div class="lookup-context-shift">{{query}}</div>
       <div class="lookup-list-container"
           [class.expanded]="expanded"
-          [class.hidden]="!expanded"
           [class.incremental-loading]="partialsLoading">
 
         <ng-container *ngIf="staticList; else withScroll">

@@ -25,7 +25,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Input() public hideToIcon = false;
   @Input() public placeholder = 'Например: пособие 3-7 лет подробнее';
   @Input() public useGlobalPlaceholder = false;
-  @Input() public contextClass = '';
+  @Input() public contextClass = 'search-sputnik';
   @Input() public cachedResponse?: boolean;
   @Input() public staticList?: boolean;
   @Input() public mainPageStyle = false;

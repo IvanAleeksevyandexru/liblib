@@ -83,9 +83,53 @@
     }
     .lookup-list-container {
       margin-top: 12px;
-      border-top-style: solid;
-      border-radius: 4px;
+      border: none;
+      box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+      border-radius: 12px;
     }
+
+      .lookup-list-container {
+        max-height: 450px;
+
+        ::ng-deep {
+          .ps {
+            max-height: 450px;
+
+            &.ps--active-y .ps__rail-y {
+              border-left: none;
+              background: inherit;
+            }
+          }
+        }
+
+        .lookup-item {
+
+          &.highlighted {
+            background: #E5EAF5;
+          }
+
+          .structure-container {
+            ::ng-deep {
+              .item-container {
+                padding-left: 33px;
+                border-bottom: none;
+
+                .item-content {
+                  display: flex;
+                  align-items: flex-start;
+                }
+
+                .icon {
+                  width: 24px;
+                  height: 24px;
+                  background-repeat: no-repeat;
+                  background-size: 24px 24px;
+                }
+              }
+            }
+          }
+        }
+      }
   }
 
   .lookup-list-container .lookup-item {
