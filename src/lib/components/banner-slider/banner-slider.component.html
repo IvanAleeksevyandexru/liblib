@@ -51,7 +51,7 @@
   <div class="close-banner-group" *ngIf="closeDisplay" (click)="excludeActiveBannerOrClose()"></div>
 </div>
 
-<div *ngIf="['portal-main-page-lower'].includes(templateType)"
+<div *ngIf="['portal-main-page-lower', 'portal-main-page-upper'].includes(templateType)"
      class="portal-main-page-slider"
      [ngClass]="[path, templateType]">
   <div #bannersFeedContainer class="banners-feed-container">
@@ -72,8 +72,10 @@
       </div>
     </div>
   </div>
-  <div *ngIf="bannerList?.length > 1" class="hide show-lg slider-buttons">
-    <a class="prev-banner" (click)="prevBanner(true)"></a>
-    <a class="next-banner" (click)="nextBanner(true)"></a>
+  <div class="container slider-buttons-wrapper">
+    <div *ngIf="bannerList?.length > 1" class="hide show-lg slider-buttons" [ngClass]="[path, templateType]">
+      <a class="prev-banner" (click)="prevBanner(true)"></a>
+      <a class="next-banner" (click)="nextBanner(true)"></a>
+    </div>
   </div>
 </div>
