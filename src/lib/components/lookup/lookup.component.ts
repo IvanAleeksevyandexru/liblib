@@ -1,16 +1,39 @@
 import {
-  OnInit, AfterViewInit, OnChanges, ChangeDetectorRef, SimpleChanges, Component, ElementRef,
-  EventEmitter, forwardRef, Input, Output, ViewChild, Optional, Host, SkipSelf, Self
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  Host,
+  Input,
+  OnChanges,
+  OnInit,
+  Optional,
+  Output,
+  Self,
+  SimpleChanges,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
-import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { from, Observable, forkJoin } from 'rxjs';
+import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { from, Observable } from 'rxjs';
 import { FocusManager } from '../../services/focus/focus.manager';
-import { Translation, InconsistentReaction, LineBreak } from '../../models/common-enums';
-import { HelperService } from '../../services/helper/helper.service';
+import { InconsistentReaction, LineBreak, Translation } from '../../models/common-enums';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
-import { ListItemsService, ListItemsOperationsContext,
-  FixedItemsProvider, ListItemsVirtualScrollController } from '../../services/list-item/list-items.service';
-import { ListItem, ListElement, ListItemConverter, LookupProvider, LookupPartialProvider } from '../../models/dropdown.model';
+import {
+  FixedItemsProvider,
+  ListItemsOperationsContext,
+  ListItemsService,
+  ListItemsVirtualScrollController
+} from '../../services/list-item/list-items.service';
+import {
+  ListElement,
+  ListItem,
+  ListItemConverter,
+  LookupPartialProvider,
+  LookupProvider
+} from '../../models/dropdown.model';
 import { ConstantsService } from '../../services/constants.service';
 import { PositioningManager, PositioningRequest } from '../../services/positioning/positioning.manager';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
@@ -277,17 +300,20 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   }
 
   public selectItem(item: ListItem, passive = false) {
-    this.returnFocus();
-    if (item && !this.listService.isSelectable(item)) {
-      return;
+    let isNew = true;
+    if (!this.mainPageStyle) {
+      this.returnFocus();
+      if (item && !this.listService.isSelectable(item)) {
+        return;
+      }
+      if (!passive) {
+        this.forceShowStatic = true;
+      }
+      this.cancelSearch();
+      isNew = !ListItem.compare(this.item, item);
+      this.item = item;
+      this.restoreQuery();
     }
-    if (!passive) {
-      this.forceShowStatic = true;
-    }
-    this.cancelSearch();
-    const isNew = !ListItem.compare(this.item, item);
-    this.item = item;
-    this.restoreQuery();
     if (isNew) {
       const outputValue = this.listService.restoreOriginal(item);
       this.commit(outputValue);
