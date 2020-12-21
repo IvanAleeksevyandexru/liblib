@@ -1,4 +1,14 @@
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  Output, SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { SearchSuggestion, SimpleSputnikSuggest } from '../../models/search';
 import { ListItem, ListItemConverter } from '../../models/dropdown.model';
 import { LookupComponent } from '../lookup/lookup.component';
@@ -10,7 +20,7 @@ import { LoadService } from '../../services/load/load.service';
   templateUrl: './search-sputnik.component.html',
   styleUrls: ['./search-sputnik.component.scss']
 })
-export class SearchSputnikComponent implements OnInit, AfterViewInit {
+export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input() public hideToIcon = false;
   @Input() public placeholder = 'Например: пособие 3-7 лет подробнее';
@@ -18,8 +28,9 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
   @Input() public contextClass = '';
   @Input() public cachedResponse?: boolean;
   @Input() public staticList?: boolean;
-  @Input() public mainPageStyle?: boolean;
-  @Input() public hideSearchResult?: boolean;
+  @Input() public mainPageStyle = false;
+  @Input() public hideSearchResult = false;
+  @Input() public setFocus = false;
 
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
@@ -62,6 +73,12 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
   }
 
   public ngAfterViewInit() {
+  }
+
+  public ngOnChanges({setFocus}: SimpleChanges) {
+    if (setFocus && setFocus.currentValue) {
+      this.lookup.setSearchBarFocus();
+    }
   }
 
   public toggleMagnifyingGlass() {
