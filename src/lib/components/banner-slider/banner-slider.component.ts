@@ -7,13 +7,16 @@ import { DragDropBinding, DragDropType, DragDropDirection, DragDropOffsetType, D
 import { HelperService } from '../../services/helper/helper.service';
 import { interval, Subscription } from 'rxjs';
 
-export const DEFAULT_SLIDE_SHOW_INTERVAL = 6000;
+export const DEFAULT_SLIDE_SHOW_INTERVAL = 2000; // 6000
 export const DEFAULT_SLIDE_TIME = 700;
 
 @Component({
   selector: 'lib-slider-banner',
   templateUrl: 'banner-slider.component.html',
-  styleUrls: ['./banner-slider.component.scss']
+  styleUrls: [
+    './banner-slider.component.scss',
+    './banner-slider-portal-main-page.component.scss'
+  ]
 })
 export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
@@ -24,6 +27,7 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
 
   @Input() public banners: Array<BannerGroup> = [];
   @Input() public path = '';
+  @Input() public templateType: 'default' | 'portal-main-page' = 'default';
 
   @Input() public slideShow = true;
   @Input() public slideShowInterval = DEFAULT_SLIDE_SHOW_INTERVAL;
