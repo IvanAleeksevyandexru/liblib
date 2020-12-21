@@ -24,10 +24,8 @@
   <div class="header {{['failed', 'process'].indexOf(state) === -1 && object.gender ? object.gender : ''}}">
     <div class="title">{{object.full.title}}</div>
     <div *ngIf="isNotificationShow()" [ngClass]="object.warning ? 'notification-red': 'notification'" class="confirm"></div>
-    <ng-container *ngIf="!isNotificationShow()">
-      <div *ngIf="isNew" class="confirm new"></div>
-      <div *ngIf="!isNew && (object.withVerificationIcon || state)" class="confirm {{state}}"></div>
-    </ng-container>
+    <div *ngIf="!isNew && (object.withVerificationIcon || state)" class="confirm {{state}}"></div>
+    <div *ngIf="isNew && !isNotificationShow()" class="confirm new"></div>
   </div>
   <div class="fields mt-24 mt-md-28 mb-16" *ngIf="object.fields">
     <p *ngIf="stateText" class="text-plain state {{state}} mb-16" [innerHTML]="stateText | appTranslate"></p>
