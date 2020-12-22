@@ -53,7 +53,7 @@
 
 <div *ngIf="['portal-main-page-lower', 'portal-main-page-upper'].includes(templateType)"
      class="portal-main-page-slider"
-     [ngClass]="[path, templateType]">
+     [ngClass]="[path, templateType, templateType === 'portal-main-page-lower' ? 'no-border-radius' : '']">
   <div #bannersFeedContainer class="banners-feed-container">
     <div #bannersFeed class="banners-feed" [ngStyle]="{'left.px': offset}">
       <div *ngFor="let banner of bannersFeedList"
