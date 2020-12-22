@@ -8,7 +8,7 @@ import { HelperService } from '../../services/helper/helper.service';
 import { interval, Subscription } from 'rxjs';
 import { LoadService } from '../../services/load/load.service';
 
-export const DEFAULT_SLIDE_SHOW_INTERVAL = 2000; // 6000
+export const DEFAULT_SLIDE_SHOW_INTERVAL = 6000;
 export const DEFAULT_SLIDE_TIME = 700;
 
 @Component({
