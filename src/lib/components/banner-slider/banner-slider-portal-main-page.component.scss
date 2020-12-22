@@ -13,10 +13,6 @@
     overflow: hidden;
     border-radius: 12px;
 
-    &.no-border-radius {
-      border-radius: 0;
-    }
-
     .banners-feed {
       position: relative;
       display: flex;
@@ -29,6 +25,12 @@
         flex-shrink: 0;
         flex-grow: 1;
       }
+    }
+  }
+
+  &.no-border-radius {
+    .banners-feed-container {
+      border-radius: 0;
     }
   }
 
