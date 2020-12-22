@@ -19,48 +19,52 @@ $radio-active-color: #0B40B3;
   opacity: 0;
   position: absolute;
 
-  &:checked + .mark-wrap,
-  &:checked:hover + .mark-wrap {
+  &:checked + .mark-wrap {
     .radio-button {
       background-color: $radio-active-color;
-      border: 4px solid #fff;
+      border: 3px solid #fff;
     }
   }
   &:checked:disabled + .mark-wrap,
-  &:checked:disabled:hover + .mark-wrap,
-  &:checked:hover + .mark-wrap {
+  &:checked:disabled:hover + .mark-wrap {
+    border-color: #86909C;
     .radio-button {
-      background-color: $radio-color;
-      border: 4px solid #fff;
+      background-color: #86909C;
+      border: 3px solid #E5EAF5;
     }
   }
 
   &:disabled + .mark-wrap,
   &:disabled:hover + .mark-wrap {
+    border-color: #86909C;
     .radio-button {
-      background-color: $radio-color;
+      background-color: #E5EAF5;
       border: none;
     }
   }
 
   &:hover + .mark-wrap {
+    border-color: #1D5DEB;
     .radio-button {
-      background-color: $radio-color;
-      border: 4px solid #fff;
+      background-color: #E5EAF5;
+      border: none;
+    }
+  }
+  &:checked:hover + .mark-wrap {
+    .radio-button {
+      background-color: #1D5DEB;
+      border: 3px solid #fff;
     }
   }
 }
 
 .mark-wrap {
   position: absolute;
-  margin-left: -38px;
-  top: -4px;
+  margin-left: -36px;
+  //top: -4px;
   border-radius: 100%;
-  border: 2px solid $radio-color;
-
-  &.focused {
-    border: 2px dotted $radio-active-color;
-  }
+  border: 2px solid $radio-active-color;
+  background: #fff;
 }
 
 .radio-button {
@@ -77,7 +81,8 @@ $radio-active-color: #0B40B3;
 
 .labelText {
   display: inline-block;
-  padding: 0 0 5px;
+  //padding: 0 0 5px;
+  line-height: 1.5;
 }
 
 .radio-description {
