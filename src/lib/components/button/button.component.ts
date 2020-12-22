@@ -17,6 +17,7 @@ export class ButtonComponent implements OnInit {
   @Input() public target = ''; // присвоить _blank, что бы внешняя ссылка открылась в новом окне
   @Input() public internalLink = ''; // внутренняя ссылка, которая попадёт в атрибут routerLink
   @Input() public showLoader = false; // троббер в виде трех точек, необходимо использовать в связке с width - 'wide'
+  @Input() public theme: 'ligth' | '' = ''; // тема отображения кнопки для нового дизайна
 
   public active = false;
 

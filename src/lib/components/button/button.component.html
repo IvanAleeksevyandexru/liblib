@@ -1,7 +1,7 @@
 <ng-template #content>
   <ng-content></ng-content>
 </ng-template>
-<div class="button-container" (click)="onClick($event)">
+<div class="button-container {{theme}}" (click)="onClick($event)">
   <button *ngIf="type === 'button'"
     [disabled]="disabled"
     class="{{size}} {{color}} {{width}} {{height}} {{type}} font-{{fontSize}}"

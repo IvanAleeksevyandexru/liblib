@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
 
   @Input() public userCounter: CounterData;
   @Input() public onlyIcon: boolean;
+  @Input() public useButton: boolean;
 
   public user: User;
   public avatarError = false;
@@ -38,6 +39,10 @@ export class LoginComponent implements OnInit {
       window.location.href = '/node-api/login/?redirectPage=' +
         encodeURIComponent(window.location.pathname + window.location.search + window.location.hash);
     }
+  }
+
+  public register(): void {
+    window.location.href = this.loadService.config.esiaUrl + '/registration/';
   }
 
   public logout() {
