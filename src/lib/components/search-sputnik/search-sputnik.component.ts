@@ -43,7 +43,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   public searchProvider = this.searchService;
   public showMagnifyingGlass = true;
   public converter = new ListItemConverter<SimpleSputnikSuggest>((item: SimpleSputnikSuggest, ctx: { [name: string]: any}): ListItem => {
-    return new ListItem({ id: ctx.index, text: item.name, icon: 'TEST', url: item.link}, item);
+    return new ListItem({ id: ctx.index, text: item.name, icon: '', url: item.link, lineBreak: item.lineBreak}, item);
   }, (item: ListItem): SimpleSputnikSuggest => {
     return (item?.originalItem) || null;
   });
