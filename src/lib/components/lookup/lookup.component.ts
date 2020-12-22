@@ -244,6 +244,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   public clearInput(): void {
     if (!this.disabled) {
       this.selectItem(null);
+      this.queryChanged.emit('')
       this.cleared.emit();
     }
   }
@@ -345,6 +346,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   }
 
   public lookupItems(queryOrMarker: string | {}) {
+    this.queryChanged.emit(this.searchBar.query);
     if (queryOrMarker !== SHOW_ALL_MARKER && (queryOrMarker as string).length < this.queryMinSymbolsCount) {
       this.cancelSearchAndClose();
       return;
@@ -352,7 +354,6 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     this.partialPageNumber = 0;
     this.partialsLoaded = false;
     this.runSearchOrIncrementalSearch(true, queryOrMarker, () => {
-      this.queryChanged.emit(this.searchBar.query);
       if (this.items.length || this.showNotFound) {
         this.updateSuggestion(queryOrMarker);
         this.openDropdown();
