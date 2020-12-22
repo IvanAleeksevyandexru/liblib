@@ -2,6 +2,7 @@
   "HEADER": {
     "PERSONAL_AREA": "Личный кабинет",
     "LOGIN_LINK": "Войти",
+    "REGISTER": "Регистрация",
     "EXIT": "Выйти",
     "ALL_ROLES": "Все мои роли",
     "MENU": {
@@ -9,7 +10,7 @@
       "NEWS": "Новости",
       "DOCS": "Документы",
       "SERVICES": "Услуги",
-      "PAYMENT": "Оплата",
+      "PAYMENT": "Платежи",
       "SUPPORT": "Поддержка",
       "PROFILE": "Профиль",
       "SETTINGS": "Настройки и безопасность",
