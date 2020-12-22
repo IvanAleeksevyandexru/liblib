@@ -167,10 +167,11 @@ export interface PayRequsites {
 }
 
 export interface PaidId {
-  amount: string;
+  amount: number;
   date: string;
-  fee: string;
-  id: string;
+  fee: number;
+  id: number;
+  userId: number;
 }
 
 export interface BillLink {
