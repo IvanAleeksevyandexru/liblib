@@ -28,28 +28,38 @@
     }
   }
 
-  .slider-buttons {
-    position: absolute;
-    right: 72px;
-    bottom: 32px;
+  &.no-border-radius {
+    .banners-feed-container {
+      border-radius: 0;
+    }
+  }
 
-    .prev-banner, .next-banner {
-      display: inline-block;
-      width: 46px;
-      height: 46px;
-      background: url(../../../assets/svg/arrows/arrow_gray-blue_in_circle.svg) 0 0 no-repeat;
-      background-size: cover;
+  .slider-buttons-wrapper {
+    position: relative;
 
-      &:hover {
-        background: url(../../../assets/svg/arrows/arrow_blue_in_circle.svg) 0 0 no-repeat;
+    .slider-buttons {
+      position: absolute;
+      right: 72px;
+      bottom: 32px;
+
+      .prev-banner, .next-banner {
+        display: inline-block;
+        width: 46px;
+        height: 46px;
+        background: url(../../../assets/svg/arrows/arrow_gray-blue_in_circle.svg) 0 0 no-repeat;
+        background-size: cover;
+
+        &:hover {
+          background: url(../../../assets/svg/arrows/arrow_blue_in_circle.svg) 0 0 no-repeat;
+        }
       }
-    }
 
-    .prev-banner {
-      margin-right: 16px;
-    }
-    .next-banner {
-      transform: rotate(180deg);
+      .prev-banner {
+        margin-right: 16px;
+      }
+      .next-banner {
+        transform: rotate(180deg);
+      }
     }
   }
 }
