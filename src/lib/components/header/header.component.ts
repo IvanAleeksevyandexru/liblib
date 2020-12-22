@@ -18,6 +18,18 @@ const HIDE_TIMOUT = 300;
 })
 export class HeaderComponent implements OnInit {
 
+  public user = this.loadService.user;
+  public userRoles = this.menuService.getUserRoles(this.user);
+  public userMenuState: UserMenuState;
+  public showNotifications: boolean;
+  public isUnread: boolean;
+  public activeRoleCode: string;
+  public showCategories: boolean;
+  public emptyCategories = true;
+  public hideTimout: any;
+  public categories: Category[] = [];
+  public showRolesList: boolean;
+
   @ViewChild(FeedsComponent) public feedsComponent: FeedsComponent;
 
   @Input() public userCounter: CounterData;
@@ -33,27 +45,19 @@ export class HeaderComponent implements OnInit {
   public onKeydownComponent(event: KeyboardEvent) {
     if (event.key === 'Escape') {
       this.showNotifications = false;
+      this.showRolesList = false;
     }
   }
 
   @HostListener('document:click', ['$event'])
   public onClickOut(event) {
-    if (event.target.classList.contains('content-overlay')) {
+    if (!event.target.classList.contains('user-role')) {
+      this.showRolesList = false;
+    }
+    if (!event.target.classList.contains('bell')) {
       this.showNotifications = false;
     }
   }
-
-  public user = this.loadService.user;
-  public userRoles = this.menuService.getUserRoles(this.user);
-  public userMenuState: UserMenuState;
-  public showNotifications: boolean;
-  public isUnread: boolean;
-  public activeRoleCode: string;
-  public showCategories: boolean;
-  public emptyCategories = true;
-  public hideTimout: any;
-  public categories: Category[] = [];
-
 
 
   constructor(
@@ -106,7 +110,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public openRolesList(): void {
-
+    this.showRolesList = !this.showRolesList;
   }
 
   public getRoleName(code: string): string {

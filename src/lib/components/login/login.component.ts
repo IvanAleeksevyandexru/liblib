@@ -30,7 +30,11 @@ export class LoginComponent implements OnInit {
     this.user = this.loadService.user;
   }
 
-  public login() {
+  public login(event) {
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
     if (isDevMode()) {
       this.authService.login().subscribe((resp) => {
         window.location = resp;
@@ -41,7 +45,11 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  public register(): void {
+  public register(event): void {
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
     window.location.href = this.loadService.config.esiaUrl + '/registration/';
   }
 

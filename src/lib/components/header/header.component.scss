@@ -8,6 +8,31 @@
     line-height: 20px;
   }
 
+  .roles-list {
+    position: relative;
+
+    .list {
+      position: absolute;
+      left: -16px;
+      top: 100%;
+      width: 200px;
+      padding: 16px 16px 0 16px;
+      box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+      border-radius: 12px;
+      background: #fff;
+      margin-top: 21px;
+
+      div {
+        margin-bottom: 16px;
+
+        a {
+          margin-left: 0;
+          color: #0B1F33;
+        }
+      }
+    }
+  }
+
   .back-to-portal {
     background: url(../../../assets/svg/arrows/arrow_back.svg) no-repeat 0 center;
     padding-left: 40px;
@@ -117,9 +142,26 @@
       line-height: 20px;
       color: #0B1F33;
       padding-right: 22px;
-      background: url(../../../assets/svg/arrows/arrow_black.svg) no-repeat right;
       cursor: pointer;
+      &:after {
+        content: '';
+        position: absolute;
+        width: 10px;
+        height: 6px;
+        top: 50%;
+        right: 0;
+        margin-top: -3px;
+        background: url(../../../assets/svg/arrows/arrow_black.svg) no-repeat right;
+      }
+      &.opened:after {
+        -webkit-transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+        transform: rotate(180deg);
+      }
     }
+
     .links {
       .item {
         margin-right: 32px;

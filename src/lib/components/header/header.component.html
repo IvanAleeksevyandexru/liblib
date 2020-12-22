@@ -65,8 +65,21 @@
         <lib-logo width="126"></lib-logo>
       </div>
       <div *ngIf="!user.authorized" class="col-lg-2 hide show-lg">
-        <div class="flex-container align-items-center">
-          <span class="user-role" (click)="openRolesList()">{{getRoleName(activeRoleCode)}}</span>
+        <div class="flex-container align-items-center roles-list">
+          <span class="user-role" [class.opened]="showRolesList" (click)="openRolesList()">{{getRoleName(activeRoleCode)}}</span>
+
+          <div class="list" *ngIf="showRolesList">
+            <ng-container *ngFor="let role of userRoles; let first = first">
+              <div *ngIf="role.code !== activeRoleCode">
+                <a class="link-plain" (click)="updateRole(role.code)"
+                   [ngClass]="{
+                        'link-plain': (role.code !== activeRoleCode),
+                        'ml-40': !first
+                   }"
+                   [href]="role.url">{{role.name}}</a>
+              </div>
+            </ng-container>
+          </div>
         </div>
       </div>
       <div class="hide show-lg"
