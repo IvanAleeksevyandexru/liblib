@@ -258,14 +258,18 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     this.searching = false;
   }
 
-  public cancelSearchAndClose() {
+  public cancelSearchAndClose(blurEvent = false) {
     this.cancelSearch();
-    this.closeDropdown();
+    if (!this.mainPageStyle || !blurEvent) {
+      this.closeDropdown();
+    }
     this.changeDetector.markForCheck();
   }
 
   public handleBlur() {
-    this.cancelSearchAndClose();
+    if (!this.mainPageStyle) {
+      this.cancelSearchAndClose();
+    }
     this.resetItemIfNotConsistent();
     this.blur.emit();
   }

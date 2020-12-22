@@ -82,10 +82,63 @@
       }
     }
     .lookup-list-container {
-      margin-top: 12px;
-      border-top-style: solid;
-      border-radius: 4px;
+      margin-top: 8px;
+      border: none;
+      box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+      border-radius: 12px;
     }
+
+      .lookup-list-container {
+        max-height: 100%;
+        margin-bottom: 30px;
+
+        ::ng-deep {
+          .ps {
+            max-height: 100%;
+
+            &.ps--active-y .ps__rail-y {
+              border-left: none;
+              background: inherit;
+            }
+          }
+        }
+
+        .lookup-item {
+
+          &.highlighted {
+            background: #E5EAF5;
+          }
+
+          &.line-before {
+            .structure-container {
+              padding-top: 0;
+              border-color: #E1E1E1;
+            }
+          }
+
+          .structure-container {
+            ::ng-deep {
+              .item-container {
+                padding-left: 17px;
+                padding-right: 24px;
+                border-bottom: none;
+
+                .item-content {
+                  display: flex;
+                  align-items: flex-start;
+                }
+
+                .icon {
+                  width: 24px;
+                  height: 24px;
+                  background-repeat: no-repeat;
+                  background-size: 24px 24px;
+                }
+              }
+            }
+          }
+        }
+      }
   }
 
   .lookup-list-container .lookup-item {
@@ -158,6 +211,15 @@
       .lookup-field {
         height: 90px;
       }
+
+
+      .lookup-list-container .lookup-item .structure-container {
+        ::ng-deep {
+          .item-container {
+            padding-left: 33px;
+          }
+        }
+      }
     }
   }
 }
@@ -174,6 +236,23 @@
     .lookup-item {
       .item-container {
         border: none !important;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 1140px){
+  .lookup {
+    &.main-page-new {
+      .lookup-list-container {
+        max-height: calc(100vh - 218px);
+        margin-bottom: 0;
+
+        ::ng-deep {
+          .ps {
+            max-height: calc(100vh - 218px);
+          }
+        }
       }
     }
   }

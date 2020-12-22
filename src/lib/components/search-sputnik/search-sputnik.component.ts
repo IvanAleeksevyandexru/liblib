@@ -25,7 +25,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Input() public hideToIcon = false;
   @Input() public placeholder = 'Например: пособие 3-7 лет подробнее';
   @Input() public useGlobalPlaceholder = false;
-  @Input() public contextClass = '';
+  @Input() public contextClass = 'search-sputnik';
   @Input() public cachedResponse?: boolean;
   @Input() public staticList?: boolean;
   @Input() public mainPageStyle = false;
@@ -43,7 +43,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   public searchProvider = this.searchService;
   public showMagnifyingGlass = true;
   public converter = new ListItemConverter<SimpleSputnikSuggest>((item: SimpleSputnikSuggest, ctx: { [name: string]: any}): ListItem => {
-    return new ListItem({ id: ctx.index, text: item.name, icon: 'TEST', url: item.link}, item);
+    return new ListItem({ id: ctx.index, text: item.name, icon: '', url: item.link, lineBreak: item.lineBreak}, item);
   }, (item: ListItem): SimpleSputnikSuggest => {
     return (item?.originalItem) || null;
   });
