@@ -1,6 +1,7 @@
 <div class="banner-container"
      [ngClass]="[
        mnemonic || '',
+       templateType || '',
        closed ? 'hidden' : '',
        noBorder ? 'no-border' : '',
        noBorderRadius ? 'no-border-radius' : '',
@@ -8,7 +9,7 @@
        closeDisplay ? 'closable' : ''
      ]"
      [style.height.px]="fixedHeight ? fixedHeight : ''"
-     [style.backgroundColor]="backgroundColor ? backgroundColor : ''"
+     [style.background]="backgroundColor ? backgroundColor : ''"
      [ngStyle]="backgroundImage ? {'background': backgroundImage} : {}"
      [style.borderColor]="borderColor && !noBorder ? borderColor : ''">
   <div [ngClass]="{'container' : needContainer}">

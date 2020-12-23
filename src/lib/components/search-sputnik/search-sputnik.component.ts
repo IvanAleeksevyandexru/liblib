@@ -1,4 +1,14 @@
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  Output, SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { SearchSuggestion, SimpleSputnikSuggest } from '../../models/search';
 import { ListItem, ListItemConverter } from '../../models/dropdown.model';
 import { LookupComponent } from '../lookup/lookup.component';
@@ -10,17 +20,22 @@ import { LoadService } from '../../services/load/load.service';
   templateUrl: './search-sputnik.component.html',
   styleUrls: ['./search-sputnik.component.scss']
 })
-export class SearchSputnikComponent implements OnInit, AfterViewInit {
+export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input() public hideToIcon = false;
   @Input() public placeholder = 'Например: пособие 3-7 лет подробнее';
   @Input() public useGlobalPlaceholder = false;
-  @Input() public contextClass = '';
+  @Input() public contextClass = 'search-sputnik';
   @Input() public cachedResponse?: boolean;
   @Input() public staticList?: boolean;
+  @Input() public mainPageStyle = false;
+  @Input() public hideSearchResult = false;
+  @Input() public setFocus = false;
 
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
+  @Output() public focused = new EventEmitter();
+  @Output() public searchChanged = new EventEmitter();
   public showField = true;
 
   public searchItem: SimpleSputnikSuggest;
@@ -28,7 +43,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
   public searchProvider = this.searchService;
   public showMagnifyingGlass = true;
   public converter = new ListItemConverter<SimpleSputnikSuggest>((item: SimpleSputnikSuggest, ctx: { [name: string]: any}): ListItem => {
-    return new ListItem({ id: ctx.index, text: item.name, icon: 'TEST', url: item.link}, item);
+    return new ListItem({ id: ctx.index, text: item.name, icon: '', url: item.link, lineBreak: item.lineBreak}, item);
   }, (item: ListItem): SimpleSputnikSuggest => {
     return (item?.originalItem) || null;
   });
@@ -58,6 +73,12 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
   }
 
   public ngAfterViewInit() {
+  }
+
+  public ngOnChanges({setFocus}: SimpleChanges) {
+    if (setFocus && setFocus.currentValue) {
+      this.lookup.setSearchBarFocus();
+    }
   }
 
   public toggleMagnifyingGlass() {
@@ -103,4 +124,19 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit {
       this.closed.emit();
     }
   }
+
+  public focusEvent(): void {
+    this.focused.emit();
+  }
+
+  public searchChangeHandler(searchQuery: string): void {
+    this.searchChanged.emit(searchQuery);
+  }
+
+  public emptyResultHandler(resultLength: number): void {
+    if (resultLength === 0) {
+      document.location.href = this.loadService.config.betaUrl + '/search?query=' + encodeURIComponent(this.lookup.query);
+    }
+  }
+
 }

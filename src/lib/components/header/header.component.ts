@@ -1,9 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, NgModuleRef, OnInit, Output, ViewChild } from '@angular/core';
 import { CountersService} from '../../services/counters/counters.service';
 import { LoadService } from '../../services/load/load.service';
 import { MenuService } from '../../services/menu/menu.service';
 import { FeedsComponent } from '../feeds/feeds.component';
-import { UserMenuState, CounterTarget, MenuLink } from '../../models';
+import { UserMenuState, CounterTarget, MenuLink, Category, CounterData } from '../../models';
+import { TranslateService } from '@ngx-translate/core';
+import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
+import { ModalService } from '../../services/modal/modal.service';
+import { Router } from '@angular/router';
+
+const HIDE_TIMOUT = 300;
 
 @Component({
   selector: 'lib-header',
@@ -12,24 +18,56 @@ import { UserMenuState, CounterTarget, MenuLink } from '../../models';
 })
 export class HeaderComponent implements OnInit {
 
-  @ViewChild(FeedsComponent) public feedsComponent: FeedsComponent;
-
-  @Input() public comingSoon?: boolean;
-  @Input() public links?: MenuLink[] = [];
-
-  @Output() public backClick = new EventEmitter<any>();
-
   public user = this.loadService.user;
   public userRoles = this.menuService.getUserRoles(this.user);
   public userMenuState: UserMenuState;
   public showNotifications: boolean;
   public isUnread: boolean;
   public activeRoleCode: string;
+  public showCategories: boolean;
+  public emptyCategories = true;
+  public hideTimout: any;
+  public categories: Category[] = [];
+  public showRolesList: boolean;
+
+  @ViewChild(FeedsComponent) public feedsComponent: FeedsComponent;
+
+  @Input() public userCounter: CounterData;
+  @Input() public comingSoon?: boolean;
+  @Input() public links?: MenuLink[] = [];
+  @Input() public mergeHeaderMenu?: boolean;
+  @Input() public rolesListEnabled?: boolean;
+  @Input() public searchSputnikEnabled?: boolean;
+
+  @Output() public backClick = new EventEmitter<any>();
+
+  @HostListener('document:keydown', ['$event'])
+  public onKeydownComponent(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      this.showNotifications = false;
+      this.showRolesList = false;
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  public onClickOut(event) {
+    if (!event.target.classList.contains('user-role')) {
+      this.showRolesList = false;
+    }
+    if (!event.target.classList.contains('bell')) {
+      this.showNotifications = false;
+    }
+  }
+
 
   constructor(
     private loadService: LoadService,
     private menuService: MenuService,
-    private countersService: CountersService
+    private countersService: CountersService,
+    public translate: TranslateService,
+    private modalService: ModalService,
+    private moduleRef: NgModuleRef<any>,
+    private router: Router
   ) {
   }
 
@@ -45,11 +83,14 @@ export class HeaderComponent implements OnInit {
   }
 
   public showUserMenu(isMobileView: boolean) {
-    if (this.user && this.user.authorized) {
-      this.userMenuState = {
-        active: true,
-        isMobileView
-      } as UserMenuState;
+    this.userMenuState = {
+      active: true,
+      isMobileView
+    } as UserMenuState;
+
+    if (isMobileView) {
+      const html = document.getElementsByTagName('html')[0];
+      html.classList.add('disable-scroll');
     }
   }
 
@@ -67,4 +108,64 @@ export class HeaderComponent implements OnInit {
   public backClickHandler(): void {
     this.backClick.emit();
   }
+
+  public openRolesList(): void {
+    this.showRolesList = !this.showRolesList;
+  }
+
+  public getRoleName(code: string): string {
+    return this.userRoles.find(role => role.code === code).name;
+  }
+
+  public redirect(event: Event, link: MenuLink): void {
+    if (link.handler) {
+      event.stopPropagation();
+      event.preventDefault();
+      link.handler(link);
+      return;
+    }
+
+    const url = link.url;
+    const isAbsUrl = /^(http|\/\/)/.test(url);
+
+    if (url && this.translate.currentLang !== 'ru') {
+      event.stopPropagation();
+      event.preventDefault();
+      this.showLangWarnModal(url, isAbsUrl);
+    } else if (!isAbsUrl) {
+      event.stopPropagation();
+      event.preventDefault();
+      this.router.navigate([url]);
+    } else {
+      event.stopPropagation();
+      event.preventDefault();
+      location.href = url;
+    }
+  }
+
+  public showLangWarnModal(url: string, isAbs: boolean): void {
+    this.modalService.popupInject(LangWarnModalComponent, this.moduleRef, {
+      url, isAbs
+    });
+  }
+
+  public openCategories() {
+    this.showCategories = true;
+
+    if (this.emptyCategories) {
+      this.menuService.loadCategories().then((data: Category[]) => {
+        this.emptyCategories = data.length === 0;
+        this.categories = data;
+      });
+    }
+
+    clearTimeout(this.hideTimout);
+  }
+
+  public closeCategories() {
+    this.hideTimout = setTimeout(() => {
+      this.showCategories = false;
+    }, HIDE_TIMOUT);
+  }
+
 }
