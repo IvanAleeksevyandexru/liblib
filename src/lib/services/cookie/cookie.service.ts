@@ -16,7 +16,7 @@ export class CookieService {
     } else if (expireDays) {
       const date = new Date();
       date.setTime(date.getTime() + (expireDays * 24 * 60 * 60 * 1000));
-      expires = `; expires=${date.toDateString()}`;
+      expires = `; expires=${date.toUTCString()}`;
     } else {
       expires = '';
     }
