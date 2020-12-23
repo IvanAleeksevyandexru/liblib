@@ -832,16 +832,16 @@ export class ProfileService {
           serviceUrl: object.serviceUrl,
           canRepeat: true,
           empty: {
-            title: 'Моя поликлиника',
+            title: object.isKid ? 'Поликлиника ребенка' : 'Моя поликлиника',
             subtitle: object.vrfStu === 'NOT_VERIFIED' ?
               'Не выбрана' :
               'Добавьте полис ОМС, чтобы просмотреть, изменить, или выбрать прикрепление к медорганизации',
           },
           full: {
-            title: 'Моя поликлиника'
+            title: object.isKid ? 'Поликлиника ребенка' : 'Моя поликлиника'
           },
           ...(object.status === 'process' ? {
-            notification: 'Идет поиск полиса в реестре ФОМС...',
+            notification: 'Идет поиск в реестре ФОМС...',
             fields: []
           } : {
             fields: [

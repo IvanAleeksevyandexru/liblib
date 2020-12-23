@@ -142,6 +142,9 @@
     </ng-container>
   </div>
   <div *ngIf="data.type === 'MEDICAL_ORG'" class="card-actions">
+    <ng-container *ngIf="state === 'process'">
+      <a class="link-plain" (click)="cancelReq()">Отменить поиск</a>
+    </ng-container>
     <ng-container *ngIf="state === 'verified'">
       <a [routerLink]="editPath ? editPath : object.detailsPath" class="link-plain">Подробнее</a>
     </ng-container>
