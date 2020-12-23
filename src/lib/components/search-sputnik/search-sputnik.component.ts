@@ -133,4 +133,10 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
     this.searchChanged.emit(searchQuery);
   }
 
+  public emptyResultHandler(resultLength: number): void {
+    if (resultLength === 0) {
+      document.location.href = this.loadService.config.betaUrl + '/search?query=' + encodeURIComponent(this.lookup.query);
+    }
+  }
+
 }
