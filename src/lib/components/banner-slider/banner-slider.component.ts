@@ -107,7 +107,7 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
         this.cancelSlideShow();
       }, dragRelease: (dragState: DragState) => {
         this.offset = dragState.offset;
-        this.activeBannerTracable = this.bannersFeedList[--dragState.selected];
+        this.activeBannerTracable = this.bannersFeedList[dragState.selected];
       }, dragEnd: (dragState: DragState) => {
         this.offset = dragState.offset;
         this.rebuildBannersFeedAccordingToActiveBanner();
