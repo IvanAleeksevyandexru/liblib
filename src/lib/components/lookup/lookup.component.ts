@@ -151,6 +151,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Output() public closed = new EventEmitter();
   @Output() public listed = new EventEmitter<Array<ListItem>>();
   @Output() public queryChanged = new EventEmitter<string>();
+  @Output() public enterKeyEvent = new EventEmitter();
 
   public internalFixedItems: Array<ListItem> = [];
   public internalItem: ListItem;
@@ -481,6 +482,12 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
       if (this.suggestionJustSelected) {
         this.suggestionJustSelected = false;
         return;
+      }
+      if (this.mainPageStyle && !this.searching && this.query) {
+        this.enterKeyEvent.emit(this.items.length);
+        if (!this.items.length) {
+          return;
+        }
       }
       if (this.expanded && this.highlighted && !this.highlighted.unselectable) {
         this.selectItem(this.highlighted);
