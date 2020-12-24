@@ -31,3 +31,19 @@ export interface ConfirmAddress {
   resendFrom?: string;
   resendAllowed?: boolean;
 }
+
+export interface CountryDict {
+  name: string;
+  size: number;
+  stateFacts: string[];
+  values: Country[];
+}
+
+export interface Country {
+  char2Code: string;
+  char3Code: string;
+  extId: string;
+  msgKey: string;
+  name: string;
+  postDelivered: boolean;
+}

@@ -154,7 +154,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
   ) {
   }
 
-  public initForm(isSimpleMode: boolean): void {
+  public initForm(isSimpleMode: boolean, withCountries: boolean): void {
     this.simpleMode = isSimpleMode;
     this.form = this.fb.group({
       region: new FormControl(''),
@@ -177,6 +177,10 @@ export class DadataService implements AutocompleteSuggestionProvider {
       geoLat: new FormControl(''),
       geoLon: new FormControl(''),
     });
+
+    if (withCountries) {
+      this.form.addControl('country', new FormControl(''))
+    }
 
     this.initCheckboxChange('house', this.lastHouseValue);
     this.initCheckboxChange('apartment', this.lastApartmentValue);

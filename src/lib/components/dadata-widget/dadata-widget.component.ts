@@ -30,6 +30,7 @@ import { ValidationService } from '../../validators/validation.service';
 import { BehaviorSubject } from 'rxjs';
 import { Validated, ValidationShowOn } from "../../models/validation-show";
 import { ValidationHelper } from "../../services/validation-helper/validation.helper";
+import { ListItem, ListItemConverter } from "../../models/dropdown.model";
 
 @Component({
   selector: 'lib-dadata-widget',
@@ -52,10 +53,12 @@ import { ValidationHelper } from "../../services/validation-helper/validation.he
 export class DadataWidgetComponent extends CommonController implements AfterViewInit, OnInit, ControlValueAccessor, Validated {
 
   @Input() public label = '';
-  @Input() public specifyTitle = ''; // код трансляции для ссылки открытия формы
+  // код трансляции для ссылки открытия формы
+  @Input() public specifyTitle = '';
   @Input() public disabled?: boolean;
   @Input() public initValue?: string;
-  @Input() public simpleMode = false; // отключение обязательности полей корпус и строение, если нет дома
+  // отключение обязательности полей корпус и строение, если нет дома
+  @Input() public simpleMode = false;
   @Input() public normalizeOnInit = true;
   @Input() public externalApiUrl?: string;
   @Input() public clearable = true;
@@ -76,6 +79,12 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
 
   @Input() public skipStreetFias: string[] = ['ec44c0ee-bf24-41c8-9e1c-76136ab05cbf'];
+  // выпадающий список список со странами
+  @Input() public countries: Array<ListItem | any> = [];
+  // предзаполненное значение
+  @Input() public defaultCountry: any = {};
+  // для преобразования countries из any в ListItem
+  @Input() public converter?: ListItemConverter;
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
@@ -194,9 +203,14 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
     this.formConfig = this.dadataService.initFormConfig(this.isOrg);
 
-    this.dadataService.initForm(this.simpleMode);
+    const withCountries = this.countries.length > 0;
+    this.dadataService.initForm(this.simpleMode, withCountries);
 
     this.form = this.dadataService.form;
+
+    if (withCountries && this.defaultCountry) {
+      this.form.get('country').setValue(this.defaultCountry);
+    }
 
     this.controlNames = Object.keys(this.form.controls).filter(key => this.excluded.indexOf(key) === -1);
 
@@ -376,19 +390,22 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     this.needReplaceQuery = false;
     this.query = '';
     this.canOpenFields.next(false);
-    this.updateCanOpenFields('');
+    this.changeQueryHandler('');
     for (const key of Object.keys(this.form.controls)) {
       this.form.get(key).enable({onlySelf: true});
     }
   }
 
-  public updateCanOpenFields(value: string): void {
+  public changeQueryHandler(value: string): void {
     this.dadataService.resetSearchComplete(false);
     if (this.isOpenedFields.getValue()) {
       this.closeDadataFields();
     }
     if (!value) {
       this.form.reset();
+    }
+    if (this.countries?.length && this.defaultCountry) {
+      this.form.get('country').setValue(this.defaultCountry);
     }
     this.query$.next(value);
   }
