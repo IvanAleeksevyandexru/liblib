@@ -11,14 +11,14 @@ export interface SearchSuggestion {
 }
 
 export interface SearchSputnikSuggests {
-  services?: SimpleSputnikSuggest[],
+  help?: SimpleSputnikSuggest[],
   info?: SimpleSputnikSuggest[],
-  departments?: SimpleSputnikSuggest[],
-  faq?: SimpleSputnikSuggest[],
-  situations?: SimpleSputnikSuggest[],
   news?: SimpleSputnikSuggest[],
   other?: SimpleSputnikSuggest[],
-  suggests?: SimpleSputnikSuggest[]
+  service?: SimpleSputnikSuggest[],
+  situation?: SimpleSputnikSuggest[],
+  structure?: SimpleSputnikSuggest[],
+  suggest?: SimpleSputnikSuggest[]
 }
 
 export interface SimpleSputnikSuggest {
@@ -27,4 +27,15 @@ export interface SimpleSputnikSuggest {
   link: string | null;
   children?: SimpleSputnikSuggest[];
   lineBreak?: string;
+}
+
+
+export interface SearchSputnikConfig {
+  url: string;
+  request: {
+    _: string;
+    query?: string;
+    q?: string;
+    serviceRecipient?: string;
+  };
 }

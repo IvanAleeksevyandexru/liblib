@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoadService } from '../load/load.service';
 import { LookupProvider } from '../../models/dropdown.model';
-import { SearchSputnikSuggests, SimpleSputnikSuggest } from '../../models/search';
+import { SearchSputnikConfig, SearchSputnikSuggests, SearchSuggests, SimpleSputnikSuggest } from '../../models/search';
 import { map } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,39 +12,31 @@ import { BehaviorSubject } from 'rxjs';
 export class SearchService implements LookupProvider<SimpleSputnikSuggest> {
   private globalSearchPlaceholder: BehaviorSubject<string> = new BehaviorSubject<string>('Например: пособие 3-7 лет подробнее');
   public globalSearchPlaceholder$ = this.globalSearchPlaceholder.asObservable();
+  private newSputnikSearchEnabled = this.loadService.config.newSputnikSearchEnabled;
 
   constructor(private http: HttpClient,
               private loadService: LoadService) {
   }
 
-  // public search(query: string, configuration?: { [name: string]: any }) {
-  //   return this.http.get(`${this.loadService.config.searchApiUrl}suggest`, {
-  //       withCredentials: true,
-  //       params: {
-  //         _: `${Math.random()}`,
-  //         query: `${query}`,
-  //         serviceRecipient: 'all'
-  //       }
-  //   }).pipe(map((results: SearchSuggests) => results.suggests));
-  // }
-
-  public search(query: string, configuration?: { [name: string]: any }) {
-    return this.http.get(`${this.loadService.config.searchSputnikApiUrl}`, {
+  public search(query: string, configuration?: { [name: string]: any }): Observable<SimpleSputnikSuggest[]> {
+    const cfg = this.getConfigurations(query);
+    return this.http.get(cfg.url, {
       withCredentials: true,
-      params: {
-        _: `${Math.random()}`,
-        q: `${query}`
+      params: cfg.request
+    }).pipe(map((res: SearchSputnikSuggests | SearchSuggests) => {
+      if (this.newSputnikSearchEnabled) {
+        return this.handleNewSputnikResults(res as SearchSputnikSuggests);
+      } else {
+        return this.handleOldSputnikResults(res as SearchSuggests);
       }
-    }).pipe(
-      map(this.handleSputnikResults)
-    );
+    }));
   }
 
   public setGlobalSearchPlaceholder(placeholder: string): void {
     this.globalSearchPlaceholder.next(placeholder);
   }
 
-  private handleSputnikResults(results: SearchSputnikSuggests): SimpleSputnikSuggest[] {
+  private handleNewSputnikResults(results: SearchSputnikSuggests): SimpleSputnikSuggest[] {
     function makeTitleWithIconClass(item: SimpleSputnikSuggest, category: string): string {
       const selfImage = ['service', 'structure', 'situation'];
       const infoImage = ['faq', 'info', 'other', 'help'];
@@ -60,9 +52,8 @@ export class SearchService implements LookupProvider<SimpleSputnikSuggest> {
         iconBlock = `<div class="icon suggests"></div>`;
       }
       return `<div class="item-content">
-                      ${iconBlock}
-                      <div>${item.name}</div>
-                      </div>`;
+                ${iconBlock}<div>${item.name}</div>
+              </div>`;
     }
 
     function handleItems(items: SimpleSputnikSuggest[], category: string, suggestionsLength: number): SimpleSputnikSuggest[] {
@@ -99,5 +90,46 @@ export class SearchService implements LookupProvider<SimpleSputnikSuggest> {
       }
     });
     return suggestions;
+  }
+
+  private handleOldSputnikResults(results: SearchSuggests): SimpleSputnikSuggest[] {
+    const result: SearchSputnikSuggests = {
+      suggest: [],
+      service: [] // этот тип, потому что надо юзать картинку из ответа
+    };
+    (results.suggests || []).map((it) => {
+      const res = {
+        name: it.header,
+        image: it.favicon,
+        link: it.url
+      };
+      if (it.type === 'pgu_marker') {
+        result.service.push(res);
+      } else {
+        result.suggest.push(res);
+      }
+    });
+    return this.handleNewSputnikResults(result);
+  }
+
+  private getConfigurations(query?: string): SearchSputnikConfig {
+    if (this.newSputnikSearchEnabled) {
+      return {
+        url: this.loadService.config.searchSputnikApiUrl,
+        request: {
+          _: `${Math.random()}`,
+          q: `${query}`
+        }
+      };
+    } else {
+      return {
+        url: `${this.loadService.config.searchApiUrl}suggest`,
+        request: {
+          _: `${Math.random()}`,
+          query,
+          serviceRecipient: 'all'
+        }
+      };
+    }
   }
 }
