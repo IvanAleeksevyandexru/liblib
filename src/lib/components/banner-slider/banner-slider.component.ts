@@ -9,7 +9,7 @@ import { interval, Subscription } from 'rxjs';
 import { LoadService } from '../../services/load/load.service';
 
 export const DEFAULT_SLIDE_SHOW_INTERVAL = 6000;
-export const DEFAULT_SLIDE_TIME = 700;
+export const DEFAULT_SLIDE_TIME = 300;
 
 @Component({
   selector: 'lib-slider-banner',
@@ -80,6 +80,11 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
 
   private animationPlayer: AnimationPlayer = null;
   private startDragPosition: number = undefined;
+
+  @HostListener('window:resize')
+  public onResize() {
+    this.rebuildBannersFeedAccordingToActiveBanner();
+  }
 
   public ngOnInit() {
     this.update();
