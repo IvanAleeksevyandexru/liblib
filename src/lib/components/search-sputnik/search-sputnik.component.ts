@@ -108,7 +108,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
       if (this.searchItem && this.searchItem.link) {
         document.location.href = this.searchItem.link;
       } else {
-        document.location.href = this.loadService.config.betaUrl + '/search?query=' + encodeURIComponent(query);
+        document.location.href = this.loadService.config.betaUrl + '/search?query=' + encodeURIComponent(this.searchItem.query || query);
       }
     }
   }
