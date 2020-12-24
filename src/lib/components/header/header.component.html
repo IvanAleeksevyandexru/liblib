@@ -115,7 +115,7 @@
 
             <div *ngIf="showNotifications" class="notifications-list" libStopScreenScroll>
               <a class="close" (click)="this.showNotifications = !this.showNotifications;"></a>
-              <h6 class="title-h6">Последние события</h6>
+              <h6 class="title-h6 mb-12">Последние события</h6>
               <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}"
                                  (psYReachEnd)="feedsComponent.showMore()">
                 <lib-feeds
