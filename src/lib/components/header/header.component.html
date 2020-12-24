@@ -62,7 +62,7 @@
   <div class="header merge-header">
     <div class="inner container grid-row flex-container align-items-center">
       <div class="col-lg-2 col-md-2 col-1 logo-wrapper">
-        <lib-logo width="126"></lib-logo>
+        <lib-logo width="126" [logoHref]="logoHref"></lib-logo>
       </div>
       <div *ngIf="!user.authorized" class="col-lg-2 hide show-lg">
         <div class="flex-container align-items-center roles-list">

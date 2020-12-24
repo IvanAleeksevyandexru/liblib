@@ -38,6 +38,7 @@ export class HeaderComponent implements OnInit {
   @Input() public mergeHeaderMenu?: boolean;
   @Input() public rolesListEnabled?: boolean;
   @Input() public searchSputnikEnabled?: boolean;
+  @Input() public logoHref?: string;
 
   @Output() public backClick = new EventEmitter<any>();
 

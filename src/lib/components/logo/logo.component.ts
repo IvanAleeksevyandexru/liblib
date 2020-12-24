@@ -8,6 +8,7 @@ import { LoadService } from '../../services/load/load.service';
 })
 export class LogoComponent implements OnInit {
   @Input() public width?: string;
+  @Input() public logoHref = '/';
 
   public url: string;
   public viewType = this.loadService.config.viewType;
