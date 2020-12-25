@@ -54,7 +54,6 @@
       <div *ngIf="countries?.length" class="address-row">
         <div class="address-item">
           <label class="input-label" for="country">{{'DADATA.COUNTRY' | libTranslate}}</label>
-          {{form.get('country').value}}
           <lib-dropdown [converter]="converter" id="country" [items]="countries"
                         formControlName="country"></lib-dropdown>
         </div>
@@ -106,9 +105,12 @@
 
         <div class="address-item index-item">
           <label class="input-label" for="index">{{'DADATA.INDEX' | libTranslate}}</label>
-          <lib-base-masked-input [mask]="validations.masks.index" tabIndex="18" [clearable]="true" [maxlength]="6" formControlName="index"
+          <lib-base-masked-input *ngIf="indexMask" [mask]="indexMask" tabIndex="18" [clearable]="true" [maxlength]="6" formControlName="index"
                                  [invalid]="formConfig.index.isInvalid || (form.get('index').errors && form.get('index').errors['minlength'])" id="index">
           </lib-base-masked-input>
+          <lib-plain-input *ngIf="!indexMask" tabIndex="18" [clearable]="true" formControlName="index"
+                                 [invalid]="formConfig.index.isInvalid || (form.get('index').errors && form.get('index').errors['minlength'])" id="index">
+          </lib-plain-input>
         </div>
         <div *ngIf="formConfig.house.visible" class="address-item address-item-with-checkbox">
           <div class="simple-field">

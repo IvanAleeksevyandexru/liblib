@@ -173,12 +173,13 @@ export class DadataService implements AutocompleteSuggestionProvider {
       apartment: new FormControl(''),
       apartmentCheckbox: new FormControl(false),
       apartmentCheckboxClosed: new FormControl(false),
-      index: new FormControl('', [Validators.maxLength(6), Validators.minLength(6)]),
+      index: new FormControl('', ),
       geoLat: new FormControl(''),
       geoLon: new FormControl(''),
     });
 
     if (withCountries) {
+      this.form.get('index').setValidators([Validators.maxLength(6), Validators.minLength(6)]);
       this.form.addControl('country', new FormControl(''))
     }
 

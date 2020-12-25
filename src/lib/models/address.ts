@@ -40,6 +40,7 @@ export interface CountryDict {
 }
 
 export interface Country {
+  id?:string;
   char2Code: string;
   char3Code: string;
   extId: string;

@@ -20,7 +20,7 @@ import {
   FormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  ValidationErrors,
+  ValidationErrors, Validators,
 } from '@angular/forms';
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { ModalService } from '../../services/modal/modal.service';
@@ -82,7 +82,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   // выпадающий список список со странами
   @Input() public countries: Array<ListItem | any> = [];
   // предзаполненное значение
-  @Input() public defaultCountry: any = {};
+  @Input() public defaultCountry: { id: string, [key: string]: any };
   // для преобразования countries из any в ListItem
   @Input() public converter?: ListItemConverter;
 
@@ -164,6 +164,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   public formConfig = null;
   public canOpenFields = this.dadataService.canOpenFields;
   public isOpenedFields = this.dadataService.isOpenedFields;
+  public indexMask = this.validations.masks.index;
   @ViewChild('autocomplete', {static: false}) public autocomplete: AutocompleteComponent;
 
   private normalizedData: NormalizedData;
@@ -209,7 +210,17 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     this.form = this.dadataService.form;
 
     if (withCountries && this.defaultCountry) {
-      this.form.get('country').setValue(this.defaultCountry);
+      const country = this.form.get('country');
+      country.setValue(this.defaultCountry);
+      country.valueChanges.subscribe(value => {
+        let validators = [Validators.maxLength(6), Validators.minLength(6)];
+        this.indexMask = this.validations.masks.index;
+        if (value.id !== this.defaultCountry.id) {
+          validators = [Validators.minLength(1)];
+          this.indexMask = null;
+        }
+        this.form.get('index').setValidators(validators)
+      })
     }
 
     this.controlNames = Object.keys(this.form.controls).filter(key => this.excluded.indexOf(key) === -1);
@@ -223,24 +234,27 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       const dadataQc = this.normalizedData ? this.normalizedData.dadataQc : '0';
       let fullAddress = '';
       this.addressStr = '';
-      this.controlNames.forEach((control, keyIndex) => {
-        const isIndex = control === 'index';
-        if (changes[control] && !this.dadataService.isElementHidden(control)) {
-          if (!isIndex) {
-            const ctrlField = this.dadataService.prefixes[control];
-            const tmpStr = (keyIndex > 0 ? ', ' : '') + (changes[control] ?
-              (ctrlField.shortType || ctrlField.abbr) + ' ' + changes[control] : '');
-            if (!this.fullAddrStrExcluded.includes(control)) {
-              fullAddress += tmpStr;
+      this.controlNames
+        .filter(item => item !== 'country')
+        .forEach((control, keyIndex) => {
+          const isIndex = control === 'index';
+          if (changes[control] && !this.dadataService.isElementHidden(control)) {
+            if (!isIndex) {
+              const ctrlField = this.dadataService.prefixes[control];
+              const tmpStr = ((keyIndex > 0 && fullAddress) ? ', ' : '') + (changes[control] ?
+                (ctrlField.shortType || ctrlField.abbr) + ' ' + changes[control] : '');
+              if (!this.fullAddrStrExcluded.includes(control)) {
+                fullAddress += tmpStr;
+              }
+              if (!this.addrStrExcluded.includes(control)) {
+                this.addressStr += tmpStr;
+              }
+            } else {
+              fullAddress = changes[control] + ', ' + fullAddress;
             }
-            if (!this.addrStrExcluded.includes(control)) {
-              this.addressStr += tmpStr;
-            }
-          } else {
-            fullAddress = changes[control] + ', ' + fullAddress;
           }
-        }
-      });
+        });
+      this.query = fullAddress;
       if (fullAddress) {
         if (this.validationSkip) {
           this.errorCodes = [];
@@ -249,7 +263,6 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           this.revalidate();
         }
         this.lastQuery = this.query;
-        this.query = fullAddress;
         this.widgetItemsVisibility = this.dadataService.validateCheckboxes();
         if (dadataQc === '0' && !this.errorCodes.length) {
             this.autocomplete.cancelSearchAndClose();
