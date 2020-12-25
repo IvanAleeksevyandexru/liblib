@@ -121,6 +121,8 @@ export class MailDeliveryService {
       const requestItem: any = { code: item, status: newStatus };
       if (newStatus === 'SUBSCRIBED' && this.isRussianPost(item) && addresses && addresses.length) {
         requestItem.data = { addresses };
+      } else if (this.isRussianPost(item)) {
+        requestItem.data = { addresses: [] };
       }
       return requestItem;
     });
