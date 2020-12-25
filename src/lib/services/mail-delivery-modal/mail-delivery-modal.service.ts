@@ -55,7 +55,7 @@ export class MailDeliveryModalService {
         if (response && response.items) {
           let remindAvailable = true;
           if (response.remind) {
-            const remindDate = moment(response.remind, 'DD.MM.YYYY HH:mm');
+            const remindDate = moment(response.remind);
             remindAvailable = moment().isAfter(remindDate);
           }
 
