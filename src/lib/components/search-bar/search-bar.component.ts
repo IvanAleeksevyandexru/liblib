@@ -82,6 +82,8 @@ export class SearchBarComponent
   @Input() public searchByTextInput = !HelperService.isTouchDevice();
   // при слабом коннекте запускать поиск последнего введенного значения #dadata
   @Input() public searchLastValue = false;
+  // новый вид для ультрановой главной
+  @Input() public mainPageStyle: boolean = false;
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();

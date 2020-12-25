@@ -6,24 +6,31 @@ import { DragDropManager } from '../../services/drag-drop/drag-drop.manager';
 import { DragDropBinding, DragDropType, DragDropDirection, DragDropOffsetType, DragState } from '../../models/drag-drop.model';
 import { HelperService } from '../../services/helper/helper.service';
 import { interval, Subscription } from 'rxjs';
+import { LoadService } from '../../services/load/load.service';
 
 export const DEFAULT_SLIDE_SHOW_INTERVAL = 6000;
-export const DEFAULT_SLIDE_TIME = 700;
+export const DEFAULT_SLIDE_TIME = 300;
 
 @Component({
   selector: 'lib-slider-banner',
   templateUrl: 'banner-slider.component.html',
-  styleUrls: ['./banner-slider.component.scss']
+  styleUrls: [
+    './banner-slider.component.scss',
+    './banner-slider-portal-main-page.component.scss'
+  ]
 })
 export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
-  constructor(private animationBuilder: AnimationBuilder,
-              private dragDropManager: DragDropManager,
-              private changeDetection: ChangeDetectorRef) {
+  constructor(
+    private animationBuilder: AnimationBuilder,
+    private dragDropManager: DragDropManager,
+    private changeDetection: ChangeDetectorRef,
+  ) {
   }
 
   @Input() public banners: Array<BannerGroup> = [];
   @Input() public path = '';
+  @Input() public templateType: 'default' | 'portal-main-page' = 'default';
 
   @Input() public slideShow = true;
   @Input() public slideShowInterval = DEFAULT_SLIDE_SHOW_INTERVAL;
@@ -74,6 +81,11 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
   private animationPlayer: AnimationPlayer = null;
   private startDragPosition: number = undefined;
 
+  @HostListener('window:resize')
+  public onResize() {
+    this.rebuildBannersFeedAccordingToActiveBanner();
+  }
+
   public ngOnInit() {
     this.update();
   }
@@ -100,7 +112,7 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
         this.cancelSlideShow();
       }, dragRelease: (dragState: DragState) => {
         this.offset = dragState.offset;
-        this.activeBannerTracable = this.bannersFeedList[--dragState.selected];
+        this.activeBannerTracable = this.bannersFeedList[dragState.selected];
       }, dragEnd: (dragState: DragState) => {
         this.offset = dragState.offset;
         this.rebuildBannersFeedAccordingToActiveBanner();

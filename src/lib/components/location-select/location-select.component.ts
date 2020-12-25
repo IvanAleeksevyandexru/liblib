@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { GosbarService } from '../../services/gosbar/gosbar.service';
 import { SharedService } from '../../services/shared/shared.service';
@@ -9,8 +9,10 @@ import { SharedService } from '../../services/shared/shared.service';
   styleUrls: ['./location-select.component.scss']
 })
 export class LocationSelectComponent implements OnInit {
-  public regionName: string;
 
+  @Input() public skinTheme?: string;
+
+  public regionName: string;
 
   constructor(
     private gosbarService: GosbarService,
