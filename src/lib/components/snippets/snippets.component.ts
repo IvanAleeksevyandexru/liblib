@@ -52,7 +52,7 @@ export class SnippetsComponent implements OnInit {
   public setSnippetIcon(snippet: SnippetModel, feed: FeedModel): { [key: string]: boolean } {
     return {
       'snippet-equeue': snippet.type === 'EQUEUE' || snippet.type === 'ORDER',
-      'snippet-kindergarten': snippet.type === 'ORDER',
+      'snippet-kindergarten': snippet.type === 'CHILD',
       'snippet-pay': snippet.type === 'PAYMENT' && !feed.data.reminder,
       'snippet-pay-reminder': snippet.type === 'PAYMENT' && feed.data.reminder,
       'snippet-im': snippet.type === 'IM',
