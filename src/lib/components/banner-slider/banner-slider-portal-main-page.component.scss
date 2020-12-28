@@ -35,30 +35,32 @@
   }
 
   .slider-buttons-wrapper {
-    position: relative;
+    position: absolute;
+    top: calc(50% - 23px);
+    width: 100%;
 
     .slider-buttons {
       position: absolute;
-      right: 72px;
-      bottom: 32px;
 
-      .prev-banner, .next-banner {
+      &.portal-main-page-upper {
+        right: calc(50% - 608px);
+      }
+
+      &.portal-main-page-lower {
+        right: 40px;
+      }
+
+      .next-banner {
         display: inline-block;
         width: 46px;
         height: 46px;
         background: url(../../../assets/svg/arrows/arrow_gray-blue_in_circle.svg) 0 0 no-repeat;
         background-size: cover;
+        transform: rotate(180deg);
 
         &:hover {
           background: url(../../../assets/svg/arrows/arrow_blue_in_circle.svg) 0 0 no-repeat;
         }
-      }
-
-      .prev-banner {
-        margin-right: 16px;
-      }
-      .next-banner {
-        transform: rotate(180deg);
       }
     }
   }
