@@ -232,7 +232,7 @@ export class ConstantsService {
     {
       id: 'settings',
       name: 'MESSAGES.TABS.SETTINGS',
-      url: '/settings/notifications'
+      url: '/settings/mail'
     }
   ]);
 
@@ -938,5 +938,4 @@ export class ConstantsService {
     'application/x-tar': 'TAR',
     'text/plain': 'TXT',
   };
-
 }

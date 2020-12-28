@@ -14,7 +14,7 @@
   <div class="subtitle mt-16">{{object.empty?.subtitle}}</div>
   <div class="actions mt-16">
     <span *ngIf="!externalLink && !addPath" class="link-plain add-link" (click)="toggleForm()">Добавить</span>
-    <a *ngIf="externalLink && !addPath" class="link-plain add-link" [href]="externalLink">Добавить</a>
+    <a *ngIf="externalLink && !addPath" class="link-plain add-link" [routerLink]="[externalLink]">Добавить</a>
     <a *ngIf="addPath" class="link-plain add-link" [routerLink]="addPath">Добавить</a>
     <a *ngIf="object.serviceUrl" class="link-plain" (click)="toOrder()">Заказать услугу</a>
   </div>
@@ -33,7 +33,7 @@
        class="text-plain mb-16"
        [class.red]="object.warning"
        [class.green]="!object.warning && state !== 'verifying'"
-       [class.gray]="state === 'verifying'"
+       [class.gray]="state === 'verifying' || state === 'failed_notification'"
        [innerHTML]="object.notification | appTranslate"
     ></p>
     <p *ngIf="object.statusMessage"
@@ -66,7 +66,7 @@
          [routerLink]="editPath">Редактировать</a>
       <a *ngIf="object.canDelete" class="link-plain" (click)="delete()">Удалить</a>
     </ng-container>
-    <ng-container *ngIf="state !== '' && state !== 'verifying' && state !== 'failed' && data.type !== 'CHILD'">
+    <ng-container *ngIf="state !== '' && state !== 'verifying' && state !== 'failed' && state !== 'failed_notification' && data.type !== 'CHILD'">
       <a *ngIf="isPassportNotification()" class="link-plain add-link" [href]="loadService.config.betaUrl + object.serviceUrl">{{object.full.orderTitle}}</a>
       <a *ngIf="object.canEdit && editPath" class="link-plain" [queryParams]="editQueryParam ? editQueryParam : {}"
          [routerLink]="editPath">Редактировать</a>
@@ -92,7 +92,7 @@
       <a *ngIf="state === 'error'" class="link-plain add-link" (click)="repeatReq()">Повторить поиск</a>
       <a *ngIf="state === 'error'" class="link-plain add-link" (click)="toggleForm()">Ввести вручную</a>
     </ng-container>
-    <ng-container *ngIf="data.type === 'KID_SNILS' && state === 'failed'">
+    <ng-container *ngIf="data.type === 'KID_SNILS' && (state === 'failed' || state === 'failed_notification')">
       <a *ngIf="!data.number" class="link-plain add-link" (click)="repeatReq()">Повторить поиск</a>
       <a *ngIf="object.canEdit" class="link-plain" (click)="toggleForm()">{{data.number ? 'Редактировать' : 'Добавить'}}</a>
     </ng-container>

@@ -168,20 +168,16 @@ export class FeedsService {
   public openDetails(feed: FeedModel): string {
     let url = (this.isLk || this.loadService.attributes.appContext === 'PARTNERS') ? '/' : this.loadService.config.lkUrl;
 
-    if (feed.feedType === 'KND_APPEAL' || feed.feedType === 'KND_APPEAL_DRAFT') {
-      url = this.loadService.config.kndDomain;
-    }
+    // if (feed.feedType === 'KND_APPEAL' || feed.feedType === 'KND_APPEAL_DRAFT') {
+    //   url = this.loadService.config.kndDomain;
+    // }
 
     switch (feed.feedType) {
       case 'FEEDBACK':
         url += `feedback/${feed.id}`;
         break;
-      case 'KND_APPEAL':
       case 'APPEAL':
         url += `appeal/${feed.id}`;
-        break;
-      case 'KND_APPEAL_DRAFT':
-        url += `form/appeal//${feed.id}`;
         break;
       case 'COMPLEX_ORDER':
         url += this.getComplexOrderUrl(feed);

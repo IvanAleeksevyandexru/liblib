@@ -23,11 +23,11 @@
     </div>
     <div class="prices text-center">
       <div class="text-right-md inline-md" [ngClass]="{'text-center-lg': isMini}">
-        <div class="price-discount title-h3 red">
-          {{dataInformer.priceDiscount | toMoney}}&nbsp;&#8381;
+        <div class="price-discount title-h3 red text-nowrap">
+          {{dataInformer.priceDiscount | toMoney}} <span class="normal">₽</span>
         </div>
         <div *ngIf="dataInformer.price" class="price small-text light-gray line-through mt-lg">
-          {{dataInformer.price | toMoney}}&nbsp;&#8381;
+          {{dataInformer.price | toMoney}}&nbsp;₽
         </div>
       </div>
     </div>

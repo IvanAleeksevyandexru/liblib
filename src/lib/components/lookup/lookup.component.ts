@@ -1,16 +1,39 @@
 import {
-  OnInit, AfterViewInit, OnChanges, ChangeDetectorRef, SimpleChanges, Component, ElementRef,
-  EventEmitter, forwardRef, Input, Output, ViewChild, Optional, Host, SkipSelf, Self
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  Host,
+  Input,
+  OnChanges,
+  OnInit,
+  Optional,
+  Output,
+  Self,
+  SimpleChanges,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
-import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { from, Observable, forkJoin } from 'rxjs';
+import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { from, Observable } from 'rxjs';
 import { FocusManager } from '../../services/focus/focus.manager';
-import { Translation, InconsistentReaction, LineBreak } from '../../models/common-enums';
-import { HelperService } from '../../services/helper/helper.service';
+import { InconsistentReaction, LineBreak, Translation } from '../../models/common-enums';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
-import { ListItemsService, ListItemsOperationsContext,
-  FixedItemsProvider, ListItemsVirtualScrollController } from '../../services/list-item/list-items.service';
-import { ListItem, ListElement, ListItemConverter, LookupProvider, LookupPartialProvider } from '../../models/dropdown.model';
+import {
+  FixedItemsProvider,
+  ListItemsOperationsContext,
+  ListItemsService,
+  ListItemsVirtualScrollController
+} from '../../services/list-item/list-items.service';
+import {
+  ListElement,
+  ListItem,
+  ListItemConverter,
+  LookupPartialProvider,
+  LookupProvider
+} from '../../models/dropdown.model';
 import { ConstantsService } from '../../services/constants.service';
 import { PositioningManager, PositioningRequest } from '../../services/positioning/positioning.manager';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
@@ -111,6 +134,10 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Input() public fixedItems: Array<ListElement | any> = [];
   // источник значений в виде внешнего провайдера с полностью независимой возможно асинхронной логикой работы
   @Input() public itemsProvider: LookupProvider<ListElement | any> | LookupPartialProvider<ListElement | any>;
+  // новый вид для ультрановой главной
+  @Input() public mainPageStyle: boolean = false;
+  // скрывать результат поиска в независимости от наличия ответа
+  @Input() public hideSearchResult: boolean = false;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -123,6 +150,8 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
   @Output() public listed = new EventEmitter<Array<ListItem>>();
+  @Output() public queryChanged = new EventEmitter<string>();
+  @Output() public enterKeyEvent = new EventEmitter();
 
   public internalFixedItems: Array<ListItem> = [];
   public internalItem: ListItem;
@@ -210,9 +239,13 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     this.htmlPlaceholder = /<|>/.test(this.placeholder) ? this.placeholder : null;
   }
 
+  public modelChange(): void {
+  }
+
   public clearInput(): void {
     if (!this.disabled) {
       this.selectItem(null);
+      this.queryChanged.emit('')
       this.cleared.emit();
     }
   }
@@ -227,14 +260,18 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     this.searching = false;
   }
 
-  public cancelSearchAndClose() {
+  public cancelSearchAndClose(blurEvent = false) {
     this.cancelSearch();
-    this.closeDropdown();
+    if (!this.mainPageStyle || !blurEvent) {
+      this.closeDropdown();
+    }
     this.changeDetector.markForCheck();
   }
 
   public handleBlur() {
-    this.cancelSearchAndClose();
+    if (!this.mainPageStyle) {
+      this.cancelSearchAndClose();
+    }
     this.resetItemIfNotConsistent();
     this.blur.emit();
   }
@@ -246,6 +283,10 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     }
 
     this.focus.emit();
+  }
+
+  public setSearchBarFocus(): void {
+    this.searchBar.inputElement.nativeElement.focus();
   }
 
   public returnFocus(e?: Event) {
@@ -265,17 +306,20 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   }
 
   public selectItem(item: ListItem, passive = false) {
-    this.returnFocus();
-    if (item && !this.listService.isSelectable(item)) {
-      return;
+    let isNew = true;
+    if (!this.mainPageStyle) {
+      this.returnFocus();
+      if (item && !this.listService.isSelectable(item)) {
+        return;
+      }
+      if (!passive) {
+        this.forceShowStatic = true;
+      }
+      this.cancelSearch();
+      isNew = !ListItem.compare(this.item, item);
+      this.item = item;
+      this.restoreQuery();
     }
-    if (!passive) {
-      this.forceShowStatic = true;
-    }
-    this.cancelSearch();
-    const isNew = !ListItem.compare(this.item, item);
-    this.item = item;
-    this.restoreQuery();
     if (isNew) {
       const outputValue = this.listService.restoreOriginal(item);
       this.commit(outputValue);
@@ -303,6 +347,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   }
 
   public lookupItems(queryOrMarker: string | {}) {
+    this.queryChanged.emit(this.searchBar.query);
     if (queryOrMarker !== SHOW_ALL_MARKER && (queryOrMarker as string).length < this.queryMinSymbolsCount) {
       this.cancelSearchAndClose();
       return;
@@ -437,6 +482,12 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
       if (this.suggestionJustSelected) {
         this.suggestionJustSelected = false;
         return;
+      }
+      if (this.mainPageStyle && !this.searching && this.query) {
+        this.enterKeyEvent.emit(this.items.length);
+        if (!this.items.length) {
+          return;
+        }
       }
       if (this.expanded && this.highlighted && !this.highlighted.unselectable) {
         this.selectItem(this.highlighted);
