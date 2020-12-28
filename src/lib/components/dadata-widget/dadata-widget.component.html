@@ -20,7 +20,7 @@
                       [disableClickClosing]="true"
                       [searchLastValue]="true"
                       [(ngModel)]="query"
-                      (ngModelChange)="normalizeInProcess = false"
+                      (ngModelChange)="normalizeInProcess = false;"
                       (focus)="handleFocus()"
                       (blur)="normalizeFullAddress(query, false, false, true); handleBlur();"
                       (autocompleted)="normalizeFullAddress(query, false, false, false, true)"

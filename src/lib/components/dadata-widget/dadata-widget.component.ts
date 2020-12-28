@@ -211,16 +211,21 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
     if (withCountries && this.defaultCountry) {
       const country = this.form.get('country');
-      country.setValue(this.defaultCountry);
       country.valueChanges.subscribe(value => {
         let validators = [Validators.maxLength(6), Validators.minLength(6)];
         this.indexMask = this.validations.masks.index;
-        if (value.id !== this.defaultCountry.id) {
+        if (value?.id !== this.defaultCountry?.id) {
           validators = [Validators.minLength(1)];
           this.indexMask = null;
+          this.dadataService.resetForm();
+          this.errorCodes = [];
+          this.needReplaceQuery = false;
+          this.query = '';
+          this.canOpenFields.next(true);
         }
         this.form.get('index').setValidators(validators)
-      })
+      });
+      country.setValue(this.defaultCountry)
     }
 
     this.controlNames = Object.keys(this.form.controls).filter(key => this.excluded.indexOf(key) === -1);

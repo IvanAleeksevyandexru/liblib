@@ -463,7 +463,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
     this.unparsed = '';
     Object.keys(this.form.controls).forEach(control => {
       const formControl = this.form.get(control);
-      if (['houseCheckbox', 'apartmentCheckbox', 'houseCheckboxClosed', 'apartmentCheckboxClosed'].indexOf(control) === -1) {
+      if (['houseCheckbox', 'apartmentCheckbox', 'houseCheckboxClosed', 'apartmentCheckboxClosed', 'country'].indexOf(control) === -1) {
         formControl.setValue('');
         formControl.enable({onlySelf: true});
       }
