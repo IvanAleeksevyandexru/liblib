@@ -53,54 +53,66 @@
     </div>
   </div>
   <div class="card-actions">
-    <ng-container *ngIf="state === '' || data.type === 'CHILD'">
-      <a
-        *ngIf="object.canDetails && object.detailsPath"
-        class="link-plain"
-        [queryParams]="object.detailsQueryParam ? object.detailsQueryParam : {}"
-         [routerLink]="object.detailsPath"
-      >{{object.detailsLinkTitle ? object.detailsLinkTitle : 'Подробнее'}}</a>
-      <a *ngIf="object.canDetails && !object.detailsPath" (click)="toggleForm()">Подробнее</a>
-      <a *ngIf="object.canEdit && !editPath" class="link-plain" (click)="toggleForm()">Редактировать</a>
-      <a *ngIf="object.canEdit && editPath && state !== 'process'" class="link-plain" [queryParams]="editQueryParam ? editQueryParam : {}"
-         [routerLink]="editPath">Редактировать</a>
-      <a *ngIf="object.canDelete" class="link-plain" (click)="delete()">Удалить</a>
-    </ng-container>
-    <ng-container *ngIf="state !== '' && state !== 'verifying' && state !== 'failed' && state !== 'failed_notification' && data.type !== 'CHILD'">
-      <a *ngIf="isPassportNotification()" class="link-plain add-link" [href]="loadService.config.betaUrl + object.serviceUrl">{{object.full.orderTitle}}</a>
-      <a *ngIf="object.canEdit && editPath" class="link-plain" [queryParams]="editQueryParam ? editQueryParam : {}"
-         [routerLink]="editPath">Редактировать</a>
-      <a *ngIf="editableInternal() && !editPath" class="link-plain" (click)="toggleForm()">Редактировать</a>
-      <a *ngIf="editableExternal()"
-         class="link-plain add-link"
-         (click)="toExternalLink()"
-      >Редактировать</a>
-      <a *ngIf="showDetailButton()"
-         class="link-plain"
-         [routerLink]="object.detailsPath"
-      >{{!isNotificationShow() || object.type === 'FRGN_PASS' || isExpiredDocDetails() ? 'Подробнее' : 'Редактировать'}}</a>
-      <a *ngIf="object.canDetails && !object.detailsPath" (click)="toggleForm()">Подробнее</a>
-      <a *ngIf="state === 'process'" class="link-plain add-link" (click)="cancelReq()">Отменить
-        проверку</a>
-      <a *ngIf="showRepeatButton()" class="link-plain add-link" (click)="repeatReq()">Повторить
-        проверку</a>
-      <a *ngIf="object.canDelete && !object.expired" class="link-plain" (click)="delete()">Удалить</a>
-      <a *ngIf="object.expired && state !== 'process' && state !== 'error'" class="link-plain add-link" (click)="toOrder()">{{object.full.orderTitle}}</a>
-    </ng-container>
-    <ng-container *ngIf="!loadService.user.isKid && data.type === 'INN' && (data.vrfStu === 'VERIFIED' || data.vrfStu === 'NOT_VERIFIED')">
-      <a *ngIf="state !== 'process' && state !== 'error'" class="link-plain" (click)="repeatReq()">{{data.number ? 'Обновить' : 'Запросить'}}</a>
-      <a *ngIf="state === 'error'" class="link-plain add-link" (click)="repeatReq()">Повторить поиск</a>
-      <a *ngIf="state === 'error'" class="link-plain add-link" (click)="toggleForm()">Ввести вручную</a>
-    </ng-container>
-    <ng-container *ngIf="data.type === 'KID_SNILS' && (state === 'failed' || state === 'failed_notification')">
-      <a *ngIf="!data.number" class="link-plain add-link" (click)="repeatReq()">Повторить поиск</a>
-      <a *ngIf="object.canEdit" class="link-plain" (click)="toggleForm()">{{data.number ? 'Редактировать' : 'Добавить'}}</a>
-    </ng-container>
-    <ng-container *ngIf="data.type === 'SELF_EMPLOYED'">
-      <a *ngIf="object.canRepeat" class="link-plain" (click)="repeatReq()">
-        {{state === 'error' ? 'Повторить поиск' : 'Обновить'}}
-      </a>
-      <a *ngIf="state === 'error'" class="link-plain" (click)="cancelReq()">Отменить</a>
+    <ng-container [ngSwitch]="data.type">
+      <ng-container *ngSwitchCase="'CHILD'">
+        <a class="link-plain" [routerLink]="object.detailsPath">Подробнее</a>
+        <a *ngIf="state !== 'process'" class="link-plain" [routerLink]="editPath">Редактировать</a>
+      </ng-container>
+      <ng-container *ngSwitchCase="'REESTR_INVALIDOV'">
+        <a (click)="toggleForm()">Скачать PDF</a>
+        <a (click)="delete()">Удалить</a>
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+        <ng-container *ngIf="state === ''">
+          <a
+            *ngIf="object.canDetails && object.detailsPath"
+            class="link-plain"
+            [queryParams]="object.detailsQueryParam ? object.detailsQueryParam : {}"
+            [routerLink]="object.detailsPath"
+          >{{object.detailsLinkTitle ? object.detailsLinkTitle : 'Подробнее'}}</a>
+          <a *ngIf="object.canDetails && !object.detailsPath" (click)="toggleForm()">Подробнее</a>
+          <a *ngIf="object.canEdit && !editPath" class="link-plain" (click)="toggleForm()">Редактировать</a>
+          <a *ngIf="object.canEdit && editPath && state !== 'process'" class="link-plain" [queryParams]="editQueryParam ? editQueryParam : {}"
+             [routerLink]="editPath">Редактировать</a>
+          <a *ngIf="object.canDelete" class="link-plain" (click)="delete()">Удалить</a>
+        </ng-container>
+        <ng-container *ngIf="state !== '' && state !== 'verifying' && state !== 'failed'">
+          <a *ngIf="isPassportNotification()" class="link-plain add-link" [href]="loadService.config.betaUrl + object.serviceUrl">{{object.full.orderTitle}}</a>
+          <a *ngIf="object.canEdit && editPath" class="link-plain" [queryParams]="editQueryParam ? editQueryParam : {}"
+             [routerLink]="editPath">Редактировать</a>
+          <a *ngIf="editableInternal() && !editPath" class="link-plain" (click)="toggleForm()">Редактировать</a>
+          <a *ngIf="editableExternal()"
+             class="link-plain add-link"
+             (click)="toExternalLink()"
+          >Редактировать</a>
+          <a *ngIf="showDetailButton()"
+             class="link-plain"
+             [routerLink]="object.detailsPath"
+          >{{!isNotificationShow() || object.type === 'FRGN_PASS' || isExpiredDocDetails() ? 'Подробнее' : 'Редактировать'}}</a>
+          <a *ngIf="object.canDetails && !object.detailsPath" (click)="toggleForm()">Подробнее</a>
+          <a *ngIf="state === 'process'" class="link-plain add-link" (click)="cancelReq()">Отменить
+            проверку</a>
+          <a *ngIf="showRepeatButton()" class="link-plain add-link" (click)="repeatReq()">Повторить
+            проверку</a>
+          <a *ngIf="object.canDelete && !object.expired" class="link-plain" (click)="delete()">Удалить</a>
+          <a *ngIf="object.expired && state !== 'process' && state !== 'error'" class="link-plain add-link" (click)="toOrder()">{{object.full.orderTitle}}</a>
+        </ng-container>
+        <ng-container *ngIf="!loadService.user.isKid && data.type === 'INN' && (data.vrfStu === 'VERIFIED' || data.vrfStu === 'NOT_VERIFIED')">
+          <a *ngIf="state !== 'process' && state !== 'error'" class="link-plain" (click)="repeatReq()">{{data.number ? 'Обновить' : 'Запросить'}}</a>
+          <a *ngIf="state === 'error'" class="link-plain add-link" (click)="repeatReq()">Повторить поиск</a>
+          <a *ngIf="state === 'error'" class="link-plain add-link" (click)="toggleForm()">Ввести вручную</a>
+        </ng-container>
+        <ng-container *ngIf="data.type === 'KID_SNILS' && (state === 'failed' || state === 'failed_notification')">
+          <a *ngIf="!data.number" class="link-plain add-link" (click)="repeatReq()">Повторить поиск</a>
+          <a *ngIf="object.canEdit" class="link-plain" (click)="toggleForm()">{{data.number ? 'Редактировать' : 'Добавить'}}</a>
+        </ng-container>
+        <ng-container *ngIf="data.type === 'SELF_EMPLOYED'">
+          <a *ngIf="object.canRepeat" class="link-plain" (click)="repeatReq()">
+            {{state === 'error' ? 'Повторить поиск' : 'Обновить'}}
+          </a>
+          <a *ngIf="state === 'error'" class="link-plain" (click)="cancelReq()">Отменить</a>
+        </ng-container>
+      </ng-container>
     </ng-container>
   </div>
 </ng-template>

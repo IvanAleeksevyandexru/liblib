@@ -777,6 +777,28 @@ export class ProfileService {
           ]
         };
       }
+      case this.DOCUMENT_TYPES.PARKING_PERMIT: {
+        return {
+          canDetails: false,
+          canEdit: false,
+          canDelete: true,
+          statusMessage: object.state === 'process' ? `Начнет действовать с ${object.dateFrom}` :
+            object.state === 'failed' ? 'Истекает срок действия разрешения' : '',
+          full: {
+            title: 'Разрешение на парковку для инвалидов'
+          },
+          fields: [
+            {
+              title: '',
+              value: `${object.model} ${object.number}`
+            },
+            {
+              title: 'Действительно до',
+              value: object.dateTo
+            }
+          ]
+        };
+      }
       default:
         return {
           empty: {}, full: {}, fields: [], canDetails: false, canEdit: false
