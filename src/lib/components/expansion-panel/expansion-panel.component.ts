@@ -9,7 +9,7 @@ export class ExpansionPanelComponent implements OnInit {
 
   @Input() public opened = false;
   @Input() public title: string;
-  @Input() public type: 'accordion' | 'gray-accordion' | 'for-footer' = 'accordion';
+  @Input() public type: 'accordion' | 'gray-accordion' | 'for-footer' | 'light' = 'accordion';
   @Input() public customClass: string;
   @Output() public toggle = new EventEmitter<any>();
   constructor() { }
