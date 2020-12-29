@@ -247,10 +247,6 @@
       padding: 0;
 
       &.new {
-        .title {
-          padding-right: 72px;
-        }
-
         .label-new {
           position: absolute;
           top: 20px;
@@ -264,6 +260,10 @@
         .title {
           font-size: 18px;
           max-height: none;
+
+          &.new-child {
+            padding-right: 72px;
+          }
         }
       }
 

@@ -646,9 +646,13 @@ export class ProfileService {
           canEdit: false,
           canDelete: !object.actRecordFound,
           withVerificationIcon: object.status === 'verified_by_request' || object.status === 'verified_by_push',
-          detailsPath: `/profile/cert${object.actRecordFound ? '-extended' : ''}/${object.id ? object.id : ''}`,
-          detailsQueryParam: {type: 'MARRIED_CERT'},
+          detailsPath: object.actRecordFound ? `/profile/cert-extended/${object.id}` : `/profile/cert/${object.id ? object.id : ''}`,
+          detailsQueryParam: {
+            type: 'MARRIED_CERT',
+            ...(object.needToSetDefaultCert ? {selectCert: ''} : {})
+          },
           detailsLinkTitle: object.actRecordFound ? 'Подробнее' : 'Редактировать',
+          ...(object.needToSetDefaultCert ? {notification: 'Уточните данные', warning: true} : {}),
           empty: {
             title: 'Свидетельство о браке',
             subtitle: 'Добавьте документ, чтобы он всегда был у вас под рукой',
@@ -674,9 +678,13 @@ export class ProfileService {
           canEdit: false,
           canDelete: !object.actRecordFound,
           withVerificationIcon: object.actRecordFound,
-          detailsPath: `/profile/cert${object.actRecordFound ? '-extended' : ''}/${object.id ? object.id : ''}`,
-          detailsQueryParam: {type: 'DIVORCE_CERT'},
+          detailsPath: object.actRecordFound ? `/profile/cert-extended/${object.id}` : `/profile/cert/${object.id ? object.id : ''}`,
+          detailsQueryParam: {
+            type: 'DIVORCE_CERT',
+            ...(object.needToSetDefaultCert ? {selectCert: ''} : {})
+          },
           detailsLinkTitle: object.actRecordFound ? 'Подробнее' : 'Редактировать',
+          ...(object.needToSetDefaultCert ? {notification: 'Уточните данные', warning: true} : {}),
           empty: {
             title: 'Свидетельство о разводе',
             subtitle: 'Добавьте документ, чтобы он всегда был у вас под рукой'
