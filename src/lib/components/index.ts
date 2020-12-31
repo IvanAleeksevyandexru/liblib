@@ -23,6 +23,7 @@ export * from './dropdown-simple/dropdown-simple.component';
 export * from './equeue/equeue.component';
 export * from './error-page/error-page.component';
 export * from './expansion-panel/expansion-panel.component';
+export * from './mail-delivery-modal/mail-delivery-modal.component';
 export * from './feed-icon/feed-icon.component';
 export * from './feeds-header/feeds-header.component';
 export * from './feeds/feeds.component';

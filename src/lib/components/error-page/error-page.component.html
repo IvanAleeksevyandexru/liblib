@@ -11,6 +11,9 @@
   <ng-container *ngSwitchCase="'empty-elections'">
     <ng-container *ngTemplateOutlet="emptyElections"></ng-container>
   </ng-container>
+  <ng-container *ngSwitchCase="'image-bottom'">
+    <ng-container *ngTemplateOutlet="imageBottom"></ng-container>
+  </ng-container>
   <ng-container *ngSwitchDefault>
     <ng-container *ngTemplateOutlet="Default"></ng-container>
   </ng-container>
@@ -56,6 +59,17 @@
         <div *ngIf="refUrl" class="subtitle text-plain mt-24 mb-32" [innerHTML]="subTitle | appTranslate: {currentUrl: location, href: refUrl}"></div>
       </div>
     </div>
+  </div>
+</ng-template>
+
+<ng-template #imageBottom>
+  <div class="text-center">
+    <div class="mb-24">
+      <div class="title title-h4 mb-20" [innerHTML]="title | appTranslate"></div>
+    </div>
+    <img class="error-image mb-24" [src]="staticDomainLibAssetsPath + 'svg/errors/' + errorType + '.svg'" alt="">
+    <div *ngIf="!refUrl" class="subtitle text-plain mb-32 mb-md-24" [innerHTML]="subTitle | appTranslate"></div>
+    <div *ngIf="refUrl" class="subtitle text-plain mb-32 mb-md-24" [innerHTML]="subTitle | appTranslate: {currentUrl: location, href: refUrl}"></div>
   </div>
 </ng-template>
 

@@ -130,6 +130,35 @@ export class ConstantsService {
       mnemonic: 'partnersHistory'
     }
   ]);
+  public readonly PAYMENT_TABS_FL = new Tabs([
+    {
+      id: 'toPay',
+      name: 'К оплате',
+      url: '/pay'
+    },
+    {
+      id: 'quittance',
+      name: 'По квитанции',
+      url: '/pay/quittance'
+    },
+    {
+      id: 'withoutQuittance',
+      name: 'По реквизитам',
+      url: '/pay/withoutQuittance',
+      hidden: true
+    },
+    {
+      id: 'history',
+      name: 'История',
+      url: '/pay/paymentHistory'
+    },
+    {
+      id: 'hidden',
+      name: 'Скрытые',
+      url: '/pay/hidden',
+      hidden: true
+    },
+  ]);
   public readonly LK_SETTINGS_SIDE_TABS = new Tabs ([
     {
       id: 'account',
@@ -165,8 +194,7 @@ export class ConstantsService {
     {
       id: 'mail',
       name: 'SETTINGS.TABS.MAIL',
-      url: '/settings/mail',
-      access: ['AL20']
+      url: '/settings/mail'
     },
     {
       id: 'esignature',
@@ -805,6 +833,7 @@ export class ConstantsService {
 
   public readonly MAIL_DELIVERY_FIRST_SUBSCRIBE_STATUSES = ['REMIND_LATER', 'NOT_SUBSCRIBED', 'DENY_SUBSCRIPTION'];
   public readonly MAIL_DELIVERY_SUBSCRIBED_STATUS = 'SUBSCRIBED';
+  public readonly MAIL_DELIVERY_RUSSIAN_POST_CODE = 'PR';
 
   public readonly INTEGRATION_MODULE_QUERY = 50;
   public readonly INTEGRATION_MODULE_APPROVE = 51;

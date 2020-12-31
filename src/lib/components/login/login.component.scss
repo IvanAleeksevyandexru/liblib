@@ -13,7 +13,10 @@
     font-family: Lato-Bold, Arial, sans-serif;
   }
 }
-
+lib-button {
+  display: inline-block;
+  margin-left: 8px;
+}
 .link {
   position: relative;
   padding-left: 24px;

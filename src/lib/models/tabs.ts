@@ -77,6 +77,12 @@ export class Tabs {
     }
   }
 
+  public showTab(tab: Tab) {
+    if (this.tabs && this.tabs.includes(tab)) {
+      tab.hidden = false;
+    }
+  }
+
   public selectFirstOneAvaialble() {
     this.setActiveTab(this.tabs.find((tab: Tab) => !tab.hidden && !tab.disabled));
   }

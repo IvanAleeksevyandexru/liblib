@@ -22,6 +22,10 @@
 	padding: 20px 0;
   box-sizing: border-box;
 
+  &.portal-main-page-lower {
+    border-radius: 12px;
+  }
+
 	&.hidden {
 		display: none;
 	}
