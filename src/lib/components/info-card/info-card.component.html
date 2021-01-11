@@ -62,11 +62,8 @@
         <a (click)="toggleForm()">Скачать PDF</a>
         <a (click)="delete()">Удалить</a>
       </ng-container>
-      <ng-container *ngSwitchCase="'MARRIED_CERT'">
-        <a *ngIf="state === 'failed'" class="link-plain" (click)="toggleForm()">Уточнить</a>
-      </ng-container>
-      <ng-container *ngSwitchCase="'DIVORCE_CERT'">
-        <a *ngIf="state === 'failed'" class="link-plain" (click)="toggleForm()">Уточнить</a>
+      <ng-container *ngSwitchCase="['MARRIED_CERT', 'DIVORCE_CERT'].includes(data.type) && state === 'failed' ? data.type: ''">
+        <a class="link-plain" (click)="toggleForm()">Уточнить</a>
       </ng-container>
       <ng-container *ngSwitchDefault>
         <ng-container *ngIf="state === ''">
