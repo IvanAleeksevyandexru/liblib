@@ -37,3 +37,13 @@
     }
   }
 }
+
+:host-context(.as-button) {
+  .counter {
+    background-color: #EE3F58;
+    height: 22px;
+    line-height: 22px;
+    font-size: 14px;
+    border-radius: 50%;
+  }
+}
