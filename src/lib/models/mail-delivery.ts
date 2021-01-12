@@ -1,5 +1,7 @@
 import { DadataResult } from './dadata';
 
+export type DeliverySubscribeStatus = 'REMIND_LATER' | 'NOT_SUBSCRIBED' | 'DENY_SUBSCRIPTION' | 'SUBSCRIBED' | 'UNSUBSCRIBED';
+
 export interface DeliveryStatus {
   status: 'REMIND_LATER' | 'NOT_SUBSCRIBED' | 'DENY_SUBSCRIPTION' | 'SUBSCRIBED' | 'UNSUBSCRIBED';
   hint?: DeliveryStatusHint;
@@ -74,3 +76,32 @@ export const comparingEsiaDadataAddresses = {
   building: 'building2',
   flat: 'apartment'
 };
+
+export interface AllSubscriptionResponse {
+  items: SubscriptionItem[];
+  pageStart: number;
+  pageSize: number;
+  totalCount: number;
+  remind?: string;
+  hint: SubscriptionHint;
+}
+
+export interface SubscriptionHint {
+  available: boolean;
+  popup: string;
+  mobilePopup: string;
+  disclaimer: string;
+  url: string;
+}
+
+export interface SubscriptionInfo {
+  items: SubscriptionItem[];
+  hint: SubscriptionHint;
+}
+
+export interface SubscriptionItem {
+  code: string;
+  name: string;
+  status: DeliverySubscribeStatus;
+  stateTs?: string;
+}
