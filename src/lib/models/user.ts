@@ -104,6 +104,7 @@ export interface User {
   autorityId?: string;
   birthDate?: string;
   branchOid?: string;
+  corporateContact?: string;
   email?: string;
   emailVerified?: boolean;
   firstName?: string;

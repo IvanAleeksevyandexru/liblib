@@ -87,7 +87,7 @@ export class ListItemsAccessoryService {
       if (scrollElement instanceof PerfectScrollbarComponent) {
         scrollContainer = (scrollElement as PerfectScrollbarComponent).directiveRef.elementRef.nativeElement;
         scrollArea = scrollContainer.children[0];
-      } else {
+      } else if(scrollArea) {
         scrollArea = (scrollArea as ElementRef).nativeElement;
         scrollContainer = this.findScrollContainer(scrollArea);
       }
@@ -136,7 +136,9 @@ export class ListItemsAccessoryService {
       });
       return result.asObservable();
     } else {
-      measureContainer.remove();
+      if (measureContainer) {
+        measureContainer.parentNode.removeChild(measureContainer);
+      }
       return of(totalHeight);
     }
   }

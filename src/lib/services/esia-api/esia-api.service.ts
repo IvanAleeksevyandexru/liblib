@@ -180,14 +180,14 @@ export class EsiaApiService {
     });
   }
 
-  public goToOffer(force = true): void {
-    const url = (window as any).location.href;
+  public goToOffer(force = true, backUrl?: string): void {
+    const url = backUrl ? backUrl : (window as any).location.href;
 
     if (force) {
       this.cookieService.set('needOffer', 1);
     }
 
-    (window as any).location.href = `${this.loadService.config.esiaUrl}/profile/offer?go_back=${url}`;
+    (window as any).location.href = `${this.loadService.config.esiaUrl}/profile/offer?go_back=${encodeURIComponent(url)}`;
   }
 
 }

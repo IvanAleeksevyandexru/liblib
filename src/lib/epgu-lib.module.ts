@@ -139,6 +139,7 @@ import { DynamicFormatterPipe } from './pipes/dynamic-formatter/dynamic-formatte
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { Setting } from './models/setting';
+import { MailDeliveryModalComponent } from './components/mail-delivery-modal/mail-delivery-modal.component';
 import { LocationSelectComponent } from './components/location-select/location-select.component';
 import { HeaderComponent } from './components/header/header.component';
 import { SearchSputnikComponent } from './components/search-sputnik/search-sputnik.component';
@@ -274,6 +275,7 @@ registerLocaleData(localeRu, 'ru');
     LangWarnModalComponent,
     PsoComponent,
     DynamicFormatterPipe,
+    MailDeliveryModalComponent,
     LocationSelectComponent,
     HeaderComponent,
     FrameComponent,
@@ -409,6 +411,7 @@ registerLocaleData(localeRu, 'ru');
     TimeLeftPipe,
     RemoveTagsPipe,
     DynamicFormatterPipe,
+    MailDeliveryModalComponent,
     LocationSelectComponent,
     HeaderComponent,
     FrameComponent,
@@ -449,6 +452,7 @@ registerLocaleData(localeRu, 'ru');
     GibddDetailsComponent,
     SliderImagesModalComponent,
     LangWarnModalComponent,
+    MailDeliveryModalComponent,
   ]
 })
 export class EpguLibModule {
