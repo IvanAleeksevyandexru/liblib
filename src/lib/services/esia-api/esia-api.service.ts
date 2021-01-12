@@ -75,6 +75,7 @@ export class EsiaApiService {
       options?: any
     }
   ): Observable<any> {
+    this.initParams();
     const url = this.setUrl(method, version);
     const token = this.cookieService.get('acc_t');
     const options = HelperService.setRequestOptions(token, extra);
@@ -91,6 +92,7 @@ export class EsiaApiService {
       options?: any
     }
   ): Observable<any> {
+    this.initParams();
     const url = this.setUrl(method, version);
     const token = this.cookieService.get('acc_t');
     const options = HelperService.setRequestOptions(token, extra);
@@ -107,6 +109,7 @@ export class EsiaApiService {
       options?: any
     }
   ): Observable<any> {
+    this.initParams();
     const url = this.setUrl(method, version);
     const token = this.cookieService.get('acc_t');
     const options = HelperService.setRequestOptions(token, extra);
