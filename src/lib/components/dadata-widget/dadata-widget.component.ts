@@ -389,6 +389,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     }
     if (!value) {
       this.form.reset();
+      this.canOpenFields.next(false);
     }
     this.query$.next(value);
   }

@@ -187,6 +187,7 @@ export class MenuService {
 
   public getUserRoles(user: User): any {
     const betaUrl = this.loadService.attributes.appContext === 'PORTAL' ? '/' : this.loadService.config.betaUrl;
+    const partnersUrl = this.loadService.config.partnersUrl;
     return [
       {
         name: 'Гражданам',
@@ -202,6 +203,16 @@ export class MenuService {
         name: 'Предпринимателям',
         url: `${betaUrl}entrepreneur`,
         code: 'B'
+      },
+      {
+        name: 'Иностранным гражданам',
+        url: `${betaUrl}foreign-citizen`,
+        code: 'F'
+      },
+      {
+        name: 'Партнёрам',
+        url: `${partnersUrl}`,
+        code: 'I'
       }
     ];
   }

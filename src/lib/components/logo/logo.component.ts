@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { LoadService } from '../../services/load/load.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { LoadService } from '../../services/load/load.service';
   styleUrls: ['./logo.component.scss']
 })
 export class LogoComponent implements OnInit {
+  @Input() public width?: string;
+  @Input() public logoHref = '/';
+
   public url: string;
   public viewType = this.loadService.config.viewType;
 

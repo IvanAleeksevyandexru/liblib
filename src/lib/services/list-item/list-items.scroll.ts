@@ -87,7 +87,7 @@ export class ListItemsAccessoryService {
       if (scrollElement instanceof PerfectScrollbarComponent) {
         scrollContainer = (scrollElement as PerfectScrollbarComponent).directiveRef.elementRef.nativeElement;
         scrollArea = scrollContainer.children[0];
-      } else {
+      } else if(scrollArea) {
         scrollArea = (scrollArea as ElementRef).nativeElement;
         scrollContainer = this.findScrollContainer(scrollArea);
       }
