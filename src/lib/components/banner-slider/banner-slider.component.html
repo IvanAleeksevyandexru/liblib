@@ -72,9 +72,8 @@
       </div>
     </div>
   </div>
-  <div class="container slider-buttons-wrapper">
+  <div class="slider-buttons-wrapper">
     <div *ngIf="bannerList?.length > 1" class="hide show-lg slider-buttons" [ngClass]="[path, templateType]">
-      <a class="prev-banner" (click)="prevBanner(true)"></a>
       <a class="next-banner" (click)="nextBanner(true)"></a>
     </div>
   </div>
