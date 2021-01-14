@@ -139,4 +139,8 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
     }
   }
 
+  public processSearchResult(list: any): void {
+    console.log(list);
+  }
+
 }

@@ -22,13 +22,14 @@
 
   &.main-page-new {
     box-sizing: border-box;
-    box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+    box-shadow: 0 4px 20px rgba(13, 76, 211, 0.1);
+    border-radius: 12px;
 
     .search-input {
       min-height: 64px;
       font-size: 16px;
       line-height: 24px;
-      border: 2px solid #e4ecfd;
+      border: 2px solid #ffffff;
       border-radius: 12px;
       padding-left: 52px;
 
@@ -54,6 +55,12 @@
         background-size: 100%;
         background-position: 0 0;
       }
+    }
+
+    .search-button {
+      position: absolute;
+      right: 14px;
+      top: 14px
     }
 
     .search-clear {
@@ -269,7 +276,7 @@
     &.main-page-new {
 
       .search-input {
-        min-height: 90px;
+        min-height: 80px;
         font-size: 24px;
         border-width: 4px;
         line-height: 32px;
@@ -287,7 +294,7 @@
       .search-in-progress {
         height: 32px;
         width: 32px;
-        top: 28px;
+        top: 23px;
 
       }
 
