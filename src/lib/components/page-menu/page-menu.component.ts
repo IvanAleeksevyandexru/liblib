@@ -6,7 +6,7 @@ import {
 import { IMenuItems } from '../../models/page-menu.model';
 
 @Component({
-  selector: 'portal-page-menu',
+  selector: 'lib-page-menu',
   templateUrl: './page-menu.component.html',
   styleUrls: ['./page-menu.component.scss']
 })
@@ -63,7 +63,6 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
           if (topOffset !== this.needOffsetFromHeader + this.offsetFromHeader + this.headerHeight) {
             this.needOffsetFromHeader = topOffset - this.offsetFromHeader - this.headerHeight;
           }
-          console.log(this.content.getBoundingClientRect().top);
           const h = this.content.getBoundingClientRect().top + this.contentHeight - this.offsetFromFooter - this.menu.nativeElement.offsetHeight;
           if (h !== this.needOffsetFromFooter) {
             this.needOffsetFromFooter = this.content.getBoundingClientRect().top + this.contentHeight - this.offsetFromFooter - this.menu.nativeElement.offsetHeight;
@@ -95,7 +94,6 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   private onScrollf() {
     const scrollTop = document.documentElement.scrollTop;
     const classList = this.menu.nativeElement.classList;
-    console.log(scrollTop);
     if (scrollTop < this.needOffsetFromHeader) {
       this.toggleClass(classList, 'fixed', 'remove');
       this.toggleClass(classList, 'fixed-bottom', 'remove');
