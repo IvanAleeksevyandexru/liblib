@@ -72,8 +72,8 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
     }
   }
 
-  public onClick(evt): void {
-    this.onclick.emit(evt.id);
+  public onClick(id): void {
+    this.onclick.emit(id);
   }
 
   private getSizes() {
