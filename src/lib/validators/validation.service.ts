@@ -361,7 +361,7 @@ export class ValidationService {
 
   public static secureUrlValidator(hostnameMinLength = 5): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-      const urlValidationRe = /^\s*(?:https:\/\/)([^-][a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*[^-])+)(?:\?(?:[a-zA-Z0-9_\-._~:/?#[\]@!$&'()*+,;=]*))?$|^(?:https:\/\/)([^-][а-яА-Я0-9_-]*(?:\.[а-яА-Я0-9_-]*[^-])+)(?:\?(?:[a-zA-Zа-яА-Я0-9_\-._~:/?#[\]@!$&'()*+,;=]*))?\s*$/gm;
+      const urlValidationRe = /^\s*(?:https:\/\/)([^-][a-zA-Zа-яА-Я0-9_-]*(?:\.[a-zA-Zа-яА-Я0-9_-]*[^-])+)(?:\?(?:[a-zA-Zа-яА-Я0-9_\-._~:/?#[\]@!$&'()*+,;=]*))?$|^(?:https:\/\/)([^-][а-яА-Я0-9_-]*(?:\.[а-яА-Я0-9_-]*[^-])+)(?:\?(?:[a-zA-Zа-яА-Я0-9_\-._~:/?#[\]@!$&'()*+,;=]*))?\s*$/gm;
       const result = urlValidationRe.exec(control.value);
       return result && ((result[1] && result[1].length >= hostnameMinLength) || (result[2] && result[2].length >= hostnameMinLength))
         ? null

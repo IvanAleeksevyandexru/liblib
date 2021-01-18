@@ -120,7 +120,8 @@ export class MailDeliveryService {
     const items = codes.map(item => {
       const requestItem: any = { code: item, status: newStatus };
       if (newStatus === 'SUBSCRIBED' && this.isRussianPost(item) && addresses && addresses.length) {
-        requestItem.data = { addresses };
+        const addressesArr = addresses.map(adr => ({asString: adr}));
+        requestItem.data = { addresses: addressesArr };
       } else if (this.isRussianPost(item)) {
         requestItem.data = { addresses: [] };
       }

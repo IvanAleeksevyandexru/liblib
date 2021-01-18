@@ -48,13 +48,21 @@ export class MailDeliveryModalComponent implements OnInit {
       let plvAddressAsString;
       let prgAddressAsString;
       if (plvAddress) {
-        plvAddressAsString = HelperService.formatMailDelivery(plvAddress);
+        if (plvAddress.addressStr) {
+          plvAddressAsString = plvAddress.zipCode ? `${plvAddress.zipCode}, ${plvAddress.addressStr}` : plvAddress.addressStr;
+        } else {
+          plvAddressAsString = HelperService.formatMailDelivery(plvAddress);
+        }
         this.addresses.push(plvAddressAsString);
       }
       if (prgAddress) {
-        prgAddressAsString = HelperService.formatMailDelivery(prgAddress);
+        if (prgAddress.addressStr) {
+          prgAddressAsString = prgAddress.zipCode ? `${prgAddress.zipCode}, ${prgAddress.addressStr}` : prgAddress.addressStr;
+        } else {
+          prgAddressAsString = HelperService.formatMailDelivery(prgAddress);
+        }
         if (plvAddressAsString !== prgAddressAsString) {
-          this.addresses.push(HelperService.formatMailDelivery(prgAddress));
+          this.addresses.push(prgAddressAsString);
         }
       }
       if (!this.addresses.length) {
