@@ -1,0 +1,9 @@
+<div #menu *ngIf="items" class="page-menu-wrapper">
+  <div class="list-items flex-container-md flex-wrap-md block-lg">
+    <ng-container *ngFor="let item of items">
+      <div class="item">
+        <a class="link-plain link-underline" (click)="onClick(item.id)">{{item.text}}</a>
+      </div>
+    </ng-container>
+  </div>
+</div>
