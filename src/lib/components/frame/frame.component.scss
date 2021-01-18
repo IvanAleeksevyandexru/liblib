@@ -8,6 +8,10 @@ $default: #FFFFFF;
   border-radius: 8px;
   cursor: default;
 
+  &.small {
+    padding: 12px 12px 24px 12px;
+  }
+
   &.effects {
     box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
     cursor: pointer;

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FrameType } from '../../models/frame-type';
+import { FrameType, SizeType } from '../../models/frame-type';
 
 @Component({
   selector: 'lib-frame',
@@ -9,6 +9,7 @@ import { FrameType } from '../../models/frame-type';
 export class FrameComponent implements OnInit {
   @Input() public noEffects = false;
   @Input() public bgType: FrameType = 'default';
+  @Input() public sizeType: SizeType = 'default';
   @Input() public disable?: boolean;
   constructor() { }
 
