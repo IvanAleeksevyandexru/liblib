@@ -36,6 +36,8 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Output() public closed = new EventEmitter();
   @Output() public focused = new EventEmitter();
   @Output() public searchChanged = new EventEmitter();
+  @Output() public sputnikSearchResult = new EventEmitter();
+  @Output() public searchButtonClick = new EventEmitter();
   public showField = true;
 
   public searchItem: SimpleSputnikSuggest;
@@ -134,13 +136,21 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   }
 
   public emptyResultHandler(resultLength: number): void {
-    if (resultLength === 0) {
-      document.location.href = this.loadService.config.betaUrl + '/search?query=' + encodeURIComponent(this.lookup.query);
-    }
+    // if (resultLength === 0) {
+    //   document.location.href = this.loadService.config.betaUrl + '/search?query=' + encodeURIComponent(this.lookup.query);
+    // }
   }
 
-  public processSearchResult(list: any): void {
-    console.log(list);
+  public processSearchResult(list: ListItem[]): void {
+    const originalList = list.map(item => item.originalItem);
+    this.sputnikSearchResult.emit({
+      query: this.lookup.query,
+      originalList
+    });
+  }
+
+  public handleSearchButtonClick(): void {
+    this.searchButtonClick.emit();
   }
 
 }

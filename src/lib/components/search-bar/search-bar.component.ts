@@ -1,8 +1,24 @@
 import {
-  Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnChanges, OnDestroy, DoCheck,
-  SimpleChanges, forwardRef, ElementRef, ViewChild, ChangeDetectorRef, Optional, Host, SkipSelf } from '@angular/core';
-import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, Subject, Subscription } from 'rxjs';
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  DoCheck,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  Host,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Output,
+  SimpleChanges,
+  SkipSelf,
+  ViewChild
+} from '@angular/core';
+import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Focusable, FocusManager } from "../../services/focus/focus.manager";
 import { Validated, ValidationShowOn } from "../../models/validation-show";
@@ -18,6 +34,7 @@ class ScheduledSearch {
     this.query = query;
     this.token = token;
   }
+
   public query: string;
   public token: number;
 }
@@ -38,7 +55,8 @@ export class SearchBarComponent
   constructor(
     private changeDetector: ChangeDetectorRef,
     protected focusManager: FocusManager,
-    @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
+    @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {
+  }
 
   // name привязывается к аттрибуту, чтобы привязать контрол к форме используйте formControlName
   @Input() public id?: string;
@@ -91,6 +109,8 @@ export class SearchBarComponent
   @Output() public forcedSearch = new EventEmitter<any>();
   @Output() public cleared = new EventEmitter<void>();
   @Output() public suggestionSelected = new EventEmitter<string>();
+  @Output() public searchButtonClick = new EventEmitter<string>();
+  @Output() public searchQueryChanged = new EventEmitter<string>();
   @ViewChild('input', {static: false}) public inputElement: ElementRef<HTMLInputElement>;
 
   public focused = false;
@@ -108,7 +128,9 @@ export class SearchBarComponent
   private isIos = navigator.userAgent.match(/iPhone|iPad|iPod/i);
 
   private onTouchedCallback: () => void;
-  protected commit(value: string) {}
+
+  protected commit(value: string) {
+  }
 
   public ngOnInit() {
     this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
@@ -367,10 +389,19 @@ export class SearchBarComponent
       this.querySubscription.unsubscribe();
     }
     return this.queryDebounce.pipe(debounceTime(this.queryTimeout)).subscribe((search: ScheduledSearch) => {
-      if ((this.searchLastValue || search.token === this.insureSearchActiveToken) && this.searchByTextInput) {
-        this.runOrPostponeSearch(search.query);
+      if (!this.mainPageStyle) {
+        if ((this.searchLastValue || search.token === this.insureSearchActiveToken) && this.searchByTextInput) {
+          this.runOrPostponeSearch(search.query);
+        }
+      } else {
+        this.searchQueryChanged.emit(search.query);
       }
     });
+  }
+
+  public startSearch(): void {
+    this.runOrPostponeSearch(this.query);
+    this.searchButtonClick.emit();
   }
 
 }
