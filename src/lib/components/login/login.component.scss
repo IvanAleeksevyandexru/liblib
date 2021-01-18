@@ -4,7 +4,7 @@
 
   .name {
     font-size: 17px;
-    font-weight: 600;
+    font-weight: bold;
   }
 }
 
@@ -75,7 +75,7 @@ lib-button {
       display: block;
       overflow: hidden;
       top: 0;
-      left: 0;
+      right: 18px;
       width: 40px;
       height: 40px;
       border-radius: 50%;
@@ -118,9 +118,9 @@ lib-button {
 
     .name {
       position: relative;
-      padding-right: 16px;
+      padding-right: 70px;
       font-size: 14px;
-      font-weight: 400;
+      font-weight: bold;
       line-height: 20px;
 
       &:before {
@@ -128,11 +128,9 @@ lib-button {
         position: absolute;
         top: 8px;
         right: 0;
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 4px 4px 0 4px;
-        border-color: #555555 transparent transparent transparent;
+        width: 10px;
+        height: 6px;
+        background: url(../../../assets/svg/arrows/arrow_gray.svg) no-repeat 0 0;
       }
     }
 

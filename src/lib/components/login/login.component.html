@@ -17,7 +17,7 @@
     <div class="name text-overflow">
       <ng-container *ngIf="user.type === 'L'">{{(user.orgShortName || user.orgName)}}</ng-container>
       <ng-container *ngIf="user.type === 'B'">{{(user.orgShortName || 'ИП ' + user.shortName)}}</ng-container>
-      <ng-container *ngIf="user.type !== 'B' && user.type !== 'L'">{{user.shortName}}</ng-container>
+      <ng-container *ngIf="user.type !== 'B' && user.type !== 'L'">{{user.firstName + ' ' + user.lastName[0] + '.'}}</ng-container>
     </div>
     <div class="position hide show-md text-overflow">
       {{user.orgPosition}}

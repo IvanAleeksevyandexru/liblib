@@ -106,27 +106,27 @@
       </div>
       <div class="col-lg-3 col-md-4 col-2 flex-container align-items-center flex-end">
         <div class="user-menu-wrapper">
-          <div *ngIf="user.authorized"
-               class="notifications">
-            <a class="bell"
-               [class.unread]="isUnread"
-               (click)="this.showNotifications = !this.showNotifications;"
-               [title]="isUnread ? 'У вас есть непрочитанные уведомления' : 'У вас нет непрочитанных уведомлений'"></a>
+<!--          <div *ngIf="user.authorized"-->
+<!--               class="notifications">-->
+<!--            <a class="bell"-->
+<!--               [class.unread]="isUnread"-->
+<!--               (click)="this.showNotifications = !this.showNotifications;"-->
+<!--               [title]="isUnread ? 'У вас есть непрочитанные уведомления' : 'У вас нет непрочитанных уведомлений'"></a>-->
 
-            <div *ngIf="showNotifications" class="notifications-list" libStopScreenScroll>
-              <a class="close" (click)="this.showNotifications = !this.showNotifications;"></a>
-              <h6 class="title-h6 mb-12">Последние события</h6>
-              <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}"
-                                 (psYReachEnd)="feedsComponent.showMore()">
-                <lib-feeds
-                  page="header"
-                  [autoload]="true"
-                  [count]="10"
-                  types="ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE,KND_APPEAL"
-                ></lib-feeds>
-              </perfect-scrollbar>
-            </div>
-          </div>
+<!--            <div *ngIf="showNotifications" class="notifications-list" libStopScreenScroll>-->
+<!--              <a class="close" (click)="this.showNotifications = !this.showNotifications;"></a>-->
+<!--              <h6 class="title-h6 mb-12">Последние события</h6>-->
+<!--              <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}"-->
+<!--                                 (psYReachEnd)="feedsComponent.showMore()">-->
+<!--                <lib-feeds-->
+<!--                  page="header"-->
+<!--                  [autoload]="true"-->
+<!--                  [count]="10"-->
+<!--                  types="ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE,KND_APPEAL"-->
+<!--                ></lib-feeds>-->
+<!--              </perfect-scrollbar>-->
+<!--            </div>-->
+<!--          </div>-->
 
           <div class="login-wrapper" (click)="showUserMenu(false)">
             <div class="login flex-container justify-end overflow-container">
