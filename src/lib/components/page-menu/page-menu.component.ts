@@ -15,35 +15,39 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   @Input() public items: IMenuItems[];
   @Input() public offsetFromHeader = 56;
   @Input() public offsetFromFooter = 56;
+  @Input() public nameOfHeader = 'lib-header'; // хедеры могут быть любые
+  @Input() public nameOfFooter = 'lib-footer'; // футеры могут быть любые
 
   @Output() public onclick = new EventEmitter<string>();
 
-  @ViewChild('menu') private menu: ElementRef;
+  @ViewChild('menu') private menuElement: ElementRef;
 
-  private header;
-  private headerHeight = 0;
-
-  private needStartFloat = 0;
-  private needOffsetTop = 0;
-
-  private needStopFloat = 0;
-  private needOffsetBottom = 0;
-
-  private needOffsetRight = 0;
-
+  private menu: HTMLDivElement;
+  private availableFloat = false;
   private isFixedNow = false;
 
-  private content;
-  private contentHeight = 0;
+  private header: HTMLElement;
+  private headerHeight = 0;
+
+  private needStartFloat = 0; // с какого места начинать плавать
+  private needOffsetTop = 0; // на сколько отступать сверху при плавании
+
+  private footer: HTMLElement;
+  private footerHeight = 0;
+
+  private needStopFloat = 0; // на каком месте перестать плавать около футера
+  private needOffsetBottom = 0; // на сколько отступать от футера
+
+  private needOffsetRight = 0; // расстояния от правого края во время плавания
 
   @HostListener('document:scroll') public scroll() {
-    if (this.items.length) {
+    if (this.availableFloat) {
       this.onScroll();
     }
   }
 
   @HostListener('window:resize') public resize() {
-    if (this.items.length) {
+    if (this.availableFloat) {
       this.getSizes();
     }
   }
@@ -55,29 +59,34 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   }
 
   public ngAfterViewInit(): void {
-    if (this.items.length) {
+    this.availableFloat = this.items.length && window.screen.width > 1140;
+    if (this.availableFloat) {
+      this.menu = this.menuElement.nativeElement as HTMLDivElement;
+      this.header = document.getElementsByTagName(this.nameOfHeader)[0] as HTMLElement;
+      this.footer = document.getElementsByTagName(this.nameOfFooter)[0] as HTMLElement;
       this.getSizes();
     }
   }
 
   public ngAfterViewChecked(): void {
-    if (this.items.length) {
+    if (this.availableFloat) {
       if (this.header && this.headerHeight !== this.header.clientHeight) {
-        this.getOffsetsTop();
+        this.getHeaderAndTopHeight();
+      }
+
+      if (this.footer && this.footerHeight !== this.footer.clientHeight) {
+        this.getFooterAndBottomData();
+      }
+
+      if (this.needStopFloat !== document.documentElement.scrollHeight - this.needOffsetBottom) {
+        this.needStopFloat = document.documentElement.scrollHeight - this.needOffsetBottom;
       }
 
       if (!this.isFixedNow && !document.documentElement.scrollTop) {
-        const menu = this.menu.nativeElement as HTMLDivElement;
+        const currentTopOffset = this.menu.getBoundingClientRect().top;
 
-
-
-        const topOffset = menu.getBoundingClientRect().top;
-        if (topOffset !== this.needStartFloat + this.offsetFromHeader + this.headerHeight) {
-          this.needStartFloat = topOffset - this.offsetFromHeader - this.headerHeight;
-        }
-        const h = this.content.getBoundingClientRect().top + this.contentHeight - this.offsetFromFooter - menu.offsetHeight;
-        if (h !== this.needStopFloat) {
-          this.needStopFloat = this.content.getBoundingClientRect().top + this.contentHeight - this.offsetFromFooter - menu.offsetHeight;
+        if (currentTopOffset !== this.needStartFloat) {
+          this.needStartFloat = currentTopOffset - this.needOffsetTop;
         }
       }
     }
@@ -88,28 +97,23 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   }
 
   private getSizes() {
-    this.getHeader();
+    this.getHeaderAndTopHeight();
+    this.getFooterAndBottomData();
     this.getWidthWindow();
 
-    this.needStartFloat = (this.menu.nativeElement as HTMLDivElement).getBoundingClientRect().top - this.offsetFromHeader - this.headerHeight;
+    this.needStartFloat = this.menu.getBoundingClientRect().top - this.needOffsetTop;
 
-    this.content = (document.getElementsByTagName('main')[0] as HTMLElement);
-    this.contentHeight = this.content.offsetHeight;
-    this.needStopFloat = this.content.getBoundingClientRect().top + this.contentHeight - this.offsetFromFooter - this.menu.nativeElement.offsetHeight;
+    this.needStopFloat = document.documentElement.scrollHeight - this.needOffsetBottom;
   }
 
-  private getHeader(): void {
-    if (document.getElementsByTagName('lib-header')[0]) {
-      this.header = document.getElementsByTagName('lib-header')[0] as HTMLElement;
-    } else if (document.getElementsByTagName('lib-light-header')[0]) {
-      this.header = document.getElementsByTagName('lib-light-header')[0] as HTMLElement;
-    }
-    this.getOffsetsTop();
-  }
-
-  private getOffsetsTop(): void {
+  private getHeaderAndTopHeight(): void {
     this.headerHeight = this.header.clientHeight;
     this.needOffsetTop = this.headerHeight + this.offsetFromHeader;
+  }
+
+  private getFooterAndBottomData(): void {
+    this.footerHeight = this.footer.clientHeight;
+    this.needOffsetBottom = this.footerHeight + this.offsetFromFooter + this.menu.scrollHeight;
   }
 
   private getWidthWindow(): void {
@@ -123,7 +127,7 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
 
   private onScroll() {
     const scrollTop = document.documentElement.scrollTop;
-    const classList = this.menu.nativeElement.classList;
+    const classList = this.menu.classList;
 
     if (scrollTop < this.needStartFloat) {
       this.isFixedNow = false;
@@ -159,15 +163,13 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   }
 
   private setTopOffset(offset: number, direction: 'top' | 'right', type?: 'delete'): void {
-    const menu = this.menu.nativeElement as HTMLDivElement;
-
     if (type === 'delete') {
-      menu.style[direction] = '';
+      this.menu.style[direction] = '';
       return;
     }
 
-    if (menu.style[direction] !== `${offset}px`) {
-      menu.style[direction] = `${offset}px`;
+    if (this.menu.style[direction] !== `${offset}px`) {
+      this.menu.style[direction] = `${offset}px`;
     }
   }
 
