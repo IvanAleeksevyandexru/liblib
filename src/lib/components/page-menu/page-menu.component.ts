@@ -20,53 +20,64 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
 
   @ViewChild('menu') private menu: ElementRef;
 
-  private needOffsetFromHeader = 0;
-  private needOffsetFromFooter = 0;
-  private enabled = false;
   private header;
   private headerHeight = 0;
+
+  private needStartFloat = 0;
+  private needOffsetTop = 0;
+
+  private needStopFloat = 0;
+  private needOffsetBottom = 0;
+
+  private needOffsetRight = 0;
+
+  private isFixedNow = false;
+
   private content;
   private contentHeight = 0;
-  private contentInitialTop = 0;
 
-  @HostListener('document:scroll') public onScroll() {
-    if (this.items.length && this.enabled) {
-      this.onScrollf();
+  @HostListener('document:scroll') public scroll() {
+    if (this.items.length) {
+      this.onScroll();
     }
   }
 
   @HostListener('window:resize') public resize() {
-    if (this.enabled) {
+    if (this.items.length) {
       this.getSizes();
     }
   }
 
-  constructor() { }
+  constructor() {
+    if (document.documentElement.scrollTop !== 0) {
+      window.scrollTo(0, 0);
+    }
+  }
 
   public ngAfterViewInit(): void {
     if (this.items.length) {
-      this.enabled = !(/hide/.test(this.menu.nativeElement.parentElement.parentElement.className));
-      if (this.enabled) {
-        this.getSizes();
-      }
+      this.getSizes();
     }
   }
 
   public ngAfterViewChecked(): void {
-    if (this.enabled) {
+    if (this.items.length) {
       if (this.header && this.headerHeight !== this.header.clientHeight) {
-        this.headerHeight = this.header.clientHeight;
+        this.getOffsetsTop();
       }
-      if (!(/fixed/.test(this.menu.nativeElement.className))) {
-        if (!document.documentElement.scrollTop) {
-          const topOffset = (this.menu.nativeElement as HTMLDivElement).getBoundingClientRect().top;
-          if (topOffset !== this.needOffsetFromHeader + this.offsetFromHeader + this.headerHeight) {
-            this.needOffsetFromHeader = topOffset - this.offsetFromHeader - this.headerHeight;
-          }
-          const h = this.content.getBoundingClientRect().top + this.contentHeight - this.offsetFromFooter - this.menu.nativeElement.offsetHeight;
-          if (h !== this.needOffsetFromFooter) {
-            this.needOffsetFromFooter = this.content.getBoundingClientRect().top + this.contentHeight - this.offsetFromFooter - this.menu.nativeElement.offsetHeight;
-          }
+
+      if (!this.isFixedNow && !document.documentElement.scrollTop) {
+        const menu = this.menu.nativeElement as HTMLDivElement;
+
+
+
+        const topOffset = menu.getBoundingClientRect().top;
+        if (topOffset !== this.needStartFloat + this.offsetFromHeader + this.headerHeight) {
+          this.needStartFloat = topOffset - this.offsetFromHeader - this.headerHeight;
+        }
+        const h = this.content.getBoundingClientRect().top + this.contentHeight - this.offsetFromFooter - menu.offsetHeight;
+        if (h !== this.needStopFloat) {
+          this.needStopFloat = this.content.getBoundingClientRect().top + this.contentHeight - this.offsetFromFooter - menu.offsetHeight;
         }
       }
     }
@@ -77,38 +88,61 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   }
 
   private getSizes() {
+    this.getHeader();
+    this.getWidthWindow();
+
+    this.needStartFloat = (this.menu.nativeElement as HTMLDivElement).getBoundingClientRect().top - this.offsetFromHeader - this.headerHeight;
+
+    this.content = (document.getElementsByTagName('main')[0] as HTMLElement);
+    this.contentHeight = this.content.offsetHeight;
+    this.needStopFloat = this.content.getBoundingClientRect().top + this.contentHeight - this.offsetFromFooter - this.menu.nativeElement.offsetHeight;
+  }
+
+  private getHeader(): void {
     if (document.getElementsByTagName('lib-header')[0]) {
       this.header = document.getElementsByTagName('lib-header')[0] as HTMLElement;
     } else if (document.getElementsByTagName('lib-light-header')[0]) {
       this.header = document.getElementsByTagName('lib-light-header')[0] as HTMLElement;
     }
-    this.headerHeight = this.header.clientHeight;
-
-    this.needOffsetFromHeader = (this.menu.nativeElement as HTMLDivElement).getBoundingClientRect().top - this.offsetFromHeader - this.headerHeight;
-
-    this.content = (document.getElementsByTagName('main')[0] as HTMLElement);
-    this.contentHeight = this.content.offsetHeight;
-    this.needOffsetFromFooter = this.content.getBoundingClientRect().top + this.contentHeight - this.offsetFromFooter - this.menu.nativeElement.offsetHeight;
+    this.getOffsetsTop();
   }
 
-  private onScrollf() {
+  private getOffsetsTop(): void {
+    this.headerHeight = this.header.clientHeight;
+    this.needOffsetTop = this.headerHeight + this.offsetFromHeader;
+  }
+
+  private getWidthWindow(): void {
+    const width = window.screen.width;
+    this.needOffsetRight = width / 2 + 75 - 9; // - 9 - ну нада. правда) width и availWidth одинаковы, а скролл то мешает.
+
+    if (width > 1216) {
+      this.needOffsetRight -= 683;
+    }
+  }
+
+  private onScroll() {
     const scrollTop = document.documentElement.scrollTop;
     const classList = this.menu.nativeElement.classList;
-    if (scrollTop < this.needOffsetFromHeader) {
+
+    if (scrollTop < this.needStartFloat) {
+      this.isFixedNow = false;
       this.toggleClass(classList, 'fixed', 'remove');
       this.toggleClass(classList, 'fixed-bottom', 'remove');
-    } else if (scrollTop >= this.needOffsetFromHeader && scrollTop + 112 <= this.needOffsetFromFooter) { // 112 изза стиля fixed.
+      this.setTopOffset(this.needOffsetTop, 'top', 'delete');
+      this.setTopOffset(this.needOffsetRight, 'right', 'delete');
+    } else if (scrollTop >= this.needStartFloat && scrollTop + this.needOffsetTop <= this.needStopFloat) {
+      this.isFixedNow = true;
       this.toggleClass(classList, 'fixed', 'add');
       this.toggleClass(classList, 'fixed-bottom', 'remove');
-      if (this.menu.nativeElement.style.top) {
-        this.menu.nativeElement.style.top = '';
-      }
+      this.setTopOffset(this.needOffsetTop, 'top');
+      this.setTopOffset(this.needOffsetRight, 'right');
     } else {
+      this.isFixedNow = true;
       this.toggleClass(classList, 'fixed-bottom', 'add');
       this.toggleClass(classList, 'fixed', 'remove');
-      if (this.menu.nativeElement.style.top !== `${this.needOffsetFromFooter}px`) {
-        this.menu.nativeElement.style.top = `${this.needOffsetFromFooter}px`;
-      }
+      this.setTopOffset(this.needStopFloat, 'top');
+      this.setTopOffset(this.needOffsetRight, 'right');
     }
   }
 
@@ -121,6 +155,19 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
       if (classList.contains(name)) {
         classList.remove(name);
       }
+    }
+  }
+
+  private setTopOffset(offset: number, direction: 'top' | 'right', type?: 'delete'): void {
+    const menu = this.menu.nativeElement as HTMLDivElement;
+
+    if (type === 'delete') {
+      menu.style[direction] = '';
+      return;
+    }
+
+    if (menu.style[direction] !== `${offset}px`) {
+      menu.style[direction] = `${offset}px`;
     }
   }
 
