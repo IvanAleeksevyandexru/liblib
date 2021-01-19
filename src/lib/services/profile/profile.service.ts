@@ -809,7 +809,7 @@ export class ProfileService {
               },
               {
                 title: 'Следующее освидетельствование',
-                value: moment(object.dateOfNextCheck).format('DD.MM.YYYY')
+                value: object.dateOfNextCheck ? moment(object.dateOfNextCheck).format('DD.MM.YYYY') : '</br> Бессрочно'
               }
             ]
           })
