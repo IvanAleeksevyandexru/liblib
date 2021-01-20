@@ -27,7 +27,7 @@
     [routerLink]="internalLink">
     <ng-container *ngTemplateOutlet="content"></ng-container>
   </a>
-  <button *ngIf="type === 'search'"
+  <button *ngIf="type === 'search' || type === 'new-search'"
     class="{{size}} {{width}} {{type}}"
     [ngClass]="{disabled: disabled, active: active}">
     <span class="icon"></span>

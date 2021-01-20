@@ -152,6 +152,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Output() public listed = new EventEmitter<Array<ListItem>>();
   @Output() public queryChanged = new EventEmitter<string>();
   @Output() public enterKeyEvent = new EventEmitter();
+  @Output() public searchButtonClick = new EventEmitter<string>();
 
   public internalFixedItems: Array<ListItem> = [];
   public internalItem: ListItem;
@@ -240,6 +241,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   }
 
   public modelChange(): void {
+    this.queryChanged.emit(this.searchBar.query);
   }
 
   public clearInput(): void {
@@ -336,7 +338,9 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
       this.closeDropdown();
     } else {
       this.showTextField();
-      this.lookupItems(showAll ? SHOW_ALL_MARKER : this.query);
+      if (!this.mainPageStyle) {
+        this.lookupItems(showAll ? SHOW_ALL_MARKER : this.query);
+      }
     }
   }
 
@@ -347,7 +351,6 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   }
 
   public lookupItems(queryOrMarker: string | {}) {
-    this.queryChanged.emit(this.searchBar.query);
     if (queryOrMarker !== SHOW_ALL_MARKER && (queryOrMarker as string).length < this.queryMinSymbolsCount) {
       this.cancelSearchAndClose();
       return;
@@ -639,5 +642,9 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
       showAll,
       queryMinSymbolsCount: this.queryMinSymbolsCount
     };
+  }
+
+  public handleSearchButtonClick(query: string): void {
+    this.searchButtonClick.emit(query);
   }
 }

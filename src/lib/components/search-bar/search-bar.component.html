@@ -40,7 +40,11 @@
   </div>
   <div class="search-clear" [hidden]="searching || disabled || !clearable || !query" [ngClass]="{'align-right': !showMagnifyingGlass && !searching}" (click)="clearSearch($event)"></div>
   <div class="search-go" *ngIf="!mainPageStyle" [hidden]="!showMagnifyingGlass || searching" (click)="runOrPostponeSearch(query, false, true)" [ngClass]="{disabled: disabled}"></div>
-  <div class="search-in-progress" *ngIf="searching && showSearching">
+  <div class="search-button" *ngIf="mainPageStyle">
+    <lib-button class="hide show-md show-lg" (click)="startSearch()">Найти</lib-button>
+    <lib-button type="new-search" class="show-sm hide-md hide-lg" (click)="startSearch()"></lib-button>
+  </div>
+  <div class="search-in-progress" *ngIf="!mainPageStyle && searching && showSearching">
     <div class="search-in-progress-cell"></div>
   </div>
 </div>

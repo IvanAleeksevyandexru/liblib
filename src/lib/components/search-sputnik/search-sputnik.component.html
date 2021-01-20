@@ -22,6 +22,8 @@
                 (queryChanged)="searchChangeHandler($event)"
                 (input)="toggleMagnifyingGlass()"
                 (enterKeyEvent)="emptyResultHandler($event)"
+                (listed)="processSearchResult($event)"
+                (searchButtonClick)="handleSearchButtonClick($event)"
                 ngDefaultControl>
     </lib-lookup>
     <div class="close-search-popup"></div>
