@@ -152,7 +152,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Output() public listed = new EventEmitter<Array<ListItem>>();
   @Output() public queryChanged = new EventEmitter<string>();
   @Output() public enterKeyEvent = new EventEmitter();
-  @Output() public searchButtonClick = new EventEmitter();
+  @Output() public searchButtonClick = new EventEmitter<string>();
 
   public internalFixedItems: Array<ListItem> = [];
   public internalItem: ListItem;
@@ -644,7 +644,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     };
   }
 
-  public handleSearchButtonClick(): void {
-    this.searchButtonClick.emit();
+  public handleSearchButtonClick(query: string): void {
+    this.searchButtonClick.emit(query);
   }
 }

@@ -37,7 +37,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Output() public focused = new EventEmitter();
   @Output() public searchChanged = new EventEmitter();
   @Output() public sputnikSearchResult = new EventEmitter();
-  @Output() public searchButtonClick = new EventEmitter();
+  @Output() public searchButtonClick = new EventEmitter<string>();
   public showField = true;
 
   public searchItem: SimpleSputnikSuggest;
@@ -149,8 +149,8 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
     });
   }
 
-  public handleSearchButtonClick(): void {
-    this.searchButtonClick.emit();
+  public handleSearchButtonClick(query: string): void {
+    this.searchButtonClick.emit(query);
   }
 
 }

@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent implements OnInit {
-  @Input() public type: 'button' | 'anchor' | 'search' = 'button'; // тип: кнопка, ссылка, с иконкой поиска
+  @Input() public type: 'button' | 'anchor' | 'search' | 'new-search' = 'button'; // тип: кнопка, ссылка, с иконкой поиска
   @Input() public size: 'md' | 'lg' | '' = ''; // размер: средний, большой; если не указан - размер минимальный
   @Input() public fontSize: number | null; // размер-шрифта
   @Input() public color: 'white' | 'transparent' | '' = ''; // цвет: белый; если не указан - синий

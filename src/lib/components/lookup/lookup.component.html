@@ -38,7 +38,7 @@
       (keydown)="handleKeydownNavigation($event)"
       (cleared)="clearInput()"
       (suggestionSelected)="selectSuggestion($event)"
-      (searchButtonClick)="handleSearchButtonClick()">
+      (searchButtonClick)="handleSearchButtonClick($event)">
         <div class="lookup-item" *ngIf="item">
           <div *ngIf="escapeHtml" class="item-container">{{item.formatted}}</div>
           <div *ngIf="!escapeHtml" class="item-container" [innerHTML]="item.formatted | safeHtml"></div>

@@ -98,6 +98,19 @@ a, button {
     }
   }
 
+  &.new-search {
+    padding: 11px;
+    border: none;
+
+    .icon {
+      display: block;
+      width: 18px;
+      height: 18px;
+      background: url(../../../assets/svg/search-big.svg) no-repeat center;
+      background-size: 100%;
+    }
+  }
+
   &.search {
     height: 40px;
     border: none;

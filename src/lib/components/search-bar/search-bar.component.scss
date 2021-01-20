@@ -26,20 +26,30 @@
     border-radius: 12px;
 
     .search-input {
-      min-height: 64px;
+      min-height: 48px;
       font-size: 16px;
       line-height: 24px;
       border: 2px solid #ffffff;
       border-radius: 12px;
-      padding-left: 52px;
+      padding-left: 12px;
 
       &:focus,
       &.focused {
         border-width: 2px;
-        padding-left: 52px;
+        padding-left: 12px;
         border-color: #ffffff;
       }
 
+    }
+
+    &::ng-deep {
+      lib-button button {
+        line-height: 16px;
+      }
+    }
+
+    .search-go {
+      display: none;
     }
 
     .search-go,
@@ -59,16 +69,19 @@
 
     .search-button {
       position: absolute;
-      right: 14px;
-      top: 14px
+      right: 4px;
+      top: 4px
     }
 
     .search-clear {
       background: url(../../../assets/svg/circle_close.svg) 0 0 no-repeat;
       background-size: 100%;
-      right: 20px;
+      right: 58px;
+      top: 12px;
+
       &.align-right {
-        right: 20px;
+        right: 58px;
+        top: 12px;
       }
     }
 
@@ -275,6 +288,10 @@
   .search-field {
     &.main-page-new {
 
+      .search-go {
+        display: block;
+      }
+
       .search-input {
         min-height: 80px;
         font-size: 24px;
@@ -301,15 +318,29 @@
       .search-clear {
         background: url(../../../assets/svg/circle_close.svg) 0 0 no-repeat;
         background-size: 100%;
-        right: 32px;
+        right: 121px;
+        top: 23px;
 
         &.align-right {
-          right: 32px;
+          right: 121px;
+          top: 23px;
         }
       }
 
       .search-go {
         left: 28px;
+      }
+
+      .search-button {
+        position: absolute;
+        right: 8px;
+        top: 8px;
+      }
+
+      &::ng-deep {
+        lib-button button {
+          line-height: 36px;
+        }
       }
 
       .search-in-progress {

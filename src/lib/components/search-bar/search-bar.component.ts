@@ -401,7 +401,7 @@ export class SearchBarComponent
 
   public startSearch(): void {
     this.runOrPostponeSearch(this.query);
-    this.searchButtonClick.emit();
+    this.searchButtonClick.emit(this.query);
   }
 
 }
