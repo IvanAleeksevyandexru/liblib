@@ -12,6 +12,10 @@ import { IMenuItems } from '../../models/page-menu.model';
 })
 export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
 
+  // При загрузке страницы document.documentElement.scrollTop должен быть равен нулю.
+  // Здесь не помогает возврат наверх. Необходиом делать там, где сама страница. То, что описано в app компоненте не подходит,
+  // т.к. при внешнем редиректе не проходит условие.
+
   @Input() public items: IMenuItems[];
   @Input() public offsetFromHeader = 56;
   @Input() public offsetFromFooter = 56;
@@ -55,9 +59,6 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   constructor() { }
 
   public ngAfterViewInit(): void {
-    if (document.documentElement.scrollTop !== 0) {
-      window.scrollTo(0, 0);
-    }
     this.availableFloat = this.items.length && window.screen.width > 1140;
     if (this.availableFloat) {
       this.menu = this.menuElement.nativeElement as HTMLDivElement;
