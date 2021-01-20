@@ -1,7 +1,7 @@
 import {
   AfterViewInit, AfterViewChecked, Component,
   ElementRef, EventEmitter, HostListener,
-  Input, Output, ViewChild
+  Input, Output, ViewChild, OnInit,
 } from '@angular/core';
 import { IMenuItems } from '../../models/page-menu.model';
 
@@ -10,7 +10,7 @@ import { IMenuItems } from '../../models/page-menu.model';
   templateUrl: './page-menu.component.html',
   styleUrls: ['./page-menu.component.scss']
 })
-export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
+export class PageMenuComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   @Input() public items: IMenuItems[];
   @Input() public offsetFromHeader = 56;
@@ -52,7 +52,9 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
     }
   }
 
-  constructor() {
+  constructor() { }
+
+  public ngOnInit(): void {
     if (document.documentElement.scrollTop !== 0) {
       window.scrollTo(0, 0);
     }
