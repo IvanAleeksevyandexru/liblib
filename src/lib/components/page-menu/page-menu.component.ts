@@ -1,7 +1,7 @@
 import {
   AfterViewInit, AfterViewChecked, Component,
   ElementRef, EventEmitter, HostListener,
-  Input, Output, ViewChild, OnInit,
+  Input, Output, ViewChild,
 } from '@angular/core';
 import { IMenuItems } from '../../models/page-menu.model';
 
@@ -10,7 +10,7 @@ import { IMenuItems } from '../../models/page-menu.model';
   templateUrl: './page-menu.component.html',
   styleUrls: ['./page-menu.component.scss']
 })
-export class PageMenuComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
 
   @Input() public items: IMenuItems[];
   @Input() public offsetFromHeader = 56;
@@ -54,13 +54,10 @@ export class PageMenuComponent implements OnInit, AfterViewInit, AfterViewChecke
 
   constructor() { }
 
-  public ngOnInit(): void {
+  public ngAfterViewInit(): void {
     if (document.documentElement.scrollTop !== 0) {
       window.scrollTo(0, 0);
     }
-  }
-
-  public ngAfterViewInit(): void {
     this.availableFloat = this.items.length && window.screen.width > 1140;
     if (this.availableFloat) {
       this.menu = this.menuElement.nativeElement as HTMLDivElement;
