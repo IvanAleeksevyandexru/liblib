@@ -7,3 +7,9 @@
 .title{
   font: bold 16px/24px Lato, Arial, sans-serif, "sans-serif";
 }
+
+:host-context(.padding-16) {
+  .disclaimer {
+    padding: 16px;
+  }
+}
