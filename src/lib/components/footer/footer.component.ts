@@ -11,10 +11,11 @@ import { filter } from 'rxjs/operators';
 })
 export class FooterComponent implements OnInit {
 
-  @Input() public hideCmsFooter: boolean; // может задаваться с вызова компоненты или по роуту
+  @Input() public onlyCopyright = false;
 
   @ViewChild('footerCms', { read: ViewContainerRef, static: true }) private viewContainerRef;
 
+  public hideCmsFooter: boolean;
   public hideFooter: boolean;
 
   constructor(
