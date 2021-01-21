@@ -1,0 +1,13 @@
+<div #lightHeader class="light-header-wrapper">
+  <div class="container">
+    <div class="light-header flex-container flex-column flex-row-md justify-center justify-start-md align-items-center-md">
+      <div class="flex-0-md">
+        <lib-logo></lib-logo>
+      </div>
+      <div *ngIf="title" class="title title-h3 flex-container align-items-center">
+        <div class="line"></div>
+        <span>{{title}}</span>
+      </div>
+    </div>
+  </div>
+</div>

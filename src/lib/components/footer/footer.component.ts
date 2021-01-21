@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FooterCmsComponent } from './footer-cms/footer-cms.component';
 import { TranslateService } from '@ngx-translate/core';
 import { NavigationEnd, Router } from '@angular/router';
@@ -10,9 +10,11 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./footer.component.scss'],
 })
 export class FooterComponent implements OnInit {
+
+  @Input() public hideCmsFooter: boolean; // может задаваться с вызова компоненты или по роуту
+
   @ViewChild('footerCms', { read: ViewContainerRef, static: true }) private viewContainerRef;
 
-  public hideCmsFooter: boolean;
   public hideFooter: boolean;
 
   constructor(

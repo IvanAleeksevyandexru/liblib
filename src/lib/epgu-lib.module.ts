@@ -63,6 +63,7 @@ import { RadioComponent } from './components/radio/radio.component';
 import { PagingControlsComponent } from './components/paging-controls/paging-controls.component';
 import { VirtualScrollComponent } from './components/virtual-scroll/virtual-scroll.component';
 import { InvalidResultsTipComponent } from './components/invalid-results-tip/invalid-results-tip.component';
+import { LightHeaderComponent } from './components/light-header/light-header.component';
 import { ValidationMessageComponent } from './components/validation-message/validation-message.component';
 import { QuestionHelpTipComponent } from './components/question-help-tip/question-help-tip.component';
 import { HiddenTooltipComponent } from './components/hidden-tooltip/hidden-tooltip.component';
@@ -203,6 +204,7 @@ registerLocaleData(localeRu, 'ru');
     PagingControlsComponent,
     VirtualScrollComponent,
     InvalidResultsTipComponent,
+    LightHeaderComponent,
     ValidationMessageComponent,
     QuestionHelpTipComponent,
     HiddenTooltipComponent,
@@ -348,6 +350,7 @@ registerLocaleData(localeRu, 'ru');
     PagingControlsComponent,
     VirtualScrollComponent,
     InvalidResultsTipComponent,
+    LightHeaderComponent,
     ValidationMessageComponent,
     QuestionHelpTipComponent,
     HiddenTooltipComponent,

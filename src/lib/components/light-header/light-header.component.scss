@@ -1,0 +1,40 @@
+:host {
+  position: relative;
+}
+
+.light-header-wrapper {
+  width: 100%;
+  background-color: #fff;
+  z-index: 2;
+
+  @media all and (min-width: 768px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  .light-header {
+    height: 116px;
+
+    .title {
+      margin-top: 24px;
+    }
+
+    @media all and (min-width: 768px) {
+      height: 104px;
+
+      .title {
+        margin-top: 0;
+        margin-left: 24px;
+
+        .line {
+          height: 43px;
+          width: 1px;
+          background-color: #B9BDC1;
+          margin-right: 24px;
+        }
+      }
+    }
+  }
+}
+
