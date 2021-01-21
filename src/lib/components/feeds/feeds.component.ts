@@ -578,4 +578,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     }
     return status;
   }
+
+  public isKindergartenSnippet(feed: any): boolean {
+    return this.checkSnippetsExists(feed) && this.page === 'orders' && feed.data.snippets[0].type === 'CHILD';
+  }
 }

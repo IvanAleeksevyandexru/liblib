@@ -25,6 +25,17 @@
         заявление
       </div>
     </div>
+
+    <!--Сниппет записи kindergarten-->
+    <div *ngIf="snippet.type === 'CHILD'">
+       <div class="small-text bold black">
+          {{snippet.firstName}} {{snippet.lastName}}
+       </div>
+       <div *ngIf="snippet.birthDate" class="small-text gray mt-12">
+         Дата рождения: {{snippet.birthDate  | date: 'dd.MM.yyyy'}}
+       </div>
+    </div>
+
     <!--Сниппет оплаты-->
     <div *ngIf="isPaymentSnippet(snippet, feed)">
       <div *ngIf="feed.data.reminder; else paySnippet">
