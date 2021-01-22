@@ -270,7 +270,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
 
   public handleBlur() {
     if (!this.mainPageStyle) {
-      this.cancelSearchAndClose();
+      setTimeout(() => this.cancelSearchAndClose(), 15);
     }
     this.resetItemIfNotConsistent();
     this.blur.emit();
