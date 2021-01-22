@@ -1,0 +1,25 @@
+.tabs-container {
+  background: #ffffff;
+  position: relative;
+}
+
+.tabs-box {
+  border-bottom: 1px solid #B6C6E8;
+}
+
+.tab-wrapper {
+  cursor: pointer;
+
+  &.active {
+    border-bottom: 3px solid #0B40B3;
+
+    & .tab-item {
+      color: #0B1F33;
+    }
+  }
+
+  & .tab-item {
+    color: #0D4CD3;
+    margin: 0 24px;
+  }
+}

@@ -77,6 +77,7 @@ export * from './standard-masked-input/standard-masked-input.component';
 export * from './tabs/tabs.component';
 export * from './tabs-aside/tabs-aside.component';
 export * from './tabs-light/tabs-light.component';
+export * from './tabs-scrolling/tabs-scrolling.component';
 export * from './throbber/throbber.component';
 export * from './user-menu/user-menu.component';
 export * from './validation-message/validation-message.component';
