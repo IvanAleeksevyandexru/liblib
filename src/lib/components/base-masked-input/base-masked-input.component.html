@@ -1,4 +1,4 @@
-<div class="plain-input" [ngClass]="contextClass ? [contextClass] : []"
+<div [ngClass]="contextClass ? [contextClass] : []" class="plain-input"
      [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <input #input type="text"
          [attr.name]="name"
