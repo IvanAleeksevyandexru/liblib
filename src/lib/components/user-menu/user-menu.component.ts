@@ -135,6 +135,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public menuItemClick(link: MenuLink): void {
     this.sendYaMetric(link.mnemonic);
+    this.onClose();
     if (link.handler) {
       link.handler(link);
     } else {
