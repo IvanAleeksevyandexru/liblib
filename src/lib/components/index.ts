@@ -79,3 +79,4 @@ export * from './throbber/throbber.component';
 export * from './user-menu/user-menu.component';
 export * from './validation-message/validation-message.component';
 export * from './virtual-scroll/virtual-scroll.component';
+export * from './button-for-input/button-for-input.component';
