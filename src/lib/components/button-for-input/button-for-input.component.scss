@@ -1,0 +1,37 @@
+button {
+  width: 24px;
+  height: 100%;
+  border: none;
+  &:active, &:hover, &:focus {
+    border: none;
+    outline: none;
+  }
+}
+
+.lookup-button {
+  background: url(../../../assets/svg/lookup-search-bar.svg) center no-repeat;
+  &.loading {
+    top: 12px;
+    background: url(../../../assets/svg/search-loader.svg) center no-repeat;
+    animation: rotate 1.5s linear infinite;
+  }
+  &.error {
+    background: url(../../../assets/svg/lookup-search-grey.svg) center no-repeat;
+  }
+}
+
+.arrow-button {
+  background: url(../../../assets/svg/arrow-send-blue.svg) center no-repeat;
+  &.error {
+    background: url(../../../assets/svg/arrow-send-gray.svg) center no-repeat;
+  }
+}
+
+.button-wrap {
+  position: absolute;
+  height: 80%;
+  top: 10%;
+  right: 16px;
+  padding-left: 18px;
+  border-left: 1px solid #D1D5DF;
+}
