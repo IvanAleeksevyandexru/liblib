@@ -2,10 +2,7 @@ import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angu
 import { Modal } from '../../models/modal-container';
 import { SearchService } from '../../services/search/search.service';
 import { LoadService } from '../../services/load/load.service';
-import { Router } from '@angular/router';
-import { SearchSuggestion } from '../../models/search';
-import { ListItem, ListItemConverter } from '../../models/dropdown.model';
-import { LookupComponent } from '../lookup/lookup.component';
+import { SearchSputnikComponent } from '../search-sputnik/search-sputnik.component';
 
 @Component({
   selector: 'lib-modal-search',
@@ -16,18 +13,10 @@ import { LookupComponent } from '../lookup/lookup.component';
 @Modal()
 
 export class ModalSearchComponent implements OnInit, AfterViewInit {
-  public searchItem: SearchSuggestion;
   private destroy: () => void;
 
-  public searchProvider = this.searchService;
-  public converter = new ListItemConverter<SearchSuggestion>((item: SearchSuggestion, ctx: { [name: string]: any}): ListItem => {
-    return new ListItem({ id: '' + ctx.index, text: item.header, icon: item.favicon || '', url: item.url}, item);
-  }, (item: ListItem): SearchSuggestion => {
-    return item.originalItem;
-  });
-
   @ViewChild('searchBox') private searchBox;
-  @ViewChild('lookup') public lookup: LookupComponent;
+  @ViewChild('searchSputnik') public searchSputnik: SearchSputnikComponent;
 
   @HostListener('document:keydown', ['$event']) public onKeydownComponent(event: KeyboardEvent) {
     if (event.key === 'Escape' || event.key === 'Esc') {
@@ -50,8 +39,7 @@ export class ModalSearchComponent implements OnInit, AfterViewInit {
   }
 
   constructor(private searchService: SearchService,
-              private loadService: LoadService,
-              private router: Router) { }
+              private loadService: LoadService) { }
 
   public ngOnInit() { }
 
@@ -59,34 +47,11 @@ export class ModalSearchComponent implements OnInit, AfterViewInit {
     this.onScroll();
   }
 
-  public formatter(item) {
-    if (!item) {
-      return;
-    }
-    if (item.originalItem.favicon) {
-      return `<div class="item-wrapper">
-                <div class="icon" style="background-image: url(${item.originalItem.favicon});"></div>
-                <div class="suggestion with-icon">${item.text}</div>
-              </div>`;
-    } if (item.originalItem.name) {
-      return `<div class="item-wrapper">
-                <div *ngIf="item.originalItem.image" class="icon" style="background-image: url(${item.originalItem.image});"></div>
-                <div class="suggestion with-icon with-original-name">${item.originalItem.name}</div>
-              </div>`;
-    } else {
-      return `<div class="item-wrapper">
-                    <div class="suggestion">${item.text}</div>
-              </div>`;
-    }
-  }
-
   public onSearch() {
-    const query = this.lookup.query ? this.lookup.query.trim() : '';
-    if (this.searchItem && this.searchItem.url && query === this.searchItem.header) {
-      document.location.href = this.searchItem.url;
-    } else {
-      document.location.href = this.loadService.config.betaUrl + '/search?query=' + encodeURIComponent(query);
-    }
+    const query = this.searchSputnik &&
+    this.searchSputnik.lookup &&
+    this.searchSputnik.lookup.query ? this.searchSputnik.lookup.query.trim() : '';
+    document.location.href = this.loadService.config.betaUrl + '/search?query=' + encodeURIComponent(query);
   }
 
   public onCancel() {
