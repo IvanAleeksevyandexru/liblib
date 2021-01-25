@@ -13,8 +13,7 @@ export class TabsScrollingComponent implements OnInit, OnChanges {
   public showTabs = false;
   public scrollConfig = {
     suppressScrollY: true,
-    wheelPropagation: true,
-    maxScrollbarLength: 1
+    wheelPropagation: true
   };
   public Translation = Translation;
 

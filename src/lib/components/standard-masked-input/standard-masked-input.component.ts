@@ -1,12 +1,13 @@
-import { Component, ViewChild, Input, Output, EventEmitter,
-  OnInit, AfterViewInit, DoCheck, OnChanges, OnDestroy, SimpleChanges, forwardRef } from '@angular/core';
+import {
+  Component, Input, Output, EventEmitter,
+  OnInit, AfterViewInit, DoCheck, OnChanges, OnDestroy, forwardRef, TemplateRef, SimpleChanges
+} from '@angular/core';
 import { ControlValueAccessor, ValidationErrors, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseMaskedInputComponent } from '../base-masked-input/base-masked-input.component';
 import { Focusable } from '../../services/focus/focus.manager';
 import { PipedMessage } from '../../models/piped-message';
 import { InputAutocomplete, TipDirection, MessagePosition, Translation, RemoveMaskSymbols } from '../../models/common-enums';
 import { ValidationDetailed, ValidationShowOn, ValidationMessages } from '../../models/validation-show';
-import { HelperService } from '../../services/helper/helper.service';
 import { Width } from '../../models/width-height';
 
 @Component({
@@ -69,12 +70,44 @@ export class StandardMaskedInputComponent extends BaseMaskedInputComponent
   @Input() public tipDirection: TipDirection | string = TipDirection.RIGHT;
   // перекрытие бабблами ограничивающего контейнера, для MessagePosition.INSIDE
   @Input() public containerOverlap = false;
+  // подставка иконок справа в инпуте
+  @Input() public icons: TemplateRef<any>;
+  // Знак вопроса, который отдает событие нажатия
+  @Input() public clickableQuestionEnabled = false;
 
   @Output() public focus = new EventEmitter();
   @Output() public blur = new EventEmitter();
   @Output() public cleared = new EventEmitter<void>();
+  @Output() public iconsCountChanged = new EventEmitter<any>();
+  @Output() public questionHandle = new EventEmitter<any>();
 
   public MessagePosition = MessagePosition;
+  public iconsCount = 0;
+
+  public ngAfterViewInit() {
+    super.ngAfterViewInit();
+    this.updateIconsCount();
+  }
+
+  public ngOnChanges(changes: SimpleChanges) {
+    super.ngOnChanges(changes);
+    for (const propName of Object.keys(changes)) {
+      if (propName === 'icons') {
+        this.updateIconsCount();
+      }
+    }
+  }
+
+  private updateIconsCount() {
+    this.iconsCount = this.questionTip || this.invalidDisplayed ? 1 : 0;
+    if (this.iconsCountChanged) {
+      this.iconsCountChanged.emit({ count: this.iconsCount });
+    }
+  }
+
+  public clickQuestionTip() {
+    this.questionHandle.emit();
+  }
 }
 
 

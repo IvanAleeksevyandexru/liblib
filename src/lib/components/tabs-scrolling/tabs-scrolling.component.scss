@@ -5,6 +5,7 @@
 
 .tabs-box {
   border-bottom: 1px solid #B6C6E8;
+  width: 100%;
 }
 
 .tab-wrapper {
@@ -21,5 +22,11 @@
   & .tab-item {
     color: #0D4CD3;
     margin: 0 24px;
+  }
+}
+
+perfect-scrollbar {
+  .ps__rail-x {
+    display: none;
   }
 }

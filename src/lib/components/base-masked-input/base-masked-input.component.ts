@@ -13,6 +13,7 @@ import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { HelperService } from '../../services/helper/helper.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { Width } from '../../models/width-height';
+import { LoadService } from '../../services/load/load.service';
 
 @Component({
   selector: 'lib-base-masked-input',
@@ -31,7 +32,8 @@ export class BaseMaskedInputComponent
     private focusManager: FocusManager,
     private changeDetection: ChangeDetectorRef,
     @Optional() @Host() @SkipSelf()
-    private controlContainer: ControlContainer) {}
+    private controlContainer: ControlContainer,
+    public loadService: LoadService) {}
 
   // компонент обертка для for ngx-mask, см детали тут https://www.npmjs.com/package/ngx-mask
 

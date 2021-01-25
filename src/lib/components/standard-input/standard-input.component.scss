@@ -18,7 +18,7 @@
   .buttons-container {
     position: absolute;
     width: auto;
-    height: 48px;
+    height: 52px;
     top: 0;
     right: 12px;
     display: flex;
@@ -35,11 +35,14 @@
     cursor: pointer;
     background: url(../../../assets/svg/input-clean.svg) 4px 0 no-repeat;
   }
-  .validation-container, .tip-container {
+  .validation-container, .tip-container, .clickable-question-tip {
     width: 32px;
     height: 24px;
-    margin-top: 11px;
+    margin-top: 14px;
     padding-left: 4px;
+  }
+  .clickable-question-tip {
+    cursor: pointer;
   }
   .password-eye {
     width: 32px;
