@@ -63,7 +63,9 @@ $col-lg-count: 12;
 
 .masonry {
   display: grid;
-  display: -ms-grid;
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    display: -ms-grid;
+  }
   column-gap: 32px;
   row-gap: 16px;
 }
