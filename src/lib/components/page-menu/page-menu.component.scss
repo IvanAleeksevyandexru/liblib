@@ -1,0 +1,43 @@
+.page-menu-wrapper {
+  position: relative;
+
+  .list-items {
+    .item {
+      margin-top: 16px;
+    }
+
+    > .item:first-child {
+      margin-top: 0px;
+    }
+
+    @media all and (min-width: 768px) and (max-width: 1140px) {
+      .item {
+        margin-top: 24px;
+        width: 208px;
+        right: 16px;
+      }
+
+      > .item:nth-child(2), .item:nth-child(3) {
+        margin-top: 0px;
+      }
+    }
+  }
+
+  @media all and (min-width: 1140px) {
+    .list-items {
+      position: absolute;
+      width: 280px;
+      right: 0;
+    }
+
+    &.fixed {
+      position: fixed;
+      height: auto;
+    }
+
+    &.fixed-bottom {
+      position: absolute;
+      height: auto;
+    }
+  }
+}

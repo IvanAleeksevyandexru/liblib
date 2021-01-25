@@ -20,7 +20,7 @@ import {
   FormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  ValidationErrors,
+  ValidationErrors, Validators,
 } from '@angular/forms';
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { ModalService } from '../../services/modal/modal.service';
@@ -30,6 +30,7 @@ import { ValidationService } from '../../validators/validation.service';
 import { BehaviorSubject } from 'rxjs';
 import { Validated, ValidationShowOn } from "../../models/validation-show";
 import { ValidationHelper } from "../../services/validation-helper/validation.helper";
+import { ListItem, ListItemConverter } from "../../models/dropdown.model";
 
 @Component({
   selector: 'lib-dadata-widget',
@@ -52,10 +53,12 @@ import { ValidationHelper } from "../../services/validation-helper/validation.he
 export class DadataWidgetComponent extends CommonController implements AfterViewInit, OnInit, ControlValueAccessor, Validated {
 
   @Input() public label = '';
-  @Input() public specifyTitle = ''; // код трансляции для ссылки открытия формы
+  // код трансляции для ссылки открытия формы
+  @Input() public specifyTitle = '';
   @Input() public disabled?: boolean;
   @Input() public initValue?: string;
-  @Input() public simpleMode = false; // отключение обязательности полей корпус и строение, если нет дома
+  // отключение обязательности полей корпус и строение, если нет дома
+  @Input() public simpleMode = false;
   @Input() public normalizeOnInit = true;
   @Input() public externalApiUrl?: string;
   @Input() public clearable = true;
@@ -76,6 +79,12 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
 
   @Input() public skipStreetFias: string[] = ['ec44c0ee-bf24-41c8-9e1c-76136ab05cbf'];
+  // выпадающий список список со странами
+  @Input() public countries: Array<ListItem | any> = [];
+  // предзаполненное значение
+  @Input() public defaultCountry: { id: string, [key: string]: any };
+  // для преобразования countries из any в ListItem
+  @Input() public converter?: ListItemConverter;
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
@@ -155,6 +164,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   public formConfig = null;
   public canOpenFields = this.dadataService.canOpenFields;
   public isOpenedFields = this.dadataService.isOpenedFields;
+  public indexMask = this.validations.masks.index;
   @ViewChild('autocomplete', {static: false}) public autocomplete: AutocompleteComponent;
 
   private normalizedData: NormalizedData;
@@ -194,9 +204,29 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
     this.formConfig = this.dadataService.initFormConfig(this.isOrg);
 
-    this.dadataService.initForm(this.simpleMode);
+    const withCountries = this.countries.length > 0;
+    this.dadataService.initForm(this.simpleMode, withCountries);
 
     this.form = this.dadataService.form;
+
+    if (withCountries && this.defaultCountry) {
+      const country = this.form.get('country');
+      country.valueChanges.subscribe(value => {
+        let validators = [Validators.maxLength(6), Validators.minLength(6)];
+        this.indexMask = this.validations.masks.index;
+        if (value?.id !== this.defaultCountry?.id) {
+          validators = [Validators.minLength(1)];
+          this.indexMask = null;
+          this.dadataService.resetForm();
+          this.errorCodes = [];
+          this.needReplaceQuery = false;
+          this.query = '';
+          this.canOpenFields.next(true);
+        }
+        this.form.get('index').setValidators(validators)
+      });
+      country.setValue(this.defaultCountry)
+    }
 
     this.controlNames = Object.keys(this.form.controls).filter(key => this.excluded.indexOf(key) === -1);
 
@@ -209,24 +239,27 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       const dadataQc = this.normalizedData ? this.normalizedData.dadataQc : '0';
       let fullAddress = '';
       this.addressStr = '';
-      this.controlNames.forEach((control, keyIndex) => {
-        const isIndex = control === 'index';
-        if (changes[control] && !this.dadataService.isElementHidden(control)) {
-          if (!isIndex) {
-            const ctrlField = this.dadataService.prefixes[control];
-            const tmpStr = (keyIndex > 0 ? ', ' : '') + (changes[control] ?
-              (ctrlField.shortType || ctrlField.abbr) + ' ' + changes[control] : '');
-            if (!this.fullAddrStrExcluded.includes(control)) {
-              fullAddress += tmpStr;
+      this.controlNames
+        .filter(item => item !== 'country')
+        .forEach((control, keyIndex) => {
+          const isIndex = control === 'index';
+          if (changes[control] && !this.dadataService.isElementHidden(control)) {
+            if (!isIndex) {
+              const ctrlField = this.dadataService.prefixes[control];
+              const tmpStr = ((keyIndex > 0 && fullAddress) ? ', ' : '') + (changes[control] ?
+                (ctrlField.shortType || ctrlField.abbr) + ' ' + changes[control] : '');
+              if (!this.fullAddrStrExcluded.includes(control)) {
+                fullAddress += tmpStr;
+              }
+              if (!this.addrStrExcluded.includes(control)) {
+                this.addressStr += tmpStr;
+              }
+            } else {
+              fullAddress = changes[control] + ', ' + fullAddress;
             }
-            if (!this.addrStrExcluded.includes(control)) {
-              this.addressStr += tmpStr;
-            }
-          } else {
-            fullAddress = changes[control] + ', ' + fullAddress;
           }
-        }
-      });
+        });
+      this.query = fullAddress;
       if (fullAddress) {
         if (this.validationSkip) {
           this.errorCodes = [];
@@ -235,7 +268,6 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           this.revalidate();
         }
         this.lastQuery = this.query;
-        this.query = fullAddress;
         this.widgetItemsVisibility = this.dadataService.validateCheckboxes();
         if (dadataQc === '0' && !this.errorCodes.length) {
             this.autocomplete.cancelSearchAndClose();
@@ -376,19 +408,23 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     this.needReplaceQuery = false;
     this.query = '';
     this.canOpenFields.next(false);
-    this.updateCanOpenFields('');
+    this.changeQueryHandler('');
     for (const key of Object.keys(this.form.controls)) {
       this.form.get(key).enable({onlySelf: true});
     }
   }
 
-  public updateCanOpenFields(value: string): void {
+  public changeQueryHandler(value: string): void {
     this.dadataService.resetSearchComplete(false);
     if (this.isOpenedFields.getValue()) {
       this.closeDadataFields();
     }
     if (!value) {
       this.form.reset();
+      this.canOpenFields.next(false);
+    }
+    if (this.countries?.length && this.defaultCountry) {
+      this.form.get('country').setValue(this.defaultCountry);
     }
     this.query$.next(value);
   }

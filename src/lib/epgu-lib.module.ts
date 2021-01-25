@@ -34,6 +34,7 @@ import { StaticBannerComponent } from './components/banner-static/banner-static.
 import { QuizComponent } from './components/quiz/quiz.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { NotifierComponent } from './components/notifier/notifier.component';
+import { PageMenuComponent } from './components/page-menu/page-menu.component';
 import { ActionsMenuComponent } from './components/actions-menu/actions-menu.component';
 import { ButtonComponent } from './components/button/button.component';
 import { LoaderComponent } from './components/loader/loader.component';
@@ -144,7 +145,6 @@ import { LocationSelectComponent } from './components/location-select/location-s
 import { HeaderComponent } from './components/header/header.component';
 import { SearchSputnikComponent } from './components/search-sputnik/search-sputnik.component';
 import { FrameComponent } from './components/frame/frame.component';
-import { CommonController } from "./common/common-controller";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -172,6 +172,7 @@ registerLocaleData(localeRu, 'ru');
     StaticBannerComponent,
     QuizComponent,
     NotifierComponent,
+    PageMenuComponent,
     TabsComponent,
     TabsAsideComponent,
     ActionsMenuComponent,
@@ -315,6 +316,7 @@ registerLocaleData(localeRu, 'ru');
     StaticBannerComponent,
     QuizComponent,
     NotifierComponent,
+    PageMenuComponent,
     TabsComponent,
     TabsAsideComponent,
     ActionsMenuComponent,
