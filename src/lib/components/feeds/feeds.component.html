@@ -3,7 +3,7 @@
               [defaultHeaders]="!isHeader"></lib-throbber>
 
 <ng-container *ngIf="isLk">
-  <a [routerLink]="openDetails(feed)"
+  <a [href]="openDetails(feed)"
      (click)="onFeedClick($event, feed)"
      class="feed-item"
      [ngClass]="setFeedItemCls(feed)"
