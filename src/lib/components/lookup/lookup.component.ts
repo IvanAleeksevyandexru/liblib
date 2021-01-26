@@ -138,6 +138,8 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Input() public mainPageStyle: boolean = false;
   // скрывать результат поиска в независимости от наличия ответа
   @Input() public hideSearchResult: boolean = false;
+  // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
+  @Input() public blockedSearchValue = '';
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -153,6 +155,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Output() public queryChanged = new EventEmitter<string>();
   @Output() public enterKeyEvent = new EventEmitter();
   @Output() public searchButtonClick = new EventEmitter<string>();
+  @Output() public blockedSearchClear = new EventEmitter();
 
   public internalFixedItems: Array<ListItem> = [];
   public internalItem: ListItem;
@@ -646,5 +649,9 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
 
   public handleSearchButtonClick(query: string): void {
     this.searchButtonClick.emit(query);
+  }
+
+  public clearBlocked(): void {
+    this.blockedSearchClear.emit();
   }
 }

@@ -102,6 +102,8 @@ export class SearchBarComponent
   @Input() public searchLastValue = false;
   // новый вид для ультрановой главной
   @Input() public mainPageStyle: boolean = false;
+  // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
+  @Input() public blockedSearchValue = '';
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
@@ -111,6 +113,7 @@ export class SearchBarComponent
   @Output() public suggestionSelected = new EventEmitter<string>();
   @Output() public searchButtonClick = new EventEmitter<string>();
   @Output() public searchQueryChanged = new EventEmitter<string>();
+  @Output() public blockedSearchClear = new EventEmitter();
   @ViewChild('input', {static: false}) public inputElement: ElementRef<HTMLInputElement>;
 
   public focused = false;
@@ -204,11 +207,11 @@ export class SearchBarComponent
   }
 
   // вызывается только внутри компонента
-  public runOrPostponeSearch(query: string, forcedWithKey = false, forcedWithMagnifyingGlass = false) {
+  public runOrPostponeSearch(query: string, forcedWithKey = false, forcedWithMagnifyingGlass = false, skipCancel = false) {
     if (forcedWithMagnifyingGlass) {
       this.returnFocus();
     }
-    if (this.disabled || this.isBlocked() || this.searchOnlyIfFocused && !this.focused && !this.searchLastValue) {
+    if (!skipCancel && (this.disabled || this.isBlocked() || this.searchOnlyIfFocused && !this.focused && !this.searchLastValue)) {
       this.cancelSearch();
       return;
     } else if (this.suggestion && forcedWithKey) {
@@ -399,8 +402,12 @@ export class SearchBarComponent
     });
   }
 
+  public clearBlocked(): void {
+    this.blockedSearchClear.emit();
+  }
+
   public startSearch(): void {
-    this.runOrPostponeSearch(this.query);
+    this.runOrPostponeSearch(this.query, false, false, true);
     this.searchButtonClick.emit(this.query);
   }
 
