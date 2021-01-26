@@ -105,6 +105,7 @@ export interface User {
   birthDate?: string;
   branchOid?: string;
   corporateContact?: string;
+  corporateContactVerified?: string;
   email?: string;
   emailVerified?: boolean;
   firstName?: string;

@@ -6,6 +6,7 @@ export enum ServiceCategoryCode {
   Fssp = 'FSSP',
   Account = 'ACCOUNT',
   StateDuty = 'STATE_DUTY',
+  Payment = 'PAYMENT',
 }
 
 export enum CardType {
@@ -27,6 +28,7 @@ export enum PayMethodCode {
   YADENGI = 'YADENGI',
   elplat = 'elplat',
   webmoney = 'webmoney',
+  Receipt = 'RECEIPT',
 }
 
 export enum PayMethodGroupCode {
@@ -55,8 +57,12 @@ export enum PaySystemCode {
   elplat = 'pps_elplat',
   webmoney = 'PPS_webmoney',
   GOOGLE_PAY = 'GOOGLE_PAY',
+  GooglePayMobi = 'GooglePay_mobi',
   APPLE_PAY = 'apple_pay',
+  ApplePayMobi = 'ApplePay_mobi',
   SAMSUNG_PAY = 'SAMSUNG_PAY',
+  SamsungPayMobi = 'SamsungPay_mobi',
+  BankCard = 'BANK_CARD',
 }
 
 export enum BillsErrors {
@@ -113,10 +119,7 @@ export interface Bill {
     code: string;
     name: string;
   };
-  billSumm: Array<{
-    summ: string;
-    summId: string;
-  }>;
+  billSumm: BillSumm[];
   comment?: string;
   createDate?: string;
   currencyCode?: string;
@@ -146,6 +149,11 @@ export interface Bill {
   isRefundAvailable?: boolean;
 }
 
+export interface BillSumm {
+  summId: string;
+  summ: string;
+}
+
 export interface BillAttr {
   name: string;
   title: string;
@@ -171,7 +179,7 @@ export interface PaidId {
   date: string;
   fee: number;
   id: number;
-  userId: number;
+  userId?: number;
 }
 
 export interface BillLink {
@@ -180,8 +188,8 @@ export interface BillLink {
   supplierFullName: string;
   billId: string;
   billNumber: string;
-  signature: string;
-  vehicle: Vehicle;
+  signature?: string;
+  vehicle?: Vehicle;
   serviceCategory?: {
     code: ServiceCategoryCode;
     name: string;
@@ -196,7 +204,7 @@ export interface SupplierSource {
   sourceURL?: string;
   nameSourceApplication: string;
   isGibdd: boolean;
-  sourceCode: string;
+  sourceCode?: string;
 }
 
 export interface FkPayment {
@@ -276,13 +284,13 @@ export interface PayMethod {
 export interface PayMethodGroup {
   code: PayMethodGroupCode;
   name: string;
-  value: string;
+  value?: string;
 }
 
 export interface PaySystem {
   code: PaySystemCode;
   name: string;
-  value: string;
+  value?: string;
 }
 
 export interface PaymentInstrument {
