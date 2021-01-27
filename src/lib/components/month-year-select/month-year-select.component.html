@@ -45,15 +45,14 @@
         <div class="field-arrow"></div>
       </div>
       <div class="field-list dropdown" [ngClass]="{expanded: monthExpanded}">
-        <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}">
-          <div class="field-overlay" (click)="close();">
-            <div class="select-field">
-              <div class="field-label label">{{'MONTHS.' + activeMonthYear?.monthCode | libTranslate}}</div>
-              <div class="field-arrow"></div>
-            </div>
+        <div class="field-overlay" (click)="close();">
+          <div class="select-field">
+            <div class="field-label label">{{'MONTHS.' + activeMonthYear?.monthCode | libTranslate}}</div>
+            <div class="field-arrow"></div>
           </div>
+        </div>
+        <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}">
           <div class="items-list">
-            <div class="item field-stub">&nbsp;</div>
             <div *ngFor="let month of monthsList" class="item" (click)="setMonth(month.month)"
               [ngClass]="{selected: month.month === activeMonthYear?.month}">
               <span class="item-label label">{{'MONTHS.' + month.monthCode | libTranslate}}</span>
@@ -62,22 +61,21 @@
         </perfect-scrollbar>
       </div>
     </div>
-    <div class="spacer"></div>
+
     <div class="year-field field">
       <div class="select-field" (click)="toggle(false)" [ngClass]="{expanded: yearExpanded}">
         <div class="field-label label">{{activeMonthYear?.year}}</div>
         <div class="field-arrow"></div>
       </div>
       <div class="field-list dropdown" [ngClass]="{expanded: yearExpanded}">
-        <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}">
-          <div class="field-overlay" (click)="close();">
-            <div class="select-field">
-              <div class="field-label label">{{activeMonthYear?.year}}</div>
-              <div class="field-arrow"></div>
-            </div>
+        <div class="field-overlay" (click)="close();">
+          <div class="select-field">
+            <div class="field-label label">{{activeMonthYear?.year}}</div>
+            <div class="field-arrow"></div>
           </div>
+        </div>
+        <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}">
           <div class="items-list">
-            <div class="item field-stub">&nbsp;</div>
             <div *ngFor="let year of yearsList" class="item" (click)="setYear(year)"
               [ngClass]="{selected: year === activeMonthYear?.year}" >
               <span class="item-label label">{{year}}</span>

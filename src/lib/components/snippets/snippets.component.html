@@ -6,7 +6,7 @@
     </ng-template>
     <!--Сниппет записи на прием или заявления-->
     <div class="snippets-data" *ngIf="isOrderOrEqueueSnippet(snippet)">
-      <div class="small-text bold black mb-8" *ngIf="isSnippetDate(snippet)">
+      <div class="small-text bold night mb-4" *ngIf="isSnippetDate(snippet)">
         <span>Запись на </span>
         <span [innerHTML]="(snippet.localDate || snippet.date) | timeToEvent:snippet.type:feed.feedType:true:true"></span>
       </div>
@@ -28,12 +28,12 @@
     <!--Сниппет оплаты-->
     <div *ngIf="isPaymentSnippet(snippet, feed)">
       <div *ngIf="feed.data.reminder; else paySnippet">
-        <div class="small-text bold black mb-4">{{feed.data.reminder}}</div>
+        <div class="small-text bold night mb-4">{{feed.data.reminder}}</div>
         <div class="small-text gray">Вы оплатили госпошлину</div>
       </div>
       <ng-template #paySnippet>
         <div *ngIf="feed.feedType !== 'GEPS'; else isGEPS">
-          <div class="small-text bold black mb-4">
+          <div class="small-text bold night mb-4">
             К оплате {{snippet.sum}} pуб&nbsp;<span *ngIf="snippet.payDate">(до {{snippet.payDate | date: 'dd.MM.yyyy'}})</span>
           </div>
           <span class="text-plain">
@@ -44,13 +44,13 @@
         </div>
         <ng-template #isGEPS>
           <div *ngIf="isSnippetWithSumm(snippet, feed)">
-            <div class="small-text bold black mb-4">
+            <div class="small-text bold night mb-4">
               {{snippet.sum}}<span class="rouble">p</span>
             </div>
             <span class="small-text gray">Сумма платежа при оплате до {{getGepsDiscountDate(snippet, feed)}}</span>
           </div>
           <div *ngIf="isSnippetWithOriginalSumm(snippet, feed)">
-            <div class="small-text black bold mb-4">
+            <div class="small-text night bold mb-4">
               {{snippet.originalAmount || snippet.sum}}<span class="rouble">p</span>
             </div>
             <span class="small-text gray">Сумма платежа</span>
@@ -69,8 +69,8 @@
     </div>
   </div>
   <div class="snippet-button-container">
-    <a class="button" (click)="goToDetails(snippet, feed, $event)">
-        {{getSnippetLinkText(snippet)}}
-    </a>
+    <lib-button color="white" (click)="goToDetails(snippet, feed, $event)">
+      {{getSnippetLinkText(snippet, feed)}}
+    </lib-button>
   </div>
 </div>
