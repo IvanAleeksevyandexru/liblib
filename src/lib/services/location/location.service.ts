@@ -119,13 +119,14 @@ export class LocationService {
     );
   }
 
-  public regionCheck(checkId) {
+  public regionCheck(checkId, checkTargetId) {
     return this.http.get(
-      `${this.loadService.config.nsiApiUrl}epgu/region/${this.loadService.attributes.selectedRegion}/service/${checkId}`,
+      `${this.loadService.config.nsiApiUrl}epgu/region/${this.savedDetectRegion.code}/service/${checkId}`,
       {
         withCredentials: true,
         params: {
-          _: `${Math.random()}`
+          _: `${Math.random()}`,
+          epguCode: checkTargetId,
         }
       }
     );
