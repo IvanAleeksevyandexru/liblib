@@ -32,7 +32,7 @@
              [class.invalid]="invalidDisplayed"
              [class.focused]="focused"
              [class.uppercase]="uppercase"
-             [class.is-suggest]="suggests && suggests.length"
+             [class.is-suggest]="suggest && suggest.list.length"
              (blur)="notifyFocusEvent($event)"
              (focus)="notifyFocusEvent($event)"
              (input)="handleInput($event.target.value, $event)"
@@ -40,10 +40,10 @@
              (keyup.enter)="forceChange()"
              (compositionstart)="compositionStart()"
              (compositionend)="compositionEnd($event.target.value)"/>
-      <div class="suggests" *ngIf="focused && suggests && suggests.length">
+      <div class="suggests" *ngIf="focused && suggest && suggest.list.length">
         <p class="title pl-16">{{'SUGGEST.TITLE' | libTranslate}}</p>
         <ul class="mt-4">
-          <li *ngFor="let item of suggests" (click)="selectSuggestItem(item)">
+          <li *ngFor="let item of suggest.list" (click)="selectSuggestItem(item)">
             <p>{{item.value}}</p>
             <ng-container *ngIf="item.hints">
               <span *ngFor="let hint of item.hints">{{hint.value}} </span>
@@ -51,7 +51,7 @@
           </li>
         </ul>
         <p class="pl-16 edit mt-4">
-          <a (click)="selectSuggestItem('editSuggestList')">{{'SUGGEST.EDIT_LIST' | libTranslate}}</a>
+          <a (click)="editSuggestList(suggest)">{{'SUGGEST.EDIT_LIST' | libTranslate}}</a>
         </p>
       </div>
     </div>

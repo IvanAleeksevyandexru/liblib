@@ -16,7 +16,7 @@
          [class.focused]="focused"
          [class.clearable]="clearable"
          [class.uppercase]="uppercase"
-         [class.is-suggest]="suggests && suggests.length"
+         [class.is-suggest]="suggest && suggest.list.length"
          (change)="handleChange($event)"
          (input)="handleInput($event)"
          (blur)="notifyFocusEvent($event)"
@@ -41,10 +41,10 @@
             (focus)="notifyFocusEvent($event)"
   >{{value}}</textarea>
   <div *ngIf="clearable && !disabled && value" (click)="clearValue($event)" class="clear-button"></div>
-  <div class="suggests" *ngIf="focused && suggests && suggests.length">
+  <div class="suggests" *ngIf="focused && suggest && suggest.list.length">
     <p class="title pl-16">{{'SUGGEST.TITLE' | libTranslate}}</p>
     <ul class="mt-4">
-      <li *ngFor="let item of suggests" (click)="selectSuggestItem(item)">
+      <li *ngFor="let item of suggest.list" (click)="selectSuggestItem(item)">
         <p>{{item.value}}</p>
         <ng-container *ngIf="item.hints">
           <span *ngFor="let hint of item.hints">{{hint.value}} </span>
@@ -52,7 +52,7 @@
       </li>
     </ul>
     <p class="pl-16 edit mt-4">
-      <a (click)="selectSuggestItem('editSuggestList')">{{'SUGGEST.EDIT_LIST' | libTranslate}}</a>
+      <a (click)="editSuggestList(suggest)">{{'SUGGEST.EDIT_LIST' | libTranslate}}</a>
     </p>
   </div>
 

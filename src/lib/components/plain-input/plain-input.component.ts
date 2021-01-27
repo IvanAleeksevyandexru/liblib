@@ -9,7 +9,7 @@ import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { HelperService } from '../../services/helper/helper.service';
 import { Width } from '../../models/width-height';
-import { Suggest } from '../../models/suggest';
+import { Suggest, SuggestItem } from '../../models/suggest';
 
 @Component({
   selector: 'lib-plain-input',
@@ -48,7 +48,7 @@ export class PlainInputComponent
   @Input() public clearable = false;
   @Input() public uppercase = false;
   @Input() public width?: Width | string;
-  @Input() public suggests?: Suggest[];
+  @Input() public suggest?: Suggest;
 
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
@@ -57,7 +57,7 @@ export class PlainInputComponent
   @Output() public cleared = new EventEmitter<void>();
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
-  @Output() public selectSuggest = new EventEmitter<Suggest | string>();
+  @Output() public selectSuggest = new EventEmitter<Suggest | SuggestItem>();
   // эти события не перехватываются и всплывают:
   // input, change, keydown, keyup, keypress, click, dblclick, touchstart, touchend,
   // touchmove, mousedown, mouseup, mouseenter, mouseleave, mouseover, mouseout, mousemove
@@ -199,7 +199,12 @@ export class PlainInputComponent
     this.invalidDisplayed = ValidationHelper.checkValidation(this, {empty: !!this.value});
   }
 
-  public selectSuggestItem(item: Suggest | string): void {
+  public selectSuggestItem(item: SuggestItem): void {
     this.selectSuggest.emit(item);
+  }
+
+  public editSuggestList(suggest: Suggest): void {
+    suggest.isEdit = true;
+    this.selectSuggest.emit(suggest);
   }
 }

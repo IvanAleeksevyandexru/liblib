@@ -13,7 +13,7 @@ import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { HelperService } from '../../services/helper/helper.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { Width } from '../../models/width-height';
-import { Suggest } from '../../models/suggest';
+import { Suggest, SuggestItem } from '../../models/suggest';
 
 @Component({
   selector: 'lib-base-masked-input',
@@ -52,7 +52,7 @@ export class BaseMaskedInputComponent
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public uppercase = false;
   @Input() public width?: string | Width;
-  @Input() public suggests?: Suggest[];
+  @Input() public suggest?: Suggest;
 
   // маска - это массив символов и/или регэкспов, каждый ответственен за свой символ в поле
   // пример: ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
@@ -79,7 +79,7 @@ export class BaseMaskedInputComponent
   @Output() public focus = new EventEmitter();
   @Output() public blur = new EventEmitter();
   @Output() public cleared = new EventEmitter<void>();
-  @Output() public selectSuggest = new EventEmitter<Suggest | string>();
+  @Output() public selectSuggest = new EventEmitter<Suggest | SuggestItem>();
 
   @ViewChild('input') private inputElement: ElementRef;
 
@@ -311,8 +311,13 @@ export class BaseMaskedInputComponent
     }
   }
 
-  public selectSuggestItem(item: Suggest | string): void {
+  public selectSuggestItem(item: SuggestItem): void {
     this.selectSuggest.emit(item);
     this.loseFocus();
+  }
+
+  public editSuggestList(suggest: Suggest): void {
+    suggest.isEdit = true;
+    this.selectSuggest.emit(suggest);
   }
 }

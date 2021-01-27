@@ -7,7 +7,7 @@ import { PipedMessage } from '../../models/piped-message';
 import { InputAutocomplete, TipDirection, MessagePosition, Translation, RemoveMaskSymbols } from '../../models/common-enums';
 import { ValidationDetailed, ValidationShowOn, ValidationMessages } from '../../models/validation-show';
 import { Width } from '../../models/width-height';
-import { Suggest } from '../../models/suggest';
+import { Suggest, SuggestItem } from '../../models/suggest';
 
 @Component({
   selector: 'lib-standard-masked-input',
@@ -37,7 +37,7 @@ export class StandardMaskedInputComponent extends BaseMaskedInputComponent
   @Input() public readOnly?: boolean;
   @Input() public commitOnInput = true;  // коммитить ли значение по input или по change
   @Input() public width?: Width | string;
-  @Input() public suggests?: Suggest[];
+  @Input() public suggest?: Suggest;
 
   @Input() public removeMaskSymbols: RemoveMaskSymbols | string = RemoveMaskSymbols.PLACEHOLDERS;
   @Input() public mask: (value: string) => Array<string> | Array<string | RegExp>;
@@ -74,7 +74,7 @@ export class StandardMaskedInputComponent extends BaseMaskedInputComponent
   @Output() public focus = new EventEmitter();
   @Output() public blur = new EventEmitter();
   @Output() public cleared = new EventEmitter<void>();
-  @Output() public selectSuggest = new EventEmitter<Suggest | string>();
+  @Output() public selectSuggest = new EventEmitter<Suggest | SuggestItem>();
 
   public MessagePosition = MessagePosition;
 }
