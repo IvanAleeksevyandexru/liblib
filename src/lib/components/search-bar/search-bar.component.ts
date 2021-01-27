@@ -27,6 +27,7 @@ import { ConstantsService } from "../../services/constants.service";
 import { SearchSyncControl } from "../../models/common-enums";
 import { HelperService } from "../../services/helper/helper.service";
 import { ValidationHelper } from "../../services/validation-helper/validation.helper";
+import { ConvertLangService } from "../../services/convert-lang/convert-lang.service";
 
 
 class ScheduledSearch {
@@ -47,7 +48,7 @@ class ScheduledSearch {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => SearchBarComponent),
     multi: true
-  }]
+  }, ConvertLangService]
 })
 export class SearchBarComponent
   implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated {
@@ -55,6 +56,7 @@ export class SearchBarComponent
   constructor(
     private changeDetector: ChangeDetectorRef,
     protected focusManager: FocusManager,
+    private convertLang: ConvertLangService,
     @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {
   }
 
@@ -104,6 +106,8 @@ export class SearchBarComponent
   @Input() public mainPageStyle: boolean = false;
   // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
   @Input() public blockedSearchValue = '';
+  // активация автоматического перевода с английского
+  @Input() public enableLangConvert = false;
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
@@ -139,6 +143,10 @@ export class SearchBarComponent
     this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
     if (!this.id) {
       this.id = 'search-input-' + Math.random().toString(16).slice(2);
+    }
+
+    if (this.enableLangConvert) {
+      this.convertLang.init('RUS')
     }
   }
 
@@ -176,7 +184,11 @@ export class SearchBarComponent
   }
 
   public updateQuery(value: string) {
-    this.query = value;
+    if (this.enableLangConvert) {
+      this.query = this.convertLang.fromEng(value);
+    } else {
+      this.query = value;
+    }
     this.suggestion = null;
     this.commit(this.query);
     if (this.searchByTextInput) {

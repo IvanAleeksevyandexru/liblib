@@ -27,6 +27,7 @@
       [suggestion]="showSuggestion ? suggestion : null"
       [mainPageStyle]="mainPageStyle"
       [blockedSearchValue]="blockedSearchValue"
+      [enableLangConvert]="enableLangConvert"
       [(ngModel)]="query"
       (searchQueryChanged)="modelChange()"
       (newSearch)="lookupItems($event)"

@@ -140,6 +140,8 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Input() public hideSearchResult: boolean = false;
   // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
   @Input() public blockedSearchValue = '';
+  // активация автоматического перевода с английского
+  @Input() public enableLangConvert = false;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();

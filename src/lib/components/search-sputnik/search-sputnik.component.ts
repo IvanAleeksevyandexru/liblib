@@ -31,6 +31,8 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Input() public mainPageStyle = false;
   @Input() public hideSearchResult = false;
   @Input() public setFocus = false;
+  // активация автоматического перевода с английского
+  @Input() public enableLangConvert = false;
   // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
   @Input() public blockedSearchValue = '';
 
