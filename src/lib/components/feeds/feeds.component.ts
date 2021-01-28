@@ -312,8 +312,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     return snippet.type === 'PAYMENT' && feed.status !== 'reject_no_pay' && !!snippet.sum;
   }
 
+  private isOrderReject(snippet: SnippetModel, feed: FeedModel): boolean {
+    return snippet.type === 'PAYMENT' && feed.feedType === 'ORDER' && feed.status === 'reject';
+  }
+
   public showSnippets(snippet: SnippetModel, feed: FeedModel): boolean {
-    if (this.isIpshAborted(feed)) {
+    if (this.isIpshAborted(feed) || this.isOrderReject(snippet, feed)) {
       return false;
     }
     if (this.checkSnippetStatus(snippet, feed)) {
@@ -453,7 +457,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
     if (!this.isLk) {
       location.href = `${this.loadService.config.urlLk}` + 'notifications';
-    } else {
+    }
+
+    if (this.page === 'overview') {
       this.router.navigate(['/notifications']);
     }
   }

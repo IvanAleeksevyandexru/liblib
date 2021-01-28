@@ -1,4 +1,4 @@
-<div class="header">
+<div class="header" [ngClass]="{'hide show-lg': !comingSoon}" *ngIf="!mergeHeaderMenu; else mergeHeaderMenuTmpl">
   <div class="inner container grid-row-lg flex-container align-items-center">
     <div class="col-lg-12 flex-container align-items-center"
           [ngClass]="{
@@ -11,15 +11,17 @@
         <lib-location-select></lib-location-select>
       </div>
 
-      <div *ngIf="!user.authorized && !comingSoon" class="flex-container align-items-center hide show-lg">
-        <div *ngFor="let role of userRoles; let first = first">
-          <a class="link-plain" (click)="updateRole(role.code)"
-             [ngClass]="{
+      <div *ngIf="!user.authorized && !comingSoon" class="hide show-lg">
+        <div class="flex-container align-items-center">
+          <div *ngFor="let role of userRoles; let first = first">
+            <a class="link-plain" (click)="updateRole(role.code)"
+               [ngClass]="{
               'text-plain': (role.code === activeRoleCode),
               'link-plain': (role.code !== activeRoleCode),
               'ml-40': !first
              }"
-             [href]="role.url">{{role.name}}</a>
+               [href]="role.url">{{role.name}}</a>
+          </div>
         </div>
       </div>
       <div class="user-menu-wrapper hide show-lg">
@@ -55,3 +57,99 @@
     </div>
   </div>
 </div>
+
+<ng-template #mergeHeaderMenuTmpl>
+  <div class="header merge-header">
+    <div class="inner container grid-row flex-container align-items-center">
+      <div class="col-lg-2 col-md-2 col-1 logo-wrapper">
+        <lib-logo width="126" [logoHref]="logoHref"></lib-logo>
+      </div>
+      <div *ngIf="!user.authorized" class="col-lg-2 hide show-lg">
+        <div class="flex-container align-items-center roles-list">
+          <span class="user-role" [class.opened]="showRolesList" (click)="openRolesList()">{{getRoleName(activeRoleCode)}}</span>
+
+          <div class="list" *ngIf="showRolesList">
+            <ng-container *ngFor="let role of userRoles; let first = first">
+              <div *ngIf="role.code !== activeRoleCode">
+                <a class="link-plain" (click)="updateRole(role.code)"
+                   [ngClass]="{
+                        'link-plain': (role.code !== activeRoleCode),
+                        'ml-40': !first
+                   }"
+                   [href]="role.url">{{role.name}}</a>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="hide show-lg"
+           [class.col-lg-4]="!user.authorized"
+           [class.col-lg-6]="user.authorized">
+        <div class="flex-container align-items-center">
+          <ul class="links flex-container-lg">
+            <li class="item flex-container align-items-center" [class.mr-24]="user.authorized" *ngFor="let link of links">
+              <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
+                 (click)="redirect($event, link)"
+                 [href]="link.url">{{link.title | appTranslate}}</a>
+              <ng-template #categoryLink>
+                <a class="category-link"
+                   [href]="link.url"
+                   (mouseenter)="openCategories()"
+                   (mouseleave)="closeCategories()">{{link.title | appTranslate}}</a>
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-1 hide show-lg">
+          <lib-location-select skinTheme="black"></lib-location-select>
+      </div>
+      <div class="col-lg-3 col-md-4 col-2 flex-container align-items-center flex-end">
+        <div class="user-menu-wrapper">
+          <div *ngIf="user.authorized"
+               class="notifications">
+            <a class="bell"
+               [class.unread]="isUnread"
+               (click)="this.showNotifications = !this.showNotifications;"
+               [title]="isUnread ? 'У вас есть непрочитанные уведомления' : 'У вас нет непрочитанных уведомлений'"></a>
+
+            <div *ngIf="showNotifications" class="notifications-list" libStopScreenScroll>
+              <a class="close" (click)="this.showNotifications = !this.showNotifications;"></a>
+              <h6 class="title-h6 mb-12">Последние события</h6>
+              <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}"
+                                 (psYReachEnd)="feedsComponent.showMore()">
+                <lib-feeds
+                  page="header"
+                  [autoload]="true"
+                  [count]="10"
+                  types="ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE,KND_APPEAL"
+                ></lib-feeds>
+              </perfect-scrollbar>
+            </div>
+          </div>
+
+          <div class="login-wrapper" (click)="showUserMenu(false)">
+            <div class="login flex-container justify-end overflow-container">
+              <lib-login [useButton]="true" (userClick)="showUserMenu(false)"
+                         class="hide show-lg"
+                         [class.show-md]="!user.authorized"></lib-login>
+              <lib-login *ngIf="!user.authorized" [onlyIcon]="true" class="login-mobile-icon"></lib-login>
+            </div>
+          </div>
+          <div class="user-menu-wrapper">
+            <a class="open-mobile-menu hide-lg"
+               (click)="showUserMenu(true)">
+              <lib-counter class="counter-circle" [counter]="userCounter"></lib-counter>
+            </a>
+            <lib-user-menu
+              [rolesListEnabled]="rolesListEnabled"
+              [searchSputnikEnabled]="searchSputnikEnabled"
+              [state]="userMenuState"
+              [links]="links">
+            </lib-user-menu>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

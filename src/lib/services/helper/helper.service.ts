@@ -350,7 +350,7 @@ export class HelperService {
   public static formatMailDelivery(address: any): string {
     let resultStr = '';
     const orderedModel = ['region', 'area', 'city', 'cityArea', 'place', 'street',
-      'additionalArea', 'additionalStreet', 'house', 'building1', 'building2', 'apartment', 'post_index'
+      'additionalArea', 'additionalStreet', 'house', 'building1', 'building2', 'apartment', 'flat', 'post_index'
     ];
     const mapping = {
       region: 'region',
@@ -362,13 +362,14 @@ export class HelperService {
       house: 'house',
       building1: 'housing',
       building2: 'building',
-      apartment: 'apartment'
+      apartment: 'apartment',
+      flat: 'flat'
     };
 
     orderedModel.forEach(addr => {
       if (address[mapping[addr]] && (addr !== 'post_index')) {
         if (!(addr === 'region' && address.region === address.city)) {
-          resultStr += addr !== 'house' ? ', ' : ', д. ';
+          resultStr += addr === 'house' ? ', д. ' : addr === 'flat' ? ', кв. ' : ', ';
           resultStr += address[mapping[addr]].trim();
         }
       }
@@ -555,7 +556,10 @@ export class HelperService {
     } else {
       if (HelperService.isInternalUrl(baseUrl) && !newTab) {
         const relativeUrl = HelperService.internalUrlToRelative(baseUrl);
-        this.router.navigateByUrl(relativeUrl, urlIsCompound ? {queryParams: compoundQueryParams} : {});
+        this.router.navigateByUrl(
+          this.router.createUrlTree(
+          [relativeUrl], urlIsCompound ? {queryParams: compoundQueryParams} : {}
+        ));
       } else {
         const absoluteUrl = HelperService.appendQueryParams(baseUrl, compoundQueryParams);
         if (newTab) {

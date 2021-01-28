@@ -34,6 +34,7 @@ import { StaticBannerComponent } from './components/banner-static/banner-static.
 import { QuizComponent } from './components/quiz/quiz.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { NotifierComponent } from './components/notifier/notifier.component';
+import { PageMenuComponent } from './components/page-menu/page-menu.component';
 import { ActionsMenuComponent } from './components/actions-menu/actions-menu.component';
 import { ButtonComponent } from './components/button/button.component';
 import { LoaderComponent } from './components/loader/loader.component';
@@ -139,11 +140,11 @@ import { DynamicFormatterPipe } from './pipes/dynamic-formatter/dynamic-formatte
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { Setting } from './models/setting';
+import { MailDeliveryModalComponent } from './components/mail-delivery-modal/mail-delivery-modal.component';
 import { LocationSelectComponent } from './components/location-select/location-select.component';
 import { HeaderComponent } from './components/header/header.component';
 import { SearchSputnikComponent } from './components/search-sputnik/search-sputnik.component';
 import { FrameComponent } from './components/frame/frame.component';
-import { CommonController } from "./common/common-controller";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -171,6 +172,7 @@ registerLocaleData(localeRu, 'ru');
     StaticBannerComponent,
     QuizComponent,
     NotifierComponent,
+    PageMenuComponent,
     TabsComponent,
     TabsAsideComponent,
     ActionsMenuComponent,
@@ -274,6 +276,7 @@ registerLocaleData(localeRu, 'ru');
     LangWarnModalComponent,
     PsoComponent,
     DynamicFormatterPipe,
+    MailDeliveryModalComponent,
     LocationSelectComponent,
     HeaderComponent,
     FrameComponent,
@@ -313,6 +316,7 @@ registerLocaleData(localeRu, 'ru');
     StaticBannerComponent,
     QuizComponent,
     NotifierComponent,
+    PageMenuComponent,
     TabsComponent,
     TabsAsideComponent,
     ActionsMenuComponent,
@@ -409,6 +413,7 @@ registerLocaleData(localeRu, 'ru');
     TimeLeftPipe,
     RemoveTagsPipe,
     DynamicFormatterPipe,
+    MailDeliveryModalComponent,
     LocationSelectComponent,
     HeaderComponent,
     FrameComponent,
@@ -449,6 +454,7 @@ registerLocaleData(localeRu, 'ru');
     GibddDetailsComponent,
     SliderImagesModalComponent,
     LangWarnModalComponent,
+    MailDeliveryModalComponent,
   ]
 })
 export class EpguLibModule {

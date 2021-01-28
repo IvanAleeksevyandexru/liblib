@@ -2,8 +2,10 @@
      [ngClass]="[contextClass ? contextClass : '']"
      [class.magnifying-glass-or-throbber-shown]="showMagnifyingGlass || searching"
      [class.clear-shown]="clearable && query"
+     [class.main-page-new]="mainPageStyle"
      [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <label [attr.for]="id" class="label-search-input">{{placeholder}}</label>
+  <div class="search-go" *ngIf="mainPageStyle" (click)="runOrPostponeSearch(query, false, true)" [ngClass]="{disabled: disabled}"></div>
   <input #input
          type="text"
          autocomplete="off"
@@ -36,12 +38,8 @@
       <ng-content></ng-content>
     </div>
   </div>
-  <div class="suggestion-container" *ngIf="suggestion && focused && !forceShowStaticContent">
-    <div class="suggestion-spacer">{{query}}</div>
-    <div class="suggestion" [innerHTML]="suggestion | safeHtml"></div>
-  </div>
-  <div class="search-clear" [hidden]="disabled || !clearable || !query" [ngClass]="{'align-right': !showMagnifyingGlass && !searching}" (click)="clearSearch($event)"></div>
-  <div class="search-go" [hidden]="!showMagnifyingGlass || searching" (click)="runOrPostponeSearch(query, false, true)" [ngClass]="{disabled: disabled}"></div>
+  <div class="search-clear" [hidden]="searching || disabled || !clearable || !query" [ngClass]="{'align-right': !showMagnifyingGlass && !searching}" (click)="clearSearch($event)"></div>
+  <div class="search-go" *ngIf="!mainPageStyle" [hidden]="!showMagnifyingGlass || searching" (click)="runOrPostponeSearch(query, false, true)" [ngClass]="{disabled: disabled}"></div>
   <div class="search-in-progress" *ngIf="searching && showSearching">
     <div class="search-in-progress-cell"></div>
   </div>

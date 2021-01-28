@@ -7,7 +7,8 @@ import { Document } from '../../models/document';
 import { Person, PersonData, User, Role } from '../../models/user';
 import { ConstantsService } from '../constants.service';
 import { HelperService } from '../helper/helper.service';
-import { SmuEventsService } from "../smu-events/smu-events.service";
+import { AuthService } from '../auth/auth.service';
+import { SmuEventsService } from '../smu-events/smu-events.service';
 
 const EMPTY_CONFIG_STUB = {data: {user: {}}, attrs: {}, config: {}};
 
@@ -27,7 +28,8 @@ export class LoadService {
   constructor(
     private http: HttpClient,
     private constants: ConstantsService,
-    private smuEventsService: SmuEventsService
+    private smuEventsService: SmuEventsService,
+    private authService: AuthService
   ) {
   }
 
@@ -91,9 +93,9 @@ export class LoadService {
     }
   }
 
-  public load(context: string, ignoreConfigMissing = false): Promise<any> {
+  public load(context: string, ignoreConfigMissing = false, ignoreDevMode = false): Promise<any> {
     this.setInitializationStarted();
-    if (isDevMode()) {
+    if (isDevMode() && !ignoreDevMode) {
       return new Promise((resolve, reject) => {
         this.http
           .get(`/node-api/${context}`, {withCredentials: true})
@@ -184,6 +186,16 @@ export class LoadService {
     document.body.classList.add('web-view-mode');
     this.smuEventsService.init();
     this.isEmbedded.next(val);
+  }
+
+  public logout(): void {
+    if (isDevMode()) {
+      this.authService.logout().subscribe((resp) => {
+        window.location = resp;
+      });
+    } else {
+      window.location.href = this.config.betaUrl + 'auth-provider/logout';
+    }
   }
 
 }

@@ -167,10 +167,11 @@ export interface PayRequsites {
 }
 
 export interface PaidId {
-  amount: string;
+  amount: number;
   date: string;
-  fee: string;
-  id: string;
+  fee: number;
+  id: number;
+  userId: number;
 }
 
 export interface BillLink {
@@ -189,12 +190,13 @@ export interface BillLink {
 
 export interface SupplierSource {
   sourceApplication: string;
-  sourceFullName: string;
-  sourcePhone: string;
+  sourceFullName?: string;
+  sourcePhone?: string;
   sourceShortName: string;
-  sourceURL: string;
+  sourceURL?: string;
   nameSourceApplication: string;
   isGibdd: boolean;
+  sourceCode: string;
 }
 
 export interface FkPayment {

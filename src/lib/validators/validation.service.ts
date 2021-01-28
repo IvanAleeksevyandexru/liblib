@@ -30,6 +30,10 @@ export class ValidationService {
     inn: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
     index: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
     year:  [/\d/, /\d/, /\d/, /\d/],
+    seriesNumberPassport: [/\d/, /\d/, ' ', /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
+    issueId: [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/],
+    seriesNumberForeign: [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
+    seriesNumberResidencePermit: [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
     seriesNumberMilitaryMask: [/[а-я]/i, /[а-я]/i, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
     driverLicenseSeriesNumber: [/[0-9А-ЯЁа-яё]/, /[0-9А-ЯЁа-яё]/, /[0-9А-ЯЁа-яё]/, /[0-9А-ЯЁа-яё]/, ' ',
       /\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
@@ -49,6 +53,9 @@ export class ValidationService {
     lastName: '(^[0-9А-ЯЁа-яё IVX()`.\'-]+$)|(^[0-9A-Za-z ()`.\'-]+$)',
     firstName: '((^[0-9А-ЯЁа-яё ()`.\'-]+[0-9А-ЯЁа-яё (),`.\'-]+[\,]?[0-9А-ЯЁа-яё ()`.\'-]+$)|(^[0-9А-ЯЁа-яё ()`.\'-]+$))|((^[0-9A-Za-z ()`.\'-]+[0-9A-Za-z (),`.\'-]+[\,]?[0-9A-Za-z ()`.\'-]+$)|(^[0-9A-Za-z ()`.\'-]+$))',
     middleName: '(^[0-9А-ЯЁа-яё ()`.\'-]+$)|(^[0-9A-Za-z ()`.\'-]+$)',
+    latinName: '[A-Za-z0-9\-−–—\'‘’.()\/ ]+',
+    issuedBy: '[\n а-яёА-ЯЁ0-9\u2013\u2014\u2212 .,‘’""”«»„“()№;\/\'-]+$',
+    issuedByForeign: '[\n а-яёА-ЯЁA-Za-z0-9\u2013\u2014\u2212 .,‘’""”«»„“()№;\/\'-]+$',
     birthCertificateSeriesFirst: '^[IVXLCivxlc]{1,6}',
     birthCertificateSeriesSecond: '^[а-яА-ЯёЁ]{2}',
     birthCertificateOldSeries: '[IVXLCivxlcа-яА-ЯёЁ−–—-]{1,9}$',
@@ -63,6 +70,7 @@ export class ValidationService {
     vehicleNumberPlateBike: `^((\\d{4}[${GENERAL_LETTERS}]{1,2}\\d{2,3})|([${GENERAL_LETTERS}]{2}\\d{2}[${GENERAL_LETTERS}]{2}\\d{2,3}))$`,
     vehicleVin: '^[A-HJ-NPR-Za-hj-npr-z\\d]{13}[\\d]{4}$',
     escapeSpecial: '[^<>&]+',
+    digitsLettersHyphen: '[0-9А-ЯЁа-яёA-Za-z-]+',
     medicalInsuranceNumber: '^([0-9a-zA-Zа-яА-ЯёЁ\\-\.]+\\s?[0-9a-zA-Zа-яА-ЯёЁ\\-\.]*)$'
   };
 
@@ -353,7 +361,7 @@ export class ValidationService {
 
   public static secureUrlValidator(hostnameMinLength = 5): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-      const urlValidationRe = /^\s*(?:https:\/\/)([^-][a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*[^-])+)(?:\?(?:[a-zA-Z0-9_\-._~:/?#[\]@!$&'()*+,;=]*))?$|^(?:https:\/\/)([^-][а-яА-Я0-9_-]*(?:\.[а-яА-Я0-9_-]*[^-])+)(?:\?(?:[a-zA-Zа-яА-Я0-9_\-._~:/?#[\]@!$&'()*+,;=]*))?\s*$/gm;
+      const urlValidationRe = /^\s*(?:https:\/\/)([^-][a-zA-Zа-яА-Я0-9_-]*(?:\.[a-zA-Zа-яА-Я0-9_-]*[^-])+)(?:\?(?:[a-zA-Zа-яА-Я0-9_\-._~:/?#[\]@!$&'()*+,;=]*))?$|^(?:https:\/\/)([^-][а-яА-Я0-9_-]*(?:\.[а-яА-Я0-9_-]*[^-])+)(?:\?(?:[a-zA-Zа-яА-Я0-9_\-._~:/?#[\]@!$&'()*+,;=]*))?\s*$/gm;
       const result = urlValidationRe.exec(control.value);
       return result && ((result[1] && result[1].length >= hostnameMinLength) || (result[2] && result[2].length >= hostnameMinLength))
         ? null

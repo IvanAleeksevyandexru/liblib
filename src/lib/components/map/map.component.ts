@@ -49,7 +49,7 @@ export class MapComponent implements OnInit, OnChanges {
     const layoutConfig = {
       iconLayout: this.iconLayout || 'default#imageWithContent',
       iconImageHref: this.iconImageHref || `${this.staticDomain}/lib-assets/svg/blue-ya-marker.svg`,
-      iconImageSize: this.iconImageSize || [24, 34],
+      iconImageSize: this.iconImageSize || [27, 30],
     };
     mapService('map', controlsConfig, layoutConfig);
   }

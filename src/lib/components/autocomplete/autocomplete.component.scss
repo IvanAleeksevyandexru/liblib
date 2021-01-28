@@ -164,14 +164,10 @@
   .lookup-field {
     ::ng-deep {
       .lookup-item {
-        display: table;
-        width: 100%;
-        vertical-align: middle;
+        display: flex;
+        height: 52px;
+        align-items: center;
         .item-container {
-          display: table-cell;
-          height: 46px;
-          vertical-align: middle;
-          padding: 0;
           .looiup-item-text {
             font-family: Lato, Arial, sans-serif;
             font-size: 16px;

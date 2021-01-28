@@ -118,7 +118,7 @@ export class IpshService {
     return null;
   }
 
-  public getBills(params: BillsRequestParams): Observable<BillResponse> {
+  public getBills(params: BillsRequestParams, body: any = {}): Observable<BillResponse> {
     let httpParams = new HttpParams();
     Object.keys(params).forEach(code => {
       httpParams = httpParams.append(code, params[code]);
@@ -129,7 +129,7 @@ export class IpshService {
 
     return this.http.post<BillResponse>(
       `${this.loadService.config.ipshApi}bills`,
-      {},
+      body,
       {
         withCredentials: true,
         params: httpParams,
@@ -155,7 +155,7 @@ export class IpshService {
     let date: string;
     let supplier: string;
     if (errorType === BillsErrors.BillsDateEvaluated) {
-      date = response.error.message.match(/\d\d.\d\d.\d\d\d\d/)[0];
+      date = response.error.message.match(/\d\d\.\d\d\.\d\d\d\d/)[0];
     }
     if (errorType === BillsErrors.BillsHasUnidentifiedBills) {
       supplier = response && response.response.bills && response.response.bills[0] && response.response.bills[0].addAttrs &&
