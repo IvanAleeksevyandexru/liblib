@@ -119,9 +119,9 @@ export class LocationService {
     );
   }
 
-  public regionCheck(checkId, checkTargetId) {
+  public regionCheck(regionCode: string, checkId: string, checkTargetId: string) {
     return this.http.get(
-      `${this.loadService.config.nsiApiUrl}epgu/region/${this.savedDetectRegion.code}/service/${checkId}`,
+      `${this.loadService.config.nsiApiUrl}epgu/region/${regionCode}/service/${checkId}`,
       {
         withCredentials: true,
         params: {
