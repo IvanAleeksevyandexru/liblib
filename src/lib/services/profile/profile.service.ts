@@ -794,7 +794,7 @@ export class ProfileService {
             title: 'Сведения об инвалидности'
           },
           ...(object.status === 'update' ? {
-            notification: 'Идет поиск в реестре инвалидов ПФР...',
+            notification: 'Идет поиск в ПФР в реестре инвалидов...',
             fields: []
           } : {
             fields: [
