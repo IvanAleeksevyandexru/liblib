@@ -104,14 +104,6 @@
                   <h4 class="normal black text-plain mb-4" [ngClass]="{'bold': setUnreadFeedCls(feed)}" [innerHTML]="setHeader(feed) | removeQuotes | highlight: search"></h4>
                 </div>
                 <p class="feed-subheader" [innerHTML]="setSubHeader(feed) | removeQuotes | highlight: search"></p>
-                <div *ngIf="isKindergartenSnippet(feed)" class="flex-container-md mt-8">
-                  <div class="small-text dark mr-16">
-                    {{feed.data.snippets[0].firstName}} {{feed.data.snippets[0].lastName}}
-                  </div>
-                  <div *ngIf="feed.data.snippets[0].birthDate" class="small-text gray mt-sm-4 mt-md-0">
-                    Дата рождения: {{feed.data.snippets[0].birthDate | date: 'dd.MM.yyyy'}}
-                  </div>
-                </div>
               </ng-container>
               <ng-template #feedbackFeed>
                 <div *ngIf="markAsFlag(feed)" class="red-flag"></div>
