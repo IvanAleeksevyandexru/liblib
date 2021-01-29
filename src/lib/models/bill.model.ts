@@ -267,10 +267,12 @@ export interface PayOption {
   paySystem: PaySystem;
   paymentInstrument?: PaymentInstrument;
   lastPayMethod?: boolean;
+  // кастомные поля
+  isHidden?: boolean;
 }
 
 export interface CardInfo {
-  cardIin: number;
+  cardIin: string;
   cardTypeCode: CardType;
   emitentBankName: string;
 }
