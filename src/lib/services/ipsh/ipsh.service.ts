@@ -222,6 +222,7 @@ export class IpshService {
         if (!data || !data.photos || !data.photos.length) {
           return throwError(data);
         }
+        return of(data);
       }),
       map((data: GibddPhotoResponse) => {
         let photos = [];
