@@ -208,6 +208,12 @@ ul.list-decimal {
   }*/
 }
 
+.shadow-block {
+  background: #FFFFFF;
+  box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+  border-radius: 12px;
+}
+
 @mixin global-classes($prefix) {
   .width-full#{$prefix} {
     width: 100%;
