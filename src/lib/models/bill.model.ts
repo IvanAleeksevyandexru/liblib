@@ -27,8 +27,7 @@ export enum PayMethodCode {
   QIWI = 'QIWI',
   YADENGI = 'YADENGI',
   elplat = 'elplat',
-  webmoney = 'webmoney',
-  Receipt = 'RECEIPT',
+  webmoney = 'webmoney'
 }
 
 export enum PayMethodGroupCode {
