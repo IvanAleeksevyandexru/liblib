@@ -213,7 +213,16 @@ export class FeedsService {
       case 'BIOMETRICS':
         url += 'settings/biometry';
         break;
+      case 'LINKED_ACCOUNT':
+        url += 'settings/social';
+        break;
       case 'ACCOUNT':
+        if (feed.data && feed.data.linked_to) {
+          url += `${feed.data.linked_to}`;
+        } else {
+          url += 'settings/account';
+        }
+        break;
       case 'PROFILE':
         url += 'settings/account';
         break;

@@ -36,6 +36,7 @@ export interface OrderCreator {
 }
 
 export interface FeedDataModel {
+  linked_to?: string;
   parentOrderId?: number;
   imOrgName?: string;
   attachCnt?: number;

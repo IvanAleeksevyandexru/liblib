@@ -271,6 +271,11 @@
         "SUBTITLE": "В архив можно переносить заявления, жалобы или сообщения, потерявшие для вас актуальность. В любой момент вы можете извлечь их обратно",
         "BUTTON": "Вернуться"
       },
+      "ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,KND_APPEAL,LINKED_ACCOUNT": {
+        "TITLE": "У вас пока нет новых событий",
+        "SUBTITLE": "Если что-то произойдет, здесь появится уведомление об этом",
+        "BUTTON": "Перейти в каталог"
+      },
       "CLAIM" : {
         "TITLE" : "Список жалоб пуст",
         "SUBTITLE": "Если вы не согласны со штрафом и вынесенным в отношении вас постановлением, вы можете обжаловать его, подав соответствующую жалобу",
