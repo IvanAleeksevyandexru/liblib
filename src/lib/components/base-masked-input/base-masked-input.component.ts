@@ -157,7 +157,7 @@ export class BaseMaskedInputComponent
 
   public handleChange(value: string, e?: Event) {
     this.attemptToApplyValue(value);
-    if (!this.commitOnInput) {
+    if (this.commitOnInput) {
       this.commit(this.removeMaskSymbolsIfNeeded(value));
     }
     this.check();

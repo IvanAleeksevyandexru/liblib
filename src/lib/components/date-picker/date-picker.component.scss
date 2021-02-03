@@ -1,3 +1,12 @@
+$selected-background: #1D5DEB;
+$hover-preview-background: #D6E2FB;
+$white-background: #FFFFFF;
+$selected-text-color: #FFFFFF;
+$locked-text-color: #D1D5DF;
+$today-text-color: #FF8A00;
+$selected-today-text-color: #F8B200;
+$border-color: #99B1E6;
+
 .width-container {
   display: inline-block;
   width: 100%;
@@ -19,7 +28,7 @@
         }
         &.text-control {
           .text-input.focused {
-            border: 2px solid #99B1E6;
+            border: 2px solid $border-color;
             &.invalid {
               background: rgba(238, 63, 88, 0.16);
             }
@@ -32,10 +41,9 @@
     }
     &.expanded {
       ::ng-deep .calendar-input .text-input {
-        border-radius: 4px 4px 0 0;
         &.focused {
           &.invalid {
-            border: 2px solid #99B1E6;
+            border: 2px solid $border-color;
           }
         }
       }
@@ -45,7 +53,7 @@
       display: block;
       width: 24px;
       height: 40px;
-      top: 2px;
+      top: 6px;
       right: 12px;
       cursor: pointer;
       background: url(../../../assets/svg/calendar-icon.svg) 3px 10px no-repeat;
@@ -67,7 +75,10 @@
   }
   .calendar-container {
     width: 280px;
-    border: 1px solid #CED9F0;
+    min-width: 280px;
+    top: 4px;
+    border: 2px solid $border-color;
+    border-radius: 8px;
     box-sizing: border-box;
     overflow: hidden;
     position: absolute;
@@ -84,6 +95,7 @@
     }
     .calendar-panel {
       width: 100%;
+      border-bottom: 1px solid $border-color;
     }
     .calendar-grid-container-wrapper {
       width: 100%;
@@ -98,13 +110,6 @@
       width: 100%;
       min-width: 100%;
       flex-shrink: 0;
-      max-height: auto;
-      &.next-month {
-        border-left: solid 1px #DCDEE0;
-      }
-      &.previous-month {
-        border-right: solid 1px #DCDEE0;
-      }
       &.out-of-area {
         display: block;
         max-height: 200px;
@@ -112,116 +117,226 @@
       }
     }
     .calendar-grid {
-      display: table;
+      padding: 12px 16px 16px;
       width: 100%;
       .calendar-week-days {
-        display: table-row;
+        display: flex;
+        justify-content: space-between;
         width: 100%;
+        margin-bottom: 12px;
         .calendar-week-day {
-          display: table-cell;
-          width: 14.28%; // 1/7
+          height: 20px;
+          width: calc(100% / 7);
           text-align: center;
-          padding: 10px;
           .calendar-week-day-text {
             font-family: Lato, Arial, sans-serif;
             font-size: 14px;
             line-height: 20px;
-            color: #626A73;
+            color: #66727F;
           }
         }
       }
-      .calendar-week {
-        display: table-row;
+      .calendar-week-wrapper {
         width: 100%;
+        border-collapse: unset;
+      }
+
+      .calendar-week {
         .calendar-day {
-          display: table-cell;
-          width: 14.28%; // 1/7
+          width: calc(100% / 7);
+          border-bottom: 4px solid $white-background;
+          border-top: 4px solid $white-background;
+          padding: 0 2px;
           text-align: center;
-          padding: 10px;
           cursor: pointer;
           box-sizing: border-box;
+
+          .calendar-day-content {
+            border-radius: 8px;
+          }
+
           .calendar-day-text {
             font-family: Lato, Arial, sans-serif;
-            font-size: 14px;
-            line-height: 20px;
-            color: #101214;
+            font-size: 16px;
+            line-height: 28px;
+            color: #0B1F33;
           }
+
           &.today {
-            position: relative;
             .calendar-day-text {
+              color: $today-text-color;
+              font-weight: bold;
             }
-            :after {
-              content: '*';
-              color: #B2001D;
-              position: absolute;
-              right: 3px;
-              top: 3px;
-            }
-            &:hover {
-              :after {
-                content: '*';
-                color: #B2001D;
-                position: absolute;
-                right: 1px;
-                top: 1px;
-              }
-            }
-          }
-          &.holiday {
-            .calendar-day-text {
-              color: #B2001D;
-            }
-          }
-          &:hover {
-            border: 2px solid #CED9F0;
-            padding: 8px;
-          }
-          &.locked {
-            background-color: #EEEFEF;
-            cursor: default;
-            &:hover {
-              border: none;
-            }
-            .calendar-day-text {
-              color: #A8ACB1;
-            }
-          }
-          &.outer {
-          }
-          &.in-range {
-            background-color: #E7ECF7;
-            border-bottom: solid 1px #0B40B3;
-            padding-bottom: 9px;
-            .calendar-day-text {
-              color: #0B40B3;
-            }
-            &.holiday {
+            &.selected, &.in-range, &.range-start, &.range-end {
               .calendar-day-text {
-                color: #B2001D;
+                color: $selected-today-text-color!important;
               }
             }
           }
-          &.range-start {
-            background-image: url(../../../assets/svg/calendar-range-start.svg);
-            background-repeat: no-repeat;
-            background-position: bottom left;
+
+          &:hover {
+            .calendar-day-content {
+              background: $hover-preview-background;
+            }
           }
-          &.range-end {
-            background-image: url(../../../assets/svg/calendar-range-end.svg);
-            background-repeat: no-repeat;
-            background-position: bottom right;
-          }
-          &.selected {
-            background-color: #0B40B3;
+
+          &.locked {
+            cursor: default;
+            .calendar-day-text {
+              color: $locked-text-color;
+            }
             &:hover {
-              border: none;
+              .calendar-day-content {
+                background: $white-background;
+              }
+            }
+          }
+
+          &.selected {
+            .calendar-day-content {
+              background: $selected-background!important;
             }
             .calendar-day-text {
-              color: white;
+              color: $selected-text-color;
+            }
+          }
+
+          &.in-range {
+            background: $selected-background;
+            .calendar-day-content,
+            &:hover .calendar-day-content {
+              background: $selected-background;
+            }
+            .calendar-day-text {
+              color: $selected-text-color;
+            }
+          }
+          &.range-start, &.in-range:first-of-type {
+            background: linear-gradient(to right, $white-background 50%, $selected-background 50%);
+            .calendar-day-content {
+              background: $selected-background;
+              .calendar-day-text {
+                color: $selected-text-color;
+              }
+            }
+          }
+          &.range-end, &.in-range:last-of-type {
+            background: linear-gradient(to right, $selected-background 50%, $white-background 50%);
+            .calendar-day-content {
+              background: $selected-background;
+              .calendar-day-text {
+                color: $selected-text-color;
+              }
+            }
+          }
+          &:last-of-type.range-start,
+          &:first-of-type.range-end,
+          &.range-start.range-end {
+            background: $white-background;
+          }
+
+          &.in-preview-range {
+            background: $hover-preview-background;
+          }
+          &.preview-range-start, &.in-preview-range:first-of-type {
+            background: linear-gradient(to right, $white-background 50%, $hover-preview-background 50%);
+            .calendar-day-content {
+              background: $hover-preview-background;
+            }
+          }
+          &.preview-range-end, &.in-preview-range:last-of-type {
+            background: linear-gradient(to right, $hover-preview-background 50%, $white-background 50%);
+            .calendar-day-content {
+              background: $hover-preview-background;
+            }
+          }
+          &:last-of-type.preview-range-start,
+          &:first-of-type.preview-range-end {
+            background: $white-background;
+          }
+
+          &.empty-day {
+            cursor: default;
+            &.range-start, &.range-end {
+              background: $white-background;
+            }
+            &.in-range {
+              background: $selected-background;
+            }
+            &.in-preview-range {
+              background: $hover-preview-background
+            }
+          }
+
+        }
+
+        &:first-of-type {
+          .calendar-day:first-of-type {
+            &.in-preview-range, &.preview-range-end, &.in-range, &.range-end {
+              .calendar-day-content {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                position: relative;
+                &:before {
+                  position: absolute;
+                  width: 18px;
+                  height: 28px;
+                  left: -18px;
+                  top: 0;
+                  content: '';
+                }
+              }
+            }
+            &.in-preview-range, &.preview-range-end {
+              .calendar-day-content:before {
+                background: $hover-preview-background;
+              }
+            }
+            &.in-range, &.range-end {
+              .calendar-day-content:before {
+                background: $selected-background;
+              }
+            }
+          }
+        }
+
+        &:last-of-type {
+          .calendar-day:last-of-type {
+            &.in-preview-range, &.preview-range-start, &.in-range, &.range-start {
+              .calendar-day-content {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                position: relative;
+                &:after {
+                  position: absolute;
+                  width: 18px;
+                  height: 28px;
+                  right: -18px;
+                  top: 0;
+                  content: '';
+                }
+              }
+            }
+            &.in-preview-range, &.preview-range-start {
+              .calendar-day-content:after {
+                background: $hover-preview-background;
+              }
+            }
+            &.in-range, &.range-start {
+              .calendar-day-content:after {
+                background: $selected-background;
+              }
             }
           }
         }
       }
+
+    }
+  }
+
+  &.date-picker-in-dropdown {
+    .calendar-container {
+      border-color: #FFFFFF;
     }
   }
 }
