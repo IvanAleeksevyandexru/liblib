@@ -68,28 +68,7 @@ export class FeedsGepsComponent implements OnInit, OnChanges, OnDestroy {
       this.fetchFeeds()
     ])
       .subscribe(([bannerGroups, feeds]) => {
-        // this.banners = bannerGroups;
-        this.banners = [{
-          banners: [
-            {
-              bgImage: '#F3F5FB',
-              closable: true,
-              content: '<a href="/settings/mail" class="flex-container flex-row align-items-center-md4" style="padding: 24px 0;">\n' +
-                '    <div>\n' +
-                '        <img src="https://gu-st.ru/content/Banner/gepsSubscr.svg" width="40" height="40" style="margin-right: 12px;">\n' +
-                '    </div>\n' +
-                '    <div class="flex-container flex-column flex-row-md justify-between-md align-items-center-md">\n' +
-                '        <div class="text-plain" style="padding-right: 16px;">Включите онлайн-доставку юридически значимых уведомлений от органов государственной власти</div>\n' +
-                '        <div class="link-plain mt-8 mt-md-0">Подробнее</div>\n' +
-                '    </div>\n' +
-                '</a>',
-              mnemonic: 'lk-geps-subscribed',
-              orderNumber: 1
-            }
-          ],
-          bgImage: '',
-          group: 'lk-geps'
-        }]
+        this.banners = bannerGroups;
         this.handleFeeds(feeds);
         this.yaMetricService.initBannerYaMetric(bannerGroups);
       }, () => {
