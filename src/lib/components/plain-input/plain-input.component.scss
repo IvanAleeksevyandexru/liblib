@@ -120,6 +120,8 @@ textarea.text-input {
   }
 
   &.bg-white {
-    background: #FFFFFF;
+    input {
+      background: #FFFFFF;
+    }
   }
 }
