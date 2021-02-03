@@ -10,6 +10,13 @@
     box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
   }
 
+  &.simple {
+    padding: 0;
+    border: none;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
   .title {
     font: bold 16px/24px Lato, Arial, sans-serif, "sans-serif";
   }

@@ -40,7 +40,7 @@ export class BaseMaskedInputComponent
   @Input() public name?: string;
   @Input() public formControlName?: string;
   @Input() public id?: string;
-  @Input() public contextClass?: string;  // маркировочный класс для deep стилей
+  @Input() public contextClass?: string; // маркировочный класс для deep стилей
   @Input() public placeholder?: string;
   @Input() public autocomplete?: InputAutocomplete | string;
   @Input() public clearable = false;
@@ -57,6 +57,8 @@ export class BaseMaskedInputComponent
   // маска - это массив символов и/или регэкспов, каждый ответственен за свой символ в поле
   // пример: ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
   @Input() public mask: (value: string) => Array<string | RegExp> | Array<string | RegExp>;
+  // позиция курсора при получении фокуса
+  @Input() public positionInInput = 0;
   // если true показывает и плейсхолдер-символы и константные символы
   // иначе не показывает символы до тех пор пока до них не добралась позиция ввода
   @Input() public showConstantMaskSymbols = true;
@@ -157,7 +159,7 @@ export class BaseMaskedInputComponent
 
   public handleChange(value: string, e?: Event) {
     this.attemptToApplyValue(value);
-    if (this.commitOnInput) {
+    if (!this.commitOnInput) {
       this.commit(this.removeMaskSymbolsIfNeeded(value));
     }
     this.check();
@@ -187,6 +189,10 @@ export class BaseMaskedInputComponent
         inp.setSelectionRange(0, 0);
         inp.focus();
       });
+    }
+
+    if (this.positionInInput !== 0) {
+      this.goToFixPosition(this.positionInInput, this.positionInInput);
     }
   }
 
@@ -238,6 +244,7 @@ export class BaseMaskedInputComponent
     if (!this.disabled) {
       this.writeValue(null);
       this.commit(null);
+      this.goToFixPosition(this.positionInInput, this.positionInInput);
       this.cleared.emit();
       this.returnFocus(e);
     }
@@ -302,6 +309,10 @@ export class BaseMaskedInputComponent
       this.empty = !viewValue || viewValue === this.emptyMaskedValue;
       this.changeDetection.detectChanges();
     }
+  }
+
+  public goToFixPosition(start: number, end: number): void {
+    this.inputElement.nativeElement.setSelectionRange(start, end);
   }
 
 }
