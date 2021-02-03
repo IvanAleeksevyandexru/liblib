@@ -12,6 +12,7 @@
     <div class="flex-container-md">
       {{notifier.message}}
       <a class="cancel" *ngIf="notifier.onCancel" (click)="cancelNotifier(notifier)">{{'NOTIFICATIONS.CANCEL' | libTranslate}}</a>
+      <a class="cancel" *ngIf="notifier.onAction" (click)="actionNotifier(notifier)">{{notifier.actionName || ('NOTIFICATIONS.REPEAT' | libTranslate)}}</a>
     </div>
     <a class="close" (click)="removeNotifier(notifier)" title="{{'NOTIFICATIONS.CLOSE' | libTranslate}}"></a>
   </div>
