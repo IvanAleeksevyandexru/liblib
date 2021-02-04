@@ -1,6 +1,6 @@
 {
   "name": "epgu-lib",
-  "version": "0.0.947",
+  "version": "0.0.967",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
