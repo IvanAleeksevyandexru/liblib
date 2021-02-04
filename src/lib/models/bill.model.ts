@@ -99,6 +99,8 @@ export interface BillsRequestParams {
   epgu_id?: string;
   vehicles?: boolean;
   interfaceTypeCode?: string;
+  PayerIdType?: string;
+  PayerIdNum?: string;
 }
 
 export interface Bill {
@@ -208,23 +210,24 @@ export interface SupplierSource {
 
 export interface FkPayment {
   amount: number;
-  bankName: string;
+  bankName?: string;
   bankPaymentExtId: number;
   billNumber: string;
-  changeStatus: number;
-  payDate: number;
+  changeStatus: string;
+  payDate: string;
   paymentStatus: string;
-  prDocDate: number;
+  prDocDate: string;
   prDocNum: string;
   prKbk: string;
   prOktmo: string;
+  prOkato: string;
   prPurpCode: string;
   prTaxPeriod: string;
   prTypeCode: string;
   purpose: string;
-  recInn: number;
-  recKpp: number;
-  recipientDate: number;
+  recInn: string;
+  recKpp: string;
+  recipientDate: string;
 }
 
 export interface BillResponse {
