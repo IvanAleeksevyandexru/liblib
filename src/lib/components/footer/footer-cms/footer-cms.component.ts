@@ -9,8 +9,13 @@ import { LoadService } from '../../../services/load/load.service';
   encapsulation: ViewEncapsulation.None
 })
 export class FooterCmsComponent implements OnInit {
-  constructor(public mainPage: MainPageService,
-              public loadService: LoadService) {
+
+  public config = this.loadService.config;
+
+  constructor(
+    public mainPage: MainPageService,
+    public loadService: LoadService
+  ) {
   }
 
   public ngOnInit() {

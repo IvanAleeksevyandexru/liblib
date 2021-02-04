@@ -36,13 +36,13 @@
     "FAIL": "Select the Region"
   },
   "WEEKDAYS": {
-    "MONDAY": "Mo",
-    "TUESDAY": "Tu",
-    "WEDNESDAY": "We",
-    "THURSDAY": "Th",
-    "FRIDAY": "Fr",
-    "SATURDAY": "Sa",
-    "SUNDAY": "Su"
+    "MONDAY": "mo",
+    "TUESDAY": "tu",
+    "WEDNESDAY": "we",
+    "THURSDAY": "th",
+    "FRIDAY": "fr",
+    "SATURDAY": "sa",
+    "SUNDAY": "su"
   },
   "MONTHS": {
     "JANUARY": "January",

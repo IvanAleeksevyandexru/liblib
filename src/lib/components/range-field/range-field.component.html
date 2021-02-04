@@ -2,14 +2,14 @@
   <div class="range-field">
     <div class="range-field-from">
       <lib-date-picker #fromDate
-        [(ngModel)]="fromText" 
-        [name]="name ? name + 'From' : null" 
+        [(ngModel)]="fromText"
+        [name]="name ? name + 'From' : null"
         [tabIndex]="tabIndex !== undefined ? tabIndex : null"
         [disabled]="disabled"
         [clearable]="clearable"
         [placeholder]="placeholderFrom"
         [asSimpleInput]="showPanel"
-        align="adjust"
+        align="left"
         [rangeTypeMonthPanel]="true"
         [isRange]="false"
         [textEditable]="textEditable && !blockMobileKeyboard"
@@ -23,7 +23,7 @@
         [validationMessages]="validationMessages"
         [minDate]="minDate"
         [maxDate]="showPanel ? maxDate : maxFromDate"
-        (click)="toggle(true, $event)" 
+        (click)="toggle(true, $event)"
         (changed)="handleChange(true, $event)">
       </lib-date-picker>
     </div>
@@ -32,14 +32,14 @@
     </div>
     <div class="range-field-to">
       <lib-date-picker #toDate
-        [(ngModel)]="toText" 
-        [name]="name ? name + 'To' : null" 
+        [(ngModel)]="toText"
+        [name]="name ? name + 'To' : null"
         [tabIndex]="tabIndex !== undefined ? tabIndex + 1 : null"
         [disabled]="disabled"
         [clearable]="clearable"
         [placeholder]="placeholderFrom"
         [asSimpleInput]="showPanel"
-        align="adjust"
+        align="right"
         [rangeTypeMonthPanel]="true"
         [isRange]="false"
         [textEditable]="textEditable && !blockMobileKeyboard"
@@ -53,7 +53,7 @@
         [validationMessages]="validationMessages"
         [minDate]="showPanel ? minDate : minToDate"
         [maxDate]="maxDate"
-        (click)="toggle(false, $event)" 
+        (click)="toggle(false, $event)"
         (changed)="handleChange(false, $event)">
       </lib-date-picker>
     </div>
