@@ -42,6 +42,7 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
   @Input() public showTitle = false;
   @Input() public showBullet = true;
   @Input() public target = false;
+  @Input() public skin: 'standart' | 'payment-fines' = 'standart';
 
   private perPage = this.limit;
   public containerTransform: string;
@@ -216,7 +217,8 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
     if (this.showModal) {
       this.modalService.popupInject(SliderImagesModalComponent, this.moduleRef, {
         images: this.images,
-        imageIndex: i
+        imageIndex: i,
+        skin: this.skin
       });
     }
   }

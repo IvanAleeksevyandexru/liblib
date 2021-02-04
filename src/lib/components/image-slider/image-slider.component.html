@@ -1,4 +1,4 @@
-<div class="image-slider-container" #sliderContainer [ngClass]="view">
+<div class="image-slider-container {{skin}}" #sliderContainer [ngClass]="view">
   <div class="image-slider-wrapper" #sliderWrapper>
     <div *ngIf="view === 'logos' && controlsVisible" class="image-slider-controls">
       <a class="prev-slider" (click)="slidePrev()"></a>

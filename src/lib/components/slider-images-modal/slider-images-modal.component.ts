@@ -9,6 +9,7 @@ import { SliderImage } from '../../models/slider-image';
 export class SliderImagesModalComponent implements OnInit {
 
   public images: SliderImage[];
+  public skin?: string;
   public imageIndex = 1;
   public destroy: () => {};
   public imageWidth: number;
