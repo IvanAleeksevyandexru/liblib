@@ -211,7 +211,7 @@ export interface SupplierSource {
 export interface FkPayment {
   amount: number;
   bankName?: string;
-  bankPaymentExtId: number;
+  bankPaymentExtId: string;
   billNumber: string;
   changeStatus: string;
   payDate: string;
@@ -219,7 +219,7 @@ export interface FkPayment {
   prDocDate: string;
   prDocNum: string;
   prKbk: string;
-  prOktmo: string;
+  prOktmo?: string;
   prOkato: string;
   prPurpCode: string;
   prTaxPeriod: string;
