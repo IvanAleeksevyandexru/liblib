@@ -26,6 +26,9 @@
       [forceShowStaticContent]="forceShowStatic"
       [suggestion]="showSuggestion ? suggestion : null"
       [mainPageStyle]="mainPageStyle"
+      [blockedSearchValue]="blockedSearchValue"
+      [enableLangConvert]="enableLangConvert"
+      [stopSearch]="stopSearch"
       [(ngModel)]="query"
       (searchQueryChanged)="modelChange()"
       (newSearch)="lookupItems($event)"
@@ -38,7 +41,8 @@
       (keydown)="handleKeydownNavigation($event)"
       (cleared)="clearInput()"
       (suggestionSelected)="selectSuggestion($event)"
-      (searchButtonClick)="handleSearchButtonClick($event)">
+      (searchButtonClick)="handleSearchButtonClick($event)"
+      (blockedSearchClear)="clearBlocked()">
         <div class="lookup-item" *ngIf="item">
           <div *ngIf="escapeHtml" class="item-container">{{item.formatted}}</div>
           <div *ngIf="!escapeHtml" class="item-container" [innerHTML]="item.formatted | safeHtml"></div>

@@ -42,6 +42,30 @@
 
     }
 
+    .blocked {
+      display: flex;
+      align-items: center;
+    }
+
+    .blocked-wrap {
+      position: relative;
+    }
+
+    .search-value {
+      opacity: 0.2;
+    }
+
+    .clear-blocked {
+      position: absolute;
+      background: url(../../../assets/svg/circle_close.svg) 0 0 no-repeat;
+      background-size: 100%;
+      right: -28px;
+      top: 1px;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+    }
+
     &::ng-deep {
       lib-button button {
         line-height: 16px;
@@ -313,6 +337,10 @@
         width: 32px;
         top: 23px;
 
+      }
+
+      .clear-blocked {
+        top: 6px;
       }
 
       .search-clear {

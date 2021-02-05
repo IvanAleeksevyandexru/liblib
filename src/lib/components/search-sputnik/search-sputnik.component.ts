@@ -31,6 +31,12 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Input() public mainPageStyle = false;
   @Input() public hideSearchResult = false;
   @Input() public setFocus = false;
+  // активация автоматического перевода с английского
+  @Input() public enableLangConvert = false;
+  // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
+  @Input() public blockedSearchValue = '';
+  // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
+  @Input() public stopSearch = false;
 
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
@@ -38,6 +44,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Output() public searchChanged = new EventEmitter();
   @Output() public sputnikSearchResult = new EventEmitter();
   @Output() public searchButtonClick = new EventEmitter<string>();
+  @Output() public blockedSearchClear = new EventEmitter();
   public showField = true;
 
   public searchItem: SimpleSputnikSuggest;
@@ -151,6 +158,10 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
 
   public handleSearchButtonClick(query: string): void {
     this.searchButtonClick.emit(query);
+  }
+
+  public clearBlocked(): void {
+    this.blockedSearchClear.emit();
   }
 
 }
