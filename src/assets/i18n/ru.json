@@ -49,13 +49,13 @@
     "FAIL": "Выберите регион"
   },
   "WEEKDAYS": {
-    "MONDAY": "Пн",
-    "TUESDAY": "Вт",
-    "WEDNESDAY": "Ср",
-    "THURSDAY": "Чт",
-    "FRIDAY": "Пт",
-    "SATURDAY": "Сб",
-    "SUNDAY": "Вс"
+    "MONDAY": "пн",
+    "TUESDAY": "вт",
+    "WEDNESDAY": "ср",
+    "THURSDAY": "чт",
+    "FRIDAY": "пт",
+    "SATURDAY": "сб",
+    "SUNDAY": "вс"
   },
   "MONTHS": {
     "JANUARY": "Январь",
@@ -92,6 +92,7 @@
     "NO_APARTMENT": "Нет квартиры",
     "NO_OFFICE": "Нет офиса",
     "REGION": "Регион",
+    "COUNTRY": "Страна доставки",
     "CITY": "Город",
     "DISTRICT": "Район",
     "TOWN": "Населенный пункт",
@@ -269,6 +270,11 @@
         "TITLE" : "Архив заявлений пуст",
         "SUBTITLE": "В архив можно переносить заявления, жалобы или сообщения, потерявшие для вас актуальность. В любой момент вы можете извлечь их обратно",
         "BUTTON": "Вернуться"
+      },
+      "ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,KND_APPEAL,LINKED_ACCOUNT": {
+        "TITLE": "У вас пока нет новых событий",
+        "SUBTITLE": "Если что-то произойдет, здесь появится уведомление об этом",
+        "BUTTON": "Перейти в каталог"
       },
       "CLAIM" : {
         "TITLE" : "Список жалоб пуст",

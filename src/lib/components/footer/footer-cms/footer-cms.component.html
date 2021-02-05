@@ -6,30 +6,30 @@
       <lib-accordion [closeOthers]="true">
         <lib-expansion-panel [title]="'Помощь и поддержка'" [type]="'for-footer'">
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/faq/c-1'">Вход и регистрация</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/faq/c-1'">Вход и регистрация</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/faq/voprosy_po_oplate'">Вопросы по оплате</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/faq/voprosy_po_oplate'">Вопросы по оплате</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/faq/lichnyy_kabinet'">Вопросы по личному кабинету</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/faq/lichnyy_kabinet'">Вопросы по личному кабинету</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/faq/avtovladelcam'">Автовладельцам</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/faq/avtovladelcam'">Автовладельцам</a>
           </div>
           <div>
-            <a class="footer__links" href="https://esia.gosuslugi.ru/public/ra/">Центры обслуживания</a>
+            <a class="footer__links" [href]="config.mapUrl + 'co'">Центры обслуживания</a>
           </div>
           <div>
-            <a class="footer__links footer__links--offset-none" [href]="loadService.config.betaUrl +'help'">Все вопросы и ответы</a>
+            <a class="footer__links footer__links--offset-none" [href]="config.betaUrl +'help'">Все вопросы и ответы</a>
           </div>
         </lib-expansion-panel>
         <lib-expansion-panel [title]="'Информация о портале'" [type]="'for-footer'">
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/news'">Новости</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/news'">Новости</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/payment'">Информация о платежах</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/payment'">Информация о платежах</a>
           </div>
           <div>
             <a class="footer__links" target="_blank"
@@ -37,16 +37,16 @@
                href="https://www.gosuslugi.ru/pgu/cms/content/isr/list/00000000000/121/">Правовая информация</a>
           </div>
           <div>
-            <a class="footer__links footer__links--offset-none" [href]="loadService.config.betaUrl +'new'">О портале</a>
+            <a class="footer__links footer__links--offset-none" [href]="config.betaUrl +'new'">О портале</a>
           </div>
         </lib-expansion-panel>
         <lib-expansion-panel [title]="'Мобильные приложения'" [type]="'for-footer'">
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/mobile'">Для граждан</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/mobile'">Для граждан</a>
           </div>
           <div>
             <a class="footer__links footer__links--offset-none"
-               [href]="loadService.config.betaUrl +'help/mobile-business'">Для бизнеса</a>
+               [href]="config.betaUrl +'help/mobile-business'">Для бизнеса</a>
           </div>
         </lib-expansion-panel>
         <lib-expansion-panel [title]="'Полезные ресурсы'" [type]="'for-footer'">
@@ -79,13 +79,13 @@
             <a class="footer__links" target="_blank" rel="noopener" href="https://dom.gosuslugi.ru/#/main">ГИС ЖКХ</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'migrant'">Беженцам с Юго-Востока Украины</a>
+            <a class="footer__links" [href]="config.betaUrl +'migrant'">Беженцам с Юго-Востока Украины</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'rating'">Народный рейтинг электронных госуслуг</a>
+            <a class="footer__links" [href]="config.betaUrl +'rating'">Народный рейтинг электронных госуслуг</a>
           </div>
           <div>
-            <a class="footer__links footer__links--offset-none" [href]="loadService.config.betaUrl +'esia-help'">Единая система идентификации и аутентификации</a>
+            <a class="footer__links footer__links--offset-none" [href]="config.betaUrl +'esia-help'">Единая система идентификации и аутентификации</a>
           </div>
         </lib-expansion-panel>
       </lib-accordion>
@@ -95,22 +95,22 @@
         <section>
           <div class="title-h6 dark mb-lg-24 mb-lg-24">Помощь и поддержка</div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/faq/c-1'">Вход и регистрация</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/faq/c-1'">Вход и регистрация</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/faq/voprosy_po_oplate'">Вопросы по оплате</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/faq/voprosy_po_oplate'">Вопросы по оплате</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/faq/lichnyy_kabinet'">Вопросы по личному кабинету</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/faq/lichnyy_kabinet'">Вопросы по личному кабинету</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/faq/avtovladelcam'">Автовладельцам</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/faq/avtovladelcam'">Автовладельцам</a>
           </div>
           <div>
-            <a class="footer__links" href="https://esia.gosuslugi.ru/public/ra/">Центры обслуживания</a>
+            <a class="footer__links" [href]="config.mapUrl + 'co'">Центры обслуживания</a>
           </div>
           <div>
-            <a class="footer__links footer__links--offset-none" [href]="loadService.config.betaUrl +'help'">Все вопросы и ответы</a>
+            <a class="footer__links footer__links--offset-none" [href]="config.betaUrl +'help'">Все вопросы и ответы</a>
           </div>
         </section>
       </div>
@@ -118,27 +118,27 @@
         <section>
           <div class="title-h6 dark mb-lg-24">Информация о портале</div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/news'">Новости</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/news'">Новости</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/payment'">Информация о платежах</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/payment'">Информация о платежах</a>
           </div>
           <div>
             <a class="footer__links" target="_blank" rel="noreferrer"
                href="https://www.gosuslugi.ru/pgu/cms/content/isr/list/00000000000/121/">Правовая информация</a>
           </div>
           <div>
-            <a class="footer__links footer__links--offset-none" [href]="loadService.config.betaUrl +'new'">О портале</a>
+            <a class="footer__links footer__links--offset-none" [href]="config.betaUrl +'new'">О портале</a>
           </div>
         </section>
         <section>
           <div class="title-h6 dark mt-lg-32 mb-lg-24">Мобильные приложения</div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/mobile'">Для граждан</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/mobile'">Для граждан</a>
           </div>
           <div>
             <a class="footer__links footer__links--offset-none"
-               [href]="loadService.config.betaUrl +'help/mobile-business'">Для бизнеса</a>
+               [href]="config.betaUrl +'help/mobile-business'">Для бизнеса</a>
           </div>
         </section>
       </div>
@@ -178,13 +178,13 @@
             <a class="footer__links" target="_blank" rel="noopener" href="https://dom.gosuslugi.ru/#/main">ГИС ЖКХ</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'migrant'">Беженцам с Юго-Востока Украины</a>
+            <a class="footer__links" [href]="config.betaUrl +'migrant'">Беженцам с Юго-Востока Украины</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'rating'">Народный рейтинг электронных госуслуг</a>
+            <a class="footer__links" [href]="config.betaUrl +'rating'">Народный рейтинг электронных госуслуг</a>
           </div>
           <div>
-            <a class="footer__links footer__links--offset-none" [href]="loadService.config.betaUrl +'esia-help'">Единая система идентификации и аутентификации</a>
+            <a class="footer__links footer__links--offset-none" [href]="config.betaUrl +'esia-help'">Единая система идентификации и аутентификации</a>
           </div>
         </section>
       </div>
@@ -194,36 +194,36 @@
         <section>
           <h4 class="mb-md-20">Помощь и поддержка</h4>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/faq/c-1'">Вход и регистрация</a></div>
+            <a class="footer__links" [href]="config.betaUrl +'help/faq/c-1'">Вход и регистрация</a></div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/faq/voprosy_po_oplate'">Вопросы по оплате</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/faq/voprosy_po_oplate'">Вопросы по оплате</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/faq/lichnyy_kabinet'">Вопросы по личному кабинету</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/faq/lichnyy_kabinet'">Вопросы по личному кабинету</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/faq/avtovladelcam'">Автовладельцам</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/faq/avtovladelcam'">Автовладельцам</a>
           </div>
           <div>
-            <a class="footer__links" href="https://esia.gosuslugi.ru/public/ra/">Центры обслуживания</a>
+            <a class="footer__links" [href]="config.mapUrl + 'co'">Центры обслуживания</a>
           </div>
           <div>
-            <a class="footer__links footer__links--offset-none" [href]="loadService.config.betaUrl +'help'">Все вопросы и ответы</a>
+            <a class="footer__links footer__links--offset-none" [href]="config.betaUrl +'help'">Все вопросы и ответы</a>
           </div>
         </section>
         <section>
           <h4 class="mt-md-32 mb-md-20">Информация о портале</h4>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/news'">Новости</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/news'">Новости</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/payment'">Информация о платежах</a>
+            <a class="footer__links" [href]="config.betaUrl +'help/payment'">Информация о платежах</a>
           </div>
           <div>
             <a class="footer__links" target="_blank" rel="noopener" href="https://www.gosuslugi.ru/pgu/cms/content/isr/list/00000000000/121/">Правовая информация</a>
           </div>
           <div>
-            <a class="footer__links footer__links--offset-none" [href]="loadService.config.betaUrl +'new'">О портале</a>
+            <a class="footer__links footer__links--offset-none" [href]="config.betaUrl +'new'">О портале</a>
           </div>
         </section>
       </div>
@@ -231,9 +231,9 @@
         <section>
           <h4 class="mb-md-20">Мобильные приложения</h4>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'help/mobile'">Для граждан</a></div>
+            <a class="footer__links" [href]="config.betaUrl +'help/mobile'">Для граждан</a></div>
           <div>
-            <a class="footer__links footer__links--offset-none" [href]="loadService.config.betaUrl +'help/mobile-business'">Для бизнеса</a>
+            <a class="footer__links footer__links--offset-none" [href]="config.betaUrl +'help/mobile-business'">Для бизнеса</a>
           </div>
         </section>
         <section>
@@ -271,12 +271,12 @@
             <a class="footer__links" target="_blank" rel="noopener" href="https://dom.gosuslugi.ru/#/main">ГИС ЖКХ</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'migrant'">Беженцам с Юго-Востока Украины</a>
+            <a class="footer__links" [href]="config.betaUrl +'migrant'">Беженцам с Юго-Востока Украины</a>
           </div>
           <div>
-            <a class="footer__links" [href]="loadService.config.betaUrl +'rating'">Народный рейтинг электронных госуслуг</a>
+            <a class="footer__links" [href]="config.betaUrl +'rating'">Народный рейтинг электронных госуслуг</a>
           </div>
-          <div><a class="footer__links footer__links--offset-none" [href]="loadService.config.betaUrl +'esia-help'">Единая система идентификации и аутентификации</a>
+          <div><a class="footer__links footer__links--offset-none" [href]="config.betaUrl +'esia-help'">Единая система идентификации и аутентификации</a>
           </div>
         </section>
       </div>

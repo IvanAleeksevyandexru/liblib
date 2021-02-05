@@ -57,6 +57,7 @@ export * from './multiline-input/multiline-input.component';
 export * from './multi-lookup/multi-lookup.component';
 export * from './no-permission/no-permission.component';
 export * from './notifier/notifier.component';
+export * from './page-menu/page-menu.component';
 export * from './paging-controls/paging-controls.component';
 export * from './plain-input/plain-input.component';
 export * from './pso/pso.component';
