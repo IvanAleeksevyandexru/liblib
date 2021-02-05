@@ -35,6 +35,8 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Input() public enableLangConvert = false;
   // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
   @Input() public blockedSearchValue = '';
+  // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
+  @Input() public stopSearch = false;
 
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();

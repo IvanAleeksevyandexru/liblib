@@ -53,7 +53,7 @@ export class SnippetsComponent implements OnInit {
     return {
       'snippet-equeue': snippet.type === 'EQUEUE' || snippet.type === 'ORDER',
       'snippet-pay': snippet.type === 'PAYMENT' && !feed.data.reminder,
-      'snippet-pay-reminder': snippet.type === 'PAYMENT' && feed.data.reminder,
+      'snippet-pay-reminder': snippet.type === 'PAYMENT' && !!feed.data.reminder,
       'snippet-im': snippet.type === 'IM',
       'snippet-draft': snippet.type === 'DRAFT',
     };
@@ -105,11 +105,14 @@ export class SnippetsComponent implements OnInit {
       snippet.statusId !== 3 && !!feed.data.imExpireDate;
   }
 
-  public getSnippetLinkText(snippet: SnippetModel): string {
+  public getSnippetLinkText(snippet: SnippetModel, feed: FeedModel): string {
     if (snippet.type === 'PAYMENT') {
+      if (feed.data.reminder) {
+        return 'Перейти';
+      }
       return 'Оплатить';
     } else if (snippet.type === 'DRAFT') {
-      return 'Использовать как черновик';
+      return 'Использовать';
     }
     return 'Подробнее';
   }

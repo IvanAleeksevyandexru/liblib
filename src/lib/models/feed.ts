@@ -19,9 +19,9 @@ export interface SnippetModel {
   createDate?: string;
   originalAmount?: string;
   discountDate?: string;
-  attachCnt: number;
-  deptMessageType: string;
-  'geps.receiveDatetime': string;
+  attachCnt?: number;
+  deptMessageType?: string;
+  'geps.receiveDatetime'?: string;
   preliminaryReservationDate?: string;
   type?: string;
   parentOrderId?: number;
@@ -49,7 +49,7 @@ export interface FeedDataModel {
   ipshPaymentStatus: string;
   channel?: string;
   imExpireDate?: string;
-  reminder?: boolean;
+  reminder?: string;
   orderId?: string;
   gisDoSsExtId?: string;
   gisDoLink?: string;

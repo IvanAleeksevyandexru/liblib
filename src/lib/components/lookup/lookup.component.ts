@@ -142,6 +142,8 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Input() public blockedSearchValue = '';
   // активация автоматического перевода с английского
   @Input() public enableLangConvert = false;
+  // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
+  @Input() public stopSearch = false;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();

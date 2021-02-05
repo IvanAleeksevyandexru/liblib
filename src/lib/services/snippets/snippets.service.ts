@@ -68,16 +68,29 @@ export class SnippetsService {
     return snippetCode;
   }
 
+  public navigateFromPortal(url: string, param?: any) {
+    const params = param ? `?param=${param}`: '';
+    location.href = `${this.loadService.config.lkUrl}url${params}`;
+  }
+
   public processLink(snippet: SnippetModel, feed: FeedModel): void {
     if (feed.unread) {
       this.markFeedAsRead(feed.id);
     }
 
     if (snippet.url && snippet.type === 'EQUEUE' && (feed.feedType === 'ORDER' || feed.feedType === 'DRAFT')) {
-      this.router.navigate([`order/${feed.id}`], {queryParams: {scrollTo: 'invitation'}});
+      if (this.loadService.config.viewType === 'LK') {
+        this.router.navigate([`order/${feed.id}`], {queryParams: {scrollTo: 'invitation'}});
+      } else {
+        this.navigateFromPortal(`order/${feed.id}`, {queryParams: {scrollTo: 'invitation'}});
+      }
     } else if (snippet.type === 'PAYMENT') {
       if (feed.data.reminder) {
-        this.navigateByPath(`draft/${feed.extId}`);
+        if (this.loadService.config.viewType === 'LK') {
+          this.navigateByPath(`draft/${feed.extId}`);
+        } else {
+          this.navigateFromPortal(`draft/${feed.extId}`);
+        }
       } else {
         let param = new HttpParams().set('billNumber', snippet.uin);
         switch (feed.feedType) {

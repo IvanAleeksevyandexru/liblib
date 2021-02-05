@@ -845,7 +845,8 @@ export class ConstantsService {
     FATHERHOOD_CERT: 'FATHERHOOD_CERT',
     MARRIED_CERT: 'MARRIED_CERT',
     DIVORCE_CERT: 'DIVORCE_CERT',
-    SELF_EMPLOYED: 'SELF_EMPLOYED'
+    SELF_EMPLOYED: 'SELF_EMPLOYED',
+    PARKING_PERMIT: 'REESTR_INVALIDOV'
   };
 
   public readonly FID_DOCUMENT_TYPES: DocumentType[] = [
@@ -941,8 +942,7 @@ export class ConstantsService {
 
   public readonly CONVERT_LANG = {
     RUS: {"q":"й","w":"ц","e":"у","r":"к","t":"е","y":"н","u":"г","i":"ш","o":"щ","p":"з","[":"х","{":"Х","]":"ъ","}":"Ъ",
-      "|":"/","`":"ё","~":"Ё","a":"ф","s":"ы","d":"в","f":"а","g":"п","h":"р","j":"о","k":"л","l":"д",";":"ж",":":"Ж",
-      "'":"э","\"":"Э","z":"я","x":"ч","c":"с","v":"м","b":"и","n":"т","m":"ь",",":"б","<":"Б",".":"ю",">":"Ю","/":".",
-      "?":",","@":"\"","#":"№","$":";","^":":","&":"?"}
+      "`":"ё","~":"Ё","a":"ф","s":"ы","d":"в","f":"а","g":"п","h":"р","j":"о","k":"л","l":"д",
+      "z":"я","x":"ч","c":"с","v":"м","b":"и","n":"т","m":"ь"}
   }
 }

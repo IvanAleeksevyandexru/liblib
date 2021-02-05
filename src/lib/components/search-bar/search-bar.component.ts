@@ -108,6 +108,8 @@ export class SearchBarComponent
   @Input() public blockedSearchValue = '';
   // активация автоматического перевода с английского
   @Input() public enableLangConvert = false;
+  // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
+  @Input() public stopSearch = false;
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
@@ -164,6 +166,12 @@ export class SearchBarComponent
         case 'searching': {
           if (this.searching === false && this.searchQueue.length) {
             this.dequeueUntilSearching();
+          }
+          break;
+        }
+        case 'stopSearch': {
+          if (changes[propName].previousValue && !changes[propName].currentValue) {
+            this.runOrPostponeSearch(this.query, false, false, true);
           }
           break;
         }
@@ -419,7 +427,9 @@ export class SearchBarComponent
   }
 
   public startSearch(): void {
-    this.runOrPostponeSearch(this.query, false, false, true);
+    if (!this.stopSearch) {
+      this.runOrPostponeSearch(this.query, false, false, true);
+    }
     this.searchButtonClick.emit(this.query);
   }
 
