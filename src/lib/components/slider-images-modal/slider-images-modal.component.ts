@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import { SliderImage } from '../../models/slider-image';
 
 @Component({
   selector: 'lib-slider-images-modal',
   templateUrl: './slider-images-modal.component.html',
-  styleUrls: ['./slider-images-modal.component.scss']
+  styleUrls: ['./slider-images-modal.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SliderImagesModalComponent implements OnInit {
 
@@ -17,8 +18,13 @@ export class SliderImagesModalComponent implements OnInit {
   constructor() { }
 
   public ngOnInit() {
-    this.imageWidth = this.getWindowSize().layout !== 'sm' ? 522 : 280;
-    this.imageHeight = this.getWindowSize().layout !== 'sm' ? 418 : 280;
+    if (this.skin && this.skin === 'payment-fines') {
+      this.imageWidth = this.getWindowSize().layout !== 'sm' ? 634 : 280;
+      this.imageHeight = this.getWindowSize().layout !== 'sm' ? 507 : 280;
+    } else  {
+      this.imageWidth = this.getWindowSize().layout !== 'sm' ? 522 : 280;
+      this.imageHeight = this.getWindowSize().layout !== 'sm' ? 418 : 280;
+    }
   }
 
   public onCancel(e: Event): void {

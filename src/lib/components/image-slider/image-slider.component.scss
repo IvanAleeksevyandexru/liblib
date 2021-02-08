@@ -187,5 +187,15 @@
 }
 
 .payment-fines {
-
+  &.card {
+    .image-feed-wrapper {
+      height: 140px;
+      .image-feed-container, .image-feed {
+        height: 140px;
+      }
+    }
+    .image-feed-title__bottom, .image-slider-controls {
+      display: none;
+    }
+  }
 }

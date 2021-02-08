@@ -151,6 +151,9 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
         this.setElementWidth(this.sliderWrapper.nativeElement, containerWidth + paddings);
         this.slidesWidthToSet = containerWidth;
       } else {
+        if (this.skin === 'payment-fines' && this.view === 'card') {
+          this.slidesWidth = 200;
+        }
         const sliderWrapperWidth = this.perPage * this.slidesWidth + (this.perPage - 1) * this.slidesOffset + paddings;
         if (this.view === 'logos') {
           this.setElementWidth(this.sliderFeedWrapper.nativeElement, sliderWrapperWidth - paddings);
@@ -162,11 +165,12 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
 
       this.setElementWidth(this.sliderFeedContainer.nativeElement, this.imagesLength * (this.slidesOffset + this.slidesWidth));
       if (this.view === 'simple') {
-        const wrapperHeight = this.showTitle ? this.slidesHeight + 72 : this.slidesHeight;
+        const increaseHeight = this.skin && this.skin === 'payment-fines' ? 96 : 72;
+        const wrapperHeight = this.showTitle ? this.slidesHeight + increaseHeight : this.slidesHeight;
         this.renderer.setStyle(this.sliderFeedWrapper.nativeElement, 'height', `${wrapperHeight}px`);
       }
       if (this.view === 'card') {
-        this.slidesHeight = SLIDES_HEIGHT_CARD;
+        this.slidesHeight = this.skin == 'payment-fines' ? 140 : SLIDES_HEIGHT_CARD;
       }
       if (this.showByIndex) {
         this.slideTo(this.showByIndex);
