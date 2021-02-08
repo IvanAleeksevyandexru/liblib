@@ -25,7 +25,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
   private externalUrl = '';
   private hideLevels = [];
   public suggestionsLength = 0;
-  public firstInSuggestion: Addresses = null;
+  public firstInSuggestion = new BehaviorSubject<Addresses>(null);
   public searchComplete = new BehaviorSubject<boolean>(false);
   public canOpenFields = new BehaviorSubject<boolean>(false);
   public isOpenedFields = new BehaviorSubject<boolean>(false);
@@ -208,7 +208,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
   }
 
   public search(query: string) {
-    this.firstInSuggestion = null;
+    this.firstInSuggestion.next(null);
     this.resetSearchComplete(false);
     this.qc = '';
     const url = `${this.externalApiUrl ? this.externalApiUrl : this.loadService.config.nsiApiUrl}dadata/suggestions`;
@@ -219,9 +219,9 @@ export class DadataService implements AutocompleteSuggestionProvider {
     }).pipe(map(res => {
       this.suggestionsLength = res.suggestions.addresses.length;
       if (this.suggestionsLength) {
-        this.firstInSuggestion = res.suggestions.addresses[0];
+        this.firstInSuggestion.next(res.suggestions.addresses[0]);
       } else {
-        this.firstInSuggestion = null;
+        this.firstInSuggestion.next(null);
         this.qc = '6';
         this.isWidgetVisible.next(false);
       }
