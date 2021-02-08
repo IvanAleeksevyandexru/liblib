@@ -1,4 +1,8 @@
 export interface SnippetModel {
+  lastName?: string;
+  firstName?: string;
+  middleName?: string;
+  birthDate?: string;
   status?: string;
   orgName?: string;
   address?: string;
