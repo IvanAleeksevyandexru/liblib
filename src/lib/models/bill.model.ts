@@ -101,7 +101,7 @@ export interface Bill {
   addAttrs: BillAttr[];
   amount: number;
   billDate: string;
-  billId: string;
+  billId: number;
   billName: string;
   billNumber: string;
   signature?: string;
@@ -175,6 +175,7 @@ export interface PaidId {
 }
 
 export interface BillLink {
+  amount: number;
   comment: string;
   billDate: string;
   supplierFullName: string;
