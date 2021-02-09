@@ -40,6 +40,16 @@
 
       position: relative;
       padding: 0 15px 0 36px;
+      &.child {
+        padding: 0 15px 0 24px;
+        margin-left: 36px;
+        &:before {
+          content: '—';
+          display: flex;
+          align-items: center;
+          height: 100%;
+        }
+      }
 
       &.services:before {
         background: url(../../../assets/svg/search-icons/service-suggest.svg) no-repeat;
@@ -70,6 +80,35 @@
         position: absolute;
         top: 0;
         left: 0;
+      }
+    }
+  }
+}
+
+.main-page-style {
+  ::ng-deep {
+    .search-input .lookup-item .item-container {
+      .icon {
+        padding: 0 24px 0 16px;
+
+        &.suggests:before {
+          background: url(../../../assets/svg/search-icons/suggest-new.svg) no-repeat 100%;
+          width: 24px;
+          height: 24px;
+        }
+
+        &.info:before {
+          width: 22px;
+          height: 22px;
+          background: url(../../../assets/svg/search-icons/info-suggest-new.svg) no-repeat;
+        }
+
+        &:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
       }
     }
   }

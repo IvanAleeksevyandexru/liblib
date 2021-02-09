@@ -64,6 +64,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   private feedsUpdateSubscription: Subscription;
   private loadedFeedsCount = 0;
   private showMoreCount = 0;
+  private afterFirstSearch = false;
   public isHeader: boolean;
 
   constructor(
@@ -82,7 +83,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public ngOnInit() {
     HelperService.mixinModuleTranslations(this.translate);
     this.getUserData();
-    this.getFeeds();
+    if (!this.afterFirstSearch) {
+      this.getFeeds();
+    }
     this.updateFeeds();
     this.isHeader = this.page === 'header';
   }
@@ -131,6 +134,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getFeeds(lastFeedId: number | string = '', lastFeedDate: Date | string = '', query = '', pageSize = ''): void {
+    this.afterFirstSearch = true;
     this.allFeedsLoaded = false;
     this.searching.emit(true);
     this.feedsSubscription = this.feedsService.getFeeds({
@@ -312,8 +316,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     return snippet.type === 'PAYMENT' && feed.status !== 'reject_no_pay' && !!snippet.sum;
   }
 
+  private isOrderReject(snippet: SnippetModel, feed: FeedModel): boolean {
+    return snippet.type === 'PAYMENT' && feed.feedType === 'ORDER' && feed.status === 'reject';
+  }
+
   public showSnippets(snippet: SnippetModel, feed: FeedModel): boolean {
-    if (this.isIpshAborted(feed)) {
+    if (this.isIpshAborted(feed) || this.isOrderReject(snippet, feed)) {
       return false;
     }
     if (this.checkSnippetStatus(snippet, feed)) {
@@ -453,7 +461,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
     if (!this.isLk) {
       location.href = `${this.loadService.config.urlLk}` + 'notifications';
-    } else {
+    }
+
+    if (this.page === 'overview') {
       this.router.navigate(['/notifications']);
     }
   }

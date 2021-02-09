@@ -47,7 +47,7 @@
       <div class="feed-item-controls mt-8">
         <div class="flex-container feed-item-controls-buttons align-items-center">
           <div class="details hide show-md" *ngIf="isAmount(feed)">
-            <p class="title-h6">{{feed.data.snippets[0].originalAmount + ' ₽'}}</p>
+            <p class="title-h6">{{feed.data.snippets[0].originalAmount}} <span class="rub-bold black">Р</span></p>
           </div>
           <div class="details hide show-md" *ngIf="isAttach(feed)">
             <div class="attach-icon"></div>

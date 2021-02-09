@@ -103,10 +103,10 @@ export class ProfileService {
           canRepeat: true,
           vrfStu: object.vrfStu,
           type: object.type,
-          serviceUrl: '10052/1',
+          // serviceUrl: '10052/1',
           empty: {
-            title: 'Добавьте паспорт',
-            subtitle: 'он необходим для получения большинства услуг на портале'
+            title: 'Паспорт РФ',
+            subtitle: 'Необходим для получения большинства услуг на портале'
           },
           full: {
             title: 'Паспорт РФ',
@@ -484,10 +484,9 @@ export class ProfileService {
           canDelete: false,
           canEdit: object.vrfValStu === 'VERIFICATION_FAILED',
           canRepeat: object.vrfValStu === 'VERIFICATION_FAILED',
-          ...(object.vrfValStu === 'VERIFICATION_FAILED' ?
+          ...(!object.number && object.vrfValStu === 'VERIFICATION_FAILED' ?
               {
-                notification: 'Не найден в базе данных ПФР. Проверьте корректность данных документа',
-                warning: true
+                notification: 'Не найден в базе данных ПФР. Введите СНИЛС ребенка вручную'
               } : {}
           ),
           ...(object.vrfValStu === 'VERIFYING' ?
@@ -813,6 +812,28 @@ export class ProfileService {
               }
             ]
           })
+        };
+      }
+      case this.DOCUMENT_TYPES.PARKING_PERMIT: {
+        return {
+          canDetails: false,
+          canEdit: false,
+          canDelete: true,
+          statusMessage: object.state === 'process' ? `Начнет действовать с ${object.dateFrom}` :
+            object.state === 'failed' ? 'Истекает срок действия разрешения' : '',
+          full: {
+            title: 'Разрешение на парковку для инвалидов'
+          },
+          fields: [
+            {
+              title: '',
+              value: `${object.model} ${object.number}`
+            },
+            {
+              title: 'Действительно до',
+              value: object.dateTo
+            }
+          ]
         };
       }
       default:

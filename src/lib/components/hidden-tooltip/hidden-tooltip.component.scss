@@ -5,6 +5,11 @@
   padding-left: 17px;
   user-select: none;
 
+  &.large {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
   &:before {
     content: '';
     position: absolute;
@@ -91,5 +96,20 @@
     width: max-content;
     text-align: left;
     top: 22px;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .caption {
+    padding-left: 24px;
+
+    &.closed:before {
+      top: 5px;
+    }
+
+    &.large {
+      font-size: 16px;
+      line-height: 24px;
+    }
   }
 }

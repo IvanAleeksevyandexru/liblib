@@ -1,7 +1,7 @@
 <div class="actions-menu-button hide-lg" [class.disabled]="disabled" (click)="showMenu = true"></div>
 <div
   class="actions-menu"
-  [classList]="{'hide-lg': actions.length <= countOutside, 'active': showMenu, 'disabled': disabled}"
+  [ngClass]="{'hide-lg': actions.length <= countOutside, 'active': showMenu, 'disabled': disabled}"
 >
   <ng-container *ngFor="let link of actions; let i = index">
     <div class="mb-16" [class.hide-lg]="i < countOutside">
@@ -17,7 +17,7 @@
   </ng-container>
   <a
     class="actions-menu-button"
-    [classList]="{'hide-lg': actions.length <= countOutside, 'disabled': disabled}"
+    [ngClass]="{'hide-lg': actions.length <= countOutside, 'disabled': disabled}"
     (click)="showMenu = true"
   ></a>
 </div>

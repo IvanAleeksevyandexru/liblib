@@ -1,0 +1,114 @@
+.popup {
+  padding: 0;
+  .close {
+    &:before, &:after {
+      background-color: #FFFFFF;
+    }
+  }
+}
+
+.popup-head {
+  background: url("../../../assets/img/mail-delivery/ezp-image-mob.png") rgb(16, 39, 55) 100% no-repeat;
+  width: 100%;
+  height: 200px;
+  background-size: contain;
+}
+
+.popup-body {
+  padding: 16px;
+}
+
+.post-line {
+  height: 8px;
+  background-image: url('../../../assets/img/mail-delivery/post-line.svg');
+  width: 100%;
+}
+
+.ml-40 {
+  margin-left: 40px;
+}
+
+.buttons-wrapper {
+  lib-button + lib-button {
+    margin-top: 20px;
+    display: block;
+  }
+}
+
+.error {
+  display: flex;
+  align-items: flex-start;
+
+  .error-icon {
+    width: 24px;
+    height: 24px;
+    background: url(../../../assets/svg/error.svg) 0 0 no-repeat;
+    margin-right: 8px
+  }
+
+  .delivery-error-text {
+    color: #DF0024;
+    max-width: calc(100% - 32px);
+  }
+}
+
+.address-wrapper {
+  margin-left: 40px;
+  margin-top: 8px;
+}
+
+@media all and (min-width: 768px) {
+  .popup {
+    width: 645px;
+    border-radius: 4px;
+  }
+
+  .popup-head {
+    background: url("../../../assets/img/mail-delivery/ezp-image-tab.png") no-repeat;
+    width: 100%;
+    height: 234px;
+    display: flex;
+    align-items: center;
+  }
+
+  .popup-body {
+    padding: 32px;
+    width: 100%;
+  }
+
+  .post-line {
+    width: 100%;
+  }
+
+  .buttons-wrapper {
+    display: flex;
+    lib-button + lib-button {
+      margin-left: 24px;
+      margin-top: 0;
+    }
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .popup {
+    width: 870px;
+    border-radius: 4px;
+  }
+
+  .popup-head {
+    background: url("../../../assets/img/mail-delivery/ezp-image-dk.png") no-repeat;
+    width: 100%;
+    height: 234px;
+    display: flex;
+    align-items: center;
+  }
+
+  .popup-body {
+    padding: 40px;
+    width: 100%;
+  }
+
+  .popup-title {
+    max-width: 60%;
+  }
+}

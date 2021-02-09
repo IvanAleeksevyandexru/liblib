@@ -26,9 +26,9 @@ export class BannersService {
   public getBanners(bannerPlace: string, useRegion: boolean  = false): Observable<BannerGroup[]> {
 
     const params: { [key: string]: string } = {
+      _: Math.random().toString(),
       groups: bannerPlace,
       platform: 'EPGUV3_DESK',
-      _: Math.random().toString()
     };
     if (useRegion) {
       params.region = this.cookieService.get('userSelectedRegion') || '00000000000';

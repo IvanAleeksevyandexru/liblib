@@ -145,7 +145,7 @@ export class DropdownSimpleComponent implements OnInit, AfterViewInit, OnChanges
       this.opened.emit();
       this.updateScrollBars();
       if (this.currentItem) {
-        ListItemsAccessoryService.scrollTo(this.scrollableArea, this.currentItem.findIndexAmong(this.internalItems));
+        ListItemsAccessoryService.scrollTo(this.scrollComponent, this.currentItem.findIndexAmong(this.internalItems));
       }
     }
   }

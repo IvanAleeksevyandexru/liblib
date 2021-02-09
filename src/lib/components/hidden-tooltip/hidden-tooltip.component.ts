@@ -7,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class HiddenTooltipComponent implements OnInit {
   @Input() public caption = ''; // Заголовок, клик по которому будет скрывать/раскрывать контент
+  @Input() public large = false; // false — 12px/16px | true — 14px/20px(mobile) 16px/24px(tablet,desktop)
   @Input() public hidden = true; // Состояние видимости контента
   @Input() public offset = true; // Отступы, по умолчанию активны
   @Input() public arrowHidden = false; // скрыть стрелку состояния видимости

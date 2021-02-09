@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EsiaApiService } from './esia-api-lib.service';
+import { MailDeliveryService } from './mail-delivery.service';
 
-describe('EsiaApiService', () => {
-  let service: EsiaApiService;
+describe('MailDeliveryService', () => {
+  let service: MailDeliveryService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(EsiaApiService);
+    service = TestBed.inject(MailDeliveryService);
   });
 
   it('should be created', () => {

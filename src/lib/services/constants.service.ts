@@ -165,8 +165,7 @@ export class ConstantsService {
     {
       id: 'mail',
       name: 'SETTINGS.TABS.MAIL',
-      url: '/settings/mail',
-      access: ['AL20']
+      url: '/settings/mail'
     },
     {
       id: 'esignature',
@@ -232,7 +231,7 @@ export class ConstantsService {
     {
       id: 'settings',
       name: 'MESSAGES.TABS.SETTINGS',
-      url: '/settings/notifications'
+      url: '/settings/mail'
     }
   ]);
 
@@ -270,6 +269,12 @@ export class ConstantsService {
       id: 'work',
       name: 'PROFILE.TABS.PENSION',
       url: '/profile/pension',
+      access: ['AL20']
+    },
+    {
+      id: 'privileges',
+      name: 'PROFILE.TABS.PRIVILEGES',
+      url: '/profile/privileges',
       access: ['AL20']
     },
     {
@@ -375,7 +380,7 @@ export class ConstantsService {
   public readonly FEEDS_CATEGORIES = [
     {
       text: 'Все',
-      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,KND_APPEAL',
+      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,KND_APPEAL,LINKED_ACCOUNT',
       id: 1,
       mnemonic: 'allEvents'
     },
@@ -405,7 +410,7 @@ export class ConstantsService {
     },
     {
       text: 'Системные',
-      type: 'BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE',
+      type: 'BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE,LINKED_ACCOUNT',
       id: 6,
       mnemonic: 'systemEvents'
     },
@@ -805,6 +810,7 @@ export class ConstantsService {
 
   public readonly MAIL_DELIVERY_FIRST_SUBSCRIBE_STATUSES = ['REMIND_LATER', 'NOT_SUBSCRIBED', 'DENY_SUBSCRIPTION'];
   public readonly MAIL_DELIVERY_SUBSCRIBED_STATUS = 'SUBSCRIBED';
+  public readonly MAIL_DELIVERY_RUSSIAN_POST_CODE = 'PR';
 
   public readonly INTEGRATION_MODULE_QUERY = 50;
   public readonly INTEGRATION_MODULE_APPROVE = 51;
@@ -846,7 +852,8 @@ export class ConstantsService {
     MARRIED_CERT: 'MARRIED_CERT',
     DIVORCE_CERT: 'DIVORCE_CERT',
     SELF_EMPLOYED: 'SELF_EMPLOYED',
-    DISABLED_PERSON: 'DISABLED_PERSON'
+    DISABLED_PERSON: 'DISABLED_PERSON',
+    PARKING_PERMIT: 'REESTR_INVALIDOV'
   };
 
   public readonly FID_DOCUMENT_TYPES: DocumentType[] = [
@@ -939,5 +946,4 @@ export class ConstantsService {
     'application/x-tar': 'TAR',
     'text/plain': 'TXT',
   };
-
 }

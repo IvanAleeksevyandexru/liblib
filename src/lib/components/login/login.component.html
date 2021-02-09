@@ -36,6 +36,18 @@
   </div>
 </div>
 <ng-template #loginLink>
-  <a [routerLink]="" *ngIf="!onlyIcon" (click)="login()" class="link">{{('HEADER.LOGIN_LINK' | libTranslate) || 'Войти'}}</a>
-  <div *ngIf="onlyIcon" (click)="login()" class="link"></div>
+  <ng-container *ngIf="useButton">
+    <lib-button theme="ligth" (click)="login($event)">{{'HEADER.LOGIN_LINK' | libTranslate}}</lib-button>
+    <lib-button theme="ligth" (click)="register($event)">{{'HEADER.REGISTER' | libTranslate}}</lib-button>
+  </ng-container>
+
+  <ng-container *ngIf="!useButton">
+    <a
+      [routerLink]=""
+      *ngIf="!onlyIcon"
+      (click)="login()"
+      [class.partners_link]="loadService.config.viewType === 'PARTNERS'"
+      class="link">{{'HEADER.LOGIN_LINK' | libTranslate}}</a>
+    <div *ngIf="onlyIcon" (click)="login()" class="link"></div>
+  </ng-container>
 </ng-template>

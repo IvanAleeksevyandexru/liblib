@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   height: auto;
-  background: #ffffff;
+  background: #fff;
   z-index: 2147473649; // значение перекрывающие z-index госбара на 2
   .search-box {
     position: relative;
@@ -14,45 +14,6 @@
     flex-wrap: nowrap;
     .search-input {
       width: 100%;
-      ::ng-deep {
-        .lookup-field .search-field {
-          .search-clear {
-            background: url(../../../assets/svg/circle_close.svg) 7px 13px no-repeat;
-          }
-          .search-input, .search-in-progress {
-            transition: .2s linear height;
-            height: 52px;
-          }
-        }
-        .item-wrapper {
-          position: relative;
-          display: flex;
-          width: 100%;
-          height: 100%;
-          cursor: pointer;
-          user-select: none;
-        }
-        .icon {
-          position: relative;
-          display: inline-block;
-          top: 7px;
-          left: 0;
-          background-size: 30px 30px;
-          background-repeat: no-repeat;
-          width: 30px;
-          height: 30px;
-          flex-shrink: 0;
-        }
-        .suggestion {
-          display: inline-block;
-          line-height: 40px;
-          margin-left: 39px;
-          &.with-icon {
-            color: #0173c1;
-            margin-left: 12px;
-          }
-        }
-      }
     }
     .button-search {
       width: 80px;
@@ -98,27 +59,11 @@
   .popup-content-box {
     .search-box {
       padding: 20px 0;
-      .search-input {
-        ::ng-deep {
-          .lookup-field .search-field {
-            .search-input, .search-in-progress {
-              height: 40px;
-              font-size: 14px;
-            }
-            .search-in-progress .search-in-progress-cell {
-              top: -13px;
-            }
-            .search-clear {
-              top: -5px;
-            }
-          }
-        }
-      }
       .button-search {
         width: 40px;
         height: 40px;
         margin-left: 12px;
-        background-position: 15px 10px;
+        background-position: 10px 10px;
         background-size: 20px 20px;
       }
       .close-search-popup {

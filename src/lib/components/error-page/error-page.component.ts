@@ -12,7 +12,7 @@ export class ErrorPageComponent implements OnInit {
   @Input() public subTitle: string;
   @Input() public cls?: string;
   @Input() public refUrl: string;
-  @Input() public errorType: 'http' | 'address' | 'server' | 'developing' | 'order';
+  @Input() public errorType: 'http' | 'address' | 'server' | 'developing' | 'order' | 'account';
   @Input() public imgPosition: 'left' | 'right';
 
   public location = window.location.href;

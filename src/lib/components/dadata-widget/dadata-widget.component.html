@@ -7,7 +7,7 @@
     <lib-autocomplete #autocomplete
                       contextClass="dadata-autocomplete"
                       [tabIndex]="0"
-                      [invalid]="!!errorCodes.length || form.invalid || invalid"
+                      [invalid]="!!errorCodes.length || form.invalid || (invalid && !normalizeInProcess)"
                       [validationShowOn]="validationShowOn"
                       [progressive]="true"
                       [disabled]="disabled"
@@ -20,11 +20,11 @@
                       [disableClickClosing]="true"
                       [searchLastValue]="true"
                       [(ngModel)]="query"
-                      (ngModelChange)="normalizeInProcess = false"
+                      (ngModelChange)="normalizeInProcess = false;"
                       (focus)="handleFocus()"
                       (blur)="normalizeFullAddress(query, false, false, true); handleBlur();"
                       (autocompleted)="normalizeFullAddress(query, false, false, false, true)"
-                      (input)="updateCanOpenFields($event.target.value)"
+                      (input)="changeQueryHandler($event.target.value)"
                       (cleared)="onClearHandler()"
                       (fetched)="dadataService.resetSearchComplete(true)"
                       [suggestionsProvider]="dadataService">
@@ -51,6 +51,13 @@
       </div>
     </div>
     <div *ngIf="isOpenedFields | async" class="mt-32 extended-fields">
+      <div *ngIf="countries?.length" class="address-row">
+        <div class="address-item">
+          <label class="input-label" for="country">{{'DADATA.COUNTRY' | libTranslate}}</label>
+          <lib-dropdown [converter]="converter" id="country" [items]="countries"
+                        formControlName="country"></lib-dropdown>
+        </div>
+      </div>
       <div class="address-row">
           <div *ngIf="formConfig.region.visible" class="address-item">
             <label class="input-label" for="region">{{'DADATA.REGION' | libTranslate}}</label>
@@ -98,9 +105,12 @@
 
         <div class="address-item index-item">
           <label class="input-label" for="index">{{'DADATA.INDEX' | libTranslate}}</label>
-          <lib-base-masked-input [mask]="validations.masks.index" tabIndex="18" [clearable]="true" [maxlength]="6" formControlName="index"
+          <lib-base-masked-input *ngIf="indexMask" [mask]="indexMask" tabIndex="18" [clearable]="true" [maxlength]="6" formControlName="index"
                                  [invalid]="formConfig.index.isInvalid || (form.get('index').errors && form.get('index').errors['minlength'])" id="index">
           </lib-base-masked-input>
+          <lib-plain-input *ngIf="!indexMask" tabIndex="18" [clearable]="true" formControlName="index"
+                                 [invalid]="formConfig.index.isInvalid || (form.get('index').errors && form.get('index').errors['minlength'])" id="index">
+          </lib-plain-input>
         </div>
         <div *ngIf="formConfig.house.visible" class="address-item address-item-with-checkbox">
           <div class="simple-field">
