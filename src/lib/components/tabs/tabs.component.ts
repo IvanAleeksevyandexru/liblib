@@ -92,6 +92,9 @@ export class TabsComponent implements OnInit, OnChanges, OnDestroy {
       this.tabsSubscription.unsubscribe();
       this.tabsService.unregister(this.name);
     }
+    if (this.activeTabSubscription) {
+      this.activeTabSubscription.unsubscribe();
+    }
   }
 
   // выделяет вкладку без срабатывания обработчиков, переходов и метрики
