@@ -28,44 +28,48 @@
   }
 }
 
-.payment-fines {
-  .popup {
-    border-radius: 12px;
-    .pay-popup-images {
-      .image-slider-wrapper {
-        position: relative;
-      }
-      .image-feed-image {
-        background-color: #86909C;
-        border-radius: 12px;
-      }
-      .image-feed-title__top {
-        border-bottom: 1px solid #99B1E6;
-        margin-bottom: 24px;
-      }
-      .image-slider-controls {
-        position: absolute;
-        top: 50%;
-        padding: 0 24px;
-        .image-slider-dots {
-          display: none;
-          visibility: hidden;
+@media all and (min-width: 768px) {
+  .payment-fines-popup {
+    .popup {
+      border-radius: 12px;
+      .pay-popup-images {
+        .image-slider-wrapper {
+          position: relative;
         }
-        .prev-slider, .next-slider {
-          background-color: unset!important;
-          width: 48px!important;
-          height: 48px!important;
+        .image-feed-image {
+          background-color: #86909C;
+          border-radius: 12px;
         }
-        .prev-slider {
-          background-image: url("../../../assets/svg/arrows/arrow-slider-prev.svg") !important;
-          .not-active {
-            background-image: url("../../../assets/svg/arrows/arrow-slider-prev.svg") !important;
+        .image-feed-title__top {
+          border-bottom: 1px solid #99B1E6;
+          margin-bottom: 24px;
+        }
+        .image-slider-controls {
+          position: absolute;
+          top: 50%;
+          padding: 0 24px;
+          .image-slider-dots {
+            display: none;
+            visibility: hidden;
           }
-        }
-        .next-slider {
-          background-image: url("../../../assets/svg/arrows/arrow-slider-next.svg")!important;
-          .not-active {
-            background-image: url("../../../assets/svg/arrows/arrow-slider-next.svg")!important;
+          .prev-slider, .next-slider {
+            background-color: unset !important;
+            width: 48px !important;
+            height: 48px !important;
+          }
+          .prev-slider {
+            background-image: url("../../../assets/svg/arrows/arrow-slider-prev.svg") !important;
+
+            .not-active {
+              background-image: url("../../../assets/svg/arrows/arrow-slider-prev.svg") !important;
+            }
+          }
+          .next-slider {
+            background-image: url("../../../assets/svg/arrows/arrow-slider-next.svg") !important;
+
+            .not-active {
+              background-image: url("../../../assets/svg/arrows/arrow-slider-next.svg") !important;
+            }
           }
         }
       }
@@ -74,10 +78,25 @@
 }
 
 @media all and (max-width: 767px) {
-  .payment-fines {
+  .popup-wrapper.payment-fines-popup {
+    background-color: #070707;
     .popup {
+      background-color: #070707;
+      .close {
+        background-color: unset;
+        box-shadow: none;
+        &:before, &:after {
+          background: #FFF;
+        }
+      }
       .image-slider-controls {
-        display: none;
+        display: none!important;
+      }
+      .image-feed-image {
+        background-color: #070707;
+      }
+      .image-feed-title__top {
+        color: #fff;
       }
     }
   }

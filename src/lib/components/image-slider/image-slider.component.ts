@@ -38,11 +38,10 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
   @Input() public showByIndex: number;
   @Input() public showModal = false;
   @Input() public enterImages = false;
-  @Input() public view: 'simple' | 'card' | 'logos' = 'simple';
+  @Input() public view: 'payment-fines' | 'payment-fines-popup' | 'simple' | 'card' | 'logos'  = 'simple';
   @Input() public showTitle = false;
   @Input() public showBullet = true;
   @Input() public target = false;
-  @Input() public skin: 'standart' | 'payment-fines' = 'standart';
 
   private perPage = this.limit;
   public containerTransform: string;
@@ -133,7 +132,7 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
       }
       // 30 - сумма padding, необходимых для отображения тени
       // 20 - отсупы для стрелок
-      const paddings = this.view === 'card' ? 30 : (this.view === 'logos' ? 20 : 0);
+      const paddings = ['payment-fines', 'payment-fines', 'card'].includes(this.view) ? 30 : (this.view === 'logos' ? 20 : 0);
       const containerWidth = this.sliderContainer.nativeElement.offsetWidth - paddings;
       if (containerWidth < SLIDES_WIDTH) {
         this.perPage = 1;
@@ -151,7 +150,7 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
         this.setElementWidth(this.sliderWrapper.nativeElement, containerWidth + paddings);
         this.slidesWidthToSet = containerWidth;
       } else {
-        if (this.skin === 'payment-fines' && this.view === 'card') {
+        if (this.view === 'payment-fines') {
           this.slidesWidth = 200;
         }
         const sliderWrapperWidth = this.perPage * this.slidesWidth + (this.perPage - 1) * this.slidesOffset + paddings;
@@ -164,13 +163,19 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
       }
 
       this.setElementWidth(this.sliderFeedContainer.nativeElement, this.imagesLength * (this.slidesOffset + this.slidesWidth));
-      if (this.view === 'simple') {
-        const increaseHeight = this.skin && this.skin === 'payment-fines' ? 96 : 72;
+      if (['payment-fines-popup', 'payment-fines', 'simple'].includes(this.view)) {
+        if(this.view ==='payment-fines-popup') {
+          this.slidesHeight = 420
+        }
+        const increaseHeight = ['payment-fines-popup', 'payment-fines'].includes(this.view) ? 96 : 72;
         const wrapperHeight = this.showTitle ? this.slidesHeight + increaseHeight : this.slidesHeight;
         this.renderer.setStyle(this.sliderFeedWrapper.nativeElement, 'height', `${wrapperHeight}px`);
       }
       if (this.view === 'card') {
-        this.slidesHeight = this.skin == 'payment-fines' ? 140 : SLIDES_HEIGHT_CARD;
+        this.slidesHeight =  SLIDES_HEIGHT_CARD;
+      }
+      if (this.view === 'payment-fines') {
+        this.slidesHeight = 140;
       }
       if (this.showByIndex) {
         this.slideTo(this.showByIndex);
@@ -222,7 +227,7 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
       this.modalService.popupInject(SliderImagesModalComponent, this.moduleRef, {
         images: this.images,
         imageIndex: i,
-        skin: this.skin
+        skin: this.view === 'payment-fines' ? 'payment-fines-popup' : ''
       });
     }
   }
