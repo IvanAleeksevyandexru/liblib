@@ -118,9 +118,6 @@
           </a>
           <a *ngIf="state === 'error'" class="link-plain" (click)="cancelReq()">Отменить</a>
         </ng-container>
-        <ng-container *ngIf="data.type === 'DISABLED_PERSON' && state === ''">
-          <a class="link-plain" (click)="repeatReq()">Обновить</a>
-        </ng-container>
       </ng-container>
     </ng-container>
   </div>
