@@ -130,6 +130,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   @Input() public shortYearFormat = false;
   @Input() public americanFormat = false; // месяц впереди, разделитель / вместо .
   @Input() public readOnly = false;
+  @Input() public handleResetFocus = false; // нужно ли убтрать фокус с поля после выбора (удалять readonly) после выбора даты в календаре, то есть после закрытия календаря
 
   // границы допустимого диапазона для ввода/выбора новых дат, могут иметь относительный формат, см HelperService.relativeDateToDate
   @Input() public minDate: Date | RelativeDate | string = new RelativeDate('start of year');
@@ -263,6 +264,9 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     this.expanded = false;
     this.detachDescriptors();
     this.closed.emit();
+    if (this.handleResetFocus) {
+      this.cancelSupressingMobileKeyboard();
+    }
   }
 
   public toggle(sourceIsInputField: boolean) {
