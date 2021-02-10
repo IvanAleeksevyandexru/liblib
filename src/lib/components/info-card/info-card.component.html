@@ -24,7 +24,7 @@
   <div class="header {{['failed', 'process'].indexOf(state) === -1 && object.gender ? object.gender : ''}}">
     <div class="title" [class.new-child]="isNew && data.type === 'CHILD'">{{object.full.title}}</div>
     <div *ngIf="isNotificationShow()" [ngClass]="object.warning ? 'notification-red': 'notification'" class="confirm"></div>
-    <div *ngIf="!isNew && (object.withVerificationIcon || state)" class="confirm {{state}}"></div>
+    <div *ngIf="!isNew && (object.withVerificationIcon || state) && !object.warning" class="confirm {{state}}"></div>
     <div *ngIf="isNew && !isNotificationShow()" class="confirm new"></div>
   </div>
   <div class="fields mt-24 mt-md-28 mb-16" *ngIf="object.fields">
@@ -79,7 +79,7 @@
              [routerLink]="editPath">Редактировать</a>
           <a *ngIf="object.canDelete" class="link-plain" (click)="delete()">Удалить</a>
         </ng-container>
-        <ng-container *ngIf="state !== '' && state !== 'verifying' && state !== 'failed'">
+        <ng-container *ngIf="state !== '' && state !== 'verifying' && state !== 'failed' && state !== 'failed_notification'">
           <a *ngIf="isPassportNotification()" class="link-plain add-link" [href]="loadService.config.betaUrl + object.serviceUrl">{{object.full.orderTitle}}</a>
           <a *ngIf="object.canEdit && editPath" class="link-plain" [queryParams]="editQueryParam ? editQueryParam : {}"
              [routerLink]="editPath">Редактировать</a>
