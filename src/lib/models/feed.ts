@@ -1,4 +1,8 @@
 export interface SnippetModel {
+  lastName?: string;
+  firstName?: string;
+  middleName?: string;
+  birthDate?: string;
   status?: string;
   orgName?: string;
   address?: string;
@@ -36,6 +40,7 @@ export interface OrderCreator {
 }
 
 export interface FeedDataModel {
+  linked_to?: string;
   parentOrderId?: number;
   imOrgName?: string;
   attachCnt?: number;

@@ -64,6 +64,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   private feedsUpdateSubscription: Subscription;
   private loadedFeedsCount = 0;
   private showMoreCount = 0;
+  private afterFirstSearch = false;
   public isHeader: boolean;
 
   constructor(
@@ -82,7 +83,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public ngOnInit() {
     HelperService.mixinModuleTranslations(this.translate);
     this.getUserData();
-    this.getFeeds();
+    if (!this.afterFirstSearch) {
+      this.getFeeds();
+    }
     this.updateFeeds();
     this.isHeader = this.page === 'header';
   }
@@ -131,6 +134,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getFeeds(lastFeedId: number | string = '', lastFeedDate: Date | string = '', query = '', pageSize = ''): void {
+    this.afterFirstSearch = true;
     this.allFeedsLoaded = false;
     this.searching.emit(true);
     this.feedsSubscription = this.feedsService.getFeeds({
@@ -581,5 +585,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         break;
     }
     return status;
+  }
+
+  public isKindergartenSnippet(feed: any): boolean {
+    return this.checkSnippetsExists(feed) && this.page === 'orders' && feed.data.snippets[0].type === 'CHILD';
   }
 }
