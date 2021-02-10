@@ -26,6 +26,9 @@
       }
       .dropdown-arrow {
         background: url(../../../assets/svg/dropdown-expand-disabled.svg) no-repeat;
+        &.disabled {
+          cursor: default;
+        }
         &:hover {
           background: url(../../../assets/svg/dropdown-expand-disabled.svg) no-repeat;
         }
