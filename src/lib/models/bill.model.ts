@@ -142,8 +142,8 @@ export interface Bill {
   vehicle?: Vehicle;
   hasPhoto?: boolean;
   attrs?: any; // Кастомный атрибут. Преобразованный addAttrs к объекту
-  isAppealAvailable?: boolean;
-  isRefundAvailable?: boolean;
+  appealAvailable?: boolean;
+  refundAvailable?: boolean;
 }
 
 export interface BillAttr {
