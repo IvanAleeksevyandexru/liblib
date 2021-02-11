@@ -240,10 +240,10 @@ export class FeedsService {
         url += `profile/family/child/${feed.extId}/docs`;
         break;
       case 'KND_APPEAL':
-        url = `https://${this.config.kndDomain}appeal/${feed.extId}`;
+        url = `${this.loadService.config.kndDomain}appeal/${feed.extId}`;
         break;
       case 'KND_APPEAL_DRAFT':
-        url = `https://${this.config.kndDomain}form/appeal/${feed.extId}`;
+        url = `${this.loadService.config.kndDomain}form/appeal/${feed.extId}`;
         break;
     }
 
