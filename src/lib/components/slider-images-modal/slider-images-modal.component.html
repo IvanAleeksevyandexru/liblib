@@ -1,4 +1,4 @@
-<div class="popup-wrapper">
+<div class="popup-wrapper {{skin}}">
   <div class="popup">
     <a class="close" (click)="onCancel($event)"></a>
     <div class="pay-popup-images" *ngIf="images">
@@ -8,7 +8,8 @@
         [slidesWidth]="imageWidth"
         [slidesHeight]="imageHeight"
         [showByIndex]="imageIndex"
-        [showTitle]="true"></lib-image-slider>
+        [showTitle]="true"
+        [view]="skin"></lib-image-slider>
     </div>
   </div>
 </div>
