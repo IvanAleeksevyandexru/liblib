@@ -28,7 +28,6 @@ import { FooterComponent } from './components/footer/footer.component';
 import { FooterCmsComponent } from './components/footer/footer-cms/footer-cms.component';
 import { FooterCopyrightComponent } from './components/footer/footer-copyright/footer-copyright.component';
 import { ModalSearchComponent } from './components/modal-search/modal-search.component';
-import { InfoCardComponent } from './components/info-card/info-card.component';
 import { SliderBannerComponent } from './components/banner-slider/banner-slider.component';
 import { StaticBannerComponent } from './components/banner-static/banner-static.component';
 import { QuizComponent } from './components/quiz/quiz.component';
@@ -167,7 +166,6 @@ registerLocaleData(localeRu, 'ru');
     SearchSputnikComponent,
     ConfirmActionComponent,
     DocumentDetailsComponent,
-    InfoCardComponent,
     SliderBannerComponent,
     StaticBannerComponent,
     QuizComponent,
@@ -311,7 +309,6 @@ registerLocaleData(localeRu, 'ru');
     SearchSputnikComponent,
     ConfirmActionComponent,
     DocumentDetailsComponent,
-    InfoCardComponent,
     SliderBannerComponent,
     StaticBannerComponent,
     QuizComponent,
