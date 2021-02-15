@@ -27,6 +27,8 @@ export enum CounterType {
   PARTNERS = 'PARTNERS',
   ORDER = 'ORDER',
   CLAIM = 'CLAIM',
+  COMPLEX_ORDER = 'COMPLEX_ORDER',
+  APPEAL = 'APPEAL',
   PAYMENT = 'PAYMENT',
   DRAFT = 'DRAFT',
   EQUEUE = 'EQUEUE',
