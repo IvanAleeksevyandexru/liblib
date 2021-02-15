@@ -223,9 +223,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           this.query = '';
           this.canOpenFields.next(true);
         }
-        this.form.get('index').setValidators(validators)
+        this.form.get('index').setValidators(validators);
       });
-      country.setValue(this.defaultCountry)
+      country.setValue(this.defaultCountry);
     }
 
     this.controlNames = Object.keys(this.form.controls).filter(key => this.excluded.indexOf(key) === -1);
@@ -284,6 +284,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           kladrCode: this.dadataService.kladrCode,
           regionCode: (this.dadataService.kladrCode && this.dadataService.kladrCode.substring(0, 2)) || ''
         };
+        this.dadataService.addTypesToCommitValue(commitValue);
         this.normalizeInProcess = false;
         this.commit(commitValue);
       } else {

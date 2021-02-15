@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
 import {
-  Addresses,
+  Addresses, DadataResult,
   FormConfig,
   NormalizedAddressElement,
   NormalizedData,
@@ -36,63 +36,63 @@ export class DadataService implements AutocompleteSuggestionProvider {
   public prefixes = {
     region: {
       abbr: 'обл.',
-      shortType: ''
+      shortType: '', type: ''
     },
     city: {
       abbr: 'г.',
-      shortType: ''
+      shortType: '', type: ''
     },
     district: {
       abbr: 'р-н.',
-      shortType: ''
+      shortType: '', type: ''
     },
     town: {
       abbr: 'пос.',
-      shortType: ''
+      shortType: '', type: ''
     },
     inCityDist: {
       abbr: 'тер.',
-      shortType: ''
+      shortType: '', type: ''
     },
     street: {
       abbr: 'ул.',
-      shortType: ''
+      shortType: '', type: ''
     },
     additionalArea: {
       abbr: 'доп. тер.',
-      shortType: ''
+      shortType: '', type: ''
     },
     additionalStreet: {
       abbr: 'доп. ул.',
-      shortType: ''
+      shortType: '', type: ''
     },
     house: {
       abbr: 'д.',
-      shortType: ''
+      shortType: '', type: ''
     },
     building1: {
       abbr: 'корп.',
-      shortType: ''
+      shortType: '', type: ''
     },
     building2: {
       abbr: 'стр.',
-      shortType: ''
+      shortType: '', type: ''
     },
     apartment: {
       abbr: 'кв.',
-      shortType: ''
+      shortType: '', type: ''
     },
     index: {
       abbr: 'инд.',
-      shortType: ''
+      shortType: '', type: ''
     },
     geoLat: {
       abbr: 'шир.',
-      shortType: ''
+      shortType: '', type: ''
     },
     geoLon: {
       abbr: 'долг.',
-      shortType: ''
+      shortType: '', type: ''
     }
   };
 
@@ -173,7 +173,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
       apartment: new FormControl(''),
       apartmentCheckbox: new FormControl(false),
       apartmentCheckboxClosed: new FormControl(false),
-      index: new FormControl('', ),
+      index: new FormControl(''),
       geoLat: new FormControl(''),
       geoLon: new FormControl(''),
     });
@@ -333,10 +333,12 @@ export class DadataService implements AutocompleteSuggestionProvider {
     if (prefix) {
       prefix.abbr = elem.shortType + '.' || '';
       prefix.shortType = elem.shortType + '.' || '';
+      prefix.type = elem.type;
     } else {
       this.prefixes[this.levelMap[level]] = {
         shortType: elem.shortType + '.' || '',
-        abbr: elem.shortType + '.' || ''
+        abbr: elem.shortType + '.' || '',
+        type: elem.type || ''
       };
     }
   }
@@ -417,7 +419,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
             isInvalid = isHiddenLvl ? false :
               this.getFormControlByLevel(3).value ? !control.value : false;
             break;
-            // Улица
+          // Улица
           case 7: {
             if (needSkipStreet) {
               isInvalid = false;
@@ -487,6 +489,15 @@ export class DadataService implements AutocompleteSuggestionProvider {
 
   public resetSearchComplete(value: boolean): void {
     this.searchComplete.next(value);
+  }
+
+  public addTypesToCommitValue(commitValue: DadataResult): void {
+    for (const key of Object.keys(commitValue)) {
+      if (['geoLat', 'geoLon', 'index'].indexOf(key) === -1 && this.prefixes[key] && commitValue[key]) {
+        commitValue[`${key}Type`] = this.prefixes[key].type;
+        commitValue[`${key}ShortType`] = this.prefixes[key].shortType.replace('.', '');
+      }
+    }
   }
 
 }
