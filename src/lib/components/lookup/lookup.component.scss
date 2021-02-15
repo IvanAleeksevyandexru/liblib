@@ -1,5 +1,14 @@
 @import '../autocomplete/autocomplete.component.scss';
 .lookup {
+  &.payment-requisites {
+    .lookup-field {
+      &.with-expand-button {
+        .expand-collapse {
+          border-left: none;
+        }
+      }
+    }
+  }
   position: relative;
   .static-list {
     position: static !important;
