@@ -1,5 +1,7 @@
-import { Component, ViewChild, ElementRef, HostListener, Input, Output, EventEmitter, SimpleChanges,
-  OnInit, OnChanges, DoCheck, AfterViewInit, OnDestroy, ChangeDetectorRef, forwardRef, Optional, Host, SkipSelf } from '@angular/core';
+import {
+  Component, ViewChild, ElementRef, HostListener, Input, Output, EventEmitter, SimpleChanges,
+  OnInit, OnChanges, DoCheck, AfterViewInit, OnDestroy, ChangeDetectorRef, forwardRef, Optional, Host, SkipSelf, ChangeDetectionStrategy
+} from '@angular/core';
 import { ControlValueAccessor, ValidationErrors, AbstractControl, ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { StandardMaskedInputComponent } from '../standard-masked-input/standard-masked-input.component';
@@ -57,6 +59,7 @@ class ParsingResult<T> {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-date-picker',
   templateUrl: 'date-picker.component.html',
   styleUrls: ['./date-picker.component.scss'],
@@ -223,6 +226,11 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       }
     }
     this.check();
+  }
+
+  public executeFunction() {
+    console.log('App Rerendered');
+    return 'This is Child Component';
   }
 
   public ngDoCheck() {

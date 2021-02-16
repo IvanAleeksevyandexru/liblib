@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterViewInit, ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -44,6 +44,7 @@ import { Width } from '../../models/width-height';
 const SHOW_ALL_MARKER = {};
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-lookup',
   templateUrl: 'lookup.component.html',
   styleUrls: ['./lookup.component.scss'],

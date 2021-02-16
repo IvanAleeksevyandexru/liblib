@@ -1,6 +1,6 @@
 import {
   Component, ViewChild, Input, Output, OnInit, OnChanges, DoCheck, OnDestroy, AfterViewInit,
-  EventEmitter, ElementRef, forwardRef, SimpleChanges, ChangeDetectorRef, Optional, Host, SkipSelf, Self
+  EventEmitter, ElementRef, forwardRef, SimpleChanges, ChangeDetectorRef, Optional, Host, SkipSelf, Self, ChangeDetectionStrategy
 } from '@angular/core';
 import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListItem, ListElement, ListItemConverter } from '../../models/dropdown.model';
@@ -22,6 +22,7 @@ import { Width } from '../../models/width-height';
  * документация по ссылке https://confluence.egovdev.ru/pages/viewpage.action?pageId=170673869
  */
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-dropdown',
   templateUrl: 'dropdown.component.html',
   styleUrls: ['./dropdown.component.scss'],
