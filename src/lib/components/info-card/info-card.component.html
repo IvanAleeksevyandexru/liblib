@@ -11,12 +11,18 @@
 
 <ng-template #empty>
   <div class="title">{{object.empty?.title}}</div>
-  <div class="subtitle mt-16">{{object.empty?.subtitle}}</div>
+  <div class="subtitle mt-16" [innerHTML]="object.empty?.subtitle"></div>
   <div class="actions mt-16">
-    <span *ngIf="!externalLink && !addPath" class="link-plain add-link" (click)="toggleForm()">Добавить</span>
-    <a *ngIf="externalLink && !addPath" class="link-plain add-link" [routerLink]="[externalLink]">Добавить</a>
-    <a *ngIf="addPath" class="link-plain add-link" [routerLink]="addPath">Добавить</a>
-    <a *ngIf="object.serviceUrl" class="link-plain" (click)="toOrder()">Заказать услугу</a>
+    <ng-container *ngIf="data.type !== 'DISABLED_PERSON'">
+      <span *ngIf="!externalLink && !addPath" class="link-plain add-link" (click)="toggleForm()">Добавить</span>
+      <a *ngIf="externalLink && !addPath" class="link-plain add-link" [routerLink]="[externalLink]">Добавить</a>
+      <a *ngIf="addPath" class="link-plain add-link" [routerLink]="addPath">Добавить</a>
+      <a *ngIf="object.serviceUrl" class="link-plain" (click)="toOrder()">Заказать услугу</a>
+    </ng-container>
+    <ng-container *ngIf="data.type === 'DISABLED_PERSON'">
+      <a class="link-plain add-link" (click)="repeatReq()">{{data.status ? 'Обновить' : 'Запросить'}}</a>
+      <a *ngIf="data.status === 'error_found'" class="link-plain add-link" [href]="object.serviceUrl">Сообщить об ошибке в ПФР</a>
+    </ng-container>
   </div>
 </ng-template>
 
@@ -114,6 +120,9 @@
             {{state === 'error' ? 'Повторить поиск' : 'Обновить'}}
           </a>
           <a *ngIf="state === 'error'" class="link-plain" (click)="cancelReq()">Отменить</a>
+        </ng-container>
+        <ng-container *ngIf="data.type === 'DISABLED_PERSON' && state === ''">
+          <a class="link-plain" (click)="repeatReq()">Обновить</a>
         </ng-container>
       </ng-container>
     </ng-container>

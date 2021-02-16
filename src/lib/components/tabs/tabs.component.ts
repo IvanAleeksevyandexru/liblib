@@ -51,7 +51,9 @@ export class TabsComponent implements OnInit, OnChanges, OnDestroy {
     this.activeTabSubscription = innerTabs.watchForActive().subscribe((tab: Tab) => {
       this.selected.emit(tab);
       this.activeTab = tab;
-      this.changeDetection.detectChanges();
+      if (!this.changeDetection['destroyed']) {
+        this.changeDetection.detectChanges();
+      }
     });
     this.selectTabByUrlIfNeeded();
     this.changeDetection.detectChanges();
