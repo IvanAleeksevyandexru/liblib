@@ -14,11 +14,6 @@ button {
     background: url(../../../assets/svg/field-icons/search-blue.svg) center no-repeat;
     cursor: pointer;
   }
-  &.loading {
-    top: 12px;
-    background: url(../../../assets/svg/search-loader.svg) center no-repeat;
-    animation: rotate 1.5s linear infinite;
-  }
   &.error {
     background: url(../../../assets/svg/field-icons/search-red.svg) center no-repeat;
   }
@@ -32,6 +27,14 @@ button {
   }
   &.error {
     background: url(../../../assets/svg/field-icons/airplane-red.svg) center no-repeat;
+  }
+}
+
+.lookup-button, .send-button {
+  &.loading {
+    top: 12px;
+    background: url(../../../assets/svg/search-loader.svg) center no-repeat;
+    animation: rotate 1.5s linear infinite;
   }
 }
 

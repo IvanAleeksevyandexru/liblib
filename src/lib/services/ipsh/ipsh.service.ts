@@ -151,27 +151,29 @@ export class IpshService {
     if (!response || !response.error) {
       return null;
     }
-    let errorType = this.getBillsErrorByCode(response && response.error && response.error.code);
-    let date: string;
-    let supplier: string;
-    if (errorType === BillsErrors.BillsDateEvaluated) {
-      date = response.error.message.match(/\d\d\.\d\d\.\d\d\d\d/)[0];
-    }
-    if (errorType === BillsErrors.BillsHasUnidentifiedBills) {
-      supplier = response && response.response.bills && response.response.bills[0] && response.response.bills[0].addAttrs &&
-        (this.getAttr(response.response.bills[0].addAttrs, 'ReceiverPdfName') ||
-          this.getAttr(response.response.bills[0].addAttrs, 'SupplierFullName'));
-      if (!supplier) {
-        errorType = BillsErrors.BillsInvalidArguments;
-      }
-    }
+    const errorType = this.getBillsErrorByCode(response && response.error && response.error.code);
+    // let date: string;
+    // let supplier: string;
+    // if (errorType === BillsErrors.BillsDateEvaluated) {
+    //   date = response.error.message.match(/\d\d\.\d\d\.\d\d\d\d/)[0];
+    // }
+    // if (errorType === BillsErrors.BillsHasUnidentifiedBills) {
+    //   supplier = response && response.response.bills && response.response.bills[0] && response.response.bills[0].addAttrs &&
+    //     (this.getAttr(response.response.bills[0].addAttrs, 'ReceiverPdfName') ||
+    //       this.getAttr(response.response.bills[0].addAttrs, 'SupplierFullName'));
+    //   if (!supplier) {
+    //     errorType = BillsErrors.BillsInvalidArguments;
+    //   }
+    // }
     return {
       code: response.error.code,
       message: response.error.message,
+      fkSmevVersion: response.error.fkSmevVersion,
+      requestId: response.error.requestId,
       type: errorType,
       billNumber,
-      date,
-      supplier
+      // date,
+      // supplier
     };
   }
 
