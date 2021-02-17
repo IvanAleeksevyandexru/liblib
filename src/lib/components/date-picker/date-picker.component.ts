@@ -228,11 +228,6 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     this.check();
   }
 
-  public executeFunction() {
-    console.log('App Rerendered');
-    return 'This is Child Component';
-  }
-
   public ngDoCheck() {
     if (this.inputElement && this.control) {
       this.inputElement.setTouched(this.control.touched);
