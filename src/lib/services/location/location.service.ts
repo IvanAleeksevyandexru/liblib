@@ -7,6 +7,7 @@ import { PlatformLocation } from '@angular/common';
 import { CountersService } from '../counters/counters.service';
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,7 @@ export class LocationService {
   };
 
   private savedDetectRegion: Region;
+  public savedDetectRegion$ = new BehaviorSubject<Region>(null);
 
   constructor(
     private http: HttpClient,
@@ -63,6 +65,7 @@ export class LocationService {
     }).pipe(
       tap((response) => {
         this.savedDetectRegion = response;
+        this.savedDetectRegion$.next(response);
       })
     );
   }
