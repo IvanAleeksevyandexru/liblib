@@ -5,9 +5,8 @@ import { Coords, Region, RegionSuggestion } from '../../models/location';
 import { LookupProvider } from '../../models/dropdown.model';
 import { PlatformLocation } from '@angular/common';
 import { CountersService } from '../counters/counters.service';
-import { of } from 'rxjs';
+import { of, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable({
   providedIn: 'root'
