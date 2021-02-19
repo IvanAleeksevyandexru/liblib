@@ -1,6 +1,8 @@
 {
   "HEADER": {
     "PERSONAL_AREA": "Personal Area",
+    "LOGIN_LINK": "Log in",
+    "REGISTER": "Register",
     "EXIT": "Exit",
     "ALL_ROLES": "All my roles",
     "MENU": {
@@ -8,13 +10,18 @@
       "NEWS": "News",
       "DOCS": "Documents",
       "SERVICES": "Services",
-      "PAYMENT": "Payment",
+      "PAYMENT": "Payments",
       "SUPPORT": "Support",
       "PROFILE": "Profile",
       "SETTINGS": "Settings and Security",
+      "SETTINGS_MENU": "Settings",
       "LOGIN_IE": "Login as businessman",
       "LOGIN_ORG": "Login as organization",
-      "CHANGE_ROLE": "Change role"
+      "CHANGE_ROLE": "Change role",
+      "ORDERS": "Statements",
+      "MESSAGES": "State post",
+      "BLOG": "Blog",
+      "HELP": "Support"
     },
     "CATALOG": {
       "ALL": "Catalog all",
@@ -112,11 +119,26 @@
     "NO_FIND_OPTION": "No required option found?",
     "ENTER_MANUALLY": "Enter the address manually"
   },
+  "DISCLAIMER": {
+    "TITLE": "Attention!",
+    "SUBSCRIBE": "Subscribe to notification",
+    "ADDRESS_LABEL": "E-mail",
+    "ERROR_LABEL": "We will let you know when the problem is resolved",
+    "GET_NOTIFICATION": "Get notification",
+    "LOADER": "Wait, please",
+    "ERROR": "Error. Try again",
+    "SUCCESS": "The notification will come to {{email}}",
+    "ALREADY_SUBSCRIBE": "{{email}} already subscribed"
+  },
   "LANG_WARN": {
     "TITLE": "This section is only available in Russian",
     "TEXT": "We're sorry, but other services currently are not presented in English",
     "GET_BACK": "Get back",
     "CONTINUE": "Continue"
   },
-  "BACK": "Back"
+  "BACK": "Back",
+  "LANG": {
+    "ru": "RUS",
+    "en": "GBR"
+  }
 }

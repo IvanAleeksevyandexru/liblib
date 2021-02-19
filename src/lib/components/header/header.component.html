@@ -11,7 +11,7 @@
         <lib-location-select></lib-location-select>
       </div>
 
-      <div *ngIf="!user.authorized && !comingSoon" class="hide show-lg">
+      <div *ngIf="!user.authorized && !comingSoon && roleChangeAvailable" class="hide show-lg">
         <div class="flex-container align-items-center">
           <div *ngFor="let role of userRoles; let first = first">
             <a class="link-plain" (click)="updateRole(role.code)"
@@ -65,7 +65,7 @@
         <lib-logo width="126" [logoHref]="logoHref"></lib-logo>
       </div>
       <div *ngIf="!user.authorized" class="col-lg-2 hide show-lg">
-        <div class="flex-container align-items-center roles-list">
+        <div *ngIf="roleChangeAvailable" class="flex-container align-items-center roles-list">
           <span class="user-role" [class.opened]="showRolesList" (click)="openRolesList()">{{getRoleName(activeRoleCode)}}</span>
 
           <div class="list" *ngIf="showRolesList">
@@ -148,6 +148,10 @@
               [links]="links">
             </lib-user-menu>
           </div>
+        </div>
+
+        <div *ngIf="languageChangeAvailable" class="ml-16">
+          <lib-language-select></lib-language-select>
         </div>
       </div>
     </div>

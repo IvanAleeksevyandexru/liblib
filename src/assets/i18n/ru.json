@@ -441,5 +441,9 @@
       "VALIDITY_TO": "по"
     }
   },
-  "BACK": "Назад"
+  "BACK": "Назад",
+  "LANG": {
+    "ru": "RUS",
+    "en": "GBR"
+  }
 }

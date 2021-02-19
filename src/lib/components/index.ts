@@ -41,6 +41,7 @@ export * from './informer/informer.component';
 export * from './integration-base/integration-base.component';
 export * from './invalid-results-tip/invalid-results-tip.component';
 export * from './lang-warn-modal/lang-warn-modal.component';
+export * from './language-select/language-select.component';
 export * from './loader/loader.component';
 export * from './location/location.component';
 export * from './location-select/location-select.component';
