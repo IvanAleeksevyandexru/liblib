@@ -31,6 +31,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Input() public mainPageStyle = false;
   @Input() public hideSearchResult = false;
   @Input() public setFocus = false;
+  @Input() public setSearchValue = '';
   // активация автоматического перевода с английского
   @Input() public enableLangConvert = false;
   // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
@@ -84,9 +85,12 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   public ngAfterViewInit() {
   }
 
-  public ngOnChanges({setFocus}: SimpleChanges) {
+  public ngOnChanges({setFocus, setSearchValue}: SimpleChanges) {
     if (setFocus && setFocus.currentValue) {
       this.lookup.setSearchBarFocus();
+    }
+    if (setSearchValue && setSearchValue.currentValue) {
+      this.lookup.setSearchBarFocus(setSearchValue.currentValue);
     }
   }
 

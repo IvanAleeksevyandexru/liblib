@@ -433,4 +433,9 @@ export class SearchBarComponent
     this.searchButtonClick.emit(this.query);
   }
 
+  public setSearchValueFromParent(value): void {
+    this.query = value;
+    this.startSearch();
+  }
+
 }

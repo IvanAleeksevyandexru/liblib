@@ -294,7 +294,12 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     this.focus.emit();
   }
 
-  public setSearchBarFocus(): void {
+  public setSearchBarFocus(setSearchValue?): void {
+    if (setSearchValue) {
+      this.query = setSearchValue;
+      this.searchBar.setSearchValueFromParent(setSearchValue);
+
+    }
     this.searchBar.inputElement.nativeElement.focus();
   }
 

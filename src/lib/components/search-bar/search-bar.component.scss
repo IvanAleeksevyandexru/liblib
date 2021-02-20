@@ -22,22 +22,21 @@
 
   &.main-page-new {
     box-sizing: border-box;
-    box-shadow: 0 4px 20px rgba(13, 76, 211, 0.1);
-    border-radius: 12px;
+    box-shadow: none;
 
     .search-input {
       min-height: 48px;
       font-size: 16px;
       line-height: 24px;
-      border: 2px solid #ffffff;
-      border-radius: 12px;
-      padding-left: 12px;
+      border: none;
+      //border-radius: 12px;
+      padding-left: 0;
 
       &:focus,
       &.focused {
-        border-width: 2px;
-        padding-left: 12px;
-        border-color: #ffffff;
+        //border-width: 2px;
+        padding-left: 0;
+        //border-color: #4D83FA;
       }
 
     }
@@ -110,7 +109,11 @@
     }
 
     .search-go {
-      left: 20px;
+      top: 100%;
+      width: 100%;
+      height: 3px;
+      background: rgba(255, 255, 255, .34);
+      left: 0;
     }
 
     .search-in-progress {
@@ -319,24 +322,30 @@
       .search-input {
         min-height: 80px;
         font-size: 24px;
-        border-width: 4px;
+        border: none;
         line-height: 32px;
-        padding-left: 75px;
-
+        background: transparent;
+        color: rgba(255, 255, 255, .5);
         &:focus,
         &.focused {
-          border-width: 4px;
-          padding-left: 75px;
+          //border-width: 4px;
+          //padding-left: 75px;
         }
       }
 
-      .search-go,
       .search-clear,
       .search-in-progress {
         height: 32px;
         width: 32px;
         top: 23px;
 
+      }
+      .search-go {
+        top: 100%;
+        width: 100%;
+        height: 3px;
+        background: rgba(255, 255, 255, .34);
+        left: 0;
       }
 
       .clear-blocked {
@@ -346,28 +355,25 @@
       .search-clear {
         background: url(../../../assets/svg/circle_close.svg) 0 0 no-repeat;
         background-size: 100%;
-        right: 121px;
-        top: 23px;
+        right: 128px;
+        top: 24px;
 
         &.align-right {
-          right: 121px;
-          top: 23px;
+          right: 128px;
+          top: 24px;
         }
-      }
-
-      .search-go {
-        left: 28px;
       }
 
       .search-button {
         position: absolute;
         right: 8px;
-        top: 8px;
+        top: 14px;
       }
 
       &::ng-deep {
         lib-button button {
-          line-height: 36px;
+          line-height: 24px;
+          padding: 12px 32px;
         }
       }
 
