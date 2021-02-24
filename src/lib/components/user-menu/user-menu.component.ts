@@ -29,6 +29,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public user: User;
   public staticUrls: object;
   public settingsCounter;
+  public userCounter;
   public avatarError = false;
   public mainTabs: Tabs = null;
   public tabsSubscription: Subscription;
@@ -42,6 +43,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() public state: UserMenuState;
   @Input() public rolesListEnabled = false;
   @Input() public searchSputnikEnabled = false;
+  @Input() public position: 'left' | 'right' = 'right';
   @Input() public links: MenuLink[] = [];
 
   @ViewChild('menuDesk') public menuDesk;
@@ -87,6 +89,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.staticUrls = this.menuService.getStaticItemUrls();
     this.countersService.counters$.subscribe(_ => {
       this.settingsCounter = this.countersService.getCounter(CounterTarget.SETTINGS);
+      this.userCounter = this.countersService.getCounter(CounterTarget.USER);
     });
     this.tabsSubscription = this.tabsService.register(MAIN_TABS).subscribe((tabs: Tabs) => {
       this.mainTabs = tabs;

@@ -90,9 +90,14 @@
 
   .item {
     display: block;
-    margin-bottom: 20px;
-    &:last-child {
-      margin-bottom: 16px;
+    margin-bottom: 16px;
+    //&:last-child {
+    //  margin-bottom: 16px;
+    //}
+
+    &.separator {
+      opacity: 0.1;
+      border: 1px solid #0B1F33
     }
 
     &.active a {
@@ -153,10 +158,14 @@
 
   &.show {
     .menu-desk.show {
-      width: 156px;
+      width: 182px;
       right: 0;
       display: block;
-      margin-top: 16px;
+      top: 24px;
+      &.left {
+        right: auto;
+        left: 0;
+      }
     }
     .menu-mobile.show {
       width: 100%;
@@ -227,7 +236,7 @@
     }
   }
   &.container {
-    padding-right: 13px;
+    //padding-right: 13px;
     .menu-header {
       padding-top: 20px;
       .close-menu {
@@ -266,8 +275,15 @@ $PAD: 768px;
         padding: 0 13px 0 20px;
         width: 320px;
         right: -4px;
-        top: -4px;
+        top: 44px;
         overflow-x: hidden;
+        &.no-search {
+          padding-top: 16px
+        }
+        &.left {
+          right: auto;
+          left: -4px
+        }
       }
     }
   }

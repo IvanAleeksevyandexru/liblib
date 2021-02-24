@@ -1,18 +1,45 @@
 <div class="user-menu show">
-  <div #menuDesk class="menu-desk container hide show-lg" [class.show]="showDeskView()">
+  <div #menuDesk class="menu-desk container hide show-lg  {{ position }}" [class.show]="showDeskView()">
     <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}">
-<!--      <ng-template *ngTemplateOutlet="menuHeader"></ng-template>-->
+      <!--      <ng-template *ngTemplateOutlet="menuHeader"></ng-template>-->
       <ng-template *ngTemplateOutlet="menuTabs"></ng-template>
       <ul class="user-menu-links">
         <li class="item">
-          <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.SETTINGS_MENU', 'settingsSecurity')">{{'HEADER.MENU.SETTINGS_MENU' | libTranslate}}</a>
-          <lib-counter class="counter" [counter]="settingsCounter"></lib-counter>
+          <a [href]=""
+             (click)="menuStaticItemClick('HEADER.MENU.PROFILE', 'profile')">{{'HEADER.MENU.PROFILE' | libTranslate}}</a>
         </li>
+        <li class="item">
+          <a [href]=""
+             (click)="menuStaticItemClick('HEADER.MENU.HELP', 'help')">{{'HEADER.MENU.HELP' | libTranslate}}</a>
+        </li>
+        <li class="item separator"></li>
+        <li class="item">
+          <a [href]=""
+             (click)="menuStaticItemClick('HEADER.MENU.NOTIFICATIONS', 'notifications')">{{'HEADER.MENU.NOTIFICATIONS' | libTranslate}}</a>
+          <lib-counter class="counter" [counter]="userCounter"></lib-counter>
+        </li>
+        <li class="item">
+          <a [href]=""
+             (click)="menuStaticItemClick('HEADER.MENU.ORDERS', 'orders')">{{'HEADER.MENU.ORDERS' | libTranslate}}</a>
+        </li>
+        <li class="item">
+          <a [href]=""
+             (click)="menuStaticItemClick('HEADER.MENU.PAYMENT', 'payment')">{{'HEADER.MENU.PAYMENT' | libTranslate}}</a>
+        </li>
+        <li class="item">
+          <a [href]=""
+             (click)="menuStaticItemClick('HEADER.MENU.DOCS', 'docs')">{{'HEADER.MENU.DOCS' | libTranslate}}</a>
+        </li>
+        <li class="item">
+          <a [href]=""
+             (click)="menuStaticItemClick('HEADER.MENU.PERMISSIONS', 'permissions')">{{'HEADER.MENU.PERMISSIONS' | libTranslate}}</a>
+        </li>
+        <li class="item separator"></li>
         <li class="item" *ngIf="!user.isKid">
-          <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{titleChangeRole | libTranslate}}</a>
+          <a [href]=""
+             (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{titleChangeRole | libTranslate}}</a>
         </li>
-      </ul>
-      <ul class="user-menu-links" *ngIf="!user.isKid">
+        <li class="item separator"></li>
         <li class="item">
           <a [href]="" (click)="logout()">{{'HEADER.EXIT' | libTranslate}}</a>
         </li>
@@ -20,8 +47,9 @@
     </perfect-scrollbar>
   </div>
 
-  <div #menuMobile class="menu-mobile container hide-lg" [class.show]="showMobileView()">
-    <ng-template *ngTemplateOutlet="menuHeader"></ng-template>
+  <div #menuMobile class="menu-mobile container hide-lg {{ position }}"
+       [class.show]="showMobileView()" [class.no-search]="!searchSputnikEnabled">
+    <!--    <ng-template *ngTemplateOutlet="menuHeader"></ng-template>-->
     <div *ngIf="searchSputnikEnabled && showMobileView()"
          [class.opened-search]="!showAllMenu"
          [class.static]="staticList"
@@ -37,41 +65,44 @@
       </lib-search-sputnik>
     </div>
     <ng-container *ngIf="showAllMenu">
-    <ng-template *ngTemplateOutlet="menuTabs"></ng-template>
-    <div class="item select-role" *ngIf="!user.authorized && rolesListEnabled" (click)="showRolesList = !showRolesList" [ngClass]="{'show-roles-list': showRolesList}">
-      <span class="active-role">{{ (activeRole?.name) || 'Гражданам' }}</span>
-    </div>
-    <div class="ul-list">
-      <ul *ngIf="showRolesList" class="roles-list">
-        <li class="item" *ngFor="let role of userRoles; let first = first">
-          <a (click)="!role.isActive && role.click()"
-             [ngClass]="{'active': role.isActive}"
-             [href]="role.url">{{role.name | libTranslate}}</a>
-        </li>
-      </ul>
-      <ul class="links-mobile" *ngIf="!user.isKid">
-        <li class="item" *ngFor="let link of links">
-          <a [href]="" (click)="menuItemClick(link)">{{link.title | appTranslate}}</a>
-        </li>
-      </ul>
-      <ul class="links-mobile" *ngIf="!user.isKid">
-        <li class="item" *ngIf="user.authorized">
-          <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{'HEADER.MENU.LOGIN_ORG' | libTranslate}}</a>
-        </li>
-        <li class="item">
-          <lib-location-select (click)="onClose()"></lib-location-select>
-        </li>
-        <li class="item" *ngIf="user.authorized">
-          <a [href]="" (click)="menuStaticItemClick('HEADER.MENU.SETTINGS_MENU', 'settingsSecurity')">{{'HEADER.MENU.SETTINGS_MENU' | libTranslate}}</a>
-          <lib-counter class="counter" [counter]="settingsCounter"></lib-counter>
-        </li>
-      </ul>
-      <ul *ngIf="user.authorized" class="links-mobile">
-        <li class="item">
-          <a [href]="" (click)="logout()">{{'HEADER.EXIT' | libTranslate}}</a>
-        </li>
-      </ul>
-    </div>
+      <ng-template *ngTemplateOutlet="menuTabs"></ng-template>
+      <div class="item select-role" *ngIf="!user.authorized && rolesListEnabled"
+           (click)="showRolesList = !showRolesList" [ngClass]="{'show-roles-list': showRolesList}">
+        <span class="active-role">{{ (activeRole?.name) || 'Гражданам' }}</span>
+      </div>
+      <div class="ul-list">
+        <ul *ngIf="showRolesList" class="roles-list">
+          <li class="item" *ngFor="let role of userRoles; let first = first">
+            <a (click)="!role.isActive && role.click()"
+               [ngClass]="{'active': role.isActive}"
+               [href]="role.url">{{role.name | libTranslate}}</a>
+          </li>
+        </ul>
+        <ul class="links-mobile" *ngIf="!user.isKid">
+          <li class="item" *ngFor="let link of links">
+            <a [href]="" (click)="menuItemClick(link)">{{link.title | appTranslate}}</a>
+          </li>
+        </ul>
+        <ul class="links-mobile" *ngIf="!user.isKid">
+          <li class="item" *ngIf="user.authorized">
+            <a [href]=""
+               (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{'HEADER.MENU.LOGIN_ORG' | libTranslate}}</a>
+          </li>
+          <li class="item">
+            <lib-location-select (click)="onClose()"></lib-location-select>
+          </li>
+          <li class="item" *ngIf="user.authorized">
+            <a [href]=""
+               (click)="menuStaticItemClick('HEADER.MENU.SETTINGS_MENU', 'settingsSecurity')">{{'HEADER.MENU.SETTINGS_MENU' | libTranslate}}</a>
+            <lib-counter class="counter" [counter]="settingsCounter"></lib-counter>
+          </li>
+        </ul>
+        <ul *ngIf="user.authorized" class="links-mobile">
+          <li class="item">
+            <a [href]="" (click)="logout()">{{'HEADER.EXIT' | libTranslate}}</a>
+          </li>
+        </ul>
+      </div>
     </ng-container>
   </div>
 
@@ -82,7 +113,8 @@
 <ng-template #menuHeader>
   <div class="menu-header" [ngClass]="{'not-authorized': !user.authorized}">
     <div *ngIf="(loadService.avatar | async) as avatar" class="avatar-wrapper">
-      <img *ngIf="avatar.url && !avatarError; else noAvatar" class="avatar" [src]="avatar.url" (error)="avatarError = true" alt=""/>
+      <img *ngIf="avatar.url && !avatarError; else noAvatar" class="avatar" [src]="avatar.url"
+           (error)="avatarError = true" alt=""/>
       <ng-template #noAvatar>
         <div
           class="no-avatar"

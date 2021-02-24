@@ -176,9 +176,18 @@ export class MenuService {
   public getStaticItemUrls(): object {
     const appContext = this.loadService.attributes.appContext;
     const lkUrl = appContext === 'LK' ? '/' : this.loadService.config.lkUrl;
+    const portalUrl = appContext === 'PORTAL' ? '/' : this.loadService.config.betaUrl;
+    const payHost = appContext === 'PAYMENT' ? '/' : this.loadService.config.oplataUrl;
 
     return {
       'HEADER.PERSONAL_AREA': `${lkUrl}overview`,
+      'HEADER.MENU.PROFILE': `${lkUrl}settings/account`,
+      'HEADER.MENU.HELP': `${portalUrl}help`,
+      'HEADER.MENU.NOTIFICATIONS': `${lkUrl}overview`,
+      'HEADER.MENU.ORDERS': `${lkUrl}orders/all`,
+      'HEADER.MENU.PAYMENT': `${payHost}pay`,
+      'HEADER.MENU.DOCS': `${lkUrl}profile/personal`,
+      'HEADER.MENU.PERMISSIONS': `${lkUrl}permissions`,
       'HEADER.MENU.SETTINGS': `${lkUrl}settings/account`,
       'HEADER.MENU.SETTINGS_MENU': `${lkUrl}settings/account`,
       'HEADER.MENU.LOGIN_ORG': `${appContext === 'PARTNERS' ? '/' : lkUrl}roles`

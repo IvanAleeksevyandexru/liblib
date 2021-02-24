@@ -3,8 +3,8 @@
   border-top: 1px solid #eeeeee;
 
   .name {
-    font-size: 17px;
-    font-weight: bold;
+    //font-size: 17px;
+    //font-weight: bold;
   }
 }
 
@@ -16,6 +16,9 @@
 lib-button {
   display: inline-block;
   margin-left: 8px;
+  & + lib-button {
+    margin-left: 2px;
+  }
 }
 .link {
   position: relative;
@@ -29,33 +32,34 @@ lib-button {
     white-space: nowrap;
     overflow: hidden;
   }
+  &.with-icon {
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: -10px;
+      width: 16px;
+      height: 16px;
+      background: url(../../../assets/svg/login.svg) 0 0 no-repeat;
+      background-size: 100%;
+    }
 
-  &:before {
-    content: '';
-    display: block;
-    position: absolute;
-    left: 0;
-    top: -10px;
-    width: 16px;
-    height: 16px;
-    background: url(../../../assets/svg/login.svg) 0 0 no-repeat;
-    background-size: 100%;
-  }
+    &:hover:before {
+      background-image: url(../../../assets/svg/login-hover.svg);
+    }
 
-  &:hover:before {
-    background-image: url(../../../assets/svg/login-hover.svg);
-  }
-
-  &.logout:before {
-    height: 12px;
-    background-image: url(../../../assets/svg/logout.svg);
+    &.logout:before {
+      height: 12px;
+      background-image: url(../../../assets/svg/logout.svg);
+    }
   }
 }
-@media all and (min-width: 768px) {
+//@media all and (min-width: 768px) {
   .authorized-user {
     position: relative;
     max-width: 160px;
-    height: 40px;
+    height: 38px;
     border-top: none;
     padding-top: 0;
     padding-left: 56px;
@@ -66,8 +70,13 @@ lib-button {
     }
 
     .counter-circle {
-      top: -2px;
-      left: 20px;
+      width: 12px;
+      height: 12px;
+      left: 22px;
+      top: 26px;
+      background: #EE3F58;
+      border: 2px solid #FFFFFF;
+      border-radius: 8px;
     }
 
     .avatar-wrapper {
@@ -76,15 +85,16 @@ lib-button {
       overflow: hidden;
       top: 0;
       right: 18px;
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
+      border: 2px solid rgba(13, 76, 211, 0.2);
     }
 
     .avatar,
     .no-avatar {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
     }
 
     .no-avatar {
@@ -120,7 +130,7 @@ lib-button {
       position: relative;
       padding-right: 70px;
       font-size: 14px;
-      font-weight: bold;
+      //font-weight: bold;
       line-height: 20px;
 
       &:before {
@@ -140,7 +150,7 @@ lib-button {
       color: #a5aeb3;
     }
   }
-}
+//}
 
 @media all and (max-width: 1139px) {
   .link{
@@ -157,9 +167,10 @@ lib-button {
     max-width: 100%;
   }
   .link {
-    &:before {
-      top: 1px;
-
+    &.with-icon {
+      &:before {
+        top: 1px;
+      }
     }
   }
 }
@@ -167,9 +178,21 @@ lib-button {
 :host-context(.main-menu) {
   .link {
     line-height: 20px;
-    &:before {
-      width: 20px;
-      height: 20px;
+
+    &.with-icon {
+      &:before {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 768px) {
+  .authorized-user {
+    .counter-circle {
+      left: auto;
+      right: 14px;
     }
   }
 }
