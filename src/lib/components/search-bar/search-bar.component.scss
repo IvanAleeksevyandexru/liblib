@@ -31,11 +31,15 @@
       border: none;
       //border-radius: 12px;
       padding-left: 0;
+      padding-right: 0;
+      color: #fff;
+      background: transparent;
 
       &:focus,
       &.focused {
         //border-width: 2px;
         padding-left: 0;
+        border: none;
         //border-color: #4D83FA;
       }
 
@@ -68,6 +72,7 @@
     &::ng-deep {
       lib-button button {
         line-height: 16px;
+        display: none;
       }
     }
 
@@ -103,7 +108,7 @@
       top: 12px;
 
       &.align-right {
-        right: 58px;
+        right: 0;
         top: 12px;
       }
     }
@@ -114,11 +119,22 @@
       height: 3px;
       background: rgba(255, 255, 255, .34);
       left: 0;
+      display: block;
     }
 
     .search-in-progress {
       right: 31px;
       top: 8px;
+    }
+    &.magnifying-glass-or-throbber-shown {
+      .search-input {
+        padding-right: 0;
+      }
+    }
+    &.clear-shown {
+      .search-input {
+        padding-right: 0;
+      }
     }
   }
 
@@ -325,7 +341,8 @@
         border: none;
         line-height: 32px;
         background: transparent;
-        color: rgba(255, 255, 255, .5);
+        color: #fff
+      ;
         &:focus,
         &.focused {
           //border-width: 4px;
@@ -374,6 +391,7 @@
         lib-button button {
           line-height: 24px;
           padding: 12px 32px;
+          display: none;
         }
       }
 
