@@ -95,8 +95,11 @@ export interface DateProperties {
   holiday?: boolean;
   selected?: boolean;
   inRange?: boolean;
+  inPreviewRange?: boolean;
   rangeStart?: boolean;
   rangeEnd?: boolean;
+  previewRangeStart?: boolean;
+  previewRangeEnd?: boolean;
   outer?: boolean;
   locked?: boolean;
   custom?: string;

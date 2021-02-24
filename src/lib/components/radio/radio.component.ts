@@ -1,5 +1,6 @@
-import { Component, forwardRef, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, forwardRef, Input, Output, OnInit, EventEmitter, AfterViewInit, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Focusable, FocusManager } from '../../services/focus/focus.manager';
 
 @Component({
   selector: 'lib-radio',
@@ -13,7 +14,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     }
   ]
 })
-export class RadioComponent implements OnInit, ControlValueAccessor {
+export class RadioComponent implements OnInit, ControlValueAccessor, Focusable, AfterViewInit, OnDestroy {
 
   public static idCounter = 1;
 
@@ -30,17 +31,28 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
 
   @Output() public changed = new EventEmitter<string>();
 
+  public focused: boolean;
   private modelInitialization = true;
   private onTouchedCallback: () => void;
   private commit(value: any) {}
 
-  constructor() { }
+  constructor(
+    private focusManager: FocusManager,
+  ) { }
 
   public ngOnInit() {
     // генеририрует уникальный ID, если не указан radioId
     if (!this.radioId) {
       this.radioId = 'app-radio-' + RadioComponent.idCounter++;
     }
+  }
+
+  public ngAfterViewInit(): void {
+    this.focusManager.register(this);
+  }
+
+  public ngOnDestroy(): void {
+    this.focusManager.unregister(this);
   }
 
   public onSelected(value: boolean) {
@@ -73,4 +85,15 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
     this.disabled = disabled;
   }
 
+  public notifyFocusEvent(e: Event, id): void {
+    this.focusManager.notifyFocusMayChanged(this, e.type === 'focus');
+  }
+
+  public handleFocus(): void {
+    this.focused = true;
+  }
+
+  public handleBlur(): void {
+    this.focused = false;
+  }
 }

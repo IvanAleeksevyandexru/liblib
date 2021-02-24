@@ -33,6 +33,7 @@ export * from './modal-container';
 export * from './notifications';
 export * from './notifier.model';
 export * from './org';
+export * from './page-menu.model';
 export * from './piped-message';
 export * from './pso.model';
 export * from './quiz';

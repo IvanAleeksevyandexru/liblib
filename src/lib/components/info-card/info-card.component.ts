@@ -155,7 +155,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
       typeDoc: this.data.type
     });
 
-    window.location.href = this.externalLink;
+    this.router.navigate([this.externalLink]);
   }
 
   public toOrder(): void {

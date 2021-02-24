@@ -1,5 +1,7 @@
-<div class="lookup" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside
-     (clickOutside)="cancelSearchAndClose()" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+<div class="lookup" [ngClass]="contextClass ? [contextClass] : []"
+     [class.main-page-new]="mainPageStyle"
+     (click)="returnFocus($event)" libClickOutside
+     (clickOutside)="cancelSearchAndClose(true)" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="lookup-field" #lookupField [ngClass]="{expanded: expanded, invalid: invalidDisplayed, 'with-expand-button': showExpandCollapse}">
     <lib-search-bar #searchBar
       [contextClass]="'lookup-input ' + contextClass"
@@ -23,7 +25,9 @@
       [showStaticContent]="item || htmlPlaceholder"
       [forceShowStaticContent]="forceShowStatic"
       [suggestion]="showSuggestion ? suggestion : null"
+      [mainPageStyle]="mainPageStyle"
       [(ngModel)]="query"
+      (ngModelChange)="modelChange()"
       (newSearch)="lookupItems($event)"
       (forcedSearch)="forceSearch($event.query, $event.byEnter)"
       [searching]="searching"
@@ -44,7 +48,7 @@
     </lib-search-bar>
     <div class="expand-collapse" *ngIf="showExpandCollapse" [ngClass]="{expanded: expanded}" (click)="lookupItemsOrClose(true)"></div>
   </div>
-  <div class="lookup-list-wrapper">
+  <div class="lookup-list-wrapper" *ngIf="!hideSearchResult">
     <div class="lookup-context-positioning" [class.static-list]="staticList" #lookupList [class.context-positioned]="contextMenuPosition">
       <div class="lookup-context-shift">{{query}}</div>
       <div class="lookup-list-container"
@@ -60,7 +64,7 @@
 
         <ng-template #withScroll>
           <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll && !staticList"
-              [config]="{suppressScrollX: true, wheelPropagation: false}"
+              [config]="{suppressScrollX: true, wheelPropagation: mainPageStyle}"
               (psYReachEnd)="loadNextPartial()">
             <ng-container *ngFor="let item of items">
               <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>

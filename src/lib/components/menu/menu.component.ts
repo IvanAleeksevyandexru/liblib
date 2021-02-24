@@ -4,7 +4,6 @@ import {
   EventEmitter,
   HostListener,
   Input,
-  isDevMode,
   NgModuleRef,
   OnInit,
   Output,
@@ -16,7 +15,6 @@ import { ModalService } from '../../services/modal/modal.service';
 import { ModalSearchComponent } from '../modal-search/modal-search.component';
 import { Category } from '../../models/category';
 import { MenuLink } from '../../models/menu-link';
-import { AuthService } from '../../services/auth/auth.service';
 import { UserMenuState } from '../../models/user-menu';
 import { CounterData } from '../../models/counter';
 import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
@@ -87,7 +85,6 @@ export class MenuComponent implements OnInit, AfterViewInit {
     private modalService: ModalService,
     private moduleRef: NgModuleRef<any>,
     private menuService: MenuService,
-    private authService: AuthService,
     public translate: TranslateService,
     private router: Router
   ) { }
@@ -129,13 +126,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
   }
 
   public logout() {
-    if (isDevMode()) {
-      this.authService.logout().subscribe((resp) => {
-        window.location = resp;
-      });
-    } else {
-      window.location.href = this.loadService.config.betaUrl + 'auth-provider/logout';
-    }
+    this.loadService.logout();
   }
 
   public showUserMenu(isMobileView: boolean) {

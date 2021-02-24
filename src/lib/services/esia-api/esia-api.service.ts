@@ -26,7 +26,8 @@ export class EsiaApiService {
     1: '/esia-rs/api/public/v1/',
     2: '/esia-rs/api/public/v2/',
     digital: '/digital/api/public/v1/',
-    smevint: '/smevint/api/public/v1/'
+    smevint: '/smevint/api/public/v1/',
+    registration: '/registration/api/public/v1/'
   };
 
   public citizenship = new BehaviorSubject<Array<Citizenship>>(null);
@@ -45,18 +46,19 @@ export class EsiaApiService {
     this.userOid = this.loadService.user.userId ? this.loadService.user.userId.toString() : null;
   }
 
-  private setUrl(input: string, version: 0 | 1 | 2 | 'digital' | 'smevint' = 0): string {
+  private setUrl(input: string, version: 0 | 1 | 2 | 'digital' | 'smevint' | 'registration'  = 0): string {
     return this.host + this.versions[version] + input.replace(/prn_oid/, this.userOid);
   }
 
   public getRequest(
     method: string,
-    version: 0 | 1 | 2 | 'digital' | 'smevint' = 0,
+    version: 0 | 1 | 2 | 'digital' | 'smevint' | 'registration'  = 0,
     extra?: {
       headers?: { name: string, value: string | string[] }[],
       options?: any
     }
   ): Observable<any> {
+    this.initParams();
     const url = this.setUrl(method, version);
     const token = this.cookieService.get('acc_t');
     const options = HelperService.setRequestOptions(token, extra);
@@ -66,13 +68,14 @@ export class EsiaApiService {
 
   public postRequest(
     method: string,
-    version: 0 | 1 | 2 | 'digital' | 'smevint' = 0,
+    version: 0 | 1 | 2 | 'digital' | 'smevint' | 'registration'  = 0,
     body?: any,
     extra?: {
       headers?: { name: string, value: string | string[] }[],
       options?: any
     }
   ): Observable<any> {
+    this.initParams();
     const url = this.setUrl(method, version);
     const token = this.cookieService.get('acc_t');
     const options = HelperService.setRequestOptions(token, extra);
@@ -82,13 +85,14 @@ export class EsiaApiService {
 
   public putRequest(
     method: string,
-    version: 0 | 1 | 2 | 'digital' | 'smevint' = 0,
+    version: 0 | 1 | 2 | 'digital' | 'smevint' | 'registration'  = 0,
     body?: any,
     extra?: {
       headers?: { name: string, value: string | string[] }[],
       options?: any
     }
   ): Observable<any> {
+    this.initParams();
     const url = this.setUrl(method, version);
     const token = this.cookieService.get('acc_t');
     const options = HelperService.setRequestOptions(token, extra);
@@ -98,13 +102,14 @@ export class EsiaApiService {
 
   public deleteRequest(
     method: string,
-    version: 0 | 1 | 2 | 'digital' | 'smevint' = 0,
+    version: 0 | 1 | 2 | 'digital' | 'smevint' | 'registration'  = 0,
     body?: any,
     extra?: {
       headers?: { name: string, value: string | string[] }[],
       options?: any
     }
   ): Observable<any> {
+    this.initParams();
     const url = this.setUrl(method, version);
     const token = this.cookieService.get('acc_t');
     const options = HelperService.setRequestOptions(token, extra);
@@ -179,14 +184,14 @@ export class EsiaApiService {
     });
   }
 
-  public goToOffer(force = true): void {
-    const url = (window as any).location.href;
+  public goToOffer(force = true, backUrl?: string): void {
+    const url = backUrl ? backUrl : (window as any).location.href;
 
     if (force) {
       this.cookieService.set('needOffer', 1);
     }
 
-    (window as any).location.href = `${this.loadService.config.esiaUrl}/profile/offer?go_back=${url}`;
+    (window as any).location.href = `${this.loadService.config.esiaUrl}/profile/offer?go_back=${encodeURIComponent(url)}`;
   }
 
 }

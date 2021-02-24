@@ -15,6 +15,7 @@ export interface CountersModel {
     DRAFT?: CounterData;
     EQUEUE?: CounterData;
     FEEDBACK?: CounterData;
+    LINKED_ACCOUNT?: CounterData;
     ACCOUNT?: CounterData;
     BIOMETRICS?: CounterData;
     PROFILE?: CounterData;
@@ -31,6 +32,7 @@ export enum CounterType {
   EQUEUE = 'EQUEUE',
   FEEDBACK = 'FEEDBACK',
   ACCOUNT = 'ACCOUNT',
+  LINKED_ACCOUNT = 'LINKED_ACCOUNT',
   PROFILE = 'PROFILE',
   BIOMETRICS = 'BIOMETRICS',
   ESIGNATURE = 'ESIGNATURE',

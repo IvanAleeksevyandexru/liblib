@@ -24,6 +24,7 @@ export class StaticBannerComponent implements OnInit, OnChanges {
   @Input() public needContainer = true;
   @Input() public borderColor = '';
   @Input() public isGeps = false;
+  @Input() public templateType = false;
 
   @Output() private close = new EventEmitter();
 
