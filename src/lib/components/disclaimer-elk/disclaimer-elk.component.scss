@@ -1,15 +1,5 @@
 .disclaimer{
-  border: 1px solid #B6C6E8;
-  border-left: 0;
-  border-radius: 4px;
-  padding: 24px;
-}
-.title{
-  font: bold 16px/24px Lato, Arial, sans-serif, "sans-serif";
-}
-
-:host-context(.padding-16) {
-  .disclaimer {
-    padding: 16px;
-  }
+  border: 2px solid #FEF0CC;
+  border-radius: 8px;
+  padding: 16px;
 }
