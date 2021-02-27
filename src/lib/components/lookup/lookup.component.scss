@@ -64,7 +64,11 @@
         }
       }
     }
-
+    &.disabled {
+      .expand-collapse {
+        background: url(../../../assets/svg/dropdown-expand-disabled.svg) 10px 11px no-repeat;
+      }
+    }
 
   }
 

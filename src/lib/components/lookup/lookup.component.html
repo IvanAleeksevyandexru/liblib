@@ -2,7 +2,7 @@
      [class.main-page-new]="mainPageStyle"
      (click)="returnFocus($event)" libClickOutside
      (clickOutside)="cancelSearchAndClose(true)" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
-  <div class="lookup-field" #lookupField [ngClass]="{expanded: expanded, invalid: invalidDisplayed, 'with-expand-button': showExpandCollapse}">
+  <div class="lookup-field" #lookupField [ngClass]="{expanded: expanded, disabled: disabled, invalid: invalidDisplayed, 'with-expand-button': showExpandCollapse}">
     <lib-search-bar #searchBar
       [contextClass]="'lookup-input ' + contextClass"
       [tabIndex]="tabIndex"
