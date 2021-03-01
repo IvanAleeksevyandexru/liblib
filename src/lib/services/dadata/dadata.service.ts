@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
 import {
-  Addresses,
+  Addresses, DadataResult,
   FormConfig,
   NormalizedAddressElement,
   NormalizedData,
@@ -487,6 +487,13 @@ export class DadataService implements AutocompleteSuggestionProvider {
 
   public resetSearchComplete(value: boolean): void {
     this.searchComplete.next(value);
+  }
+
+  public addKladrToCommitValue(commitValue: DadataResult, normalizedElements: Array<NormalizedAddressElement>): void {
+    normalizedElements.forEach(elem => {
+      const elemName = this.levelMap[elem.level];
+      commitValue[`${elemName}Kladr`] = elem.kladrCode;
+    })
   }
 
 }
