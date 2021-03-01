@@ -63,6 +63,7 @@ export class RangeFieldComponent implements AfterViewInit, OnChanges, OnDestroy,
 
   @Input() public minDate: Date | RelativeDate | string = new RelativeDate('start of year');
   @Input() public maxDate: Date | RelativeDate | string = new RelativeDate('end of year');
+  @Input() public setEmptyEndDate = false;
 
   // focus и blur не выбрасываются когда фокус переходит внутри с поля на поле. только при общей утрате/приобретении фокуса
   @Output() public focus = new EventEmitter<any>();
@@ -143,6 +144,12 @@ export class RangeFieldComponent implements AfterViewInit, OnChanges, OnDestroy,
   }
 
   public closePanel() {
+    if (this.setEmptyEndDate && !this.range && this.startDate && this.startDate.rangeStart) {
+      this.range = Range.create(this.startDate.rangeStart, this.maxToDate, this.textModelValue);
+      this.synchronizeRangeStart();
+      this.rangeUpdated();
+    }
+
     this.expanded = false;
   }
 
