@@ -147,6 +147,7 @@ import { SearchSputnikComponent } from './components/search-sputnik/search-sputn
 import { FrameComponent } from './components/frame/frame.component';
 import { ButtonForInputComponent } from './components/button-for-input/button-for-input.component';
 import { LanguageSelectComponent } from './components/language-select/language-select.component';
+import { RoundLoaderComponent } from './components/round-loader/round-loader.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -284,6 +285,7 @@ registerLocaleData(localeRu, 'ru');
     FrameComponent,
     ButtonForInputComponent,
     LanguageSelectComponent,
+    RoundLoaderComponent,
   ],
   imports: [
     CommonModule,
@@ -423,6 +425,7 @@ registerLocaleData(localeRu, 'ru');
     FrameComponent,
     ButtonForInputComponent,
     LanguageSelectComponent,
+    RoundLoaderComponent,
   ],
   providers: [
     GosbarService,
