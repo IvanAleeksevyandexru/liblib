@@ -147,7 +147,9 @@ import { LocationSelectComponent } from './components/location-select/location-s
 import { HeaderComponent } from './components/header/header.component';
 import { SearchSputnikComponent } from './components/search-sputnik/search-sputnik.component';
 import { FrameComponent } from './components/frame/frame.component';
-import { ButtonForInputComponent } from "./components/button-for-input/button-for-input.component";
+import { ButtonForInputComponent } from './components/button-for-input/button-for-input.component';
+import { RoundLoaderComponent } from './components/round-loader/round-loader.component';
+
 
 registerLocaleData(localeRu, 'ru');
 
@@ -285,7 +287,8 @@ registerLocaleData(localeRu, 'ru');
     LocationSelectComponent,
     HeaderComponent,
     FrameComponent,
-    ButtonForInputComponent
+    ButtonForInputComponent,
+    RoundLoaderComponent,
   ],
   imports: [
     CommonModule,
@@ -425,7 +428,8 @@ registerLocaleData(localeRu, 'ru');
     LocationSelectComponent,
     HeaderComponent,
     FrameComponent,
-    ButtonForInputComponent
+    ButtonForInputComponent,
+    RoundLoaderComponent,
   ],
   providers: [
     GosbarService,
