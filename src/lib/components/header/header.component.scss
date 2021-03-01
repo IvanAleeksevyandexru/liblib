@@ -1,4 +1,7 @@
 .header {
+  .catalog-menu-wrap {
+    margin-right: 18px;
+  }
   .logo-wrapper {
     display: flex;
     align-items: baseline;
@@ -70,7 +73,7 @@
   }
 
   .inner {
-    height: 56px;
+    height: 64px;
   }
   .ml-40 {
     margin-left: 40px;
@@ -225,6 +228,10 @@
 
 @media all and (min-width: 1140px) {
   .header {
+    .roles-list-wrap{
+      margin-right: 0;
+      margin-left: auto;
+    }
     .login-mobile-icon {
       display: none;
     }
@@ -237,7 +244,9 @@
   //  left: -40px;
   //}
 }
+@media all and (max-width: 1139px) {
 
+}
 @media all and (min-width: 768px) {
   .header {
 

@@ -1,0 +1,23 @@
+<div class="catalog-menu-icon"
+     [class.show]="showMenu"
+     [class.not-authorized]="!loadService.user.authorized"
+     (click)="onMenuClick()"></div>
+<div class="catalog-menu show">
+  <div [class.show]="showMenu" class="catalog-menu-mobile">
+    <div class="catalog-menu-content">
+      <div class="flex-container catalog-menu-header align-items-center justify-between">
+<!--        <div><portal-user-roles></portal-user-roles></div>-->
+        <div><lib-location-select skinTheme="black"></lib-location-select></div>
+      </div>
+      <div [class.hide]="!showMenu">
+        <lib-menu-catalog-links
+          [mobile]="true"
+          [catalog]="catalog">
+        </lib-menu-catalog-links>
+        <div class="catalog-help">
+          <a class="catalog-help-link" href>Помощь</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

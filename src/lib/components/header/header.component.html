@@ -57,25 +57,35 @@
 <ng-template #mergeHeaderMenuTmpl>
   <div class="header merge-header">
     <div class="inner container grid-row flex-container align-items-center">
-      <div class="col-lg-2 col-md-2 col-1 logo-wrapper">
-        <lib-logo width="126" [logoHref]="logoHref"></lib-logo>
-      </div>
-      <div *ngIf="!user.authorized" class="col-lg-2 hide show-lg">
-        <div class="flex-container align-items-center roles-list">
-          <span class="user-role" [class.opened]="showRolesList" (click)="openRolesList()">{{getRoleName(activeRoleCode)}}</span>
+      <div class="col-lg-4 col-md-2 col-2 logo-wrapper">
+        <div class="flex-container flex-1 align-items-center">
+           <div class="catalog-menu-wrap" *ngIf="catalog">
+             <lib-menu-catalog
+               (menuCatalogOpened)="onMenuCatalogClick($event)"
+               [catalog]="catalog">
+             </lib-menu-catalog>
+           </div>
+          <div>
+            <lib-logo width="126" [logoHref]="logoHref"></lib-logo>
+          </div>
+          <div *ngIf="!user.authorized" class="hide show-lg roles-list-wrap">
+            <div class="flex-container align-items-center roles-list">
+              <span class="user-role" [class.opened]="showRolesList" (click)="openRolesList()">{{getRoleName(activeRoleCode)}}</span>
 
-          <div class="list" *ngIf="showRolesList">
-            <div *ngFor="let role of userRoles; let first = first" class="list-item-wrap" [class.active]="role.code === activeRoleCode">
-              <a class="list-item link-plain" (click)="updateRole(role.code)"
-                 [ngClass]="{'ml-40': !first}"
-                 [href]="role.url">{{role.name}}</a>
+              <div class="list" *ngIf="showRolesList">
+                <div *ngFor="let role of userRoles; let first = first" class="list-item-wrap" [class.active]="role.code === activeRoleCode">
+                  <a class="list-item link-plain" (click)="updateRole(role.code)"
+                     [ngClass]="{'ml-40': !first}"
+                     [href]="role.url">{{role.name}}</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="hide show-lg"
            [class.col-lg-3]="!user.authorized"
-           [class.col-lg-6]="user.authorized">
+           [class.col-lg-4]="user.authorized">
         <div class="flex-container align-items-center">
           <ul class="links flex-container-lg">
             <li class="item flex-container align-items-center" [class.mr-24]="user.authorized" *ngFor="let link of links">
@@ -95,7 +105,8 @@
       <div class="col-lg-1 hide show-lg">
           <lib-location-select skinTheme="red"></lib-location-select>
       </div>
-      <div class="col-md-4 col-2 flex-container align-items-center flex-end"
+      <div class="col-md-4 col-1 flex-container align-items-center flex-end"
+           [class.catalog-menu-opened]="menuCatalogOpened"
            [class.col-lg-4]="!user.authorized"
            [class.col-lg-3]="user.authorized">
         <a *ngIf="!user.authorized" href="{{loadService.config.betaUrl}}help" target="_self" class="search-icon hide show-lg"></a>
