@@ -72,7 +72,7 @@ lib-button {
     .counter-circle {
       width: 12px;
       height: 12px;
-      left: 22px;
+      left: 8px;
       top: 26px;
       background: #EE3F58;
       border: 2px solid #FFFFFF;
@@ -140,7 +140,7 @@ lib-button {
         right: 0;
         width: 10px;
         height: 6px;
-        background: url(../../../assets/svg/arrows/arrow_gray.svg) no-repeat 0 0;
+        background: url(../../../assets/svg/arrows/arrow_gosblue.svg) no-repeat 0 0;
       }
     }
 
@@ -193,6 +193,34 @@ lib-button {
     .counter-circle {
       left: auto;
       right: 14px;
+    }
+  }
+}
+
+@media all and (max-width: 767px) {
+  .authorized-user {
+    &:not(.hide-arrow):before {
+      content: '';
+      position: absolute;
+      top: 16px;
+      right: 7px;
+      width: 10px;
+      height: 6px;
+      background: url(../../../assets/svg/arrows/arrow_gosblue.svg) no-repeat 0 0;
+    }
+
+    .avatar-wrapper {
+      right: 32px;
+    }
+
+    .close-menu {
+      position: absolute;
+      right: 0;
+      top: 8px;
+      width: 24px;
+      height: 24px;
+      background: url(../../../assets/svg/close-large-24.svg) center no-repeat;
+      background-size: 24px;
     }
   }
 }

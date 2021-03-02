@@ -44,6 +44,8 @@ export class HeaderComponent implements OnInit {
 
   @Output() public backClick = new EventEmitter<any>();
 
+  @ViewChild('menu') private menu;
+
   @HostListener('document:keydown', ['$event'])
   public onKeydownComponent(event: KeyboardEvent) {
     if (event.key === 'Escape') {
@@ -91,10 +93,13 @@ export class HeaderComponent implements OnInit {
       isMobileView
     } as UserMenuState;
 
-    if (isMobileView) {
-      const html = document.getElementsByTagName('html')[0];
-      html.classList.add('disable-scroll');
-    }
+    const html = document.getElementsByTagName('html')[0];
+    html.classList.add('disable-scroll-sm');
+  }
+
+  public hideUserMenu() {
+    console.log('hideUserMenu');
+    this.menu.onClose();
   }
 
   public initUserMenuState(): void {

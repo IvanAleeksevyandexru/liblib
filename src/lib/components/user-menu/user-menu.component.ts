@@ -99,7 +99,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngAfterViewInit() {
-    const menu = this.state && this.state.isMobileView ? this.menuMobile : this.menuDesk;
+    const menu = this.menuDesk;
     this.menuOffset = menu.nativeElement.offsetTop;
   }
 
@@ -125,6 +125,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public onClose() {
     const html = document.getElementsByTagName('html')[0];
     html.classList.remove('disable-scroll');
+    html.classList.remove('disable-scroll-sm');
     this.state.active = false;
   }
 

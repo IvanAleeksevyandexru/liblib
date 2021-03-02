@@ -135,16 +135,19 @@
 
           <div class="login-wrapper">
             <div class="login flex-container justify-end overflow-container">
-              <lib-login [useButton]="true" class="hide show-md"
-                         [ngClass]="{'show-md': user.authorized, 'show-lg': !user.authorized}"
+              <lib-login [useButton]="true" class="hide"
+                         [ngClass]="{'show': user.authorized, 'show-lg': !user.authorized}"
+                         [menuOpened]="userMenuState.active"
+                         (closeMenu)="hideUserMenu()"
                          (userClick)="showUserMenu(false)"></lib-login>
-              <lib-login [useButton]="true" *ngIf="user.authorized" class="show hide-md"
-                         (userClick)="showUserMenu(true)"></lib-login>
+<!--              <lib-login [useButton]="true" *ngIf="user.authorized" class="show hide-md"-->
+<!--                         (userClick)="showUserMenu(true)"></lib-login>-->
               <lib-login *ngIf="!user.authorized" [onlyText]="true" class="login-mobile-icon"></lib-login>
             </div>
           </div>
-          <div class="user-menu-wrapper">
+          <div class="user-menu-wrapper" *ngIf="user.authorized">
             <lib-user-menu
+              #menu
               [searchSputnikEnabled]="searchSputnikEnabled"
               [state]="userMenuState"
               [links]="links">

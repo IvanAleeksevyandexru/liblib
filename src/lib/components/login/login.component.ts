@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { LoadService } from '../../services/load/load.service';
 import { CounterData } from '../../models/counter';
 import { User } from '../../models/user';
+import { UserMenuState } from "../../models";
 
 @Component({
   selector: 'lib-login',
@@ -14,13 +15,14 @@ export class LoginComponent implements OnInit {
   @Input() public userCounter: CounterData;
   @Input() public onlyIcon: boolean;
   @Input() public onlyText: boolean;
+  @Input() public menuOpened: boolean;
   @Input() public useButton: boolean;
 
   public user: User;
   public avatarError = false;
 
-  @Output()
-  public userClick: EventEmitter<any> = new EventEmitter();
+  @Output() public userClick: EventEmitter<any> = new EventEmitter();
+  @Output() public closeMenu: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private authService: AuthService,
@@ -60,7 +62,12 @@ export class LoginComponent implements OnInit {
   }
 
   public userClicked(): void {
-    this.userClick.emit(this.user);
+    this.userClick.emit();
+  }
+
+  public onCloseMenu(event: Event): void {
+    this.stopEvent(event);
+    this.closeMenu.emit();
   }
 
 }
