@@ -26,7 +26,7 @@
     padding-left: 14px;
     border: 2px solid #99B1E6;
   }
-  &.invalid {
+  &.invalid:not(.focused) {
     background: rgba(238, 63, 88, 0.16);
   }
   &[disabled], &.disabled, &[readonly] {

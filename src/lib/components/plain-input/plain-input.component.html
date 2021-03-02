@@ -39,5 +39,5 @@
             (blur)="notifyFocusEvent($event)"
             (focus)="notifyFocusEvent($event)"
   >{{value}}</textarea>
-  <div *ngIf="clearable && !disabled && value" (click)="clearValue($event)" class="clear-button"></div>
+  <div *ngIf="clearable && !disabled && value && focused" (click)="clearValue($event)" class="clear-button"></div>
 </div>

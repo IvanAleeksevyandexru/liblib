@@ -20,5 +20,5 @@
          (keyup.enter)="forceChange()"
          (compositionstart)="compositionStart()"
          (compositionend)="compositionEnd($event.target.value)"/>
-  <div *ngIf="clearable && !disabled && !empty" (click)="clearValue($event)" class="clear-button"></div>
+  <div *ngIf="clearable && !disabled && !empty && focused" (click)="clearValue($event)" class="clear-button"></div>
 </div>
