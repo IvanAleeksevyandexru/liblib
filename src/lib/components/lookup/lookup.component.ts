@@ -40,6 +40,7 @@ import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { VirtualScrollComponent } from '../virtual-scroll/virtual-scroll.component';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { Width } from '../../models/width-height';
+import { Suggest, SuggestItem } from '../../models/suggest';
 
 const SHOW_ALL_MARKER = {};
 
@@ -73,6 +74,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Input() public width?: Width | string;
   @Input() public cachedResponse?: boolean;
   @Input() public staticList?: boolean;
+  @Input() public suggest?: Suggest;
 
 
   // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
@@ -152,6 +154,8 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Output() public listed = new EventEmitter<Array<ListItem>>();
   @Output() public queryChanged = new EventEmitter<string>();
   @Output() public enterKeyEvent = new EventEmitter();
+  @Output() public selectSuggest = new EventEmitter<Suggest | SuggestItem>();
+
 
   public internalFixedItems: Array<ListItem> = [];
   public internalItem: ListItem;
@@ -639,5 +643,15 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
       showAll,
       queryMinSymbolsCount: this.queryMinSymbolsCount
     };
+  }
+
+  public selectSuggestItem(item: SuggestItem): void {
+    this.selectSuggest.emit(item);
+    this.closeDropdown();
+  }
+
+  public editSuggestList(suggest: Suggest): void {
+    suggest.isEdit = true;
+    this.selectSuggest.emit(suggest);
   }
 }
