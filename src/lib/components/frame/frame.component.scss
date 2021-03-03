@@ -5,15 +5,19 @@ $default: #FFFFFF;
 
 .frame {
   padding: 32px 32px 32px 24px;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: default;
 
+  &.small {
+    padding: 12px 12px 24px 12px;
+  }
+
   &.effects {
-    box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+    box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
     cursor: pointer;
 
     &:hover {
-      box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
+      box-shadow: 0 24px 48px #E6EBF5;
     }
   }
 

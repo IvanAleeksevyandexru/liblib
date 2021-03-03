@@ -3,7 +3,7 @@ import { CountersService} from '../../services/counters/counters.service';
 import { LoadService } from '../../services/load/load.service';
 import { MenuService } from '../../services/menu/menu.service';
 import { FeedsComponent } from '../feeds/feeds.component';
-import { UserMenuState, CounterTarget, MenuLink, Category, CounterData } from '../../models';
+import { UserMenuState, CounterTarget, MenuLink, Category, CounterData, Catalog } from '../../models';
 import { TranslateService } from '@ngx-translate/core';
 import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
 import { ModalService } from '../../services/modal/modal.service';
@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit {
   public hideTimout: any;
   public categories: Category[] = [];
   public showRolesList: boolean;
+  public menuCatalogOpened: boolean;
 
   @ViewChild(FeedsComponent) public feedsComponent: FeedsComponent;
 
@@ -39,8 +40,11 @@ export class HeaderComponent implements OnInit {
   @Input() public rolesListEnabled?: boolean;
   @Input() public searchSputnikEnabled?: boolean;
   @Input() public logoHref?: string;
+  @Input() public catalog?: Catalog[];
 
   @Output() public backClick = new EventEmitter<any>();
+
+  @ViewChild('menu') private menu;
 
   @HostListener('document:keydown', ['$event'])
   public onKeydownComponent(event: KeyboardEvent) {
@@ -89,10 +93,13 @@ export class HeaderComponent implements OnInit {
       isMobileView
     } as UserMenuState;
 
-    if (isMobileView) {
-      const html = document.getElementsByTagName('html')[0];
-      html.classList.add('disable-scroll');
-    }
+    const html = document.getElementsByTagName('html')[0];
+    html.classList.add('disable-scroll-sm');
+  }
+
+  public hideUserMenu() {
+    console.log('hideUserMenu');
+    this.menu.onClose();
   }
 
   public initUserMenuState(): void {
@@ -161,6 +168,10 @@ export class HeaderComponent implements OnInit {
     }
 
     clearTimeout(this.hideTimout);
+  }
+
+  public onMenuCatalogClick(menuCatalogOpened: boolean) {
+    this.menuCatalogOpened = menuCatalogOpened;
   }
 
   public closeCategories() {

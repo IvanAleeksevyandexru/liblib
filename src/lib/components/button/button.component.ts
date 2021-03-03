@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent implements OnInit {
-  @Input() public type: 'button' | 'anchor' | 'search' = 'button'; // тип: кнопка, ссылка, с иконкой поиска
+  @Input() public type: 'button' | 'anchor' | 'search' | 'new-search' = 'button'; // тип: кнопка, ссылка, с иконкой поиска
   @Input() public size: 'md' | 'lg' | '' = ''; // размер: средний, большой; если не указан - размер минимальный
   @Input() public fontSize: number | null; // размер-шрифта
   @Input() public color: 'white' | 'transparent' | '' = ''; // цвет: белый; если не указан - синий
@@ -17,7 +17,7 @@ export class ButtonComponent implements OnInit {
   @Input() public target = ''; // присвоить _blank, что бы внешняя ссылка открылась в новом окне
   @Input() public internalLink = ''; // внутренняя ссылка, которая попадёт в атрибут routerLink
   @Input() public showLoader = false; // троббер в виде трех точек, необходимо использовать в связке с width - 'wide'
-  @Input() public theme: 'ligth' | '' = ''; // тема отображения кнопки для нового дизайна
+  @Input() public theme: 'light' | 'light left-btn' | 'light right-btn' | '' = ''; // тема отображения кнопки для нового дизайна
 
   public active = false;
 
