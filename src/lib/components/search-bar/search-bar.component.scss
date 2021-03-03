@@ -67,10 +67,10 @@
       position: absolute;
       background: url(../../../assets/svg/circle_close_blue.svg) 0 0 no-repeat;
       background-size: 100%;
-      right: -36px;
-      top: -3px;
-      width: 32px;
-      height: 32px;
+      right: -28px;
+      top: 0;
+      width: 24px;
+      height: 24px;
       cursor: pointer;
     }
 
@@ -371,6 +371,8 @@
       }
 
       .clear-blocked {
+        width: 24px;
+        height: 24px;
         right: -40px;
         top: 5px;
       }
