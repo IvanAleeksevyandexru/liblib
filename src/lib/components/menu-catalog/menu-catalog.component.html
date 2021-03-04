@@ -15,7 +15,7 @@
             <lib-location-select skinTheme="black"></lib-location-select>
           </div>
         </div>
-        <div [class.hide]="!showMenu">
+        <div *ngIf="catalog?.length" [class.hide]="!showMenu">
           <lib-menu-catalog-links
             [mobile]="true"
             [catalog]="catalog">

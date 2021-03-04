@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { Catalog } from '../../models/main-page.model';
 import { Subscription } from 'rxjs';
 import { LoadService } from '../../services/load/load.service';
-import { MenuService } from "../../services";
-import { UserRole } from "../../models";
+import { MenuService } from "../../services/menu/menu.service";
+import { UserRole } from "../../models/menu-link";
 
 @Component({
   selector: 'lib-menu-catalog',
