@@ -1,5 +1,6 @@
 .user-menu {
   width: 100%;
+  position: relative;
 
   .container {
     padding: 0 13px;
@@ -123,26 +124,34 @@
     //}
   }
 
-  //.select-role {
-  //  cursor: pointer;
-  //  user-select: none;
-  //  &:after {
-  //    display: inline-block;
-  //    width: 16px;
-  //    height: 8px;
-  //    content: '';
-  //    background: url(../../../assets/svg/triangle.svg) center no-repeat;
-  //    transform: rotate(180deg);
-  //    margin-left: 6px;
-  //  }
-  //}
-  //
-  //.select-role.show-roles-list {
-  //  &:after {
-  //    transform: rotate(0deg);
-  //  }
-  //}
+  .select-role {
+    cursor: pointer;
+    user-select: none;
+    &:after {
+      display: inline-block;
+      width: 16px;
+      height: 8px;
+      content: '';
+      background: url(../../../assets/svg/arrows/arrow_gray.svg) center no-repeat;
+      margin-left: 6px;
+    }
+    .active-role {
+      color: #0D4CD3;
+      &:hover {
+        color: #1D5DEB;
+      }
+    }
+  }
 
+  .select-role.show-roles-list {
+    &:after {
+      transform: rotate(180deg);
+    }
+    .active-role {
+      color: #0B1F33;
+    }
+  }
+  //
   //.roles-list {
   //  margin-left: 16px;
   //}
@@ -218,14 +227,50 @@
     }
     .user-menu-links {
       padding: 16px;
+      &.burger {
+        padding: 0;
+        .item {
+          padding: 16px;
+          margin: 0;
+
+          ::ng-deep {
+            .location-select {
+              .text {
+                font-size: 16px;
+                line-height: 24px;
+                color: #0D4CD3;
+                &:hover {
+                  color: #1D5DEB;
+                }
+              }
+            }
+          }
+        }
+        .text-plain {
+          color: #0D4CD3;
+          &:hover {
+            color: #1D5DEB;
+          }
+        }
+      }
     }
     .separator {
       opacity: 0.1;
       border-top: 1px solid #0B1F33;
     }
+    .digital-assistant-wrap {
+      background: linear-gradient(133.89deg, #322D6F 20.92%, #191240 81.4%);
+      .text-plain, .text-plain:hover {
+        color: #ffffff !important;
+      }
+    }
+    .location-select-wrap {
+      background: rgba(13, 76, 211, 0.08);
+    }
     .icon {
       width: 24px;
       height: 24px;
+      background-size: 24px;
       margin-right: 16px;
       &.bell {
         background-image: url(../../../assets/svg/menu-icons/bell.svg);
@@ -241,6 +286,13 @@
       }
       &.hand-break {
         background-image: url(../../../assets/svg/menu-icons/hand-break.svg);
+      }
+      &.digital-assistant {
+        background-image: url(../../../assets/svg/menu-icons/digital-assistant.svg);
+      }
+      &.aim {
+        background-image: url(../../../assets/svg/menu-icons/aim.svg);
+        margin-right: 0;
       }
     }
   }

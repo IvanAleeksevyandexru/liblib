@@ -59,7 +59,7 @@
     <div class="inner container grid-row flex-container align-items-center">
       <div class="col-lg-4 col-md-2 col-2 logo-wrapper">
         <div class="flex-container flex-1 align-items-center">
-           <div class="catalog-menu-wrap" *ngIf="catalog">
+           <div class="catalog-menu-wrap" *ngIf="showBurger">
              <lib-menu-catalog
                (menuCatalogOpened)="onMenuCatalogClick($event)"
                [catalog]="catalog">
@@ -111,28 +111,6 @@
            [class.col-lg-3]="user.authorized">
         <a *ngIf="!user.authorized" href="{{loadService.config.betaUrl}}help" target="_self" class="search-icon hide show-lg"></a>
         <div class="user-menu-wrapper">
-<!--          <div *ngIf="user.authorized"-->
-<!--               class="notifications">-->
-<!--            <a class="bell"-->
-<!--               [class.unread]="isUnread"-->
-<!--               (click)="this.showNotifications = !this.showNotifications;"-->
-<!--               [title]="isUnread ? 'У вас есть непрочитанные уведомления' : 'У вас нет непрочитанных уведомлений'"></a>-->
-
-<!--            <div *ngIf="showNotifications" class="notifications-list" libStopScreenScroll>-->
-<!--              <a class="close" (click)="this.showNotifications = !this.showNotifications;"></a>-->
-<!--              <h6 class="title-h6 mb-12">Последние события</h6>-->
-<!--              <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}"-->
-<!--                                 (psYReachEnd)="feedsComponent.showMore()">-->
-<!--                <lib-feeds-->
-<!--                  page="header"-->
-<!--                  [autoload]="true"-->
-<!--                  [count]="10"-->
-<!--                  types="ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE,KND_APPEAL"-->
-<!--                ></lib-feeds>-->
-<!--              </perfect-scrollbar>-->
-<!--            </div>-->
-<!--          </div>-->
-
           <div class="login-wrapper">
             <div class="login flex-container justify-end overflow-container">
               <lib-login [useButton]="true" class="hide"
@@ -140,8 +118,6 @@
                          [menuOpened]="userMenuState.active"
                          (closeMenu)="hideUserMenu()"
                          (userClick)="showUserMenu(false)"></lib-login>
-<!--              <lib-login [useButton]="true" *ngIf="user.authorized" class="show hide-md"-->
-<!--                         (userClick)="showUserMenu(true)"></lib-login>-->
               <lib-login *ngIf="!user.authorized" [onlyText]="true" class="login-mobile-icon"></lib-login>
             </div>
           </div>

@@ -40,6 +40,7 @@ export class HeaderComponent implements OnInit {
   @Input() public rolesListEnabled?: boolean;
   @Input() public searchSputnikEnabled?: boolean;
   @Input() public logoHref?: string;
+  @Input() public showBurger = true;
   @Input() public catalog?: Catalog[];
 
   @Output() public backClick = new EventEmitter<any>();
@@ -66,7 +67,7 @@ export class HeaderComponent implements OnInit {
 
 
   constructor(
-    private loadService: LoadService,
+    public loadService: LoadService,
     private menuService: MenuService,
     private countersService: CountersService,
     public translate: TranslateService,
@@ -77,10 +78,10 @@ export class HeaderComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.loadService.userTypeNA$.subscribe(type => {
-      this.updateRole(type);
-    });
     this.initUserMenuState();
+    this.loadService.userTypeNA$.subscribe(type => {
+      this.activeRoleCode = type;
+    });
     this.countersService.counters$.subscribe(() => {
       const counter = this.countersService.getCounter(CounterTarget.USER);
       this.isUnread = !!(counter && counter.unread);
@@ -98,7 +99,6 @@ export class HeaderComponent implements OnInit {
   }
 
   public hideUserMenu() {
-    console.log('hideUserMenu');
     this.menu.onClose();
   }
 

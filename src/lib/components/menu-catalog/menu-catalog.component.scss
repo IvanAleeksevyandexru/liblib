@@ -31,7 +31,7 @@
   height: 24px;
   background: url('../../../assets/svg/menu-new.svg') center center no-repeat;
   position: relative;
-  z-index: 10;
+  z-index: 9;
   cursor: pointer;
   &.show{
     background-image: url('../../../assets/svg/close.svg');
