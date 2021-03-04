@@ -14,6 +14,7 @@ import { ListItem, ListItemConverter } from '../../models/dropdown.model';
 import { LookupComponent } from '../lookup/lookup.component';
 import { SearchService } from '../../services/search/search.service';
 import { LoadService } from '../../services/load/load.service';
+import { ConstantsService } from "../../services";
 
 @Component({
   selector: 'lib-search-sputnik',
@@ -38,6 +39,8 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Input() public blockedSearchValue = '';
   // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
   @Input() public stopSearch = false;
+  // ожидание (мс) до срабатывания поиска с последнего ввода символа
+  @Input() public queryTimeout = ConstantsService.DEFAULT_QUERY_DEBOUNCE;
 
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();

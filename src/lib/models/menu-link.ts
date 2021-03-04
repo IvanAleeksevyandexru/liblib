@@ -5,3 +5,11 @@ export interface MenuLink {
   mnemonic?: string;
   handler?: (MenuLink) => void;
 }
+
+export interface UserRole {
+  name: string;
+  url: string;
+  code: string;
+  isActive?: boolean;
+  click?: () => void;
+}

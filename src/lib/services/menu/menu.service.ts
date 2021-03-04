@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
 import { AccessesService } from '../accesses/accesses.service';
-import { Category, MenuLink, User } from '../../models';
+import { Category, MenuLink, User, UserRole } from '../../models';
 import { CookieService } from '../cookie/cookie.service';
 
 const HASH = Math.random();
@@ -194,7 +194,7 @@ export class MenuService {
     };
   }
 
-  public getUserRoles(user: User): any {
+  public getUserRoles(user: User): UserRole[] {
     const betaUrl = this.loadService.attributes.appContext === 'PORTAL' ? '/' : this.loadService.config.betaUrl;
     const partnersUrl = this.loadService.config.partnersUrl;
     return [
