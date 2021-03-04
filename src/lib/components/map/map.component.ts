@@ -47,7 +47,7 @@ export class MapComponent implements OnInit, OnChanges {
       zoom: this.zoom || 9
     };
     const layoutConfig = {
-      iconLayout: this.iconLayout || 'default#imageWithContent',
+      iconLayout: this.iconLayout || 'default#image',
       iconImageHref: this.iconImageHref || `${this.staticDomain}/lib-assets/svg/blue-ya-marker.svg`,
       iconImageSize: this.iconImageSize || [27, 30],
     };

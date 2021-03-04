@@ -19,7 +19,7 @@ export class CountersService {
     LINKED_ACCOUNT: key => key === CounterType.LINKED_ACCOUNT,
     BIOMETRY: key => key === CounterType.BIOMETRICS,
     SETTINGS: key => this.counterFilters.ACCOUNT(key) || this.counterFilters.BIOMETRY(key) || this.counterFilters.ESIGNATURE(key) || this.counterFilters.LINKED_ACCOUNT(key),
-    STATEMENTS: key => key === CounterType.ORDER || key === CounterType.EQUEUE || key === CounterType.CLAIM,
+    STATEMENTS: key => key === CounterType.ORDER || key === CounterType.EQUEUE || key === CounterType.CLAIM || key === CounterType.COMPLEX_ORDER || key === CounterType.APPEAL,
     MESSAGES: key => key === CounterType.GEPS,
     PARTNERS: key => key === CounterType.PARTNERS,
     PAYMENTS: key => false,
