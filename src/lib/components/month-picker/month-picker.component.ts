@@ -333,14 +333,18 @@ export class MonthPickerComponent
       this.years.forEach((yearIterated) => yearIterated.selected = false);
       this.selectedYearChanged = true;
       this.rebuildMonths(year.number);
-      const complete = () => {
+      const complete = (newOffset) => {
         year.selected = true;
         this.selectedYear = year.number;
         this.prevYearAvailable = year.number - 1 >= this.minimum.year;
         this.nextYearAvailable = year.number + 1 <= this.maximum.year;
+        if (newOffset) {
+          this.yearsFeedOffset = newOffset;
+        }
+        this.changeDetection.detectChanges();
       };
       if (passive) {
-        complete();
+        complete(null);
       } else {
         this.slideTo(year, complete);
       }
@@ -421,7 +425,7 @@ export class MonthPickerComponent
     }
   }
 
-  public slideTo(targetYear: Year, callback?: () => void) {
+  public slideTo(targetYear: Year, callback?: (offset) => void) {
     this.changeDetection.detectChanges();
     const yearIndex = this.years.findIndex((year) => year === targetYear);
     if (yearIndex >= 0 && this.yearsFeed && this.yearsContainer) {
@@ -431,14 +435,16 @@ export class MonthPickerComponent
       const minLimit = containerWidth - feedWidth;
       let newOffset = -(yearIndex * (ITEM_WIDTH + ITEM_SPACE) - frameWidth);
       newOffset = Math.min(0, Math.max(minLimit, newOffset));
-      const done = callback ? callback : () => {};
+      const done = callback ? callback : (offset) => {};
+      if (this.yearsFeedOffset === 0) {
+        this.yearsFeedOffset = newOffset;
+      }
       const animationPlayer = this.animationBuilder.build([
         style({left: this.yearsFeedOffset + 'px'}), animate(DELAY, style({left: newOffset + 'px'}))
       ]).create(this.yearsFeed.nativeElement);
       animationPlayer.onDone(() => {
         animationPlayer.destroy();
-        this.yearsFeedOffset = newOffset;
-        done();
+        done(newOffset);
       });
       animationPlayer.play();
     }
