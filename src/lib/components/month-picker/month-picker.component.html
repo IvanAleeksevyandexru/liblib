@@ -3,7 +3,6 @@
     <div class="month-picker-value">
       <div class="month-picker-icon icon"></div>
       <div class="clear-icon icon" *ngIf="clearable && activeMonthYear" (click)="clearValue($event)"></div>
-      {{yearsFeedOffset}}
       <input #focusableInput
              class="focusable-input"
              type="text"
