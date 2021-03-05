@@ -1,10 +1,11 @@
-<section class="disclaimer {{customClass}}" [ngClass]="{'shadow': noBorder}"
-         [style.borderLeft]="!noBorder ? '4px solid ' + color : 'none'">
-  <div class="flex-container align-items-center mb-8">
-    <div *ngIf="horizontalLine" class="line mr-8" [style.backgroundColor]="color"></div>
-    <h4 *ngIf="title" class="title" [innerHTML]="title"></h4>
+<section class="disclaimer"
+         [ngClass]="{ 'shadow': noBorder && !noShadow, 'with-line-view': horizontalLine }"
+         [style.border]="noBorder ? 'none' : '2px solid ' + color">
+  <div *ngIf="title" class="flex-container mb-8">
+    <div class="line mt-8 mr-8" [style.backgroundColor]="color"></div>
+    <h4 class="title bold" [innerHTML]="title"></h4>
   </div>
-  <p *ngIf="text; else content" class="text-help gray mb-0" [innerHTML]="text"></p>
+  <p *ngIf="text; else content" class="text" [innerHTML]="text"></p>
   <ng-template #content>
     <ng-content></ng-content>
   </ng-template>
