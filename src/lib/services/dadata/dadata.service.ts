@@ -213,6 +213,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
     this.qc = '';
     const url = `${this.externalApiUrl ? this.externalApiUrl : this.loadService.config.nsiApiUrl}dadata/suggestions`;
     return this.http.get<SuggestionsResponse>(url, {
+      withCredentials: true,
       params: {
         q: query
       }
@@ -232,6 +233,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
   public normalize(address: string): Observable<NormalizedData> {
     const url = `${this.externalApiUrl ? this.externalApiUrl : this.loadService.config.nsiApiUrl}dadata/normalize`;
     return this.http.get<NormalizedData>(url, {
+      withCredentials: true,
       params: {
         q: address
       }
