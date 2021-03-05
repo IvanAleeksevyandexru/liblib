@@ -9,7 +9,7 @@
       'notifier-process': notifier.type === NotifierType.Process,
       'notifier-success': notifier.type === NotifierType.Success,
       'last-one': last}">
-    <div class="flex-container-md">
+    <div>
       {{notifier.message}}
       <a class="cancel" *ngIf="notifier.onCancel" (click)="cancelNotifier(notifier)">{{'NOTIFICATIONS.CANCEL' | libTranslate}}</a>
     </div>
