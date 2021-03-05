@@ -6,13 +6,13 @@ import { Focusable } from '../../services/focus/focus.manager';
 import { PipedMessage } from '../../models/piped-message';
 import { InputAutocomplete, TipDirection, MessagePosition, Translation, RemoveMaskSymbols } from '../../models/common-enums';
 import { ValidationDetailed, ValidationShowOn, ValidationMessages } from '../../models/validation-show';
-import { HelperService } from '../../services/helper/helper.service';
 import { Width } from '../../models/width-height';
+import { Suggest, SuggestItem } from '../../models/suggest';
 
 @Component({
   selector: 'lib-standard-masked-input',
   templateUrl: 'standard-masked-input.component.html',
-  styleUrls: ['./standard-masked-input.component.scss'],
+  styleUrls: ['./standard-masked-input.component.scss', '../plain-input/plain-input.component.scss'],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => StandardMaskedInputComponent),
@@ -37,6 +37,7 @@ export class StandardMaskedInputComponent extends BaseMaskedInputComponent
   @Input() public readOnly?: boolean;
   @Input() public commitOnInput = true;  // коммитить ли значение по input или по change
   @Input() public width?: Width | string;
+  @Input() public suggest?: Suggest;
 
   @Input() public removeMaskSymbols: RemoveMaskSymbols | string = RemoveMaskSymbols.PLACEHOLDERS;
   @Input() public mask: (value: string) => Array<string> | Array<string | RegExp>;
@@ -73,6 +74,7 @@ export class StandardMaskedInputComponent extends BaseMaskedInputComponent
   @Output() public focus = new EventEmitter();
   @Output() public blur = new EventEmitter();
   @Output() public cleared = new EventEmitter<void>();
+  @Output() public selectSuggest = new EventEmitter<Suggest | SuggestItem>();
 
   public MessagePosition = MessagePosition;
 }
