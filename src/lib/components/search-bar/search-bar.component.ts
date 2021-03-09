@@ -18,7 +18,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Focusable, FocusManager } from "../../services/focus/focus.manager";
 import { Validated, ValidationShowOn } from "../../models/validation-show";
@@ -28,6 +28,7 @@ import { SearchSyncControl } from "../../models/common-enums";
 import { HelperService } from "../../services/helper/helper.service";
 import { ValidationHelper } from "../../services/validation-helper/validation.helper";
 import { ConvertLangService } from "../../services/convert-lang/convert-lang.service";
+import { SharedService } from '../../services/shared/shared.service';
 
 
 class ScheduledSearch {
@@ -57,6 +58,7 @@ export class SearchBarComponent
     private changeDetector: ChangeDetectorRef,
     protected focusManager: FocusManager,
     private convertLang: ConvertLangService,
+    public sharedService: SharedService,
     @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {
   }
 
@@ -130,6 +132,7 @@ export class SearchBarComponent
   private lastEmitted = '';
   private suppressSearching = false;
   private insureSearchActiveToken = 0;
+  private sharedSubscription: Subscription;
   private queryDebounce = new Subject<ScheduledSearch>();
   private querySubscription = this.refreshDebouncedSubscription();
   private searchQueue: Array<string> = [];
@@ -142,6 +145,11 @@ export class SearchBarComponent
   }
 
   public ngOnInit() {
+    this.sharedSubscription = this.sharedService.on('clearSearch').subscribe((val) => {
+      if (val) {
+        this.query = '';
+      }
+    });
     this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
     if (!this.id) {
       this.id = 'search-input-' + Math.random().toString(16).slice(2);
@@ -188,6 +196,7 @@ export class SearchBarComponent
   }
 
   public ngOnDestroy() {
+    this.sharedSubscription.unsubscribe();
     this.focusManager.unregister(this);
   }
 
