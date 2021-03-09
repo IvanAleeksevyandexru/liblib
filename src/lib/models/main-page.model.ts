@@ -86,6 +86,26 @@ export interface FooterInterface {
   content: string;
 }
 
+export interface MainFooter {
+  socialLinks?: boolean;
+  blocks?: MainFooterBlock[];
+}
+
+export interface MainFooterBlock {
+  title: string;
+  hideDesktop?: boolean;
+  hideTablet?: boolean;
+  hideMobile?: boolean;
+  links?: MainFooterBlockLink[];
+  apps?: string[];
+}
+
+export interface MainFooterBlockLink {
+  title: string;
+  url: string;
+  newTab?: boolean;
+}
+
 export interface LifeSituationInterface {
   description: string;
   icon: string;

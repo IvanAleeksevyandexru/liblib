@@ -82,3 +82,5 @@ export * from './validation-message/validation-message.component';
 export * from './virtual-scroll/virtual-scroll.component';
 export * from './menu-catalog/menu-catalog.component';
 export * from './menu-catalog-links/menu-catalog-links.component'
+export * from './small-footer/small-footer.component';
+export * from './social-links/social-links.component';

@@ -147,6 +147,8 @@ import { SearchSputnikComponent } from './components/search-sputnik/search-sputn
 import { FrameComponent } from './components/frame/frame.component';
 import { MenuCatalogComponent } from './components/menu-catalog/menu-catalog.component';
 import { MenuCatalogLinksComponent } from './components/menu-catalog-links/menu-catalog-links.component';
+import { SmallFooterComponent } from './components/small-footer/small-footer.component';
+import { SocialLinksComponent } from './components/social-links/social-links.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -284,6 +286,8 @@ registerLocaleData(localeRu, 'ru');
     FrameComponent,
     MenuCatalogComponent,
     MenuCatalogLinksComponent,
+    SmallFooterComponent,
+    SocialLinksComponent
   ],
   imports: [
     CommonModule,
@@ -422,7 +426,8 @@ registerLocaleData(localeRu, 'ru');
     HeaderComponent,
     FrameComponent,
     MenuCatalogComponent,
-    MenuCatalogLinksComponent
+    MenuCatalogLinksComponent,
+    SmallFooterComponent
   ],
   providers: [
     GosbarService,
@@ -439,6 +444,7 @@ registerLocaleData(localeRu, 'ru');
     HealthService,
     ToMoneyPipe,
     CapitalLetterPipe,
+    SocialLinksComponent,
     {
       provide: LOCALE_ID,
       useValue: 'ru'

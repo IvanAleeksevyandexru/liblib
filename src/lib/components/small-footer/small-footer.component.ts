@@ -1,0 +1,55 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { LoadService } from '../../services/load/load.service';
+import { MainFooter } from '../../models/main-page.model';
+import { MainPageService } from '../../services/main-page/main-page.service';
+
+@Component({
+  selector: 'lib-small-footer',
+  templateUrl: './small-footer.component.html',
+  styleUrls: ['./small-footer.component.scss']
+})
+export class SmallFooterComponent implements OnInit {
+
+  @Input() public needFooterData: boolean;
+  @Input() public footer: MainFooter;
+
+  public config = this.loadService.config;
+  public staticDomainLibAssetsPath = this.loadService.config.staticDomainLibAssetsPath;
+  public applications = {
+    android: {
+      url: this.config.appStores.googlePlay,
+      icon: `${this.staticDomainLibAssetsPath}svg/mp-buttons/googleplay-white.svg`,
+      name: 'Google Play'
+    },
+    ios: {
+      url: this.config.appStores.appStore,
+      icon: `${this.staticDomainLibAssetsPath}svg/mp-buttons/appstore-white.svg`,
+      name: 'App Store'
+    },
+    huawei: {
+      url: this.config.appStores.appGallery,
+      name: 'App Gallery'
+    },
+  };
+
+  constructor(
+    public loadService: LoadService,
+    private mainPageService: MainPageService
+  ) { }
+
+  public ngOnInit(): void {
+    this.getFooter();
+  }
+
+  private getFooter(): void {
+    if(this.needFooterData) {
+      this.mainPageService.getFooterData().subscribe((data: any) => {
+        // пока на моке, как доработают бэк - надо будет доделать
+        if (data?.footer) {
+          this.footer = data.footer as MainFooter;
+        }
+      });
+    }
+  }
+
+}
