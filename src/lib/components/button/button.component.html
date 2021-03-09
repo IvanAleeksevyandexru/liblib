@@ -10,7 +10,7 @@
     <ng-container *ngIf="!showLoader">
       <ng-container *ngTemplateOutlet="content"></ng-container>
     </ng-container>
-    <lib-loader [color]="color" *ngIf="showLoader"></lib-loader>
+    <lib-round-loader *ngIf="showLoader"></lib-round-loader>
   </button>
   <a *ngIf="type === 'anchor' && link !== ''"
     class="{{size}} {{color}} {{width}} {{height}} {{type}}"
