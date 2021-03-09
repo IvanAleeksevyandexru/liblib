@@ -112,6 +112,47 @@ export class ConstantsService {
       metric: {name: this.TABS_METRIC_NAME, action: 'permissions'}
     }
   ]);
+  public readonly LK_DEPT_TABS = new Tabs([
+    {
+      id: 'orders-dept',
+      name: 'TABS.ORDERS_DEPT.TITLE',
+      url: '/orders-dept',
+      metric: {name: this.TABS_METRIC_NAME, action: 'ordersDept'}
+    }, {
+      id: 'orders-refusals',
+      name: 'TABS.ORDERS_REFUSALS.TITLE',
+      url: '/orders-refusals',
+      metric: {name: this.TABS_METRIC_NAME, action: 'ordersRefusals'}
+    }, {
+      id: 'orders-bankruptcy',
+      name: 'TABS.ORDERS_BANKRUPTCY.TITLE',
+      url: '/orders-bankruptcy',
+      metric: {name: this.TABS_METRIC_NAME, action: 'ordersBankruptcy'}
+    }
+  ]);
+  public readonly LK_DEPT_TABS_ASIDE = new Tabs([
+    {
+      id: 'debt',
+      name: 'Все заявления',
+      url: '/orders-debt/all'
+    },
+    {
+      id: 'inbox',
+      name: 'Полученные',
+      url: '/orders-debt/inbox'
+    },
+    {
+      id: 'approved',
+      name: 'Одобренные',
+      url: '/orders-debt/approved'
+    },
+    {
+      id: 'failure',
+      name: 'Отказы',
+      url: '/orders-debt/failure',
+      break: 'after'
+    }
+  ]);
   public readonly LK_PARTNERS_TABS = new Tabs([
     {
       id: 'partners',
@@ -254,6 +295,12 @@ export class ConstantsService {
       access: ['AL15', 'AL20']
     },
     {
+      id: 'health',
+      name: 'PROFILE.TABS.HEALTH',
+      url: '/profile/health',
+      access: ['AL20']
+    },
+    {
       id: 'property',
       name: 'PROFILE.TABS.PROPERTY',
       url: '/profile/property',
@@ -374,7 +421,7 @@ export class ConstantsService {
   public readonly FEEDS_CATEGORIES = [
     {
       text: 'Все',
-      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,KND_APPEAL',
+      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,KND_APPEAL,LINKED_ACCOUNT',
       id: 1,
       mnemonic: 'allEvents'
     },
@@ -404,7 +451,7 @@ export class ConstantsService {
     },
     {
       text: 'Системные',
-      type: 'BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE',
+      type: 'BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE,LINKED_ACCOUNT',
       id: 6,
       mnemonic: 'systemEvents'
     },
@@ -846,6 +893,7 @@ export class ConstantsService {
     MARRIED_CERT: 'MARRIED_CERT',
     DIVORCE_CERT: 'DIVORCE_CERT',
     SELF_EMPLOYED: 'SELF_EMPLOYED',
+    DISABLED_PERSON: 'DISABLED_PERSON',
     PARKING_PERMIT: 'REESTR_INVALIDOV'
   };
 

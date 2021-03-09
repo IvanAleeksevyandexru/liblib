@@ -16,9 +16,10 @@ export class CountersService {
   private counterFilters: { [index: string]: CounterFilter } = {
     USER: key => this.counterFilters.STATEMENTS(key) || this.counterFilters.MESSAGES(key) || this.counterFilters.SETTINGS(key),
     ACCOUNT: key => key === CounterType.ACCOUNT || key === CounterType.PROFILE,
+    LINKED_ACCOUNT: key => key === CounterType.LINKED_ACCOUNT,
     BIOMETRY: key => key === CounterType.BIOMETRICS,
-    SETTINGS: key => this.counterFilters.ACCOUNT(key) || this.counterFilters.BIOMETRY(key) || this.counterFilters.ESIGNATURE(key),
-    STATEMENTS: key => key === CounterType.ORDER || key === CounterType.EQUEUE || key === CounterType.CLAIM,
+    SETTINGS: key => this.counterFilters.ACCOUNT(key) || this.counterFilters.BIOMETRY(key) || this.counterFilters.ESIGNATURE(key) || this.counterFilters.LINKED_ACCOUNT(key),
+    STATEMENTS: key => key === CounterType.ORDER || key === CounterType.EQUEUE || key === CounterType.CLAIM || key === CounterType.COMPLEX_ORDER || key === CounterType.APPEAL,
     MESSAGES: key => key === CounterType.GEPS,
     PARTNERS: key => key === CounterType.PARTNERS,
     PAYMENTS: key => false,
@@ -97,7 +98,7 @@ export class CountersService {
   // TODO: описать интерфейс
   public doCountersApiRequest(isHide?: boolean): Observable<any> {
     let params = {
-      types: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,CLAIM,PROFILE,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE,PARTNERS,BUSINESSMAN,KND_APPEAL',
+      types: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,CLAIM,PROFILE,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE,PARTNERS,BUSINESSMAN,KND_APPEAL,LINKED_ACCOUNT',
       isArchive: 'false',
       _: Math.random().toString()
     };
