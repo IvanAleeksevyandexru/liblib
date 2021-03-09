@@ -62,6 +62,9 @@
           [class.incremental-loading]="partialsLoading">
 
         <ng-container *ngIf="staticList; else withScroll">
+
+          <ng-container [ngTemplateOutlet]="suggestTmpl" [ngTemplateOutletContext]="{suggest: suggest}"></ng-container>
+
           <ng-container *ngFor="let item of items">
             <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
           </ng-container>
@@ -71,6 +74,9 @@
           <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll && !staticList"
               [config]="{suppressScrollX: true, wheelPropagation: mainPageStyle}"
               (psYReachEnd)="loadNextPartial()">
+
+            <ng-container [ngTemplateOutlet]="suggestTmpl" [ngTemplateOutletContext]="{suggest: suggest}"></ng-container>
+
             <ng-container *ngFor="let item of items">
               <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
             </ng-container>
@@ -79,6 +85,9 @@
           <lib-virtual-scroll #virtualScroll *ngIf="virtualScroll && !staticList"
               [scrollStrategy]="virtualScrollController"
               (scrollBottomReached)="loadNextPartial()">
+
+            <ng-container [ngTemplateOutlet]="suggestTmpl" [ngTemplateOutletContext]="{suggest: suggest}"></ng-container>
+
             <ng-container *libVirtualFor="let item of items">
               <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
             </ng-container>
@@ -116,6 +125,23 @@
         <div *ngIf="collapsableGroups && item.collapsable" class="expand-collapse" [class.collapsed]="item.collapsed" (click)="expandCollapse(item, $event)"></div>
       </div>
     </div>
+  </div>
+</ng-template>
+
+<ng-template #suggestTmpl let-suggest="suggest">
+  <div class="suggests" *ngIf="suggest && suggest.list.length">
+    <p class="title pl-16">{{'SUGGEST.TITLE' | libTranslate}}</p>
+    <ul class="mt-4">
+      <li *ngFor="let item of suggest.list" (click)="selectSuggestItem(item)">
+        <p>{{item.value}}</p>
+        <ng-container *ngIf="item.hints">
+          <span *ngFor="let hint of item.hints">{{hint.value}} </span>
+        </ng-container>
+      </li>
+    </ul>
+    <p class="ml-16 mr-16 edit mt-4">
+      <a (click)="editSuggestList(suggest)">{{'SUGGEST.EDIT_LIST' | libTranslate}}</a>
+    </p>
   </div>
 </ng-template>
 

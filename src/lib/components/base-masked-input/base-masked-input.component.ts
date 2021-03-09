@@ -13,11 +13,12 @@ import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { HelperService } from '../../services/helper/helper.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { Width } from '../../models/width-height';
+import { Suggest, SuggestItem } from '../../models/suggest';
 
 @Component({
   selector: 'lib-base-masked-input',
   templateUrl: 'base-masked-input.component.html',
-  styleUrls: ['./base-masked-input.component.scss'],
+  styleUrls: ['./base-masked-input.component.scss', '../plain-input/plain-input.component.scss'],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => BaseMaskedInputComponent),
@@ -51,6 +52,7 @@ export class BaseMaskedInputComponent
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public uppercase = false;
   @Input() public width?: string | Width;
+  @Input() public suggest?: Suggest;
 
   // маска - это массив символов и/или регэкспов, каждый ответственен за свой символ в поле
   // пример: ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
@@ -77,6 +79,7 @@ export class BaseMaskedInputComponent
   @Output() public focus = new EventEmitter();
   @Output() public blur = new EventEmitter();
   @Output() public cleared = new EventEmitter<void>();
+  @Output() public selectSuggest = new EventEmitter<Suggest | SuggestItem>();
 
   @ViewChild('input') private inputElement: ElementRef;
 
@@ -215,7 +218,13 @@ export class BaseMaskedInputComponent
   }
 
   public returnFocus(e?: Event) {
-    if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement)) {
+    let isSuggest;
+    if (e) {
+      const target = e.target as HTMLTextAreaElement;
+      isSuggest = target.offsetParent.classList.contains('suggests');
+    }
+
+    if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement) && !isSuggest) {
       this.inputElement.nativeElement.focus();
       HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue);
       this.focusManager.notifyFocusMayChanged(this, true);
@@ -302,4 +311,13 @@ export class BaseMaskedInputComponent
     }
   }
 
+  public selectSuggestItem(item: SuggestItem): void {
+    this.selectSuggest.emit(item);
+    this.loseFocus();
+  }
+
+  public editSuggestList(suggest: Suggest): void {
+    suggest.isEdit = true;
+    this.selectSuggest.emit(suggest);
+  }
 }
