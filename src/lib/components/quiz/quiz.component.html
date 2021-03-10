@@ -15,16 +15,19 @@
         </div>
         <div class="answers mb-8 mb-lg-16" [ngClass]="{'new-lines': newLines}">
           <ng-container *ngIf="question.questionType === QuestionType.RADIO">
-            <div *ngFor="let answer of question.answers" class="answer text-plain" [ngClass]="{selected: answer === question.selectedAnswer, hidden: answer === question.defaultAnswer}" (click)="selectAnswer(question, answer);">
-              <ng-container [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{text: answer.text,
-                  escapeHtml: escapeHtml, translation: translation, Translation: Translation}">
+            <div *ngFor="let answer of question.answers"
+                 class="answer text-plain"
+                 [ngClass]="{selected: answer === question.selectedAnswer, hidden: answer === question.defaultAnswer}"
+                 (click)="selectAnswer(question, answer);">
+              <ng-container [ngTemplateOutlet]="textTemplate"
+                            [ngTemplateOutletContext]="{text: answer.text, escapeHtml: escapeHtml, translation: translation, Translation: Translation}">
               </ng-container>
             </div>
           </ng-container>
           <ng-container *ngIf="question.questionType === QuestionType.RATING">
-            <div *ngFor="let answer of question.answers" class="answer rate-answer" 
-              [ngClass]="{selected: answer.selected, highlighted: answer.highlighted, hidden: answer === question.defaultAnswer}" 
-              (click)="selectAnswer(question, answer)" 
+            <div *ngFor="let answer of question.answers" class="answer rate-answer"
+              [ngClass]="{selected: answer.selected, highlighted: answer.highlighted, hidden: answer === question.defaultAnswer}"
+              (click)="selectAnswer(question, answer)"
               (mouseenter)="highlightAnswer(question, answer)" (mouseleave)="dehighlightAnswers(question)">
             </div>
           </ng-container>
@@ -41,10 +44,10 @@
             </ng-container>
           </div>
           <div class="extended-answer mb-32">
-            <lib-plain-input 
-              [multiline]="true" 
-              [disabled]="question.textComment.disabled || false" 
-              [placeholder]="question.textComment.placeholder ? (translation === Translation.APP ? (question.textComment.placeholder | appTranslate) : question.textComment.placeholder) : ''" [(ngModel)]="question.extendedAnswer" 
+            <lib-plain-input
+              [multiline]="true"
+              [disabled]="question.textComment.disabled || false"
+              [placeholder]="question.textComment.placeholder ? (translation === Translation.APP ? (question.textComment.placeholder | appTranslate) : question.textComment.placeholder) : ''" [(ngModel)]="question.extendedAnswer"
               [maxlength]="4000">
             </lib-plain-input>
           </div>
