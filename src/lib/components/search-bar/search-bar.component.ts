@@ -5,14 +5,14 @@ import {
 import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { Focusable, FocusManager } from "../../services/focus/focus.manager";
-import { Validated, ValidationShowOn } from "../../models/validation-show";
-import { Width } from "../../models/width-height";
-import { ConstantsService } from "../../services/constants.service";
-import { SearchSyncControl } from "../../models/common-enums";
-import { HelperService } from "../../services/helper/helper.service";
-import { ValidationHelper } from "../../services/validation-helper/validation.helper";
-import { ConvertLangService } from "../../services/convert-lang/convert-lang.service";
+import { Focusable, FocusManager } from '../../services/focus/focus.manager';
+import { Validated, ValidationShowOn } from '../../models/validation-show';
+import { Width } from '../../models/width-height';
+import { ConstantsService } from '../../services/constants.service';
+import { SearchSyncControl } from '../../models/common-enums';
+import { HelperService } from '../../services/helper/helper.service';
+import { ValidationHelper } from '../../services/validation-helper/validation.helper';
+import { ConvertLangService } from '../../services/convert-lang/convert-lang.service';
 import { SharedService } from '../../services/shared/shared.service';
 
 
@@ -91,7 +91,7 @@ export class SearchBarComponent
   // при слабом коннекте запускать поиск последнего введенного значения #dadata
   @Input() public searchLastValue = false;
   // новый вид для ультрановой главной
-  @Input() public mainPageStyle: boolean = false;
+  @Input() public mainPageStyle = false;
   // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
   @Input() public blockedSearchValue = '';
   // активация автоматического перевода с английского
@@ -142,7 +142,7 @@ export class SearchBarComponent
     }
 
     if (this.enableLangConvert) {
-      this.convertLang.init('RUS')
+      this.convertLang.init('RUS');
     }
   }
 
@@ -185,7 +185,7 @@ export class SearchBarComponent
     this.sharedSubscription.unsubscribe();
     this.focusManager.unregister(this);
   }
-
+1
   public updateQuery(value: string) {
     if (this.enableLangConvert) {
       this.query = this.convertLang.fromEng(value);
