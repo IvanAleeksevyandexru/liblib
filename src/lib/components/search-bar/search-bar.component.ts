@@ -195,7 +195,7 @@ export class SearchBarComponent
     this.suggestion = null;
     this.commit(this.query);
     if (this.searchByTextInput) {
-      this.queryDebounce.next(new ScheduledSearch(value, this.insureSearchActiveToken));
+      this.queryDebounce.next(new ScheduledSearch(value ? value.trim() : value, this.insureSearchActiveToken));
     }
     this.check();
   }
@@ -300,7 +300,7 @@ export class SearchBarComponent
       setTimeout(() => {
         input.setSelectionRange(len, len);
         input.focus();
-      }, 1)
+      }, 1);
     } else {
       const val = input.value;
       input.value = '';
