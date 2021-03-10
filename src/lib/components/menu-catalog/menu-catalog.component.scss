@@ -72,6 +72,28 @@
   background: rgba(13, 76, 211, 0.08);
   padding: 18px;
 }
+@media (max-width: 767px) {
+  .user-menu.show .bottom-block.bottom-block-burger {
+    position: static;
+    bottom: auto;
+    .fs-16{
+      font-size: 16px;
+    }
+  }
+  .user-menu.show .menu-desk.burger-wrap.show{
+    top: 63px;
+  }
+  .burger-wrap{
+    border-top: 1px solid #E1E1E1;
+  }
+}
+@media (min-width: 768px) and (max-width: 1139px) {
+  .user-menu.show .burger-wrap.menu-desk.show{
+    top: 19px;
+    border-radius: 0 0 12px 12px;
+    border-top: 1px solid #E1E1E1;
+  }
+}
 @media (min-width: 768px) {
   .catalog-menu-header {
     padding: 18px 64px;
