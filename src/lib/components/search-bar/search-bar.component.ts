@@ -1,24 +1,9 @@
 import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  DoCheck,
-  ElementRef,
-  EventEmitter,
-  forwardRef,
-  Host,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Optional,
-  Output,
-  SimpleChanges,
-  SkipSelf,
-  ViewChild
+  Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnChanges, OnDestroy, DoCheck,
+  SimpleChanges, forwardRef, ElementRef, ViewChild, ChangeDetectorRef, Optional, Host, SkipSelf, ChangeDetectionStrategy
 } from '@angular/core';
-import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject, Subscription } from 'rxjs';
+import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Focusable, FocusManager } from "../../services/focus/focus.manager";
 import { Validated, ValidationShowOn } from "../../models/validation-show";
@@ -42,6 +27,7 @@ class ScheduledSearch {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-search-bar',
   templateUrl: 'search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],

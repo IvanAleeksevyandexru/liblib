@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterViewInit, ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -45,6 +45,7 @@ import { Suggest, SuggestItem } from '../../models/suggest';
 const SHOW_ALL_MARKER = {};
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-lookup',
   templateUrl: 'lookup.component.html',
   styleUrls: ['./lookup.component.scss'],

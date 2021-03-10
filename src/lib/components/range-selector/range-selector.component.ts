@@ -1,5 +1,7 @@
-import { Component, OnInit, OnChanges, AfterViewInit, DoCheck, OnDestroy, Input, Output,
-  EventEmitter, forwardRef, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import {
+  Component, OnInit, OnChanges, AfterViewInit, DoCheck, OnDestroy, Input, Output,
+  EventEmitter, forwardRef, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DropdownSimpleComponent } from '../dropdown-simple/dropdown-simple.component';
 import { Focusable } from '../../services/focus/focus.manager';
@@ -14,6 +16,7 @@ const moment = moment_;
 const STD_DATE_FORMAT = 'DD.MM.YYYY';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-range-selector',
   templateUrl: 'range-selector.component.html',
   styleUrls: ['./range-selector.component.scss'],
@@ -73,6 +76,7 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
       }
     });
     this.checkConsistency();
+    this.changeDetector.detectChanges();
   }
 
   public selectRange(item: RangeListItem) {
@@ -101,6 +105,7 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
       }
     }
     this.check();
+    this.changeDetector.detectChanges();
   }
 
   public closeDropdown() {
@@ -126,6 +131,7 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
     }
     this.closeDropdown();
     this.check();
+    this.changeDetector.detectChanges();
   }
 
   public writeValue(value: Range<Date> | Range<string> | RangeListItem | any) {
@@ -156,6 +162,7 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
       this.currentItem = null;
     }
     this.check();
+    this.changeDetector.detectChanges();
   }
 
   public formatRange(range: Range<Date> | Range<string>) {
