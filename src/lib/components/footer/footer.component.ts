@@ -24,7 +24,9 @@ export class FooterComponent implements OnInit {
       filter(event => event instanceof NavigationEnd)
     )
       .subscribe((event: any) => {
-        this.hideFooter = this.hideCmsFooter = event.url.indexOf('/form') >= 0;
+        if (event.url.indexOf('/form') !== -1) {
+          this.hideFooter = this.hideCmsFooter = true;
+        }
       });
   }
 
