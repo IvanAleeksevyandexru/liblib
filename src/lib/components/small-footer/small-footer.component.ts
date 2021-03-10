@@ -35,14 +35,91 @@ export class SmallFooterComponent implements OnInit {
   constructor(
     public loadService: LoadService,
     private mainPageService: MainPageService
-  ) { }
+  ) {
+  }
 
   public ngOnInit(): void {
     this.getFooter();
+    this.footer = {
+      "socialLinks": true,
+      "blocks": [
+        {
+          "title": "Вопросы и ответы",
+          "links": [
+            {
+              "title": "Вход и регистрация",
+              "url": "https://www.gosuslugi.ru/help/faq/c-1"
+            },
+            {
+              "title": "Оплата",
+              "url": "https://www.gosuslugi.ru/help/faq/voprosy_po_oplate"
+            },
+            {
+              "title": "Личный кабинет",
+              "url": "https://www.gosuslugi.ru/help/faq/lichnyy_kabinet"
+            },
+            {
+              "title": "Автовладельцам",
+              "url": "https://www.gosuslugi.ru/help/faq/avtovladelcam"
+            },
+            {
+              "title": "Центры обслуживания",
+              "url": "https://map.gosuslugi.ru/co",
+              "newTab": true
+            }
+          ]
+        },
+        {
+          "title": "О портале",
+          "links": [
+            {
+              "title": "Новости",
+              "url": "https://www.gosuslugi.ru/help/news"
+            },
+            {
+              "title": "Информация о платежах",
+              "url": "https://www.gosuslugi.ru/help/payment"
+            },
+            {
+              "title": "Правовая информация",
+              "url": "https://www.gosuslugi.ru/pgu/cms/content/isr/list/00000000000/121/"
+            }
+          ]
+        },
+        {
+          "title": "Партнёрам",
+          "links": [
+            {
+              "title": "Государственным органам",
+              "url": "https://partners.gosuslugi.ru/catalog/",
+              "newTab": true
+            },
+            {
+              "title": "Коммерческим организациям",
+              "url": "https://partners.gosuslugi.ru/catalog/",
+              "newTab": true
+            },
+            {
+              "title": "Документы",
+              "url": "https://partners.gosuslugi.ru/docs",
+              "newTab": true
+            }
+          ]
+        },
+        {
+          "title": "Скачайте приложение:",
+          "hideMobile": true,
+          "apps": [
+            "android",
+            "ios"
+          ]
+        }
+      ]
+    };
   }
 
   private getFooter(): void {
-    if(this.needFooterData) {
+    if (this.needFooterData) {
       this.mainPageService.getFooterData().subscribe((data: any) => {
         // пока на моке, как доработают бэк - надо будет доделать
         if (data?.footer) {

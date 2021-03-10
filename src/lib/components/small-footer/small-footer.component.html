@@ -1,47 +1,72 @@
 <div class="footer-wrapper" id="footer-wrapper">
   <div class="full-height">
     <div class="container" *ngIf="footer">
-      <div class="grid-row">
-        <div *ngFor="let block of footer.blocks; let first = first;" class="col-3 col-md-3 col-lg-3 mt-md-40 mt-lg-64"
-             [ngClass]="{
-             'mt-40': first,
-             'mt-8': !first,
-             'hide-lg': block.hideDesktop,
-             'show-lg': !block.hideDesktop,
-             'hide-md': block.hideTablet,
-             'show-md': !block.hideTablet,
-             'hide-sm': block.hideMobile
-          }">
-          <div class="title-h5 mb-32">{{ block.title }}</div>
-          <ng-container *ngIf="block.links?.length">
-            <div *ngFor="let link of block.links; let last = last" [ngClass]="{'mb-16': !last}">
-              <a [href]="link.url" class="text-plain"
-                 [attr.target]="link.newTab ? '_blank' : null"
-                 [attr.rel]="link.newTab ? 'noopener noreferrer' : null">{{ link.title }}</a>
-            </div>
-          </ng-container>
-          <div *ngIf="block.apps?.length" class="flex-container align-items-center">
-            <div *ngFor="let app of block.apps; let last = last" [ngClass]="{'mr-16': !last}">
-              <a [href]="applications[app].url" target="_blank" rel="noopener noreferrer">
-                <img *ngIf="applications[app].icon" [src]="applications[app].icon" [alt]="applications[app].name"
-                     width="132px" height="56px">
-              </a>
-            </div>
+      <div class="hide-md">
+        <lib-accordion [closeOthers]="true">
+          <div *ngFor="let block of footer.blocks;"
+               [ngClass]="{
+               'hide-sm': block.hideMobile,
+               'hide-md': block.hideTablet,
+               'show-md': !block.hideTablet,
+               'hide-lg': block.hideDesktop,
+               'show-lg': !block.hideDesktop
+               }">
+            <lib-expansion-panel [title]="block.title" type="for-footer">
+              <ng-container *ngIf="block.links?.length">
+                <div *ngFor="let link of block.links; let first = first" [ngClass]="{'mt-12': !first}">
+                  <a [href]="link.url" class="text-plain gray"
+                     [attr.target]="link.newTab ? '_blank' : null"
+                     [attr.rel]="link.newTab ? 'noopener noreferrer' : null">{{ link.title }}
+                  </a>
+                </div>
+              </ng-container>
+            </lib-expansion-panel>
           </div>
+        </lib-accordion>
+        <div *ngIf="footer.socialLinks" class="mt-20">
+          <lib-social-links></lib-social-links>
         </div>
       </div>
-      <div class="copyright mt-40 mt-lg-64">
-        <div class="divider mb-20 mb-lg-24"></div>
-        <div class="flex-container flex-column flex-row-md justify-between-md">
-          <div class="flex-container align-items-center">
-            <img [src]="staticDomainLibAssetsPath + 'svg/mindigits-logo-nowords.svg'" alt="Минцифры России"
-                 class="mr-12 mr-lg-24" width="38px" height="40px">
-            <div>Официальный интернет-портал государственных услуг</div>
-          </div>
-          <div class="divider mt-20 mb-20 show hide-md"></div>
-          <div class="flex-container justify-center align-items-center" *ngIf="footer.socialLinks">
-            <div class="mr-16 hide show-lg">Мы в соцсетях</div>
-            <lib-social-links></lib-social-links>
+      <div class="hide show-md">
+        <div class="grid-row">
+          <div *ngFor="let block of footer.blocks; let last = last" class="col-3 col-md-3 col-lg-3 mt-md-52"
+               [ngClass]="{
+               'hide-sm': block.hideMobile,
+               'hide-md': block.hideTablet,
+               'show-md': !block.hideTablet,
+               'hide-lg': block.hideDesktop,
+               'show-lg': !block.hideDesktop
+               }">
+            <div class="title-h5 mb-32">{{ block.title }}</div>
+            <ng-container *ngIf="block.links?.length">
+              <div *ngFor="let link of block.links; let first = first"
+                   [ngClass]="{'mt-md-16': !first, 'mt-md-32': first}">
+                <a [href]="link.url" class="text-plain gray"
+                   [attr.target]="link.newTab ? '_blank' : null"
+                   [attr.rel]="link.newTab ? 'noopener noreferrer' : null">
+                  {{ link.title }}
+                </a>
+              </div>
+            </ng-container>
+            <div class="social-wrapper flex-container flex-column justify-between">
+              <div *ngIf="block.apps?.length" class="flex-container align-items-center">
+                <div *ngFor="let app of block.apps; let last = last" [ngClass]="{'mr-16': !last}">
+                  <a [href]="applications[app].url" target="_blank" rel="noopener noreferrer">
+                    <img *ngIf="applications[app].icon"
+                         [src]="applications[app].icon"
+                         [alt]="applications[app].name"
+                         width="132px"
+                         height="56px">
+                  </a>
+                </div>
+              </div>
+              <ng-container *ngIf="last && footer.socialLinks">
+                <div class="flex-container align-items-center">
+                  <div class="mr-md-16">Мы в соцсетях</div>
+                  <lib-social-links></lib-social-links>
+                </div>
+              </ng-container>
+            </div>
           </div>
         </div>
       </div>
