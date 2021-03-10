@@ -4,13 +4,13 @@ import {
 import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { Focusable, FocusManager } from "../../services/focus/focus.manager";
-import { Validated, ValidationShowOn } from "../../models/validation-show";
-import { Width } from "../../models/width-height";
-import { ConstantsService } from "../../services/constants.service";
-import { SearchSyncControl } from "../../models/common-enums";
-import { HelperService } from "../../services/helper/helper.service";
-import { ValidationHelper } from "../../services/validation-helper/validation.helper";
+import { Focusable, FocusManager } from '../../services/focus/focus.manager';
+import { Validated, ValidationShowOn } from '../../models/validation-show';
+import { Width } from '../../models/width-height';
+import { ConstantsService } from '../../services/constants.service';
+import { SearchSyncControl } from '../../models/common-enums';
+import { HelperService } from '../../services/helper/helper.service';
+import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 
 
 class ScheduledSearch {
@@ -83,7 +83,7 @@ export class SearchBarComponent
   // при слабом коннекте запускать поиск последнего введенного значения #dadata
   @Input() public searchLastValue = false;
   // новый вид для ультрановой главной
-  @Input() public mainPageStyle: boolean = false;
+  @Input() public mainPageStyle = false;
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
@@ -155,7 +155,7 @@ export class SearchBarComponent
     this.suggestion = null;
     this.commit(this.query);
     if (this.searchByTextInput) {
-      this.queryDebounce.next(new ScheduledSearch(value, this.insureSearchActiveToken));
+      this.queryDebounce.next(new ScheduledSearch(value ? value.trim() : value, this.insureSearchActiveToken));
     }
     this.check();
   }
@@ -260,7 +260,7 @@ export class SearchBarComponent
       setTimeout(() => {
         input.setSelectionRange(len, len);
         input.focus();
-      }, 1)
+      }, 1);
     } else {
       const val = input.value;
       input.value = '';

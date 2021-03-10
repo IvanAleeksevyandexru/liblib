@@ -249,7 +249,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   public clearInput(): void {
     if (!this.disabled) {
       this.selectItem(null);
-      this.queryChanged.emit('')
+      this.queryChanged.emit('');
       this.cleared.emit();
     }
   }
