@@ -62,6 +62,7 @@ export class SearchService implements LookupProvider<SimpleSputnikSuggest> {
       items.forEach(item => {
         item.query = item.name;
         item.name = makeTitleWithIconClass(item, category);
+        item.category = category;
         if (item.children?.length) {
           const childs = handleItems(item.children, category, suggestionsLength);
           result.push(...childs);

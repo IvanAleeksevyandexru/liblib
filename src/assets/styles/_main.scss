@@ -7,6 +7,12 @@ html {
   }
 }
 
+@media all and (max-width: 767px) {
+  html.disable-scroll-sm {
+    overflow: hidden;
+  }
+}
+
 body {
   display: flex;
   flex-direction: column;
