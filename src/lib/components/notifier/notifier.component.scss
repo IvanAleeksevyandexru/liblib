@@ -49,7 +49,7 @@
       color: #fff;
     }
     .cancel {
-      margin-left: 32px;
+      margin-left: 4px;
       text-decoration: underline;
     }
 
@@ -106,8 +106,10 @@
 }
 
 @media all and (max-width: 432px) {
-  .notifier {
-    min-width: unset;
-    max-width: 100%;
+  .notifiers-list {
+    .notifier {
+      min-width: unset;
+      max-width: 100%;
+    }
   }
 }
