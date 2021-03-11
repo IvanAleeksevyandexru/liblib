@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 const HIDE_TIMOUT = 300;
 
@@ -30,6 +31,9 @@ export class HeaderComponent implements OnInit {
   public categories: Category[] = [];
   public showRolesList: boolean;
   public menuCatalogOpened: boolean;
+
+  private closeBurger = new BehaviorSubject(false);
+  public closeBurger$ = this.closeBurger.asObservable();
 
   @ViewChild(FeedsComponent) public feedsComponent: FeedsComponent;
 
@@ -89,6 +93,8 @@ export class HeaderComponent implements OnInit {
   }
 
   public showUserMenu(isMobileView: boolean) {
+    this.menuService.closeBurgerOutside.next(true);
+
     this.userMenuState = {
       active: true,
       isMobileView
@@ -172,6 +178,9 @@ export class HeaderComponent implements OnInit {
 
   public onMenuCatalogClick(menuCatalogOpened: boolean) {
     this.menuCatalogOpened = menuCatalogOpened;
+    if (menuCatalogOpened) {
+      this.hideUserMenu();
+    }
   }
 
   public closeCategories() {
