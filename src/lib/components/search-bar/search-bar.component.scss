@@ -34,6 +34,8 @@
       padding-right: 0;
       color: #fff;
       background: transparent;
+      text-align: left;
+      direction: rtl;
 
       &::placeholder {
         color: #AAC6FB;
@@ -44,6 +46,7 @@
         padding-left: 0;
         border: none;
         //border-color: #4D83FA;
+        direction: ltr;
       }
 
     }
