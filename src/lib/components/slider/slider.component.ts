@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter, HostListener,
@@ -54,6 +55,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
 
   constructor(
     private renderer: Renderer2,
+    private cd: ChangeDetectorRef,
   ) { }
 
   public ngOnInit(): void {
@@ -87,6 +89,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
     this.listWidth = (this.slideWidth + this.betweenOffset) * this.items.length + additionOffset;
     this.hideArrows = this.listWidth <= this.wrapperWidth;
     this.setElementWidth(this.sliderList.nativeElement, this.listWidth);
+    this.cd.detectChanges();
   }
 
   private detectDevice(): void {
