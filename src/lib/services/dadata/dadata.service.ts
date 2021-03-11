@@ -293,7 +293,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
           if (!houseControl.value && !hideHouseCb) {
             houseCheckbox.setValue(true);
           }
-          if (!apartmentControl.value && !!hideApartCb) {
+          if (!apartmentControl.value && !hideApartCb) {
             apartmentCheckbox.setValue(true);
           }
         }
