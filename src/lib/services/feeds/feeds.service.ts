@@ -243,7 +243,7 @@ export class FeedsService {
         url = `${this.loadService.config.kndDomain}appeal/${feed.extId}`;
         break;
       case 'KND_APPEAL_DRAFT':
-        url = `${this.loadService.config.kndDomain}form/appeal/${feed.extId}`;
+        url = `${this.loadService.config.kndDomain}form/appeal/${feed.extId}?isDraft=true`;
         break;
     }
 

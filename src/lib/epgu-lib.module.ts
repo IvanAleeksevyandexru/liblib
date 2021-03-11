@@ -144,6 +144,8 @@ import { LocationSelectComponent } from './components/location-select/location-s
 import { HeaderComponent } from './components/header/header.component';
 import { SearchSputnikComponent } from './components/search-sputnik/search-sputnik.component';
 import { FrameComponent } from './components/frame/frame.component';
+import { MenuCatalogComponent } from './components/menu-catalog/menu-catalog.component';
+import { MenuCatalogLinksComponent } from './components/menu-catalog-links/menu-catalog-links.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -278,6 +280,8 @@ registerLocaleData(localeRu, 'ru');
     LocationSelectComponent,
     HeaderComponent,
     FrameComponent,
+    MenuCatalogComponent,
+    MenuCatalogLinksComponent,
   ],
   imports: [
     CommonModule,
@@ -414,6 +418,8 @@ registerLocaleData(localeRu, 'ru');
     LocationSelectComponent,
     HeaderComponent,
     FrameComponent,
+    MenuCatalogComponent,
+    MenuCatalogLinksComponent
   ],
   providers: [
     GosbarService,

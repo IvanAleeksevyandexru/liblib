@@ -25,6 +25,10 @@
   &.focused {
     padding-left: 14px;
     border: 2px solid #99B1E6;
+    &.is-suggest {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
   }
   &.invalid {
     background: rgba(238, 63, 88, 0.16);
@@ -92,5 +96,52 @@ textarea.text-input {
         padding-right: 22px;
       }
     }
+  }
+}
+
+.suggests {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  padding: 8px 0 12px 0;
+  border: 1px solid #99B1E6;
+  border-top: none;
+  background: #fff;
+  font-family: Lato, Arial, sans-serif;
+  z-index: 1;
+
+  .pl-16 {
+    padding-left: 16px;
+  }
+
+  .title {
+    font-size: 14px;
+    line-height: 20px;
+    color: #66727F;
+  }
+
+  ul {
+    li {
+      padding: 12px 16px;
+      cursor: pointer;
+      &:hover {
+        background-color: #E7ECF7;
+      }
+      p {
+        font-size: 16px;
+        line-height: 24px;
+        color: #0B1F33;
+      }
+      span {
+        font-size: 14px;
+        line-height: 20px;
+        color: #66727F
+      }
+    }
+  }
+  .edit {
+    font-size: 14px;
+    line-height: 20px;
   }
 }

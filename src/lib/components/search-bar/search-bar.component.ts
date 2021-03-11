@@ -1,8 +1,24 @@
 import {
-  Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnChanges, OnDestroy, DoCheck,
-  SimpleChanges, forwardRef, ElementRef, ViewChild, ChangeDetectorRef, Optional, Host, SkipSelf } from '@angular/core';
-import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, Subject, Subscription } from 'rxjs';
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  DoCheck,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  Host,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Output,
+  SimpleChanges,
+  SkipSelf,
+  ViewChild
+} from '@angular/core';
+import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Focusable, FocusManager } from "../../services/focus/focus.manager";
 import { Validated, ValidationShowOn } from "../../models/validation-show";
@@ -11,6 +27,8 @@ import { ConstantsService } from "../../services/constants.service";
 import { SearchSyncControl } from "../../models/common-enums";
 import { HelperService } from "../../services/helper/helper.service";
 import { ValidationHelper } from "../../services/validation-helper/validation.helper";
+import { ConvertLangService } from "../../services/convert-lang/convert-lang.service";
+import { SharedService } from '../../services/shared/shared.service';
 
 
 class ScheduledSearch {
@@ -18,6 +36,7 @@ class ScheduledSearch {
     this.query = query;
     this.token = token;
   }
+
   public query: string;
   public token: number;
 }
@@ -30,7 +49,7 @@ class ScheduledSearch {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => SearchBarComponent),
     multi: true
-  }]
+  }, ConvertLangService]
 })
 export class SearchBarComponent
   implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated {
@@ -38,7 +57,10 @@ export class SearchBarComponent
   constructor(
     private changeDetector: ChangeDetectorRef,
     protected focusManager: FocusManager,
-    @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
+    private convertLang: ConvertLangService,
+    public sharedService: SharedService,
+    @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {
+  }
 
   // name привязывается к аттрибуту, чтобы привязать контрол к форме используйте formControlName
   @Input() public id?: string;
@@ -84,6 +106,12 @@ export class SearchBarComponent
   @Input() public searchLastValue = false;
   // новый вид для ультрановой главной
   @Input() public mainPageStyle: boolean = false;
+  // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
+  @Input() public blockedSearchValue = '';
+  // активация автоматического перевода с английского
+  @Input() public enableLangConvert = false;
+  // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
+  @Input() public stopSearch = false;
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
@@ -91,6 +119,9 @@ export class SearchBarComponent
   @Output() public forcedSearch = new EventEmitter<any>();
   @Output() public cleared = new EventEmitter<void>();
   @Output() public suggestionSelected = new EventEmitter<string>();
+  @Output() public searchButtonClick = new EventEmitter<string>();
+  @Output() public searchQueryChanged = new EventEmitter<string>();
+  @Output() public blockedSearchClear = new EventEmitter();
   @ViewChild('input', {static: false}) public inputElement: ElementRef<HTMLInputElement>;
 
   public focused = false;
@@ -101,6 +132,7 @@ export class SearchBarComponent
   private lastEmitted = '';
   private suppressSearching = false;
   private insureSearchActiveToken = 0;
+  private sharedSubscription: Subscription;
   private queryDebounce = new Subject<ScheduledSearch>();
   private querySubscription = this.refreshDebouncedSubscription();
   private searchQueue: Array<string> = [];
@@ -108,12 +140,23 @@ export class SearchBarComponent
   private isIos = navigator.userAgent.match(/iPhone|iPad|iPod/i);
 
   private onTouchedCallback: () => void;
-  protected commit(value: string) {}
+
+  protected commit(value: string) {
+  }
 
   public ngOnInit() {
+    this.sharedSubscription = this.sharedService.on('clearSearch').subscribe((val) => {
+      if (val) {
+        this.query = '';
+      }
+    });
     this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
     if (!this.id) {
       this.id = 'search-input-' + Math.random().toString(16).slice(2);
+    }
+
+    if (this.enableLangConvert) {
+      this.convertLang.init('RUS')
     }
   }
 
@@ -134,6 +177,12 @@ export class SearchBarComponent
           }
           break;
         }
+        case 'stopSearch': {
+          if (changes[propName].previousValue && !changes[propName].currentValue) {
+            this.runOrPostponeSearch(this.query, false, false, true);
+          }
+          break;
+        }
       }
     }
     this.check();
@@ -147,11 +196,16 @@ export class SearchBarComponent
   }
 
   public ngOnDestroy() {
+    this.sharedSubscription.unsubscribe();
     this.focusManager.unregister(this);
   }
 
   public updateQuery(value: string) {
-    this.query = value;
+    if (this.enableLangConvert) {
+      this.query = this.convertLang.fromEng(value);
+    } else {
+      this.query = value;
+    }
     this.suggestion = null;
     this.commit(this.query);
     if (this.searchByTextInput) {
@@ -182,11 +236,11 @@ export class SearchBarComponent
   }
 
   // вызывается только внутри компонента
-  public runOrPostponeSearch(query: string, forcedWithKey = false, forcedWithMagnifyingGlass = false) {
+  public runOrPostponeSearch(query: string, forcedWithKey = false, forcedWithMagnifyingGlass = false, skipCancel = false) {
     if (forcedWithMagnifyingGlass) {
       this.returnFocus();
     }
-    if (this.disabled || this.isBlocked() || this.searchOnlyIfFocused && !this.focused && !this.searchLastValue) {
+    if (!skipCancel && (this.disabled || this.isBlocked() || this.searchOnlyIfFocused && !this.focused && !this.searchLastValue)) {
       this.cancelSearch();
       return;
     } else if (this.suggestion && forcedWithKey) {
@@ -367,10 +421,30 @@ export class SearchBarComponent
       this.querySubscription.unsubscribe();
     }
     return this.queryDebounce.pipe(debounceTime(this.queryTimeout)).subscribe((search: ScheduledSearch) => {
-      if ((this.searchLastValue || search.token === this.insureSearchActiveToken) && this.searchByTextInput) {
-        this.runOrPostponeSearch(search.query);
+      if (!this.mainPageStyle) {
+        if ((this.searchLastValue || search.token === this.insureSearchActiveToken) && this.searchByTextInput) {
+          this.runOrPostponeSearch(search.query);
+        }
+      } else {
+        this.searchQueryChanged.emit(search.query);
       }
     });
+  }
+
+  public clearBlocked(): void {
+    this.blockedSearchClear.emit();
+  }
+
+  public startSearch(): void {
+    if (!this.stopSearch) {
+      this.runOrPostponeSearch(this.query, false, false, true);
+    }
+    this.searchButtonClick.emit(this.query);
+  }
+
+  public setSearchValueFromParent(value): void {
+    this.query = value;
+    this.startSearch();
   }
 
 }

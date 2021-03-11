@@ -155,3 +155,8 @@ export interface SearchConfigInterface {
   example: string;
   placeholder: string;
 }
+
+export interface Catalog{
+  ico: string;
+  title: string;
+}
