@@ -1,59 +1,59 @@
 <div class="footer-wrapper" id="footer-wrapper">
-  <div class="full-height">
-    <div class="container" *ngIf="footer">
-      <div class="hide-md">
-        <lib-accordion [closeOthers]="true">
-          <div *ngFor="let block of footer.blocks;"
-               [ngClass]="{
-               'hide-sm': block.hideMobile,
-               'hide-md': block.hideTablet,
-               'show-md': !block.hideTablet,
-               'hide-lg': block.hideDesktop,
-               'show-lg': !block.hideDesktop
-               }">
-            <lib-expansion-panel [title]="block.title" type="for-footer">
-              <ng-container *ngIf="block.links?.length">
-                <ng-container [ngTemplateOutlet]="links" [ngTemplateOutletContext]="{block: block}"></ng-container>
-              </ng-container>
-            </lib-expansion-panel>
-          </div>
-        </lib-accordion>
-        <div *ngIf="footer.socialLinks" class="mt-20">
-          <lib-social-links></lib-social-links>
-        </div>
-      </div>
-      <div class="hide show-md">
-        <div class="grid-row">
-          <div *ngFor="let block of footer.blocks; let last = last" class="col-3 col-md-3 col-lg-3 mt-md-52"
-               [ngClass]="{
-               'hide-sm': block.hideMobile,
-               'hide-md': block.hideTablet,
-               'show-md': !block.hideTablet,
-               'hide-lg': block.hideDesktop,
-               'show-lg': !block.hideDesktop
-               }">
-            <div class="title-h5 mb-32">{{ block.title }}</div>
-            <ng-container *ngIf="block.links?.length">
-              <ng-container [ngTemplateOutlet]="links" [ngTemplateOutletContext]="{block: block}"></ng-container>
-            </ng-container>
-            <div class="social-wrapper flex-container flex-column justify-between">
-              <div *ngIf="block.apps?.length" class="flex-container align-items-center">
-                <div *ngFor="let app of block.apps; let last = last" [ngClass]="{'mr-16': !last}">
-                  <a [href]="applications[app].url" target="_blank" rel="noopener noreferrer">
-                    <img *ngIf="applications[app].icon"
-                         [src]="applications[app].icon"
-                         [alt]="applications[app].name"
-                         width="132px"
-                         height="56px">
-                  </a>
-                </div>
-              </div>
-              <ng-container *ngIf="last && footer.socialLinks">
-                <div class="mt-md-32 flex-container align-items-center">
-                  <div class="mr-md-16">Мы в соцсетях</div>
-                  <lib-social-links></lib-social-links>
-                </div>
-              </ng-container>
+  <div class="container" *ngIf="footer">
+     <div class="hide-md">
+       <lib-accordion [closeOthers]="true">
+         <div *ngFor="let block of footer.blocks;"
+              [ngClass]="{
+              'hide-sm': block.hideMobile,
+              'hide-md': block.hideTablet,
+              'show-md': !block.hideTablet,
+              'hide-lg': block.hideDesktop,
+              'show-lg': !block.hideDesktop
+              }">
+           <lib-expansion-panel [title]="block.title" type="for-footer">
+             <ng-container *ngIf="block.links?.length">
+               <ng-container [ngTemplateOutlet]="links" [ngTemplateOutletContext]="{block: block}"></ng-container>
+             </ng-container>
+           </lib-expansion-panel>
+         </div>
+       </lib-accordion>
+       <div *ngIf="footer.socialLinks" class="mt-20">
+         <lib-social-links></lib-social-links>
+       </div>
+     </div>
+    <div class="hide show-md">
+      <div class="grid-row">
+         <div *ngFor="let block of footer.blocks; let last = last"
+              class="col-3 col-md-3 col-lg-3 mt-md-52 block-wrapper flex-column-md justify-between-md"
+              [ngClass]="{
+              'hide-sm': block.hideMobile,
+              'hide-md': block.hideTablet,
+              'show-md': !block.hideTablet,
+              'hide-lg': block.hideDesktop,
+              'show-lg': !block.hideDesktop
+              }">
+           <div>
+             <div class="title-h5 mb-32">{{ block.title }}</div>
+             <ng-container *ngIf="block.links?.length"
+                           [ngTemplateOutlet]="links"
+                           [ngTemplateOutletContext]="{block: block}">
+             </ng-container>
+             <div *ngIf="block.apps?.length" class="flex-container align-items-center">
+               <div *ngFor="let app of block.apps; let last = last" [ngClass]="{'mr-16': !last}">
+                 <a [href]="applications[app].url" target="_blank" rel="noopener noreferrer">
+                   <img *ngIf="applications[app].icon"
+                        [src]="applications[app].icon"
+                        [alt]="applications[app].name"
+                        width="132px"
+                        height="56px">
+                 </a>
+               </div>
+             </div>
+           </div>
+          <div *ngIf="last && footer.socialLinks" class="social-wrapper flex-container flex-column justify-between">
+            <div class="mt-md-32 flex-container align-items-center">
+              <div class="mr-md-16">Мы в соцсетях</div>
+              <lib-social-links></lib-social-links>
             </div>
           </div>
         </div>
@@ -64,10 +64,11 @@
 
 <ng-template #links let-block="block">
   <div *ngFor="let link of block.links; let first = first" [ngClass]="{'mt-12 mt-md-16': !first, 'mt-md-32': first}">
-    <a [href]="link.url" class="text-plain gray"
+    <a class="text-plain gray"
+       [href]="link.url"
        [attr.target]="link.newTab ? '_blank' : null"
        [attr.rel]="link.newTab ? 'noopener noreferrer' : null">
-      {{ link.title }}
+      {{link.title}}
     </a>
   </div>
 </ng-template>

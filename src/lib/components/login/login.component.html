@@ -38,8 +38,8 @@
 </div>
 <ng-template #loginLink>
   <ng-container *ngIf="useButton">
-    <lib-button theme="light left-btn" (click)="login($event)">{{'HEADER.LOGIN_LINK' | libTranslate}}</lib-button>
-    <lib-button theme="light right-btn" (click)="register($event)">{{'HEADER.REGISTER' | libTranslate}}</lib-button>
+    <lib-button theme="light" (click)="login($event)">{{'HEADER.LOGIN_LINK' | libTranslate}}</lib-button>
+    <lib-button theme="light" (click)="register($event)">{{'HEADER.REGISTER' | libTranslate}}</lib-button>
   </ng-container>
 
   <ng-container *ngIf="!useButton">

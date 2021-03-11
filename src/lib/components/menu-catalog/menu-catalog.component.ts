@@ -41,7 +41,7 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
     });
     this.subscriptionBurger = this.menuService.closeBurgerOutside$.subscribe(res => {
       if (res) {
-        this.onMenuClick(null, true);
+        this.onMenuClick(false, true);
       }
     });
   }
