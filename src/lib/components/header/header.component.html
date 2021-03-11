@@ -57,7 +57,7 @@
 <ng-template #mergeHeaderMenuTmpl>
   <div class="header merge-header">
     <div class="inner container grid-row flex-container align-items-center">
-      <div class="col-lg-4 col-md-2 col-2 logo-wrapper">
+      <div class="col-lg-5 col-md-2 col-2 logo-wrapper">
         <div class="flex-container flex-1 align-items-center">
            <div class="catalog-menu-wrap" *ngIf="showBurger">
              <lib-menu-catalog
@@ -102,9 +102,9 @@
           </ul>
         </div>
       </div>
-      <div class="col-lg-1 hide show-lg">
-          <lib-location-select skinTheme="red"></lib-location-select>
-      </div>
+<!--      <div class="col-lg-1 hide show-lg">-->
+<!--          <lib-location-select skinTheme="red"></lib-location-select>-->
+<!--      </div>-->
       <div class="col-md-4 col-1 flex-container align-items-center flex-end"
            [class.catalog-menu-opened]="menuCatalogOpened"
            [class.col-lg-4]="!user.authorized"
