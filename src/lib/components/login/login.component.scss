@@ -13,13 +13,15 @@
     font-family: Lato-Bold, Arial, sans-serif;
   }
 }
+
 lib-button {
   display: inline-block;
-  margin-left: 8px;
+
   & + lib-button {
     margin-left: 2px;
   }
 }
+
 .link {
   position: relative;
   padding-left: 24px;
@@ -32,6 +34,7 @@ lib-button {
     white-space: nowrap;
     overflow: hidden;
   }
+
   &.with-icon {
     &:before {
       content: '';
@@ -55,107 +58,112 @@ lib-button {
     }
   }
 }
+
 //@media all and (min-width: 768px) {
-  .authorized-user {
-    position: relative;
-    max-width: 160px;
+.authorized-user {
+  position: relative;
+  max-width: 160px;
+  height: 38px;
+  border-top: none;
+  padding-top: 0;
+  padding-left: 56px;
+  cursor: pointer;
+
+  .user-data {
+    max-width: 32vw;
+  }
+
+  .counter-circle {
+    width: 12px;
+    height: 12px;
+    left: 8px;
+    top: 26px;
+    background: #EE3F58;
+    border: 2px solid #FFFFFF;
+    border-radius: 8px;
+  }
+
+  .avatar-wrapper {
+    position: absolute;
+    display: block;
+    overflow: hidden;
+    top: 0;
+    right: 18px;
+    width: 38px;
     height: 38px;
-    border-top: none;
-    padding-top: 0;
-    padding-left: 56px;
-    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid rgba(13, 76, 211, 0.2);
+  }
 
-    .user-data {
-      max-width: 32vw;
+  .avatar,
+  .no-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .no-avatar {
+    background-color: #D1D5DF;
+    background-image: url(../../../assets/svg/no-avatar.svg);
+    background-size: 100%;
+
+    &.female {
+      background-image: url(../../../assets/svg/avatars/default-avatar-f.svg);
     }
 
-    .counter-circle {
-      width: 12px;
-      height: 12px;
-      left: 8px;
-      top: 26px;
-      background: #EE3F58;
-      border: 2px solid #FFFFFF;
-      border-radius: 8px;
+    &.male {
+      background-image: url(../../../assets/svg/avatars/default-avatar-m.svg);
     }
 
-    .avatar-wrapper {
-      position: absolute;
-      display: block;
-      overflow: hidden;
-      top: 0;
-      right: 18px;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: 2px solid rgba(13, 76, 211, 0.2);
-    }
+    &.business {
+      background-color: transparent;
+      background-image: url(../../../assets/svg/avatars/default-avatar-ip-m.svg);
 
-    .avatar,
-    .no-avatar {
-      width: 36px;
-      height: 36px;
-    }
-
-    .no-avatar {
-      background-color: #D1D5DF;
-      background-image: url(../../../assets/svg/no-avatar.svg);
-      background-size: 100%;
-
-      &.female{
-        background-image: url(../../../assets/svg/avatars/default-avatar-f.svg);
-      }
-      &.male{
-        background-image: url(../../../assets/svg/avatars/default-avatar-m.svg);
+      &.female {
+        background-image: url(../../../assets/svg/avatars/default-avatar-ip-f.svg);
       }
 
-      &.business {
-        background-color: transparent;
+      &.male {
         background-image: url(../../../assets/svg/avatars/default-avatar-ip-m.svg);
-        &.female{
-          background-image: url(../../../assets/svg/avatars/default-avatar-ip-f.svg);
-        }
-        &.male{
-          background-image: url(../../../assets/svg/avatars/default-avatar-ip-m.svg);
-        }
-      }
-
-      &.legal {
-        background-color: transparent;
-        background-image: url(../../../assets/svg/avatars/default-avatar-ul.svg);
       }
     }
 
-    .name {
-      position: relative;
-      padding-right: 70px;
-      font-size: 14px;
-      //font-weight: bold;
-      line-height: 20px;
-
-      &:before {
-        content: '';
-        position: absolute;
-        top: 8px;
-        right: 0;
-        width: 10px;
-        height: 6px;
-        background: url(../../../assets/svg/arrows/arrow_gosblue.svg) no-repeat 0 0;
-      }
-    }
-
-    .position {
-      font-size: 12px;
-      line-height: 20px;
-      color: #a5aeb3;
+    &.legal {
+      background-color: transparent;
+      background-image: url(../../../assets/svg/avatars/default-avatar-ul.svg);
     }
   }
+
+  .name {
+    position: relative;
+    padding-right: 70px;
+    font-size: 14px;
+    //font-weight: bold;
+    line-height: 20px;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      right: 0;
+      width: 10px;
+      height: 6px;
+      background: url(../../../assets/svg/arrows/arrow_gosblue.svg) no-repeat 0 0;
+    }
+  }
+
+  .position {
+    font-size: 12px;
+    line-height: 20px;
+    color: #a5aeb3;
+  }
+}
+
 //}
 
 @media all and (max-width: 1139px) {
-  .link{
-    &.partners_link{
-      &:before{
+  .link {
+    &.partners_link {
+      &:before {
         top: 1px
       }
     }
