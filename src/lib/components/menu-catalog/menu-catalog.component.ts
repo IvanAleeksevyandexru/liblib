@@ -41,7 +41,7 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
     });
     this.subscriptionBurger = this.menuService.closeBurgerOutside$.subscribe(res => {
       if (res) {
-        this.onMenuClick(false);
+        this.onMenuClick(null, true);
       }
     });
   }
@@ -65,8 +65,8 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onMenuClick(allResolutions?: boolean) {
-    this.showMenu = !this.showMenu;
+  public onMenuClick(allResolutions?: boolean, manualClose?: boolean) {
+    this.showMenu = manualClose ? !manualClose : !this.showMenu;
     this.disableScroll(this.showMenu, allResolutions);
     this.menuCatalogOpened.emit(this.showMenu);
   }
