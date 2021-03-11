@@ -105,7 +105,9 @@ export class HeaderComponent implements OnInit {
   }
 
   public hideUserMenu() {
-    this.menu.onClose();
+    if (this.menu) {
+      this.menu.onClose();
+    }
   }
 
   public initUserMenuState(): void {

@@ -1,22 +1,12 @@
 .light {
-  &.left-btn {
-    a, button {
-      border-radius: 22px 0 0 22px;
-    }
-  }
-
-  &.right-btn {
-    a, button {
-      border-radius: 0 22px 22px 0;
-    }
-  }
   a, button {
     font-weight: normal;
     font-size: 14px;
     line-height: 20px;
     color: #0D4CD3;
-    background-color:rgba(13,76,211, .08);
-    padding: 6px 24px;
+    background-color: #E4ECFD;
+    padding: 6px 16px;
+    border-radius: 8px;
   }
 }
 
