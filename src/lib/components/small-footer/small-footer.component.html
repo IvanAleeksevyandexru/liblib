@@ -13,12 +13,7 @@
                }">
             <lib-expansion-panel [title]="block.title" type="for-footer">
               <ng-container *ngIf="block.links?.length">
-                <div *ngFor="let link of block.links; let first = first" [ngClass]="{'mt-12': !first}">
-                  <a [href]="link.url" class="text-plain gray"
-                     [attr.target]="link.newTab ? '_blank' : null"
-                     [attr.rel]="link.newTab ? 'noopener noreferrer' : null">{{ link.title }}
-                  </a>
-                </div>
+                <ng-container [ngTemplateOutlet]="links" [ngTemplateOutletContext]="{block: block}"></ng-container>
               </ng-container>
             </lib-expansion-panel>
           </div>
@@ -39,14 +34,7 @@
                }">
             <div class="title-h5 mb-32">{{ block.title }}</div>
             <ng-container *ngIf="block.links?.length">
-              <div *ngFor="let link of block.links; let first = first"
-                   [ngClass]="{'mt-md-16': !first, 'mt-md-32': first}">
-                <a [href]="link.url" class="text-plain gray"
-                   [attr.target]="link.newTab ? '_blank' : null"
-                   [attr.rel]="link.newTab ? 'noopener noreferrer' : null">
-                  {{ link.title }}
-                </a>
-              </div>
+              <ng-container [ngTemplateOutlet]="links" [ngTemplateOutletContext]="{block: block}"></ng-container>
             </ng-container>
             <div class="social-wrapper flex-container flex-column justify-between">
               <div *ngIf="block.apps?.length" class="flex-container align-items-center">
@@ -61,7 +49,7 @@
                 </div>
               </div>
               <ng-container *ngIf="last && footer.socialLinks">
-                <div class="flex-container align-items-center">
+                <div class="mt-md-32 flex-container align-items-center">
                   <div class="mr-md-16">Мы в соцсетях</div>
                   <lib-social-links></lib-social-links>
                 </div>
@@ -73,3 +61,13 @@
     </div>
   </div>
 </div>
+
+<ng-template #links let-block="block">
+  <div *ngFor="let link of block.links; let first = first" [ngClass]="{'mt-12 mt-md-16': !first, 'mt-md-32': first}">
+    <a [href]="link.url" class="text-plain gray"
+       [attr.target]="link.newTab ? '_blank' : null"
+       [attr.rel]="link.newTab ? 'noopener noreferrer' : null">
+      {{ link.title }}
+    </a>
+  </div>
+</ng-template>
