@@ -68,6 +68,33 @@ export class ProfileService {
 
   public createCardObject(object: any): InfoCardView {
     switch (object.type) {
+      case this.DOCUMENT_TYPES.MEDICAL_POLICY_OLD: {
+        const result = {
+          attrId: 'oms',
+          canDetails: false,
+          canEdit: !this.loadService.user.isKid,
+          canDelete: !this.loadService.user.isKid,
+          withVerificationIcon: false,
+          serviceUrl: object.serviceUrl,
+          empty: {
+            title: 'Полис ОМС',
+            subtitle: 'Необходим для записи на прием в поликлиники и больницы',
+          },
+          full: {
+            title: 'Полис ОМС'
+          },
+          fields: [
+            {
+              title: '',
+              value: object.number || ''
+            }
+          ]
+        };
+        if (object.expiryDate) {
+          result.fields.push({title: 'Действителен до', value: object.expiryDate});
+        }
+        return result;
+      }
       case this.DOCUMENT_TYPES.MEDICAL_POLICY: {
         const result = {
           attrId: 'oms',
@@ -75,7 +102,7 @@ export class ProfileService {
           canEdit: !this.loadService.user.isKid,
           canDelete: !this.loadService.user.isKid,
           vrfStu: object.vrfStu,
-          number: object.number,
+          number: object.unitedNumber ? object.unitedNumber : object.number,
           detailsPath: '/profile/health/medical-policy',
           withVerificationIcon: false,
           serviceUrl: object.serviceUrl,
@@ -89,7 +116,7 @@ export class ProfileService {
           fields: [
             {
               title: '',
-              value: object.number || ''
+              value: object.unitedNumber ? object.unitedNumber : object.number || ''
             }
           ]
         };
@@ -823,7 +850,9 @@ export class ProfileService {
       }
       case this.DOCUMENT_TYPES.MEDICAL_ORG: {
         return {
-          canDetails: true,
+          canDetails: object.isKid
+            ? this.loadService.config.healthSectionParameters.showChildMedicalOrg
+            : this.loadService.config.healthSectionParameters.showMedicalOrg,
           detailsPath: '/profile/health/medical-org',
           canEdit: false,
           canDelete: true,

@@ -816,6 +816,7 @@ export class ConstantsService {
     [key: string]: DocumentType
   } = {
     MEDICAL_POLICY: 'MDCL_PLCY',
+    MEDICAL_POLICY_OLD: 'MDCL_PLCY_OLD',
     FOREIGN_PASSPORT: 'FRGN_PASS',
     DRIVING_LICENCE: 'RF_DRIVING_LICENSE',
     PASSPORT: 'RF_PASSPORT',

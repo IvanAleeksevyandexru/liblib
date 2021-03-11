@@ -28,6 +28,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
   @Output() public changeTypeEmitter = new EventEmitter();
   @Output() public cancelReqEmitter = new EventEmitter();
   @Output() public repeatReqEmitter = new EventEmitter();
+  @Output() public customReqEmitter = new EventEmitter();
 
   public object: InfoCardView; // для вывода основных данных карточки
   public informer: {
@@ -128,6 +129,10 @@ export class InfoCardComponent implements OnInit, OnChanges {
     });
 
     this.repeatReqEmitter.emit();
+  }
+
+  public customReq(option?: string): void {
+    this.customReqEmitter.emit(option);
   }
 
   public toggleForm(): void {

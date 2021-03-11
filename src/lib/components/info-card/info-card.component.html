@@ -13,7 +13,7 @@
   <div class="title">{{object.empty?.title}}</div>
   <div class="subtitle mt-16" [innerHTML]="object.empty?.subtitle"></div>
   <div *ngIf="data?.type === 'MDCL_PLCY'" class="info-action mt-16">
-    <a class="link-plain add-link" (click)="repeatReq()">Узнать больше</a>
+    <a class="link-plain add-link" (click)="customReq('more')">Узнать больше</a>
   </div>
   <div class="actions mt-16">
     <ng-container *ngIf="data?.type !== 'DISABLED_PERSON' && data?.type !== 'MDCL_PLCY' && data?.type !== 'MEDICAL_ORG'">
@@ -145,7 +145,7 @@
     <ng-container *ngIf="state === 'process'">
       <a class="link-plain" (click)="cancelReq()">Отменить поиск</a>
     </ng-container>
-    <ng-container *ngIf="state === 'verified'">
+    <ng-container *ngIf="state === 'verified' && object.canDetails">
       <a [routerLink]="editPath ? editPath : object.detailsPath" class="link-plain">Подробнее</a>
     </ng-container>
   </div>
