@@ -69,6 +69,7 @@ export * from './range-field/range-field.component';
 export * from './range-selector/range-selector.component';
 export * from './role-change/role-change.component';
 export * from './search-bar/search-bar.component';
+export * from './slider/slider.component';
 export * from './slider-images-modal/slider-images-modal.component';
 export * from './snippets/snippets.component';
 export * from './social-share/social-share.component';

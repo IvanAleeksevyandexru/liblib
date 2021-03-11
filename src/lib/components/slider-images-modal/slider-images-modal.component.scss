@@ -19,59 +19,20 @@
   .popup {
     width: 586px;
     border-radius: 4px;
+
+    .popup-title {
+      margin-top: 20px;
+    }
   }
-  .payment-fines {
+  .payment-fines-popup {
     .popup {
       width: 682px;
       padding: 0 24px 24px 24px;
-    }
-  }
-}
-
-@media all and (min-width: 768px) {
-  .payment-fines-popup {
-    .popup {
       border-radius: 12px;
-      .pay-popup-images {
-        .image-slider-wrapper {
-          position: relative;
-        }
-        .image-feed-image {
-          background-color: #86909C;
-          border-radius: 12px;
-        }
-        .image-feed-title__top {
-          border-bottom: 1px solid #99B1E6;
-          margin-bottom: 24px;
-        }
-        .image-slider-controls {
-          position: absolute;
-          top: 50%;
-          padding: 0 24px;
-          .image-slider-dots {
-            display: none;
-            visibility: hidden;
-          }
-          .prev-slider, .next-slider {
-            background-color: unset !important;
-            width: 48px !important;
-            height: 48px !important;
-          }
-          .prev-slider {
-            background-image: url("../../../assets/svg/arrows/arrow-slider-prev.svg") !important;
 
-            .not-active {
-              background-image: url("../../../assets/svg/arrows/arrow-slider-prev.svg") !important;
-            }
-          }
-          .next-slider {
-            background-image: url("../../../assets/svg/arrows/arrow-slider-next.svg") !important;
-
-            .not-active {
-              background-image: url("../../../assets/svg/arrows/arrow-slider-next.svg") !important;
-            }
-          }
-        }
+      .popup-title {
+        padding-bottom: 24px;
+        border-bottom: 1px solid #99B1E6;
       }
     }
   }
@@ -86,17 +47,16 @@
         background-color: unset;
         box-shadow: none;
         &:before, &:after {
-          background: #FFF;
+          background: #FFFFFF;
         }
       }
-      .image-slider-controls {
-        display: none!important;
+
+      .popup-title {
+        color: #FFFFFF;
       }
-      .image-feed-image {
-        background-color: #070707;
-      }
-      .image-feed-title__top {
-        color: #fff;
+
+      .popup-images {
+        margin-top: 80px;
       }
     }
   }
