@@ -72,6 +72,12 @@ export class MainPageService {
     return personType;
   }
 
+  public getFooterData() {
+    return this.http.get(`${this.loadService.config.portalCfgUrl}main-page-data.json?_=${Math.random()}`, {
+      withCredentials: true
+    });
+  }
+
   private setBgType() {
     if (this.user.authorized) {
       this.mainBgType.next(this.getBgType(this.user.type));

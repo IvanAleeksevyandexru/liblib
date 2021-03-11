@@ -22,6 +22,7 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
   public userRoles = this.menuService.getUserRoles(this.user);
   public activeRole: UserRole;
   public subscription: Subscription;
+  public subscriptionBurger: Subscription;
   public readonly scrollConfig = {
     wheelPropagation: true
   };
@@ -37,6 +38,11 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
       this.activeRole = this.userRoles.find(role => {
         return role.code === type;
       });
+    });
+    this.subscriptionBurger = this.menuService.closeBurgerOutside$.subscribe(res => {
+      if (res) {
+        this.onMenuClick(false, true);
+      }
     });
   }
 
@@ -54,10 +60,13 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+    if (this.subscriptionBurger) {
+      this.subscriptionBurger.unsubscribe();
+    }
   }
 
-  public onMenuClick(allResolutions?: boolean) {
-    this.showMenu = !this.showMenu;
+  public onMenuClick(allResolutions?: boolean, manualClose?: boolean) {
+    this.showMenu = manualClose ? !manualClose : !this.showMenu;
     this.disableScroll(this.showMenu, allResolutions);
     this.menuCatalogOpened.emit(this.showMenu);
   }

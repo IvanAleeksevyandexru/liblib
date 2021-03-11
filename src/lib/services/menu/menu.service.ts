@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { AccessesService } from '../accesses/accesses.service';
 import { Category, MenuLink, User, UserRole } from '../../models';
 import { CookieService } from '../cookie/cookie.service';
+import { BehaviorSubject } from 'rxjs';
 
 const HASH = Math.random();
 
@@ -11,6 +12,9 @@ const HASH = Math.random();
   providedIn: 'root'
 })
 export class MenuService {
+
+  public closeBurgerOutside = new BehaviorSubject(false);
+  public closeBurgerOutside$ = this.closeBurgerOutside.asObservable();
 
   constructor(
     private loadService: LoadService,
