@@ -48,6 +48,8 @@
     }
     .dropdown-values {
       width: 100%;
+      display: grid;
+
       .dropdown-values-container {
         width: 100%;
         display: block;
