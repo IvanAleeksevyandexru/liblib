@@ -26,9 +26,9 @@
   }
 }
 
-perfect-scrollbar {
+::ng-deep {
   .ps__rail-x {
-    display: none;
+    display: none!important;
   }
 }
 
