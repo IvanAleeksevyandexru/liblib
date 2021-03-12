@@ -225,7 +225,7 @@ export class BaseMaskedInputComponent
     let isSuggest;
     if (e) {
       const target = e.target as HTMLTextAreaElement;
-      isSuggest = target.offsetParent.classList.contains('suggests');
+      isSuggest = target?.offsetParent?.classList.contains('suggests');
     }
 
     if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement) && !isSuggest) {
@@ -243,7 +243,9 @@ export class BaseMaskedInputComponent
     this.lastModelValue = value === null || value === undefined ? '' : '' + value;
     this.attemptToApplyValue(this.lastModelValue);
     this.check();
-    this.changeDetection.detectChanges();
+    if (!this.destroyed) {
+      this.changeDetection.detectChanges();
+    }
   }
 
   public clearValue(e: Event) {
@@ -268,7 +270,9 @@ export class BaseMaskedInputComponent
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
     this.check();
-    this.changeDetection.detectChanges();
+    if (!this.destroyed) {
+      this.changeDetection.detectChanges();
+    }
   }
 
   public check(): void {

@@ -63,6 +63,7 @@ export class PlainInputComponent
   // input, change, keydown, keyup, keypress, click, dblclick, touchstart, touchend,
   // touchmove, mousedown, mouseup, mouseenter, mouseleave, mouseover, mouseout, mousemove
 
+  private destroyed = false;
   public focused = false;
   public touched = false;
   public invalidDisplayed = false;
@@ -108,6 +109,7 @@ export class PlainInputComponent
   }
 
   public ngOnDestroy() {
+    this.destroyed = true;
     this.focusManager.unregister(this);
   }
 
@@ -194,6 +196,9 @@ export class PlainInputComponent
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
     this.check();
+    if (!this.destroyed) {
+      this.changeDetection.detectChanges();
+    }
   }
 
   public check() {
