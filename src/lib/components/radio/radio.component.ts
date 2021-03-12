@@ -1,8 +1,20 @@
-import { Component, forwardRef, Input, Output, OnInit, EventEmitter, AfterViewInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  forwardRef,
+  Input,
+  Output,
+  OnInit,
+  EventEmitter,
+  AfterViewInit,
+  OnDestroy,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Focusable, FocusManager } from '../../services/focus/focus.manager';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-radio',
   templateUrl: './radio.component.html',
   styleUrls: ['./radio.component.scss'],
@@ -38,6 +50,7 @@ export class RadioComponent implements OnInit, ControlValueAccessor, Focusable, 
 
   constructor(
     private focusManager: FocusManager,
+    private changeDetector: ChangeDetectorRef
   ) { }
 
   public ngOnInit() {
@@ -71,6 +84,7 @@ export class RadioComponent implements OnInit, ControlValueAccessor, Focusable, 
       return; // управление @Input свойством, переинициализация моделью возможна только реальным значением
     }
     this.checked = value === this.value;
+    this.changeDetector.detectChanges();
   }
 
   public registerOnChange(func: any) {

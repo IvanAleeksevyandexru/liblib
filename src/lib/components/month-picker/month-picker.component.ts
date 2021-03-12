@@ -1,6 +1,6 @@
 import {
   Component, ViewChild, Input, Output, ElementRef, EventEmitter, SimpleChanges, forwardRef,
-  OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, Optional, Host, SkipSelf, ChangeDetectorRef
+  OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, Optional, Host, SkipSelf, ChangeDetectorRef, ChangeDetectionStrategy
 } from '@angular/core';
 import {
   AbstractControl,
@@ -37,6 +37,7 @@ const ITEM_SPACE = 4;
 const DELAY = 300;
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-month-picker',
   templateUrl: 'month-picker.component.html',
   styleUrls: ['./month-picker.component.scss'],

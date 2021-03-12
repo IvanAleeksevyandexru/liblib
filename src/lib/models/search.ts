@@ -26,6 +26,7 @@ export interface SimpleSputnikSuggest {
   image: string | null;
   link: string | null;
   children?: SimpleSputnikSuggest[];
+  category?: string;
   lineBreak?: string;
   query?: string;
 }

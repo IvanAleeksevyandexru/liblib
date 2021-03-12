@@ -136,12 +136,17 @@ export class LoadService {
 
   public setUserTypeNA(newType?: string): void {
     if (!this.user.authorized) {
+      const appContext = this.attributes.appContext;
       if (newType) {
         this.userTypeNA.next(newType);
-      } else {
+      } else if (appContext === 'PORTAL') {
         const route = location.pathname;
         const type = route === '/legal-entity' ? 'L' : route === '/entrepreneur' ? 'B' : 'P';
         this.userTypeNA.next(type);
+      } else if (appContext === 'PARTNERS') {
+        this.userTypeNA.next('I');
+      } else {
+        this.userTypeNA.next('P');
       }
     }
   }
