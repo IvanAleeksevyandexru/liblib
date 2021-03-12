@@ -119,7 +119,9 @@ export class PlainInputComponent
       this.inputElement.nativeElement.value = this.value;
     }
     this.check();
-    this.changeDetection.detectChanges();
+    if (!this.destroyed) {
+      this.changeDetection.detectChanges();
+    }
   }
 
   public clearValue(e: Event) {
