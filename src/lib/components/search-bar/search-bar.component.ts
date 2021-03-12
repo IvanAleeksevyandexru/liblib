@@ -1,33 +1,18 @@
 import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  DoCheck,
-  ElementRef,
-  EventEmitter,
-  forwardRef,
-  Host,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Optional,
-  Output,
-  SimpleChanges,
-  SkipSelf,
-  ViewChild
+  Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnChanges, OnDestroy, DoCheck,
+  SimpleChanges, forwardRef, ElementRef, ViewChild, ChangeDetectorRef, Optional, Host, SkipSelf, ChangeDetectionStrategy
 } from '@angular/core';
-import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject, Subscription } from 'rxjs';
+import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { Focusable, FocusManager } from "../../services/focus/focus.manager";
-import { Validated, ValidationShowOn } from "../../models/validation-show";
-import { Width } from "../../models/width-height";
-import { ConstantsService } from "../../services/constants.service";
-import { SearchSyncControl } from "../../models/common-enums";
-import { HelperService } from "../../services/helper/helper.service";
-import { ValidationHelper } from "../../services/validation-helper/validation.helper";
-import { ConvertLangService } from "../../services/convert-lang/convert-lang.service";
+import { Focusable, FocusManager } from '../../services/focus/focus.manager';
+import { Validated, ValidationShowOn } from '../../models/validation-show';
+import { Width } from '../../models/width-height';
+import { ConstantsService } from '../../services/constants.service';
+import { SearchSyncControl } from '../../models/common-enums';
+import { HelperService } from '../../services/helper/helper.service';
+import { ValidationHelper } from '../../services/validation-helper/validation.helper';
+import { ConvertLangService } from '../../services/convert-lang/convert-lang.service';
 import { SharedService } from '../../services/shared/shared.service';
 
 
@@ -42,6 +27,7 @@ class ScheduledSearch {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-search-bar',
   templateUrl: 'search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
@@ -105,7 +91,7 @@ export class SearchBarComponent
   // при слабом коннекте запускать поиск последнего введенного значения #dadata
   @Input() public searchLastValue = false;
   // новый вид для ультрановой главной
-  @Input() public mainPageStyle: boolean = false;
+  @Input() public mainPageStyle = false;
   // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
   @Input() public blockedSearchValue = '';
   // активация автоматического перевода с английского
@@ -156,7 +142,7 @@ export class SearchBarComponent
     }
 
     if (this.enableLangConvert) {
-      this.convertLang.init('RUS')
+      this.convertLang.init('RUS');
     }
   }
 
@@ -199,7 +185,7 @@ export class SearchBarComponent
     this.sharedSubscription.unsubscribe();
     this.focusManager.unregister(this);
   }
-
+1
   public updateQuery(value: string) {
     if (this.enableLangConvert) {
       this.query = this.convertLang.fromEng(value);
@@ -209,7 +195,7 @@ export class SearchBarComponent
     this.suggestion = null;
     this.commit(this.query);
     if (this.searchByTextInput) {
-      this.queryDebounce.next(new ScheduledSearch(value, this.insureSearchActiveToken));
+      this.queryDebounce.next(new ScheduledSearch(value ? value.trim() : value, this.insureSearchActiveToken));
     }
     this.check();
   }
@@ -314,7 +300,7 @@ export class SearchBarComponent
       setTimeout(() => {
         input.setSelectionRange(len, len);
         input.focus();
-      }, 1)
+      }, 1);
     } else {
       const val = input.value;
       input.value = '';

@@ -1,5 +1,7 @@
-import { Component, EventEmitter, forwardRef, ElementRef, Input, Output,
-  OnInit, DoCheck, ViewChild, ChangeDetectorRef, Optional, Host, Self, SkipSelf } from '@angular/core';
+import {
+  Component, EventEmitter, forwardRef, ElementRef, Input, Output,
+  OnInit, DoCheck, ViewChild, ChangeDetectorRef, Optional, Host, Self, SkipSelf, ChangeDetectionStrategy
+} from '@angular/core';
 import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AutocompleteSuggestion,
   AutocompleteSuggestionProvider, AutocompleteSuggestionPartialProvider } from '../../models/dropdown.model';
@@ -17,6 +19,7 @@ import { Width } from '../../models/width-height';
 import { from, Observable } from 'rxjs';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-autocomplete',
   templateUrl: 'autocomplete.component.html',
   styleUrls: ['./autocomplete.component.scss'],
