@@ -198,6 +198,7 @@ export class BaseMaskedInputComponent
     this.focused = false;
     this.check();
     this.blur.emit();
+    this.changeDetection.detectChanges();
   }
 
   public handleFocus() {
@@ -242,6 +243,7 @@ export class BaseMaskedInputComponent
     this.lastModelValue = value === null || value === undefined ? '' : '' + value;
     this.attemptToApplyValue(this.lastModelValue);
     this.check();
+    this.changeDetection.detectChanges();
   }
 
   public clearValue(e: Event) {
@@ -266,6 +268,7 @@ export class BaseMaskedInputComponent
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
     this.check();
+    this.changeDetection.detectChanges();
   }
 
   public check(): void {
