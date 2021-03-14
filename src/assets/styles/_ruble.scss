@@ -17,7 +17,7 @@ $red: 'rgb(223, 0, 36)'; // #DF0024
 
 @supports (display: block) {
   .rub {
-    color: transparent;
+    color: transparent!important;
     &:after {
       display: inline-block;
       width: .55em;

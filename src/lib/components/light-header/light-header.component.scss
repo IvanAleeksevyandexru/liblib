@@ -9,6 +9,7 @@
   width: 100%;
   background-color: #fff;
   z-index: 2;
+  border-bottom: 1px solid #99B1E6;
 
   .light-header {
     height: 74px;
@@ -35,3 +36,8 @@
   }
 }
 
+@media all and (min-width: 768px) {
+  .light-header-wrapper {
+    border-bottom: 1px solid #F5F7FA;
+  }
+}

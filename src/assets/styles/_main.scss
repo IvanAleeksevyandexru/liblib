@@ -330,6 +330,10 @@ ul.list-decimal {
     align-items: start;
   }
 
+  .align-items-baseline#{$prefix} {
+    align-items: baseline;
+  }
+
   .align-self-center#{$prefix} {
     align-self: center;
   }
