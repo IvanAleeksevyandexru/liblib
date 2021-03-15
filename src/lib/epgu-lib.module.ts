@@ -151,6 +151,10 @@ import { SmallFooterComponent } from './components/small-footer/small-footer.com
 import { SocialLinksComponent } from './components/social-links/social-links.component';
 import { CatalogTabsService } from './services/catalog-tabs/catalog-tabs.service';
 
+import { CatalogTabsComponent } from './components/catalog-tabs/catalog-tabs.component';
+import { CatalogTabsListComponent } from './components/catalog-tabs-list/catalog-tabs-list.component';
+import { CatalogTabItemComponent } from './components/catalog-tab-item/catalog-tab-item.component';
+
 registerLocaleData(localeRu, 'ru');
 
 @NgModule({
@@ -288,7 +292,10 @@ registerLocaleData(localeRu, 'ru');
     MenuCatalogComponent,
     MenuCatalogLinksComponent,
     SmallFooterComponent,
-    SocialLinksComponent
+    SocialLinksComponent,
+    CatalogTabsComponent,
+    CatalogTabsListComponent,
+    CatalogTabItemComponent
   ],
   imports: [
     CommonModule,
@@ -428,7 +435,10 @@ registerLocaleData(localeRu, 'ru');
     FrameComponent,
     MenuCatalogComponent,
     MenuCatalogLinksComponent,
-    SmallFooterComponent
+    SmallFooterComponent,
+    CatalogTabsComponent,
+    CatalogTabsListComponent,
+    CatalogTabItemComponent
   ],
   providers: [
     GosbarService,

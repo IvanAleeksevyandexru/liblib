@@ -58,6 +58,7 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
     this.showMenu = false;
     this.menuCatalogOpened.emit(false);
     this.showSubCatalog = false;
+    this.closeAllTabs();
   }
 
   public disableScroll(isMenuOpen: boolean, allResolutions: boolean): void {
@@ -67,6 +68,11 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
     } else {
       html.classList.remove(`disable-scroll`);
     }
+  }
+
+  private closeAllTabs(): void {
+    this.catalog.forEach(item => item.sideActive = false);
+    this.catalog.forEach(item => item.active = false);
   }
 
   public ngOnDestroy() {

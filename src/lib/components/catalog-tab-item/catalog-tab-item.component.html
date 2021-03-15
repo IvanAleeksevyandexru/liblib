@@ -1,0 +1,72 @@
+<div [ngClass]="
+     {'main-page-view': viewType === 'main-page-view', 'side-view': viewType === 'side-view'}"
+     class="catalog-tab-item-wrap">
+  <div class="container">
+    <div *ngIf="loaded else loading" class="catalog-tab-item">
+      <a href class="close-catalog" (click)="closeCatalog($event)"></a>
+      <div class="grid-row">
+        <div class="col-lg-6">
+          <section>
+            <h3 class="title-h6 catalog-item-title">Популярные услуги</h3>
+            <div class="scroll-container">
+              <perfect-scrollbar>
+                  <h4 *ngFor="let item of popular"
+                      (click)="goToPopular(item)"
+                      class="title-h6 summer-nigh mt-lg-20 catalog-title-popular">
+                        {{item.catalogTitle}}
+                  </h4>
+                  <section *ngIf="regionName && regionPopular?.length">
+                    <h5 class="title-h6 catalog-item-title mt-40 catalog-item-title-small">
+                      Услуги для <span (click)="showRegionModal()" class="catalog-item-title-link">{{regionName}}</span>
+                    </h5>
+                    <h6 (click)="goToPopular(item)"
+                        *ngFor="let item of regionPopular | slice:0:(regionPopularMore ? undefined : 3)"
+                        class="title-h6 summer-nigh mt-lg-20 catalog-title-popular">
+                          {{item.catalogTitle}}
+                    </h6>
+                    <ng-container *ngIf="regionPopular && regionPopular.length > 3 && !regionPopularMore">
+                      <div class="mt-28 text-plain blue" (click)="regionPopularMore = !regionPopularMore">
+                        Показать все
+                      </div>
+                    </ng-container>
+                  </section>
+              </perfect-scrollbar>
+            </div>
+          </section>
+        </div>
+        <div *ngIf="faqs?.length" class="col-lg-6">
+          <section>
+            <h3 class="title-h6 catalog-item-title">Часто задаваемые вопросы</h3>
+            <div class="scroll-container">
+              <perfect-scrollbar #scrollbarComponent>
+                <div *ngFor="let item of faqs | slice:0:(faqsMore ? undefined : 3)"
+                     #elements
+                     class="title-h6 summer-nigh mt-lg-24 catalog-title-popular">
+                  <div class="flex-container">
+                    <div [class.active]="item.active" (click)="toggleFaqsQuestions(item)" class="arrow"></div>
+                    <div>
+                      <div>
+                        <h6 (click)="toggleFaqsQuestions(item)" class="title-h6 summer-nigh mt-lg-20 catalog-title-popular">
+                            {{item.shortQuestion || item.question}}
+                        </h6>
+                        <div [class.active]="item.active" class="faq-answer" [innerHTML]="item.shortAnswer"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ng-container *ngIf="faqs && faqs.length > 3 && !faqsMore">
+                  <div class="mt-24 text-plain blue" (click)="faqsMore = !faqsMore">
+                    Показать все
+                  </div>
+                </ng-container>
+              </perfect-scrollbar>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <ng-template #loading>
+      <lib-throbber defaultHeaders="true"></lib-throbber>
+    </ng-template>
+  </div>
+</div>

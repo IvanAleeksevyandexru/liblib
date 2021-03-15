@@ -1,0 +1,19 @@
+<div [ngClass]="
+     {'main-page-view': viewType === 'main-page-view', 'side-view': viewType === 'side-view'}"
+     class="flex-container-lg">
+  <a href
+     [class.active]="item.active"
+     (click)="tabClick($event, item)"
+     class="catalog-link-item"
+     *ngFor="let item of catalog">
+    <div class="catalog-link-info">
+      <div>
+        <img [src]="item.ico" alt="{{item.title}}">
+      </div>
+      <div class="catalog-link mt-lg-8">
+        {{item.title}}
+      </div>
+    </div>
+    <div class="catalog-link-arrow"></div>
+  </a>
+</div>
