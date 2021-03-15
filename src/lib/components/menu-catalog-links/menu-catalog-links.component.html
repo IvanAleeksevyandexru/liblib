@@ -1,19 +1,20 @@
-<div [class.catalog-mob]="mobile" class="container">
-  <div class="grid-row">
-    <div class="col-3 col-md-6 col-lg-12">
-      <div class="flex-container-lg catalog-link-wrap justify-between">
-        <a href class="catalog-link-item" *ngFor="let item of catalog">
-          <div class="catalog-link-info">
-            <div>
-              <img [src]="item.ico" alt="{{item.title}}">
-            </div>
-            <div class="catalog-link mt-lg-8">
-              {{item.title}}
-            </div>
+<div *ngIf="catalog" [class.catalog-mob]="mobile">
+  <div class="scroll-container">
+    <perfect-scrollbar>
+      <a [class.side-active]="item.sideActive"
+         (click)="openTab($event, item)"
+         href
+         class="catalog-link-item flex-container"
+         *ngFor="let item of catalog">
+        <div class="catalog-link-info flex-container align-items-center">
+          <div>
+            <img [src]="item.ico" alt="{{item.title}}">
           </div>
-          <div class="catalog-link-arrow"></div>
-        </a>
-      </div>
-    </div>
+          <div class="catalog-link">
+            {{item.title}}
+          </div>
+        </div>
+      </a>
+    </perfect-scrollbar>
   </div>
 </div>

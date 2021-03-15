@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Catalog } from '../../models/main-page.model';
 import { Subscription } from 'rxjs';
 import { LoadService } from '../../services/load/load.service';
 import { MenuService } from "../../services/menu/menu.service";
 import { UserRole } from "../../models/menu-link";
+import { CatalogTabsService } from '../../services/catalog-tabs/catalog-tabs.service';
 
 @Component({
   selector: 'lib-menu-catalog',
@@ -12,24 +13,29 @@ import { UserRole } from "../../models/menu-link";
 })
 export class MenuCatalogComponent implements OnInit, OnDestroy {
 
-  @Input() public catalog?: Catalog[];
   @Output() public menuCatalogOpened = new EventEmitter<boolean>();
+
+  @HostListener('document:click', ['$event'])
+  public onClickOut(event) {
+    if (event.target.classList.contains('catalog-menu')) {
+      this.onClose();
+    }
+  }
 
   public user = this.loadService.user;
   public showRolesList = false;
-  public rolesListEnabled = true;
+  public showSubCatalog: boolean;
+  public catalog = this.catalogTabsService.catalogTabsList;
   public showMenu = false;
   public userRoles = this.menuService.getUserRoles(this.user);
   public activeRole: UserRole;
   public subscription: Subscription;
   public subscriptionBurger: Subscription;
-  public readonly scrollConfig = {
-    wheelPropagation: true
-  };
 
   constructor(
     public loadService: LoadService,
-    private menuService: MenuService
+    private menuService: MenuService,
+    public catalogTabsService: CatalogTabsService
   ) {
   }
 
@@ -46,13 +52,20 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
     });
   }
 
+  public onClose() {
+    const html = document.getElementsByTagName('html')[0];
+    html.classList.remove('disable-scroll');
+    this.showMenu = false;
+    this.menuCatalogOpened.emit(false);
+    this.showSubCatalog = false;
+  }
+
   public disableScroll(isMenuOpen: boolean, allResolutions: boolean): void {
     const html = document.getElementsByTagName('html')[0];
-    const postfix = allResolutions ? '' : '-sm';
     if (isMenuOpen) {
-      html.classList.add(`disable-scroll${postfix}`);
+      html.classList.add(`disable-scroll`);
     } else {
-      html.classList.remove(`disable-scroll${postfix}`);
+      html.classList.remove(`disable-scroll`);
     }
   }
 
@@ -63,11 +76,16 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
     if (this.subscriptionBurger) {
       this.subscriptionBurger.unsubscribe();
     }
+    this.onClose();
   }
 
   public onMenuClick(allResolutions?: boolean, manualClose?: boolean) {
     this.showMenu = manualClose ? !manualClose : !this.showMenu;
     this.disableScroll(this.showMenu, allResolutions);
     this.menuCatalogOpened.emit(this.showMenu);
+  }
+
+  public catalogLinkClick(showSubCatalog: boolean) {
+    this.showSubCatalog = showSubCatalog;
   }
 }

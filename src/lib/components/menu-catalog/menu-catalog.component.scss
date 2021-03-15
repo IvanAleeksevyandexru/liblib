@@ -1,11 +1,29 @@
 .catalog-menu-content{
   position: relative;
   z-index: 11;
+  background: #fff;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.content-overlay {
+  transform: rotate3d(0,0,0,0deg);
+}
+
+.content-overlay.show {
+  position: fixed;
+  z-index: 9;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  background: #0B1F33;
+  opacity: .92;
+  width: 100%;
+  transition: background .15s ease;
 }
 .catalog-help{
-  position: fixed;
-  bottom: 64px;
-  width: 100%;
   border-top: 1px solid rgba(16, 24, 40, 0.1);
   padding: 16px 18px;
   background: #fff;
@@ -38,34 +56,49 @@
   }
 }
 .catalog-menu{
-  width: 100%;
-}
-.catalog-menu-mobile{
-  background: #fff;
-  border-top: 1px solid #eee;
-  height: 100%;
+  height: 100vh;
   max-height: 100vh;
   overflow-y: auto;
   position: fixed;
   left: -100vw;
   top: 64px;
-  transition: left .5s ease;
-  width: 0;
+  transition: left 250ms ease-in 0s;
   z-index: 2147473649;
+  transform: rotate3d(0,0,0,0deg);
   &.show{
-    background: #fff;
-    border-top: 1px solid #eee;
-    height: 100%;
+    height: 100vh;
     max-height: 100vh;
-    overflow-y: auto;
+    overflow: hidden;
     position: fixed;
     left: 0;
     width: 100%;
     display: block;
-    top: 0;
+    top: -64px;
+    bottom: 0;
     transform: translateY(64px);
-    transition: left .5s ease;
+    transition: left 250ms ease-out;
     z-index: 2147473649;
+  }
+}
+.sub-catalog{
+  bottom: 0;
+  display: block;
+  left: calc(320px - 800px);
+  top: -64px;
+  transform: translateY(64px);
+  transition: left 250ms ease-in 0s;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  position: fixed;
+  z-index: 10;
+  background: #fff;
+  border-radius: 0 12px 12px 0;
+  border-left: 1px solid #E1E1E1;
+  &.show{
+    left: 320px;
+    width: 850px;
+    transition: left 250ms ease-out;
   }
 }
 .catalog-menu-header{
@@ -98,13 +131,28 @@
   .catalog-menu-header {
     padding: 18px 64px;
   }
-  .catalog-help{
+  .close{
+    background: url(../../../assets/svg/close-white.svg) no-repeat center;
+    width: 40px;
+    height: 40px;
+    background-size: cover;
     position: fixed;
-    bottom: 64px;
-    width: 100%;
-    border-top: 1px solid rgba(16, 24, 40, 0.1);
-    padding: 16px 64px;
-    background: #fff;
+    z-index: 2147473649;
+    display: none;
+    opacity: 0;
+    transition: opacity 300ms ease-in 0s;
+    cursor: pointer;
+    left: 354px;
+    top: 32px;
+
+    &.show{
+      display: block;
+      opacity: 1;
+      transition: opacity 300ms ease-out;
+    }
+    &.show-with-sub {
+      left: 1204px;
+    }
   }
 }
 @media (min-width: 1140px) {

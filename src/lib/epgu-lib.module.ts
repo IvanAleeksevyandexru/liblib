@@ -149,6 +149,7 @@ import { MenuCatalogComponent } from './components/menu-catalog/menu-catalog.com
 import { MenuCatalogLinksComponent } from './components/menu-catalog-links/menu-catalog-links.component';
 import { SmallFooterComponent } from './components/small-footer/small-footer.component';
 import { SocialLinksComponent } from './components/social-links/social-links.component';
+import { CatalogTabsService } from './services/catalog-tabs/catalog-tabs.service';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -445,6 +446,7 @@ registerLocaleData(localeRu, 'ru');
     ToMoneyPipe,
     CapitalLetterPipe,
     SocialLinksComponent,
+    CatalogTabsService,
     {
       provide: LOCALE_ID,
       useValue: 'ru'

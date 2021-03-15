@@ -2,79 +2,27 @@
      [class.show]="showMenu"
      [class.not-authorized]="!loadService.user.authorized"
      (click)="onMenuClick(!!catalog?.length)"></div>
-
-<ng-template *ngTemplateOutlet="catalog?.length ? catalogMenu : simpleView"></ng-template>
-
-<ng-template #catalogMenu>
-  <div class="catalog-menu show">
-    <div [class.show]="showMenu" class="catalog-menu-mobile">
-      <div class="catalog-menu-content">
-        <div class="flex-container catalog-menu-header align-items-center justify-between">
-          <!--        <div><portal-user-roles></portal-user-roles></div>-->
-          <div>
-            <lib-location-select skinTheme="black"></lib-location-select>
-          </div>
-        </div>
-        <div *ngIf="catalog?.length" [class.hide]="!showMenu">
-          <lib-menu-catalog-links
-            [mobile]="true"
-            [catalog]="catalog">
-          </lib-menu-catalog-links>
-          <div class="catalog-help">
-            <a class="catalog-help-link" href>Помощь</a>
-          </div>
-        </div>
+<div [class.show]="showMenu" class="catalog-menu">
+  <div class="catalog-menu-content">
+    <div class="catalog-menu-header">
+      <div>
+        <lib-location-select skinTheme="black"></lib-location-select>
       </div>
     </div>
-  </div>
-</ng-template>
-
-<ng-template #simpleView>
-  <div class="user-menu show">
-    <div class="menu-desk burger-wrap container left" [class.show]="showMenu">
-      <ul class="user-menu-links burger">
-        <li *ngIf="loadService.config.showMenuDigitalAssistant" class="digital-assistant-wrap">
-          <div class="item flex-container">
-            <div class="icon digital-assistant"></div>
-            <a [href]="loadService.config.betaUrl + 'newsearch'"
-               class="text-plain">{{'HEADER.MENU.DIGITAL_ASSISTANT' | libTranslate}}</a>
-          </div>
-        </li>
-        <li *ngIf="!user.authorized && rolesListEnabled" class="show hide-lg">
-          <ng-template *ngTemplateOutlet="selectUserRole"></ng-template>
-        </li>
-        <li class="location-select-wrap hide-lg">
-          <div class="item justify-between">
-            <lib-location-select skinTheme="red"></lib-location-select>
-            <div class="icon aim"></div>
-          </div>
-        </li>
-      </ul>
-      <div class="bottom-block bottom-block-burger">
-        <ul class="user-menu-links burger">
-          <li class="item">
-            <a [href]="loadService.config.betaUrl + 'help'"
-               class="text-plain fs-16">{{'HEADER.MENU.HELP_SUPPORT' | libTranslate}}</a>
-          </li>
-        </ul>
-      </div>
+    <div class="flex-1" *ngIf="catalog?.length" [class.hide]="!showMenu">
+      <lib-menu-catalog-links
+        (catalogLinkClick)="catalogLinkClick($event)"
+        [mobile]="true">
+      </lib-menu-catalog-links>
     </div>
-    <div class="content-overlay" [class.show-md]="showMenu" (click)="onMenuClick()"></div>
+    <div class="catalog-help">
+      <a class="catalog-help-link" href>Помощь и поддержка</a>
+    </div>
   </div>
-</ng-template>
+</div>
+<div class="sub-catalog" [class.show]="showSubCatalog">
+  wewewe
+</div>
+<div class="content-overlay" [class.show]="showMenu"></div>
+<div (click)="onClose()" [ngClass]="{show: showMenu, 'show-with-sub': showSubCatalog}" class="close"></div>
 
-<ng-template #selectUserRole>
-  <div class="select-role item flex-container align-items-center"
-       (click)="showRolesList = !showRolesList" [ngClass]="{'show-roles-list': showRolesList}">
-    <span class="active-role">{{ activeRole?.name }}</span>
-  </div>
-  <div class="" *ngIf="showRolesList">
-    <ul>
-      <ng-container *ngFor="let role of userRoles;">
-        <li class="item" *ngIf="!role.isActive && activeRole.code !== role.code">
-          <a [href]="role.url" class="text-plain">{{role.name | libTranslate}}</a>
-        </li>
-      </ng-container>
-    </ul>
-  </div>
-</ng-template>
