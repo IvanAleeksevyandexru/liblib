@@ -33,7 +33,7 @@
               'show-lg': !block.hideDesktop
               }">
            <div>
-             <div class="title-h5 mb-32">{{ block.title }}</div>
+             <div class="custom-sizes title-h5 mb-32">{{ block.title }}</div>
              <ng-container *ngIf="block.links?.length"
                            [ngTemplateOutlet]="links"
                            [ngTemplateOutletContext]="{block: block}">
@@ -64,7 +64,7 @@
 
 <ng-template #links let-block="block">
   <div *ngFor="let link of block.links; let first = first" [ngClass]="{'mt-12 mt-md-16': !first, 'mt-md-32': first}">
-    <a class="text-plain gray"
+    <a class="custom-sizes text-plain gray"
        [href]="link.url"
        [attr.target]="link.newTab ? '_blank' : null"
        [attr.rel]="link.newTab ? 'noopener noreferrer' : null">
