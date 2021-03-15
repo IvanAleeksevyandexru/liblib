@@ -4,9 +4,9 @@
   display: flex;
   flex-flow: column;
   align-items: flex-start;
-  left: 8px;
+  left: 32px;
   right: unset;
-  bottom: 0;
+  bottom: 24px;
 
   .notifier {
     position: relative;
@@ -18,7 +18,7 @@
     line-height: 20px;
     padding: 16px 48px 16px 16px;
     margin-bottom: 8px;
-    min-width: 400px;
+    width: 500px;
 
     &.icon {
       padding-left: 48px;
@@ -49,13 +49,12 @@
       color: #fff;
     }
     .cancel {
-      margin-left: 4px;
-      text-decoration: underline;
+      margin-left: 12px;
     }
 
     .close {
       position: absolute;
-      top: 16px;
+      top: 18px;
       right: 16px;
       width: 16px;
       height: 16px;
@@ -84,9 +83,10 @@
 
 @media all and (min-width: 768px) and (max-width: 1140px) {
   .notifiers-list {
-    text-align: center;
-    right: 64px;
-    align-items: stretch;
+    left: 64px;
+    .notifier {
+      width: calc(100vw - 128px);
+    }
   }
 }
 
@@ -94,8 +94,10 @@
   .notifiers-list {
     left: 16px;
     right: 16px;
+    bottom: 8px;
     align-items: stretch;
     .notifier {
+      width: 100%;
       .cancel {
         display: block;
         margin-left: 0;
@@ -105,11 +107,3 @@
   }
 }
 
-@media all and (max-width: 432px) {
-  .notifiers-list {
-    .notifier {
-      min-width: unset;
-      max-width: 100%;
-    }
-  }
-}

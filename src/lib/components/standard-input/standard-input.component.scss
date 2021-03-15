@@ -84,8 +84,14 @@
 }
 
 .bg-white {
-  .text-input:not(.invalid) {
+  .text-input {
     background: #FFFFFF;
+    &.invalid {
+      background: rgba(238, 63, 88, 0.16);
+    }
+    &.focused {
+      background: #FFFFFF;
+    }
   }
 }
 .shadow {
