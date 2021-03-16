@@ -198,7 +198,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
 
   @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
   @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
-  @ViewChild('searchBar', {static: false}) private searchBar: SearchBarComponent;
+  @ViewChild('searchBar', {static: false}) public searchBar: SearchBarComponent;
   @ViewChild('lookupField') private fieldContainer: ElementRef;
   @ViewChild('lookupList', {static: false}) private listContainer: ElementRef;
 
