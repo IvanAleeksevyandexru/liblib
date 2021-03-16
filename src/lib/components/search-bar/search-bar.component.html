@@ -34,7 +34,7 @@
   <div *ngIf="blockedSearchValue" class="search-input blocked">
     <div class="blocked-wrap">
       <div class="search-value">{{blockedSearchValue}}</div>
-      <div class="clear-blocked" (click)="clearBlocked()"></div>
+      <div class="clear-blocked" (click)="clearBlocked($event)"></div>
     </div>
   </div>
   <div class="static-content" (click)="setFocus()" *ngIf="showStaticContent"
@@ -46,9 +46,11 @@
       <ng-content></ng-content>
     </div>
   </div>
-  <div class="search-clear" *ngIf="!mainPageStyle" [hidden]="searching || disabled || !clearable || !query"
+  <div class="search-clear"
+       [hidden]="searching || disabled || !clearable || !query || blockedSearchValue"
        [ngClass]="{'align-right': !showMagnifyingGlass && !searching}"
-       (click)="clearSearch($event)"></div>
+       (click)="clearSearch($event)">
+  </div>
   <div class="search-go" *ngIf="!mainPageStyle" [hidden]="!showMagnifyingGlass || searching"
        (click)="runOrPostponeSearch(query, false, true)"
        [ngClass]="{disabled: disabled}"></div>

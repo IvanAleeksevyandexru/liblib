@@ -417,8 +417,9 @@ export class SearchBarComponent
     });
   }
 
-  public clearBlocked(): void {
+  public clearBlocked(evt: Event): void {
     this.blockedSearchClear.emit();
+    this.clearSearch(evt);
   }
 
   public startSearch(): void {
