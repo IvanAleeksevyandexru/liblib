@@ -46,7 +46,7 @@
       <ng-content></ng-content>
     </div>
   </div>
-<!--  <div class="search-clear" [hidden]="searching || disabled || !clearable || !query || (mainPageStyle && blockedSearchValue)" [ngClass]="{'align-right': !showMagnifyingGlass && !searching}" (click)="clearSearch($event)"></div>-->
+  <div class="search-clear" *ngIf="!mainPageStyle" [hidden]="searching || disabled || !clearable || !query" [ngClass]="{'align-right': !showMagnifyingGlass && !searching}" (click)="clearSearch($event)"></div>
   <div class="search-go" *ngIf="!mainPageStyle" [hidden]="!showMagnifyingGlass || searching" (click)="runOrPostponeSearch(query, false, true)" [ngClass]="{disabled: disabled}"></div>
   <div class="search-button" *ngIf="mainPageStyle">
     <lib-button class="hide show-lg" (click)="startSearch()">Отправить</lib-button>
