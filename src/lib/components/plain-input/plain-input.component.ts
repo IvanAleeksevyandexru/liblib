@@ -1,6 +1,6 @@
 import {
   Component, ViewChild, Input, Output, ElementRef, EventEmitter, SimpleChanges, forwardRef, HostBinding,
-  OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, Optional, Host, SkipSelf, ChangeDetectorRef
+  OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, Optional, Host, SkipSelf, ChangeDetectorRef, ChangeDetectionStrategy
 } from '@angular/core';
 import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { InputAutocomplete } from '../../models/common-enums';
@@ -12,6 +12,7 @@ import { Width } from '../../models/width-height';
 import { Suggest, SuggestItem } from '../../models/suggest';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-plain-input',
   templateUrl: 'plain-input.component.html',
   styleUrls: ['./plain-input.component.scss'],

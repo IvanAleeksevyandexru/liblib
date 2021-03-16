@@ -1,5 +1,7 @@
-import { Component, ViewChild, Input, Output, ElementRef, EventEmitter, OnInit, DoCheck,
-  AfterViewInit, OnChanges, OnDestroy, SimpleChanges, forwardRef, ChangeDetectorRef, Optional, Host, SkipSelf } from '@angular/core';
+import {
+  Component, ViewChild, Input, Output, ElementRef, EventEmitter, OnInit, DoCheck,
+  AfterViewInit, OnChanges, OnDestroy, SimpleChanges, forwardRef, ChangeDetectorRef, Optional, Host, SkipSelf, ChangeDetectionStrategy
+} from '@angular/core';
 import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { conformToMask, createTextMaskInputElement } from 'text-mask-core';
 // раскомментировать для детальной отладки
@@ -16,6 +18,7 @@ import { Width } from '../../models/width-height';
 import { Suggest, SuggestItem } from '../../models/suggest';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-base-masked-input',
   templateUrl: 'base-masked-input.component.html',
   styleUrls: ['./base-masked-input.component.scss', '../plain-input/plain-input.component.scss'],

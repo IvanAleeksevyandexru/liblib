@@ -8,7 +8,7 @@ import {
   HostListener,
   SimpleChanges,
   OnChanges,
-  OnDestroy, NgModuleRef, ChangeDetectorRef, ViewChildren, QueryList
+  OnDestroy, NgModuleRef, ChangeDetectorRef, ViewChildren, QueryList, ChangeDetectionStrategy
 } from '@angular/core';
 import { SliderImage } from '../../models/slider-image';
 import { SliderImagesModalComponent } from '../slider-images-modal/slider-images-modal.component';
@@ -23,6 +23,7 @@ export const SLIDES_HEIGHT = 280;
 export const SLIDES_HEIGHT_CARD = 226;
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-image-slider',
   templateUrl: './image-slider.component.html',
   styleUrls: ['./image-slider.component.scss'],

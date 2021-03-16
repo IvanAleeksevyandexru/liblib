@@ -20,14 +20,15 @@ import {
   FormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  ValidationErrors, Validators,
+  ValidationErrors,
+  Validators,
 } from '@angular/forms';
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { DadataModalComponent } from '../dadata-modal/dadata-modal.component';
 import { CommonController } from '../../common/common-controller';
 import { ValidationService } from '../../validators/validation.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, forkJoin, zip } from 'rxjs';
 import { Validated, ValidationShowOn } from "../../models/validation-show";
 import { ValidationHelper } from "../../services/validation-helper/validation.helper";
 import { ListItem, ListItemConverter } from "../../models/dropdown.model";
@@ -223,9 +224,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           this.query = '';
           this.canOpenFields.next(true);
         }
-        this.form.get('index').setValidators(validators)
+        this.form.get('index').setValidators(validators);
       });
-      country.setValue(this.defaultCountry)
+      country.setValue(this.defaultCountry);
     }
 
     this.controlNames = Object.keys(this.form.controls).filter(key => this.excluded.indexOf(key) === -1);
@@ -284,6 +285,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           kladrCode: this.dadataService.kladrCode,
           regionCode: (this.dadataService.kladrCode && this.dadataService.kladrCode.substring(0, 2)) || ''
         };
+        this.dadataService.addTypesToCommitValue(commitValue);
         this.normalizeInProcess = false;
         this.commit(commitValue);
       } else {
@@ -375,9 +377,10 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       let query = fullAddress;
       if (blurCall) {
         this.disableOpening = true;
-        this.dadataService.searchComplete.pipe(filter(res => !!res), take(1),
-          switchMap(data => {
-            query = this.dadataService.firstInSuggestion ? this.dadataService.firstInSuggestion.address : query;
+        zip(this.dadataService.firstInSuggestion.pipe(filter(res => res !== null)),
+          this.dadataService.searchComplete.pipe(filter(res => !!res))).pipe(take(1))
+          .pipe(switchMap(data => {
+            query = data[0] ? data[0].address : query;
             return this.dadataService.normalize(query).pipe(
               take(1),
               finalize(() => this.disableOpening = false));
@@ -388,7 +391,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           }, error => {
             this.normalizeInProcess = false;
           });
-        return Promise.resolve()
+        return Promise.resolve();
       }
       return this.dadataService.normalize(query).toPromise().then(res => {
         success(res);
@@ -416,6 +419,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public changeQueryHandler(value: string): void {
     this.dadataService.resetSearchComplete(false);
+    this.dadataService.firstInSuggestion.next(null);
     if (this.isOpenedFields.getValue()) {
       this.closeDadataFields();
     }

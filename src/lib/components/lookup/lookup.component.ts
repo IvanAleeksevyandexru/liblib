@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterViewInit, ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -45,6 +45,7 @@ import { Suggest, SuggestItem } from '../../models/suggest';
 const SHOW_ALL_MARKER = {};
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-lookup',
   templateUrl: 'lookup.component.html',
   styleUrls: ['./lookup.component.scss'],
@@ -197,7 +198,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
 
   @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
   @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
-  @ViewChild('searchBar', {static: false}) private searchBar: SearchBarComponent;
+  @ViewChild('searchBar', {static: false}) public searchBar: SearchBarComponent;
   @ViewChild('lookupField') private fieldContainer: ElementRef;
   @ViewChild('lookupList', {static: false}) private listContainer: ElementRef;
 
@@ -258,7 +259,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   public clearInput(): void {
     if (!this.disabled) {
       this.selectItem(null);
-      this.queryChanged.emit('')
+      this.queryChanged.emit('');
       this.cleared.emit();
     }
   }
@@ -283,7 +284,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
 
   public handleBlur() {
     if (!this.mainPageStyle) {
-      this.cancelSearchAndClose();
+      setTimeout(() => this.cancelSearchAndClose(), 15);
     }
     this.resetItemIfNotConsistent();
     this.blur.emit();
