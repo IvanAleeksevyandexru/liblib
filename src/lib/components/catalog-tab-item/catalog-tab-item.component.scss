@@ -6,6 +6,16 @@
   z-index: 1;
   height: 100%;
 }
+.container-catalog-wrap {
+  height: 100%;
+}
+.catalog-throbber{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
 .scroll-container {
   position: relative;
   width: 100%;

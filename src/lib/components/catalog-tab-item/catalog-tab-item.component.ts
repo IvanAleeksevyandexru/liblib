@@ -31,7 +31,6 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   @Output() public catalogClose: EventEmitter<null> = new EventEmitter();
   @Output() public subCatalogClose: EventEmitter<null> = new EventEmitter();
 
-  @ViewChild('scrollbarComponent', {static: false}) public scrollbarComponent: PerfectScrollbarComponent;
   @ViewChildren('elements') public listItems: QueryList<any>;
 
   public catalogDataSubscription: Subscription;
@@ -133,11 +132,6 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     this.catalogClose.emit();
     this.router.navigate([link]);
   }
-
-  // public scrollToQuestion(): void {
-  //   const el = this.listItems.toArray();
-  //   this.scrollbarComponent.directiveRef.scrollToTop(30, 300);
-  // }
 
   public ngOnDestroy() {
     this.toggleBodyScroll(false);

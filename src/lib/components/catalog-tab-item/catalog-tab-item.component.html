@@ -12,7 +12,7 @@
                  (click)="closeSubCatalog()">{{backTitle}}</div>
             <h3 class="title-h6 catalog-item-title hide show-lg">Популярные услуги</h3>
             <div class="scroll-container">
-              <perfect-scrollbar>
+              <perfect-scrollbar [config]="{wheelPropagation: false}">
                   <h4 *ngFor="let item of popular | slice:0:(popularMore ? popularMore : undefined)"
                       (click)="goToPopular(item)"
                       class="title-h6 summer-nigh mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular">
@@ -36,7 +36,7 @@
               Услуги для <span (click)="showRegionModal()" class="catalog-item-title-link">{{regionName}}</span>
             </h5>
             <div class="scroll-container">
-              <perfect-scrollbar>
+              <perfect-scrollbar [config]="{wheelPropagation: false}">
                 <ng-template [ngTemplateOutlet]="regionPopularTmpl"></ng-template>
               </perfect-scrollbar>
             </div>
@@ -44,7 +44,7 @@
           <section *ngIf="viewType === 'main-page-view' && faqs?.length">
             <h3 class="title-h6 catalog-item-title">Часто задаваемые вопросы</h3>
             <div class="scroll-container">
-              <perfect-scrollbar #scrollbarComponent>
+              <perfect-scrollbar [config]="{wheelPropagation: false}">
                 <div *ngFor="let item of faqs | slice:0:(faqsMore ? undefined : itemsCounter)"
                      #elements
                      class="title-h6 summer-nigh mt-lg-24  catalog-title-popular">
@@ -87,7 +87,9 @@
       </ng-template>
     </div>
     <ng-template #loading>
-      <lib-throbber defaultHeaders="true"></lib-throbber>
+      <div class="catalog-throbber">
+        <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
+      </div>
     </ng-template>
   </div>
 </div>

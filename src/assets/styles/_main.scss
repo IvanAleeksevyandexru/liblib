@@ -5,6 +5,13 @@ html {
   &.disable-scroll, &.menu-catalog-opened {
     overflow: hidden;
   }
+  &.menu-catalog-opened {
+    height: -webkit-fill-available;
+    body{
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+    }
+  }
 }
 
 @media all and (max-width: 767px) {
