@@ -209,8 +209,18 @@ export class FeedsGepsComponent implements OnInit, OnChanges, OnDestroy {
     return this.feeds && !this.feeds.length && !this.feedsIsLoading;
   }
 
-  public isAmount(feed: FeedModel) {
-    if (feed.data.snippets && feed.data.snippets.length && feed.data.snippets[0].originalAmount) {
+  public isAmountSum(feed: FeedModel) {
+    if (feed.data.snippets && feed.data.snippets.length && (feed.data.snippets[0].originalAmount ||
+      feed.data.snippets[0].sum)) {
+      return feed.data.snippets[0].originalAmount;
+    }
+  }
+
+  public setAmountSum(feed: FeedModel) {
+    if (feed.data.snippets && feed.data.snippets.length && (feed.data.snippets[0].discountDate ||
+      !feed.data.snippets[0].originalAmount && !feed.data.snippets[0].discountDate)) {
+      return feed.data.snippets[0].sum;
+    } else if (feed.data.snippets && feed.data.snippets.length && !feed.data.snippets[0].discountDate) {
       return feed.data.snippets[0].originalAmount;
     }
   }
