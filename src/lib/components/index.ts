@@ -80,7 +80,11 @@ export * from './throbber/throbber.component';
 export * from './user-menu/user-menu.component';
 export * from './validation-message/validation-message.component';
 export * from './virtual-scroll/virtual-scroll.component';
-export * from './menu-catalog/menu-catalog.component';
-export * from './menu-catalog-links/menu-catalog-links.component';
 export * from './small-footer/small-footer.component';
 export * from './social-links/social-links.component';
+
+export * from './menu-catalog/menu-catalog.component';
+export * from './catalog-tabs-list/catalog-tabs-list.component';
+export * from './catalog-tabs/catalog-tabs.component';
+export * from './catalog-tab-item/catalog-tab-item.component';
+

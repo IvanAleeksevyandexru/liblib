@@ -14,6 +14,7 @@ import { CatalogTabsService } from '../../services/catalog-tabs/catalog-tabs.ser
 export class MenuCatalogComponent implements OnInit, OnDestroy {
 
   @Output() public menuCatalogOpened = new EventEmitter<boolean>();
+  public currentCategoryCode: string;
 
   @HostListener('document:click', ['$event'])
   public onClickOut(event) {
@@ -54,7 +55,7 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
 
   public onClose() {
     const html = document.getElementsByTagName('html')[0];
-    html.classList.remove('disable-scroll');
+    html.classList.remove('disable-scroll','menu-catalog-opened');
     this.showMenu = false;
     this.menuCatalogOpened.emit(false);
     this.showSubCatalog = false;
@@ -64,15 +65,20 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
   public disableScroll(isMenuOpen: boolean, allResolutions: boolean): void {
     const html = document.getElementsByTagName('html')[0];
     if (isMenuOpen) {
-      html.classList.add(`disable-scroll`);
+      html.classList.add('disable-scroll','menu-catalog-opened');
     } else {
-      html.classList.remove(`disable-scroll`);
+      html.classList.remove('disable-scroll','menu-catalog-opened');
     }
   }
 
   private closeAllTabs(): void {
     this.catalog.forEach(item => item.sideActive = false);
     this.catalog.forEach(item => item.active = false);
+  }
+
+  public closeCatalog() {
+    this.closeAllTabs();
+    this.onClose();
   }
 
   public ngOnDestroy() {
@@ -91,7 +97,26 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
     this.menuCatalogOpened.emit(this.showMenu);
   }
 
-  public catalogLinkClick(showSubCatalog: boolean) {
-    this.showSubCatalog = showSubCatalog;
+  public catalogTabListItemClick(item: any) {
+
+    this.showSubCatalog = false;
+
+    if (item.active) {
+      item.active = false;
+      return;
+    }
+
+    this.closeAllTabs();
+
+    item.active = !item.active;
+
+    this.currentCategoryCode = item.code;
+    this.showSubCatalog = item.active;
+
+  }
+
+  public subCatalogClose(): void {
+    this.showSubCatalog = false;
+    this.closeAllTabs();
   }
 }

@@ -27,6 +27,7 @@ export class CatalogTabsListComponent implements OnInit, OnDestroy {
   public tabClick($event: any, item: any) {
     $event.preventDefault();
     $event.stopPropagation();
+    item.viewType = this.viewType;
     this.catalogTabListItemClick.emit(item);
   }
 }

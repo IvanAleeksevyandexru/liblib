@@ -18,13 +18,25 @@ export class CatalogTabsService {
   ) {
   }
 
-  public storeCatalogData(data: any, code: string): void {
+  public storeCatalogData(data: any, code: string, isMainPageView): void {
     if (!this.catalogTabsData[code]) {
-      this.catalogTabsData[code] = {
-        popular: data[0],
-        regionPopular: data[1],
-        faqs: data[2]
-      };
+      if(!isMainPageView) {
+        this.catalogTabsData[code] = {
+          popular: data[0],
+          regionPopular: data[1],
+          faqs: {
+            faq: {
+              items: []
+            }
+          }
+        }
+      } else {
+        this.catalogTabsData[code] = {
+          popular: data[0],
+          regionPopular: data[1],
+          faqs: data[2]
+        }
+      }
     }
   }
 
@@ -60,8 +72,11 @@ export class CatalogTabsService {
     });
   }
 
-  public getCatalogFaqs(code: string): Observable<Faqs> {
-    if (this.catalogTabsData[code]) {
+  public getCatalogFaqs(code: string, isFaqRequestNeed): Observable<Faqs> {
+    if(!isFaqRequestNeed) {
+      return of({faq: {items: []}}) as any;
+    }
+    if (this.catalogTabsData[code] && this.getDataCatalogStoreData(code, 'faqs').faq?.items?.length) {
       return of(this.getDataCatalogStoreData(code, 'faqs'));
     }
     return this.http.get<Faqs>(`${this.loadService.config.catalogApiUrl}elm/get/serviceCategories/${code}`, {

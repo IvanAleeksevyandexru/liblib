@@ -7,6 +7,11 @@
   flex-direction: column;
   height: 100%;
 }
+.digital-assistant-link{
+  display: block;
+  padding: 16px;
+  background: linear-gradient(133.89deg, #322D6F 20.92%, #191240 81.4%);
+}
 .content-overlay {
   transform: rotate3d(0,0,0,0deg);
 }
@@ -63,7 +68,7 @@
   left: -100vw;
   top: 64px;
   transition: left 250ms ease-in 0s;
-  z-index: 2147473649;
+  z-index: 10;
   transform: rotate3d(0,0,0,0deg);
   &.show{
     height: 100vh;
@@ -77,13 +82,13 @@
     bottom: 0;
     transform: translateY(64px);
     transition: left 250ms ease-out;
-    z-index: 2147473649;
+    z-index: 10;
   }
 }
 .sub-catalog{
   bottom: 0;
-  display: block;
-  left: calc(320px - 800px);
+  display: none;
+  left: 320px;
   top: -64px;
   transform: translateY(64px);
   transition: left 250ms ease-in 0s;
@@ -96,6 +101,7 @@
   border-radius: 0 12px 12px 0;
   border-left: 1px solid #E1E1E1;
   &.show{
+    display: block;
     left: 320px;
     width: 850px;
     transition: left 250ms ease-out;
@@ -105,7 +111,11 @@
   background: rgba(13, 76, 211, 0.08);
   padding: 18px;
 }
+
 @media (max-width: 767px) {
+  .sub-catalog{
+    border-radius: 0;
+  }
   .user-menu.show .bottom-block.bottom-block-burger {
     position: static;
     bottom: auto;
@@ -119,12 +129,34 @@
   .burger-wrap{
     border-top: 1px solid #E1E1E1;
   }
+  .catalog-menu-content{
+    width: 100%;
+  }
+  .catalog-menu.show, .sub-catalog{
+    top: 0;
+  }
+  .sub-catalog.show {
+    display: block;
+    left: 0;
+    width: 100%;
+  }
+  .content-overlay{
+    display: none;
+  }
 }
 @media (min-width: 768px) and (max-width: 1139px) {
   .user-menu.show .burger-wrap.menu-desk.show{
     top: 19px;
     border-radius: 0 0 12px 12px;
     border-top: 1px solid #E1E1E1;
+  }
+  .sub-catalog.show{
+    left: 0;
+    width: 320px;
+    border-radius: 0;
+  }
+  .catalog-menu{
+    top: 0;
   }
 }
 @media (min-width: 768px) {
@@ -155,6 +187,17 @@
     }
   }
 }
-@media (min-width: 1140px) {
-
+@media (max-width: 1139px) {
+  .sub-catalog.show{
+    top: -64px;
+  }
+  .close.show{
+    display: none;
+  }
+  .catalog-menu-logo-wrap{
+    display: flex;
+    align-items: center;
+    height: 64px;
+    padding: 0 16px;
+  }
 }

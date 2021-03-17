@@ -36,20 +36,19 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
   }
 
   catalogTabListItemClick(item: any) {
-    console.log(item);
 
     this.showCatalogTabItem = false;
 
     if (item.active) {
       item.active = false;
-    return;
-  }
+      return;
+    }
 
-  this.closeAllTabs();
+    this.closeAllTabs();
 
     item.active = !item.active;
 
-  this.currentCategoryCode = item.code;
-  this.showCatalogTabItem = item.active;
+    this.currentCategoryCode = item.code;
+    this.showCatalogTabItem = item.active;
   }
 }

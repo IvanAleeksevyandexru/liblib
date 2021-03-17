@@ -1,19 +1,29 @@
 <div [ngClass]="
      {'main-page-view': viewType === 'main-page-view', 'side-view': viewType === 'side-view'}"
-     class="flex-container-lg">
-  <a href
-     [class.active]="item.active"
-     (click)="tabClick($event, item)"
-     class="catalog-link-item"
-     *ngFor="let item of catalog">
-    <div class="catalog-link-info">
-      <div>
-        <img [src]="item.ico" alt="{{item.title}}">
+     class="catalog-tab-list-wrap">
+  <div class="scroll-container">
+    <perfect-scrollbar>
+      <div class="flex-container-lg catalog-link-item-wrap">
+        <a href
+           [class.active]="item.active"
+           (click)="tabClick($event, item)"
+           class="catalog-link-item"
+           *ngFor="let item of catalog">
+          <div class="catalog-link-info">
+            <div>
+              <img [src]="item.ico" alt="{{item.title}}">
+            </div>
+            <div class="catalog-link mt-lg-8">
+              {{item.title}}
+            </div>
+          </div>
+        </a>
+        <div class="hide-lg">
+          <div class="catalog-location-wrap">
+            <lib-location-select skinTheme="red"></lib-location-select>
+          </div>
+        </div>
       </div>
-      <div class="catalog-link mt-lg-8">
-        {{item.title}}
-      </div>
-    </div>
-    <div class="catalog-link-arrow"></div>
-  </a>
+    </perfect-scrollbar>
+  </div>
 </div>

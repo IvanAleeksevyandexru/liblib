@@ -29,6 +29,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   @Input() public code: string;
   @Input() public viewType: 'main-page-view' | 'side-view';
   @Output() public catalogClose: EventEmitter<null> = new EventEmitter();
+  @Output() public subCatalogClose: EventEmitter<null> = new EventEmitter();
 
   @ViewChild('scrollbarComponent', {static: false}) public scrollbarComponent: PerfectScrollbarComponent;
   @ViewChildren('elements') public listItems: QueryList<any>;
@@ -37,7 +38,10 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   public popular: any[];
   public regionPopular: any[];
   public faqsMore: any;
+  public popularMore: any;
   public faqs: any[];
+  public backTitle: string;
+  public itemsCounter: number;
 
   public loaded: boolean;
   public regionName: string;
@@ -54,6 +58,8 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   public ngOnInit(): void {
     this.getRegionName();
     this.toggleBodyScroll(true);
+    this.itemsCounter = this.viewType === 'main-page-view' ? 3: 5;
+    this.popularMore = this.viewType === 'main-page-view' ? undefined: 5;
   }
 
   public ngOnChanges(changes: SimpleChanges) {
@@ -69,19 +75,30 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
       this.catalogTabsService.getCatalogRegionPopular(this.code).pipe(
         catchError((err) => of([]))
       ),
-      this.catalogTabsService.getCatalogFaqs(this.code).pipe(
+      this.catalogTabsService.getCatalogFaqs(this.code, this.viewType === 'main-page-view').pipe(
         catchError((err) => of({faq: {items: []}}))
       )
     ]).subscribe((data: [any, any[], any]) => {
       this.popular = data[0].passports;
       this.regionPopular = data[1];
-      this.faqs = data[2].faq.items;
+      this.faqs = data[2] && data[2].faq.items;
       this.loaded = true;
-      this.catalogTabsService.storeCatalogData(data, this.code);
+      this.catalogTabsService.storeCatalogData(data, this.code, this.viewType === 'main-page-view');
+      this.getBackTitle();
     }, () => {
       // TODO: обработка ошибок
       this.loaded = true;
     });
+  }
+
+  public getBackTitle(): void {
+    this.backTitle = this.catalogTabsService.catalogTabsList.find((item) => {
+      return item.code === this.code;
+    }).title;
+  }
+
+  public closeSubCatalog(): void {
+    this.subCatalogClose.emit();
   }
 
   public toggleFaqsQuestions(item: any): void {
@@ -113,6 +130,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
 
   public goToPopular(item: any): void {
     const link = item.epguPassport ? `/group/${item.epguId}` : `${item.epguId}`;
+    this.catalogClose.emit();
     this.router.navigate([link]);
   }
 
