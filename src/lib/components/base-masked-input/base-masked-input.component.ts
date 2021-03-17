@@ -224,7 +224,7 @@ export class BaseMaskedInputComponent
     let isSuggest;
     if (e) {
       const target = e.target as HTMLTextAreaElement;
-      isSuggest = target && target.offsetParent && target.offsetParent.classList.contains('suggests');
+      isSuggest = target.offsetParent && target.offsetParent.classList.contains('suggests');
     }
 
     if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement) && !isSuggest) {
