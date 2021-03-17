@@ -1,6 +1,12 @@
 .footer-wrapper {
   background: #EFF5F9;
   padding: 32px 0;
+
+  .custom-sizes {
+    &.title-h5 {
+      font-size: 16px;
+    }
+  }
 }
 
 .block-wrapper {
@@ -16,6 +22,16 @@
 @media all and (min-width: 768px) {
   .footer-wrapper {
     padding: 12px 0 64px 0;
+
+
+    .custom-sizes {
+      &.text-plain {
+        font-size: 18px;
+      }
+      &.title-h5 {
+        font-size: 18px;
+      }
+    }
   }
 }
 

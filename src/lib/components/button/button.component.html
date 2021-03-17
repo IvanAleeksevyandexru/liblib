@@ -29,6 +29,7 @@
   </a>
   <button *ngIf="type === 'search' || type === 'new-search'"
     class="{{size}} {{width}} {{type}}"
+    type="submit"
     [ngClass]="{disabled: disabled, active: active}">
     <span class="icon"></span>
   </button>
