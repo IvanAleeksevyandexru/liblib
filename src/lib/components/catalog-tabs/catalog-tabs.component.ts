@@ -22,9 +22,9 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.sharedService.on('menuCatalogClick').subscribe(() => {
-      this.closeCatalog();
-    })
+    // this.sharedService.on('menuCatalogClick').subscribe(() => {
+    //   this.closeCatalog();
+    // })
   }
 
   private closeAllTabs(): void {
