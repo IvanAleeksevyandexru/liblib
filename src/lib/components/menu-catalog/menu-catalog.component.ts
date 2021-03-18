@@ -5,6 +5,7 @@ import { LoadService } from '../../services/load/load.service';
 import { MenuService } from "../../services/menu/menu.service";
 import { UserRole } from "../../models/menu-link";
 import { CatalogTabsService } from '../../services/catalog-tabs/catalog-tabs.service';
+import { SharedService } from '../../services/shared/shared.service';
 
 @Component({
   selector: 'lib-menu-catalog',
@@ -36,7 +37,8 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
   constructor(
     public loadService: LoadService,
     private menuService: MenuService,
-    public catalogTabsService: CatalogTabsService
+    public catalogTabsService: CatalogTabsService,
+    public sharedService: SharedService
   ) {
   }
 
@@ -55,7 +57,7 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
 
   public onClose() {
     const html = document.getElementsByTagName('html')[0];
-    html.classList.remove('disable-scroll','menu-catalog-opened');
+    html.classList.remove('menu-catalog-opened');
     this.showMenu = false;
     this.menuCatalogOpened.emit(false);
     this.showSubCatalog = false;
@@ -65,9 +67,9 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
   public disableScroll(isMenuOpen: boolean, allResolutions: boolean): void {
     const html = document.getElementsByTagName('html')[0];
     if (isMenuOpen) {
-      html.classList.add('disable-scroll','menu-catalog-opened');
+      html.classList.add('menu-catalog-opened');
     } else {
-      html.classList.remove('disable-scroll','menu-catalog-opened');
+      html.classList.remove('menu-catalog-opened');
     }
   }
 
@@ -92,6 +94,7 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
   }
 
   public onMenuClick(allResolutions?: boolean, manualClose?: boolean) {
+    this.sharedService.send('menuCatalogClick');
     this.showMenu = manualClose ? !manualClose : !this.showMenu;
     this.disableScroll(this.showMenu, allResolutions);
     this.menuCatalogOpened.emit(this.showMenu);

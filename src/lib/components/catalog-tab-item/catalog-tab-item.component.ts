@@ -54,7 +54,6 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
 
   public ngOnInit(): void {
     this.getRegionName();
-    this.toggleBodyScroll(true);
     this.itemsCounter = this.viewType === 'main-page-view' ? 3 : 5;
     this.popularMore = this.viewType === 'main-page-view' ? undefined : 5;
   }
@@ -78,28 +77,22 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     ]).pipe(
       switchMap((data: any) => {
         const faqCategoriesData = data[2];
-        if (faqCategoriesData && faqCategoriesData.faqCategories && faqCategoriesData.faqCategories.items.length === 0) {
-          return of(data);
-        }
-        if(faqCategoriesData?.faqCategories?.items?.length === 0) {
-          return of(data);
-        }
         const categoriesCodes = faqCategoriesData.faqCategories.items.map((item: any) => {
           return item.code;
         })
         return of(...categoriesCodes).pipe(
             concatMap(code => this.catalogTabsService.getFaqItemCategory(code, this.code)
           )
-        ).pipe(map((faqItemCategory: any) =>  data.concat({faqItemCategory})))
+        ).pipe(map((faqItemCategory: any) =>  data.concat(faqItemCategory)))
       })
     ).subscribe((data: [any, any[], any, any]) => {
+      this.catalogTabsService.storeCatalogData(data, this.code);
       this.popular = data[0].passports;
       this.regionPopular = data[1];
       if (data[3]) {
         this.createFaqs(data[3]);
       }
       this.loaded = true;
-      this.catalogTabsService.storeCatalogData(data, this.code, this.viewType === 'main-page-view');
       this.getBackTitle();
     }, () => {
       // TODO: обработка ошибок
@@ -108,11 +101,11 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public createFaqs(faqsData: any): void {
-    this.faqs = faqsData.faqItemCategory.children;
-    if (!this.faqs && faqsData.faqItemCategory.faqs.length > 0) {
+    this.faqs = faqsData.children;
+    if (!this.faqs && faqsData.faqs.length > 0) {
       this.faqs = [{
-        title: faqsData.faqItemCategory.title,
-        faqs: faqsData.faqItemCategory.faqs
+        title: faqsData.title,
+        faqs: faqsData.faqs
       }]
     }
   }
@@ -143,14 +136,9 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     this.gosbarService.popupLocation();
   }
 
-  public toggleBodyScroll(disable: boolean): void {
-    document.body.classList.toggle('disable-scroll', disable);
-  }
-
   public closeCatalog($evt): void {
     $evt.preventDefault();
     $evt.stopPropagation();
-    this.toggleBodyScroll(false);
     this.catalogClose.emit();
   }
 
@@ -161,7 +149,6 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnDestroy() {
-    this.toggleBodyScroll(false);
   }
 
 }

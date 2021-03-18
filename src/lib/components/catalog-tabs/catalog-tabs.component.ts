@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { LoadService } from '../../services/load/load.service';
+import { SharedService } from '../../services/shared/shared.service';
 
 @Component({
   selector: 'lib-catalog-tabs',
@@ -15,11 +16,15 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
   public currentCategoryCode: string;
 
   constructor(
-    public loadService: LoadService
+    public loadService: LoadService,
+    public sharedService: SharedService
   ) {
   }
 
   public ngOnInit(): void {
+    this.sharedService.on('menuCatalogClick').subscribe(() => {
+      this.closeCatalog();
+    })
   }
 
   private closeAllTabs(): void {
