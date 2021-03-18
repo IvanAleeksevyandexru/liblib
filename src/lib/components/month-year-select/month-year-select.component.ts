@@ -172,7 +172,8 @@ export class MonthYearSelectComponent implements OnInit, OnChanges {
       }
       const scrollableArea = selected.closest('.ps');
       if (scrollableArea) {
-        setTimeout(() => scrollableArea.scrollTop = selectedIndex * selected.offsetHeight);
+        // высота итема списка 20, паддинги верх-низ у joinedView 8, у stdView 12, 110 отступ от верха (центровка)
+        setTimeout(() => scrollableArea.scrollTop = selectedIndex * (this.joinedView ? 36 : 44) - 110);
       }
     }
   }
