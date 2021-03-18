@@ -4,6 +4,7 @@
       <div *ngIf="showDisclaimer(disclaimer)"
            class="disclaimer {{disclaimer.level}} {{disclaimer.mnemonic}}"
            id="disclaimer_{{disclaimer.id}}"
+           [hidden]="disclaimer.isHidden"
            [ngClass]="{'mb-4': !(lastGroup && last), 'main-page': isMainPage}">
         <div class="container">
           <div class="level-icon-{{disclaimer.level}}">
