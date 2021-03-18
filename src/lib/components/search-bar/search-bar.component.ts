@@ -124,6 +124,7 @@ export class SearchBarComponent
   private searchQueue: Array<string> = [];
   private forcedSearchPrevent = false;
   private isIos = navigator.userAgent.match(/iPhone|iPad|iPod/i);
+  private destroyed = false;
 
   private onTouchedCallback: () => void;
 
@@ -182,6 +183,7 @@ export class SearchBarComponent
   }
 
   public ngOnDestroy() {
+    this.destroyed = true;
     this.sharedSubscription.unsubscribe();
     this.focusManager.unregister(this);
   }
@@ -388,7 +390,9 @@ export class SearchBarComponent
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
     this.check();
-    this.changeDetector.detectChanges();
+    if (!this.destroyed) {
+      this.changeDetector.detectChanges();
+    }
   }
 
   public check() {
