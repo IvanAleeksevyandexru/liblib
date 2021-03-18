@@ -24,17 +24,17 @@ export class CatalogTabsService {
         this.catalogTabsData[code] = {
           popular: data[0],
           regionPopular: data[1],
-          faqs: {
-            faq: {
-              items: []
-            }
+          faqCategories: [],
+          faqCategory: {
+            items: []
           }
         }
       } else {
         this.catalogTabsData[code] = {
           popular: data[0],
           regionPopular: data[1],
-          faqs: data[2]
+          faqCategories: data[2],
+          faqCategory: data[3]
         }
       }
     }
@@ -72,14 +72,24 @@ export class CatalogTabsService {
     });
   }
 
-  public getCatalogFaqs(code: string, isFaqRequestNeed): Observable<Faqs> {
+  public getFaqCategories(code: string, isFaqRequestNeed): Observable<any> {
     if(!isFaqRequestNeed) {
-      return of({faq: {items: []}}) as any;
+      return of({faqCategories: {items: []}}) as any;
     }
-    if (this.catalogTabsData[code] && this.getDataCatalogStoreData(code, 'faqs').faq?.items?.length) {
-      return of(this.getDataCatalogStoreData(code, 'faqs'));
+    if (this.catalogTabsData[code] && this.getDataCatalogStoreData(code, 'faqCategories')) {
+      return of(this.getDataCatalogStoreData(code, 'faqCategories'));
     }
-    return this.http.get<Faqs>(`${this.loadService.config.catalogApiUrl}elm/get/serviceCategories/${code}`, {
+    return this.http.get<any>(`${this.loadService.config.catalogApiUrl}elm/get/serviceCategories/${code}`, {
+      params: {
+        _: `${Math.random()}`,
+        region: `${this.loadService.attributes.selectedRegion}`
+      },
+      withCredentials: true
+    });
+  }
+
+  public getFaqItemCategory(code: string, categoryCode: string): Observable<any> {
+    return this.http.get<any>(`${this.loadService.config.cmsUrl}faq/categories/${code}`, {
       params: {
         _: `${Math.random()}`,
         region: `${this.loadService.attributes.selectedRegion}`

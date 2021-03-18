@@ -15,7 +15,7 @@
               <perfect-scrollbar [config]="{wheelPropagation: false}">
                   <h4 *ngFor="let item of popular | slice:0:(popularMore ? popularMore : undefined)"
                       (click)="goToPopular(item)"
-                      class="title-h6 summer-nigh mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular">
+                      class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular">
                         {{item.catalogTitle}}
                   </h4>
                   <ng-container *ngIf="popular && popular.length > popularMore">
@@ -45,26 +45,27 @@
             <h3 class="title-h6 catalog-item-title">Часто задаваемые вопросы</h3>
             <div class="scroll-container">
               <perfect-scrollbar [config]="{wheelPropagation: false}">
-                <div *ngFor="let item of faqs | slice:0:(faqsMore ? undefined : itemsCounter)"
-                     #elements
-                     class="title-h6 summer-nigh mt-lg-24  catalog-title-popular">
-                  <div class="flex-container">
-                    <div [class.active]="item.active" (click)="toggleFaqsQuestions(item)" class="arrow"></div>
-                    <div>
+                <div *ngFor="let item of faqs; let index = index;" class="catalog-title-popular">
+                  <h4 *ngIf="item.faqs?.length" [class.mt-lg-24]="index>0" class="title-h6">{{item.title}}</h4>
+                  <div class="mt-lg-24" *ngFor="let faq of item.faqs | slice:0:(item.faqsMore ? undefined : itemsCounter)">
+                    <div class="flex-container">
+                      <div [class.active]="faq.active" (click)="toggleFaqsQuestions(faq)" class="arrow"></div>
                       <div>
-                        <h6 (click)="toggleFaqsQuestions(item)" class="title-h6 summer-nigh mt-lg-20 catalog-title-popular">
-                            {{item.shortQuestion || item.question}}
-                        </h6>
-                        <div [class.active]="item.active" class="faq-answer" [innerHTML]="item.shortAnswer"></div>
+                        <div>
+                          <h6 (click)="toggleFaqsQuestions(faq)" class="title-h6 title-h6-light">
+                            {{faq.shortQuestion || faq.question}}
+                          </h6>
+                          <div [class.active]="faq.active" class="faq-answer" [innerHTML]="faq.shortAnswer"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <ng-container *ngIf="item.faqs && item.faqs.length > itemsCounter && !item.faqsMore">
+                    <div class="mt-32 text-plain blue" (click)="item.faqsMore = !item.faqsMore">
+                      Показать все
+                    </div>
+                  </ng-container>
                 </div>
-                <ng-container *ngIf="faqs && faqs.length > itemsCounter && !faqsMore">
-                  <div class="mt-24 text-plain blue" (click)="faqsMore = !faqsMore">
-                    Показать все
-                  </div>
-                </ng-container>
               </perfect-scrollbar>
             </div>
           </section>
@@ -76,7 +77,7 @@
         </h5>
         <h6 (click)="goToPopular(item)"
             *ngFor="let item of regionPopular | slice:0:(regionPopularMore ? undefined : itemsCounter)"
-            class="title-h6 summer-nigh mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular">
+            class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular">
           {{item.catalogTitle}}
         </h6>
         <ng-container *ngIf="regionPopular && regionPopular.length > itemsCounter && !regionPopularMore">

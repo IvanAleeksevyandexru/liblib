@@ -17,7 +17,7 @@ import { SharedService } from '../../services/shared/shared.service';
 import { CatalogTabsService } from '../../services/catalog-tabs/catalog-tabs.service';
 
 import { Router } from '@angular/router';
-import { catchError } from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'lib-catalog-tab-item',
@@ -30,8 +30,6 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   @Input() public viewType: 'main-page-view' | 'side-view';
   @Output() public catalogClose: EventEmitter<null> = new EventEmitter();
   @Output() public subCatalogClose: EventEmitter<null> = new EventEmitter();
-
-  @ViewChildren('elements') public listItems: QueryList<any>;
 
   public catalogDataSubscription: Subscription;
   public popular: any[];
@@ -57,8 +55,8 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   public ngOnInit(): void {
     this.getRegionName();
     this.toggleBodyScroll(true);
-    this.itemsCounter = this.viewType === 'main-page-view' ? 3: 5;
-    this.popularMore = this.viewType === 'main-page-view' ? undefined: 5;
+    this.itemsCounter = this.viewType === 'main-page-view' ? 3 : 5;
+    this.popularMore = this.viewType === 'main-page-view' ? undefined : 5;
   }
 
   public ngOnChanges(changes: SimpleChanges) {
@@ -74,13 +72,32 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
       this.catalogTabsService.getCatalogRegionPopular(this.code).pipe(
         catchError((err) => of([]))
       ),
-      this.catalogTabsService.getCatalogFaqs(this.code, this.viewType === 'main-page-view').pipe(
-        catchError((err) => of({faq: {items: []}}))
+      this.catalogTabsService.getFaqCategories(this.code, this.viewType === 'main-page-view').pipe(
+        catchError((err) => of({faqCategories: {items: []}}))
       )
-    ]).subscribe((data: [any, any[], any]) => {
+    ]).pipe(
+      switchMap((data: any) => {
+        const faqCategoriesData = data[2];
+        if (faqCategoriesData && faqCategoriesData.faqCategories && faqCategoriesData.faqCategories.items.length === 0) {
+          return of(data);
+        }
+        if(faqCategoriesData?.faqCategories?.items?.length === 0) {
+          return of(data);
+        }
+        const categoriesCodes = faqCategoriesData.faqCategories.items.map((item: any) => {
+          return item.code;
+        })
+        return of(...categoriesCodes).pipe(
+            concatMap(code => this.catalogTabsService.getFaqItemCategory(code, this.code)
+          )
+        ).pipe(map((faqItemCategory: any) =>  data.concat({faqItemCategory})))
+      })
+    ).subscribe((data: [any, any[], any, any]) => {
       this.popular = data[0].passports;
       this.regionPopular = data[1];
-      this.faqs = data[2] && data[2].faq.items;
+      if (data[3]) {
+        this.createFaqs(data[3]);
+      }
       this.loaded = true;
       this.catalogTabsService.storeCatalogData(data, this.code, this.viewType === 'main-page-view');
       this.getBackTitle();
@@ -88,6 +105,16 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
       // TODO: обработка ошибок
       this.loaded = true;
     });
+  }
+
+  public createFaqs(faqsData: any): void {
+    this.faqs = faqsData.faqItemCategory.children;
+    if (!this.faqs && faqsData.faqItemCategory.faqs.length > 0) {
+      this.faqs = [{
+        title: faqsData.faqItemCategory.title,
+        faqs: faqsData.faqItemCategory.faqs
+      }]
+    }
   }
 
   public getBackTitle(): void {
