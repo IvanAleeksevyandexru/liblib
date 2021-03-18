@@ -18,8 +18,7 @@ import * as moment_ from 'moment';
 import { Banner, BannerGroup } from '../../models/main-page.model';
 import { BannersService } from '../../services/banners/banners.service';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
-import { SnippetsComponent } from '../../components/snippets/snippets.component';
-
+2
 const moment = moment_;
 
 @Component({
