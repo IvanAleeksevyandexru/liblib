@@ -46,8 +46,8 @@
     <a class="flex-1-0-md flex-1-0-lg">
       <div class="feed-item-controls mt-8">
         <div class="flex-container feed-item-controls-buttons align-items-center">
-          <div class="details hide show-md" *ngIf="isAmountSum(feed)">
-            <p class="title-h6">{{setAmountSum(feed)}} <span class="rub-bold black">Р</span></p>
+          <div class="details hide show-md" *ngIf="getAmount(feed) as amount">
+            <p class="title-h6">{{amount}} <span class="rub-bold black">Р</span></p>
           </div>
           <div class="details hide show-md" *ngIf="isAttach(feed)">
             <div class="attach-icon"></div>

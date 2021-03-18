@@ -18,6 +18,7 @@ import * as moment_ from 'moment';
 import { Banner, BannerGroup } from '../../models/main-page.model';
 import { BannersService } from '../../services/banners/banners.service';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
+import { SnippetsComponent } from '../../components/snippets/snippets.component';
 
 const moment = moment_;
 
@@ -209,20 +210,11 @@ export class FeedsGepsComponent implements OnInit, OnChanges, OnDestroy {
     return this.feeds && !this.feeds.length && !this.feedsIsLoading;
   }
 
-  public isAmountSum(feed: FeedModel) {
-    if (feed.data.snippets && feed.data.snippets.length && (feed.data.snippets[0].originalAmount ||
-      feed.data.snippets[0].sum)) {
-      return feed.data.snippets[0].originalAmount;
-    }
-  }
-
-  public setAmountSum(feed: FeedModel) {
-    if (feed.data.snippets && feed.data.snippets.length && (feed.data.snippets[0].discountDate ||
-      !feed.data.snippets[0].originalAmount && !feed.data.snippets[0].discountDate)) {
-      return feed.data.snippets[0].sum;
-    } else if (feed.data.snippets && feed.data.snippets.length && !feed.data.snippets[0].discountDate) {
-      return feed.data.snippets[0].originalAmount;
-    }
+  public getAmount(feed: FeedModel) {
+    return (feed.data.snippets && feed.data.snippets.length ?
+      ((feed.data.snippets[0].discountDate || (!feed.data.snippets[0].originalAmount)) ?
+        feed.data.snippets[0].sum : (!feed.data.snippets[0].discountDate ?
+          feed.data.snippets[0].originalAmount : '')) : '');
   }
 
   public isAttach(feed: FeedModel) {
