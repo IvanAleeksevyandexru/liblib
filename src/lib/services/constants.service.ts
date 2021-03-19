@@ -171,6 +171,35 @@ export class ConstantsService {
       mnemonic: 'partnersHistory'
     }
   ]);
+  public readonly PAYMENT_TABS_FL = new Tabs([
+    {
+      id: 'toPay',
+      name: 'К оплате',
+      url: '/pay'
+    },
+    {
+      id: 'quittance',
+      name: 'По квитанции',
+      url: '/pay/quittance'
+    },
+    {
+      id: 'withoutQuittance',
+      name: 'По реквизитам',
+      url: '/pay/withoutQuittance',
+      hidden: true
+    },
+    {
+      id: 'history',
+      name: 'История',
+      url: '/pay/paymentHistory'
+    },
+    {
+      id: 'hidden',
+      name: 'Скрытые',
+      url: '/pay/hidden',
+      hidden: true
+    },
+  ]);
   public readonly LK_SETTINGS_SIDE_TABS = new Tabs ([
     {
       id: 'account',

@@ -23,10 +23,17 @@ $checkbox-active-color: #0D4CD3;
 
   &:hover + .checkbox {
     background: $checkbox-default-color;
+    border-color: #1D5DEB;
   }
-
+  &:hover:checked + .checkbox {
+    background: #fff;
+    &:before {
+      background-color: #1D5DEB;
+    }
+  }
   &:disabled + .checkbox {
     background-color: #D1D5DF;
+    border-color: #86909C;
     &:before {
       display: none;
     }
@@ -35,41 +42,38 @@ $checkbox-active-color: #0D4CD3;
   &:disabled:checked + .checkbox {
     &:before {
       display: block;
-      background-color: #66727F;
+      background-color: #86909C;
     }
   }
 
   &:checked + .checkbox,
   &:active + .checkbox {
-    border: 2px solid $checkbox-active-color;
     &:before {
       content: '';
-      background: $checkbox-active-color url(../../../assets/svg/check.svg) no-repeat 4px 2px;
-      height: 22px;
+      background: $checkbox-active-color url(../../../assets/svg/check_v2.svg) no-repeat 50%;
+      height: 14px;
       position: absolute;
-      width: 22px;
+      width: 14px;
       border-radius: 2px;
-      background-size: 16px;
-    }
-    &.focused {
-      border-style: dotted;
+      background-size: 10px 8px;
     }
   }
 }
 
 .checkbox {
   position: absolute;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
+  padding: 3px;
   margin-left: -36px;
   background-color: #fff;
   box-sizing: border-box;
   border-radius: 4px;
-  border: 2px solid #B6C6E8;
-  box-sizing: content-box;
-  &.focused {
+  border: 2px solid $checkbox-active-color;
+  //box-sizing: content-box;
+  /*&.focused {
     border: 2px dotted $checkbox-active-color;
-  }
+  }*/
 }
 
 .labelText {

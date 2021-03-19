@@ -30,7 +30,7 @@
       border-bottom-right-radius: 0;
     }
   }
-  &.invalid {
+  &.invalid:not(.focused) {
     background: rgba(238, 63, 88, 0.16);
   }
   &[disabled], &.disabled, &[readonly] {
@@ -64,34 +64,18 @@ textarea.text-input {
   .clear-button {
     position: absolute;
     width: 24px;
-    height: 52px;
-    top: 0;
+    height: 24px;
+    top: 14px;
     right: 12px;
     outline: none;
-    background: url(../../../assets/svg/input-clean.svg) 4px 18px no-repeat;
+    background: url(../../../assets/svg/input-clean.svg) 0 0 no-repeat;
     cursor: pointer;
   }
   &.multiline {
-    border: 2px solid #F5F7FA;
-    border-radius: 4px;
-    &.focused {
-      border: 2px solid #99B1E6;
-    }
-    &.invalid {
-      background: rgba(238, 63, 88, 0.16);
-      border-color: rgba(238, 63, 88, 0.16);
-    }
-    &[disabled], &.disabled, &[readonly] {
-      background: #D1D5DF;
-      color: #66727F;
-      -webkit-text-fill-color: #66727F;
-      opacity: 1;
-    }
     .text-input {
       display: block;
       padding-top: 16px;
       padding-bottom: 16px;
-      border: none;
       &.clearable {
         padding-right: 22px;
       }
@@ -144,5 +128,36 @@ textarea.text-input {
   .edit {
     font-size: 14px;
     line-height: 20px;
+  }
+}
+
+.bg-white {
+  .text-input {
+    background: #FFFFFF;
+    &.invalid {
+      background: rgba(238, 63, 88, 0.16);
+    }
+    &.focused {
+      background: #FFFFFF;
+    }
+  }
+}
+.shadow {
+  .text-input {
+    box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
+  }
+}
+.with-active-icon {
+  .text-input {
+    padding-right: 52px;
+    &.clearable {
+      padding-right: 92px;
+    }
+  }
+  .clear-button {
+    border-right: 2px solid #9DACCE;
+    right: 52px;
+    padding-right: 14px;
+    width: 38px;
   }
 }

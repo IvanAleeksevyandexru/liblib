@@ -19,5 +19,45 @@
   .popup {
     width: 586px;
     border-radius: 4px;
+
+    .popup-title {
+      margin-top: 20px;
+    }
+  }
+  .payment-fines-popup {
+    .popup {
+      width: 682px;
+      padding: 0 24px 24px 24px;
+      border-radius: 12px;
+
+      .popup-title {
+        padding-bottom: 24px;
+        border-bottom: 1px solid #99B1E6;
+      }
+    }
+  }
+}
+
+@media all and (max-width: 767px) {
+  .popup-wrapper.payment-fines-popup {
+    background-color: #070707;
+    .popup {
+      background-color: #070707;
+      .close {
+        background-color: unset;
+        box-shadow: none;
+        &:before, &:after {
+          background: #FFFFFF;
+        }
+      }
+
+      .popup-title {
+        color: #FFFFFF;
+      }
+
+      .popup-images {
+        margin-top: 80px;
+      }
+    }
   }
 }

@@ -5,6 +5,8 @@ export class Notifier {
   public keepAfterRouteChange: boolean;
   public showIcon: boolean;
   public onCancel: () => void;
+  public onAction: () => void;
+  public actionName: string;
 
   constructor(init?: Partial<Notifier>) {
     Object.assign(this, init);

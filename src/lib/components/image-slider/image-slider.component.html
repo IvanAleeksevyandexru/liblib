@@ -12,11 +12,11 @@
       </div>
     </div>
     <div *ngIf=" view !== 'logos' && controlsVisible" class="image-slider-controls">
-      <a class="prev-slider" (click)="slidePrev()"></a>
+      <a class="prev-slider" (click)="slidePrev()" [ngClass]="{disabled: currentIndex === 0}"></a>
       <div *ngIf="showBullet" class="image-slider-dots">
         <a class="image-slider-dot" [class.active]="i === currentIndex" *ngFor="let dot of dots; index as i" (click)="slideTo(i)"></a>
       </div>
-      <a class="next-slider" (click)="slideNext()"></a>
+      <a class="next-slider" (click)="slideNext()" [ngClass]="{disabled: currentIndex >= dots.length - 1}"></a>
     </div>
     <div *ngIf="view === 'logos' && controlsVisible" class="image-slider-controls">
       <a class="next-slider" (click)="slideNext()"></a>

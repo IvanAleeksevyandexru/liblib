@@ -23,6 +23,8 @@ export class NotifierService {
       type: NotifierType.Success,
       notifierId : config.notifierId,
       onCancel: config.onCancel,
+      onAction: config.onAction,
+      actionName: config.actionName,
       showIcon: config.showIcon
     }));
   }
@@ -33,6 +35,8 @@ export class NotifierService {
       type: NotifierType.Process,
       notifierId : config.notifierId,
       onCancel: config.onCancel,
+      onAction: config.onAction,
+      actionName: config.actionName,
       showIcon: config.showIcon
     }));
   }
@@ -43,6 +47,8 @@ export class NotifierService {
       type: NotifierType.Error,
       notifierId : config.notifierId,
       onCancel: config.onCancel,
+      onAction: config.onAction,
+      actionName: config.actionName,
       showIcon: config.showIcon
     }));
   }

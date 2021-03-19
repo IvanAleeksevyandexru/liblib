@@ -101,7 +101,7 @@ export interface Bill {
   addAttrs: BillAttr[];
   amount: number;
   billDate: string;
-  billId: string;
+  billId: number;
   billName: string;
   billNumber: string;
   signature?: string;
@@ -142,8 +142,8 @@ export interface Bill {
   vehicle?: Vehicle;
   hasPhoto?: boolean;
   attrs?: any; // Кастомный атрибут. Преобразованный addAttrs к объекту
-  isAppealAvailable?: boolean;
-  isRefundAvailable?: boolean;
+  appealAvailable?: boolean;
+  refundAvailable?: boolean;
 }
 
 export interface BillAttr {
@@ -175,6 +175,7 @@ export interface PaidId {
 }
 
 export interface BillLink {
+  amount: number;
   comment: string;
   billDate: string;
   supplierFullName: string;

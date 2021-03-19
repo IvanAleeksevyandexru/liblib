@@ -149,6 +149,10 @@ import { MenuCatalogComponent } from './components/menu-catalog/menu-catalog.com
 import { MenuCatalogLinksComponent } from './components/menu-catalog-links/menu-catalog-links.component';
 import { SmallFooterComponent } from './components/small-footer/small-footer.component';
 import { SocialLinksComponent } from './components/social-links/social-links.component';
+import { ButtonForInputComponent } from './components/button-for-input/button-for-input.component';
+import { LanguageSelectComponent } from './components/language-select/language-select.component';
+import { RoundLoaderComponent } from './components/round-loader/round-loader.component';
+import { SliderComponent } from './components/slider/slider.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -287,7 +291,11 @@ registerLocaleData(localeRu, 'ru');
     MenuCatalogComponent,
     MenuCatalogLinksComponent,
     SmallFooterComponent,
-    SocialLinksComponent
+    SocialLinksComponent,
+    ButtonForInputComponent,
+    LanguageSelectComponent,
+    RoundLoaderComponent,
+    SliderComponent,
   ],
   imports: [
     CommonModule,
@@ -427,7 +435,11 @@ registerLocaleData(localeRu, 'ru');
     FrameComponent,
     MenuCatalogComponent,
     MenuCatalogLinksComponent,
-    SmallFooterComponent
+    SmallFooterComponent,
+    ButtonForInputComponent,
+    LanguageSelectComponent,
+    RoundLoaderComponent,
+    SliderComponent,
   ],
   providers: [
     GosbarService,
