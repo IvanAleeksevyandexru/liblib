@@ -204,6 +204,30 @@ ul.list-dotted {
   }
 }
 
+ul.list-blue-dotted {
+  list-style: none;
+
+  & > li {
+    margin-top: 12px;
+    margin-left: 20px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: #4D83FA;
+      border-radius: 50%;
+      margin-left: -20px;
+      margin-right: 12px;
+    }
+  }
+}
+
 ul.list-decimal {
   list-style: decimal;
   margin-left: 18px;
@@ -316,6 +340,10 @@ ul.list-decimal {
 
   .align-items-start#{$prefix} {
     align-items: start;
+  }
+
+  .align-items-baseline#{$prefix} {
+    align-items: baseline;
   }
 
   .align-self-center#{$prefix} {

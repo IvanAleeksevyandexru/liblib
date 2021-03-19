@@ -63,6 +63,7 @@ import { RadioComponent } from './components/radio/radio.component';
 import { PagingControlsComponent } from './components/paging-controls/paging-controls.component';
 import { VirtualScrollComponent } from './components/virtual-scroll/virtual-scroll.component';
 import { InvalidResultsTipComponent } from './components/invalid-results-tip/invalid-results-tip.component';
+import { LightHeaderComponent } from './components/light-header/light-header.component';
 import { ValidationMessageComponent } from './components/validation-message/validation-message.component';
 import { QuestionHelpTipComponent } from './components/question-help-tip/question-help-tip.component';
 import { HiddenTooltipComponent } from './components/hidden-tooltip/hidden-tooltip.component';
@@ -133,6 +134,7 @@ import { AccordionComponent } from './components/accordion/accordion.component';
 import { ExpansionPanelComponent } from './components/expansion-panel/expansion-panel.component';
 import { ExpansionPanelHeaderComponent } from './components/expansion-panel/expansion-panel-header/expansion-panel-header.component';
 import { TabsLightComponent } from './components/tabs-light/tabs-light.component';
+import { TabsScrollingComponent } from './components/tabs-scrolling/tabs-scrolling.component';
 import { CapitalLetterPipe } from './pipes/capital-letter/capital-letter.pipe';
 import { LangWarnModalComponent } from './components/lang-warn-modal/lang-warn-modal.component';
 import { PsoComponent } from './components/pso/pso.component';
@@ -211,6 +213,7 @@ registerLocaleData(localeRu, 'ru');
     PagingControlsComponent,
     VirtualScrollComponent,
     InvalidResultsTipComponent,
+    LightHeaderComponent,
     ValidationMessageComponent,
     QuestionHelpTipComponent,
     HiddenTooltipComponent,
@@ -280,6 +283,7 @@ registerLocaleData(localeRu, 'ru');
     ExpansionPanelComponent,
     ExpansionPanelHeaderComponent,
     TabsLightComponent,
+    TabsScrollingComponent,
     CapitalLetterPipe,
     LangWarnModalComponent,
     PsoComponent,
@@ -364,6 +368,7 @@ registerLocaleData(localeRu, 'ru');
     PagingControlsComponent,
     VirtualScrollComponent,
     InvalidResultsTipComponent,
+    LightHeaderComponent,
     ValidationMessageComponent,
     QuestionHelpTipComponent,
     HiddenTooltipComponent,
@@ -422,6 +427,7 @@ registerLocaleData(localeRu, 'ru');
     ExpansionPanelComponent,
     ExpansionPanelHeaderComponent,
     TabsLightComponent,
+    TabsScrollingComponent,
     CapitalLetterPipe,
     LangWarnModalComponent,
     PsoComponent,

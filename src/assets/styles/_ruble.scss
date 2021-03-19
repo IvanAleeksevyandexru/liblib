@@ -63,6 +63,9 @@ $red: 'rgb(223, 0, 36)'; // #DF0024
     &.light-gray:after {
       @include bold-ruble($light-gray);
     }
+    &.new-light-gray:after {
+      @include bold-ruble($new-light-gray);
+    }
     &.white:after {
       @include bold-ruble($white);
     }

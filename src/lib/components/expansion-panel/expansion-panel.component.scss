@@ -164,6 +164,21 @@
       padding: 0;
     }
   }
+
+  &.light {
+    .panel-header {
+      padding: 16px 36px 16px 0;
+      border-bottom: none;
+
+      .panel-arrow {
+        right: 0;
+      }
+    }
+
+    .panel-body {
+      padding: 0;
+    }
+  }
 }
 
 @media all and (min-width: 768px) {

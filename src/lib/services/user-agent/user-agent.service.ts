@@ -13,6 +13,10 @@ export class UserAgentService {
     return /trident|msie/i.test(this.userAgent);
   }
 
+  public isMozillaFirefox(): boolean {
+    return /Firefox/i.test(this.userAgent);
+  }
+
   public changeGridForIE(): void {
     if (this.isIE()) {
       const gridElements: NodeList = document.querySelectorAll('.grid-row, .grid-row-md, .grid-row-lg');

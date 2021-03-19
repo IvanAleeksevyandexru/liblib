@@ -12,8 +12,8 @@ import { Disclaimer, DisclaimerInterface } from '../../models/disclaimer.model';
 })
 export class DisclaimerComponent implements OnInit {
 
-  @Input() isPortal = false;
-  @Input() isMainPage = false;
+  @Input() private isPortal  = false;
+  @Input() public isMainPage = false;
 
   public disclaimerPack: [Disclaimer[], Disclaimer[], Disclaimer[]] = [[], [], []];
   private user = this.loadService.user;
@@ -22,15 +22,17 @@ export class DisclaimerComponent implements OnInit {
   private region = this.loadService.attributes.selectedRegion;
   private havePriority = 0; // если есть хоть один приоритетный - прячем все. Как только все приоритетные закрыты, показываем остальные
 
-  constructor(private disclaimerService: DisclaimerService,
-              private cookieService: CookieService,
-              private loadService: LoadService,
-              private fb: FormBuilder) {
+  constructor(
+    private disclaimerService: DisclaimerService,
+    private cookieService: CookieService,
+    private loadService: LoadService,
+    private fb: FormBuilder
+  ) {
   }
 
   public ngOnInit() {
 
-    if(this.isPortal) {
+    if (this.isPortal) {
       this.disclaimerService.disclaimersMainPage.subscribe((data: DisclaimerInterface[]) => {
         const newData: Disclaimer[] = data.map((el: DisclaimerInterface): Disclaimer => {
           return new Disclaimer(el);
@@ -45,14 +47,14 @@ export class DisclaimerComponent implements OnInit {
       const newData: Disclaimer[] = data.map((el: DisclaimerInterface): Disclaimer => {
         return new Disclaimer(el);
       });
-      let mainDisclaimerPosition = this.isPortal ? 1: 0;
+      const mainDisclaimerPosition = this.isPortal ? 1 : 0;
       this.disclaimerPack[mainDisclaimerPosition] = newData;
       this.checkDisclaimers(this.disclaimerPack[mainDisclaimerPosition]);
     });
 
     // Получаем доп.дисклеймеры
     this.disclaimerService.disclaimersAdditional.subscribe((data: DisclaimerInterface[]) => {
-      let additionalDisclaimerPosition = this.isPortal ? 2: 1;
+      const additionalDisclaimerPosition = this.isPortal ? 2 : 1;
       if (data === null) { // при очистке срабатывает
         this.disclaimerPack[additionalDisclaimerPosition] = [];
       } else if (data.length) {

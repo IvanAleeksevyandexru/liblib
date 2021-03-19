@@ -16,6 +16,7 @@ import { HelperService } from '../../services/helper/helper.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { Width } from '../../models/width-height';
 import { Suggest, SuggestItem } from '../../models/suggest';
+import { LoadService } from '../../services/load/load.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,14 +36,15 @@ export class BaseMaskedInputComponent
     private focusManager: FocusManager,
     private changeDetection: ChangeDetectorRef,
     @Optional() @Host() @SkipSelf()
-    private controlContainer: ControlContainer) {}
+    private controlContainer: ControlContainer,
+    public loadService: LoadService) {}
 
   // компонент обертка для for ngx-mask, см детали тут https://www.npmjs.com/package/ngx-mask
 
   @Input() public name?: string;
   @Input() public formControlName?: string;
   @Input() public id?: string;
-  @Input() public contextClass?: string;  // маркировочный класс для deep стилей
+  @Input() public contextClass?: string; // маркировочный класс для deep стилей
   @Input() public placeholder?: string;
   @Input() public autocomplete?: InputAutocomplete | string;
   @Input() public clearable = false;
@@ -60,6 +62,8 @@ export class BaseMaskedInputComponent
   // маска - это массив символов и/или регэкспов, каждый ответственен за свой символ в поле
   // пример: ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
   @Input() public mask: (value: string) => Array<string | RegExp> | Array<string | RegExp>;
+  // позиция курсора при получении фокуса
+  @Input() public positionInInput = 0;
   // если true показывает и плейсхолдер-символы и константные символы
   // иначе не показывает символы до тех пор пока до них не добралась позиция ввода
   @Input() public showConstantMaskSymbols = true;
@@ -192,6 +196,10 @@ export class BaseMaskedInputComponent
         inp.focus();
       });
     }
+
+    if (this.positionInInput !== 0) {
+      this.goToFixPosition(this.positionInInput, this.positionInInput);
+    }
   }
 
   public handleBlur() {
@@ -252,6 +260,7 @@ export class BaseMaskedInputComponent
     if (!this.disabled) {
       this.writeValue(null);
       this.commit(null);
+      this.goToFixPosition(this.positionInInput, this.positionInInput);
       this.cleared.emit();
       this.returnFocus(e);
     }
@@ -330,4 +339,9 @@ export class BaseMaskedInputComponent
     suggest.isEdit = true;
     this.selectSuggest.emit(suggest);
   }
+
+  public goToFixPosition(start: number, end: number): void {
+    this.inputElement.nativeElement.setSelectionRange(start, end);
+  }
+
 }
