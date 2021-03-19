@@ -18,6 +18,7 @@ import { CatalogTabsService } from '../../services/catalog-tabs/catalog-tabs.ser
 
 import { Router } from '@angular/router';
 import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
+import { LocationService } from '../../services/location/location.service';
 
 @Component({
   selector: 'lib-catalog-tab-item',
@@ -31,7 +32,6 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   @Output() public catalogClose: EventEmitter<null> = new EventEmitter();
   @Output() public subCatalogClose: EventEmitter<null> = new EventEmitter();
 
-  public catalogDataSubscription: Subscription;
   public popular: any[];
   public regionPopular: any[];
   public faqsMore: any;
@@ -41,19 +41,19 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   public itemsCounter: number;
 
   public loaded: boolean;
-  public regionName: string;
+  public regionName = this.locationService.userSelectedRegionName;
   public regionPopularMore: boolean;
 
   constructor(
     private catalogTabsService: CatalogTabsService,
     private sharedService: SharedService,
     private gosbarService: GosbarService,
+    private locationService: LocationService,
     private router: Router
   ) {
   }
 
   public ngOnInit(): void {
-    this.getRegionName();
     this.itemsCounter = this.viewType === 'main-page-view' ? 3 : 5;
     this.popularMore = this.viewType === 'main-page-view' ? undefined : 5;
   }
@@ -71,13 +71,12 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
       this.catalogTabsService.getCatalogRegionPopular(this.code).pipe(
         catchError((err) => of([]))
       ),
-      this.catalogTabsService.getFaqCategories(this.code, this.viewType === 'main-page-view').pipe(
+      this.catalogTabsService.getFaqCategories(this.code).pipe(
         catchError((err) => of({faqCategories: {items: []}}))
       )
     ]).pipe(
       switchMap((data: any) => {
-        const faqCategoriesData = data[2];
-        const categoriesCodes = faqCategoriesData.faqCategories.items.map((item: any) => {
+        const categoriesCodes = data[2].faqCategories.items.map((item: any) => {
           return item.code;
         })
         return of(...categoriesCodes).pipe(
@@ -122,14 +121,6 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
 
   public toggleFaqsQuestions(item: any): void {
     item.active = !item.active;
-  }
-
-  public getRegionName(): void {
-    this.sharedService.on('regionData').subscribe(regionData => {
-      if (regionData && regionData.code !== '00000000000') {
-        this.regionName = regionData.name;
-      }
-    });
   }
 
   public showRegionModal(): void {

@@ -94,7 +94,7 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
   }
 
   public onMenuClick(allResolutions?: boolean, manualClose?: boolean) {
-    // this.sharedService.send('menuCatalogClick');
+    this.sharedService.send('menuCatalogClick', 'menuCatalogClick');
     this.showMenu = manualClose ? !manualClose : !this.showMenu;
     this.disableScroll(this.showMenu, allResolutions);
     this.menuCatalogOpened.emit(this.showMenu);

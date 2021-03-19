@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { LoadService } from '../../services/load/load.service';
 import { SharedService } from '../../services/shared/shared.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'lib-catalog-tabs',
@@ -14,6 +15,7 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
 
   public showCatalogTabItem: boolean;
   public currentCategoryCode: string;
+  public sharedServiceSubscription: Subscription;
 
   constructor(
     public loadService: LoadService,
@@ -22,9 +24,9 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    // this.sharedService.on('menuCatalogClick').subscribe(() => {
-    //   this.closeCatalog();
-    // })
+      this.sharedServiceSubscription = this.sharedService.on('menuCatalogClick').subscribe(() => {
+        this.closeCatalog();
+      })
   }
 
   private closeAllTabs(): void {
@@ -34,10 +36,6 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
   public closeCatalog() {
     this.closeAllTabs();
     this.showCatalogTabItem = false;
-  }
-
-  public ngOnDestroy() {
-    this.closeAllTabs();
   }
 
   catalogTabListItemClick(item: any) {
@@ -56,4 +54,10 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
     this.currentCategoryCode = item.code;
     this.showCatalogTabItem = item.active;
   }
+
+  public ngOnDestroy() {
+    this.sharedServiceSubscription.unsubscribe();
+    this.closeAllTabs();
+  }
+
 }

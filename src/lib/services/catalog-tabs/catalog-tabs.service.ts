@@ -54,7 +54,7 @@ export class CatalogTabsService {
     });
   }
 
-  public getFaqCategories(code: string, isFaqRequestNeed): Observable<any> {
+  public getFaqCategories(code: string): Observable<any> {
     if (this.catalogTabsData[code]) {
       return of(this.getDataCatalogStoreData(code)[2]);
     }
