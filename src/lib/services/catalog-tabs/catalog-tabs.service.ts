@@ -68,9 +68,6 @@ export class CatalogTabsService {
   }
 
   public getFaqItemCategory(code: string, categoryCode: string): Observable<any> {
-    if (this.catalogTabsData[categoryCode]) {
-      return of(this.getDataCatalogStoreData(categoryCode)[3]);
-    }
     return this.http.get<any>(`${this.loadService.config.cmsUrl}faq/categories/${code}`, {
       params: {
         _: `${Math.random()}`,

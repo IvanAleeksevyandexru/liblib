@@ -5,19 +5,17 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Output, QueryList,
-  SimpleChanges,
-  ViewChild, ViewChildren
+  Output,
+  SimpleChanges
 } from '@angular/core';
-import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
-import { forkJoin, of, Subscription } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 
 import { GosbarService } from '../../services/gosbar/gosbar.service';
 import { SharedService } from '../../services/shared/shared.service';
 import { CatalogTabsService } from '../../services/catalog-tabs/catalog-tabs.service';
 
 import { Router } from '@angular/router';
-import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { LocationService } from '../../services/location/location.service';
 
 @Component({
@@ -33,6 +31,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   @Output() public subCatalogClose: EventEmitter<null> = new EventEmitter();
 
   public popular: any[];
+  public otherPopular: any[];
   public regionPopular: any[];
   public faqsMore: any;
   public popularMore: any;
@@ -76,18 +75,26 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
       )
     ]).pipe(
       switchMap((data: any) => {
-        const categoriesCodes = data[2].faqCategories.items.map((item: any) => {
-          return item.code;
+        if (this.catalogTabsService.catalogTabsData[this.code] && this.catalogTabsService.getDataCatalogStoreData(this.code)[3]) {
+          return of(this.catalogTabsService.getDataCatalogStoreData(this.code));
+        }
+        const multipleData = [];
+        data[2].faqCategories.items.forEach((item: any) => {
+          multipleData.push(this.catalogTabsService.getFaqItemCategory(item.code, this.code))
         })
-        return of(...categoriesCodes).pipe(
-            concatMap(code => this.catalogTabsService.getFaqItemCategory(code, this.code)
-          )
-        ).pipe(map((faqItemCategory: any) =>  data.concat(faqItemCategory)))
+
+        return forkJoin(multipleData).pipe(map((faqItemCategory: any) =>  {
+          return data.concat([faqItemCategory]);
+        }))
       })
     ).subscribe((data: [any, any[], any, any]) => {
       this.catalogTabsService.storeCatalogData(data, this.code);
-      this.popular = data[0].passports;
-      this.regionPopular = data[1];
+      if (data[0]) {
+        this.createPopular(data[0]);
+      }
+      if (data[1]) {
+        this.createRegionPopular(data[1]);
+      }
       if (data[3]) {
         this.createFaqs(data[3]);
       }
@@ -99,14 +106,34 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  public createFaqs(faqsData: any): void {
-    this.faqs = faqsData.children;
-    if (!this.faqs && faqsData.faqs.length > 0) {
-      this.faqs = [{
-        title: faqsData.title,
-        faqs: faqsData.faqs
-      }]
+  public createRegionPopular(regionPopular: any) {
+    this.regionPopular = regionPopular;
+  }
+
+  public createPopular(popular: any): void {
+    if(popular.code === 'other') {
+      this.otherPopular = popular.children;
+    } else {
+      this.popular = popular.passports;
     }
+  }
+
+  public createFaqs(faqsData: any): void {
+    let children = [];
+    let faqs = [];
+    faqsData.forEach((item) => {
+      if(item.children && item.children.length) {
+        children = children.concat(item.children);
+      }
+    });
+    faqsData.forEach((item) => {
+      if(item.faqs && item.faqs.length)
+        faqs = faqs.concat({
+          title: item.title,
+          faqs: item.faqs,
+        });
+    });
+    this.faqs = children.concat(faqs);
   }
 
   public getBackTitle(): void {

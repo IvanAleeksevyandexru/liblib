@@ -7,25 +7,47 @@
       <div class="grid-row">
         <div class="col-lg-6 col-3 col-md-6">
           <section>
-            <div class="back-title text-plain bold"
-                 *ngIf="viewType === 'side-view'"
+            <div class="back-title text-plain bold" *ngIf="viewType === 'side-view'"
                  (click)="closeSubCatalog()">{{backTitle}}</div>
-            <h3 class="title-h6 catalog-item-title hide show-lg">Популярные услуги</h3>
+            <h3 *ngIf="code !== 'other'"
+                class="title-h6 catalog-item-title hide show-lg">
+                  Популярные услуги
+            </h3>
             <div class="scroll-container">
               <perfect-scrollbar [config]="{wheelPropagation: false}">
-                  <h4 *ngFor="let item of popular | slice:0:(popularMore ? popularMore : undefined)"
-                      (click)="goToPopular(item)"
-                      class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular">
-                        {{item.catalogTitle}}
-                  </h4>
-                  <ng-container *ngIf="popular && popular.length > popularMore">
+                <ng-container *ngIf="code !== 'other' && popular && popular.length">
+                  <section class="catalog-title-popular-wrap" *ngFor="let item of popular | slice:0:(popularMore ? popularMore : undefined)">
+                    <h4 (click)="goToPopular(item)" class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular pointer">
+                      {{item.catalogTitle}}
+                    </h4>
+                  </section>
+                  <ng-container *ngIf="popular.length > popularMore">
                     <div *ngIf="viewType === 'side-view'" class="mt-24 text-plain blue" (click)="popularMore = undefined">
                       Показать все
                     </div>
                   </ng-container>
-                  <section *ngIf="viewType === 'main-page-view' && regionName && regionPopular?.length">
-                    <ng-template [ngTemplateOutlet]="regionPopularTmpl"></ng-template>
+                </ng-container>
+                <ng-container *ngIf="code === 'other' && otherPopular && otherPopular.length">
+                  <section class="catalog-title-popular-wrap" *ngFor="let item of otherPopular ">
+                    <h4 class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular catalog-other-popular">
+                      {{item.title}}
+                    </h4>
+                    <div *ngFor="let passport of item.passports | slice:0:(item.otherPopularMore ? undefined : itemsCounter)">
+                      <h5 (click)="goToPopular(passport)" class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 pointer">
+                        {{passport.catalogTitle}}
+                      </h5>
+                    </div>
+                    <ng-container
+                      *ngIf="item.passports && item.passports.length > itemsCounter && !item.otherPopularMore">
+                      <div class="mt-32 text-plain blue" (click)="item.otherPopularMore = !item.otherPopularMore">
+                        Показать все
+                      </div>
+                    </ng-container>
                   </section>
+                </ng-container>
+                <section *ngIf="viewType === 'main-page-view' && regionName && regionPopular?.length">
+                  <ng-template [ngTemplateOutlet]="regionPopularTmpl"></ng-template>
+                </section>
               </perfect-scrollbar>
             </div>
           </section>
@@ -51,12 +73,10 @@
                     <div class="flex-container">
                       <div [class.active]="faq.active" (click)="toggleFaqsQuestions(faq)" class="arrow"></div>
                       <div>
-                        <div>
-                          <h6 (click)="toggleFaqsQuestions(faq)" class="title-h6 title-h6-light">
-                            {{faq.shortQuestion || faq.question}}
-                          </h6>
-                          <div [class.active]="faq.active" class="faq-answer" [innerHTML]="faq.shortAnswer"></div>
-                        </div>
+                        <h6 (click)="toggleFaqsQuestions(faq)" class="title-h6 title-h6-light pointer">
+                          {{faq.shortQuestion || faq.question}}
+                        </h6>
+                        <div [class.active]="faq.active" class="faq-answer" [innerHTML]="faq.shortAnswer || faq.answer"></div>
                       </div>
                     </div>
                   </div>
@@ -77,7 +97,7 @@
         </h5>
         <h6 (click)="goToPopular(item)"
             *ngFor="let item of regionPopular | slice:0:(regionPopularMore ? undefined : itemsCounter)"
-            class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular">
+            class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular pointer">
           {{item.catalogTitle}}
         </h6>
         <ng-container *ngIf="regionPopular && regionPopular.length > itemsCounter && !regionPopularMore">

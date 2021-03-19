@@ -31,16 +31,23 @@
 }
 .catalog-item-title-link{
   color: #0D4CD3;
-  cursor: pointer;
 }
 .catalog-item-title-small{
   font-size: 12px;
+  padding-bottom: 0;
 }
-.catalog-title-popular{
+.pointer{
   cursor: pointer;
-  &:first-of-type{
+}
+.catalog-title-popular-wrap:first-of-type {
+  .catalog-title-popular:first-of-type {
     margin-top: 0;
   }
+}
+.catalog-other-popular{
+  cursor: default;
+  color: #8890A9;
+  text-transform: uppercase;
 }
 @media all and (min-width: 1140px) {
   ::ng-deep{
