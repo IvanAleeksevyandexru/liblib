@@ -426,11 +426,13 @@ export class SearchBarComponent
     this.clearSearch(evt);
   }
 
-  public startSearch(): void {
+  public startSearch(evt?: Event): void {
     if (!this.stopSearch) {
       this.runOrPostponeSearch(this.query, false, false, true);
     }
-    this.searchButtonClick.emit(this.query);
+    if (!this.mainPageStyle || !evt || evt.type !== 'submit') {
+      this.searchButtonClick.emit(this.query);
+    }
   }
 
   public setSearchValueFromParent(value): void {
