@@ -55,7 +55,7 @@
        (click)="runOrPostponeSearch(query, false, true)"
        [ngClass]="{disabled: disabled}"></div>
   <div class="search-button" *ngIf="mainPageStyle">
-    <lib-button class="hide show-lg">Отправить</lib-button>
+    <lib-button class="hide show-lg" (click)="startSearch()">Отправить</lib-button>
     <lib-button type="new-search" class="show-sm hide-md hide-lg"></lib-button>
   </div>
   <div class="search-in-progress" *ngIf="!mainPageStyle && searching && showSearching">
