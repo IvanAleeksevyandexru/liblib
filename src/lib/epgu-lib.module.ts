@@ -146,6 +146,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { SearchSputnikComponent } from './components/search-sputnik/search-sputnik.component';
 import { FrameComponent } from './components/frame/frame.component';
 import { MenuCatalogComponent } from './components/menu-catalog/menu-catalog.component';
+import { MenuCatalogSimpleComponent } from './components/menu-catalog-simple/menu-catalog-simple.component';
 import { SmallFooterComponent } from './components/small-footer/small-footer.component';
 import { SocialLinksComponent } from './components/social-links/social-links.component';
 import { CatalogTabsService } from './services/catalog-tabs/catalog-tabs.service';
@@ -153,6 +154,7 @@ import { CatalogTabsService } from './services/catalog-tabs/catalog-tabs.service
 import { CatalogTabsComponent } from './components/catalog-tabs/catalog-tabs.component';
 import { CatalogTabsListComponent } from './components/catalog-tabs-list/catalog-tabs-list.component';
 import { CatalogTabItemComponent } from './components/catalog-tab-item/catalog-tab-item.component';
+
 
 registerLocaleData(localeRu, 'ru');
 
@@ -289,6 +291,7 @@ registerLocaleData(localeRu, 'ru');
     HeaderComponent,
     FrameComponent,
     MenuCatalogComponent,
+    MenuCatalogSimpleComponent,
     SmallFooterComponent,
     SocialLinksComponent,
     CatalogTabsComponent,
@@ -432,6 +435,7 @@ registerLocaleData(localeRu, 'ru');
     HeaderComponent,
     FrameComponent,
     MenuCatalogComponent,
+    MenuCatalogSimpleComponent,
     SmallFooterComponent,
     CatalogTabsComponent,
     CatalogTabsListComponent,

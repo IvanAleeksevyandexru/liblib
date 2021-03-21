@@ -7,8 +7,9 @@ import { UserMenuState, CounterTarget, MenuLink, Category, CounterData, Catalog 
 import { TranslateService } from '@ngx-translate/core';
 import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
 import { ModalService } from '../../services/modal/modal.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { filter, pairwise } from 'rxjs/operators';
 
 const HIDE_TIMOUT = 300;
 
@@ -31,6 +32,8 @@ export class HeaderComponent implements OnInit {
   public categories: Category[] = [];
   public showRolesList: boolean;
   public menuCatalogOpened: boolean;
+  public burgerWithCatalog = true;
+  public burgerDemoMode = this.loadService.config.burgerDemoMode;
 
   private closeBurger = new BehaviorSubject(false);
   public closeBurger$ = this.closeBurger.asObservable();
@@ -79,10 +82,14 @@ export class HeaderComponent implements OnInit {
     private moduleRef: NgModuleRef<any>,
     private router: Router
   ) {
+    this.onRouteChange();
   }
 
   public ngOnInit(): void {
     this.initUserMenuState();
+    if(this.burgerDemoMode) {
+      this.burgerWithCatalogShow(location.pathname);
+    }
     this.loadService.userTypeNA$.subscribe(type => {
       this.activeRoleCode = type;
     });
@@ -90,6 +97,20 @@ export class HeaderComponent implements OnInit {
       const counter = this.countersService.getCounter(CounterTarget.USER);
       this.isUnread = !!(counter && counter.unread);
     });
+  }
+
+  public burgerWithCatalogShow(currentPath): void {
+    this.burgerWithCatalog = ['/', '/new', '/newsearch'].indexOf(currentPath) === 0;
+  }
+
+  private onRouteChange(): void {
+    if (this.burgerDemoMode) {
+      this.router.events.subscribe((evt) => {
+        if (evt instanceof NavigationEnd) {
+          this.burgerWithCatalogShow(evt.url);
+        }
+      });
+    }
   }
 
   public showUserMenu(isMobileView: boolean) {
