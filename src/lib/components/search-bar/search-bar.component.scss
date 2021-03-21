@@ -180,6 +180,10 @@
     }
   }
 
+  .static-content {
+    display: grid;
+  }
+
   ::-webkit-input-placeholder {
     color: #D1D5DF;
   }

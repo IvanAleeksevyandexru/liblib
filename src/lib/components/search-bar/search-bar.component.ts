@@ -124,6 +124,7 @@ export class SearchBarComponent
   private searchQueue: Array<string> = [];
   private forcedSearchPrevent = false;
   private isIos = navigator.userAgent.match(/iPhone|iPad|iPod/i);
+  private destroyed = false;
 
   private onTouchedCallback: () => void;
 
@@ -182,6 +183,7 @@ export class SearchBarComponent
   }
 
   public ngOnDestroy() {
+    this.destroyed = true;
     this.sharedSubscription.unsubscribe();
     this.focusManager.unregister(this);
   }
@@ -360,11 +362,13 @@ export class SearchBarComponent
   }
 
   public returnFocus(e?: Event) {
-    if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement)) {
-      this.suppressSearching = true;
-      this.setFocus();
-      this.suppressSearching = false;
-    }
+    setTimeout(() => {
+      if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement)) {
+        this.suppressSearching = true;
+        this.setFocus();
+        this.suppressSearching = false;
+      }
+    });
   }
 
   public setFocus() {
@@ -388,7 +392,9 @@ export class SearchBarComponent
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
     this.check();
-    this.changeDetector.detectChanges();
+    if (!this.destroyed) {
+      this.changeDetector.detectChanges();
+    }
   }
 
   public check() {
@@ -422,11 +428,13 @@ export class SearchBarComponent
     this.clearSearch(evt);
   }
 
-  public startSearch(): void {
+  public startSearch(evt?: Event): void {
     if (!this.stopSearch) {
       this.runOrPostponeSearch(this.query, false, false, true);
     }
-    this.searchButtonClick.emit(this.query);
+    if (!this.mainPageStyle || !evt || evt.type !== 'submit') {
+      this.searchButtonClick.emit(this.query);
+    }
   }
 
   public setSearchValueFromParent(value): void {
