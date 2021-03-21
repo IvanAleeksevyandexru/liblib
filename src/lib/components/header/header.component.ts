@@ -42,6 +42,7 @@ export class HeaderComponent implements OnInit {
 
   @Input() public userCounter: CounterData;
   @Input() public comingSoon?: boolean;
+  @Input() public isPortal = false;
   @Input() public links?: MenuLink[] = [];
   @Input() public mergeHeaderMenu?: boolean;
   @Input() public rolesListEnabled?: boolean;
@@ -100,7 +101,11 @@ export class HeaderComponent implements OnInit {
   }
 
   public burgerWithCatalogShow(currentPath): void {
-    this.burgerWithCatalog = ['/', '/new', '/newsearch'].indexOf(currentPath) === 0;
+    let urls = ['/new', '/newsearch'];
+    if (this.isPortal) {
+      urls.push('/');
+    }
+    this.burgerWithCatalog = urls.indexOf(currentPath) === 0;
   }
 
   private onRouteChange(): void {

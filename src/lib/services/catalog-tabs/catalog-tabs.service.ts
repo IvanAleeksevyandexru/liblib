@@ -9,8 +9,10 @@ import { Faqs, PopularFederal, RegionalPopular } from '../../models/catalog';
 })
 export class CatalogTabsService {
 
+  // TODO: интерфейсы
   public catalogTabsData: any = {};
   public catalogTabsList: any;
+  public departmentsData: any;
 
   constructor(
     public loadService: LoadService,
@@ -78,6 +80,9 @@ export class CatalogTabsService {
   }
 
   public getDepartmentsData(): Observable<any> {
+    if (this.departmentsData) {
+      return of(this.departmentsData);
+    }
     return this.http.get<any>(`${this.loadService.config.catalogApiUrl}departments/menu`, {
       params: {
         _: `${Math.random()}`,

@@ -71,6 +71,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   public getDepartmentsData(): void {
     this.loaded = false;
     this.catalogTabsService.getDepartmentsData().subscribe((departmentsData: any) => {
+      this.catalogTabsService.departmentsData = departmentsData;
       this.departmentsData = departmentsData;
       this.loaded = true;
     })
