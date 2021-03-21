@@ -105,7 +105,7 @@ export class HeaderComponent implements OnInit {
     if (this.isPortal) {
       urls.push('/');
     }
-    this.burgerWithCatalog = urls.indexOf(currentPath) === 0;
+    this.burgerWithCatalog = urls.indexOf(currentPath) > -1;
   }
 
   private onRouteChange(): void {
