@@ -87,7 +87,7 @@ export interface DadataResult {
   apartmentCheckbox: boolean;
   apartmentCheckboxClosed: boolean;
   index: string;
-  type?: 'PLV' | 'PRG' | 'OPS' | 'OLG';
+  type?: 'PLV' | 'PRG' | 'OPS' | 'OLG' | 'PTA';
 }
 
 export class FormConfig {
