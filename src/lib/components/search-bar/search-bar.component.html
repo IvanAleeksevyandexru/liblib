@@ -7,7 +7,6 @@
   <label [attr.for]="id" class="label-search-input">{{placeholder}}</label>
   <div class="search-go" *ngIf="mainPageStyle" (click)="runOrPostponeSearch(query, false, true)" [ngClass]="{disabled: disabled}"></div>
   <input #input
-         *ngIf="!blockedSearchValue"
          type="text"
          autocomplete="off"
          [attr.id]="id ? id : null"
@@ -20,6 +19,7 @@
          [class.focused]="focused"
          [class.invalid]="invalidDisplayed"
          [class.shadowed]="showStaticContent && (!focused || forceShowStaticContent)"
+         [hidden]="blockedSearchValue"
          [value]="query"
          [disabled]="disabled"
          [readonly]="readOnly"

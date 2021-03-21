@@ -362,11 +362,13 @@ export class SearchBarComponent
   }
 
   public returnFocus(e?: Event) {
-    if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement)) {
-      this.suppressSearching = true;
-      this.setFocus();
-      this.suppressSearching = false;
-    }
+    setTimeout(() => {
+      if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement)) {
+        this.suppressSearching = true;
+        this.setFocus();
+        this.suppressSearching = false;
+      }
+    });
   }
 
   public setFocus() {
