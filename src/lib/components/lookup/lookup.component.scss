@@ -107,6 +107,11 @@
 
       .lookup-item {
 
+        .item-container {
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
         &.highlighted {
           background: #F5F7FA;
         }

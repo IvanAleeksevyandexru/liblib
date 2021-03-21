@@ -181,6 +181,8 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   public minimumDate = this.getMinimumDate();
   public maximumDate = this.getMaximumDate();
 
+  private destroyed = false;
+
   @ViewChild('input') public inputElement: StandardMaskedInputComponent;
   @ViewChild('calendarContainer') public calendarContainer: ElementRef;
   @ViewChild('fieldContainer', {static: false}) public fieldContainer: ElementRef;
@@ -236,6 +238,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   }
 
   public ngOnDestroy() {
+    this.destroyed = true;
     this.detachDescriptors();
   }
 
@@ -452,6 +455,9 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
 
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
+    if (!this.destroyed) {
+      this.changeDetection.detectChanges();
+    }
   }
 
   public handleBlur() {
