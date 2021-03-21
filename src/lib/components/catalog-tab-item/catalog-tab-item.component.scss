@@ -19,6 +19,9 @@
   flex-direction: column;
   height: 100%;
 }
+.department-column-start-header{
+  margin-top: 0;
+}
 .scroll-container {
   position: relative;
   width: 100%;
@@ -49,9 +52,22 @@
   color: #8890A9;
   text-transform: uppercase;
 }
+.uppercase{
+  text-transform: uppercase;
+}
 @media all and (min-width: 1140px) {
+  .side-view{
+    .all-departments{
+      position: absolute;
+      bottom: -37px;
+    }
+  }
+  .blue:hover{
+    color: #1d5deb;
+  }
   ::ng-deep{
     .sub-catalog .side-view .scroll-container .ps,
+    .departments-wrap .ps,
     .catalog-tab-wrap .catalog-tab-item-wrap.main-page-view .scroll-container .ps{
       padding-right: 24px;
     }

@@ -76,4 +76,14 @@ export class CatalogTabsService {
       withCredentials: true
     });
   }
+
+  public getDepartmentsData(): Observable<any> {
+    return this.http.get<any>(`${this.loadService.config.catalogApiUrl}departments/menu`, {
+      params: {
+        _: `${Math.random()}`,
+        region: `${this.loadService.attributes.selectedRegion}`
+      },
+      withCredentials: true
+    });
+  }
 }

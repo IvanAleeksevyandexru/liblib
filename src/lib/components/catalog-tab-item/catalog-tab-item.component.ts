@@ -17,6 +17,7 @@ import { CatalogTabsService } from '../../services/catalog-tabs/catalog-tabs.ser
 import { Router } from '@angular/router';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { LocationService } from '../../services/location/location.service';
+import { LoadService } from '../../services/load/load.service';
 
 @Component({
   selector: 'lib-catalog-tab-item',
@@ -31,6 +32,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   @Output() public subCatalogClose: EventEmitter<null> = new EventEmitter();
 
   public popular: any[];
+  public departmentsData: any[];
   public otherPopular: any[];
   public regionPopular: any[];
   public faqsMore: any;
@@ -48,6 +50,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     private sharedService: SharedService,
     private gosbarService: GosbarService,
     private locationService: LocationService,
+    public loadService: LoadService,
     private router: Router
   ) {
   }
@@ -58,7 +61,19 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnChanges(changes: SimpleChanges) {
-    this.getCatalogData();
+    if (this.code === 'ministries') {
+      this.getDepartmentsData();
+    } else {
+      this.getCatalogData();
+    }
+  }
+
+  public getDepartmentsData(): void {
+    this.loaded = false;
+    this.catalogTabsService.getDepartmentsData().subscribe((departmentsData: any) => {
+      this.departmentsData = departmentsData;
+      this.loaded = true;
+    })
   }
 
   public getCatalogData(): void {
@@ -169,4 +184,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   public ngOnDestroy() {
   }
 
+  goToDepartment(departmentPassport: any) {
+    location.href = `${this.loadService.config.betaUrl}${departmentPassport.url}`;
+  }
 }
