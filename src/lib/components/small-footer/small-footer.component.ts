@@ -19,11 +19,13 @@ export class SmallFooterComponent implements OnInit {
     android: {
       url: this.config.appStores.googlePlay,
       icon: `${this.staticDomainLibAssetsPath}svg/mp-buttons/googleplay-white.svg`,
+      iconHover: `${this.staticDomainLibAssetsPath}svg/mp-buttons/googleplay-white-hover.svg`,
       name: 'Google Play'
     },
     ios: {
       url: this.config.appStores.appStore,
       icon: `${this.staticDomainLibAssetsPath}svg/mp-buttons/appstore-white.svg`,
+      iconHover: `${this.staticDomainLibAssetsPath}svg/mp-buttons/appstore-white-hover.svg`,
       name: 'App Store'
     },
     huawei: {
