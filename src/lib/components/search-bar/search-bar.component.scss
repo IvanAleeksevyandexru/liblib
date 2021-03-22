@@ -136,7 +136,7 @@
     }
     &.clear-shown {
       .search-input {
-        padding-right: 0;
+        padding-right: 34px;
       }
     }
   }
@@ -342,6 +342,12 @@
         display: block;
       }
 
+      &.clear-shown {
+        .search-input {
+          padding-right: 46px;
+        }
+      }
+
       .search-input {
         min-height: 80px;
         font-size: 36px;
@@ -416,6 +422,12 @@
 @media all and (min-width: 1140px) {
   .search-field {
     &.main-page-new {
+
+      &.clear-shown {
+        .search-input {
+          padding-right: 228px;
+        }
+      }
       .clear-blocked, .search-clear {
         right: 128px;
 
