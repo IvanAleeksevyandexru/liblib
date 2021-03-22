@@ -148,13 +148,18 @@ import { HeaderComponent } from './components/header/header.component';
 import { SearchSputnikComponent } from './components/search-sputnik/search-sputnik.component';
 import { FrameComponent } from './components/frame/frame.component';
 import { MenuCatalogComponent } from './components/menu-catalog/menu-catalog.component';
-import { MenuCatalogLinksComponent } from './components/menu-catalog-links/menu-catalog-links.component';
+import { MenuCatalogSimpleComponent } from './components/menu-catalog-simple/menu-catalog-simple.component';
 import { SmallFooterComponent } from './components/small-footer/small-footer.component';
 import { SocialLinksComponent } from './components/social-links/social-links.component';
 import { ButtonForInputComponent } from './components/button-for-input/button-for-input.component';
 import { LanguageSelectComponent } from './components/language-select/language-select.component';
 import { RoundLoaderComponent } from './components/round-loader/round-loader.component';
 import { SliderComponent } from './components/slider/slider.component';
+import { CatalogTabsService } from './services/catalog-tabs/catalog-tabs.service';
+import { CatalogTabsComponent } from './components/catalog-tabs/catalog-tabs.component';
+import { CatalogTabsListComponent } from './components/catalog-tabs-list/catalog-tabs-list.component';
+import { CatalogTabItemComponent } from './components/catalog-tab-item/catalog-tab-item.component';
+
 
 registerLocaleData(localeRu, 'ru');
 
@@ -293,13 +298,16 @@ registerLocaleData(localeRu, 'ru');
     HeaderComponent,
     FrameComponent,
     MenuCatalogComponent,
-    MenuCatalogLinksComponent,
+    MenuCatalogSimpleComponent,
     SmallFooterComponent,
     SocialLinksComponent,
     ButtonForInputComponent,
     LanguageSelectComponent,
     RoundLoaderComponent,
     SliderComponent,
+    CatalogTabsComponent,
+    CatalogTabsListComponent,
+    CatalogTabItemComponent
   ],
   imports: [
     CommonModule,
@@ -440,12 +448,15 @@ registerLocaleData(localeRu, 'ru');
     HeaderComponent,
     FrameComponent,
     MenuCatalogComponent,
-    MenuCatalogLinksComponent,
-    SmallFooterComponent,
     ButtonForInputComponent,
     LanguageSelectComponent,
     RoundLoaderComponent,
     SliderComponent,
+    MenuCatalogSimpleComponent,
+    SmallFooterComponent,
+    CatalogTabsComponent,
+    CatalogTabsListComponent,
+    CatalogTabItemComponent
   ],
   providers: [
     GosbarService,
@@ -463,6 +474,7 @@ registerLocaleData(localeRu, 'ru');
     ToMoneyPipe,
     CapitalLetterPipe,
     SocialLinksComponent,
+    CatalogTabsService,
     {
       provide: LOCALE_ID,
       useValue: 'ru'

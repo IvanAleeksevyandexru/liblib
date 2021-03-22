@@ -10,7 +10,6 @@ import { MainPageService } from '../../services/main-page/main-page.service';
 })
 export class SmallFooterComponent implements OnInit {
 
-  @Input() public needFooterData: boolean;
   @Input() public footer: MainFooter;
 
   public config = this.loadService.config;
@@ -33,24 +32,11 @@ export class SmallFooterComponent implements OnInit {
   };
 
   constructor(
-    public loadService: LoadService,
-    private mainPageService: MainPageService
+    public loadService: LoadService
   ) {
   }
 
   public ngOnInit(): void {
-    this.getFooter();
-  }
-
-  private getFooter(): void {
-    if (this.needFooterData) {
-      this.mainPageService.getFooterData().subscribe((data: any) => {
-        // пока на моке, как доработают бэк - надо будет доделать
-        if (data?.footer) {
-          this.footer = data.footer as MainFooter;
-        }
-      });
-    }
   }
 
 }
