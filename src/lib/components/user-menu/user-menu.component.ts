@@ -1,5 +1,7 @@
-import { Component, NgModuleRef, HostListener, isDevMode, ViewChild, ChangeDetectorRef,
-  Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import {
+  Component, NgModuleRef, HostListener, isDevMode, ViewChild, ChangeDetectorRef,
+  Input, OnInit, AfterViewInit, OnDestroy
+} from '@angular/core';
 import { Category } from '../../models/category';
 import { MenuLink } from '../../models/menu-link';
 import { Tabs, Tab, MAIN_TABS } from '../../models/tabs';
