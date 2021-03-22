@@ -132,7 +132,9 @@
                          [ngClass]="{'show': user.authorized, 'show-lg': !user.authorized}"
                          [menuOpened]="userMenuState.active"
                          (closeMenu)="hideUserMenu()"
-                         (userClick)="showUserMenu(false)"></lib-login>
+                         (userClick)="showUserMenu(false)"
+                         [userCounter]="userCounter">
+              </lib-login>
               <lib-login *ngIf="!user.authorized" [onlyText]="true" class="login-mobile-icon"></lib-login>
             </div>
           </div>
