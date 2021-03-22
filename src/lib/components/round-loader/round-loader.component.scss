@@ -5,3 +5,9 @@
   animation: rotate 1.5s linear infinite;
   margin: auto;
 }
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
