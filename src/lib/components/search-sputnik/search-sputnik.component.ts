@@ -33,6 +33,8 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Input() public hideSearchResult = false;
   @Input() public setFocus = false;
   @Input() public setSearchValue = '';
+  @Input() public disableSputnikData = false;
+  @Input() public searchQuery = '';
   // активация автоматического перевода с английского
   @Input() public enableLangConvert = false;
   // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
@@ -90,12 +92,15 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   public ngAfterViewInit() {
   }
 
-  public ngOnChanges({setFocus, setSearchValue}: SimpleChanges) {
+  public ngOnChanges({setFocus, setSearchValue, stopSearch}: SimpleChanges) {
     if (setFocus && setFocus.currentValue) {
       this.lookup.setSearchBarFocus();
     }
     if (setSearchValue && setSearchValue.currentValue) {
       this.lookup.setSearchBarFocus(setSearchValue.currentValue);
+    }
+    if (stopSearch && !stopSearch.currentValue && !stopSearch.firstChange) {
+      this.lookup.lookupItems(this.searchQuery, true);
     }
   }
 
@@ -158,11 +163,13 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   }
 
   public processSearchResult(list: ListItem[]): void {
-    const originalList = list.map(item => item.originalItem);
-    this.sputnikSearchResult.emit({
-      query: this.lookup.query,
-      originalList
-    });
+    if (!this.stopSearch) {
+      const originalList = list.map(item => item.originalItem);
+      this.sputnikSearchResult.emit({
+        query: this.lookup.query,
+        originalList
+      });
+    }
   }
 
   public handleSearchButtonClick(query: string): void {
