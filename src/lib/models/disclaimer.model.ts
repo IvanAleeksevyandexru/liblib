@@ -11,6 +11,7 @@ export interface DisclaimerInterface {
   region: string;
   startDate?: string;
   isPriority?: boolean;
+  isHidden?: boolean;
 }
 
 export interface DisclaimerMessageInterface {
@@ -30,6 +31,7 @@ export class Disclaimer {
   public noticeText?: string;
   public noticeEmail?: string;
   public isPriority?: boolean;
+  public isHidden?: boolean;
 
   constructor(data: DisclaimerInterface) {
     const getMessage = (messages: Array<DisclaimerMessageInterface>): string => {
@@ -45,6 +47,7 @@ export class Disclaimer {
     this.notificationEnabled = data.notificationEnabled;
     this.message = getMessage(data.messages);
     this.isPriority = data.isPriority;
+    this.isHidden = data.isHidden;
   }
 
 }

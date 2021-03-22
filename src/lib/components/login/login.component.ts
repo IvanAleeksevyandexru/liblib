@@ -3,7 +3,6 @@ import { AuthService } from '../../services/auth/auth.service';
 import { LoadService } from '../../services/load/load.service';
 import { CounterData } from '../../models/counter';
 import { User } from '../../models/user';
-import { UserMenuState } from "../../models";
 
 @Component({
   selector: 'lib-login',

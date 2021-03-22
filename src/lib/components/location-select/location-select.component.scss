@@ -19,6 +19,12 @@
     &:hover {
       color: #1D5DEB;
     }
+
+    @media all and (max-width: 1140px) {
+      max-width: 231px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 
   &.black {

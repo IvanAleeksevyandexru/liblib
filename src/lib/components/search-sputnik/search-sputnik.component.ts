@@ -9,12 +9,12 @@ import {
   Output, SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { SearchSuggestion, SimpleSputnikSuggest } from '../../models/search';
+import { SimpleSputnikSuggest } from '../../models/search';
 import { ListItem, ListItemConverter } from '../../models/dropdown.model';
 import { LookupComponent } from '../lookup/lookup.component';
 import { SearchService } from '../../services/search/search.service';
 import { LoadService } from '../../services/load/load.service';
-import { ConstantsService } from "../../services";
+import { ConstantsService } from '../../services';
 
 @Component({
   selector: 'lib-search-sputnik',
@@ -41,6 +41,8 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Input() public stopSearch = false;
   // ожидание (мс) до срабатывания поиска с последнего ввода символа
   @Input() public queryTimeout = ConstantsService.DEFAULT_QUERY_DEBOUNCE;
+  // максимальная длинна введенной фразы
+  @Input() public maxLength = 400;
 
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
@@ -54,7 +56,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   public searchItem: SimpleSputnikSuggest;
 
   public searchProvider = this.searchService;
-  public showMagnifyingGlass = true;
+  public showMagnifyingGlass = false;
   public converter = new ListItemConverter<SimpleSputnikSuggest>((item: SimpleSputnikSuggest, ctx: { [name: string]: any}): ListItem => {
     return new ListItem({ id: ctx.index, text: item.name, icon: '', url: item.link, lineBreak: item.lineBreak}, item);
   }, (item: ListItem): SimpleSputnikSuggest => {

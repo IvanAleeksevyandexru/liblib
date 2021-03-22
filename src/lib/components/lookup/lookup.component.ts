@@ -7,7 +7,7 @@ import {
   forwardRef,
   Host,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy,
   OnInit,
   Optional,
   Output,
@@ -55,7 +55,7 @@ const SHOW_ALL_MARKER = {};
     multi: true
   }, ListItemsService]
 })
-export class LookupComponent implements OnInit, AfterViewInit, OnChanges, ControlValueAccessor, Validated {
+export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges, ControlValueAccessor, Validated {
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -196,9 +196,11 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   public fixedItemsProvider = new FixedItemsProvider();
   public prevQuery: string;
 
+  private destroyed = false;
+
   @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
   @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
-  @ViewChild('searchBar', {static: false}) private searchBar: SearchBarComponent;
+  @ViewChild('searchBar', {static: false}) public searchBar: SearchBarComponent;
   @ViewChild('lookupField') private fieldContainer: ElementRef;
   @ViewChild('lookupList', {static: false}) private listContainer: ElementRef;
 
@@ -207,6 +209,10 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
 
   public ngOnInit() {
     this.update();
+  }
+
+  public ngOnDestroy() {
+    this.destroyed = true;
   }
 
   public ngAfterViewInit() {
@@ -599,7 +605,9 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
     this.searchBar.setDisabledState(isDisabled);
-    this.changeDetector.detectChanges();
+    if (!this.destroyed) {
+      this.changeDetector.detectChanges();
+    }
   }
 
   public updateFormatting() {

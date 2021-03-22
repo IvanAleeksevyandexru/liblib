@@ -1,9 +1,7 @@
 <div class="header" [ngClass]="{'hide show-lg': !comingSoon}" *ngIf="!mergeHeaderMenu; else mergeHeaderMenuTmpl">
   <div class="inner container grid-row-lg flex-container align-items-center">
     <div class="col-lg-12 flex-container align-items-center"
-          [ngClass]="{
-            'justify-end': user.authorized
-          }">
+         [ngClass]="{'justify-end': user.authorized}">
       <div *ngIf="comingSoon">
         <a href="" class="back-to-portal" (click)="backClickHandler()">Вернуться к старой версии</a>
       </div>
@@ -13,7 +11,8 @@
 
       <div *ngIf="!user.authorized && !comingSoon" class="hide show-lg">
         <div class="flex-container align-items-center">
-          <div *ngFor="let role of userRoles; let first = first" class="list-item-wrap" [class.active]="role.code === activeRoleCode">
+          <div *ngFor="let role of userRoles; let first = first" class="list-item-wrap"
+               [class.active]="role.code === activeRoleCode">
             <a class="list-item link-plain" (click)="updateRole(role.code)"
                [ngClass]="{'ml-40': !first}"
                [href]="role.url">{{role.name}}</a>
@@ -56,34 +55,35 @@
 
 <ng-template #mergeHeaderMenuTmpl>
   <div class="header merge-header">
-    <div class="inner container grid-row flex-container align-items-center">
-      <div class="col-lg-5 col-md-2 col-2 logo-wrapper">
-        <div class="flex-container flex-1 align-items-center">
-           <div class="catalog-menu-wrap" *ngIf="showBurger">
-             <lib-menu-catalog
-               (menuCatalogOpened)="onMenuCatalogClick($event)"
-               [catalog]="catalog">
-             </lib-menu-catalog>
-           </div>
-          <div>
-            <lib-logo width="126" [logoHref]="logoHref"></lib-logo>
-          </div>
-          <div *ngIf="!user.authorized" class="hide show-lg roles-list-wrap">
-            <div class="flex-container align-items-center roles-list">
-              <span class="user-role" [class.opened]="showRolesList" (click)="openRolesList()">{{getRoleName(activeRoleCode)}}</span>
+    <div class="inner container flex-container justify-between align-items-center">
+      <div class="logo-n-type-page-container flex-container align-items-center">
+        <div class="catalog-menu-wrap" *ngIf="showBurger">
+          <lib-menu-catalog
+            (menuCatalogOpened)="onMenuCatalogClick($event)"
+            [catalog]="catalog">
+          </lib-menu-catalog>
+        </div>
+        <div>
+          <lib-logo width="126" [logoHref]="logoHref"></lib-logo>
+        </div>
+        <div *ngIf="!user.authorized" class="hide show-lg ml-lg-48">
+          <div class="flex-container align-items-center roles-list">
+            <span class="user-role" [class.opened]="showRolesList"
+                  (click)="openRolesList()">{{getRoleName(activeRoleCode)}}</span>
 
-              <div class="list" *ngIf="showRolesList">
-                <div *ngFor="let role of userRoles; let first = first" class="list-item-wrap" [class.active]="role.code === activeRoleCode">
-                  <a class="list-item link-plain" (click)="updateRole(role.code)"
-                     [ngClass]="{'ml-40': !first}"
-                     [href]="role.url">{{role.name}}</a>
-                </div>
+            <div class="list" *ngIf="showRolesList">
+              <div *ngFor="let role of userRoles; let first = first" class="list-item-wrap"
+                   [class.active]="role.code === activeRoleCode">
+                <a class="list-item link-plain" (click)="updateRole(role.code)"
+                   [ngClass]="{'ml-40': !first}"
+                   [href]="role.url">{{role.name}}</a>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="hide show-lg"
+      <!--   Оставляю, т.к. могут передумать на счет ссылок. Нужна будет доработка стилей   -->
+      <!--<div class="hide show-lg"
            [class.col-lg-3]="!user.authorized"
            [class.col-lg-4]="user.authorized">
         <div class="flex-container align-items-center">
@@ -101,16 +101,18 @@
             </li>
           </ul>
         </div>
-      </div>
-<!--      <div class="col-lg-1 hide show-lg">-->
-<!--          <lib-location-select skinTheme="red"></lib-location-select>-->
-<!--      </div>-->
-      <div class="col-md-4 col-1 flex-container align-items-center flex-end"
-           [class.catalog-menu-opened]="menuCatalogOpened"
-           [class.col-lg-4]="!user.authorized"
-           [class.col-lg-3]="user.authorized">
-        <a *ngIf="!user.authorized" href="{{loadService.config.betaUrl}}help" target="_self" class="search-icon hide show-lg"></a>
-        <div class="user-menu-wrapper">
+      </div>-->
+      <div class="avatar-n-location-container flex-container align-items-center"
+           [class.catalog-menu-opened]="menuCatalogOpened">
+        <div class="hide show-lg ml-lg-64">
+          <lib-location-select skinTheme="red"></lib-location-select>
+        </div>
+        <a *ngIf="!user.authorized"
+           href="{{loadService.config.betaUrl}}help"
+           target="_self"
+           class="search-icon hide show-lg ml-lg-20">
+        </a>
+        <div class="ml-lg-20">
           <div class="login-wrapper">
             <div class="login flex-container justify-end overflow-container">
               <lib-login [useButton]="true" class="hide"
@@ -123,10 +125,10 @@
           </div>
           <div class="user-menu-wrapper" *ngIf="user.authorized">
             <lib-user-menu
-              #menu
-              [searchSputnikEnabled]="searchSputnikEnabled"
-              [state]="userMenuState"
-              [links]="links">
+                #menu
+                [searchSputnikEnabled]="searchSputnikEnabled"
+                [state]="userMenuState"
+                [links]="links">
             </lib-user-menu>
           </div>
         </div>

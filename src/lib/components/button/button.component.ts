@@ -18,6 +18,7 @@ export class ButtonComponent implements OnInit {
   @Input() public internalLink = ''; // внутренняя ссылка, которая попадёт в атрибут routerLink
   @Input() public showLoader = false; // троббер в виде трех точек, необходимо использовать в связке с width - 'wide'
   @Input() public theme: 'light' | 'light left-btn' | 'light right-btn' | '' = ''; // тема отображения кнопки для нового дизайна
+  @Input() public buttonType: 'submit' | 'reset' | 'button' = 'button';
 
   public active = false;
 

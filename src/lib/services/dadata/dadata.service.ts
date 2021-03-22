@@ -500,4 +500,11 @@ export class DadataService implements AutocompleteSuggestionProvider {
     }
   }
 
+  public addKladrToCommitValue(commitValue: DadataResult, normalizedElements: Array<NormalizedAddressElement>): void {
+    normalizedElements.forEach(elem => {
+      const elemName = this.levelMap[elem.level];
+      commitValue[`${elemName}Kladr`] = elem.kladrCode;
+    })
+  }
+
 }

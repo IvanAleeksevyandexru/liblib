@@ -2,7 +2,9 @@
   <a class="panel-header" (click)="onClick($event)" href="#" role="tab">
     <div class="panel-title">
       <span *ngIf="title"
-            [ngClass]="[type === 'accordion' ? 'title-h4' : '']">{{title}}</span>
+            [ngClass]="{'title-h4': type === 'accordion', 'title-h6': type === 'for-footer'}">
+        {{title}}
+      </span>
       <ng-content select="lib-expansion-panel-header"></ng-content>
     </div>
     <div class="panel-arrow"></div>
