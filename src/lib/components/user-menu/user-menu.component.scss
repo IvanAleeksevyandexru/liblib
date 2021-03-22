@@ -175,7 +175,7 @@
       .menu-items-wrap {
         display: flex;
         flex-direction: column;
-        height: 100%;
+        height: calc(100% - 50px);
         justify-content: space-between;
       }
     }
@@ -374,10 +374,8 @@ $PAD: 768px;
       padding-top: 0;
     }
     .bottom-block {
-      position: fixed;
       width: 100%;
       background: #fff;
-      bottom: 0;
     }
   }
 }
