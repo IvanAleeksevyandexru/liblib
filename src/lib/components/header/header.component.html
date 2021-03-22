@@ -58,10 +58,23 @@
     <div class="inner container flex-container justify-between align-items-center">
       <div class="logo-n-type-page-container flex-container align-items-center">
         <div class="catalog-menu-wrap" *ngIf="showBurger">
-          <lib-menu-catalog
-            (menuCatalogOpened)="onMenuCatalogClick($event)"
-            [catalog]="catalog">
-          </lib-menu-catalog>
+          <ng-container *ngIf="burgerDemoMode; else burgerCatalogMode">
+            <ng-container *ngIf="burgerWithCatalog; else burgerWithoutCatalog">
+              <lib-menu-catalog
+                (menuCatalogOpened)="onMenuCatalogClick($event)">
+              </lib-menu-catalog>
+            </ng-container>
+            <ng-template #burgerWithoutCatalog>
+              <lib-menu-catalog-simple
+                (menuCatalogOpened)="onMenuCatalogClick($event)">
+              </lib-menu-catalog-simple>
+            </ng-template>
+          </ng-container>
+          <ng-template #burgerCatalogMode>
+            <lib-menu-catalog
+              (menuCatalogOpened)="onMenuCatalogClick($event)">
+            </lib-menu-catalog>
+          </ng-template>
         </div>
         <div>
           <lib-logo width="126" [logoHref]="logoHref"></lib-logo>

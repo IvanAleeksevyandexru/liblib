@@ -7,7 +7,6 @@
   <label [attr.for]="id" class="label-search-input">{{placeholder}}</label>
   <div class="search-go" *ngIf="mainPageStyle" (click)="runOrPostponeSearch(query, false, true)" [ngClass]="{disabled: disabled}"></div>
   <input #input
-         *ngIf="!blockedSearchValue"
          type="text"
          autocomplete="off"
          [attr.id]="id ? id : null"
@@ -20,6 +19,7 @@
          [class.focused]="focused"
          [class.invalid]="invalidDisplayed"
          [class.shadowed]="showStaticContent && (!focused || forceShowStaticContent)"
+         [hidden]="blockedSearchValue"
          [value]="query"
          [disabled]="disabled"
          [readonly]="readOnly"
@@ -55,7 +55,7 @@
        (click)="runOrPostponeSearch(query, false, true)"
        [ngClass]="{disabled: disabled}"></div>
   <div class="search-button" *ngIf="mainPageStyle">
-    <lib-button class="hide show-lg">Отправить</lib-button>
+    <lib-button class="hide show-lg" (click)="startSearch($event)">Отправить</lib-button>
     <lib-button type="new-search" class="show-sm hide-md hide-lg"></lib-button>
   </div>
   <div class="search-in-progress" *ngIf="!mainPageStyle && searching && showSearching">

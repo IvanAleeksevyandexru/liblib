@@ -17,7 +17,7 @@ import { UserMenuState, CounterTarget, MenuLink, Category, CounterData, Catalog 
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
 import { ModalService } from '../../services/modal/modal.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { HelperService } from '../../services/helper/helper.service';
 
@@ -44,6 +44,8 @@ export class HeaderComponent implements OnInit, OnChanges {
   public menuCatalogOpened: boolean;
   public roleChangeAvailable = true;
   private translateSubscription: Subscription;
+  public burgerWithCatalog = true;
+  public burgerDemoMode = this.loadService.config.burgerDemoMode;
 
   private closeBurger = new BehaviorSubject(false);
   public closeBurger$ = this.closeBurger.asObservable();
@@ -52,6 +54,7 @@ export class HeaderComponent implements OnInit, OnChanges {
 
   @Input() public userCounter: CounterData;
   @Input() public comingSoon?: boolean;
+  @Input() public isPortal = false;
   @Input() public links?: MenuLink[] = [];
   @Input() public mergeHeaderMenu?: boolean;
   @Input() public rolesListEnabled?: boolean;
@@ -93,10 +96,14 @@ export class HeaderComponent implements OnInit, OnChanges {
     private moduleRef: NgModuleRef<any>,
     private router: Router
   ) {
+    this.onRouteChange();
   }
 
   public ngOnInit(): void {
     this.initUserMenuState();
+    if(this.burgerDemoMode) {
+      this.burgerWithCatalogShow(location.pathname);
+    }
     this.loadService.userTypeNA$.subscribe(type => {
       this.activeRoleCode = type;
     });
@@ -110,6 +117,24 @@ export class HeaderComponent implements OnInit, OnChanges {
       });
     }
     this.roleChangeAvailable = HelperService.langIsRus(this.translate.currentLang);
+  }
+
+  public burgerWithCatalogShow(currentPath): void {
+    let urls = ['/new', '/newsearch'];
+    if (this.isPortal) {
+      urls.push('/');
+    }
+    this.burgerWithCatalog = urls.indexOf(currentPath) > -1;
+  }
+
+  private onRouteChange(): void {
+    if (this.burgerDemoMode) {
+      this.router.events.subscribe((evt) => {
+        if (evt instanceof NavigationEnd) {
+          this.burgerWithCatalogShow(evt.url);
+        }
+      });
+    }
   }
 
   public showUserMenu(isMobileView: boolean) {
