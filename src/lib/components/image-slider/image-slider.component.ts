@@ -85,7 +85,7 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
       feedElement: this.sliderFeedContainer,
       type: DragDropType.TOUCH, direction: DragDropDirection.HORIZONTAL, offsetType: DragDropOffsetType.TRANSFORM,
       centeringNeeded: true, cleanUp: false, limit: true,
-      containerDimension: this.slidesWidthToSet, itemsDistance: SLIDES_OFFSET,
+      containerDimension: this.slidesWidthToSet, itemsDistance: this.slidesOffset,
       dragStart: () => {
         this.renderer.addClass(this.sliderFeedContainer.nativeElement, 'no-transition');
       },
