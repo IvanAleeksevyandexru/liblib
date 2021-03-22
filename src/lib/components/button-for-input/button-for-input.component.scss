@@ -38,6 +38,12 @@ button {
   }
 }
 
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .button-wrap {
   position: absolute;
   height: 24px;
