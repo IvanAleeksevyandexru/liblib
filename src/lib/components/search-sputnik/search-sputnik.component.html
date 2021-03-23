@@ -1,10 +1,11 @@
 <div class="flex-container align-items-center search-container" [class.main-page-style]="mainPageStyle" [class]="contextClass" [ngClass]="{'show-field' : showField}">
+  werwerwerwerwr
   <div *ngIf="showField" #searchBox class="search-input">
     <lib-lookup #lookup class="search"
                 [placeholder]="placeholder"
                 [contextClass]="contextClass"
                 [itemsProvider]="searchProvider"
-                [queryMinSymbolsCount]="3"
+                [queryMinSymbolsCount]="2"
                 [maxlength]="maxLength"
                 [staticList]="staticList"
                 [hideSearchResult]="hideSearchResult"
@@ -14,7 +15,6 @@
                 [clearable]="true"
                 [cachedResponse]="cachedResponse"
                 [mainPageStyle]="mainPageStyle"
-                [blockedSearchValue]="blockedSearchValue"
                 [enableLangConvert]="enableLangConvert"
                 [queryTimeout]="queryTimeout"
                 [stopSearch]="stopSearch"

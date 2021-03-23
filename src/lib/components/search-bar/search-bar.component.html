@@ -19,7 +19,6 @@
          [class.focused]="focused"
          [class.invalid]="invalidDisplayed"
          [class.shadowed]="showStaticContent && (!focused || forceShowStaticContent)"
-         [hidden]="blockedSearchValue"
          [value]="query"
          [disabled]="disabled"
          [readonly]="readOnly"
@@ -31,12 +30,6 @@
          (blur)="notifyFocusEvent($event)"
          (keydown.enter)="runOrPostponeSearch(query, true, false)"
          (keydown.arrowright)="selectSuggestion()"/>
-  <div *ngIf="blockedSearchValue" class="search-input blocked">
-    <div class="blocked-wrap">
-      <div class="search-value">{{blockedSearchValue}}</div>
-      <div class="clear-blocked" (click)="clearBlocked($event)"></div>
-    </div>
-  </div>
   <div class="static-content" (click)="setFocus()" *ngIf="showStaticContent"
        [class.shadowed]="focused && !forceShowStaticContent"
        [class.invalid]="invalidDisplayed"
@@ -47,7 +40,7 @@
     </div>
   </div>
   <div class="search-clear"
-       [hidden]="searching || disabled || !clearable || !query || blockedSearchValue"
+       [hidden]="searching || disabled || !clearable || !query"
        [ngClass]="{'align-right': !showMagnifyingGlass && !searching}"
        (click)="clearSearch($event)">
   </div>
