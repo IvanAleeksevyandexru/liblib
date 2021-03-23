@@ -38,7 +38,7 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
     this.showCatalogTabItem = false;
   }
 
-  catalogTabListItemClick(item: any) {
+  public catalogTabListItemClick(item: any) {
 
     this.showCatalogTabItem = false;
 
