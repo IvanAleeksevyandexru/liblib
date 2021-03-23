@@ -92,8 +92,6 @@ export class SearchBarComponent
   @Input() public searchLastValue = false;
   // новый вид для ультрановой главной
   @Input() public mainPageStyle = false;
-  // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
-  @Input() public blockedSearchValue = '';
   // активация автоматического перевода с английского
   @Input() public enableLangConvert = false;
   // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
@@ -107,7 +105,6 @@ export class SearchBarComponent
   @Output() public suggestionSelected = new EventEmitter<string>();
   @Output() public searchButtonClick = new EventEmitter<string>();
   @Output() public searchQueryChanged = new EventEmitter<string>();
-  @Output() public blockedSearchClear = new EventEmitter();
   @ViewChild('input', {static: false}) public inputElement: ElementRef<HTMLInputElement>;
 
   public focused = false;
@@ -187,7 +184,7 @@ export class SearchBarComponent
     this.sharedSubscription.unsubscribe();
     this.focusManager.unregister(this);
   }
-1
+
   public updateQuery(value: string) {
     if (this.enableLangConvert) {
       this.query = this.convertLang.fromEng(value);
@@ -421,11 +418,6 @@ export class SearchBarComponent
         this.searchQueryChanged.emit(search.query);
       }
     });
-  }
-
-  public clearBlocked(evt: Event): void {
-    this.blockedSearchClear.emit();
-    this.clearSearch(evt);
   }
 
   public startSearch(evt?: Event): void {

@@ -37,8 +37,6 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Input() public searchQuery = '';
   // активация автоматического перевода с английского
   @Input() public enableLangConvert = false;
-  // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
-  @Input() public blockedSearchValue = '';
   // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
   @Input() public stopSearch = false;
   // ожидание (мс) до срабатывания поиска с последнего ввода символа
@@ -89,8 +87,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
     }
   }
 
-  public ngAfterViewInit() {
-  }
+  public ngAfterViewInit() {}
 
   public ngOnChanges({setFocus, setSearchValue, stopSearch}: SimpleChanges) {
     if (setFocus && setFocus.currentValue) {
