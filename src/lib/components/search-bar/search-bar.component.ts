@@ -132,6 +132,7 @@ export class SearchBarComponent
     this.sharedSubscription = this.sharedService.on('clearSearch').subscribe((val) => {
       if (val) {
         this.query = '';
+        this.changeDetector.detectChanges();
       }
     });
     this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
