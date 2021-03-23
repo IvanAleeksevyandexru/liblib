@@ -72,9 +72,23 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     this.loaded = false;
     this.catalogTabsService.getDepartmentsData().subscribe((departmentsData: any) => {
       this.catalogTabsService.departmentsData = departmentsData;
-      this.departmentsData = departmentsData;
+      this.departmentsData = this.departmentDataHandling(departmentsData);
       this.loaded = true;
     })
+  }
+
+  public departmentDataHandling(departmentsData: any): any {
+    const departments = departmentsData.slice(0, 6);
+    const secondColumnDepartments = [];
+    const firstColumnDepartments = [];
+    departments.forEach((item, index, arr) => {
+      if((index + 1) % 2 === 0) {
+        secondColumnDepartments.push(item);
+      } else {
+        firstColumnDepartments.push(item);
+      }
+    });
+    return firstColumnDepartments.concat(secondColumnDepartments);
   }
 
   public getCatalogData(): void {
