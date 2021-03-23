@@ -179,7 +179,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   public goToPopular(item: any): void {
     const link = item.epguPassport ? `/group/${item.epguId}` : `${item.epguId}`;
     this.catalogClose.emit();
-    this.router.navigate([link]);
+    location.href = link;
   }
 
   public ngOnDestroy() {

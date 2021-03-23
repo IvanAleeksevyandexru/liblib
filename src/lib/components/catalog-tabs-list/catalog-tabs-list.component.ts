@@ -18,8 +18,8 @@ export class CatalogTabsListComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-  }
 
+  }
 
   public ngOnDestroy() {
   }

@@ -1,0 +1,44 @@
+.roles-list {
+  .toggle-role-icon{
+    width: 12px;
+    height: 10px;
+    margin-right: 12px;
+    background: url('../../../assets/svg/arrows/arrow_gray.svg') 50% 50% no-repeat;
+    transform: rotateZ(180deg);
+  }
+  .opened{
+    .toggle-role-icon{
+      transform: rotateZ(0);
+    }
+  }
+  .user-role {
+    padding: 32px 16px 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .list-item{
+    display: block;
+    padding-bottom: 24px;
+  }
+  .list-item-wrap{
+    padding-left: 16px;
+    .list-item{
+      &:hover{
+        color: #1d5deb;
+      }
+    }
+  }
+}
+@media (min-width: 768px) {
+  .roles-list{
+
+  }
+}
+@media (min-width: 1140px) {
+  .roles-list{
+    display: none;
+  }
+  .roles-list.authorized{
+    display: block;
+  }
+}

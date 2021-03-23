@@ -204,26 +204,31 @@ export class MenuService {
     return [
       {
         name: 'Гражданам',
+        secondName: 'Граждан',
         url: `${betaUrl}`,
         code: 'P'
       },
       {
         name: 'Юридическим лицам',
+        secondName: 'Юридическиx лиц',
         url: `${betaUrl}legal-entity`,
         code: 'L'
       },
       {
         name: 'Предпринимателям',
+        secondName: 'Предпринимателей',
         url: `${betaUrl}entrepreneur`,
         code: 'B'
       },
       {
         name: 'Иностранным гражданам',
+        secondName: 'Иностранных граждан',
         url: `${betaUrl}foreign-citizen`,
         code: 'F'
       },
       {
         name: 'Партнёрам',
+        secondName: 'Партнёров',
         url: `${partnersUrl}`,
         code: 'I'
       }

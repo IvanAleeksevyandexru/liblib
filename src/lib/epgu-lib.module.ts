@@ -159,6 +159,7 @@ import { CatalogTabsService } from './services/catalog-tabs/catalog-tabs.service
 import { CatalogTabsComponent } from './components/catalog-tabs/catalog-tabs.component';
 import { CatalogTabsListComponent } from './components/catalog-tabs-list/catalog-tabs-list.component';
 import { CatalogTabItemComponent } from './components/catalog-tab-item/catalog-tab-item.component';
+import { UserRolesComponent } from './components/user-roles/user-roles.component';
 
 
 registerLocaleData(localeRu, 'ru');
@@ -307,7 +308,8 @@ registerLocaleData(localeRu, 'ru');
     SliderComponent,
     CatalogTabsComponent,
     CatalogTabsListComponent,
-    CatalogTabItemComponent
+    CatalogTabItemComponent,
+    UserRolesComponent
   ],
   imports: [
     CommonModule,
@@ -456,7 +458,8 @@ registerLocaleData(localeRu, 'ru');
     SmallFooterComponent,
     CatalogTabsComponent,
     CatalogTabsListComponent,
-    CatalogTabItemComponent
+    CatalogTabItemComponent,
+    UserRolesComponent
   ],
   providers: [
     GosbarService,
