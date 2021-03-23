@@ -8,6 +8,7 @@ export interface MenuLink {
 
 export interface UserRole {
   name: string;
+  secondName?: string;
   url: string;
   code: string;
   isActive?: boolean;
