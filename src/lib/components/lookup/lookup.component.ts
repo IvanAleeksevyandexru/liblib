@@ -141,8 +141,6 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   @Input() public mainPageStyle: boolean = false;
   // скрывать результат поиска в независимости от наличия ответа
   @Input() public hideSearchResult: boolean = false;
-  // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
-  @Input() public blockedSearchValue = '';
   // активация автоматического перевода с английского
   @Input() public enableLangConvert = false;
   // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
