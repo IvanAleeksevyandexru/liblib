@@ -75,7 +75,7 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
 
   private closeAllTabs(): void {
     this.catalog.forEach(item => item.sideActive = false);
-    this.catalog.forEach(item => item.active = false);
+    this.catalog.forEach(item => item.mainActive = false);
   }
 
   public closeCatalog() {
@@ -104,17 +104,17 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
 
     this.showSubCatalog = false;
 
-    if (item.active) {
-      item.active = false;
+    if (item.sideActive) {
+      item.sideActive = false;
       return;
     }
 
     this.closeAllTabs();
 
-    item.active = !item.active;
+    item.sideActive = !item.sideActive;
 
     this.currentCategoryCode = item.code;
-    this.showSubCatalog = item.active;
+    this.showSubCatalog = item.sideActive;
 
   }
 

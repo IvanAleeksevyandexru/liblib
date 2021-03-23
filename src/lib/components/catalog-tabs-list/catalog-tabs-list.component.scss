@@ -55,7 +55,7 @@
       padding: 16px 16px 20px;
       border-radius: 8px 8px 0 0;
       flex: 1 1 0;
-      &.active {
+      &.main-active {
         background: #FAFCFF;
         position: relative;
         &:before, &:after{
@@ -148,7 +148,7 @@
     display: block;
     padding: 16px 0 16px 16px;
     justify-content: space-between;
-    &:hover, &.active{
+    &:hover, &.side-active{
       background: #EDF2FE;
     }
     &:last-of-type{
@@ -200,4 +200,9 @@
     }
   }
 
+}
+@media (min-width: 1140px) {
+  .catalog-link-item-wrap{
+    overflow-x: hidden;
+  }
 }

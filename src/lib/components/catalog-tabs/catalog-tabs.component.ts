@@ -30,7 +30,8 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
   }
 
   private closeAllTabs(): void {
-    this.catalog.forEach(item => item.active = false);
+    this.catalog.forEach(item => item.sideActive = false);
+    this.catalog.forEach(item => item.mainActive = false);
   }
 
   public closeCatalog() {
@@ -42,17 +43,17 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
 
     this.showCatalogTabItem = false;
 
-    if (item.active) {
-      item.active = false;
+    if (item.mainActive) {
+      item.mainActive = false;
       return;
     }
 
     this.closeAllTabs();
 
-    item.active = !item.active;
+    item.mainActive = !item.mainActive;
 
     this.currentCategoryCode = item.code;
-    this.showCatalogTabItem = item.active;
+    this.showCatalogTabItem = item.mainActive;
   }
 
   public ngOnDestroy() {
