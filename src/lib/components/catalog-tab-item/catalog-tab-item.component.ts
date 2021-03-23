@@ -139,7 +139,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
 
   public createRegionPopular(regionPopular: any) {
     this.regionPopular = regionPopular;
-    this.regionPopularEmpty.emit(regionPopular.length === 0);
+    this.regionPopularEmpty.emit(regionPopular.length === 0 && this.code !== 'ministries');
   }
 
   public createPopular(popular: any): void {

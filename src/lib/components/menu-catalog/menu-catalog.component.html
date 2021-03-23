@@ -41,5 +41,6 @@
   </ng-container>
 </div>
 <div class="content-overlay" [class.show]="showMenu"></div>
-<div (click)="onClose()" [ngClass]="{show: showMenu, 'show-with-sub': showSubCatalog}" class="close"></div>
+<div (click)="onClose()"
+     [ngClass]="{show: showMenu, 'show-with-sub': showSubCatalog, 'show-with-empty-region-popular': emptyRegionPopular}" class="close"></div>
 
