@@ -29,11 +29,12 @@
   </div>
 </div>
 
-<div class="sub-catalog" [class.show]="showSubCatalog">
+<div class="sub-catalog" [ngClass]="{'empty-region-popular': emptyRegionPopular,'show': showSubCatalog}">
   <ng-container *ngIf="showSubCatalog">
     <lib-catalog-tab-item
       viewType="side-view"
       (catalogClose)="closeCatalog()"
+      (regionPopularEmpty)="regionPopularEmpty($event)"
       (subCatalogClose)="subCatalogClose()"
       [code]="currentCategoryCode"
     ></lib-catalog-tab-item>

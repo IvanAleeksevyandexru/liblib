@@ -26,6 +26,7 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
 
   public user = this.loadService.user;
   public showRolesList = false;
+  public emptyRegionPopular: boolean;
   public showSubCatalog: boolean;
   public catalog = this.catalogTabsService.catalogTabsList;
   public showMenu = false;
@@ -121,5 +122,11 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
   public subCatalogClose(): void {
     this.showSubCatalog = false;
     this.closeAllTabs();
+  }
+
+  public regionPopularEmpty($event): void {
+    setTimeout(() => {
+      this.emptyRegionPopular = $event;
+    });
   }
 }

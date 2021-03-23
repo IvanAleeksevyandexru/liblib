@@ -30,6 +30,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   @Input() public viewType: 'main-page-view' | 'side-view';
   @Output() public catalogClose: EventEmitter<null> = new EventEmitter();
   @Output() public subCatalogClose: EventEmitter<null> = new EventEmitter();
+  @Output() public regionPopularEmpty: EventEmitter<boolean> = new EventEmitter();
 
   public popular: any[];
   public departmentsData: any[];
@@ -138,6 +139,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
 
   public createRegionPopular(regionPopular: any) {
     this.regionPopular = regionPopular;
+    this.regionPopularEmpty.emit(regionPopular.length === 0);
   }
 
   public createPopular(popular: any): void {
@@ -199,7 +201,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   public ngOnDestroy() {
   }
 
-  goToDepartment(departmentPassport: any) {
+  public goToDepartment(departmentPassport: any): void {
     location.href = `${this.loadService.config.betaUrl}${departmentPassport.url}`;
   }
 }

@@ -5,7 +5,9 @@
     <div *ngIf="loaded else loading" class="catalog-tab-item">
       <a href class="close-catalog" (click)="closeCatalog($event)"></a>
       <div *ngIf="code !== 'ministries'; else departments" class="grid-row">
-        <div class="col-lg-6 col-3 col-md-6">
+        <div
+          [ngClass]="(viewType !== 'main-page-view' && !regionPopular?.length) ? 'col-lg-12' : 'col-lg-6'"
+          class="col-lg-6 col-3 col-md-6">
           <section>
             <div class="back-title text-plain bold" *ngIf="viewType === 'side-view'"
                  (click)="closeSubCatalog()">{{backTitle}}</div>

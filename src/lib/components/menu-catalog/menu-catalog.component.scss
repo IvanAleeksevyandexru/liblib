@@ -106,6 +106,9 @@
     left: 320px;
     width: 850px;
     transition: left 250ms ease-out;
+    &.empty-region-popular {
+      width: 425px;
+    }
   }
 }
 .catalog-menu-header{
