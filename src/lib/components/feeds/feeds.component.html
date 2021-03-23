@@ -1,34 +1,35 @@
 <lib-throbber *ngIf="feedsIsLoading"
               [size]="isHeader ? 'throbber-small' : ''"
-              [defaultHeaders]="!isHeader"></lib-throbber>
+              [defaultHeaders]="!isHeader">
+</lib-throbber>
 
-<ng-container *ngIf="isLk">
-  <a [href]="openDetails(feed)"
-     (click)="onFeedClick($event, feed)"
-     class="feed-item"
-     [ngClass]="setFeedItemCls(feed)"
-     *ngFor="let feed of feeds ; trackBy: trackById; let i = index; ">
+<ng-container *ngFor="let feed of feeds ; trackBy: trackById; let i = index; ">
+  <ng-container *ngIf="withReload(feed)">
+    <a [routerLink]="openDetails(feed)"
+       (click)="onFeedClick($event, feed)"
+       class="feed-item"
+       [ngClass]="setFeedItemCls(feed)"
+       *ngFor="let feed of feeds ; trackBy: trackById; let i = index; ">
 
-    <ng-container
-      [ngTemplateOutlet]="feedTemplate"
-      [ngTemplateOutletContext]="{feed: feed, i: i}"></ng-container>
-  </a>
+      <ng-container
+        [ngTemplateOutlet]="feedTemplate"
+        [ngTemplateOutletContext]="{feed: feed, i: i}"></ng-container>
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="!withReload(feed)">
+    <a [href]="openDetails(feed)"
+       (click)="onFeedClick($event, feed)"
+       class="feed-item"
+       [ngClass]="setFeedItemCls(feed)"
+       *ngFor="let feed of feeds ; trackBy: trackById; let i = index; ">
+
+      <ng-container
+        [ngTemplateOutlet]="feedTemplate"
+        [ngTemplateOutletContext]="{feed: feed, i: i}"></ng-container>
+    </a>
+  </ng-container>
 </ng-container>
-
-<ng-container *ngIf="!isLk">
-  <a [href]="openDetails(feed)"
-     (click)="onFeedClick($event, feed)"
-     class="feed-item"
-     [ngClass]="setFeedItemCls(feed)"
-     *ngFor="let feed of feeds ; trackBy: trackById; let i = index; ">
-
-    <ng-container
-      [ngTemplateOutlet]="feedTemplate"
-      [ngTemplateOutletContext]="{feed: feed, i: i}"></ng-container>
-
-  </a>
-</ng-container>
-
 
 <div *ngIf="enableShowMoreButton()" [ngClass]="{ 'mt-32': !isHeader, 'mt-16 text-center': isHeader }">
 
@@ -74,7 +75,6 @@
 <!--    </ng-template>-->
   </div>
 </div>
-
 
 <ng-template #feedTemplate let-feed="feed" let-i="i">
   <div class="flex-container-md flex-container-lg align-items-center-lg feed-item-content">
