@@ -4,7 +4,7 @@
   border-radius: 20px;
   padding: 3px 8px;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 16px;
   color: #fff;
   background-color: #EE3F58;
@@ -35,15 +35,5 @@
       border: 2px solid #fff;
       font-size: 0;
     }
-  }
-}
-
-:host-context(.as-button) {
-  .counter {
-    background-color: #EE3F58;
-    height: 22px;
-    line-height: 22px;
-    font-size: 14px;
-    border-radius: 20px;
   }
 }

@@ -373,8 +373,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     }
   }
 
-  public lookupItems(queryOrMarker: string | {}) {
-    if (queryOrMarker !== SHOW_ALL_MARKER && (queryOrMarker as string).length < this.queryMinSymbolsCount) {
+  public lookupItems(queryOrMarker: string | {}, lookupAnyway: boolean = false) {
+    if ((this.mainPageStyle && this.stopSearch && !lookupAnyway) || (queryOrMarker !== SHOW_ALL_MARKER && (queryOrMarker as string).length < this.queryMinSymbolsCount)) {
       this.cancelSearchAndClose();
       return;
     }
