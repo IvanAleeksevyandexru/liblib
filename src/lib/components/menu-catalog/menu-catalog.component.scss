@@ -106,9 +106,6 @@
     left: 320px;
     width: 850px;
     transition: left 250ms ease-out;
-    &.empty-region-popular {
-      width: 425px;
-    }
   }
 }
 .catalog-menu-header{
@@ -206,5 +203,14 @@
     align-items: center;
     height: 64px;
     padding: 0 16px;
+  }
+}
+@media (min-width: 1140px) {
+  .sub-catalog{
+    &.show{
+      &.empty-region-popular {
+        width: 425px;
+      }
+    }
   }
 }
