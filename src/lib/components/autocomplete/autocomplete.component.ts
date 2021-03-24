@@ -111,6 +111,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   @ViewChild('searchBar', {static: false}) public searchBar: SearchBarComponent;
   @ViewChild('dropdownField', {static: false}) private valuesContainer: ElementRef;
   @ViewChild('dropdownList', {static: false}) private listContainer: ElementRef;
+  @ViewChild('additionalItem', {static: false}) private additionalItem: ElementRef;
 
   public query = '';
   public activeQuery = '';
@@ -149,7 +150,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   }
 
   public openDropdown() {
-    if (!this.disableOpening && !this.disabled && !this.expanded && (this.suggestions.length || this.showNotFound)) {
+    if (!this.disableOpening && !this.disabled && !this.expanded && (this.suggestions.length || this.additionalItem.nativeElement.children?.length || this.showNotFound)) {
       this.expanded = true;
       this.highlighted = null;
       this.changeDetector.detectChanges();
@@ -266,7 +267,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
     }
     // не делать запрос, если не изменилась модель
     if (!this.modelChanged) {
-      if (this.suggestions.length || this.showNotFound) {
+      if (this.suggestions.length || this.additionalItem.nativeElement.children.length || this.showNotFound) {
         this.openDropdown();
       } else {
         this.closeDropdown();
@@ -281,7 +282,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
     this.partialPageNumber = 0;
     this.partialsLoaded = false;
     this.runSearchOrIncrementalSearch(true, query, () => {
-      if (this.suggestions.length || this.showNotFound) {
+      if (this.suggestions.length || this.additionalItem.nativeElement.children.length || this.showNotFound) {
         this.updateSuggestion(query);
         this.openDropdown();
       } else {
