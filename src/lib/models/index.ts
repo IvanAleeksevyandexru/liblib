@@ -21,7 +21,6 @@ export * from './feed';
 export * from './file-link';
 export * from './frame-type';
 export * from './gibdd-fine.model';
-export * from './info-card-view';
 export * from './kid';
 export * from './knd.model';
 export * from './link';
