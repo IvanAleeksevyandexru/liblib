@@ -151,27 +151,29 @@ export class IpshService {
     if (!response || !response.error) {
       return null;
     }
-    let errorType = this.getBillsErrorByCode(response && response.error && response.error.code);
-    let date: string;
-    let supplier: string;
-    if (errorType === BillsErrors.BillsDateEvaluated) {
-      date = response.error.message.match(/\d\d\.\d\d\.\d\d\d\d/)[0];
-    }
-    if (errorType === BillsErrors.BillsHasUnidentifiedBills) {
-      supplier = response && response.response.bills && response.response.bills[0] && response.response.bills[0].addAttrs &&
-        (this.getAttr(response.response.bills[0].addAttrs, 'ReceiverPdfName') ||
-          this.getAttr(response.response.bills[0].addAttrs, 'SupplierFullName'));
-      if (!supplier) {
-        errorType = BillsErrors.BillsInvalidArguments;
-      }
-    }
+    const errorType = this.getBillsErrorByCode(response && response.error && response.error.code);
+    // let date: string;
+    // let supplier: string;
+    // if (errorType === BillsErrors.BillsDateEvaluated) {
+    //   date = response.error.message.match(/\d\d\.\d\d\.\d\d\d\d/)[0];
+    // }
+    // if (errorType === BillsErrors.BillsHasUnidentifiedBills) {
+    //   supplier = response && response.response.bills && response.response.bills[0] && response.response.bills[0].addAttrs &&
+    //     (this.getAttr(response.response.bills[0].addAttrs, 'ReceiverPdfName') ||
+    //       this.getAttr(response.response.bills[0].addAttrs, 'SupplierFullName'));
+    //   if (!supplier) {
+    //     errorType = BillsErrors.BillsInvalidArguments;
+    //   }
+    // }
     return {
       code: response.error.code,
       message: response.error.message,
+      fkSmevVersion: response.error.fkSmevVersion,
+      requestId: response.error.requestId,
       type: errorType,
       billNumber,
-      date,
-      supplier
+      // date,
+      // supplier
     };
   }
 
@@ -218,6 +220,12 @@ export class IpshService {
     });
     this.healthService.measureStart('gibdd_photo');
     return this.http.get(url, {params: httpParams}).pipe(
+      switchMap((data: GibddPhotoResponse) => {
+        if (!data || !data.photos || !data.photos.length) {
+          return throwError(data);
+        }
+        return of(data);
+      }),
       map((data: GibddPhotoResponse) => {
         let photos = [];
         const errorCode = data && data.code || 'null';
@@ -230,14 +238,15 @@ export class IpshService {
           });
           this.healthService.measureEnd('gibdd_photo', 0, {BrowserError: 'OK', utm_source: 'gibdd_photo_ok', deptCode: params.div});
           this.yaMetricService.callReachGoal('gibdd_photo_ok');
-        } else {
-          this.healthService.measureEnd('gibdd_photo', 1, {BrowserError: errorCode, utm_source: 'gibdd_photo_no', deptCode: params.div});
-          this.yaMetricService.callReachGoal('gibdd_photo_error');
         }
         return photos;
       }),
       catchError(error => {
-        this.healthService.measureEnd('gibdd_photo', 1,  {BrowserError: error.status, utm_source: 'gibdd_photo_no', deptCode: params.div});
+        this.healthService.measureEnd('gibdd_photo', 1,  {
+          BrowserError: error.code || error.status,
+          utm_source: 'gibdd_photo_no',
+          deptCode: params.div
+        });
         this.yaMetricService.callReachGoal('gibdd_photo_error');
         return throwError(error);
       })

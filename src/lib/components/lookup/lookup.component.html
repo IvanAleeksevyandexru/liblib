@@ -2,7 +2,7 @@
      [class.main-page-new]="mainPageStyle"
      (click)="returnFocus($event)" libClickOutside
      (clickOutside)="cancelSearchAndClose(true)" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
-  <div class="lookup-field" #lookupField [ngClass]="{expanded: expanded, invalid: invalidDisplayed, 'with-expand-button': showExpandCollapse}">
+  <div class="lookup-field" #lookupField [ngClass]="{expanded: expanded, disabled: disabled, invalid: invalidDisplayed, 'with-expand-button': showExpandCollapse}">
     <lib-search-bar #searchBar
       [contextClass]="'lookup-input ' + contextClass"
       [tabIndex]="tabIndex"
@@ -26,7 +26,6 @@
       [forceShowStaticContent]="forceShowStatic"
       [suggestion]="showSuggestion ? suggestion : null"
       [mainPageStyle]="mainPageStyle"
-      [blockedSearchValue]="blockedSearchValue"
       [enableLangConvert]="enableLangConvert"
       [stopSearch]="stopSearch"
       [(ngModel)]="query"
@@ -41,8 +40,7 @@
       (keydown)="handleKeydownNavigation($event)"
       (cleared)="clearInput()"
       (suggestionSelected)="selectSuggestion($event)"
-      (searchButtonClick)="handleSearchButtonClick($event)"
-      (blockedSearchClear)="clearBlocked()">
+      (searchButtonClick)="handleSearchButtonClick($event)">
         <div class="lookup-item" *ngIf="item">
           <div *ngIf="escapeHtml" class="item-container">{{item.formatted}}</div>
           <div *ngIf="!escapeHtml" class="item-container" [innerHTML]="item.formatted | safeHtml"></div>

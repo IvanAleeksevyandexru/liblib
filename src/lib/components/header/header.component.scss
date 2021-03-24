@@ -240,8 +240,12 @@
   //  left: -40px;
   //}
 }
-@media all and (max-width: 1139px) {
-
+@media all and (max-width: 767px) {
+  ::ng-deep .menu-catalog-opened{
+    .login-wrapper{
+      display: none!important;
+    }
+  }
 }
 @media all and (min-width: 768px) {
   .header {

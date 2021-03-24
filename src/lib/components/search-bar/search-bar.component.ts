@@ -92,8 +92,6 @@ export class SearchBarComponent
   @Input() public searchLastValue = false;
   // новый вид для ультрановой главной
   @Input() public mainPageStyle = false;
-  // заблокированное значение для "умного" поиска в случае, если пользователь начал отвечать на предложенный квиз
-  @Input() public blockedSearchValue = '';
   // активация автоматического перевода с английского
   @Input() public enableLangConvert = false;
   // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
@@ -107,7 +105,6 @@ export class SearchBarComponent
   @Output() public suggestionSelected = new EventEmitter<string>();
   @Output() public searchButtonClick = new EventEmitter<string>();
   @Output() public searchQueryChanged = new EventEmitter<string>();
-  @Output() public blockedSearchClear = new EventEmitter();
   @ViewChild('input', {static: false}) public inputElement: ElementRef<HTMLInputElement>;
 
   public focused = false;
@@ -135,6 +132,7 @@ export class SearchBarComponent
     this.sharedSubscription = this.sharedService.on('clearSearch').subscribe((val) => {
       if (val) {
         this.query = '';
+        this.changeDetector.detectChanges();
       }
     });
     this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
@@ -187,7 +185,7 @@ export class SearchBarComponent
     this.sharedSubscription.unsubscribe();
     this.focusManager.unregister(this);
   }
-1
+
   public updateQuery(value: string) {
     if (this.enableLangConvert) {
       this.query = this.convertLang.fromEng(value);
@@ -362,11 +360,13 @@ export class SearchBarComponent
   }
 
   public returnFocus(e?: Event) {
-    if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement)) {
-      this.suppressSearching = true;
-      this.setFocus();
-      this.suppressSearching = false;
-    }
+    setTimeout(() => {
+      if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement)) {
+        this.suppressSearching = true;
+        this.setFocus();
+        this.suppressSearching = false;
+      }
+    });
   }
 
   public setFocus() {
@@ -421,16 +421,13 @@ export class SearchBarComponent
     });
   }
 
-  public clearBlocked(evt: Event): void {
-    this.blockedSearchClear.emit();
-    this.clearSearch(evt);
-  }
-
-  public startSearch(): void {
+  public startSearch(evt?: Event): void {
     if (!this.stopSearch) {
       this.runOrPostponeSearch(this.query, false, false, true);
     }
-    this.searchButtonClick.emit(this.query);
+    if (!this.mainPageStyle || !evt || evt.type !== 'submit') {
+      this.searchButtonClick.emit(this.query);
+    }
   }
 
   public setSearchValueFromParent(value): void {

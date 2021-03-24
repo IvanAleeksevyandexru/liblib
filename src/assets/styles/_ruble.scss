@@ -1,9 +1,10 @@
 $base: 'rgb(11, 31, 51)'; // #0B1F33
 $gray: 'rgb(102, 114, 127)'; // #66727F
-$light-gray: 'rgb(168, 172, 177)'; // #a8acb1
+$light-gray: 'rgb(168, 172, 177)'; // #A8ACB1
+$new-light-gray: 'rgb(209 213 223)'; // #D1D5DF
 $white: 'rgb(255, 255, 255)'; // #FFFFFF
 $black: 'rgb(0, 0, 0)'; // #000000
-$blue: 'rgb(11, 64, 179)'; // #0b40b3
+$blue: 'rgb(11, 64, 179)'; // #0B40B3
 $red: 'rgb(223, 0, 36)'; // #DF0024
 
 @mixin regular-ruble($color) {
@@ -16,7 +17,7 @@ $red: 'rgb(223, 0, 36)'; // #DF0024
 
 @supports (display: block) {
   .rub {
-    color: transparent;
+    color: transparent!important;
     &:after {
       display: inline-block;
       width: .55em;
@@ -29,6 +30,9 @@ $red: 'rgb(223, 0, 36)'; // #DF0024
     }
     &.light-gray:after {
       @include regular-ruble($light-gray);
+    }
+    &.new-light-gray:after {
+      @include regular-ruble($new-light-gray);
     }
     &.white:after {
       @include regular-ruble($white);
@@ -45,7 +49,7 @@ $red: 'rgb(223, 0, 36)'; // #DF0024
   }
 
   .rub-bold {
-    color: transparent;
+    color: transparent!important;
     &:after {
       display: inline-block;
       width: .55em;
@@ -58,6 +62,9 @@ $red: 'rgb(223, 0, 36)'; // #DF0024
     }
     &.light-gray:after {
       @include bold-ruble($light-gray);
+    }
+    &.new-light-gray:after {
+      @include bold-ruble($new-light-gray);
     }
     &.white:after {
       @include bold-ruble($white);

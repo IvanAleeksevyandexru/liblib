@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { LoadService } from '../load/load.service';
 import { CookieService } from '../cookie/cookie.service';
 import { SearchService } from '../search/search.service';
@@ -15,6 +15,7 @@ export class MainPageService {
   public config = this.loadService.config;
   public user = this.loadService.user;
   public executed = false;
+  public cfgData: any; // TODO: интерфейс
   private mainBgType: BehaviorSubject<string> = new BehaviorSubject<string>('person');
   public mainBgType$ = this.mainBgType.asObservable();
 
@@ -72,7 +73,10 @@ export class MainPageService {
     return personType;
   }
 
-  public getFooterData() {
+  public getCfgData(): any {
+    if (this.cfgData) {
+      return of(this.cfgData);
+    }
     return this.http.get(`${this.loadService.config.portalCfgUrl}main-page-data.json?_=${Math.random()}`, {
       withCredentials: true
     });

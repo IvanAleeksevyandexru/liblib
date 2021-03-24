@@ -185,3 +185,52 @@
     }
   }
 }
+
+.payment-fines-popup {
+  &.image-slider-container {
+    .image-slider-wrapper {
+      position: relative;
+      margin: auto;
+    }
+    .image-feed-image {
+      background-color: #86909C;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .image-feed-title__top {
+      border-bottom: 1px solid #99B1E6;
+      margin-bottom: 24px;
+    }
+    .image-slider-controls {
+      position: absolute;
+      top: calc(50% - 24px);
+      padding: 0 24px;
+      margin-top: 0;
+      .prev-slider, .next-slider {
+        width: 48px;
+        height: 48px;
+        background: rgba(255, 255, 255, 0.6) url("../../../assets/svg/arrows/arrow-slider-prev.svg") no-repeat;
+        border-radius: 50%;
+        &.disabled {
+          background-color: rgba(255, 255, 255, 0.2);
+          cursor: default;
+        }
+      }
+      .next-slider {
+        transform: rotate(180deg);
+      }
+    }
+
+    @media all and (max-width: 767px) {
+      .image-slider-controls {
+        display: none!important;
+      }
+      .image-feed-image {
+        background-color: #070707;
+      }
+      .image-feed-title__top {
+        color: #FFFFFF;
+      }
+    }
+  }
+}

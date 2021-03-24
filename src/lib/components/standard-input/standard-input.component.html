@@ -55,7 +55,7 @@
       >{{value}}</textarea>
     </div>
     <div class="buttons-container" [ngClass]="{multiline: multiline}">
-      <div *ngIf="clearable && !disabled && value" (click)="clearValue($event)" class="clear-button"></div>
+      <div *ngIf="clearable && !disabled && value && focused" (click)="clearValue($event)" class="clear-button"></div>
       <div class="validation-container" *ngIf="validationPosition === MessagePosition.INSIDE && invalidDisplayed && validationMessages">
         <lib-invalid-results-tip
           [invalid]="invalid"

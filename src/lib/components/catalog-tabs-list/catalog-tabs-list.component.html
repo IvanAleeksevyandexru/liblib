@@ -1,0 +1,34 @@
+<div [ngClass]="viewType"
+     class="catalog-tab-list-wrap">
+  <div class="scroll-container">
+    <perfect-scrollbar>
+      <div class="flex-container-lg catalog-link-item-wrap">
+        <ng-container *ngIf="viewType === 'side-view'">
+          <lib-user-roles></lib-user-roles>
+        </ng-container>
+        <a href
+           [ngClass]="{
+            'main-active':  item.mainActive && viewType === 'main-page-view',
+            'side-active':  item.sideActive && viewType === 'side-view'
+           }"
+           (click)="tabClick($event, item)"
+           class="catalog-link-item"
+           *ngFor="let item of catalog">
+          <div class="catalog-link-info">
+            <div>
+              <img [src]="item.ico" alt="{{item.title}}">
+            </div>
+            <div class="catalog-link mt-lg-8">
+              {{item.title}}
+            </div>
+          </div>
+        </a>
+        <div class="hide-lg">
+          <div class="catalog-location-wrap">
+            <lib-location-select skinTheme="red"></lib-location-select>
+          </div>
+        </div>
+      </div>
+    </perfect-scrollbar>
+  </div>
+</div>

@@ -60,6 +60,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public hasMore: boolean;
   public removeInProgress: boolean;
   public isLk = (this.loadService.attributes.appContext || this.loadService.config.viewType) === 'LK';
+  public isPartners = (this.loadService.attributes.appContext || this.loadService.config.viewType) === 'PARTNERS';
   private feedsSubscription: Subscription;
   private feedsUpdateSubscription: Subscription;
   private loadedFeedsCount = 0;
@@ -172,6 +173,10 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   public openDetails(feed: FeedModel): string {
     return this.feedsService.openDetails(feed);
+  }
+
+  public withReload(feed): boolean {
+    return !(this.isLk && !['KND_APPEAL', 'KND_APPEAL_DRAFT'].includes(feed.feedType) || this.isPartners);
   }
 
   public getUserData(): User {

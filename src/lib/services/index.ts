@@ -46,4 +46,5 @@ export * from './user-agent/user-agent.service';
 export * from './ya-map/ya-map.service';
 export * from './ya-metric/ya-metric.service';
 export * from './constants.service';
+export * from './catalog-tabs/catalog-tabs.service';
 

@@ -60,3 +60,4 @@ export * from './validation-show';
 export * from './vehicle';
 export * from './verifying-status';
 export * from './width-height';
+export * from './catalog';

@@ -1,0 +1,22 @@
+<div class="select-container" libClickOutside (clickOutside)="toggleList(false)">
+  <div class="selected-item small-text" (click)="toggleList(true)">{{'LANG.' + activeItem | libTranslate}}</div>
+
+  <div *ngIf="showList" class="lang-list">
+    <div class="lang-list__item" (click)="toggleList(false)">
+      <div class="lang-ist__item-content small-text flex-container align-items-center">
+        <img src="{{staticDomainLibAssetsPath}}svg/languages/{{activeItem}}.svg" alt="" class="mr-8">
+        <span>{{'LANG.' + activeItem | libTranslate}}</span>
+      </div>
+    </div>
+    <ng-container *ngFor="let lang of languages">
+      <div *ngIf="lang !== activeItem"
+           (click)="selectLang(lang)"
+           class="lang-list__item">
+        <div class="lang-ist__item-content small-text flex-container align-items-center">
+          <img src="{{staticDomainLibAssetsPath}}svg/languages/{{lang}}.svg" alt="" class="mr-8">
+          <span>{{'LANG.' + lang | libTranslate}}</span>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

@@ -198,16 +198,8 @@
   color: #000000;
 }
 
-.light-gray {
-  color: #979CA1;
-}
-
 .gray {
   color: #626a73;
-}
-
-.light-gray {
-  color: #979CA1;
 }
 
 .dark-gray {
@@ -220,6 +212,10 @@
 
 .light-gray {
   color: #a8acb1;
+}
+
+.new-light-gray {
+  color: #D1D5DF;
 }
 
 .green {
@@ -284,7 +280,7 @@
     color: #0B1F33;
 
     &.red {
-      color: #DF0024;
+      color: #E11432;
     }
 
     &.white {
@@ -307,19 +303,23 @@
     color: #0D4CD3;
   }
 
+  .base-gray {
+    color: #0B1F33;
+  }
+
   .gray {
     color: #66727F;
   }
 
   .red {
-    color: #DF0024;
+    color: #E11432;
   }
 
   .link-plain {
     color: #0D4CD3;
 
     &:hover {
-      color: #0B40B3;
+      color: #1D5DEB;
     }
   }
 

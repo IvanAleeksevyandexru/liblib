@@ -1,19 +1,11 @@
 import { Component, OnInit, OnDestroy, Input, Inject, ViewChild, ElementRef, ChangeDetectorRef, Renderer2 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Notifier, NotifierSetting, NotifierType } from '../../models/notifier.model';
+import { Notifier, NotifierSetting, NotifierType, NOTIFIER_DEFAULT_SETTING } from '../../models/notifier.model';
 import { NotifierService } from '../../services/notifier/notifier.service';
 import { AnimationBuilder, style, animate } from '@angular/animations';
 import { HelperService } from '../../services/helper/helper.service';
 
-const DEFAULT_SETTING = {
-  singleNotifier: false, // эквивалент maxNotificationsCount = 1
-  removeDelay: 5000, // null - никогда, 0 - мгновенно, другое число - задержка (мс)
-  maxNotificationsCount: 5, // размер очереди сообщений
-  showCloseAllCount: 0, // 0 - никогда, 1 - всегда, более 1 - при определенном количестве и более
-  theme: 'dark',
-  align: 'left',
-  animated: true
-};
+
 const ANIMATION_TIME = 200;
 
 @Component({
@@ -42,7 +34,7 @@ export class NotifierComponent implements OnInit, OnDestroy {
   ) { }
 
   public ngOnInit() {
-    this.setting = Object.assign(DEFAULT_SETTING, this.setting);
+    this.setting = Object.assign(NOTIFIER_DEFAULT_SETTING, this.setting);
 
     this.subscription = this.notifierService.onNotifier(this.id)
       .subscribe(notifier => {
@@ -137,6 +129,11 @@ export class NotifierComponent implements OnInit, OnDestroy {
 
   public cancelNotifier(notifier: Notifier) {
     notifier.onCancel();
+    this.removeNotifier(notifier);
+  }
+
+  public actionNotifier(notifier: Notifier) {
+    notifier.onAction();
     this.removeNotifier(notifier);
   }
 }

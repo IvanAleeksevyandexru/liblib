@@ -1,0 +1,20 @@
+<svg width="25" height="26" viewBox="0 0 25 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="26">
+    <circle cx="12.5" cy="13" r="12.1528" fill="#C4C4C4" stroke="#E1E1E1" stroke-width="0.694444"/>
+  </mask>
+  <g mask="url(#mask0)">
+    <path d="M0 0.481445H37.5V13.0001H0V0.481445Z" fill="#FAFCFF"/>
+    <path d="M0 13H37.5V25.5187H0V13Z" fill="#D52B1E"/>
+    <path d="M0 8.93213H37.5V17.3822H0V8.93213Z" fill="#0039A6"/>
+    <path d="M-11.5 1V25H36.5V1H-11.5Z" fill="#00247D"/>
+    <path d="M-11.5 1L36.5 25L-11.5 1ZM36.5 1L-11.5 25L36.5 1Z" fill="black"/>
+    <path d="M36.5 1L-11.5 25M-11.5 1L36.5 25L-11.5 1Z" stroke="white" stroke-width="4.8"/>
+    <path d="M-11.5 1L36.5 25L-11.5 1ZM36.5 1L-11.5 25L36.5 1Z" fill="black"/>
+    <path d="M36.5 1L-11.5 25M-11.5 1L36.5 25L-11.5 1Z" stroke="#CF142B" stroke-width="3.2"/>
+    <path d="M12.5 1V25V1ZM-11.5 13H36.5H-11.5Z" fill="black"/>
+    <path d="M-11.5 13H36.5M12.5 1V25V1Z" stroke="white" stroke-width="8"/>
+    <path d="M12.5 1V25V1ZM-11.5 13H36.5H-11.5Z" fill="black"/>
+    <path d="M-11.5 13H36.5M12.5 1V25V1Z" stroke="#CF142B" stroke-width="4.8"/>
+  </g>
+  <circle cx="12.5" cy="13" r="12.1528" stroke="#E1E1E1" stroke-width="0.694444"/>
+</svg>

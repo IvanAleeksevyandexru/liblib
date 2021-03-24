@@ -171,6 +171,13 @@
       left: 0;
       right: 0;
       overflow-y: auto;
+
+      .menu-items-wrap {
+        display: flex;
+        flex-direction: column;
+        height: calc(100% - 50px);
+        justify-content: space-between;
+      }
     }
   }
 
@@ -200,22 +207,7 @@
   background: #fff;
   z-index: 10;
   display: none;
-  //::ng-deep perfect-scrollbar {
-  //  max-height: calc(100vh - 70px);
-  //  .ps {
-  //    &.ps--active-y {
-  //      .ps__rail-y {
-  //        opacity: 1;
-  //        background-color: white;
-  //        width: 8px;
-  //        .ps__thumb-y {
-  //          width: 7px;
-  //          background-color: #E9ECEE;
-  //        }
-  //      }
-  //    }
-  //  }
-  //}
+
   &.container {
     //padding-right: 13px;
     .menu-header {
@@ -382,10 +374,8 @@ $PAD: 768px;
       padding-top: 0;
     }
     .bottom-block {
-      position: fixed;
       width: 100%;
       background: #fff;
-      bottom: 0;
     }
   }
 }
@@ -404,10 +394,15 @@ $PAD: 768px;
         left: auto;
         top: -24px;
         border-radius: 12px;
+
         &.left {
           right: auto;
           left: 0;
         }
+        .menu-items-wrap {
+          display: block;
+        }
+
       }
     }
     .content-overlay {
