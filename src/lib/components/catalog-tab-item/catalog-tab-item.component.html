@@ -30,9 +30,14 @@
                   </ng-container>
                 </ng-container>
                 <ng-container *ngIf="code === 'other' && otherPopular && otherPopular.length">
-                  <section class="catalog-title-popular-wrap" *ngFor="let item of otherPopular ">
-                    <h4 class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular catalog-other-popular">
-                      {{item.title}}
+                  <section class="catalog-title-popular-wrap" *ngFor="let item of otherPopular">
+                    <h4
+                      class="flex-container title-h6 mt-lg-48 mt-sm-40 mt-md-40 catalog-title-popular catalog-other-popular"
+                    >
+                      <span *ngIf="item.icons[0]?.path" class="catalog-other-popular-icon mr-12">
+                        <img [src]="item.icons[0]?.path" alt="">
+                      </span>
+                      <span>{{item.title}}</span>
                     </h4>
                     <div *ngFor="let passport of item.passports | slice:0:(item.otherPopularMore ? undefined : itemsCounter)">
                       <h5 (click)="goToPopular(passport)" class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 pointer">
@@ -135,8 +140,12 @@
           let-isFirst="isFirst"
           let-department="department">
             <h4 [class.department-column-start-header]="isFirst"
-                class="title-h6 mt-lg-48 mt-sm-32 mt-md-32 catalog-title-popular catalog-other-popular">
-                  {{department.categoryName}}</h4>
+                class="flex-container title-h6 mt-sm-40 mt-lg-48 mt-md-40 catalog-title-popular catalog-other-popular">
+                  <span *ngIf="department.icons[0]?.path" class="catalog-other-popular-icon mr-12">
+                      <img [src]="department.icons[0]?.path" alt="">
+                  </span>
+                  <span>{{department.categoryName}}</span>
+            </h4>
             <div *ngFor="let departmentPassport of department.passports | slice:0:(department.more ? undefined : 3)">
               <h5 (click)="goToDepartment(departmentPassport)" class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 pointer">
                 {{departmentPassport.shortName || departmentPassport.passportTitle}}
