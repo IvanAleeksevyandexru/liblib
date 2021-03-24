@@ -115,7 +115,7 @@
           </ul>
         </div>
       </div>-->
-      <div class="avatar-n-location-container flex-container align-items-center"
+      <div class="avatar-n-location-container flex-container justify-end align-items-center"
            [class.catalog-menu-opened]="menuCatalogOpened">
         <div class="hide show-lg ml-lg-64">
           <lib-location-select skinTheme="red"></lib-location-select>
@@ -147,7 +147,6 @@
             </lib-user-menu>
           </div>
         </div>
-
         <div *ngIf="languageChangeAvailable" class="ml-16">
           <lib-language-select></lib-language-select>
         </div>
