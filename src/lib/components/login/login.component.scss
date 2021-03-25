@@ -56,7 +56,7 @@ lib-button {
 
 .authorized-user {
   position: relative;
-  max-width: 160px;
+  max-width: 326px;
   height: 38px;
   border-top: none;
   padding-top: 0;
@@ -64,7 +64,8 @@ lib-button {
   cursor: pointer;
 
   .user-data {
-    max-width: 32vw;
+    max-width: 256px;
+    padding-right: 70px;
   }
 
   .counter-circle {
@@ -125,19 +126,19 @@ lib-button {
   }
 
   .name {
-    position: relative;
-    padding-right: 70px;
     font-size: 14px;
     line-height: 20px;
 
     &:before {
       content: '';
+      display: inline-block;
       position: absolute;
-      top: 8px;
-      right: 0;
+      background: url(../../../assets/svg/arrows/arrow_gosblue.svg) no-repeat 0 0;
+      background-size: cover;
       width: 10px;
       height: 6px;
-      background: url(../../../assets/svg/arrows/arrow_gosblue.svg) no-repeat 0 0;
+      top: 16px;
+      right: 0;
     }
   }
 

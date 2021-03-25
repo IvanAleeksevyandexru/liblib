@@ -2,7 +2,7 @@ html {
   height: 100%;
   overflow-x: hidden;
 
-  &.disable-scroll, &.menu-catalog-opened {
+  &.disable-scroll {
     overflow: hidden;
   }
   &.menu-catalog-opened {
