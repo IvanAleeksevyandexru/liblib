@@ -8,8 +8,7 @@
     <a [routerLink]="openDetails(feed)"
        (click)="onFeedClick($event, feed)"
        class="feed-item"
-       [ngClass]="setFeedItemCls(feed)"
-       *ngFor="let feed of feeds ; trackBy: trackById; let i = index; ">
+       [ngClass]="setFeedItemCls(feed)">
 
       <ng-container
         [ngTemplateOutlet]="feedTemplate"
@@ -21,8 +20,7 @@
     <a [href]="openDetails(feed)"
        (click)="onFeedClick($event, feed)"
        class="feed-item"
-       [ngClass]="setFeedItemCls(feed)"
-       *ngFor="let feed of feeds ; trackBy: trackById; let i = index; ">
+       [ngClass]="setFeedItemCls(feed)">
 
       <ng-container
         [ngTemplateOutlet]="feedTemplate"
