@@ -267,7 +267,7 @@ export class FeedsGepsComponent implements OnInit, OnChanges, OnDestroy {
 
   private injectBanners(feeds: FeedItemModel[]): FeedItemModel[] {
     const part: FeedItemModel[] = [].concat(feeds);
-    if (part.length > 1) {
+    if (part.length > 0) {
       const banner = this.getActualBanner();
       if (banner) {
         if (part.length > 3) {
