@@ -83,7 +83,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public ngOnInit() {
     if (!this.links.length) {
-      this.links = this.menuService.getUserMenuLinks();
+      this.links = this.menuService.getUserMenuDefaultLinks();
     }
     this.user = this.loadService.user as User;
     this.userRoles = this.menuService.getUserRoles(this.user);
