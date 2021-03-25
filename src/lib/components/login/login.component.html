@@ -1,7 +1,12 @@
-<div *ngIf="user.authorized; else loginLink" class="authorized-user flex-container-md justify-end-md align-items-center"
-  (click)="userClicked()" [class.hide-arrow]="menuOpened">
+<div *ngIf="user.authorized; else loginLink"
+     class="authorized-user flex-container-md justify-end-md align-items-center"
+     (click)="userClicked()"
+     [class.hide-arrow]="menuOpened">
   <div *ngIf="(loadService.avatar | async) as avatar" class="avatar-wrapper">
-    <img *ngIf="avatar.url && !avatarError; else noAvatar" class="avatar" [src]="avatar.url" (error)="avatarError = true" alt="" />
+    <img *ngIf="avatar.url && !avatarError; else noAvatar"
+         class="avatar" [src]="avatar.url"
+         (error)="avatarError = true"
+         alt="" />
     <ng-template #noAvatar>
       <div
         class="no-avatar"

@@ -32,6 +32,7 @@
       .list-item-wrap {
         cursor: pointer;
         padding: 12px 16px;
+        display: block;
 
         &:first-of-type, &:first-of-type:hover {
           border-radius: 12px 12px 0 0;
