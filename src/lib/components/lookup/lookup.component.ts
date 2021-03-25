@@ -132,6 +132,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   // включает-отключает возможность выбирать группировочные элементы
   @Input() public virtualGroups = true;
 
+  @Input() public removeTags = false;
+
   // источник значений в виде фиксированного списка
   // ListElement-ы лукап может использовать нативно, any работает через конвертер
   @Input() public fixedItems: Array<ListElement | any> = [];
@@ -398,6 +400,10 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     }
   }
 
+  public removeQueryTags(query: string): string {
+    return query.replace(/<[^>]*>/g, '\n');
+  }
+
   public runSearchOrIncrementalSearch(rootSearch: boolean, queryOrMarker: string | {}, callback?: () => void) {
     if (rootSearch && this.searching || !rootSearch && (this.searching || this.partialsLoading)) {
       return;
@@ -405,7 +411,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
     const provider = this.itemsProvider ? this.itemsProvider : this.fixedItemsProvider.setSource(this.internalFixedItems);
     const config = this.createSearchConfiguration(queryOrMarker === SHOW_ALL_MARKER);
-    const query = queryOrMarker === SHOW_ALL_MARKER ? '' : queryOrMarker as string;
+    let query = queryOrMarker === SHOW_ALL_MARKER ? '' : queryOrMarker as string;
     let promiseOrObservable = null;
     if (this.incrementalLoading) {
       promiseOrObservable = (provider as LookupPartialProvider).searchPartial(query, this.partialPageNumber, config);
@@ -413,6 +419,9 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
       if (this.prevQuery === this.query && this.cachedResponse) {
         this.openDropdown();
         return;
+      }
+      if(this.removeTags && query) {
+        query = this.removeQueryTags(query);
       }
       promiseOrObservable = (provider as LookupProvider).search(query, config);
     }
