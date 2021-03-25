@@ -30,10 +30,12 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Input() public cachedResponse?: boolean;
   @Input() public staticList?: boolean;
   @Input() public mainPageStyle = false;
+  @Input() public removeTags = false;
   @Input() public hideSearchResult = false;
   @Input() public setFocus = false;
   @Input() public setSearchValue = '';
   @Input() public disableSputnikData = false;
+  @Input() public highlightSubstring = true;
   @Input() public searchQuery = '';
   // активация автоматического перевода с английского
   @Input() public enableLangConvert = false;
