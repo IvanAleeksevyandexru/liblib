@@ -88,8 +88,7 @@
               <a *ngFor="let role of userRoles; let first = first"
                  class="list-item-wrap"
                  [class.active]="role.code === activeRoleCode"
-                 [href]="role.url"
-                 (click)="updateRole(role.code)">
+                 (click)="updateRole(role.code, role.url)">
                 <div class="list-item link-plain"
                    [ngClass]="{'ml-40': !first}">{{role.name}}</div>
               </a>

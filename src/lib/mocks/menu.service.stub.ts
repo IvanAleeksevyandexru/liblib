@@ -112,7 +112,7 @@ export class MenuServiceStub {
     }];
   }
 
-  public getUserMenuLinks(): MenuLink[] {
+  public getUserMenuDefaultLinks(): MenuLink[] {
     return this.getLinks();
   }
 

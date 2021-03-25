@@ -30,7 +30,10 @@
       "PERMISSIONS": "Согласия",
       "HELP": "Помощь",
       "HELP_SUPPORT": "Помощь и поддержка",
-      "DIGITAL_ASSISTANT": "Цифровой ассистент"
+      "DIGITAL_ASSISTANT": "Цифровой ассистент",
+      "PARTNERS_ORDERS": "Уведомления",
+      "SUBSCRIPTIONS": "Подписки",
+      "HISTORY": "История операций"
     },
     "CATALOG": {
       "ALL": "Весь каталог",

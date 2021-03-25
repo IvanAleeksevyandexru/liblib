@@ -156,7 +156,7 @@ export class ConstantsService {
   public readonly LK_PARTNERS_TABS = new Tabs([
     {
       id: 'partners',
-      name: 'TABS.ORDERS.TITLE',
+      name: 'TABS.PARTNERS_ORDERS.TITLE',
       url: '/lk/orders/all',
       mnemonic: 'partnersOrders'
     }, {
