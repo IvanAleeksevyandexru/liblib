@@ -162,8 +162,11 @@ export class HeaderComponent implements OnInit, OnChanges {
     } as UserMenuState;
   }
 
-  public updateRole(code: string): void {
-    this.activeRoleCode = code;
+  public updateRole(code: string, url: string): void {
+    if (this.activeRoleCode !== code) {
+      this.activeRoleCode = code;
+      window.location.href = url;
+    }
   }
 
   public backClickHandler(): void {
