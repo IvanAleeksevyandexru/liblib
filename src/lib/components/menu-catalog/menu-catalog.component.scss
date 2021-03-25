@@ -11,7 +11,21 @@
   display: block;
   padding: 16px;
   color: #fff;
+  position: relative;
   background: linear-gradient(133.89deg, #322D6F 20.92%, #191240 81.4%);
+  &:after{
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    transform: rotateZ(-270deg);
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    pointer-events: none;
+    margin-top: -5px;
+    background: url('../../../assets/svg/arrow-opened-white.svg') 50% 50% no-repeat;
+  }
 }
 .content-overlay {
   transform: rotate3d(0,0,0,0deg);
