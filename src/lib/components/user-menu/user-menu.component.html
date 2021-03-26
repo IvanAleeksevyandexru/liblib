@@ -26,7 +26,7 @@
                      class="text-plain"
                      (click)="menuStaticItemClick(link.title, link.mnemonic)">{{link.title | libTranslate}}</a>
                 </div>
-                <lib-counter class="counter" [counter]="userCounter"></lib-counter>
+                <lib-counter *ngIf="needCounter(link.mnemonic)" class="counter" [counter]="getKindOfCounter(link.mnemonic)"></lib-counter>
               </li>
             </ng-container>
           </ng-container>
