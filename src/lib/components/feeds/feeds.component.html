@@ -3,8 +3,8 @@
               [defaultHeaders]="!isHeader">
 </lib-throbber>
 
-<ng-container *ngFor="let feed of feeds ; trackBy: trackById; let i = index; ">
-  <ng-container *ngIf="withReload(feed)">
+<ng-container *ngFor="let feed of feeds ; trackBy: trackById; let i = index;">
+  <ng-container *ngIf="!withReload(feed)">
     <a [routerLink]="openDetails(feed)"
        (click)="onFeedClick($event, feed)"
        class="feed-item"
@@ -16,7 +16,7 @@
     </a>
   </ng-container>
 
-  <ng-container *ngIf="!withReload(feed)">
+  <ng-container *ngIf="withReload(feed)">
     <a [href]="openDetails(feed)"
        (click)="onFeedClick($event, feed)"
        class="feed-item"
