@@ -224,6 +224,7 @@ export class HeaderComponent implements OnInit, OnChanges {
 
   public onMenuCatalogClick(menuCatalogOpened: boolean) {
     this.menuCatalogOpened = menuCatalogOpened;
+    (document.getElementsByTagName('html')[0] as HTMLElement).style.overflowY = menuCatalogOpened ? 'hidden' : 'auto';
     if (menuCatalogOpened) {
       this.hideUserMenu();
     }
