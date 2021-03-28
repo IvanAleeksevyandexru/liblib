@@ -26,53 +26,10 @@
                      class="text-plain"
                      (click)="menuStaticItemClick(link.title, link.mnemonic)">{{link.title | libTranslate}}</a>
                 </div>
-                <lib-counter class="counter" [counter]="userCounter"></lib-counter>
+                <lib-counter *ngIf="needCounter(link.mnemonic)" class="counter" [counter]="getKindOfCounter(link.mnemonic)"></lib-counter>
               </li>
             </ng-container>
           </ng-container>
-          <!--<ng-template #defaultLink>
-            &lt;!&ndash;<li class="item justify-between align-items-center">
-              <div class="flex-container">
-                <div class="icon bell"></div>
-                <a [href]=""
-                   class="text-plain"
-                   (click)="menuStaticItemClick('HEADER.MENU.NOTIFICATIONS', 'notifications')">{{'HEADER.MENU.NOTIFICATIONS' | libTranslate}}</a>
-              </div>
-              <lib-counter class="counter" [counter]="userCounter"></lib-counter>
-            </li>&ndash;&gt;
-            &lt;!&ndash;<li class="item">
-              <div class="flex-container">
-                <div class="icon edit"></div>
-                <a [href]=""
-                   class="text-plain"
-                   (click)="menuStaticItemClick('HEADER.MENU.ORDERS', 'orders')">{{'HEADER.MENU.ORDERS' | libTranslate}}</a>
-              </div>
-            </li>&ndash;&gt;
-            &lt;!&ndash;<li class="item">
-              <div class="flex-container">
-                <div class="icon wallet"></div>
-                <a [href]=""
-                   class="text-plain"
-                   (click)="menuStaticItemClick('HEADER.MENU.PAYMENT', 'payment')">{{'HEADER.MENU.PAYMENT' | libTranslate}}</a>
-              </div>
-            </li>&ndash;&gt;
-            &lt;!&ndash;<li class="item">
-              <div class="flex-container">
-                <div class="icon doc"></div>
-                <a [href]=""
-                   class="text-plain"
-                   (click)="menuStaticItemClick('HEADER.MENU.DOCS', 'docs')">{{'HEADER.MENU.DOCS' | libTranslate}}</a>
-              </div>
-            </li>&ndash;&gt;
-            &lt;!&ndash;<li class="item">
-              <div class="flex-container">
-                <div class="icon hand-break"></div>
-                <a [href]=""
-                   class="text-plain"
-                   (click)="menuStaticItemClick('HEADER.MENU.PERMISSIONS', 'permissions')">{{'HEADER.MENU.PERMISSIONS' | libTranslate}}</a>
-              </div>
-            </li>&ndash;&gt;
-          </ng-template>-->
         </ul>
       </div>
       <div class="separator hide show-md"></div>
