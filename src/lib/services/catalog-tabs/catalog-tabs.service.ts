@@ -3,6 +3,7 @@ import { Observable, of } from 'rxjs';
 import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
 import {
+  CatalogData,
   Departments,
   FaqCategories,
   FaqCategoriesCMS,
@@ -16,8 +17,8 @@ import {
 })
 export class CatalogTabsService {
 
-  public catalogTabsData: any = {};
-  public catalogTabsList: any;
+  public catalogTabsData: {[key: string]: any} = {};
+  public catalogTabsList: CatalogData[];
   public departmentsData: Departments[];
 
   constructor(
@@ -26,7 +27,7 @@ export class CatalogTabsService {
   ) {
   }
 
-  public storeCatalogData(data: any, code: string): void {
+  public storeCatalogData(data: [PopularFederal, RegionalPopular[], Departments[], FaqCategoriesCMS[]], code: string): void {
     this.catalogTabsData[code] = data;
   }
 

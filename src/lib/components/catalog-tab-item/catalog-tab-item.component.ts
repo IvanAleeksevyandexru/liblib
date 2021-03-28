@@ -19,8 +19,8 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { LocationService } from '../../services/location/location.service';
 import { LoadService } from '../../services/load/load.service';
 import {
-  Children,
-  Departments, FaqCategories, FaqCategoriesCMS,
+  Children, DepartmentPassport,
+  Departments, FaqCategories, FaqCategoriesCMS, FaqCategoriesCMSFaq,
   FaqCategoriesItem,
   PassportChildren,
   PopularFederal,
@@ -44,11 +44,10 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   public departmentsData: Departments[];
   public otherPopular: Children[];
   public regionPopular: RegionalPopular[];
-  public faqsMore: any;
-  public popularMore: any;
+  public popularMore: undefined | number;
   public faqs: FaqCategoriesCMS[];
   public backTitle: string;
-  public itemsCounter: number;
+  public itemsCounter: undefined | number;
 
   public loaded: boolean;
   public regionName = this.locationService.userSelectedRegionName;
@@ -59,8 +58,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     private sharedService: SharedService,
     private gosbarService: GosbarService,
     private locationService: LocationService,
-    public loadService: LoadService,
-    private router: Router
+    public loadService: LoadService
   ) {
   }
 
@@ -159,7 +157,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  public createFaqs(faqsData: any): void {
+  public createFaqs(faqsData: FaqCategoriesCMS[]): void {
     let children = [];
     let faqs = [];
     faqsData.forEach((item) => {
@@ -187,7 +185,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     this.subCatalogClose.emit();
   }
 
-  public toggleFaqsQuestions(item: any): void {
+  public toggleFaqsQuestions(item: FaqCategoriesCMSFaq): void {
     item.active = !item.active;
   }
 
@@ -201,7 +199,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     this.catalogClose.emit();
   }
 
-  public goToPopular(item: any): void {
+  public goToPopular(item: PassportChildren | RegionalPopular): void {
     const link = item.epguPassport ? `/group/${item.epguId}` : `${item.epguId}`;
     this.catalogClose.emit();
     location.href = link;
@@ -210,7 +208,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   public ngOnDestroy() {
   }
 
-  public goToDepartment(departmentPassport: any): void {
+  public goToDepartment(departmentPassport: DepartmentPassport): void {
     location.href = `${this.loadService.config.betaUrl}${departmentPassport.url}`;
   }
 }

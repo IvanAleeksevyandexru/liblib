@@ -173,3 +173,13 @@ export interface FaqCategoriesCMSFaq {
   shortQuestion?: string;
   active?: boolean;
 }
+
+export interface CatalogData{
+  ico: string;
+  title: string;
+  code: string;
+  active?: boolean;
+  mainActive?: boolean;
+  sideActive?: boolean;
+  viewType?: string;
+}
