@@ -4,7 +4,7 @@ import {
   EventEmitter,
   HostListener,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy,
   OnInit,
   Output, SimpleChanges,
   ViewChild
@@ -14,14 +14,15 @@ import { ListItem, ListItemConverter } from '../../models/dropdown.model';
 import { LookupComponent } from '../lookup/lookup.component';
 import { SearchService } from '../../services/search/search.service';
 import { LoadService } from '../../services/load/load.service';
-import { ConstantsService } from '../../services';
+import { ConstantsService, SharedService } from '../../services';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'lib-search-sputnik',
   templateUrl: './search-sputnik.component.html',
   styleUrls: ['./search-sputnik.component.scss']
 })
-export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges {
+export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
   @Input() public hideToIcon = false;
   @Input() public placeholder = 'Например: пособие 3-7 лет подробнее';
@@ -65,6 +66,8 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
     return (item?.originalItem) || null;
   });
 
+  private sharedSubscription: Subscription;
+
   @ViewChild('searchBox') private searchBox;
   @ViewChild('lookup') public lookup: LookupComponent;
 
@@ -74,11 +77,13 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
     }
   }
 
-  constructor(private searchService: SearchService,
-              private loadService: LoadService) { }
+  constructor(
+    private searchService: SearchService,
+    private loadService: LoadService,
+    public sharedService: SharedService,
+  ) { }
 
   public ngOnInit() {
-
     if (this.hideToIcon) {
       this.showField = false;
     }
@@ -87,6 +92,11 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
         this.placeholder = placeholder;
       });
     }
+    this.sharedSubscription = this.sharedService.on('clearSearch').subscribe((val) => {
+      if (val) {
+        this.lookup.query = '';
+      }
+    });
   }
 
   public ngAfterViewInit() {}
@@ -101,6 +111,10 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
     if (stopSearch && !stopSearch.currentValue && !stopSearch.firstChange) {
       this.lookup.lookupItems(this.searchQuery, true);
     }
+  }
+
+  public ngOnDestroy(): void {
+    this.sharedSubscription.unsubscribe();
   }
 
   public toggleMagnifyingGlass() {

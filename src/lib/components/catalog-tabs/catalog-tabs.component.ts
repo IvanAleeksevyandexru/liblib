@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { LoadService } from '../../services/load/load.service';
 import { SharedService } from '../../services/shared/shared.service';
 import { Subscription } from 'rxjs';
+import { CatalogData } from '../../models/catalog';
 
 @Component({
   selector: 'lib-catalog-tabs',
@@ -10,7 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class CatalogTabsComponent implements OnInit, OnDestroy {
 
-  @Input() public catalog: any;
+  @Input() public catalog: CatalogData[];
   @Input() public mobile: boolean;
 
   public showCatalogTabItem: boolean;

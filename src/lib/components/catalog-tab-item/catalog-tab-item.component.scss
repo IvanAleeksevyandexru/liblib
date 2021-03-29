@@ -55,6 +55,13 @@
 .uppercase{
   text-transform: uppercase;
 }
+::ng-deep {
+  .sub-catalog .side-view .scroll-container .ps,
+  .departments-wrap .ps,
+  .catalog-tab-wrap .catalog-tab-item-wrap.main-page-view .scroll-container .ps {
+    padding-right: 24px;
+  }
+}
 @media all and (min-width: 1140px) {
   .side-view{
     .all-departments{
@@ -66,11 +73,11 @@
     color: #1d5deb;
   }
   ::ng-deep{
-    .sub-catalog .side-view .scroll-container .ps,
+    /*.sub-catalog .side-view .scroll-container .ps,
     .departments-wrap .ps,
     .catalog-tab-wrap .catalog-tab-item-wrap.main-page-view .scroll-container .ps{
       padding-right: 24px;
-    }
+    }*/
     .faq-answer, .faq-answer p{
       color: #66727F;
       font-size: 16px;
@@ -182,10 +189,11 @@
       overflow: auto;
     }
     .catalog-tab-item {
-      padding: 89px 0 89px;
+      padding: 89px 0 0 0;
     }
     .scroll-container{
-      height: auto;
+      height: calc(100vh - 121px);
+      width: calc(100% + 16px);
     }
     .container-catalog-wrap{
       padding: 0 16px;

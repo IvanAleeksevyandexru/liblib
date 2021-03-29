@@ -6,6 +6,7 @@ import { MenuService } from "../../services/menu/menu.service";
 import { UserRole } from "../../models/menu-link";
 import { CatalogTabsService } from '../../services/catalog-tabs/catalog-tabs.service';
 import { SharedService } from '../../services/shared/shared.service';
+import { CatalogData } from '../../models/catalog';
 
 @Component({
   selector: 'lib-menu-catalog',
@@ -101,7 +102,7 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
     this.menuCatalogOpened.emit(this.showMenu);
   }
 
-  public catalogTabListItemClick(item: any) {
+  public catalogTabListItemClick(item: CatalogData) {
 
     this.showSubCatalog = false;
 
