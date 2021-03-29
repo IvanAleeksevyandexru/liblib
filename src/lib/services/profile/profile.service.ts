@@ -677,7 +677,7 @@ export class ProfileService {
           canDetails: true,
           canEdit: false,
           canDelete: !object.actRecordFound,
-          withVerificationIcon: object.actRecordFound,
+          withVerificationIcon: object.status === 'verified_by_request' || object.status === 'verified_by_push',
           detailsPath: object.actRecordFound ? `/profile/cert-extended/${object.id}` : `/profile/cert/${object.id ? object.id : ''}`,
           detailsQueryParam: {
             type: 'DIVORCE_CERT',
