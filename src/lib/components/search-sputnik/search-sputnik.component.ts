@@ -14,7 +14,8 @@ import { ListItem, ListItemConverter } from '../../models/dropdown.model';
 import { LookupComponent } from '../lookup/lookup.component';
 import { SearchService } from '../../services/search/search.service';
 import { LoadService } from '../../services/load/load.service';
-import { ConstantsService, SharedService } from '../../services';
+import { ConstantsService } from '../../services/constants.service';
+import { SharedService } from '../../services/shared/shared.service';
 import { Subscription } from 'rxjs';
 
 @Component({
