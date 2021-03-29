@@ -1,6 +1,14 @@
 export interface QuizAnswer {
   id: number;
   text: string;
+  max?: number;
+  min?: number;
+  orderNumber?: number;
+  otherAnswer?: boolean;
+  questionId?: number;
+  quizGroupId?: number;
+  quizId?: number;
+  type?: string;
 }
 
 export enum QuestionType {

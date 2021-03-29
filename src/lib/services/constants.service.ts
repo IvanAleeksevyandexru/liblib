@@ -156,7 +156,7 @@ export class ConstantsService {
   public readonly LK_PARTNERS_TABS = new Tabs([
     {
       id: 'partners',
-      name: 'TABS.ORDERS.TITLE',
+      name: 'TABS.PARTNERS_ORDERS.TITLE',
       url: '/lk/orders/all',
       mnemonic: 'partnersOrders'
     }, {
@@ -170,6 +170,35 @@ export class ConstantsService {
       url: '/lk/history',
       mnemonic: 'partnersHistory'
     }
+  ]);
+  public readonly PAYMENT_TABS_FL = new Tabs([
+    {
+      id: 'toPay',
+      name: 'К оплате',
+      url: '/pay'
+    },
+    {
+      id: 'quittance',
+      name: 'По квитанции',
+      url: '/pay/quittance'
+    },
+    {
+      id: 'withoutQuittance',
+      name: 'По реквизитам',
+      url: '/pay/withoutQuittance',
+      hidden: true
+    },
+    {
+      id: 'history',
+      name: 'История',
+      url: '/pay/paymentHistory'
+    },
+    {
+      id: 'hidden',
+      name: 'Скрытые',
+      url: '/pay/hidden',
+      hidden: true
+    },
   ]);
   public readonly LK_SETTINGS_SIDE_TABS = new Tabs ([
     {
@@ -987,4 +1016,10 @@ export class ConstantsService {
     'application/x-tar': 'TAR',
     'text/plain': 'TXT',
   };
+
+  public readonly CONVERT_LANG = {
+    RUS: {"q":"й","w":"ц","e":"у","r":"к","t":"е","y":"н","u":"г","i":"ш","o":"щ","p":"з","[":"х","{":"Х","]":"ъ","}":"Ъ",
+      "`":"ё","~":"Ё","a":"ф","s":"ы","d":"в","f":"а","g":"п","h":"р","j":"о","k":"л","l":"д",
+      "z":"я","x":"ч","c":"с","v":"м","b":"и","n":"т","m":"ь"}
+  }
 }

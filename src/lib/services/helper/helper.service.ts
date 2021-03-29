@@ -513,6 +513,10 @@ export class HelperService {
       HelperService.recoverProtocol(url).substring(HelperService.getCurrentHost().length) || '/' : url;
   }
 
+  public static langIsRus(lang: string): boolean {
+    return lang === 'ru';
+  }
+
   public static isUrlEqualToCurrent(url: string | {url: string, queryParams?: {[key: string]: string}}) {
     const urlIsCompound = HelperService.isObject(url);
     const baseUrl = url && urlIsCompound ? (url as any).url : url;

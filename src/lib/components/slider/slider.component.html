@@ -1,0 +1,29 @@
+<div class="slider-container">
+  <div class="list-container" #sliderContainer>
+    <div class="list-wrapper" #sliderWrapper>
+      <div class="list flex-container align-items-start" #sliderList
+           [ngStyle]="containerTransform ? {transform: containerTransform} : {}">
+        <div class="list-item"
+             *ngFor="let item of items; let i = index; let isFirst = first; let isLast = last;"
+             [style.marginLeft.px]="isFirst ? sidePadding : betweenOffset"
+             [style.marginRight.px]="isLast ? sidePadding : 0"
+             [style.width.px]="slideWidth"
+             (click)="onSelect(item)">
+          <ng-container *ngTemplateOutlet="contentTemplate; context: { item: item, index: i }"></ng-container>
+        </div>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!hideArrows">
+      <div class="control-wrapper control-wrapper__prev" [ngClass]="{ disabled: disableLeftArrow }">
+        <a (click)="showPrevious()"
+           class="slider-arrow slider-arrow__prev"></a>
+      </div>
+      <div class="control-wrapper control-wrapper__next" [ngClass]="{ disabled: disableRightArrow }">
+        <a (click)="showNext()"
+           class="slider-arrow slider-arrow_next"></a>
+      </div>
+    </ng-container>
+  </div>
+
+</div>

@@ -56,7 +56,8 @@
     .clear-icon {
       right: 40px;
       outline: none;
-      background: url(../../../assets/svg/input-clean.svg) 3px 11px no-repeat;
+      background: url(../../../assets/svg/input-clean.svg) 3px 8px no-repeat;
+      background-size: contain;
     }
     .focusable-input {
       position: absolute;

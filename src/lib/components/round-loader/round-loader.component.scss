@@ -1,0 +1,13 @@
+.loader {
+  width: 24px;
+  height: 24px;
+  background: url(../../../assets/svg/small-round-loader.svg) center no-repeat;
+  animation: rotate 1.5s linear infinite;
+  margin: auto;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}

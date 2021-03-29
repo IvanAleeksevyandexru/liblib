@@ -52,6 +52,8 @@ export class MenuComponent implements OnInit, AfterViewInit {
   public showMenuBtns = this.loadService.config.showMenuBtns;
   public isMainPage = this.checkMainPage();
 
+  private staticUrls: object;
+
   @ViewChild('menu') public menu;
 
   @HostListener('document:scroll') public onScroll() {
@@ -91,8 +93,9 @@ export class MenuComponent implements OnInit, AfterViewInit {
 
   public ngOnInit() {
     if (!this.links.length) {
-      this.links = this.menuService.getLinks();
+      this.links = this.menuService.getUserMenuDefaultLinks();
     }
+    this.staticUrls = this.menuService.getStaticItemUrls();
     this.user = this.loadService.user;
     this.initUserMenuState();
   }
@@ -156,7 +159,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const url = link.url;
+    const url = this.staticUrls[link.title];
     const isAbsUrl = /^(http|\/\/)/.test(url);
 
     if (url && this.translate.currentLang !== 'ru') {

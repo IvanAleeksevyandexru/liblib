@@ -9,11 +9,12 @@ import {
   Output, SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { SearchSuggestion, SimpleSputnikSuggest } from '../../models/search';
+import { SimpleSputnikSuggest } from '../../models/search';
 import { ListItem, ListItemConverter } from '../../models/dropdown.model';
 import { LookupComponent } from '../lookup/lookup.component';
 import { SearchService } from '../../services/search/search.service';
 import { LoadService } from '../../services/load/load.service';
+import { ConstantsService } from '../../services';
 
 @Component({
   selector: 'lib-search-sputnik',
@@ -29,19 +30,35 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Input() public cachedResponse?: boolean;
   @Input() public staticList?: boolean;
   @Input() public mainPageStyle = false;
+  @Input() public removeTags = false;
   @Input() public hideSearchResult = false;
   @Input() public setFocus = false;
+  @Input() public setSearchValue = '';
+  @Input() public disableSputnikData = false;
+  @Input() public highlightSubstring = true;
+  @Input() public searchQuery = '';
+  // активация автоматического перевода с английского
+  @Input() public enableLangConvert = false;
+  // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
+  @Input() public stopSearch = false;
+  // ожидание (мс) до срабатывания поиска с последнего ввода символа
+  @Input() public queryTimeout = ConstantsService.DEFAULT_QUERY_DEBOUNCE;
+  // максимальная длинна введенной фразы
+  @Input() public maxLength = 400;
 
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
   @Output() public focused = new EventEmitter();
   @Output() public searchChanged = new EventEmitter();
+  @Output() public sputnikSearchResult = new EventEmitter();
+  @Output() public searchButtonClick = new EventEmitter<string>();
+  @Output() public blockedSearchClear = new EventEmitter();
   public showField = true;
 
   public searchItem: SimpleSputnikSuggest;
 
   public searchProvider = this.searchService;
-  public showMagnifyingGlass = true;
+  public showMagnifyingGlass = false;
   public converter = new ListItemConverter<SimpleSputnikSuggest>((item: SimpleSputnikSuggest, ctx: { [name: string]: any}): ListItem => {
     return new ListItem({ id: ctx.index, text: item.name, icon: '', url: item.link, lineBreak: item.lineBreak}, item);
   }, (item: ListItem): SimpleSputnikSuggest => {
@@ -72,12 +89,17 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
     }
   }
 
-  public ngAfterViewInit() {
-  }
+  public ngAfterViewInit() {}
 
-  public ngOnChanges({setFocus}: SimpleChanges) {
+  public ngOnChanges({setFocus, setSearchValue, stopSearch}: SimpleChanges) {
     if (setFocus && setFocus.currentValue) {
       this.lookup.setSearchBarFocus();
+    }
+    if (setSearchValue && setSearchValue.currentValue) {
+      this.lookup.setSearchBarFocus(setSearchValue.currentValue);
+    }
+    if (stopSearch && !stopSearch.currentValue && !stopSearch.firstChange) {
+      this.lookup.lookupItems(this.searchQuery, true);
     }
   }
 
@@ -134,9 +156,27 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   }
 
   public emptyResultHandler(resultLength: number): void {
-    if (resultLength === 0) {
-      document.location.href = this.loadService.config.betaUrl + '/search?query=' + encodeURIComponent(this.lookup.query);
+    // if (resultLength === 0) {
+    //   document.location.href = this.loadService.config.betaUrl + '/search?query=' + encodeURIComponent(this.lookup.query);
+    // }
+  }
+
+  public processSearchResult(list: ListItem[]): void {
+    if (!this.stopSearch) {
+      const originalList = list.map(item => item.originalItem);
+      this.sputnikSearchResult.emit({
+        query: this.lookup.query,
+        originalList
+      });
     }
+  }
+
+  public handleSearchButtonClick(query: string): void {
+    this.searchButtonClick.emit(query);
+  }
+
+  public clearBlocked(): void {
+    this.blockedSearchClear.emit();
   }
 
 }

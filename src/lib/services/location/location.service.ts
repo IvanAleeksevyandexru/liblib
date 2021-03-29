@@ -5,7 +5,7 @@ import { Coords, Region, RegionSuggestion } from '../../models/location';
 import { LookupProvider } from '../../models/dropdown.model';
 import { PlatformLocation } from '@angular/common';
 import { CountersService } from '../counters/counters.service';
-import { of } from 'rxjs';
+import { of, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
@@ -30,6 +30,7 @@ export class LocationService {
   };
 
   private savedDetectRegion: Region;
+  public savedDetectRegion$ = new BehaviorSubject<Region>(null);
 
   constructor(
     private http: HttpClient,
@@ -63,6 +64,7 @@ export class LocationService {
     }).pipe(
       tap((response) => {
         this.savedDetectRegion = response;
+        this.savedDetectRegion$.next(response);
       })
     );
   }
@@ -119,13 +121,14 @@ export class LocationService {
     );
   }
 
-  public regionCheck(checkId) {
+  public regionCheck(regionCode: string, checkId: string, checkTargetId: string) {
     return this.http.get(
-      `${this.loadService.config.nsiApiUrl}epgu/region/${this.loadService.attributes.selectedRegion}/service/${checkId}`,
+      `${this.loadService.config.nsiApiUrl}epgu/region/${regionCode}/service/${checkId}`,
       {
         withCredentials: true,
         params: {
-          _: `${Math.random()}`
+          _: `${Math.random()}`,
+          epguCode: checkTargetId,
         }
       }
     );

@@ -1,8 +1,8 @@
 <nav class="nav" *ngIf="innerTabs?.visible !== false" [ngClass]="{'nav-flex': responsive}" libClickOutside (clickOutside)="showMobTabs = false">
   <div class="tabs-box">
     <ul class="mob-tabs" [ngClass]="{'opened': showMobTabs}" *ngIf="responsive">
-      <li class="tab-wrapper" *ngIf="activeTab">
-        <span class="tab-item selected-tab-item small-text" (click)="toggleTabsList($event)">
+      <li class="tab-wrapper selected-item-wrapper" *ngIf="activeTab" (click)="toggleTabsList($event)">
+        <span class="tab-item selected-tab-item small-text">
           <ng-container [ngTemplateOutlet]="tabTpl" [ngTemplateOutletContext]="{tab: activeTab}"></ng-container>
         </span>
       </li>

@@ -1,5 +1,7 @@
-import { Component, ViewChild, ElementRef, HostListener, Input, Output, EventEmitter, SimpleChanges,
-  OnInit, OnChanges, DoCheck, AfterViewInit, OnDestroy, ChangeDetectorRef, forwardRef, Optional, Host, SkipSelf } from '@angular/core';
+import {
+  Component, ViewChild, ElementRef, HostListener, Input, Output, EventEmitter, SimpleChanges,
+  OnInit, OnChanges, DoCheck, AfterViewInit, OnDestroy, ChangeDetectorRef, forwardRef, Optional, Host, SkipSelf, ChangeDetectionStrategy
+} from '@angular/core';
 import { ControlValueAccessor, ValidationErrors, AbstractControl, ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { StandardMaskedInputComponent } from '../standard-masked-input/standard-masked-input.component';
@@ -57,6 +59,7 @@ class ParsingResult<T> {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-date-picker',
   templateUrl: 'date-picker.component.html',
   styleUrls: ['./date-picker.component.scss'],
@@ -178,6 +181,8 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   public minimumDate = this.getMinimumDate();
   public maximumDate = this.getMaximumDate();
 
+  private destroyed = false;
+
   @ViewChild('input') public inputElement: StandardMaskedInputComponent;
   @ViewChild('calendarContainer') public calendarContainer: ElementRef;
   @ViewChild('fieldContainer', {static: false}) public fieldContainer: ElementRef;
@@ -233,6 +238,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   }
 
   public ngOnDestroy() {
+    this.destroyed = true;
     this.detachDescriptors();
   }
 
@@ -449,6 +455,9 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
 
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
+    if (!this.destroyed) {
+      this.changeDetection.detectChanges();
+    }
   }
 
   public handleBlur() {

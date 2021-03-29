@@ -11,8 +11,9 @@
       "DOCS": "Документы",
       "SERVICES": "Услуги",
       "PAYMENT": "Платежи",
-      "SUPPORT": "Поддержка",
       "PROFILE": "Профиль",
+      "SUPPORT": "Поддержка",
+      "NOTIFICATIONS": "Уведомления",
       "SETTINGS": "Настройки и безопасность",
       "SETTINGS_MENU": "Настройки",
       "LOGIN_IE": "Войти как предприниматель",
@@ -27,7 +28,12 @@
       "MESSAGES": "Госпочта",
       "BLOG": "Блог",
       "PERMISSIONS": "Согласия",
-      "HELP": "Помощь"
+      "HELP": "Помощь",
+      "HELP_SUPPORT": "Помощь и поддержка",
+      "DIGITAL_ASSISTANT": "Цифровой ассистент",
+      "PARTNERS_ORDERS": "Уведомления",
+      "SUBSCRIPTIONS": "Подписки",
+      "HISTORY": "История операций"
     },
     "CATALOG": {
       "ALL": "Весь каталог",
@@ -321,6 +327,7 @@
   },
   "NOTIFICATIONS": {
     "CANCEL": "Отменить",
+    "REPEAT": "Повторить",
     "CLOSE": "Закрыть",
     "CLEAR": "Скрыть все"
   },
@@ -440,5 +447,13 @@
       "VALIDITY_TO": "по"
     }
   },
-  "BACK": "Вернуться"
+  "BACK": "Назад",
+  "LANG": {
+    "ru": "RUS",
+    "en": "GBR"
+  },
+  "SUGGEST" : {
+    "TITLE" : "Вы ранее заполняли",
+    "EDIT_LIST" : "Есть неактуальное?"
+  }
 }

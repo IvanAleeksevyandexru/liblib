@@ -15,6 +15,7 @@
          [attr.maxlength]="maxlength"
          [attr.placeholder]="placeholder"
          class="search-input"
+         [class.main-page-style]="mainPageStyle"
          [class.focused]="focused"
          [class.invalid]="invalidDisplayed"
          [class.shadowed]="showStaticContent && (!focused || forceShowStaticContent)"
@@ -38,9 +39,19 @@
       <ng-content></ng-content>
     </div>
   </div>
-  <div class="search-clear" [hidden]="searching || disabled || !clearable || !query" [ngClass]="{'align-right': !showMagnifyingGlass && !searching}" (click)="clearSearch($event)"></div>
-  <div class="search-go" *ngIf="!mainPageStyle" [hidden]="!showMagnifyingGlass || searching" (click)="runOrPostponeSearch(query, false, true)" [ngClass]="{disabled: disabled}"></div>
-  <div class="search-in-progress" *ngIf="searching && showSearching">
+  <div class="search-clear"
+       [hidden]="searching || disabled || !clearable || !query"
+       [ngClass]="{'align-right': !showMagnifyingGlass && !searching}"
+       (click)="clearSearch($event)">
+  </div>
+  <div class="search-go" *ngIf="!mainPageStyle" [hidden]="!showMagnifyingGlass || searching"
+       (click)="runOrPostponeSearch(query, false, true)"
+       [ngClass]="{disabled: disabled}"></div>
+  <div class="search-button" *ngIf="mainPageStyle">
+    <lib-button class="hide show-lg" (click)="startSearch($event)">Отправить</lib-button>
+    <lib-button type="new-search" class="show-sm hide-md hide-lg"></lib-button>
+  </div>
+  <div class="search-in-progress" *ngIf="!mainPageStyle && searching && showSearching">
     <div class="search-in-progress-cell"></div>
   </div>
 </div>

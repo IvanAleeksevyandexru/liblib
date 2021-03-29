@@ -1,0 +1,112 @@
+.catalog-menu-content{
+  position: relative;
+  z-index: 11;
+}
+.catalog-help{
+  position: fixed;
+  bottom: 64px;
+  width: 100%;
+  border-top: 1px solid rgba(16, 24, 40, 0.1);
+  padding: 16px 18px;
+  background: #fff;
+}
+.catalog-help-link{
+  font-size: 16px;
+  line-height: 24px;
+  color: #0B1F33;
+  display: inline-block;
+  vertical-align: middle;
+  &:before{
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    //background: url('../../../assets/svg/help.svg') 0 0 no-repeat;
+    margin-right: 16px;
+  }
+}
+.catalog-menu-icon{
+  width: 24px;
+  height: 24px;
+  background: url('../../../assets/svg/menu-new.svg') center center no-repeat;
+  position: relative;
+  z-index: 9;
+  cursor: pointer;
+  &.show{
+    background-image: url('../../../assets/svg/close.svg');
+  }
+}
+.catalog-menu{
+  width: 100%;
+}
+.catalog-menu-mobile{
+  background: #fff;
+  border-top: 1px solid #eee;
+  height: 100%;
+  max-height: 100vh;
+  overflow-y: auto;
+  position: fixed;
+  left: -100vw;
+  top: 64px;
+  transition: left .5s ease;
+  width: 0;
+  z-index: 2147473649;
+  &.show{
+    background: #fff;
+    border-top: 1px solid #eee;
+    height: 100%;
+    max-height: 100vh;
+    overflow-y: auto;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    display: block;
+    top: 0;
+    transform: translateY(64px);
+    transition: left .5s ease;
+    z-index: 2147473649;
+  }
+}
+.catalog-menu-header{
+  background: rgba(13, 76, 211, 0.08);
+  padding: 18px;
+}
+@media (max-width: 767px) {
+  .user-menu.show .bottom-block.bottom-block-burger {
+    position: static;
+    bottom: auto;
+    .fs-16{
+      font-size: 16px;
+    }
+  }
+  .user-menu.show .menu-desk.burger-wrap.show{
+    top: 63px;
+  }
+  .burger-wrap{
+    border-top: 1px solid #E1E1E1;
+  }
+}
+@media (min-width: 768px) and (max-width: 1139px) {
+  .user-menu.show .burger-wrap.menu-desk.show{
+    top: 19px;
+    border-radius: 0 0 12px 12px;
+    border-top: 1px solid #E1E1E1;
+  }
+}
+@media (min-width: 768px) {
+  .catalog-menu-header {
+    padding: 18px 64px;
+  }
+  .catalog-help{
+    position: fixed;
+    bottom: 64px;
+    width: 100%;
+    border-top: 1px solid rgba(16, 24, 40, 0.1);
+    padding: 16px 64px;
+    background: #fff;
+  }
+}
+@media (min-width: 1140px) {
+
+}

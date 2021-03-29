@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterViewInit, ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -7,7 +7,7 @@ import {
   forwardRef,
   Host,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy,
   OnInit,
   Optional,
   Output,
@@ -40,10 +40,12 @@ import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { VirtualScrollComponent } from '../virtual-scroll/virtual-scroll.component';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { Width } from '../../models/width-height';
+import { Suggest, SuggestItem } from '../../models/suggest';
 
 const SHOW_ALL_MARKER = {};
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-lookup',
   templateUrl: 'lookup.component.html',
   styleUrls: ['./lookup.component.scss'],
@@ -53,7 +55,7 @@ const SHOW_ALL_MARKER = {};
     multi: true
   }, ListItemsService]
 })
-export class LookupComponent implements OnInit, AfterViewInit, OnChanges, ControlValueAccessor, Validated {
+export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges, ControlValueAccessor, Validated {
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -73,6 +75,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Input() public width?: Width | string;
   @Input() public cachedResponse?: boolean;
   @Input() public staticList?: boolean;
+  @Input() public suggest?: Suggest;
 
 
   // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
@@ -129,6 +132,8 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   // включает-отключает возможность выбирать группировочные элементы
   @Input() public virtualGroups = true;
 
+  @Input() public removeTags = false;
+
   // источник значений в виде фиксированного списка
   // ListElement-ы лукап может использовать нативно, any работает через конвертер
   @Input() public fixedItems: Array<ListElement | any> = [];
@@ -138,6 +143,10 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Input() public mainPageStyle: boolean = false;
   // скрывать результат поиска в независимости от наличия ответа
   @Input() public hideSearchResult: boolean = false;
+  // активация автоматического перевода с английского
+  @Input() public enableLangConvert = false;
+  // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
+  @Input() public stopSearch = false;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -152,6 +161,10 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   @Output() public listed = new EventEmitter<Array<ListItem>>();
   @Output() public queryChanged = new EventEmitter<string>();
   @Output() public enterKeyEvent = new EventEmitter();
+  @Output() public searchButtonClick = new EventEmitter<string>();
+  @Output() public blockedSearchClear = new EventEmitter();
+  @Output() public selectSuggest = new EventEmitter<Suggest | SuggestItem>();
+
 
   public internalFixedItems: Array<ListItem> = [];
   public internalItem: ListItem;
@@ -183,9 +196,11 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   public fixedItemsProvider = new FixedItemsProvider();
   public prevQuery: string;
 
+  private destroyed = false;
+
   @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
   @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
-  @ViewChild('searchBar', {static: false}) private searchBar: SearchBarComponent;
+  @ViewChild('searchBar', {static: false}) public searchBar: SearchBarComponent;
   @ViewChild('lookupField') private fieldContainer: ElementRef;
   @ViewChild('lookupList', {static: false}) private listContainer: ElementRef;
 
@@ -194,6 +209,10 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
 
   public ngOnInit() {
     this.update();
+  }
+
+  public ngOnDestroy() {
+    this.destroyed = true;
   }
 
   public ngAfterViewInit() {
@@ -240,12 +259,13 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   }
 
   public modelChange(): void {
+    this.queryChanged.emit(this.searchBar.query);
   }
 
   public clearInput(): void {
     if (!this.disabled) {
       this.selectItem(null);
-      this.queryChanged.emit('')
+      this.queryChanged.emit('');
       this.cleared.emit();
     }
   }
@@ -270,7 +290,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
 
   public handleBlur() {
     if (!this.mainPageStyle) {
-      this.cancelSearchAndClose();
+      setTimeout(() => this.cancelSearchAndClose(), 15);
     }
     this.resetItemIfNotConsistent();
     this.blur.emit();
@@ -285,7 +305,12 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     this.focus.emit();
   }
 
-  public setSearchBarFocus(): void {
+  public setSearchBarFocus(setSearchValue?): void {
+    if (setSearchValue) {
+      this.query = setSearchValue;
+      this.searchBar.setSearchValueFromParent(setSearchValue);
+
+    }
     this.searchBar.inputElement.nativeElement.focus();
   }
 
@@ -336,7 +361,9 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
       this.closeDropdown();
     } else {
       this.showTextField();
-      this.lookupItems(showAll ? SHOW_ALL_MARKER : this.query);
+      if (!this.mainPageStyle) {
+        this.lookupItems(showAll ? SHOW_ALL_MARKER : this.query);
+      }
     }
   }
 
@@ -346,9 +373,8 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     }
   }
 
-  public lookupItems(queryOrMarker: string | {}) {
-    this.queryChanged.emit(this.searchBar.query);
-    if (queryOrMarker !== SHOW_ALL_MARKER && (queryOrMarker as string).length < this.queryMinSymbolsCount) {
+  public lookupItems(queryOrMarker: string | {}, lookupAnyway: boolean = false) {
+    if ((this.mainPageStyle && this.stopSearch && !lookupAnyway) || (queryOrMarker !== SHOW_ALL_MARKER && (queryOrMarker as string).length < this.queryMinSymbolsCount)) {
       this.cancelSearchAndClose();
       return;
     }
@@ -374,6 +400,10 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
     }
   }
 
+  public removeQueryTags(query: string): string {
+    return query.replace(/<[^>]*>/g, '\n');
+  }
+
   public runSearchOrIncrementalSearch(rootSearch: boolean, queryOrMarker: string | {}, callback?: () => void) {
     if (rootSearch && this.searching || !rootSearch && (this.searching || this.partialsLoading)) {
       return;
@@ -381,7 +411,7 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
 
     const provider = this.itemsProvider ? this.itemsProvider : this.fixedItemsProvider.setSource(this.internalFixedItems);
     const config = this.createSearchConfiguration(queryOrMarker === SHOW_ALL_MARKER);
-    const query = queryOrMarker === SHOW_ALL_MARKER ? '' : queryOrMarker as string;
+    let query = queryOrMarker === SHOW_ALL_MARKER ? '' : queryOrMarker as string;
     let promiseOrObservable = null;
     if (this.incrementalLoading) {
       promiseOrObservable = (provider as LookupPartialProvider).searchPartial(query, this.partialPageNumber, config);
@@ -389,6 +419,9 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
       if (this.prevQuery === this.query && this.cachedResponse) {
         this.openDropdown();
         return;
+      }
+      if(this.removeTags && query) {
+        query = this.removeQueryTags(query);
       }
       promiseOrObservable = (provider as LookupProvider).search(query, config);
     }
@@ -579,7 +612,9 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
     this.searchBar.setDisabledState(isDisabled);
-    this.changeDetector.detectChanges();
+    if (!this.destroyed) {
+      this.changeDetector.detectChanges();
+    }
   }
 
   public updateFormatting() {
@@ -639,5 +674,23 @@ export class LookupComponent implements OnInit, AfterViewInit, OnChanges, Contro
       showAll,
       queryMinSymbolsCount: this.queryMinSymbolsCount
     };
+  }
+
+  public handleSearchButtonClick(query: string): void {
+    this.searchButtonClick.emit(query);
+  }
+
+  public clearBlocked(): void {
+    this.blockedSearchClear.emit();
+  }
+
+  public selectSuggestItem(item: SuggestItem): void {
+    this.selectSuggest.emit(item);
+    this.closeDropdown();
+  }
+
+  public editSuggestList(suggest: Suggest): void {
+    suggest.isEdit = true;
+    this.selectSuggest.emit(suggest);
   }
 }

@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class LoaderComponent implements OnInit {
 
-  @Input() public color: 'white' | '' = ''; // цвет: белый; если не указан - синий
+  @Input() public color: 'white' | 'black' | '' = ''; // если не указан - синий
   @Input() public size: 'big' | 'small' | '' = ''; // размер: большой, маленький; если не указан - обычный
 
   constructor() { }

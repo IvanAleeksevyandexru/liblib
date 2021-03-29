@@ -8,7 +8,7 @@ import {
   HostListener,
   SimpleChanges,
   OnChanges,
-  OnDestroy, NgModuleRef, ChangeDetectorRef, ViewChildren, QueryList
+  OnDestroy, NgModuleRef, ChangeDetectorRef, ViewChildren, QueryList, ChangeDetectionStrategy
 } from '@angular/core';
 import { SliderImage } from '../../models/slider-image';
 import { SliderImagesModalComponent } from '../slider-images-modal/slider-images-modal.component';
@@ -23,6 +23,7 @@ export const SLIDES_HEIGHT = 280;
 export const SLIDES_HEIGHT_CARD = 226;
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-image-slider',
   templateUrl: './image-slider.component.html',
   styleUrls: ['./image-slider.component.scss'],
@@ -38,7 +39,7 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
   @Input() public showByIndex: number;
   @Input() public showModal = false;
   @Input() public enterImages = false;
-  @Input() public view: 'simple' | 'card' | 'logos' = 'simple';
+  @Input() public view: 'payment-fines-popup' | 'simple' | 'card' | 'logos' = 'simple';
   @Input() public showTitle = false;
   @Input() public showBullet = true;
   @Input() public target = false;
@@ -85,7 +86,7 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
       feedElement: this.sliderFeedContainer,
       type: DragDropType.TOUCH, direction: DragDropDirection.HORIZONTAL, offsetType: DragDropOffsetType.TRANSFORM,
       centeringNeeded: true, cleanUp: false, limit: true,
-      containerDimension: this.slidesWidthToSet, itemsDistance: SLIDES_OFFSET,
+      containerDimension: this.slidesWidthToSet, itemsDistance: this.slidesOffset,
       dragStart: () => {
         this.renderer.addClass(this.sliderFeedContainer.nativeElement, 'no-transition');
       },
@@ -134,7 +135,7 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
       // 20 - отсупы для стрелок
       const paddings = this.view === 'card' ? 30 : (this.view === 'logos' ? 20 : 0);
       const containerWidth = this.sliderContainer.nativeElement.offsetWidth - paddings;
-      if (containerWidth < SLIDES_WIDTH) {
+      if (containerWidth < SLIDES_WIDTH || this.limit === 1) {
         this.perPage = 1;
         this.slidesWidth = containerWidth;
         this.slidesOffset = 0;
@@ -160,8 +161,9 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
       }
 
       this.setElementWidth(this.sliderFeedContainer.nativeElement, this.imagesLength * (this.slidesOffset + this.slidesWidth));
-      if (this.view === 'simple') {
-        const wrapperHeight = this.showTitle ? this.slidesHeight + 72 : this.slidesHeight;
+      if (['payment-fines-popup', 'simple'].includes(this.view)) {
+        const increaseHeight = this.view === 'payment-fines-popup' ? 96 : 72;
+        const wrapperHeight = this.showTitle ? this.slidesHeight + increaseHeight : this.slidesHeight;
         this.renderer.setStyle(this.sliderFeedWrapper.nativeElement, 'height', `${wrapperHeight}px`);
       }
       if (this.view === 'card') {
@@ -229,7 +231,7 @@ export class ImageSliderComponent implements AfterViewInit, OnChanges, OnDestroy
   private checkImagesSize() {
     this.imagesElements.forEach(item => {
       item.nativeElement.onload = () => {
-        if (item.nativeElement.naturalWidth > this.slidesWidth || item.nativeElement.naturalWidth > 226) {
+        if (item.nativeElement.naturalWidth > this.slidesWidth || item.nativeElement.naturalWidth > SLIDES_HEIGHT_CARD) {
           this.renderer.addClass(item.nativeElement, 'entered-img');
         }
       };
