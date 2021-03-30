@@ -79,7 +79,7 @@ export class EqueueComponent implements OnInit {
     if (this.equeueDataExist()) {
       this.yaMetricService.callReachGoal('overviewUpcomingEqueues', {
         show: true,
-        screen: this.loadService.config.deviceType
+        screen: this.loadService.attributes.deviceType
       });
     }
   }
@@ -87,7 +87,7 @@ export class EqueueComponent implements OnInit {
   public onEqueueClick(isItem: boolean): void {
     this.yaMetricService.callReachGoal('overviewUpcomingEqueues', {
       action: isItem ? 'equeueRow' : 'all',
-      screen: this.loadService.config.deviceType
+      screen: this.loadService.attributes.deviceType
     });
   }
 }
