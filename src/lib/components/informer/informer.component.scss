@@ -8,6 +8,20 @@
   line-height: 40px;
   color: #E11432;
 }
+.informer-top-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 24px;
+  &.no_debt {
+    background: rgba(45, 195, 106, 0.1);
+  }
+}
+.informer-bottom-wrap{
+  padding: 16px 0;
+  text-align: center;
+}
 .price{
   color: #86909C;
 }
@@ -28,12 +42,11 @@
 }
 .informer-main {
   background-color: #fff;
-  box-shadow: 0px 24px 48px rgba(230, 235, 245, 0.4);
-  padding: 24px;
+  box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
   border-radius: 12px;
   cursor: pointer;
   flex-direction: column;
-
+  overflow: hidden;
   .loader {
     align-self: center;
   }
@@ -42,8 +55,8 @@
     width: 100%;
 
     .icon-no-debt {
-      width: 48px;
-      height: 48px;
+      width: 54px;
+      height: 40px;
     }
 
     .search {
@@ -76,11 +89,18 @@
 }
 
 @media all and (min-width: 768px) {
+  .informer-top-wrap {
+    justify-content: flex-start;
+    padding: 24px 32px;
+  }
+  .informer-bottom-wrap {
+    padding: 24px 32px;
+  }
   .informer-main {
     .without-debt {
       .icon-no-debt {
-        width: 48px;
-        height: 48px;
+        width: 34px;
+        height: 24px;
         margin-right: 24px;
       }
 
@@ -108,14 +128,6 @@
 
   .mini {
     &.informer-main {
-
-      .without-debt {
-        .icon-no-debt {
-          width: 40px;
-          height: 40px;
-          margin-right: 20px;
-        }
-      }
       .debt {
         .price, .btn  {
           margin-left: 24px;
@@ -129,23 +141,28 @@
   }
 }
 
-.mini {
-  &.informer-main {
-    box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
-    border-radius: 12px;
-  }
-}
-
 @media all and (min-width: 1140px) {
+  .informer-top-wrap {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 24px;
+    text-align: center;
+  }
+  .icon-no-debt{
+    margin-bottom: 20px;
+  }
   .mini {
     &.informer-main {
       min-height: 204px;
       height: auto;
 
       .without-debt {
+        height: 100%;
         .icon-no-debt {
-          width: 64px;
-          height: 64px;
+          width: 74px;
+          height: 56px;
           margin-right: 0;
         }
 
