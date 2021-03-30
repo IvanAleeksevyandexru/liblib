@@ -134,7 +134,7 @@ export class InformerComponent implements OnInit {
   private getInformerShortData() {
     this.informersService.getDataInformer().subscribe((response: InformerShortInterface) => {
 
-        if (response.hint) {
+        if (response?.hint) {
           this.hintResponse = response.hint;
           var hint = Object.keys(this.informersService.hints).find((code) => {
             return this.hintResponse.code === code;
@@ -144,7 +144,7 @@ export class InformerComponent implements OnInit {
           this.getTextToHint("00");
         }
 
-        if (response.result) {
+        if (response?.result) {
           // есть начисления
           if (response.result.total) {
             const res = response.result;

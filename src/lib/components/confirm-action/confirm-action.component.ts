@@ -22,6 +22,7 @@ export class ConfirmActionComponent implements OnInit {
   public maxWidth: number;
   public buttons: {
     title: string,
+    type: 'anchor' | undefined,
     color: string,
     loader?: boolean,
     disabled?: boolean,

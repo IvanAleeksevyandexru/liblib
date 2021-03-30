@@ -1,10 +1,10 @@
 import { Injectable, isDevMode } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { HelperService } from '../helper/helper.service';
 import { CookieService } from '../cookie/cookie.service';
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { LoadService } from '../load/load.service';
-import { map } from 'rxjs/operators';
 import { OfferSettings, PermissionScope, PermissionScopes } from '../../models/permission.model';
 
 export interface Citizenship {
@@ -30,7 +30,7 @@ export class EsiaApiService {
     registration: '/registration/api/public/v1/'
   };
 
-  public citizenship = new BehaviorSubject<Array<Citizenship>>(null);
+  private citizenship: Citizenship[];
 
   private config = new BehaviorSubject<any>(null);
   public config$ = this.config.asObservable();
@@ -122,18 +122,21 @@ export class EsiaApiService {
     }
   }
 
-  public loadConfig() {
+  public loadConfig(): void {
     this.getRequest('profile/config', 1).subscribe((data: any) => {
       this.config.next(data);
     });
   }
 
-  public loadCitizenship() {
-    this.getRequest('citizenship', 1).subscribe(res => {
-      if (res && res.values) {
-        this.citizenship.next(res.values);
-      }
-    });
+  public get citizenship$(): Observable<Citizenship[]> {
+    if (this.citizenship) {
+      return of(this.citizenship);
+    } else {
+      return this.getRequest('citizenship', 1).pipe(
+        map(res => res.values),
+        tap(citizenship => this.citizenship = citizenship)
+      );
+    }
   }
 
   public checkDigitalScopes(sysname?: string | string[]): Observable<boolean | boolean[]> {
@@ -158,7 +161,7 @@ export class EsiaApiService {
     );
   }
 
-  public checkOffer() {
+  public checkOffer(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.loadService.loaded.subscribe((loaded: boolean) => {
         if (loaded) {

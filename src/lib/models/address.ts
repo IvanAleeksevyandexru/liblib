@@ -3,7 +3,7 @@ export interface Address {
   id?: number;
   stateFacts?: string[];
   vrfDdt?: string;
-  type: 'PLV' | 'PRG' | 'OPS' | 'OLG';
+  type: 'PLV' | 'PRG' | 'OPS' | 'OLG' | 'PTA';
   addressStr?: string;
   city?: string;
   countryId?: string;
@@ -40,7 +40,7 @@ export interface CountryDict {
 }
 
 export interface Country {
-  id?:string;
+  id?: string;
   char2Code: string;
   char3Code: string;
   extId: string;

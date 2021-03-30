@@ -295,7 +295,7 @@ export class HelperService {
     }
   }
 
-  public static convertEpguDadataAddressToEsiaAddress(dadataAddress: DadataResult, type: 'PLV' | 'PRG' | 'OPS' | 'OLG'): Address {
+  public static convertEpguDadataAddressToEsiaAddress(dadataAddress: DadataResult, type: 'PLV' | 'PRG' | 'OPS' | 'OLG' | 'PTA'): Address {
     return {
       type,
       countryId: 'RUS',

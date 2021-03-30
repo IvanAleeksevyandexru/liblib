@@ -985,12 +985,13 @@ export class ConstantsService {
   };
 
   public readonly ADDRESS_TYPE: {
-    [key: string]: 'PLV' | 'PRG' | 'OPS' | 'OLG'
+    [key: string]: 'PLV' | 'PRG' | 'OPS' | 'OLG' | 'PTA'
   } = {
     PLV: 'PLV',
     PRG: 'PRG',
     OPS: 'OPS',
-    OLG: 'OLG'
+    OLG: 'OLG',
+    PTA: 'PTA'
   };
 
   public readonly ELECTION_COMMON_DATE_FORMAT = 'DD.MM.YYYY';

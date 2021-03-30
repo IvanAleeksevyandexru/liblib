@@ -2,17 +2,24 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
-import { Faqs, PopularFederal, RegionalPopular } from '../../models/catalog';
+import {
+  CatalogData,
+  Departments,
+  FaqCategories,
+  FaqCategoriesCMS,
+  Faqs,
+  PopularFederal,
+  RegionalPopular
+} from '../../models/catalog';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CatalogTabsService {
 
-  // TODO: интерфейсы
-  public catalogTabsData: any = {};
-  public catalogTabsList: any;
-  public departmentsData: any;
+  public catalogTabsData: {[key: string]: any} = {};
+  public catalogTabsList: CatalogData[];
+  public departmentsData: Departments[];
 
   constructor(
     public loadService: LoadService,
@@ -20,7 +27,7 @@ export class CatalogTabsService {
   ) {
   }
 
-  public storeCatalogData(data: any, code: string): void {
+  public storeCatalogData(data: [PopularFederal, RegionalPopular[], Departments[], FaqCategoriesCMS[]], code: string): void {
     this.catalogTabsData[code] = data;
   }
 
@@ -56,11 +63,11 @@ export class CatalogTabsService {
     });
   }
 
-  public getFaqCategories(code: string): Observable<any> {
+  public getFaqCategories(code: string): Observable<FaqCategories> {
     if (this.catalogTabsData[code]) {
       return of(this.getDataCatalogStoreData(code)[2]);
     }
-    return this.http.get<any>(`${this.loadService.config.catalogApiUrl}elm/get/serviceCategories/${code}`, {
+    return this.http.get<FaqCategories>(`${this.loadService.config.catalogApiUrl}elm/get/serviceCategories/${code}`, {
       params: {
         _: `${Math.random()}`,
         region: `${this.loadService.attributes.selectedRegion}`
@@ -69,8 +76,8 @@ export class CatalogTabsService {
     });
   }
 
-  public getFaqItemCategory(code: string, categoryCode: string): Observable<any> {
-    return this.http.get<any>(`${this.loadService.config.cmsUrl}faq/categories/${code}`, {
+  public getFaqItemCategory(code: string, categoryCode: string): Observable<FaqCategoriesCMS> {
+    return this.http.get<FaqCategoriesCMS>(`${this.loadService.config.cmsUrl}faq/categories/${code}`, {
       params: {
         _: `${Math.random()}`,
         region: `${this.loadService.attributes.selectedRegion}`
@@ -79,11 +86,11 @@ export class CatalogTabsService {
     });
   }
 
-  public getDepartmentsData(): Observable<any> {
+  public getDepartmentsData(): Observable<Departments[]> {
     if (this.departmentsData) {
       return of(this.departmentsData);
     }
-    return this.http.get<any>(`${this.loadService.config.catalogApiUrl}departments/menu`, {
+    return this.http.get<Departments[]>(`${this.loadService.config.catalogApiUrl}departments/menu`, {
       params: {
         _: `${Math.random()}`,
         region: `${this.loadService.attributes.selectedRegion}`
