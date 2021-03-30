@@ -15,6 +15,7 @@ import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { LoadService } from '../../services/load/load.service';
 import { Router } from '@angular/router';
 import { ProfileService } from '../../services/profile/profile.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'lib-informer',
@@ -132,8 +133,13 @@ export class InformerComponent implements OnInit {
   }
 
   private getInformerShortData() {
-    this.informersService.getDataInformer().subscribe((response: InformerShortInterface) => {
-
+    this.informersService.getDataInformer()
+      // .pipe(
+      //   tap(() => {
+      //     throw Error()
+      //   })
+      // )
+      .subscribe((response: InformerShortInterface) => {
         if (response?.hint) {
           this.hintResponse = response.hint;
           var hint = Object.keys(this.informersService.hints).find((code) => {

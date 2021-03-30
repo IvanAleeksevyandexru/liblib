@@ -1,6 +1,6 @@
 <div class="informer-main flex-container justify-center mini" (click)="redirectAndSendYaMetric()">
   <div *ngIf="statusInformer === 'load'" class="loader">
-    <lib-throbber-hexagon [size]="'medium big-lg'"></lib-throbber-hexagon>
+    <lib-throbber-hexagon [size]="'large'"></lib-throbber-hexagon>
   </div>
 
   <div *ngIf="['error', 'no_debt', 'al10', 'no_rights'].includes(statusInformer)"

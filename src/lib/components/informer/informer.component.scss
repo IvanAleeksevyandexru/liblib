@@ -47,6 +47,7 @@
   cursor: pointer;
   flex-direction: column;
   overflow: hidden;
+  min-height: 130px;
   .loader {
     align-self: center;
   }
@@ -60,12 +61,14 @@
     }
 
     .search {
-      background: url("../../../assets/svg/search-icons/gray_search_in_circle.svg") 0 0 no-repeat;
+      //background: url("../../../assets/svg/search-icons/gray_search_in_circle.svg") 0 0 no-repeat;
+      background: url("../../../assets/svg/informer/error.svg") 0 0 no-repeat;
       background-size: contain;
     }
 
     .ok {
-      background: url("../../../assets/svg/notification/success/green_tick_in_circle.svg") 0 0 no-repeat;
+      // background: url("../../../assets/svg/notification/success/green_tick_in_circle.svg") 0 0 no-repeat;
+      background: url("../../../assets/svg/informer/success.svg") 0 0 no-repeat;
       background-size: contain;
     }
 
