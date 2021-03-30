@@ -18,6 +18,14 @@ import { Router } from '@angular/router';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { LocationService } from '../../services/location/location.service';
 import { LoadService } from '../../services/load/load.service';
+import {
+  Children, DepartmentPassport,
+  Departments, FaqCategories, FaqCategoriesCMS, FaqCategoriesCMSFaq,
+  FaqCategoriesItem,
+  PassportChildren,
+  PopularFederal,
+  RegionalPopular
+} from '../../models/catalog';
 
 @Component({
   selector: 'lib-catalog-tab-item',
@@ -32,15 +40,14 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   @Output() public subCatalogClose: EventEmitter<null> = new EventEmitter();
   @Output() public regionPopularEmpty: EventEmitter<boolean> = new EventEmitter();
 
-  public popular: any[];
-  public departmentsData: any[];
-  public otherPopular: any[];
-  public regionPopular: any[];
-  public faqsMore: any;
-  public popularMore: any;
-  public faqs: any[];
+  public popular: PassportChildren[];
+  public departmentsData: Departments[];
+  public otherPopular: Children[];
+  public regionPopular: RegionalPopular[];
+  public popularMore: undefined | number;
+  public faqs: FaqCategoriesCMS[];
   public backTitle: string;
-  public itemsCounter: number;
+  public itemsCounter: undefined | number;
 
   public loaded: boolean;
   public regionName = this.locationService.userSelectedRegionName;
@@ -51,8 +58,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     private sharedService: SharedService,
     private gosbarService: GosbarService,
     private locationService: LocationService,
-    public loadService: LoadService,
-    private router: Router
+    public loadService: LoadService
   ) {
   }
 
@@ -71,7 +77,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
 
   public getDepartmentsData(): void {
     this.loaded = false;
-    this.catalogTabsService.getDepartmentsData().subscribe((departmentsData: any) => {
+    this.catalogTabsService.getDepartmentsData().subscribe((departmentsData: Departments[]) => {
       this.catalogTabsService.departmentsData = departmentsData;
       this.departmentsData = this.departmentDataHandling(departmentsData);
       this.regionPopularEmpty.emit(false);
@@ -79,7 +85,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     })
   }
 
-  public departmentDataHandling(departmentsData: any): any {
+  public departmentDataHandling(departmentsData: Departments[]): Departments[] {
     const departments = departmentsData.slice(0, 6);
     const secondColumnDepartments = [];
     const firstColumnDepartments = [];
@@ -106,12 +112,12 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
         catchError((err) => of({faqCategories: {items: []}}))
       )
     ]).pipe(
-      switchMap((data: any) => {
+      switchMap((data: [PopularFederal, RegionalPopular[], FaqCategories]) => {
         if (this.catalogTabsService.catalogTabsData[this.code] && this.catalogTabsService.getDataCatalogStoreData(this.code)[3]) {
           return of(this.catalogTabsService.getDataCatalogStoreData(this.code));
         }
         const multipleData = [];
-        data[2].faqCategories.items.forEach((item: any) => {
+        data[2].faqCategories.items.forEach((item: FaqCategoriesItem) => {
           multipleData.push(this.catalogTabsService.getFaqItemCategory(item.code, this.code))
         })
 
@@ -119,7 +125,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
           return data.concat([faqItemCategory]);
         }))
       })
-    ).subscribe((data: [any, any[], any, any]) => {
+    ).subscribe((data: [PopularFederal, RegionalPopular[], Departments[], FaqCategoriesCMS[]]) => {
       this.catalogTabsService.storeCatalogData(data, this.code);
       if (data[0]) {
         this.createPopular(data[0]);
@@ -138,12 +144,12 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  public createRegionPopular(regionPopular: any) {
+  public createRegionPopular(regionPopular: RegionalPopular[]) {
     this.regionPopular = regionPopular;
     this.regionPopularEmpty.emit(regionPopular.length === 0 && this.code !== 'ministries');
   }
 
-  public createPopular(popular: any): void {
+  public createPopular(popular: PopularFederal): void {
     if(popular.code === 'other') {
       this.otherPopular = popular.children;
     } else {
@@ -151,7 +157,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  public createFaqs(faqsData: any): void {
+  public createFaqs(faqsData: FaqCategoriesCMS[]): void {
     let children = [];
     let faqs = [];
     faqsData.forEach((item) => {
@@ -179,7 +185,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     this.subCatalogClose.emit();
   }
 
-  public toggleFaqsQuestions(item: any): void {
+  public toggleFaqsQuestions(item: FaqCategoriesCMSFaq): void {
     item.active = !item.active;
   }
 
@@ -193,7 +199,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     this.catalogClose.emit();
   }
 
-  public goToPopular(item: any): void {
+  public goToPopular(item: PassportChildren | RegionalPopular): void {
     const link = item.epguPassport ? `/group/${item.epguId}` : `${item.epguId}`;
     this.catalogClose.emit();
     location.href = link;
@@ -202,7 +208,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   public ngOnDestroy() {
   }
 
-  public goToDepartment(departmentPassport: any): void {
+  public goToDepartment(departmentPassport: DepartmentPassport): void {
     location.href = `${this.loadService.config.betaUrl}${departmentPassport.url}`;
   }
 }

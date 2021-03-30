@@ -19,6 +19,8 @@ export interface Children {
   title: string;
   parentId: number;
   passports: PassportChildren[];
+  icons?: Icon[];
+  otherPopularMore?: any;
 }
 
 export interface PassportChildren {
@@ -116,3 +118,68 @@ export interface NewsItem {
   iconAlt: string;
 }
 
+export interface Departments {
+  categoryCode: string;
+  categoryName: string;
+  categorytId: number;
+  icons: Icon[];
+  passports: DepartmentPassport[];
+}
+
+export interface DepartmentPassport {
+  categorytId: number;
+  passportId: number;
+  passportTitle: string;
+  shortName: string;
+  url: string;
+}
+
+export interface FaqCategories {
+  faqCategories: {
+    items: FaqCategoriesItem[];
+  }
+}
+
+export interface FaqCategoriesCMS {
+  children: FaqCategoriesCMSChildren[];
+  code: string;
+  faqs: FaqCategoriesCMSFaq[];
+  id: number;
+  orderNumber: number;
+  parentId: number;
+  title: string;
+  faqsMore?: any;
+}
+
+export interface FaqCategoriesCMSChildren {
+  code: string;
+  faqs: FaqCategoriesCMSFaq[];
+  id: number
+  orderNumber: number;
+  parentId: number;
+  title: string;
+}
+
+export interface FaqCategoriesCMSFaq {
+  answer: string;
+  categoryCode: string;
+  categoryId: number;
+  code: string;
+  id: number;
+  orderNumber: number;
+  personType: string[];
+  question: string;
+  shortAnswer: string;
+  shortQuestion?: string;
+  active?: boolean;
+}
+
+export interface CatalogData{
+  ico: string;
+  title: string;
+  code: string;
+  active?: boolean;
+  mainActive?: boolean;
+  sideActive?: boolean;
+  viewType?: string;
+}
