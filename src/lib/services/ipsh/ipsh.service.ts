@@ -66,6 +66,10 @@ export class IpshService {
       return BillsErrors.BillsNoAccessRights;
     }
 
+    if (code === 50) {
+      return BillsErrors.BillsNoAccessRightsUL;
+    }
+
     if (code === 13) {
       return BillsErrors.BillsCanceled;
     }

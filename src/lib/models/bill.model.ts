@@ -74,6 +74,7 @@ export enum BillsErrors {
   BillsHasUnidentifiedBills = 'BILLS_HAS_UNIDENTIFIED_BILLS',
   BillsInvalidArguments = 'BILLS_INVALID_ARGUMENTS',
   BillsNoAccessRights = 'BILLS_NO_ACCESS_RIGHTS',
+  BillsNoAccessRightsUL = 'BILLS_NO_ACCESS_RIGHTS_UL',
   BillsDateEvaluated = 'BILLS_DATE_EVALUATED',
   BillsUncorrectNumber = 'BILLS_UNCORRECT_NUMBER',
   Default = 'DEFAULT'
