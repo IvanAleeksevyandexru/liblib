@@ -63,6 +63,7 @@ export class HeaderComponent implements OnInit, OnChanges {
   @Input() public showBurger = true;
   @Input() public catalog?: Catalog[];
   @Input() public languageChangeAvailable: boolean;
+  @Input() public trustedLinks = false;
 
   @Output() public backClick = new EventEmitter<any>();
 
