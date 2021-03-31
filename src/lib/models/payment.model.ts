@@ -107,6 +107,7 @@ export interface PaymentItems {
   document: {
     number: string;
     typeName: string;
+    typeDocCode?: string;
   };
   vehicle?: Vehicle;
   addAttrs: {
@@ -135,6 +136,7 @@ export interface PaymentDetails extends PaymentItems {
     ip?: string;
     id?: string;
     billLinks?: BillLink[];
+    debtText?: string;
   };
   stateDuty?: {
     orderId: string;

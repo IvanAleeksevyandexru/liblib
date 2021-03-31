@@ -1,3 +1,15 @@
+.light {
+  a, button {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #0D4CD3;
+    background-color: #E4ECFD;
+    padding: 6px 16px;
+    border-radius: 8px;
+  }
+}
+
 a, button {
   display: inline-block;
   font-family: Lato, Arial, sans-serif;
@@ -31,7 +43,7 @@ a, button {
   }
 
   &.disabled {
-    color: #828C9A;
+    color: #66727F;
     background-color: #E5EAF5;
     cursor: default;
   }
@@ -81,8 +93,21 @@ a, button {
 
     &.disabled {
       border-color: #E5EAF5;
-      color: #828C9A;
+      color: #66727F;
       background-color: #E5EAF5;
+    }
+  }
+
+  &.new-search {
+    padding: 11px;
+    border: none;
+
+    .icon {
+      display: block;
+      width: 18px;
+      height: 18px;
+      background: url(../../../assets/svg/search-big.svg) no-repeat center;
+      background-size: 100%;
     }
   }
 
@@ -119,7 +144,7 @@ a, button {
   }
 
   &.loader {
-    min-width: 150px;
+    min-width: 100px;
   }
 }
 

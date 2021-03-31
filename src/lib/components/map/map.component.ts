@@ -17,7 +17,7 @@ export class MapComponent implements OnInit, OnChanges {
   @Input() public redraw = false;
   @Input() public iconLayout: string;
   @Input() public iconImageHref: string;
-  @Input() public iconImageSize: string;
+  @Input() public iconImageSize: number[];
   @Input() public selectAddress = false;
   @Input() public externalMode = false;
   @Input() public enterpriseYandexMapsEnabled = false;
@@ -47,9 +47,9 @@ export class MapComponent implements OnInit, OnChanges {
       zoom: this.zoom || 9
     };
     const layoutConfig = {
-      iconLayout: this.iconLayout || 'default#imageWithContent',
+      iconLayout: this.iconLayout || 'default#image',
       iconImageHref: this.iconImageHref || `${this.staticDomain}/lib-assets/svg/blue-ya-marker.svg`,
-      iconImageSize: this.iconImageSize || [24, 34],
+      iconImageSize: this.iconImageSize || [27, 30],
     };
     mapService('map', controlsConfig, layoutConfig);
   }

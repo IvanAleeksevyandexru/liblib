@@ -43,7 +43,7 @@
     .dropdown-arrow {
       display: block;
       position: absolute;
-      top: 10px;
+      top: 12px;
       right: 12px;
       background: url(../../../assets/svg/dropdown-expand.svg) no-repeat;
       width: 24px;
@@ -87,7 +87,7 @@
     display: block;
     border-style: none solid solid solid;
     box-sizing: border-box;
-    z-index: 2;
+    z-index: 4;
     &.hidden {
       display: none;
     }
@@ -143,11 +143,12 @@
     color: #515A63;
   }
   .dropdown-field {
-    border: 2px solid #A8ACB1;
+    border: 2px solid transparent;
     border-radius: 4px;
-    background-color: white;
+    background-color: #F5F7FA;
     padding: 12px 40px 12px 16px;
     &.expanded {
+      border: 2px solid #99B1E6;
       border-radius: 4px 4px 0 0;
       &.invalid {
         border-color: #A8ACB1;

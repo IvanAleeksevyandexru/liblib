@@ -2,6 +2,7 @@
   "HEADER": {
     "PERSONAL_AREA": "Личный кабинет",
     "LOGIN_LINK": "Войти",
+    "REGISTER": "Регистрация",
     "EXIT": "Выйти",
     "ALL_ROLES": "Все мои роли",
     "MENU": {
@@ -9,9 +10,10 @@
       "NEWS": "Новости",
       "DOCS": "Документы",
       "SERVICES": "Услуги",
-      "PAYMENT": "Оплата",
-      "SUPPORT": "Поддержка",
+      "PAYMENT": "Платежи",
       "PROFILE": "Профиль",
+      "SUPPORT": "Поддержка",
+      "NOTIFICATIONS": "Уведомления",
       "SETTINGS": "Настройки и безопасность",
       "SETTINGS_MENU": "Настройки",
       "LOGIN_IE": "Войти как предприниматель",
@@ -26,7 +28,12 @@
       "MESSAGES": "Госпочта",
       "BLOG": "Блог",
       "PERMISSIONS": "Согласия",
-      "HELP": "Помощь"
+      "HELP": "Помощь",
+      "HELP_SUPPORT": "Помощь и поддержка",
+      "DIGITAL_ASSISTANT": "Цифровой ассистент",
+      "PARTNERS_ORDERS": "Уведомления",
+      "SUBSCRIPTIONS": "Подписки",
+      "HISTORY": "История операций"
     },
     "CATALOG": {
       "ALL": "Весь каталог",
@@ -37,24 +44,24 @@
     "COPYRIGHT": "Официальный интернет-портал государственных услуг, {{currentYear}} г."
   },
   "LOCATION": {
-    "TITLE": "Укажите ваше местоположение",
-    "DESCRIPTION": "От выбора местоположения зависит набор услуг, доступный для получения на портале",
-    "CURRENT": "Ваше текущее местоположение",
-    "CHANGE": "Вы можете изменить регион",
-    "AUTO-SELECT": "Определить автоматически",
-    "MANUAL-SELECT": "Выбрать вручную",
+    "TITLE": "Где вы находитесь?",
+    "DESCRIPTION": "Вы увидите услуги, доступные для вашего региона",
+    "CURRENT": "Текущее местоположение",
+    "CHANGE": "Выбор региона",
+    "AUTO-SELECT": "Автоматически",
+    "MANUAL-SELECT": "Вручную",
     "AUTO-SELECT-ERROR": "Невозможно определить",
-    "SUBMIT": "Сохранить",
+    "SUBMIT": "Применить",
     "FAIL": "Выберите регион"
   },
   "WEEKDAYS": {
-    "MONDAY": "Пн",
-    "TUESDAY": "Вт",
-    "WEDNESDAY": "Ср",
-    "THURSDAY": "Чт",
-    "FRIDAY": "Пт",
-    "SATURDAY": "Сб",
-    "SUNDAY": "Вс"
+    "MONDAY": "пн",
+    "TUESDAY": "вт",
+    "WEDNESDAY": "ср",
+    "THURSDAY": "чт",
+    "FRIDAY": "пт",
+    "SATURDAY": "сб",
+    "SUNDAY": "вс"
   },
   "MONTHS": {
     "JANUARY": "Январь",
@@ -91,6 +98,7 @@
     "NO_APARTMENT": "Нет квартиры",
     "NO_OFFICE": "Нет офиса",
     "REGION": "Регион",
+    "COUNTRY": "Страна доставки",
     "CITY": "Город",
     "DISTRICT": "Район",
     "TOWN": "Населенный пункт",
@@ -166,6 +174,18 @@
       "UPDATE_BUTTON": "Обновить",
       "CANCEL_BUTTON": "Не обновлять"
     }
+  },
+  "MAIL_DELIVERY": {
+    "POPUP_TITLE": "Онлайн-доставка заказных писем от государства",
+    "USER_AGREEMENT": "Включая доставку электронных заказных писем, вы принимаете условия",
+    "USER_AGREEMENT_LINK": "пользовательского соглашения",
+    "SELECT_SUBSCRIPTIONS": "Выберите подписки для включения:",
+    "ENABLE_ONLINE_DELIVERY": "Включить онлайн доставку",
+    "REFUSE": "Отказаться",
+    "SUBSCRIBE_ERROR": "При выполнении операции произошла ошибка. Повторите позже.",
+    "POST_ADDRESS": "Почтовый адрес",
+    "POST_ADDRESSES": "Почтовые адреса",
+    "CHANGE_LINK": "Изменить или добавить"
   },
   "DISCLAIMER": {
     "TITLE": "Внимание !",
@@ -257,6 +277,11 @@
         "SUBTITLE": "В архив можно переносить заявления, жалобы или сообщения, потерявшие для вас актуальность. В любой момент вы можете извлечь их обратно",
         "BUTTON": "Вернуться"
       },
+      "ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,KND_APPEAL,LINKED_ACCOUNT": {
+        "TITLE": "У вас пока нет новых событий",
+        "SUBTITLE": "Если что-то произойдет, здесь появится уведомление об этом",
+        "BUTTON": "Перейти в каталог"
+      },
       "CLAIM" : {
         "TITLE" : "Список жалоб пуст",
         "SUBTITLE": "Если вы не согласны со штрафом и вынесенным в отношении вас постановлением, вы можете обжаловать его, подав соответствующую жалобу",
@@ -302,6 +327,7 @@
   },
   "NOTIFICATIONS": {
     "CANCEL": "Отменить",
+    "REPEAT": "Повторить",
     "CLOSE": "Закрыть",
     "CLEAR": "Скрыть все"
   },
@@ -421,5 +447,13 @@
       "VALIDITY_TO": "по"
     }
   },
-  "BACK": "Вернуться"
+  "BACK": "Назад",
+  "LANG": {
+    "ru": "RUS",
+    "en": "GBR"
+  },
+  "SUGGEST" : {
+    "TITLE" : "Вы ранее заполняли",
+    "EDIT_LIST" : "Есть неактуальное?"
+  }
 }

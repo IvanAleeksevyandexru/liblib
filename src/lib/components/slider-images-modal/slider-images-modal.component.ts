@@ -8,16 +8,25 @@ import { SliderImage } from '../../models/slider-image';
 })
 export class SliderImagesModalComponent implements OnInit {
 
+  public popupTitle: string; // Общий заголовок. Если если есть, то заголовки фото скрываем
+  public showTitle = true; // Заголовок конркетного фото
   public images: SliderImage[];
+  public skin = 'simple';
   public imageIndex = 1;
   public destroy: () => {};
   public imageWidth: number;
   public imageHeight: number;
+  public showBullet = true;
   constructor() { }
 
   public ngOnInit() {
-    this.imageWidth = this.getWindowSize().layout !== 'sm' ? 522 : 280;
-    this.imageHeight = this.getWindowSize().layout !== 'sm' ? 418 : 280;
+    if (this.skin === 'payment-fines-popup') {
+      this.imageWidth = this.getWindowSize().layout !== 'sm' ? 634 : 280;
+      this.imageHeight = this.getWindowSize().layout !== 'sm' ? 507 : 280;
+    } else  {
+      this.imageWidth = this.getWindowSize().layout !== 'sm' ? 522 : 280;
+      this.imageHeight = this.getWindowSize().layout !== 'sm' ? 418 : 280;
+    }
   }
 
   public onCancel(e: Event): void {

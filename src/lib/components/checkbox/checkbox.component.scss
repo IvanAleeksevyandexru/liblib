@@ -12,7 +12,7 @@ $checkbox-active-color: #0D4CD3;
   margin-top: 10px;
   vertical-align: top;
   line-height: 30px;
-  font-size: 15px;
+  font-size: 16px;
   width: fit-content;
 }
 
@@ -23,11 +23,17 @@ $checkbox-active-color: #0D4CD3;
 
   &:hover + .checkbox {
     background: $checkbox-default-color;
+    border-color: #1D5DEB;
   }
-
+  &:hover:checked + .checkbox {
+    background: #fff;
+    &:before {
+      background-color: #1D5DEB;
+    }
+  }
   &:disabled + .checkbox {
-    box-shadow: 0 0 0 2px #828C9A;
     background-color: #D1D5DF;
+    border-color: #86909C;
     &:before {
       display: none;
     }
@@ -36,7 +42,7 @@ $checkbox-active-color: #0D4CD3;
   &:disabled:checked + .checkbox {
     &:before {
       display: block;
-      background-color: #66727F;
+      background-color: #86909C;
     }
   }
 
@@ -44,27 +50,30 @@ $checkbox-active-color: #0D4CD3;
   &:active + .checkbox {
     &:before {
       content: '';
-      background: $checkbox-active-color url(../../../assets/svg/check.svg) no-repeat 4px 3px;
-      height: 16px;
-      left: 3px;
+      background: $checkbox-active-color url(../../../assets/svg/check_v2.svg) no-repeat 50%;
+      height: 14px;
       position: absolute;
-      top: 3px;
-      width: 16px;
+      width: 14px;
       border-radius: 2px;
-      background-size: 9px;
+      background-size: 10px 8px;
     }
   }
 }
 
 .checkbox {
   position: absolute;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
+  padding: 3px;
   margin-left: -36px;
   background-color: #fff;
   box-sizing: border-box;
   border-radius: 4px;
-  box-shadow: 0 0 0 2px $checkbox-active-color;
+  border: 2px solid $checkbox-active-color;
+  //box-sizing: content-box;
+  /*&.focused {
+    border: 2px dotted $checkbox-active-color;
+  }*/
 }
 
 .labelText {

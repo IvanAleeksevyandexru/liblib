@@ -1,18 +1,18 @@
 .counter {
   display: inline-block;
-  height: 16px;
-  border-radius: 12px;
-  padding: 0 8px;
+  height: 22px;
+  border-radius: 20px;
+  padding: 3px 8px;
   text-align: center;
-  font-size: 12px;
-  line-height: 19px;
-  color: #ffffff;
-  background-color: #df0024;
+  font-size: 14px;
+  line-height: 16px;
+  color: #fff;
+  background-color: #EE3F58;
 }
 
 :host {
   display: inline-block;
-  height: 16px;
+  height: 22px;
   font-size: 0;
   margin-left: 8px;
 
@@ -24,7 +24,7 @@
     height: 14px;
 
     &.small .counter {
-      border: 1px solid #ffffff;
+      border: 1px solid #fff;
     }
 
     .counter {
@@ -32,7 +32,7 @@
       height: 100%;
       padding: 0;
       border-radius: 50%;
-      border: 2px solid #ffffff;
+      border: 2px solid #fff;
       font-size: 0;
     }
   }

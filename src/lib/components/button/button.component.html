@@ -1,8 +1,9 @@
 <ng-template #content>
   <ng-content></ng-content>
 </ng-template>
-<div class="button-container" (click)="onClick($event)">
+<div class="button-container {{theme}}" (click)="onClick($event)">
   <button *ngIf="type === 'button'"
+    [type]="buttonType"
     [disabled]="disabled"
     class="{{size}} {{color}} {{width}} {{height}} {{type}} font-{{fontSize}}"
     [ngClass]="{disabled: disabled, active: active, loader: showLoader}"
@@ -10,7 +11,7 @@
     <ng-container *ngIf="!showLoader">
       <ng-container *ngTemplateOutlet="content"></ng-container>
     </ng-container>
-    <lib-loader [color]="color" *ngIf="showLoader"></lib-loader>
+    <lib-round-loader *ngIf="showLoader"></lib-round-loader>
   </button>
   <a *ngIf="type === 'anchor' && link !== ''"
     class="{{size}} {{color}} {{width}} {{height}} {{type}}"
@@ -27,8 +28,9 @@
     [routerLink]="internalLink">
     <ng-container *ngTemplateOutlet="content"></ng-container>
   </a>
-  <button *ngIf="type === 'search'"
+  <button *ngIf="type === 'search' || type === 'new-search'"
     class="{{size}} {{width}} {{type}}"
+    type="submit"
     [ngClass]="{disabled: disabled, active: active}">
     <span class="icon"></span>
   </button>

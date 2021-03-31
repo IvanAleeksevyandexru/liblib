@@ -72,21 +72,24 @@
                     <span class="calendar-week-day-text">{{weekDay | libTranslate}}</span>
                   </div>
                 </div>
-                <div class="calendar-week" *ngFor="let week of prevWeeks">
-                  <div *ngFor="let day of week" [class]="day.custom" (click)="selectDate(day)" [ngClass]="{
-                      'calendar-day': true,
-                      'today': day.today,
-                      'holiday': day.holiday,
-                      'selected': day.selected,
-                      'in-range': day.inRange,
-                      'range-start': day.rangeStart,
-                      'range-end': day.rangeEnd,
-                      'locked': day.locked,
-                      'outer': day.outer
-                    }">
-                    <span class="calendar-day-text">{{day?.day}}</span>
-                  </div>
-                </div>
+                <table class="calendar-week-wrapper">
+                  <tr class="calendar-week" *ngFor="let week of prevWeeks">
+                    <td *ngFor="let day of week" [class]="day.custom" (click)="selectDate(day)" [ngClass]="{
+                        'calendar-day': true,
+                        'today': day.today,
+                        'holiday': day.holiday,
+                        'selected': day.selected,
+                        'in-range': day.inRange,
+                        'range-start': day.rangeStart,
+                        'range-end': day.rangeEnd,
+                        'locked': day.locked,
+                        'outer': day.outer,
+                        'empty-day': !day.day
+                      }">
+                      <span class="calendar-day-text">{{day?.day}}</span>
+                    </td>
+                  </tr>
+                </table>
               </div>
             </div>
             <div class="calendar-grid-wrap current-month">
@@ -96,21 +99,30 @@
                     <span class="calendar-week-day-text">{{weekDay | libTranslate}}</span>
                   </div>
                 </div>
-                <div class="calendar-week" *ngFor="let week of weeks">
-                  <div *ngFor="let day of week" [class]="day.custom" (click)="selectDate(day)" [ngClass]="{
-                      'calendar-day': true,
-                      'today': day.today,
-                      'holiday': day.holiday,
-                      'selected': day.selected,
-                      'in-range': day.inRange,
-                      'range-start': day.rangeStart,
-                      'range-end': day.rangeEnd,
-                      'locked': day.locked,
-                      'outer': day.outer
-                    }">
-                    <span class="calendar-day-text">{{day?.day}}</span>
-                  </div>
-                </div>
+                <table class="calendar-week-wrapper" (mouseleave)="leaveCalendar()">
+                  <tr class="calendar-week" *ngFor="let week of weeks">
+                    <td *ngFor="let day of week" [class]="day.custom"
+                        (click)="selectDate(day)" (mouseenter)="enterInCalendar($event, day)" [ngClass]="{
+                        'calendar-day': true,
+                        'today': day.today,
+                        'holiday': day.holiday,
+                        'selected': day.selected,
+                        'in-range': day.inRange,
+                        'range-start': day.rangeStart,
+                        'range-end': day.rangeEnd,
+                        'in-preview-range': day.inPreviewRange,
+                        'preview-range-start': day.previewRangeStart,
+                        'preview-range-end': day.previewRangeEnd,
+                        'locked': day.locked,
+                        'outer': day.outer,
+                        'empty-day': !day.day
+                      }">
+                      <div class="calendar-day-content">
+                        <span class="calendar-day-text">{{day?.day}}</span>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
               </div>
             </div>
             <div class="calendar-grid-wrap next-month" [ngClass]="{'out-of-area': monthShift !== 'next'}">
@@ -120,21 +132,24 @@
                     <span class="calendar-week-day-text">{{weekDay | libTranslate}}</span>
                   </div>
                 </div>
-                <div class="calendar-week" *ngFor="let week of nextWeeks">
-                  <div *ngFor="let day of week" [class]="day.custom" (click)="selectDate(day)" [ngClass]="{
-                      'calendar-day': true,
-                      'today': day.today,
-                      'holiday': day.holiday,
-                      'selected': day.selected,
-                      'in-range': day.inRange,
-                      'range-start': day.rangeStart,
-                      'range-end': day.rangeEnd,
-                      'locked': day.locked,
-                      'outer': day.outer
-                    }">
-                    <span class="calendar-day-text">{{day?.day}}</span>
-                  </div>
-                </div>
+                <table class="calendar-week-wrapper">
+                  <tr class="calendar-week" *ngFor="let week of nextWeeks">
+                    <td *ngFor="let day of week" [class]="day.custom" (click)="selectDate(day)" [ngClass]="{
+                        'calendar-day': true,
+                        'today': day.today,
+                        'holiday': day.holiday,
+                        'selected': day.selected,
+                        'in-range': day.inRange,
+                        'range-start': day.rangeStart,
+                        'range-end': day.rangeEnd,
+                        'locked': day.locked,
+                        'outer': day.outer,
+                        'empty-day': !day.day
+                      }">
+                      <span class="calendar-day-text">{{day?.day}}</span>
+                    </td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>

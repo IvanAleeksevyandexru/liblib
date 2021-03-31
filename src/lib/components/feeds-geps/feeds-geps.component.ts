@@ -267,7 +267,7 @@ export class FeedsGepsComponent implements OnInit, OnChanges, OnDestroy {
 
   private injectBanners(feeds: FeedItemModel[]): FeedItemModel[] {
     const part: FeedItemModel[] = [].concat(feeds);
-    if (part.length > 1) {
+    if (part.length > 0) {
       const banner = this.getActualBanner();
       if (banner) {
         if (part.length > 3) {
@@ -283,6 +283,9 @@ export class FeedsGepsComponent implements OnInit, OnChanges, OnDestroy {
 
   private getActualBanner(): FeedBannerModel {
     const banners = this.getGroupBanners();
+    if (this.activeBanners === banners.length) {
+      this.activeBanners = 0;
+    }
     const banner = banners.length && this.activeBanners < banners.length ? banners[this.activeBanners] : null;
     return banner ? {path: this.bannerPlace + '.' + banner.mnemonic} : null;
   }

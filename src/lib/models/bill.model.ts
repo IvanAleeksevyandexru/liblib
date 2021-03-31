@@ -6,6 +6,7 @@ export enum ServiceCategoryCode {
   Fssp = 'FSSP',
   Account = 'ACCOUNT',
   StateDuty = 'STATE_DUTY',
+  Payment = 'PAYMENT',
 }
 
 export enum CardType {
@@ -26,7 +27,7 @@ export enum PayMethodCode {
   QIWI = 'QIWI',
   YADENGI = 'YADENGI',
   elplat = 'elplat',
-  webmoney = 'webmoney',
+  webmoney = 'webmoney'
 }
 
 export enum PayMethodGroupCode {
@@ -55,8 +56,12 @@ export enum PaySystemCode {
   elplat = 'pps_elplat',
   webmoney = 'PPS_webmoney',
   GOOGLE_PAY = 'GOOGLE_PAY',
+  GooglePayMobi = 'GooglePay_mobi',
   APPLE_PAY = 'apple_pay',
+  ApplePayMobi = 'ApplePay_mobi',
   SAMSUNG_PAY = 'SAMSUNG_PAY',
+  SamsungPayMobi = 'SamsungPay_mobi',
+  BankCard = 'BANK_CARD',
 }
 
 export enum BillsErrors {
@@ -94,6 +99,8 @@ export interface BillsRequestParams {
   epgu_id?: string;
   vehicles?: boolean;
   interfaceTypeCode?: string;
+  PayerIdType?: string;
+  PayerIdNum?: string;
 }
 
 export interface Bill {
@@ -101,7 +108,7 @@ export interface Bill {
   addAttrs: BillAttr[];
   amount: number;
   billDate: string;
-  billId: string;
+  billId: number;
   billName: string;
   billNumber: string;
   signature?: string;
@@ -113,10 +120,7 @@ export interface Bill {
     code: string;
     name: string;
   };
-  billSumm: Array<{
-    summ: string;
-    summId: string;
-  }>;
+  billSumm: BillSumm[];
   comment?: string;
   createDate?: string;
   currencyCode?: string;
@@ -142,8 +146,13 @@ export interface Bill {
   vehicle?: Vehicle;
   hasPhoto?: boolean;
   attrs?: any; // Кастомный атрибут. Преобразованный addAttrs к объекту
-  isAppealAvailable?: boolean;
-  isRefundAvailable?: boolean;
+  appealAvailable?: boolean;
+  refundAvailable?: boolean;
+}
+
+export interface BillSumm {
+  summId: string;
+  summ: string;
 }
 
 export interface BillAttr {
@@ -167,20 +176,22 @@ export interface PayRequsites {
 }
 
 export interface PaidId {
-  amount: string;
+  amount: number;
   date: string;
-  fee: string;
-  id: string;
+  fee: number;
+  id: number;
+  userId?: number;
 }
 
 export interface BillLink {
+  amount: number;
   comment: string;
   billDate: string;
   supplierFullName: string;
   billId: string;
   billNumber: string;
-  signature: string;
-  vehicle: Vehicle;
+  signature?: string;
+  vehicle?: Vehicle;
   serviceCategory?: {
     code: ServiceCategoryCode;
     name: string;
@@ -189,33 +200,35 @@ export interface BillLink {
 
 export interface SupplierSource {
   sourceApplication: string;
-  sourceFullName: string;
-  sourcePhone: string;
+  sourceFullName?: string;
+  sourcePhone?: string;
   sourceShortName: string;
-  sourceURL: string;
+  sourceURL?: string;
   nameSourceApplication: string;
   isGibdd: boolean;
+  sourceCode?: string;
 }
 
 export interface FkPayment {
   amount: number;
-  bankName: string;
-  bankPaymentExtId: number;
+  bankName?: string;
+  bankPaymentExtId: string;
   billNumber: string;
-  changeStatus: number;
-  payDate: number;
+  changeStatus: string;
+  payDate: string;
   paymentStatus: string;
-  prDocDate: number;
+  prDocDate: string;
   prDocNum: string;
   prKbk: string;
-  prOktmo: string;
+  prOktmo?: string;
+  prOkato: string;
   prPurpCode: string;
   prTaxPeriod: string;
   prTypeCode: string;
   purpose: string;
-  recInn: number;
-  recKpp: number;
-  recipientDate: number;
+  recInn: string;
+  recKpp: string;
+  recipientDate: string;
 }
 
 export interface BillResponse {
@@ -257,10 +270,12 @@ export interface PayOption {
   paySystem: PaySystem;
   paymentInstrument?: PaymentInstrument;
   lastPayMethod?: boolean;
+  // кастомные поля
+  isHidden?: boolean;
 }
 
 export interface CardInfo {
-  cardIin: number;
+  cardIin: string;
   cardTypeCode: CardType;
   emitentBankName: string;
 }
@@ -274,13 +289,13 @@ export interface PayMethod {
 export interface PayMethodGroup {
   code: PayMethodGroupCode;
   name: string;
-  value: string;
+  value?: string;
 }
 
 export interface PaySystem {
   code: PaySystemCode;
   name: string;
-  value: string;
+  value?: string;
 }
 
 export interface PaymentInstrument {

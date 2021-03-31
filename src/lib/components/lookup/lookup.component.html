@@ -1,6 +1,8 @@
-<div class="lookup" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside
-     (clickOutside)="cancelSearchAndClose()" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
-  <div class="lookup-field" #lookupField [ngClass]="{expanded: expanded, invalid: invalidDisplayed, 'with-expand-button': showExpandCollapse}">
+<div class="lookup" [ngClass]="contextClass ? [contextClass] : []"
+     [class.main-page-new]="mainPageStyle"
+     (click)="returnFocus($event)" libClickOutside
+     (clickOutside)="cancelSearchAndClose(true)" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+  <div class="lookup-field" #lookupField [ngClass]="{expanded: expanded, disabled: disabled, invalid: invalidDisplayed, 'with-expand-button': showExpandCollapse}">
     <lib-search-bar #searchBar
       [contextClass]="'lookup-input ' + contextClass"
       [tabIndex]="tabIndex"
@@ -23,7 +25,11 @@
       [showStaticContent]="item || htmlPlaceholder"
       [forceShowStaticContent]="forceShowStatic"
       [suggestion]="showSuggestion ? suggestion : null"
+      [mainPageStyle]="mainPageStyle"
+      [enableLangConvert]="enableLangConvert"
+      [stopSearch]="stopSearch"
       [(ngModel)]="query"
+      (searchQueryChanged)="modelChange()"
       (newSearch)="lookupItems($event)"
       (forcedSearch)="forceSearch($event.query, $event.byEnter)"
       [searching]="searching"
@@ -33,7 +39,8 @@
       (input)="showTextField()"
       (keydown)="handleKeydownNavigation($event)"
       (cleared)="clearInput()"
-      (suggestionSelected)="selectSuggestion($event)">
+      (suggestionSelected)="selectSuggestion($event)"
+      (searchButtonClick)="handleSearchButtonClick($event)">
         <div class="lookup-item" *ngIf="item">
           <div *ngIf="escapeHtml" class="item-container">{{item.formatted}}</div>
           <div *ngIf="!escapeHtml" class="item-container" [innerHTML]="item.formatted | safeHtml"></div>
@@ -44,7 +51,7 @@
     </lib-search-bar>
     <div class="expand-collapse" *ngIf="showExpandCollapse" [ngClass]="{expanded: expanded}" (click)="lookupItemsOrClose(true)"></div>
   </div>
-  <div class="lookup-list-wrapper">
+  <div class="lookup-list-wrapper" *ngIf="!hideSearchResult">
     <div class="lookup-context-positioning" [class.static-list]="staticList" #lookupList [class.context-positioned]="contextMenuPosition">
       <div class="lookup-context-shift">{{query}}</div>
       <div class="lookup-list-container"
@@ -53,6 +60,9 @@
           [class.incremental-loading]="partialsLoading">
 
         <ng-container *ngIf="staticList; else withScroll">
+
+          <ng-container [ngTemplateOutlet]="suggestTmpl" [ngTemplateOutletContext]="{suggest: suggest}"></ng-container>
+
           <ng-container *ngFor="let item of items">
             <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
           </ng-container>
@@ -60,8 +70,11 @@
 
         <ng-template #withScroll>
           <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll && !staticList"
-              [config]="{suppressScrollX: true, wheelPropagation: false}"
+              [config]="{suppressScrollX: true, wheelPropagation: mainPageStyle}"
               (psYReachEnd)="loadNextPartial()">
+
+            <ng-container [ngTemplateOutlet]="suggestTmpl" [ngTemplateOutletContext]="{suggest: suggest}"></ng-container>
+
             <ng-container *ngFor="let item of items">
               <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
             </ng-container>
@@ -70,6 +83,9 @@
           <lib-virtual-scroll #virtualScroll *ngIf="virtualScroll && !staticList"
               [scrollStrategy]="virtualScrollController"
               (scrollBottomReached)="loadNextPartial()">
+
+            <ng-container [ngTemplateOutlet]="suggestTmpl" [ngTemplateOutletContext]="{suggest: suggest}"></ng-container>
+
             <ng-container *libVirtualFor="let item of items">
               <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
             </ng-container>
@@ -107,6 +123,23 @@
         <div *ngIf="collapsableGroups && item.collapsable" class="expand-collapse" [class.collapsed]="item.collapsed" (click)="expandCollapse(item, $event)"></div>
       </div>
     </div>
+  </div>
+</ng-template>
+
+<ng-template #suggestTmpl let-suggest="suggest">
+  <div class="suggests" *ngIf="suggest && suggest.list.length">
+    <p class="title pl-16">{{'SUGGEST.TITLE' | libTranslate}}</p>
+    <ul class="mt-4">
+      <li *ngFor="let item of suggest.list" (click)="selectSuggestItem(item)">
+        <p>{{item.value}}</p>
+        <ng-container *ngIf="item.hints">
+          <span *ngFor="let hint of item.hints">{{hint.value}} </span>
+        </ng-container>
+      </li>
+    </ul>
+    <p class="ml-16 mr-16 edit mt-4">
+      <a (click)="editSuggestList(suggest)">{{'SUGGEST.EDIT_LIST' | libTranslate}}</a>
+    </p>
   </div>
 </ng-template>
 

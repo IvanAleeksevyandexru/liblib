@@ -13,23 +13,34 @@ export class LoginComponent implements OnInit {
 
   @Input() public userCounter: CounterData;
   @Input() public onlyIcon: boolean;
+  @Input() public onlyText: boolean;
+  @Input() public menuOpened: boolean;
+  @Input() public useButton: boolean;
 
   public user: User;
   public avatarError = false;
 
-  @Output()
-  public userClick: EventEmitter<any> = new EventEmitter();
+  @Output() public userClick: EventEmitter<any> = new EventEmitter();
+  @Output() public closeMenu: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private authService: AuthService,
     public loadService: LoadService
   ) { }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.user = this.loadService.user;
   }
 
-  public login() {
+  private stopEvent(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+  }
+
+  public login(event?: Event): void {
+    this.stopEvent(event);
     if (isDevMode()) {
       this.authService.login().subscribe((resp) => {
         window.location = resp;
@@ -40,18 +51,22 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  public logout() {
-    if (isDevMode()) {
-      this.authService.logout().subscribe((resp) => {
-        window.location = resp;
-      });
-    } else {
-      window.location.href = this.loadService.config.betaUrl + 'auth-provider/logout';
-    }
+  public register(event: Event): void {
+    this.stopEvent(event);
+    window.location.href = this.loadService.config.esiaUrl + '/registration/';
   }
 
-  public userClicked() {
-    this.userClick.emit(this.user);
+  public logout(): void {
+    this.loadService.logout();
+  }
+
+  public userClicked(): void {
+    this.userClick.emit();
+  }
+
+  public onCloseMenu(event: Event): void {
+    this.stopEvent(event);
+    this.closeMenu.emit();
   }
 
 }

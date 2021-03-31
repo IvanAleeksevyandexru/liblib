@@ -60,10 +60,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public hasMore: boolean;
   public removeInProgress: boolean;
   public isLk = (this.loadService.attributes.appContext || this.loadService.config.viewType) === 'LK';
+  public isPartners = (this.loadService.attributes.appContext || this.loadService.config.viewType) === 'PARTNERS';
   private feedsSubscription: Subscription;
   private feedsUpdateSubscription: Subscription;
   private loadedFeedsCount = 0;
   private showMoreCount = 0;
+  private afterFirstSearch = false;
   public isHeader: boolean;
 
   constructor(
@@ -82,7 +84,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public ngOnInit() {
     HelperService.mixinModuleTranslations(this.translate);
     this.getUserData();
-    this.getFeeds();
+    if (!this.afterFirstSearch) {
+      this.getFeeds();
+    }
     this.updateFeeds();
     this.isHeader = this.page === 'header';
   }
@@ -131,6 +135,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getFeeds(lastFeedId: number | string = '', lastFeedDate: Date | string = '', query = '', pageSize = ''): void {
+    this.afterFirstSearch = true;
     this.allFeedsLoaded = false;
     this.searching.emit(true);
     this.feedsSubscription = this.feedsService.getFeeds({
@@ -168,6 +173,10 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   public openDetails(feed: FeedModel): string {
     return this.feedsService.openDetails(feed);
+  }
+
+  public withReload(feed): boolean {
+    return !(this.isLk && !['KND_APPEAL', 'KND_APPEAL_DRAFT'].includes(feed.feedType) || this.isPartners);
   }
 
   public getUserData(): User {
@@ -312,8 +321,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     return snippet.type === 'PAYMENT' && feed.status !== 'reject_no_pay' && !!snippet.sum;
   }
 
+  private isOrderReject(snippet: SnippetModel, feed: FeedModel): boolean {
+    return snippet.type === 'PAYMENT' && feed.feedType === 'ORDER' && feed.status === 'reject';
+  }
+
   public showSnippets(snippet: SnippetModel, feed: FeedModel): boolean {
-    if (this.isIpshAborted(feed)) {
+    if (this.isIpshAborted(feed) || this.isOrderReject(snippet, feed)) {
       return false;
     }
     if (this.checkSnippetStatus(snippet, feed)) {
@@ -453,7 +466,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
     if (!this.isLk) {
       location.href = `${this.loadService.config.urlLk}` + 'notifications';
-    } else {
+    }
+
+    if (this.page === 'overview') {
       this.router.navigate(['/notifications']);
     }
   }
@@ -575,5 +590,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         break;
     }
     return status;
+  }
+
+  public isKindergartenSnippet(feed: any): boolean {
+    return this.checkSnippetsExists(feed) && this.page === 'orders' && feed.data.snippets[0].type === 'CHILD';
   }
 }

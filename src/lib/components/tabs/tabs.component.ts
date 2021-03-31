@@ -51,7 +51,9 @@ export class TabsComponent implements OnInit, OnChanges, OnDestroy {
     this.activeTabSubscription = innerTabs.watchForActive().subscribe((tab: Tab) => {
       this.selected.emit(tab);
       this.activeTab = tab;
-      this.changeDetection.detectChanges();
+      if (!this.changeDetection['destroyed']) {
+        this.changeDetection.detectChanges();
+      }
     });
     this.selectTabByUrlIfNeeded();
     this.changeDetection.detectChanges();
@@ -63,6 +65,7 @@ export class TabsComponent implements OnInit, OnChanges, OnDestroy {
   public showMobTabs = false;
   private tabsSubscription: Subscription = null;
   private activeTabSubscription: Subscription = null;
+  public isMozilla = navigator.userAgent.match(/Mozilla/i);
 
   public ngOnInit() {
     if (this.control === ModelControl.LOCAL) {
@@ -91,6 +94,9 @@ export class TabsComponent implements OnInit, OnChanges, OnDestroy {
       this.tabsSubscription.unsubscribe();
       this.tabsService.unregister(this.name);
     }
+    if (this.activeTabSubscription) {
+      this.activeTabSubscription.unsubscribe();
+    }
   }
 
   // выделяет вкладку без срабатывания обработчиков, переходов и метрики
@@ -113,7 +119,14 @@ export class TabsComponent implements OnInit, OnChanges, OnDestroy {
         }
       };
       if (selectedTab.metric && this.yaMetricService) {
-        this.yaMetricService.callReachGoalParamsAsMap(selectedTab.metric).then(proceed);
+        if (this.isMozilla) {
+          this.yaMetricService.callReachGoalParamsAsMap(selectedTab.metric);
+          setTimeout(() => {
+            proceed();
+          }, 100)
+        } else {
+          this.yaMetricService.callReachGoalParamsAsMap(selectedTab.metric).then(proceed)
+        }
       } else {
         proceed();
       }

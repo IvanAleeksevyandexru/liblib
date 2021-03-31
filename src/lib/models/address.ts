@@ -3,7 +3,7 @@ export interface Address {
   id?: number;
   stateFacts?: string[];
   vrfDdt?: string;
-  type: 'PLV' | 'PRG' | 'OPS' | 'OLG';
+  type: 'PLV' | 'PRG' | 'OPS' | 'OLG' | 'PTA';
   addressStr?: string;
   city?: string;
   countryId?: string;
@@ -30,4 +30,21 @@ export interface ConfirmAddress {
   // Кастомные поля
   resendFrom?: string;
   resendAllowed?: boolean;
+}
+
+export interface CountryDict {
+  name: string;
+  size: number;
+  stateFacts: string[];
+  values: Country[];
+}
+
+export interface Country {
+  id?: string;
+  char2Code: string;
+  char3Code: string;
+  extId: string;
+  msgKey: string;
+  name: string;
+  postDelivered: boolean;
 }

@@ -11,19 +11,33 @@ export interface SearchSuggestion {
 }
 
 export interface SearchSputnikSuggests {
-  services?: SimpleSputnikSuggest[],
+  help?: SimpleSputnikSuggest[],
   info?: SimpleSputnikSuggest[],
-  departments?: SimpleSputnikSuggest[],
-  faq?: SimpleSputnikSuggest[],
-  situations?: SimpleSputnikSuggest[],
   news?: SimpleSputnikSuggest[],
   other?: SimpleSputnikSuggest[],
-  suggests?: SimpleSputnikSuggest[]
+  service?: SimpleSputnikSuggest[],
+  situation?: SimpleSputnikSuggest[],
+  structure?: SimpleSputnikSuggest[],
+  suggest?: SimpleSputnikSuggest[]
 }
 
 export interface SimpleSputnikSuggest {
   name: string;
   image: string | null;
   link: string | null;
-  children?: SimpleSputnikSuggest[]
+  children?: SimpleSputnikSuggest[];
+  category?: string;
+  lineBreak?: string;
+  query?: string;
+}
+
+
+export interface SearchSputnikConfig {
+  url: string;
+  request: {
+    _: string;
+    query?: string;
+    q?: string;
+    serviceRecipient?: string;
+  };
 }

@@ -295,7 +295,7 @@ export class HelperService {
     }
   }
 
-  public static convertEpguDadataAddressToEsiaAddress(dadataAddress: DadataResult, type: 'PLV' | 'PRG' | 'OPS' | 'OLG'): Address {
+  public static convertEpguDadataAddressToEsiaAddress(dadataAddress: DadataResult, type: 'PLV' | 'PRG' | 'OPS' | 'OLG' | 'PTA'): Address {
     return {
       type,
       countryId: 'RUS',
@@ -350,7 +350,7 @@ export class HelperService {
   public static formatMailDelivery(address: any): string {
     let resultStr = '';
     const orderedModel = ['region', 'area', 'city', 'cityArea', 'place', 'street',
-      'additionalArea', 'additionalStreet', 'house', 'building1', 'building2', 'apartment', 'post_index'
+      'additionalArea', 'additionalStreet', 'house', 'building1', 'building2', 'apartment', 'flat', 'post_index'
     ];
     const mapping = {
       region: 'region',
@@ -362,13 +362,14 @@ export class HelperService {
       house: 'house',
       building1: 'housing',
       building2: 'building',
-      apartment: 'apartment'
+      apartment: 'apartment',
+      flat: 'flat'
     };
 
     orderedModel.forEach(addr => {
       if (address[mapping[addr]] && (addr !== 'post_index')) {
         if (!(addr === 'region' && address.region === address.city)) {
-          resultStr += addr !== 'house' ? ', ' : ', д. ';
+          resultStr += addr === 'house' ? ', д. ' : addr === 'flat' ? ', кв. ' : ', ';
           resultStr += address[mapping[addr]].trim();
         }
       }
@@ -510,6 +511,10 @@ export class HelperService {
   public static internalUrlToRelative(url: string): string {
     return url && HelperService.isInternalUrl(url) ?
       HelperService.recoverProtocol(url).substring(HelperService.getCurrentHost().length) || '/' : url;
+  }
+
+  public static langIsRus(lang: string): boolean {
+    return lang === 'ru';
   }
 
   public static isUrlEqualToCurrent(url: string | {url: string, queryParams?: {[key: string]: string}}) {

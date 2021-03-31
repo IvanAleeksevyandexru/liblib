@@ -1,13 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { InformersService } from '../../services/informers/informers.service';
-import { DataInformer,
+import {
+  DataInformer,
   InformerShortInterface,
   TypeDebt,
   WordsOfDebt,
   TypeIcons,
   DebtYaMetricInterface,
   TypeDataOfInformers,
-  TypeStatus
+  TypeStatus, HintInterface
 } from '../../models/informer.model';
 import { DeclinePipe } from '../../pipes/decline/decline.pipe';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
@@ -27,6 +28,10 @@ export class InformerComponent implements OnInit {
 
   public statusInformer: TypeStatus = 'load';
   public dataInformer = new DataInformer();
+  public hintResponse: HintInterface;
+  public hintText: string;
+  public linkHint: string;
+  public mnemonicHint: string;
 
   private links = {
     al10: '/profile/personal',
@@ -91,7 +96,7 @@ export class InformerComponent implements OnInit {
     }
   }
 
-  private getWorld(debtCount: Array<string>): string[] {
+  private getWord(debtCount: Array<string>): string[] {
     if (debtCount.length === 1) {
       return WordsOfDebt[debtCount[0]].split('|');
     } else {
@@ -111,10 +116,35 @@ export class InformerComponent implements OnInit {
     this.statusInformer = 'debt';
   }
 
+  private getTextToHint(code: string): void {
+    if (this.informersService.hints[code].textWithDay) {
+      if (this.hintResponse.days == 1) {
+        this.hintText = "Остался последний день ";
+      } else {
+        this.hintText = this.informersService.getWord(this.hintResponse.days, "остался") + ' ' + this.hintResponse.days + ' ' + this.informersService.getWord(this.hintResponse.days, "день") + ' ';
+      }
+      this.hintText += this.informersService.hints[code].textWithDay;
+    } else {
+      this.hintText = this.informersService.hints[code].text;
+    }
+    this.linkHint = this.informersService.hints[code].link;
+    this.mnemonicHint = code;
+  }
+
   private getInformerShortData() {
-    this.informersService.getDataInformer().subscribe(
-      (response: InformerShortInterface) => {
-        if (response && response.result) {
+    this.informersService.getDataInformer().subscribe((response: InformerShortInterface) => {
+
+        if (response?.hint) {
+          this.hintResponse = response.hint;
+          var hint = Object.keys(this.informersService.hints).find((code) => {
+            return this.hintResponse.code === code;
+          });
+          this.getTextToHint(hint);
+        } else if (this.loadService.user.userType == 'P') {
+          this.getTextToHint("00");
+        }
+
+        if (response && response?.result) {
           // есть начисления
           if (response.result.total) {
             const res = response.result;
@@ -128,7 +158,7 @@ export class InformerComponent implements OnInit {
                 this.debtForYaMetric.types = Object.assign(this.debtForYaMetric.types, {[TypeDebt[type]]: res[TypeDebt[type]].amount});
               }
             }
-            this.dataInformer.docs = this.declinePipe.transform(res.total, this.getWorld(debtCount));
+            this.dataInformer.docs = this.declinePipe.transform(res.total, this.getWord(debtCount));
             this.setExtraDebtData(res);
             // инфа для метрики
             this.debtForYaMetric.counter = res.total;
@@ -179,4 +209,5 @@ export class InformerComponent implements OnInit {
       location.href = this.links[this.statusInformer];
     }
   }
+
 }

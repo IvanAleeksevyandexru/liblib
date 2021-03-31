@@ -112,10 +112,51 @@ export class ConstantsService {
       metric: {name: this.TABS_METRIC_NAME, action: 'permissions'}
     }
   ]);
+  public readonly LK_DEPT_TABS = new Tabs([
+    {
+      id: 'orders-dept',
+      name: 'TABS.ORDERS_DEPT.TITLE',
+      url: '/orders-dept',
+      metric: {name: this.TABS_METRIC_NAME, action: 'ordersDept'}
+    }, {
+      id: 'orders-refusals',
+      name: 'TABS.ORDERS_REFUSALS.TITLE',
+      url: '/orders-refusals',
+      metric: {name: this.TABS_METRIC_NAME, action: 'ordersRefusals'}
+    }, {
+      id: 'orders-bankruptcy',
+      name: 'TABS.ORDERS_BANKRUPTCY.TITLE',
+      url: '/orders-bankruptcy',
+      metric: {name: this.TABS_METRIC_NAME, action: 'ordersBankruptcy'}
+    }
+  ]);
+  public readonly LK_DEPT_TABS_ASIDE = new Tabs([
+    {
+      id: 'debt',
+      name: 'Все заявления',
+      url: '/orders-debt/all'
+    },
+    {
+      id: 'inbox',
+      name: 'Полученные',
+      url: '/orders-debt/inbox'
+    },
+    {
+      id: 'approved',
+      name: 'Одобренные',
+      url: '/orders-debt/approved'
+    },
+    {
+      id: 'failure',
+      name: 'Отказы',
+      url: '/orders-debt/failure',
+      break: 'after'
+    }
+  ]);
   public readonly LK_PARTNERS_TABS = new Tabs([
     {
       id: 'partners',
-      name: 'TABS.ORDERS.TITLE',
+      name: 'TABS.PARTNERS_ORDERS.TITLE',
       url: '/lk/orders/all',
       mnemonic: 'partnersOrders'
     }, {
@@ -129,6 +170,35 @@ export class ConstantsService {
       url: '/lk/history',
       mnemonic: 'partnersHistory'
     }
+  ]);
+  public readonly PAYMENT_TABS_FL = new Tabs([
+    {
+      id: 'toPay',
+      name: 'К оплате',
+      url: '/pay'
+    },
+    {
+      id: 'quittance',
+      name: 'По квитанции',
+      url: '/pay/quittance'
+    },
+    {
+      id: 'withoutQuittance',
+      name: 'По реквизитам',
+      url: '/pay/withoutQuittance',
+      hidden: true
+    },
+    {
+      id: 'history',
+      name: 'История',
+      url: '/pay/paymentHistory'
+    },
+    {
+      id: 'hidden',
+      name: 'Скрытые',
+      url: '/pay/hidden',
+      hidden: true
+    },
   ]);
   public readonly LK_SETTINGS_SIDE_TABS = new Tabs ([
     {
@@ -165,8 +235,7 @@ export class ConstantsService {
     {
       id: 'mail',
       name: 'SETTINGS.TABS.MAIL',
-      url: '/settings/mail',
-      access: ['AL20']
+      url: '/settings/mail'
     },
     {
       id: 'esignature',
@@ -232,7 +301,7 @@ export class ConstantsService {
     {
       id: 'settings',
       name: 'MESSAGES.TABS.SETTINGS',
-      url: '/settings/notifications'
+      url: '/settings/mail'
     }
   ]);
 
@@ -270,6 +339,12 @@ export class ConstantsService {
       id: 'work',
       name: 'PROFILE.TABS.PENSION',
       url: '/profile/pension',
+      access: ['AL20']
+    },
+    {
+      id: 'privileges',
+      name: 'PROFILE.TABS.PRIVILEGES',
+      url: '/profile/privileges',
       access: ['AL20']
     },
     {
@@ -375,7 +450,7 @@ export class ConstantsService {
   public readonly FEEDS_CATEGORIES = [
     {
       text: 'Все',
-      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,KND_APPEAL',
+      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,KND_APPEAL,LINKED_ACCOUNT',
       id: 1,
       mnemonic: 'allEvents'
     },
@@ -405,7 +480,7 @@ export class ConstantsService {
     },
     {
       text: 'Системные',
-      type: 'BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE',
+      type: 'BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE,LINKED_ACCOUNT',
       id: 6,
       mnemonic: 'systemEvents'
     },
@@ -805,6 +880,7 @@ export class ConstantsService {
 
   public readonly MAIL_DELIVERY_FIRST_SUBSCRIBE_STATUSES = ['REMIND_LATER', 'NOT_SUBSCRIBED', 'DENY_SUBSCRIPTION'];
   public readonly MAIL_DELIVERY_SUBSCRIBED_STATUS = 'SUBSCRIBED';
+  public readonly MAIL_DELIVERY_RUSSIAN_POST_CODE = 'PR';
 
   public readonly INTEGRATION_MODULE_QUERY = 50;
   public readonly INTEGRATION_MODULE_APPROVE = 51;
@@ -848,6 +924,7 @@ export class ConstantsService {
     DIVORCE_CERT: 'DIVORCE_CERT',
     SELF_EMPLOYED: 'SELF_EMPLOYED',
     DISABLED_PERSON: 'DISABLED_PERSON',
+    PARKING_PERMIT: 'REESTR_INVALIDOV',
     MEDICAL_ORG: 'MEDICAL_ORG'
   };
 
@@ -910,12 +987,13 @@ export class ConstantsService {
   };
 
   public readonly ADDRESS_TYPE: {
-    [key: string]: 'PLV' | 'PRG' | 'OPS' | 'OLG'
+    [key: string]: 'PLV' | 'PRG' | 'OPS' | 'OLG' | 'PTA'
   } = {
     PLV: 'PLV',
     PRG: 'PRG',
     OPS: 'OPS',
-    OLG: 'OLG'
+    OLG: 'OLG',
+    PTA: 'PTA'
   };
 
   public readonly ELECTION_COMMON_DATE_FORMAT = 'DD.MM.YYYY';
@@ -942,4 +1020,9 @@ export class ConstantsService {
     'text/plain': 'TXT',
   };
 
+  public readonly CONVERT_LANG = {
+    RUS: {"q":"й","w":"ц","e":"у","r":"к","t":"е","y":"н","u":"г","i":"ш","o":"щ","p":"з","[":"х","{":"Х","]":"ъ","}":"Ъ",
+      "`":"ё","~":"Ё","a":"ф","s":"ы","d":"в","f":"а","g":"п","h":"р","j":"о","k":"л","l":"д",
+      "z":"я","x":"ч","c":"с","v":"м","b":"и","n":"т","m":"ь"}
+  }
 }

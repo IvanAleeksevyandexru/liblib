@@ -5,6 +5,8 @@
          [disabled]="disabled"
          [ngClass]="{'disabled': disabled}"
          (change)="onSelected($event.target.checked)"
+         (focus)="notifyFocusEvent($event, radioId)"
+         (blur)="notifyFocusEvent($event, radioId)"
          [id]="radioId"
          [name]="name"
          [attr.value]="value"
@@ -13,7 +15,9 @@
          [attr.errorMessage]="errorMessage"
          [required]="required"
          [attr.tabIndex]="disabled ? -1 : 0">
-  <span class="radio-button"></span>
+  <div class="mark-wrap" [class.focused]="focused">
+    <div class="radio-button"></div>
+  </div>
   <div class="label-wrap">
     <span class="labelText" [style.color]="labelColor">{{labelText}}</span>
     <div *ngIf="description || errorMessage" class="radio-description">

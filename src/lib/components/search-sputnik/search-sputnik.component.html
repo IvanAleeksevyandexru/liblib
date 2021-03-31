@@ -1,22 +1,35 @@
-<div class="flex-container align-items-center search-container" [class]="contextClass" [ngClass]="{'show-field' : showField}">
+<div class="flex-container align-items-center search-container" [class.main-page-style]="mainPageStyle" [class]="contextClass" [ngClass]="{'show-field' : showField}">
   <div *ngIf="showField" #searchBox class="search-input">
     <lib-lookup #lookup class="search"
                 [placeholder]="placeholder"
+                [removeTags]="removeTags"
                 [contextClass]="contextClass"
                 [itemsProvider]="searchProvider"
-                [queryMinSymbolsCount]="3"
-                [maxlength]="400"
+                [queryMinSymbolsCount]="2"
+                [maxlength]="maxLength"
+                [highlightSubstring]="highlightSubstring"
                 [staticList]="staticList"
+                [hideSearchResult]="hideSearchResult"
                 [(ngModel)]="searchItem"
                 clearInconsistent="ignore"
                 [showMagnifyingGlass]="showMagnifyingGlass"
                 [clearable]="true"
                 [cachedResponse]="cachedResponse"
+                [mainPageStyle]="mainPageStyle"
+                [enableLangConvert]="enableLangConvert"
+                [queryTimeout]="queryTimeout"
+                [stopSearch]="stopSearch"
                 (opened)="toggleSearch(true)"
                 (closed)="toggleSearch(false)"
+                (focus)="focusEvent()"
                 [converter]="converter"
                 (changed)="onSearch()"
+                (queryChanged)="searchChangeHandler($event)"
                 (input)="toggleMagnifyingGlass()"
+                (enterKeyEvent)="emptyResultHandler($event)"
+                (listed)="processSearchResult($event)"
+                (searchButtonClick)="handleSearchButtonClick($event)"
+                (blockedSearchClear)="clearBlocked()"
                 ngDefaultControl>
     </lib-lookup>
     <div class="close-search-popup"></div>

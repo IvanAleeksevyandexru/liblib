@@ -1,53 +1,42 @@
 .calendar-panel {
   width: 100%;
-  background-color: #E7ECF7;
+  background-color: #FFFFFF;
   position: relative;
+  height: 56px;
   .panel {
     display: flex;
     flex-flow: row;
     flex-wrap: nowrap;
     width: 100%;
-    padding: 7px;
+    padding: 14px 7px 14px 11px;
     box-sizing: border-box;
-    &.simplified-panel {
-    }
-    &.standard-panel {
-      .next-month {
-        margin-left: 18px;
-      }
-    }
-    &.joined-panel {
-    }
   }
   .label {
     font-family: Lato, Arial, sans-serif;
-    font-size: 14px;
-    line-height: 20px;
-    color: #09338F;
+    font-size: 16px;
+    line-height: 24px;
+    color: #0B1F33;
   }
   .dropdown {
     position: absolute;
-    border: 1px solid #CED9F0;
     background-color: white;
-    box-shadow: 0px 0px 24px rgba(128, 129, 136, 0.15);
+    border: 1px solid #99B1E6;
+    border-radius: 8px;
     overflow: hidden;
     z-index: 1;
     display: none;
     &.expanded {
       display: block;
+      .field-arrow {
+        transform: rotate(180deg);
+      }
     }
     .item {
       display: block;
       background-color: white;
-      padding: 8px;
+      padding: 4px;
       text-align: center;
       cursor: pointer;
-      &.selected {
-        background-color: #0B40B3;
-        .label {
-          color: white;
-        }
-      }
     }
   }
   ::ng-deep .ps {
@@ -67,67 +56,84 @@
   .month-year-field {
     position: relative;
   }
+
   .field {
     position: relative;
-    padding: 2px 8px;
     .select-field {
-      display: table;
+      width: 100%;
       cursor: pointer;
-      .field-label, .field-arrow {
-        display: table-cell;
-        vertical-align: middle;
-      }
+      position: relative;
+      display: flex;
       .field-label {
         min-width: 40px;
       }
       .field-arrow {
-        width: 22px;
-        background: url(../../../assets/svg/select-arrow.svg) 0 -5px no-repeat;
+        width: 24px;
+        height: 24px;
+        background: url(../../../assets/svg/select-arrow.svg) no-repeat;
       }
     }
     .field-list {
-      border-radius: 0px 0px 4px 4px;
       left: -1px;
-      top: -8px;
-      width: 120px;
+      top: -3px;
+      width: inherit;
+      max-height: 225px;
       ::ng-deep .ps {
-        max-height: 255px;
+        max-height: 192px;
         &.ps--active-y {
           .ps__rail-y {
-            width: 18px;
+            width: 4px;
             .ps__thumb-y {
-              width: 18px;
-              background: #B6C6E8 url(../../../assets/svg/select-slider.svg) 5px 53px no-repeat;
-              border-radius: 16px;
-              &:hover {
-                background-color: #09338F;
-              }
+              width: 4px;
+              background: #66727F;
+              opacity: .5;
+              border-radius: 8px;
             }
           }
           .items-list {
-            width: calc(100% - 20px);
-            border-right: solid 1px #CED9F0;
+            width: calc(100% - 4px);
           }
           .field-overlay {
-            width: calc(100% - 21px);
+            width: calc(100% - 4px);
           }
         }
       }
       .field-overlay {
-        position: absolute;
+        padding: 4px 0 4px 12px;
         width: 100%;
-        padding: 9px 8px 5px 8px;
-        background-color: white;
+        border-bottom: 1px solid #99B1E6;
+        background-color: #FFFFFF;
       }
       .item {
-        padding: 12px 0 12px 8px;
-        text-align: left;
-        &.field-stub {
-          height: 34px;
+        padding: 4px 0;
+        margin: 0 4px;
+        text-align: center;
+        &:hover {
+          border-radius: 8px;
+          background-color: #F5F7FA;
         }
       }
     }
   }
+
+  .month-field {
+    &.field {
+      width: 104px;
+      padding: 2px 2px 2px 12px;
+    }
+  }
+
+  .year-field {
+    .select-field {
+      justify-content: center;
+    }
+    &.field {
+      width: 90px;
+      padding: 2px 2px 2px 12px;
+      justify-content: center;
+    }
+  }
+
   .joined-field {
     .select-field {
       .field-arrow {
@@ -136,6 +142,15 @@
       &.expanded {
         .field-arrow {
           background: url(../../../assets/svg/dropdown-collapse.svg) 0 -3px;
+        }
+      }
+    }
+    .item {
+      &.selected {
+        background-color: #0B40B3;
+        border-radius: 8px;
+        .label {
+          color: white;
         }
       }
     }
@@ -157,6 +172,8 @@
         width: 160px;
         flex-shrink: 0;
         align-content: flex-start;
+        border-right: 1px solid #99b1e6;
+        padding: 2px;
         .month {
           width: 50%;
         }
@@ -165,6 +182,7 @@
         height: 100%;
         background-color: #F3F5FB;
         flex-grow: 1;
+        padding: 2px;
         ::ng-deep .ps {
           .ps__rail-y {
             width: 7px;
@@ -185,37 +203,21 @@
   .prev-month, .next-month {
     width: 24px;
     height: 24px;
-    background-color: white;
     background-repeat: no-repeat;
-    border-radius: 12px;
-    &.disabled {
-      opacity: 0.5;
-    }
-    &:hover {
-      background-color: #09338F;
-      &.disabled {
-        background-color: white;
-      }
-    }
+    cursor: pointer;
   }
   .prev-month {
-    background-image: url(../../../assets/svg/calendar-prev-month.svg);
-    background-position: 7px 7px;
-    &:hover {
-      background-image: url(../../../assets/svg/calendar-prev-month-hover.svg);
-      &.disabled {
-        background-image: url(../../../assets/svg/calendar-prev-month.svg);
-      }
+    background-image: url(../../../assets/svg/month-picker-prev-month.svg);
+    background-position: 30% 50%;
+    &.disabled {
+      background-image: url(../../../assets/svg/month-picker-prev-month-disabled.svg);
     }
   }
   .next-month {
-    background-image: url(../../../assets/svg/calendar-next-month.svg);
-    background-position: 10px 7px;
-    &:hover {
-      background-image: url(../../../assets/svg/calendar-next-month-hover.svg);
-      &.disabled {
-        background-image: url(../../../assets/svg/calendar-next-month.svg);
-      }
+    background-image: url(../../../assets/svg/month-picker-next-month.svg);
+    background-position: 70% 50%;
+    &.disabled {
+      background-image: url(../../../assets/svg/month-picker-next-month-disabled.svg);
     }
   }
 }

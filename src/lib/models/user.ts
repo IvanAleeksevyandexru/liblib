@@ -104,6 +104,8 @@ export interface User {
   autorityId?: string;
   birthDate?: string;
   branchOid?: string;
+  corporateContact?: string;
+  corporateContactVerified?: string;
   email?: string;
   emailVerified?: boolean;
   firstName?: string;
@@ -157,6 +159,7 @@ export interface User {
   shortName?: string; // Фамилия И. О.
   type?: string; // Тип пользователя - ЮЛ, ИП, ОГВ, физик
   typeParams?: UserTypeParams; // Параметры в зависимости от типа пользователя
+  error?: boolean;
 }
 
 export interface CategoryUser {

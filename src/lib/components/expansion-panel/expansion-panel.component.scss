@@ -120,8 +120,6 @@
   }
 
   &.for-footer {
-    border-bottom: 1px solid #979CA1;
-
     &.opened {
       .panel-header {
         border: none;
@@ -129,23 +127,56 @@
     }
 
     .panel-header {
-      padding: 12px 52px 12px 0;
+      padding: 12px 0;
       min-height: auto;
+      display: flex;
 
       .panel-title {
-        font-size: 16px;
-        line-height: 24px;
-        color: #000;
+        padding-right: 8px;
+        width: auto;
       }
 
       .panel-arrow {
-        background-color: transparent;
-        right: 7px;
+        background: url(../../../assets/svg/arrows/arrow_black.svg) 0 0 no-repeat;
+        height: 6px;
+        width: 10px;
+        position: static;
+        right: inherit;
       }
     }
 
     .panel-body {
-      padding: 8px 0 20px 0;
+      padding: 0 0 12px 0;
+    }
+  }
+
+  &.light {
+    .panel-header {
+      padding: 16px 36px 16px 0;
+      border-bottom: none;
+
+      .panel-arrow {
+        right: 0;
+      }
+    }
+
+    .panel-body {
+      padding: 0;
+    }
+  }
+
+  &.light {
+    .panel-header {
+      padding: 16px 36px 16px 0;
+      border-bottom: none;
+
+      .panel-arrow {
+        right: 0;
+      }
+    }
+
+    .panel-body {
+      padding: 0;
     }
   }
 }
@@ -172,6 +203,12 @@
         .panel-arrow {
           top: unset;
         }
+      }
+    }
+
+    &.light {
+      .panel-header {
+        padding: 16px 40px 16px 0;
       }
     }
   }

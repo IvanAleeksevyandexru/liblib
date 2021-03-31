@@ -1,7 +1,12 @@
-<div *ngIf="user.authorized; else loginLink" class="authorized-user flex-container-md justify-end-md align-items-center"
-  (click)="userClicked()">
+<div *ngIf="user.authorized; else loginLink"
+     class="authorized-user flex-container-md justify-end-md align-items-center"
+     (click)="userClicked()"
+     [class.hide-arrow]="menuOpened">
   <div *ngIf="(loadService.avatar | async) as avatar" class="avatar-wrapper">
-    <img *ngIf="avatar.url && !avatarError; else noAvatar" class="avatar" [src]="avatar.url" (error)="avatarError = true" alt="" />
+    <img *ngIf="avatar.url && !avatarError; else noAvatar"
+         class="avatar" [src]="avatar.url"
+         (error)="avatarError = true"
+         alt="" />
     <ng-template #noAvatar>
       <div
         class="no-avatar"
@@ -13,17 +18,18 @@
     </ng-template>
   </div>
   <lib-counter class="counter-circle" [counter]="userCounter"></lib-counter>
-  <div class="user-data">
-    <div class="name text-overflow">
+  <a class="close-menu" *ngIf="menuOpened" (click)="onCloseMenu($event)"></a>
+  <div class="user-data hide show-md">
+    <div class="text-plain blue name text-overflow">
       <ng-container *ngIf="user.type === 'L'">{{(user.orgShortName || user.orgName)}}</ng-container>
       <ng-container *ngIf="user.type === 'B'">{{(user.orgShortName || 'ИП ' + user.shortName)}}</ng-container>
-      <ng-container *ngIf="user.type !== 'B' && user.type !== 'L'">{{user.shortName}}</ng-container>
+      <ng-container *ngIf="user.type !== 'B' && user.type !== 'L'">{{user.firstName + ' ' + user.lastName[0] + '.'}}</ng-container>
     </div>
-    <div class="position hide show-md text-overflow">
+    <div class="position text-overflow">
       {{user.orgPosition}}
     </div>
   </div>
-  <div class="actions hide-md mt-16 mb-32">
+  <div class="actions hide mt-16 mb-32">
     <div class="mb-32">
       <a href="/roles" class="roles bold">{{'HEADER.ALL_ROLES' | libTranslate}}</a>
     </div>
@@ -36,11 +42,19 @@
   </div>
 </div>
 <ng-template #loginLink>
-  <a
-    [routerLink]=""
-    *ngIf="!onlyIcon"
-    (click)="login()"
-    [class.partners_link]="loadService.config.viewType === 'PARTNERS'"
-    class="link">{{('HEADER.LOGIN_LINK' | libTranslate) || 'Войти'}}</a>
-  <div *ngIf="onlyIcon" (click)="login()" class="link"></div>
+  <ng-container *ngIf="useButton">
+    <lib-button theme="light" (click)="login($event)">{{'HEADER.LOGIN_LINK' | libTranslate}}</lib-button>
+    <lib-button theme="light" (click)="register($event)">{{'HEADER.REGISTER' | libTranslate}}</lib-button>
+  </ng-container>
+
+  <ng-container *ngIf="!useButton">
+    <a
+      [routerLink]=""
+      *ngIf="!onlyIcon"
+      (click)="login()"
+      [class.partners_link]="loadService.config.viewType === 'PARTNERS'"
+      [class.with-icon]="!onlyText"
+      class="link">{{'HEADER.LOGIN_LINK' | libTranslate}}</a>
+    <div *ngIf="onlyIcon" (click)="login()" class="link"></div>
+  </ng-container>
 </ng-template>

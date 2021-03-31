@@ -27,7 +27,6 @@
         width: 48px;
         height: 48px;
         outline: none;
-        border-left: solid 1px #A8ACB1;
         cursor: pointer;
         &.expanded {
           background: url(../../../assets/svg/dropdown-collapse.svg) 10px 11px no-repeat;
@@ -65,7 +64,97 @@
         }
       }
     }
+    &.disabled {
+      .expand-collapse {
+        background: url(../../../assets/svg/dropdown-expand-disabled.svg) 10px 11px no-repeat;
+      }
+    }
+
   }
+
+  &.main-page-new {
+    .lookup-field {
+      height: 48px;
+
+      &.expanded {
+        ::ng-deep .search-field {
+          .search-input, .static-content {
+            border-radius: 12px;
+          }
+        }
+      }
+    }
+
+    .lookup-context-positioning {
+      position: static;
+    }
+
+    .lookup-list-container {
+      margin-top: 8px;
+      border: none;
+      box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+      border-radius: 12px;
+      max-height: 100%;
+      margin-bottom: 0;
+
+      ::ng-deep {
+        .ps {
+          max-height: 100%;
+
+          &.ps--active-y .ps__rail-y {
+            border-left: none;
+            background: inherit;
+          }
+        }
+      }
+
+      .lookup-item {
+
+        .item-container {
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
+        &.highlighted {
+          background: #F5F7FA;
+        }
+
+        &.line-before {
+          .structure-container {
+            padding-top: 0;
+            border-color: #E1E1E1;
+          }
+        }
+
+        .lookup-item-text {
+          color: #0B1F33;
+        }
+
+        .structure-container {
+          ::ng-deep {
+            .item-container {
+              padding-left: 17px;
+              padding-right: 24px;
+              border-bottom: none;
+
+              .item-content {
+                display: flex;
+                align-items: flex-start;
+              }
+
+              .icon {
+                width: 24px;
+                height: 24px;
+                background-repeat: no-repeat;
+                background-size: 24px 24px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   .lookup-list-container .lookup-item {
     .expand-collapse {
       display: none;
@@ -110,11 +199,61 @@
 
   &.menu-search {
     .lookup-list-container {
-      border-color: #ffffff;
+      border-color: #fff;
       max-height: 450px;
       ::ng-deep .ps {
         max-height: 400px;
       }
+    }
+  }
+
+  .suggests {
+    padding: 8px 0 12px 0;
+    font-family: Lato, Arial, sans-serif;
+
+    .ml-16 {
+      margin-left: 16px;
+    }
+
+    .mr-16 {
+      margin-right: 16px;
+    }
+
+    .pl-16 {
+      padding-left: 16px;
+    }
+
+    .title {
+      font-size: 14px;
+      line-height: 20px;
+      color: #66727F;
+    }
+
+    ul {
+      list-style: none;
+      li {
+        padding: 12px 16px;
+        cursor: pointer;
+        &:hover {
+          background-color: #E7ECF7;
+        }
+        p {
+          font-size: 16px;
+          line-height: 24px;
+          color: #0B1F33;
+        }
+        span {
+          font-size: 14px;
+          line-height: 20px;
+          color: #66727F
+        }
+      }
+    }
+    .edit {
+      border-bottom: 1px solid #99B1E6;
+      font-size: 14px;
+      line-height: 20px;
+      padding-bottom: 10px;
     }
   }
 }
@@ -125,6 +264,25 @@
     .lookup-item {
       .item-container {
         border: none !important;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 768px) {
+  .lookup {
+    &.main-page-new {
+      .lookup-field {
+        height: 80px;
+      }
+
+
+      .lookup-list-container .lookup-item .structure-container {
+        ::ng-deep {
+          .item-container {
+            padding-left: 33px;
+          }
+        }
       }
     }
   }
@@ -142,6 +300,16 @@
     .lookup-item {
       .item-container {
         border: none !important;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 1140px){
+  .lookup {
+    &.main-page-new {
+      .lookup-list-container {
+        margin-bottom: 30px;
       }
     }
   }

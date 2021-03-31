@@ -43,15 +43,11 @@ export class ListItemsAccessoryService {
         return items[nextVisible];
       }
     } else if (e.key === 'ArrowLeft') {
-      e.preventDefault();
-      e.stopPropagation();
       if (highlightedElement instanceof ListItem) {
         (highlightedElement as ListItem).collapse();
         return true;
       }
     } else if (e.key === 'ArrowRight') {
-      e.preventDefault();
-      e.stopPropagation();
       if (highlightedElement instanceof ListItem) {
         (highlightedElement as ListItem).expand();
         return true;
@@ -91,7 +87,7 @@ export class ListItemsAccessoryService {
       if (scrollElement instanceof PerfectScrollbarComponent) {
         scrollContainer = (scrollElement as PerfectScrollbarComponent).directiveRef.elementRef.nativeElement;
         scrollArea = scrollContainer.children[0];
-      } else {
+      } else if(scrollArea) {
         scrollArea = (scrollArea as ElementRef).nativeElement;
         scrollContainer = this.findScrollContainer(scrollArea);
       }
@@ -140,7 +136,9 @@ export class ListItemsAccessoryService {
       });
       return result.asObservable();
     } else {
-      measureContainer.remove();
+      if (measureContainer) {
+        measureContainer.parentNode.removeChild(measureContainer);
+      }
       return of(totalHeight);
     }
   }

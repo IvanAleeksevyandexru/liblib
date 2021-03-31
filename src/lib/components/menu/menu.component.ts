@@ -4,7 +4,6 @@ import {
   EventEmitter,
   HostListener,
   Input,
-  isDevMode,
   NgModuleRef,
   OnInit,
   Output,
@@ -16,7 +15,6 @@ import { ModalService } from '../../services/modal/modal.service';
 import { ModalSearchComponent } from '../modal-search/modal-search.component';
 import { Category } from '../../models/category';
 import { MenuLink } from '../../models/menu-link';
-import { AuthService } from '../../services/auth/auth.service';
 import { UserMenuState } from '../../models/user-menu';
 import { CounterData } from '../../models/counter';
 import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
@@ -54,6 +52,8 @@ export class MenuComponent implements OnInit, AfterViewInit {
   public showMenuBtns = this.loadService.config.showMenuBtns;
   public isMainPage = this.checkMainPage();
 
+  private staticUrls: object;
+
   @ViewChild('menu') public menu;
 
   @HostListener('document:scroll') public onScroll() {
@@ -87,15 +87,15 @@ export class MenuComponent implements OnInit, AfterViewInit {
     private modalService: ModalService,
     private moduleRef: NgModuleRef<any>,
     private menuService: MenuService,
-    private authService: AuthService,
     public translate: TranslateService,
     private router: Router
   ) { }
 
   public ngOnInit() {
     if (!this.links.length) {
-      this.links = this.menuService.getLinks();
+      this.links = this.menuService.getUserMenuDefaultLinks();
     }
+    this.staticUrls = this.menuService.getStaticItemUrls();
     this.user = this.loadService.user;
     this.initUserMenuState();
   }
@@ -129,13 +129,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
   }
 
   public logout() {
-    if (isDevMode()) {
-      this.authService.logout().subscribe((resp) => {
-        window.location = resp;
-      });
-    } else {
-      window.location.href = this.loadService.config.betaUrl + 'auth-provider/logout';
-    }
+    this.loadService.logout();
   }
 
   public showUserMenu(isMobileView: boolean) {
@@ -165,7 +159,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const url = link.url;
+    const url = this.staticUrls[link.title];
     const isAbsUrl = /^(http|\/\/)/.test(url);
 
     if (url && this.translate.currentLang !== 'ru') {

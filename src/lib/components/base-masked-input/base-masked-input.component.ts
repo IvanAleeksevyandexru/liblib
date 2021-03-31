@@ -1,5 +1,7 @@
-import { Component, ViewChild, Input, Output, ElementRef, EventEmitter, OnInit, DoCheck,
-  AfterViewInit, OnChanges, OnDestroy, SimpleChanges, forwardRef, ChangeDetectorRef, Optional, Host, SkipSelf } from '@angular/core';
+import {
+  Component, ViewChild, Input, Output, ElementRef, EventEmitter, OnInit, DoCheck,
+  AfterViewInit, OnChanges, OnDestroy, SimpleChanges, forwardRef, ChangeDetectorRef, Optional, Host, SkipSelf, ChangeDetectionStrategy
+} from '@angular/core';
 import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { conformToMask, createTextMaskInputElement } from 'text-mask-core';
 // раскомментировать для детальной отладки
@@ -13,11 +15,14 @@ import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { HelperService } from '../../services/helper/helper.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { Width } from '../../models/width-height';
+import { Suggest, SuggestItem } from '../../models/suggest';
+import { LoadService } from '../../services/load/load.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-base-masked-input',
   templateUrl: 'base-masked-input.component.html',
-  styleUrls: ['./base-masked-input.component.scss'],
+  styleUrls: ['./base-masked-input.component.scss', '../plain-input/plain-input.component.scss'],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => BaseMaskedInputComponent),
@@ -31,14 +36,15 @@ export class BaseMaskedInputComponent
     private focusManager: FocusManager,
     private changeDetection: ChangeDetectorRef,
     @Optional() @Host() @SkipSelf()
-    private controlContainer: ControlContainer) {}
+    private controlContainer: ControlContainer,
+    public loadService: LoadService) {}
 
   // компонент обертка для for ngx-mask, см детали тут https://www.npmjs.com/package/ngx-mask
 
   @Input() public name?: string;
   @Input() public formControlName?: string;
   @Input() public id?: string;
-  @Input() public contextClass?: string;  // маркировочный класс для deep стилей
+  @Input() public contextClass?: string; // маркировочный класс для deep стилей
   @Input() public placeholder?: string;
   @Input() public autocomplete?: InputAutocomplete | string;
   @Input() public clearable = false;
@@ -51,10 +57,13 @@ export class BaseMaskedInputComponent
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public uppercase = false;
   @Input() public width?: string | Width;
+  @Input() public suggest?: Suggest;
 
   // маска - это массив символов и/или регэкспов, каждый ответственен за свой символ в поле
   // пример: ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
   @Input() public mask: (value: string) => Array<string | RegExp> | Array<string | RegExp>;
+  // позиция курсора при получении фокуса
+  @Input() public positionInInput = 0;
   // если true показывает и плейсхолдер-символы и константные символы
   // иначе не показывает символы до тех пор пока до них не добралась позиция ввода
   @Input() public showConstantMaskSymbols = true;
@@ -77,6 +86,7 @@ export class BaseMaskedInputComponent
   @Output() public focus = new EventEmitter();
   @Output() public blur = new EventEmitter();
   @Output() public cleared = new EventEmitter<void>();
+  @Output() public selectSuggest = new EventEmitter<Suggest | SuggestItem>();
 
   @ViewChild('input') private inputElement: ElementRef;
 
@@ -155,7 +165,7 @@ export class BaseMaskedInputComponent
 
   public handleChange(value: string, e?: Event) {
     this.attemptToApplyValue(value);
-    if (!this.commitOnInput) {
+    if (this.commitOnInput) {
       this.commit(this.removeMaskSymbolsIfNeeded(value));
     }
     this.check();
@@ -186,12 +196,17 @@ export class BaseMaskedInputComponent
         inp.focus();
       });
     }
+
+    if (this.positionInInput !== 0) {
+      this.goToFixPosition(this.positionInInput, this.positionInInput);
+    }
   }
 
   public handleBlur() {
     this.focused = false;
     this.check();
     this.blur.emit();
+    this.changeDetection.detectChanges();
   }
 
   public handleFocus() {
@@ -215,7 +230,13 @@ export class BaseMaskedInputComponent
   }
 
   public returnFocus(e?: Event) {
-    if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement)) {
+    let isSuggest;
+    if (e) {
+      const target = e.target as HTMLTextAreaElement;
+      isSuggest = target?.offsetParent?.classList.contains('suggests');
+    }
+
+    if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement) && !isSuggest) {
       this.inputElement.nativeElement.focus();
       HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue);
       this.focusManager.notifyFocusMayChanged(this, true);
@@ -230,12 +251,16 @@ export class BaseMaskedInputComponent
     this.lastModelValue = value === null || value === undefined ? '' : '' + value;
     this.attemptToApplyValue(this.lastModelValue);
     this.check();
+    if (!this.destroyed) {
+      this.changeDetection.detectChanges();
+    }
   }
 
   public clearValue(e: Event) {
     if (!this.disabled) {
       this.writeValue(null);
       this.commit(null);
+      this.goToFixPosition(this.positionInInput, this.positionInInput);
       this.cleared.emit();
       this.returnFocus(e);
     }
@@ -254,6 +279,9 @@ export class BaseMaskedInputComponent
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
     this.check();
+    if (!this.destroyed) {
+      this.changeDetection.detectChanges();
+    }
   }
 
   public check(): void {
@@ -300,6 +328,20 @@ export class BaseMaskedInputComponent
       this.empty = !viewValue || viewValue === this.emptyMaskedValue;
       this.changeDetection.detectChanges();
     }
+  }
+
+  public selectSuggestItem(item: SuggestItem): void {
+    this.selectSuggest.emit(item);
+    this.loseFocus();
+  }
+
+  public editSuggestList(suggest: Suggest): void {
+    suggest.isEdit = true;
+    this.selectSuggest.emit(suggest);
+  }
+
+  public goToFixPosition(start: number, end: number): void {
+    this.inputElement.nativeElement.setSelectionRange(start, end);
   }
 
 }
