@@ -1,12 +1,20 @@
 .block-informer-hint{
-  background: rgba(248, 178, 0, .1);
-  border-radius: 8px;
-  padding: 8px 8px 8px 12px;
+  background: rgba(248, 178, 0, .12);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 .price-discount{
   font-size: 32px;
   line-height: 40px;
   color: #E11432;
+}
+.button-container{
+  padding: 0 24px 24px;
+}
+.debt{
+  padding: 24px 0;
 }
 .informer-top-wrap {
   display: flex;
@@ -17,26 +25,51 @@
   &.no_debt {
     background: rgba(45, 195, 106, 0.1);
   }
+  &.error, &.al10{
+    background: rgba(248, 178, 0, .12);
+  }
 }
-.informer-bottom-wrap{
+.informer-top-wrap-debt {
+  height: 68px;
+  &.stateDuty{
+    background: #EDF2FE url("../../../assets/svg/informer/duty.svg") 50% 50% no-repeat;
+  }
+  &.fine{
+    background: #EDF2FE url("../../../assets/svg/informer/fine.svg") 50% 50% no-repeat;
+  }
+  &.account{
+    background: #EDF2FE url("../../../assets/svg/informer/bill.svg") 50% 50% no-repeat;
+  }
+  &.all{
+    background: #EDF2FE url("../../../assets/svg/informer/debts.svg") 50% 50% no-repeat;
+  }
+  &.fssp{
+    background: #EDF2FE url("../../../assets/svg/informer/jud.svg") 50% 50% no-repeat;
+  }
+  &.fns{
+    background: #EDF2FE url("../../../assets/svg/informer/tax.svg") 50% 50% no-repeat;
+  }
+}
+.informer-bottom-wrap {
   padding: 16px 0;
   text-align: center;
 }
 .price{
   color: #86909C;
 }
-.block-informer-wrap{
+.block-informer-wrap {
  width: 100%;
 }
-.informer-hint-icon{
+.informer-hint-icon {
+  flex: 0 0 auto;
   width: 20px;
   height: 20px;
-  margin-right: 12px;
-  background: url("../../../assets/svg/notification/warn/yellow_warn_in_circle.svg") 0 0 no-repeat;
+  margin-right: 8px;
+  background: url("../../../assets/svg/informer/warning.svg") 0 0 no-repeat;
   background-size: contain;
 }
-.informer-hint-text{
-  color: #1D2533;
+.informer-hint-text {
+  color: #0B1F33;
   font-size: 12px;
   line-height: 16px;
 }
@@ -47,7 +80,10 @@
   cursor: pointer;
   flex-direction: column;
   overflow: hidden;
-  min-height: 130px;
+  &.loading{
+    min-height: 130px;
+    justify-content: center;
+  }
   .loader {
     align-self: center;
   }
@@ -61,20 +97,22 @@
     }
 
     .search {
-      //background: url("../../../assets/svg/search-icons/gray_search_in_circle.svg") 0 0 no-repeat;
       background: url("../../../assets/svg/informer/error.svg") 0 0 no-repeat;
       background-size: contain;
+      width: 34px;
+      height: 40px;
     }
 
     .ok {
-      // background: url("../../../assets/svg/notification/success/green_tick_in_circle.svg") 0 0 no-repeat;
       background: url("../../../assets/svg/informer/success.svg") 0 0 no-repeat;
       background-size: contain;
     }
 
     .warn {
-      background: url("../../../assets/svg/notification/warn/yellow_warn_in_circle.svg") 0 0 no-repeat;
+      background: url("../../../assets/svg/informer/error.svg") 0 0 no-repeat;
       background-size: contain;
+      width: 34px;
+      height: 40px;
     }
   }
 
@@ -91,7 +129,56 @@
   }
 }
 
+@media  (min-width: 768px) and (max-width: 1139px) {
+  .debt {
+    padding: 24px;
+    .price-discount {
+      margin-left: 0!important;
+    }
+    .debt-title, .debt-text {
+      text-align: left;
+      margin-left: 0;
+    }
+  }
+  .button-container{
+    padding: 0 16px 0 0;
+    display: flex;
+    align-items: center;
+  }
+  .informer-main{
+    &.with-debt{
+      flex-direction: row;
+      justify-content: flex-start;
+      &.loading{
+        justify-content: center;
+      }
+    }
+  }
+  .informer-top-wrap-debt {
+    width: 88px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+  }
+}
+
+
 @media all and (min-width: 768px) {
+  .informer-top-wrap-debt{
+    &.with-hint {
+      width: 140px;
+    }
+  }
+  .block-informer-hint{
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .informer-hint-icon{
+    margin-bottom: 8px;
+  }
   .informer-top-wrap {
     justify-content: flex-start;
     padding: 24px 32px;
@@ -105,6 +192,10 @@
         width: 34px;
         height: 24px;
         margin-right: 24px;
+        &.search, &.warn{
+          width: 19px;
+          height: 24px;
+        }
       }
 
       .title-no-debt {
@@ -145,6 +236,25 @@
 }
 
 @media all and (min-width: 1140px) {
+  .informer-top-wrap-debt{
+    &.with-hint {
+      width: auto;
+    }
+  }
+  .block-informer-hint{
+    flex-direction: row;
+    align-items: center;
+    padding: 0 24px;
+  }
+  .informer-hint-icon{
+    margin-bottom: 0;
+  }
+  .informer-bottom-wrap{
+    padding: 0;
+    height: 96px;
+    display: flex;
+    align-items: center;
+  }
   .informer-top-wrap {
     flex: 1 0 auto;
     display: flex;
@@ -152,21 +262,34 @@
     justify-content: center;
     padding: 0 24px;
     text-align: center;
+    &.no_debt{
+      padding: 24px;
+    }
   }
   .icon-no-debt{
     margin-bottom: 20px;
   }
   .mini {
     &.informer-main {
-      min-height: 204px;
-      height: auto;
-
+      &.with-debt{
+        min-height: 280px;
+        .debt {
+          padding: 0 24px;
+        }
+      }
+      &.loading{
+        min-height: 280px;
+      }
       .without-debt {
         height: 100%;
         .icon-no-debt {
           width: 74px;
           height: 56px;
           margin-right: 0;
+          &.search, &.warn{
+            width: 40px;
+            height: 56px;
+          }
         }
 
         .title-no-debt {

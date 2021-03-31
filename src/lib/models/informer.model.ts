@@ -67,6 +67,7 @@ export class DataInformer {
   public price: number;
   public priceDiscount: number;
   public docs: string;
+  public type: string;
 
   constructor() {
     this.title = '';
@@ -75,6 +76,7 @@ export class DataInformer {
     this.price = 0;
     this.priceDiscount = 0;
     this.docs = '';
+    this.type = ''
   }
 }
 
