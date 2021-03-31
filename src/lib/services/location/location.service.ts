@@ -16,7 +16,6 @@ export class LocationService {
   public userSelectedRegionCode: string;
   public userSelectedRegionName: string;
   public userSelectedRegionPath: string;
-  public firstTimeShow = true;
 
   public defaultRegion = {
     id: '00000000000',
