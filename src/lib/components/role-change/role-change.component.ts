@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { LoadService } from '../../services/load/load.service';
-import { User, Role } from '../../models/user';
+import { Role, User } from '../../models/user';
 import { TranslateService } from '@ngx-translate/core';
 import { RedirectsService } from '../../services/redirects/redirects.service';
 import { EsiaApiService } from '../../services/esia-api/esia-api.service';
@@ -22,6 +22,8 @@ export class RoleChangeComponent implements OnInit {
   public displayRoles: Role[] = [];
   public user: User;
   public query: string = this.activatedRoute.snapshot.queryParamMap.get('q') || '';
+  public rUrl: string = this.activatedRoute.snapshot.queryParamMap.get('rUrl') || '';
+  public type: string = this.activatedRoute.snapshot.queryParamMap.get('type') || '';
   public isCreatedBusiness: boolean;
   public isMoreRoles: boolean;
   public createUrl: string = this.loadService.config.esiaUrl + '/profile/user/emps';
@@ -72,7 +74,7 @@ export class RoleChangeComponent implements OnInit {
 
       this.roles.unshift(privatePerson);
 
-      this.filterRoles(this.query, this.activePage);
+      this.filterRoles(this.query, this.activePage, this.type);
 
       if (this.roles.length >= COUNT_ROLES_PER_ADD_BUTTON) {
         this.isMoreRoles = true;
@@ -102,7 +104,7 @@ export class RoleChangeComponent implements OnInit {
    * @param role Роль пользователя
    * @param event Событие клика
    */
-  public switchRole(role: Role, event: Event): void {
+  public switchRole(role: Role, event?: Event): void {
     if (role.current) {
       return;
     }
@@ -116,14 +118,20 @@ export class RoleChangeComponent implements OnInit {
       withCredentials: true,
       params
     }).subscribe(response => {
-      if (prevRole.type === 'PRIVATE' && role.type !== 'PRIVATE' && this.appContext !== 'PARTNERS') {
-        this.redirectsService.redirectToOrganizationView();
+      if (this.rUrl && this.appContext === 'LK') {
+        window.location.href = this.loadService.config.betaUrl + this.rUrl;
       } else {
-        window.location.href = '/';
+        if (prevRole.type === 'PRIVATE' && role.type !== 'PRIVATE' && this.appContext !== 'PARTNERS') {
+          this.redirectsService.redirectToOrganizationView();
+        } else {
+          window.location.href = '/';
+        }
       }
     });
 
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
   }
 
   /**
@@ -187,7 +195,7 @@ export class RoleChangeComponent implements OnInit {
    */
   public updateQuery(newQuery: string): void {
     this.query = newQuery || '';
-    this.filterRoles(this.query, 1);
+    this.filterRoles(this.query, 1, this.type);
   }
 
   /**
@@ -195,14 +203,28 @@ export class RoleChangeComponent implements OnInit {
    *
    * @param query строка запроса
    * @param activePage номер страницы
+   * @param type тип роли
    */
-  private filterRoles(query: string, activePage): void {
+  private filterRoles(query: string, activePage, type: string): void {
     this.filteredRoles = this.roles.filter(item => {
-        return item.shortName.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+        if (query && (item.shortName.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
           item.fullName && item.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-          (item.ogrn ? (item.ogrn.indexOf(query) !== -1) : false);
+          (item.ogrn ? (item.ogrn.indexOf(query) !== -1) : false))) {
+          return true;
+        } else {
+          // agency и legal не разделяем, а person должен быть private
+          type = type === 'person' ? 'private': type;
+          let personType = item.type.toLowerCase();
+          personType = personType === 'agency' ? 'legal' : personType;
+          type = type === 'agency' ? 'legal' : type;
+          return personType?.indexOf(type) > -1;
+        }
       }
     );
+
+    if (this.filteredRoles.length === 1 && type && activePage === 1) {
+      this.switchRole(this.filteredRoles[0]);
+    }
 
     this.pageChanged(activePage);
   }
