@@ -15,16 +15,6 @@ import { CatalogData } from '../../models/catalog';
 })
 export class MenuCatalogComponent implements OnInit, OnDestroy {
 
-  @Output() public menuCatalogOpened = new EventEmitter<boolean>();
-  public currentCategoryCode: string;
-
-  @HostListener('document:click', ['$event'])
-  public onClickOut(event) {
-    if (event.target.classList.contains('catalog-menu')) {
-      this.onClose();
-    }
-  }
-
   public user = this.loadService.user;
   public showRolesList = false;
   public emptyRegionPopular: boolean;
@@ -35,6 +25,17 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
   public activeRole: UserRole;
   public subscription: Subscription;
   public subscriptionBurger: Subscription;
+  public isOpenLangMenu = false;
+
+  @Output() public menuCatalogOpened = new EventEmitter<boolean>();
+  public currentCategoryCode: string;
+
+  @HostListener('document:click', ['$event'])
+  public onClickOut(event) {
+    if (event.target.classList.contains('catalog-menu')) {
+      this.onClose();
+    }
+  }
 
   constructor(
     public loadService: LoadService,
@@ -129,5 +130,9 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.emptyRegionPopular = $event;
     });
+  }
+
+  public openLanguageMenu(evt: boolean) {
+    this.isOpenLangMenu = evt;
   }
 }
