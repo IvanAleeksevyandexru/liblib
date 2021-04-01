@@ -32,6 +32,7 @@ import { BehaviorSubject, forkJoin, zip } from 'rxjs';
 import { Validated, ValidationShowOn } from "../../models/validation-show";
 import { ValidationHelper } from "../../services/validation-helper/validation.helper";
 import { ListItem, ListItemConverter } from "../../models/dropdown.model";
+import { Suggest, SuggestItem } from '../../models/suggest';
 
 @Component({
   selector: 'lib-dadata-widget',
@@ -87,8 +88,11 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   // для преобразования countries из any в ListItem
   @Input() public converter?: ListItemConverter;
 
+  @Input() public suggest?: Suggest;
+
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
+  @Output() public selectSuggest = new EventEmitter<Suggest | SuggestItem>();
 
   public errorCodes: Array<string> = [];
   public query = '';
@@ -551,7 +555,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       setTimeout(() => {
         input.focus();
         input.setSelectionRange(len, len);
-      }, 1000)
+      }, 1000);
     } else {
       input.value = input.value;
     }
@@ -559,5 +563,14 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public check() {
     ValidationHelper.checkValidation(this, {touched: true});
+  }
+
+  public selectSuggestItem(item: SuggestItem): void {
+    this.selectSuggest.emit(item);
+  }
+
+  public editSuggestList(suggest: Suggest): void {
+    suggest.isEdit = true;
+    this.selectSuggest.emit(suggest);
   }
 }
