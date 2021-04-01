@@ -1,7 +1,7 @@
 import { Injectable, isDevMode } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { HelperService } from '../helper/helper.service';
 import { CookieService } from '../cookie/cookie.service';
 import { LoadService } from '../load/load.service';
@@ -187,14 +187,21 @@ export class EsiaApiService {
     });
   }
 
-  public goToOffer(force = true, backUrl?: string): void {
+  public goToOffer(force = true, backUrl?: string, additional?: {[key: string]: string}): void {
     const url = backUrl ? backUrl : (window as any).location.href;
+
+    const params = new HttpParams({
+      fromObject: {
+        go_back: encodeURIComponent(url),
+        ...(additional)
+      }
+    });
 
     if (force) {
       this.cookieService.set('needOffer', 1);
     }
 
-    (window as any).location.href = `${this.loadService.config.esiaUrl}/profile/offer?go_back=${encodeURIComponent(url)}`;
+    (window as any).location.href = `${this.loadService.config.esiaUrl}/profile/offer?${params.toString()}`;
   }
 
 }
