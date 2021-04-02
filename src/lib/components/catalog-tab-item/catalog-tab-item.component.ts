@@ -9,12 +9,9 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { forkJoin, of } from 'rxjs';
-
 import { GosbarService } from '../../services/gosbar/gosbar.service';
 import { SharedService } from '../../services/shared/shared.service';
 import { CatalogTabsService } from '../../services/catalog-tabs/catalog-tabs.service';
-
-import { Router } from '@angular/router';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { LocationService } from '../../services/location/location.service';
 import { LoadService } from '../../services/load/load.service';
