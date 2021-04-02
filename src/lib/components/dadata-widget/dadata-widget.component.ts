@@ -434,7 +434,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     this.query$.next(value);
   }
 
-  private revalidate() {
+  public revalidate() {
     const needSkipStreet = this.normalizedData ?
       !!this.normalizedData.address.elements.find(item => item.level === 4 && this.skipStreetFias.includes(item.fiasCode)) : false;
     this.dadataService.setErrorsByLevel(1, needSkipStreet);
