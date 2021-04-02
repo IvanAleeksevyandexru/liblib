@@ -60,8 +60,8 @@
         <div class="catalog-menu-wrap" *ngIf="showBurger">
           <ng-container *ngIf="burgerDemoMode; else burgerCatalogMode">
             <ng-container *ngIf="burgerWithCatalog; else burgerWithoutCatalog">
-              <lib-menu-catalog
-                (menuCatalogOpened)="onMenuCatalogClick($event)">
+              <lib-menu-catalog [languageChangeAvailable]="languageChangeAvailable"
+                                (menuCatalogOpened)="onMenuCatalogClick($event)">
               </lib-menu-catalog>
             </ng-container>
             <ng-template #burgerWithoutCatalog>
@@ -71,8 +71,8 @@
             </ng-template>
           </ng-container>
           <ng-template #burgerCatalogMode>
-            <lib-menu-catalog
-              (menuCatalogOpened)="onMenuCatalogClick($event)">
+            <lib-menu-catalog [languageChangeAvailable]="languageChangeAvailable"
+                              (menuCatalogOpened)="onMenuCatalogClick($event)">
             </lib-menu-catalog>
           </ng-template>
         </div>

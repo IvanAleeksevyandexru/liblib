@@ -27,7 +27,9 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
   public subscriptionBurger: Subscription;
   public isOpenLangMenu = false;
 
-  @Output() public menuCatalogOpened = new EventEmitter<boolean>();
+  @Input() public languageChangeAvailable?: boolean;
+
+  @Output() public menuCatalogOpened?: EventEmitter<boolean> = new EventEmitter<boolean>();
   public currentCategoryCode: string;
 
   @HostListener('document:click', ['$event'])

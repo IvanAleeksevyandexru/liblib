@@ -14,7 +14,11 @@
       </div>
     </div>
   </div>
-  <a class="link-plain digital-assistant-link" [ngClass]="{'lower-z': isOpenLangMenu}" [href]="loadService.config.betaUrl + 'newsearch'">{{'HEADER.MENU.DIGITAL_ASSISTANT' | libTranslate}}</a>
+  <a class="link-plain digital-assistant-link"
+     [ngClass]="{'lower-z': isOpenLangMenu}"
+     [href]="loadService.config.betaUrl + 'newsearch'">
+    {{'HEADER.MENU.DIGITAL_ASSISTANT' | libTranslate}}
+  </a>
   <div class="catalog-menu-content">
     <div class="flex-1" *ngIf="catalog?.length" [class.hide]="!showMenu">
       <lib-catalog-tabs-list
@@ -25,7 +29,7 @@
       <div class="catalog-help hide-lg">
         <div class="flex-container justify-between align-items-center">
           <a class="link" [href]="loadService.config.betaUrl + 'help'">Помощь и поддержка</a>
-          <div class="hide-lg">
+          <div *ngIf="languageChangeAvailable" class="hide-lg">
             <lib-language-select (openChoice)="openLanguageMenu($event)"></lib-language-select>
           </div>
         </div>
