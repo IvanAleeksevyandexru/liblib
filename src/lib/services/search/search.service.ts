@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { LoadService } from '../load/load.service';
 import { LookupProvider } from '../../models/dropdown.model';
 import { SearchSputnikConfig, SearchSputnikSuggests, SearchSuggests, SimpleSputnikSuggest } from '../../models/search';
-import { map } from 'rxjs/operators';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -23,13 +23,20 @@ export class SearchService implements LookupProvider<SimpleSputnikSuggest> {
     return this.http.get(cfg.url, {
       withCredentials: true,
       params: cfg.request
-    }).pipe(map((res: SearchSputnikSuggests | SearchSuggests) => {
-      if (this.newSputnikSearchEnabled) {
-        return this.handleNewSputnikResults(res as SearchSputnikSuggests);
-      } else {
-        return this.handleOldSputnikResults(res as SearchSuggests);
-      }
-    }));
+    }).pipe(
+      catchError(() => {
+        return of(null)
+      }),
+      map((res: SearchSputnikSuggests | SearchSuggests | null) => {
+        if (res === null) {
+          return [{error: true}];
+        } else if (this.newSputnikSearchEnabled) {
+          return this.handleNewSputnikResults(res as SearchSputnikSuggests);
+        } else {
+          return this.handleOldSputnikResults(res as SearchSuggests);
+        }
+      })
+    );
   }
 
   public setGlobalSearchPlaceholder(placeholder: string): void {
