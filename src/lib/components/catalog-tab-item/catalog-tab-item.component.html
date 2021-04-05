@@ -15,7 +15,7 @@
                   Популярные услуги
             </h3>
             <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
-              <div class="scroll-container">
+              <div [ngClass]="{'with-link-old-portal': checkOldPortalBanner() && code !== 'other'}" class="scroll-container">
                 <perfect-scrollbar [config]="{wheelPropagation: false}">
                   <ng-container [ngTemplateOutlet]="populars"></ng-container>
                 </perfect-scrollbar>
@@ -45,7 +45,7 @@
           <section *ngIf="viewType === 'main-page-view' && faqs?.length">
             <h3 class="title-h6 catalog-item-title">Часто задаваемые вопросы</h3>
             <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
-              <div class="scroll-container">
+              <div [ngClass]="{'with-link-old-portal': checkOldPortalBanner()}" class="scroll-container">
                 <perfect-scrollbar [config]="{wheelPropagation: false}">
                   <ng-container [ngTemplateOutlet]="popularFaq"></ng-container>
                 </perfect-scrollbar>

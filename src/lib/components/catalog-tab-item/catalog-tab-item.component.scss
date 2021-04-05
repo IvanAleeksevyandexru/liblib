@@ -118,6 +118,11 @@
     right: -128px;
     top: 42px;
   }
+  .scroll-container {
+    &.with-link-old-portal {
+      height: calc(100vh - 372px);
+    }
+  }
 }
 
 .side-view {
