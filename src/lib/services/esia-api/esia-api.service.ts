@@ -192,7 +192,7 @@ export class EsiaApiService {
 
     const params = new HttpParams({
       fromObject: {
-        go_back: encodeURIComponent(url),
+        go_back: url,
         ...(additional)
       }
     });
