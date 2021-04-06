@@ -502,11 +502,12 @@ export class DadataService implements AutocompleteSuggestionProvider {
     }
   }
 
-  public addKladrToCommitValue(commitValue: DadataResult, normalizedElements: Array<NormalizedAddressElement>): void {
+  public addAddressInfoToCommitValue(commitValue: DadataResult, normalizedElements: Array<NormalizedAddressElement>): void {
     normalizedElements.forEach(elem => {
       const elemName = this.levelMap[elem.level];
       commitValue[`${elemName}Kladr`] = elem.kladrCode;
-    })
+      commitValue[`${elemName}Fias`] = elem.fiasCode;
+    });
   }
 
 }

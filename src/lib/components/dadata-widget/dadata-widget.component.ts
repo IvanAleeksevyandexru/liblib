@@ -286,7 +286,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           regionCode: (this.dadataService.kladrCode && this.dadataService.kladrCode.substring(0, 2)) || ''
         };
         this.dadataService.addTypesToCommitValue(commitValue);
-        this.dadataService.addKladrToCommitValue(commitValue, this.normalizedData.address.elements)
+        this.dadataService.addAddressInfoToCommitValue(commitValue, this.normalizedData.address.elements)
         this.normalizeInProcess = false;
         this.commit(commitValue);
       } else {
