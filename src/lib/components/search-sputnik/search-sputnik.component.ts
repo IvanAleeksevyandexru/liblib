@@ -118,11 +118,6 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges,
     this.sharedSubscription.unsubscribe();
   }
 
-  public toggleMagnifyingGlass() {
-    const query = this.lookup.query ? this.lookup.query.trim() : '';
-    this.showMagnifyingGlass = !query.length;
-  }
-
   public formatter(item) {
     if (!item) {
       return;
