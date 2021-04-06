@@ -33,11 +33,11 @@ export class RegionCasesComponent implements OnInit {
     //   6 - предлож. падеж
 
     let manualRegions = this.loadService.config.manualRegions;
-    const regionCode = this.locationService.userSelectedRegionCode;
+    const regionCodes = this.locationService.userSelectedRegionCodes;
     if (manualRegions) {
       manualRegions = JSON.parse(manualRegions);
       for(let key in manualRegions) {
-        if(regionCode === manualRegions[key].okato) {
+        if(regionCodes[regionCodes.length - 1] === manualRegions[key].okato) {
           this.regionCase = manualRegions[key].cases[this.caseItem];
         }
       }
