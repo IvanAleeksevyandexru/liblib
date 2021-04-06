@@ -38,6 +38,15 @@ $border-color: #99B1E6;
           }
         }
       }
+
+      .blocked-mobile-keyboard {
+        input[readonly] {
+          -webkit-text-fill-color: #0b1f33;
+          background: #f5f7fa;
+          color: #0b1f33;
+
+        }
+      }
     }
     &.expanded {
       ::ng-deep .calendar-input .text-input {
