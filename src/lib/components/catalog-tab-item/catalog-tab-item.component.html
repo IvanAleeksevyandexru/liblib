@@ -29,7 +29,9 @@
         <div  class="col-lg-6 col-3 col-md-6">
           <section *ngIf="viewType !== 'main-page-view' && regionName && regionPopular?.length">
             <h5 class="title-h6 catalog-item-title mt-40 catalog-item-title-small">
-              Услуги для <span (click)="showRegionModal()" class="catalog-item-title-link pointer blue">{{regionName}}</span>
+              Услуги для <span (click)="showRegionModal()" class="catalog-item-title-link pointer blue">
+              <lib-region-cases caseItem="1" ></lib-region-cases>
+            </span>
             </h5>
             <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
               <div class="scroll-container">
@@ -118,7 +120,9 @@
       </ng-template>
       <ng-template #regionPopularTmpl>
         <h5 *ngIf="viewType === 'main-page-view'" class="title-h6 catalog-item-title mt-40 catalog-item-title-small">
-          Услуги для <span (click)="showRegionModal()" class="catalog-item-title-link pointer blue">{{regionName}}</span>
+          Услуги для <span (click)="showRegionModal()" class="catalog-item-title-link pointer blue">
+          <lib-region-cases caseItem="1" ></lib-region-cases>
+        </span>
         </h5>
         <h6 (click)="goToPopular(item)"
             *ngFor="let item of regionPopular | slice:0:(regionPopularMore ? undefined : itemsCounter)"
