@@ -37,7 +37,12 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
 
   public closeCatalog() {
     this.closeAllTabs();
+    this.toggleScroll(false);
     this.showCatalogTabItem = false;
+  }
+
+  public toggleScroll(menuOpened: boolean) {
+    document.getElementsByTagName('html')[0].classList.toggle('main-menu-catalog-opened', menuOpened);
   }
 
   public catalogTabListItemClick(item: any) {
@@ -46,6 +51,7 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
 
     if (item.mainActive) {
       item.mainActive = false;
+      this.toggleScroll(false);
       return;
     }
 
@@ -53,6 +59,7 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
 
     item.mainActive = !item.mainActive;
 
+    this.toggleScroll(item.mainActive);
     this.currentCategoryCode = item.code;
     this.showCatalogTabItem = item.mainActive;
   }

@@ -73,6 +73,7 @@ export class GosbarService {
         this.locationService.userSelectedRegionCode = regionData.code;
         this.locationService.userSelectedRegionName = regionData.name;
         this.locationService.userSelectedRegionPath = regionData.path;
+        this.locationService.userSelectedRegionCodes = regionData.codes;
       } else {
         onError('empty response');
       }

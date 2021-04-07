@@ -25,7 +25,6 @@
                 [converter]="converter"
                 (changed)="onSearch()"
                 (queryChanged)="searchChangeHandler($event)"
-                (input)="toggleMagnifyingGlass()"
                 (enterKeyEvent)="emptyResultHandler($event)"
                 (listed)="processSearchResult($event)"
                 (searchButtonClick)="handleSearchButtonClick($event)"
