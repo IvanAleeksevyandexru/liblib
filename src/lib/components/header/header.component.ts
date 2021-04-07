@@ -223,9 +223,14 @@ export class HeaderComponent implements OnInit, OnChanges {
     clearTimeout(this.hideTimout);
   }
 
-  public onMenuCatalogClick(menuCatalogOpened: boolean) {
+  public onMenuCatalogClick(menuCatalogOpened: boolean, isCatalogSimple = false) {
     this.menuCatalogOpened = menuCatalogOpened;
-    (document.getElementsByTagName('html')[0] as HTMLElement).style.overflowY = menuCatalogOpened ? 'hidden' : 'auto';
+    const htmlEl = (document.getElementsByTagName('html')[0] as HTMLElement);
+    if (isCatalogSimple) {
+      htmlEl.classList.toggle('hide-scroll', menuCatalogOpened);
+    } else {
+      htmlEl.style.overflowY = menuCatalogOpened ? 'hidden' : 'auto';
+    }
     if (menuCatalogOpened) {
       this.hideUserMenu();
     }
