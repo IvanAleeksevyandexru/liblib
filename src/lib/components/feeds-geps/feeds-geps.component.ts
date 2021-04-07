@@ -209,10 +209,18 @@ export class FeedsGepsComponent implements OnInit, OnChanges, OnDestroy {
     return this.feeds && !this.feeds.length && !this.feedsIsLoading;
   }
 
-  public isAmount(feed: FeedModel) {
-    if (feed.data.snippets && feed.data.snippets.length && feed.data.snippets[0].originalAmount) {
-      return feed.data.snippets[0].originalAmount;
+  public discountIsActual(feed: FeedModel): boolean {
+    return feed.data.snippets[0].discountDate && moment(feed.data.snippets[0].discountDate) >= moment();
+  }
+
+  public getAmount(feed: FeedModel) {
+    if (feed.data.snippets?.length) {
+      if (!this.discountIsActual(feed) && feed.data.snippets[0].originalAmount) {
+        return feed.data.snippets[0].originalAmount;
+      }
+      return feed.data.snippets[0].sum;
     }
+    return null;
   }
 
   public isAttach(feed: FeedModel) {
