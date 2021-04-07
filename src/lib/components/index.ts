@@ -94,4 +94,7 @@ export * from './catalog-tabs/catalog-tabs.component';
 export * from './catalog-tab-item/catalog-tab-item.component';
 
 export * from './user-roles/user-roles.component';
+export * from './region-cases/region-cases.component';
+
+
 

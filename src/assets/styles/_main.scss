@@ -527,6 +527,17 @@ ul.list-decimal {
   }
 }
 @media all and (min-width: 1140px) {
+  html{
+    &.main-menu-catalog-opened{
+      position: fixed;
+      width: 100%;
+      top:0;
+      left: 0;
+      height: 100%;
+      overflow-y: scroll !important;
+      z-index: 10;
+    }
+  }
   .balloon-button {
     &.font-13{
       font-size: 13px;

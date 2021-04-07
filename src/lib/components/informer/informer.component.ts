@@ -105,10 +105,6 @@ export class InformerComponent implements OnInit {
   }
 
   private setExtraDebtData(res): void {
-    // цена без скидки
-    if (res.originalAmount && res.originalAmount !== 0) {
-      this.dataInformer.price = res.originalAmount;
-    }
     // цена со скидкой или просто цена
     this.dataInformer.priceDiscount = res.amount;
 
@@ -117,31 +113,22 @@ export class InformerComponent implements OnInit {
   }
 
   private getTextToHint(code: string): void {
-    if (this.informersService.hints[code].textWithDay) {
-      if (this.hintResponse.days == 1) {
-        this.hintText = "Остался последний день ";
-      } else {
-        this.hintText = this.informersService.getWord(this.hintResponse.days, "остался") + ' ' + this.hintResponse.days + ' ' + this.informersService.getWord(this.hintResponse.days, "день") + ' ';
-      }
-      this.hintText += this.informersService.hints[code].textWithDay;
-    } else {
+    if (this.informersService.hints[code] && code === '03') {
+      this.hintText = 'Скидка истекает через' + ' ' + this.hintResponse.days + ' ' + this.informersService.getWord(this.hintResponse.days, "день") + ' ';
+      } else if(this.informersService.hints[code] && code === '05') {
       this.hintText = this.informersService.hints[code].text;
     }
-    this.linkHint = this.informersService.hints[code].link;
-    this.mnemonicHint = code;
   }
 
   private getInformerShortData() {
-    this.informersService.getDataInformer().subscribe((response: InformerShortInterface) => {
-
+    this.informersService.getDataInformer()
+      .subscribe((response: InformerShortInterface) => {
         if (response?.hint) {
           this.hintResponse = response.hint;
           var hint = Object.keys(this.informersService.hints).find((code) => {
             return this.hintResponse.code === code;
           });
           this.getTextToHint(hint);
-        } else if (this.loadService.user.userType == 'P') {
-          this.getTextToHint("00");
         }
 
         if (response?.result) {
@@ -158,6 +145,7 @@ export class InformerComponent implements OnInit {
                 this.debtForYaMetric.types = Object.assign(this.debtForYaMetric.types, {[TypeDebt[type]]: res[TypeDebt[type]].amount});
               }
             }
+            this.dataInformer.type = debtCount.length === 1 ? TypeDebt[debtCount[0]]: 'all';
             this.dataInformer.docs = this.declinePipe.transform(res.total, this.getWord(debtCount));
             this.setExtraDebtData(res);
             // инфа для метрики
@@ -202,12 +190,7 @@ export class InformerComponent implements OnInit {
         break;
     }
     this.yaMetricService.yaMetricInformerMain(type, this.debtForYaMetric);
-
-    if (['al10', 'no_rights'].includes(this.statusInformer)) {
-      this.router.navigate([this.links[this.statusInformer]]);
-    } else {
-      location.href = this.links[this.statusInformer];
-    }
+    location.href = `${this.loadService.config.oplataUrl}pay`;
   }
 
 }

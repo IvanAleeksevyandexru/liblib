@@ -124,6 +124,11 @@
         height: 40px;
       }
 
+      &.large#{$prefix} {
+        width: 72px;
+        height: 68px;
+      }
+
       &.big#{$prefix} {
         width: 87px;
         height: 100px;
