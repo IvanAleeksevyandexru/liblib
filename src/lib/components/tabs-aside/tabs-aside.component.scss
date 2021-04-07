@@ -127,6 +127,10 @@
   }
 }
 
+.hide-for-mobile {
+  display: none;
+}
+
 @media all and (min-width: 1140px) {
   .nav {
     background: none;
@@ -159,5 +163,9 @@
       margin-top: 0;
       border: none;
     }
+  }
+
+  .hide-for-mobile {
+    display: block;
   }
 }
