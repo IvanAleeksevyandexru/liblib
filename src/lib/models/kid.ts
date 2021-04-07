@@ -3,6 +3,7 @@ import { Document } from './document';
 export interface Kid {
   eTag?: string;
   id?: number;
+  oid?: number;
   linkCode?: string;
   stateFacts?: string[];
   trusted?: boolean;
@@ -21,10 +22,13 @@ export interface Kid {
     docs?: Document[];
   };
   // кастомные поля
+  tempId?: number;
+  age?: number;
   birthCert?: Document;
   type?: string;
   hasNewDoc?: boolean | string;
   hasAccount?: boolean;
+  edit?: boolean;
   state?: any;
   statusMessage?: string;
 }
