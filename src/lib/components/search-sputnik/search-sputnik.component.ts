@@ -178,10 +178,12 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges,
 
   public processSearchResult(list: ListItem[]): void {
     if (!this.stopSearch) {
-      const originalList = list.map(item => item.originalItem);
+      const error = list.length === 1 && list[0].originalItem.error;
+      const originalList = error ? [] : list.map(item => item.originalItem);
       this.sputnikSearchResult.emit({
         query: this.lookup.query,
-        originalList
+        originalList,
+        error
       });
     }
   }
