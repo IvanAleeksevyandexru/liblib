@@ -17,6 +17,7 @@ import { ListItemsService, ListItemsVirtualScrollController } from '../../servic
 import { PositioningManager, PositioningRequest } from '../../services/positioning/positioning.manager';
 import { Width } from '../../models/width-height';
 import { from, Observable } from 'rxjs';
+import { Suggest, SuggestItem } from '../../models/suggest';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -93,6 +94,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   @Input() public disableOpening = false;
   // при слабом коннекте запускать поиск последнего введенного значения #dadata
   @Input() public searchLastValue = false;
+  @Input() public suggest?: Suggest;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -105,6 +107,8 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
   @Output() public fetched = new EventEmitter();
+  @Output() public selectSuggest = new EventEmitter<Suggest | SuggestItem>();
+
 
   @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
   @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
@@ -471,6 +475,16 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
       queryMinSymbolsCount: this.queryMinSymbolsCount,
       partialPageSize: this.incrementalPageSize
     };
+  }
+
+  public selectSuggestItem(item: SuggestItem): void {
+    this.closeDropdown();
+    this.selectSuggest.emit(item);
+  }
+
+  public editSuggestList(suggest: Suggest): void {
+    suggest.isEdit = true;
+    this.selectSuggest.emit(suggest);
   }
 
 }
