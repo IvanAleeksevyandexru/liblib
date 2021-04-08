@@ -22,7 +22,7 @@
               <li (click)="menuStaticItemClick(link.title, link.mnemonic)" class="item justify-between align-items-center">
                 <div class="flex-container">
                   <div class="icon {{link.icon}}"></div>
-                  <a href class="text-plain">{{link.title | libTranslate}}</a>
+                  <span class="text-plain">{{link.title | libTranslate}}</span>
                 </div>
                 <lib-counter *ngIf="needCounter(link.mnemonic)" class="counter" [counter]="getKindOfCounter(link.mnemonic)"></lib-counter>
               </li>
