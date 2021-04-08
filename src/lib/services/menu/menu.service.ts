@@ -66,7 +66,8 @@ export class MenuService {
     },{
       title: 'HEADER.MENU.PERMISSIONS',
       mnemonic: 'permissions',
-      icon: 'hand-break'
+      icon: 'hand-break',
+      trusted: true
     }];
   }
 

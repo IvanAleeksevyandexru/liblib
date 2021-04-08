@@ -8,6 +8,7 @@ export interface MenuLink {
   mnemonic?: string;
   handler?: (MenuLink) => void;
   icon?: IconType;
+  trusted?: boolean;
 }
 
 export interface UserRole {

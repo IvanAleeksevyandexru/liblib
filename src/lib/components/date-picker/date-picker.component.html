@@ -16,6 +16,7 @@
           #input
           [(ngModel)]="text"
           contextClass="calendar-input"
+          [class.blocked-mobile-keyboard]="blockMobileKeyboard"
           [name]="name"
           [tabIndex]="tabIndex"
           [disabled]="disabled"
