@@ -71,9 +71,9 @@ export class MenuService {
     }].filter(item => {
       if (!item.trusted) {
         return true;
-      } else { // Оставим пункты меню только для подтвержденной УЗ
-        return item.trusted && item.trusted === this.loadService.user.person.person.trusted;
       }
+      // Оставим пункты меню только для подтвержденной УЗ
+      return this.loadService.user.person.person.trusted;
     }) as MenuLink[];
   }
 
