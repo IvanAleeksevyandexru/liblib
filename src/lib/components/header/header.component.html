@@ -6,7 +6,7 @@
         <a href="" class="back-to-portal" (click)="backClickHandler()">Вернуться к старой версии</a>
       </div>
       <div class="mr-40 hide show-lg">
-        <lib-location-select skinTheme="empty"></lib-location-select>
+        <lib-location-select></lib-location-select>
       </div>
 
       <div *ngIf="!user.authorized && !comingSoon && roleChangeAvailable" class="hide show-lg">
