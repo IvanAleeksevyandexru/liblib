@@ -35,6 +35,7 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor, Validate
 
   public invalidDisplayed: boolean;
   public focused: boolean;
+  private destroyed = false;
   private modelInitialization = true;
   private onTouchedCallback: () => void;
   private commit(value: any) {}
@@ -56,6 +57,7 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor, Validate
   }
 
   public ngOnDestroy(): void {
+    this.destroyed = true;
     this.focusManager.unregister(this);
   }
 
@@ -73,7 +75,9 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor, Validate
       return; // управление @Input свойством, переинициализация моделью возможна только реальным значением
     }
     this.checked = !!value;
-    this.changeDetector.detectChanges();
+    if (!this.destroyed) {
+      this.changeDetector.detectChanges();
+    }
   }
 
   public registerOnChange(func: any) {

@@ -51,23 +51,30 @@ export class MenuService {
       title: 'HEADER.MENU.NOTIFICATIONS',
       mnemonic: 'notifications',
       icon: 'bell'
-    },{
+    }, {
       title: 'HEADER.MENU.ORDERS',
       mnemonic: 'orders',
       icon: 'edit'
-    },{
+    }, {
       title: 'HEADER.MENU.PAYMENT',
       mnemonic: 'payment',
       icon: 'wallet'
-    },{
+    }, {
       title: 'HEADER.MENU.DOCS',
       mnemonic: 'docs',
       icon: 'doc'
-    },{
+    }, {
       title: 'HEADER.MENU.PERMISSIONS',
       mnemonic: 'permissions',
-      icon: 'hand-break'
-    }];
+      icon: 'hand-break',
+      trusted: true
+    }].filter(item => {
+      if (!item.trusted) {
+        return true;
+      }
+      // Оставим пункты меню только для подтвержденной УЗ
+      return this.loadService.user.person.person.trusted;
+    }) as MenuLink[];
   }
 
   public getStaticItemUrls(): object {

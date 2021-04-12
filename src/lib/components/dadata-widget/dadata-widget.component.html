@@ -19,6 +19,7 @@
                       [queryMinSymbolsCount]="queryMinSymbolsCount"
                       [disableClickClosing]="true"
                       [searchLastValue]="true"
+                      [suggest]="suggest"
                       [(ngModel)]="query"
                       (ngModelChange)="normalizeInProcess = false;"
                       (focus)="handleFocus()"
@@ -27,6 +28,7 @@
                       (input)="changeQueryHandler($event.target.value)"
                       (cleared)="onClearHandler()"
                       (fetched)="dadataService.resetSearchComplete(true)"
+                      (selectSuggest)="selectSuggestItem($event)"
                       [suggestionsProvider]="dadataService">
           <!--inside dropdown additional content customized-->
           <div class="dadata-additional-item">

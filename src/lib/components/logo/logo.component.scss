@@ -1,33 +1,9 @@
 .logo {
   display: block;
-  height: 16px;
-  width: 96px;
-  margin-top: 3px;
-  background: url(../../../assets/svg/main-logo.svg) no-repeat;
+  height: 24px;
+  width: 126px;
+  background: url(../../../assets/svg/main-logo.svg) 0 100% no-repeat;
   background-size: contain;
   text-indent: 100%;
   overflow: hidden;
-}
-@media all and (min-width: 768px) {
-  .logo {
-    height: 24px;
-    width: 145px;
-  }
-}
-
-@media all and (min-width: 1140px) {
-  .logo {
-    margin-top: 3px;
-  }
-}
-
-:host-context(.app-portal) {
-  .logo {
-    display: block;
-    height: 32px;
-    width: 152px;
-    margin-top: 16px;
-    background: url(../../../assets/svg/main-logo.svg) no-repeat;
-    background-size: contain;
-  }
 }

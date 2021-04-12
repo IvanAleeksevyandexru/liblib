@@ -32,6 +32,7 @@ import { BehaviorSubject, forkJoin, zip } from 'rxjs';
 import { Validated, ValidationShowOn } from "../../models/validation-show";
 import { ValidationHelper } from "../../services/validation-helper/validation.helper";
 import { ListItem, ListItemConverter } from "../../models/dropdown.model";
+import { Suggest, SuggestItem } from '../../models/suggest';
 
 @Component({
   selector: 'lib-dadata-widget',
@@ -87,8 +88,11 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   // для преобразования countries из any в ListItem
   @Input() public converter?: ListItemConverter;
 
+  @Input() public suggest?: Suggest;
+
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
+  @Output() public selectSuggest = new EventEmitter<Suggest | SuggestItem>();
 
   public errorCodes: Array<string> = [];
   public query = '';
@@ -172,6 +176,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   private onTouchedCallback: () => void;
   private onValidationCallback: () => void;
   private addressStr = '';
+  private selectedNormalized = false;
 
   private commit(value: DadataResult) {
   }
@@ -286,7 +291,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           regionCode: (this.dadataService.kladrCode && this.dadataService.kladrCode.substring(0, 2)) || ''
         };
         this.dadataService.addTypesToCommitValue(commitValue);
-        this.dadataService.addKladrToCommitValue(commitValue, this.normalizedData.address.elements)
+        this.dadataService.addAddressInfoToCommitValue(commitValue, this.normalizedData.address.elements)
         this.normalizeInProcess = false;
         this.commit(commitValue);
       } else {
@@ -304,17 +309,11 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   public openDadataFields(validateAfter = false): void {
     this.isOpenedFields.next(true);
     this.canOpenFields.next(true);
-    if (!this.normalizedData) {
-      this.normalizeFullAddress(this.query, true).then(() => {
-        if (validateAfter) {
-          this.revalidate();
-        }
-      });
-    } else {
+    this.normalizeFullAddress(this.autocomplete.searchBar.query, false).then(() => {
       if (validateAfter) {
         this.revalidate();
       }
-    }
+    });
     this.autocomplete.cancelSearchAndClose();
   }
 
@@ -362,7 +361,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           this.dadataService.resetForm();
           this.dadataService.parseAddress(res, onInitCall, this.hideHouseCheckbox, this.hideApartmentCheckbox);
           // onChange triggering guaranteed
-          if (selectAddress) {
+          if (selectAddress || this.isOpenedFields.getValue()) {
             this.validationSkip = false;
           } else {
             this.validationSkip = !this.needReplaceQuery || suppressValidation
@@ -376,7 +375,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       this.normalizeInProcess = true;
       this.commit(null);
       let query = fullAddress;
-      if (blurCall) {
+      if (blurCall && !this.selectedNormalized && !this.isOpenedFields.getValue()) {
         this.disableOpening = true;
         zip(this.dadataService.firstInSuggestion.pipe(filter(res => res !== null)),
           this.dadataService.searchComplete.pipe(filter(res => !!res))).pipe(take(1))
@@ -394,9 +393,10 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           });
         return Promise.resolve();
       }
+      this.selectedNormalized = selectAddress;
       return this.dadataService.normalize(query).toPromise().then(res => {
         success(res);
-        return res;
+        return Promise.resolve();
       }, err => {
         this.normalizeInProcess = false;
       });
@@ -419,6 +419,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   }
 
   public changeQueryHandler(value: string): void {
+    this.selectedNormalized = false;
     this.dadataService.resetSearchComplete(false);
     this.dadataService.firstInSuggestion.next(null);
     if (this.isOpenedFields.getValue()) {
@@ -551,7 +552,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       setTimeout(() => {
         input.focus();
         input.setSelectionRange(len, len);
-      }, 1000)
+      }, 1000);
     } else {
       input.value = input.value;
     }
@@ -559,5 +560,14 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public check() {
     ValidationHelper.checkValidation(this, {touched: true});
+  }
+
+  public selectSuggestItem(item: SuggestItem): void {
+    this.selectSuggest.emit(item);
+  }
+
+  public editSuggestList(suggest: Suggest): void {
+    suggest.isEdit = true;
+    this.selectSuggest.emit(suggest);
   }
 }
