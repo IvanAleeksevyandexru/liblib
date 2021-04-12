@@ -156,30 +156,30 @@ export class DadataService implements AutocompleteSuggestionProvider {
 
   public initForm(isSimpleMode: boolean, withCountries: boolean): void {
     this.simpleMode = isSimpleMode;
+    const validation = [Validators.pattern('(^([-А-Яа-яёЁ0-9,.();№N\'_+<>\\\\/"\\s]+)$)|(^$)')];
     this.form = this.fb.group({
-      region: new FormControl(''),
-      city: new FormControl(''),
-      district: new FormControl(''),
-      town: new FormControl(''),
-      inCityDist: new FormControl(''),
-      street: new FormControl(''),
-      additionalArea: new FormControl(''),
-      additionalStreet: new FormControl(''),
-      house: new FormControl(''),
+      region: new FormControl('', validation),
+      city: new FormControl('', validation),
+      district: new FormControl('', validation),
+      town: new FormControl('', validation),
+      inCityDist: new FormControl('', validation),
+      street: new FormControl('', validation),
+      additionalArea: new FormControl('', validation),
+      additionalStreet: new FormControl('', validation),
+      house: new FormControl('', validation),
       houseCheckbox: new FormControl(false),
       houseCheckboxClosed: new FormControl(false),
-      building1: new FormControl(''),
-      building2: new FormControl(''),
-      apartment: new FormControl(''),
+      building1: new FormControl('', validation),
+      building2: new FormControl('', validation),
+      apartment: new FormControl('', validation),
       apartmentCheckbox: new FormControl(false),
       apartmentCheckboxClosed: new FormControl(false),
-      index: new FormControl(''),
+      index: new FormControl('', [Validators.maxLength(6), Validators.minLength(6)]),
       geoLat: new FormControl(''),
       geoLon: new FormControl(''),
     });
 
     if (withCountries) {
-      this.form.get('index').setValidators([Validators.maxLength(6), Validators.minLength(6)]);
       this.form.addControl('country', new FormControl(''))
     }
 
@@ -408,57 +408,60 @@ export class DadataService implements AutocompleteSuggestionProvider {
         const controlConfig = this.formConfig[this.levelMap[key]];
         const control = this.getFormControlByLevel(key);
         const isHiddenLvl = this.isElementHidden(this.levelMap[key]);
+        controlConfig.regExpInvalid = !new RegExp('(^([-А-Яа-яёЁ0-9,.();№N\'_+<>\\\\/"\\s]+)$)|(^$)').test(control.value ? control.value : '');
         let isInvalid = false;
-        switch (key) {
-          // Район + если не заполнен Город
-          // Город + если не заполнен Район
-          case 3:
-          case 4:
-            isInvalid = !(this.getFormControlByLevel(3).value || this.getFormControlByLevel(4).value);
-            break;
-          // Нас пункт + если заполнен Район
-          case 6:
-            isInvalid = isHiddenLvl ? false :
-              this.getFormControlByLevel(3).value ? !control.value : false;
-            break;
-          // Улица
-          case 7: {
-            if (needSkipStreet) {
-              isInvalid = false;
-            } else {
+        if (!controlConfig.regExpInvalid) {
+          switch (key) {
+            // Район + если не заполнен Город
+            // Город + если не заполнен Район
+            case 3:
+            case 4:
+              isInvalid = !(this.getFormControlByLevel(3).value || this.getFormControlByLevel(4).value);
+              break;
+            // Нас пункт + если заполнен Район
+            case 6:
               isInvalid = isHiddenLvl ? false :
-                this.getFormControlByLevel(4).value ?
-                  (this.getFormControlByLevel(6).value ? false : !control.value) : false;
+                this.getFormControlByLevel(3).value ? !control.value : false;
+              break;
+            // Улица
+            case 7: {
+              if (needSkipStreet) {
+                isInvalid = false;
+              } else {
+                isInvalid = isHiddenLvl ? false :
+                  this.getFormControlByLevel(4).value ?
+                    (this.getFormControlByLevel(6).value ? false : !control.value) : false;
+              }
+              break;
             }
-            break;
-          }
-          case 11: {
-            const houseCheckbox = this.form.get('houseCheckbox');
-            isInvalid = isHiddenLvl || houseCheckbox.value ? false : !control.value;
-            break;
-          }
-          case 14:
-            const apartmentCheckbox = this.form.get('apartmentCheckbox');
-            isInvalid = isHiddenLvl || apartmentCheckbox.value ? false : !control.value;
-            break;
-          case 12:
-          case 13: {
-            if (!this.simpleMode) {
+            case 11: {
               const houseCheckbox = this.form.get('houseCheckbox');
-              if (houseCheckbox.value) {
-                isInvalid = !(this.getFormControlByLevel(key === 13 ? 12 : 13).value || control.value);
+              isInvalid = isHiddenLvl || houseCheckbox.value ? false : !control.value;
+              break;
+            }
+            case 14:
+              const apartmentCheckbox = this.form.get('apartmentCheckbox');
+              isInvalid = isHiddenLvl || apartmentCheckbox.value ? false : !control.value;
+              break;
+            case 12:
+            case 13: {
+              if (!this.simpleMode) {
+                const houseCheckbox = this.form.get('houseCheckbox');
+                if (houseCheckbox.value) {
+                  isInvalid = !(this.getFormControlByLevel(key === 13 ? 12 : 13).value || control.value);
+                } else {
+                  isInvalid = false;
+                }
               } else {
                 isInvalid = false;
               }
-            } else {
-              isInvalid = false;
+              break;
             }
-            break;
+            default:
+              isInvalid = !control.value;
           }
-          default:
-            isInvalid = !control.value;
         }
-        controlConfig.isInvalid = isInvalid;
+        controlConfig.isInvalid = controlConfig.regExpInvalid || isInvalid;
       });
     }
   }
