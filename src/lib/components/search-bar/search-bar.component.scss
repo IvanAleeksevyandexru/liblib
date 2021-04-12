@@ -34,8 +34,6 @@
       padding-right: 0;
       color: #fff;
       background: transparent;
-      text-align: left;
-      direction: rtl;
 
       &::placeholder {
         color: #AAC6FB;
@@ -44,11 +42,6 @@
       &.focused {
         padding-left: 0;
         border: none;
-        direction: ltr;
-      }
-
-      &.blocked {
-        direction: ltr;
       }
     }
 

@@ -48,7 +48,6 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() public searchSputnikEnabled = false;
   @Input() public position: 'left' | 'right' = 'right';
   @Input() public links: MenuLink[] = [];
-  @Input() public trustedLinks = false;
 
   @ViewChild('menuDesk') public menuDesk;
   @ViewChild('menuMobile') public menuMobile;
@@ -86,12 +85,6 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public ngOnInit() {
     if (!this.links.length) {
       this.links = this.menuService.getUserMenuDefaultLinks();
-      // Оставим пункты меню только для подтвержденной УЗ
-      this.links.forEach((link: MenuLink, index: number) => {
-        if (link.trusted && link.trusted !== this.trustedLinks) {
-          this.links.splice(index, 1);
-        }
-      })
     }
     this.user = this.loadService.user as User;
     this.userRoles = this.menuService.getUserRoles(this.user);
@@ -203,19 +196,17 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private needCounter(type: string): boolean {
+  public needCounter(type: string): boolean {
     const types = ['notifications', 'partnersOrders'];
     return types.includes(type);
   }
 
-  private getKindOfCounter(type: string): CounterData {
+  public getKindOfCounter(type: string): CounterData {
     switch (type) {
       case 'notifications':
         return this.userCounter;
-        break;
       case 'partnersOrders':
         return this.partnersCounter;
-        break;
     }
   }
 

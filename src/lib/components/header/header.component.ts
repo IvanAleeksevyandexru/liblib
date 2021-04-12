@@ -63,7 +63,6 @@ export class HeaderComponent implements OnInit, OnChanges {
   @Input() public showBurger = true;
   @Input() public catalog?: Catalog[];
   @Input() public languageChangeAvailable: boolean;
-  @Input() public trustedLinks = false;
 
   @Output() public backClick = new EventEmitter<any>();
 
@@ -102,7 +101,7 @@ export class HeaderComponent implements OnInit, OnChanges {
 
   public ngOnInit(): void {
     this.initUserMenuState();
-    if(this.burgerDemoMode) {
+    if (this.burgerDemoMode) {
       this.burgerWithCatalogShow(location.pathname);
     }
     this.loadService.userTypeNA$.subscribe(type => {
@@ -223,9 +222,14 @@ export class HeaderComponent implements OnInit, OnChanges {
     clearTimeout(this.hideTimout);
   }
 
-  public onMenuCatalogClick(menuCatalogOpened: boolean) {
+  public onMenuCatalogClick(menuCatalogOpened: boolean, isCatalogSimple = false) {
     this.menuCatalogOpened = menuCatalogOpened;
-    (document.getElementsByTagName('html')[0] as HTMLElement).style.overflowY = menuCatalogOpened ? 'hidden' : 'auto';
+    const htmlEl = (document.getElementsByTagName('html')[0] as HTMLElement);
+    if (isCatalogSimple) {
+      htmlEl.classList.toggle('hide-scroll', menuCatalogOpened);
+    } else {
+      htmlEl.style.overflowY = menuCatalogOpened ? 'hidden' : 'auto';
+    }
     if (menuCatalogOpened) {
       this.hideUserMenu();
     }

@@ -47,7 +47,7 @@
             <lib-login></lib-login>
           </div>
         </div>
-        <lib-user-menu [state]="userMenuState" [links]="links" [trustedLinks]="trustedLinks"></lib-user-menu>
+        <lib-user-menu [state]="userMenuState" [links]="links"></lib-user-menu>
       </div>
     </div>
   </div>
@@ -66,7 +66,7 @@
             </ng-container>
             <ng-template #burgerWithoutCatalog>
               <lib-menu-catalog-simple
-                (menuCatalogOpened)="onMenuCatalogClick($event)">
+                (menuCatalogOpened)="onMenuCatalogClick($event, true)">
               </lib-menu-catalog-simple>
             </ng-template>
           </ng-container>
@@ -144,8 +144,7 @@
                 #menu
                 [searchSputnikEnabled]="searchSputnikEnabled"
                 [state]="userMenuState"
-                [links]="links"
-                [trustedLinks]="trustedLinks">
+                [links]="links">
             </lib-user-menu>
           </div>
         </div>
