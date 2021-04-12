@@ -373,7 +373,6 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       this.form.markAsTouched();
       // используем промис, т.к. в противном случае без сабскрайбера не вызывается сервис
       this.normalizeInProcess = true;
-      this.commit(null);
       let query = fullAddress;
       if (blurCall && !this.selectedNormalized && !this.isOpenedFields.getValue()) {
         this.disableOpening = true;
