@@ -9,12 +9,9 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { forkJoin, of } from 'rxjs';
-
 import { GosbarService } from '../../services/gosbar/gosbar.service';
 import { SharedService } from '../../services/shared/shared.service';
 import { CatalogTabsService } from '../../services/catalog-tabs/catalog-tabs.service';
-
-import { Router } from '@angular/router';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { LocationService } from '../../services/location/location.service';
 import { LoadService } from '../../services/load/load.service';
@@ -90,7 +87,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     const secondColumnDepartments = [];
     const firstColumnDepartments = [];
     departments.forEach((item, index, arr) => {
-      if((index + 1) % 2 === 0) {
+      if ((index + 1) % 2 === 0) {
         secondColumnDepartments.push(item);
       } else {
         firstColumnDepartments.push(item);
@@ -121,7 +118,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
           multipleData.push(this.catalogTabsService.getFaqItemCategory(item.code, this.code))
         })
 
-        return forkJoin(multipleData).pipe(map((faqItemCategory: any) =>  {
+        return forkJoin(multipleData).pipe(map((faqItemCategory: any) => {
           return data.concat([faqItemCategory]);
         }))
       })
@@ -150,7 +147,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public createPopular(popular: PopularFederal): void {
-    if(popular.code === 'other') {
+    if (popular.code === 'other') {
       this.otherPopular = popular.children;
     } else {
       this.popular = popular.passports;
@@ -161,12 +158,12 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     let children = [];
     let faqs = [];
     faqsData.forEach((item) => {
-      if(item.children && item.children.length) {
+      if (item.children && item.children.length) {
         children = children.concat(item.children);
       }
     });
     faqsData.forEach((item) => {
-      if(item.faqs && item.faqs.length)
+      if (item.faqs && item.faqs.length)
         faqs = faqs.concat({
           title: item.title,
           faqs: item.faqs,
@@ -200,12 +197,18 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public goToPopular(item: PassportChildren | RegionalPopular): void {
-    const link = item.epguPassport ? `/group/${item.epguId}` : `${item.epguId}`;
+    const link = item.epguPassport ? `group/${item.epguId}` : `${item.epguId}`;
     this.catalogClose.emit();
-    location.href = link;
+    location.href = `${this.loadService.config.betaUrl}${link}`;
   }
 
   public ngOnDestroy() {
+  }
+
+  public checkOldPortalBanner(): boolean {
+    return this.loadService.config.linkToNewOldPortal
+      && this.viewType === 'main-page-view'
+      && !localStorage.getItem('new-portal-banner-close');
   }
 
   public goToDepartment(departmentPassport: DepartmentPassport): void {

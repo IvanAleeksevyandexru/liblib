@@ -159,6 +159,7 @@ import { CatalogTabsComponent } from './components/catalog-tabs/catalog-tabs.com
 import { CatalogTabsListComponent } from './components/catalog-tabs-list/catalog-tabs-list.component';
 import { CatalogTabItemComponent } from './components/catalog-tab-item/catalog-tab-item.component';
 import { UserRolesComponent } from './components/user-roles/user-roles.component';
+import { RegionCasesComponent } from './components/region-cases/region-cases.component';
 
 
 registerLocaleData(localeRu, 'ru');
@@ -307,7 +308,8 @@ registerLocaleData(localeRu, 'ru');
     CatalogTabsComponent,
     CatalogTabsListComponent,
     CatalogTabItemComponent,
-    UserRolesComponent
+    UserRolesComponent,
+    RegionCasesComponent
   ],
   imports: [
     CommonModule,
@@ -456,7 +458,8 @@ registerLocaleData(localeRu, 'ru');
     CatalogTabsComponent,
     CatalogTabsListComponent,
     CatalogTabItemComponent,
-    UserRolesComponent
+    UserRolesComponent,
+    RegionCasesComponent
   ],
   providers: [
     GosbarService,

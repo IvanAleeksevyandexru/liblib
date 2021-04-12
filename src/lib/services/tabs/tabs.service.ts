@@ -74,6 +74,15 @@ export class TabsService {
     }
   }
 
+  public hideTabsAccordingToTrusted(tabsName: any, trusted: boolean) {
+    const tabs = this.getTabs(tabsName);
+    tabs.tabs.forEach((tab: Tab) => {
+      if (tab.trusted && tab.trusted !== trusted) {
+        tabs.hideTab(tab);
+      }
+    });
+  }
+
   private createOrUpdate(tabsName: any, tabsProperties?: {[key: string]: any}): Tabs {
     if (!tabsName) {
       throw new Error('Invalid Tabs Group Name');

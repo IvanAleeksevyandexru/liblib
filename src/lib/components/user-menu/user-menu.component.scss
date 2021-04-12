@@ -441,3 +441,24 @@ $PAD: 768px;
     }
   }
 }
+
+@media all and (min-width: 1140px) {
+  .user-menu {
+    .menu-desk.container{
+      .user-menu-links-wrap {
+        padding: 0;
+        .item{
+          margin-bottom: 0;
+          display: flex;
+          padding: 16px;
+          align-items: center;
+          cursor: pointer;
+          &:hover{
+            background-color: #EDF2FE;
+          }
+        }
+      }
+    }
+  }
+
+}

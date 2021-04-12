@@ -23,6 +23,8 @@ export class TabsAsideComponent extends TabsComponent implements OnInit, OnChang
   @Input() public tabs: Tabs = null;
   // как интерпретировать .text вкладки: как текст или как код транслитерации
   @Input() public translation: Translation | string = Translation.APP;
+  // скрытие отображения мобильного и планшетного меню если доступно не более одной вкладки
+  @Input() public hideMobileViewIfOne: boolean;
   // событие выбора вкладки
   @Output() public selected = new EventEmitter<Tab>();
 
@@ -43,6 +45,10 @@ export class TabsAsideComponent extends TabsComponent implements OnInit, OnChang
   public select(tab: Tab) {
     this.expanded = false;
     super.select(tab);
+  }
+
+  public hideForMobile(tabs: Tab[]): boolean {
+    return this.hideMobileViewIfOne && !!tabs && tabs.filter(item => !item.hidden).length < 2;
   }
 
 }

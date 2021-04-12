@@ -72,6 +72,21 @@ export class LocationComponent implements OnInit, OnDestroy {
     }
   }
 
+  public getPlatform(): string {
+    let platform: string;
+    switch (this.loadService.attributes.deviceType) {
+      case 'desk':
+        platform = 'EPGUV3_DESK';
+          break;
+      case 'tab':
+        platform = 'EPGUV3_TAB';
+        break;
+      default:
+        platform = 'EPGUV3_MOB';
+    }
+    return platform;
+  }
+
   public onRadioChange() {
     switch (this.radioValue) {
       case 'current':
@@ -86,12 +101,12 @@ export class LocationComponent implements OnInit, OnDestroy {
           this.errorMessage = '';
           this.regionCode = '';
           this.searching = true;
-          navigator.geolocation.getCurrentPosition((position => {
+          navigator.geolocation.getCurrentPosition((position) => {
             const query: any = {};
             query.latitude = position && position.coords.latitude || 0;
             query.longitude = position && position.coords.longitude || 0;
-            query.needIpDetect = !this.locationService.firstTimeShow;
-            query.platform = 'EPGUV3_DESK';
+            query.needIpDetect = true;
+            query.platform = this.getPlatform();
             query._ = Math.random();
             this.locationService.getCurrentLocation(query).subscribe((data: Region) => {
               this.searching = false;
@@ -104,7 +119,7 @@ export class LocationComponent implements OnInit, OnDestroy {
             }, () => {
               this.errorMessage = 'LOCATION.AUTO-SELECT-ERROR';
             });
-          }), () => {
+          }, (err) => {
             this.errorMessage = 'LOCATION.AUTO-SELECT-ERROR';
           });
         }
@@ -134,7 +149,6 @@ export class LocationComponent implements OnInit, OnDestroy {
   }
 
   public onClose() {
-    this.locationService.firstTimeShow = false;
     this.destroy();
   }
 
