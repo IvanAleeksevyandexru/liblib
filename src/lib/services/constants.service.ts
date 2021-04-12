@@ -893,6 +893,7 @@ export class ConstantsService {
     [key: string]: DocumentType
   } = {
     MEDICAL_POLICY: 'MDCL_PLCY',
+    MEDICAL_POLICY_OLD: 'MDCL_PLCY_OLD',
     FOREIGN_PASSPORT: 'FRGN_PASS',
     DRIVING_LICENCE: 'RF_DRIVING_LICENSE',
     PASSPORT: 'RF_PASSPORT',
@@ -924,7 +925,8 @@ export class ConstantsService {
     DIVORCE_CERT: 'DIVORCE_CERT',
     SELF_EMPLOYED: 'SELF_EMPLOYED',
     DISABLED_PERSON: 'DISABLED_PERSON',
-    PARKING_PERMIT: 'REESTR_INVALIDOV'
+    PARKING_PERMIT: 'REESTR_INVALIDOV',
+    MEDICAL_ORG: 'MEDICAL_ORG'
   };
 
   public readonly FID_DOCUMENT_TYPES: DocumentType[] = [
