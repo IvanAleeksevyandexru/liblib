@@ -11,7 +11,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { DadataService } from '../../services/dadata/dadata.service';
-import { DadataResult, NormalizedData } from '../../models/dadata';
+import { DadataResult, HouseAndApartmentManipulations, NormalizedData } from '../../models/dadata';
 import { debounceTime, distinctUntilChanged, filter, finalize, switchMap, take, takeUntil } from 'rxjs/operators';
 import { ConstantsService } from '../../services/constants.service';
 import {
@@ -69,6 +69,8 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   @Input() public hideLevels?: Array<string> = [];
   @Input() public hideHouseCheckbox = false;
   @Input() public hideApartmentCheckbox = false;
+  @Input() public selectHouseCheckbox = false;
+  @Input() public selectApartmentCheckbox = false;
   @Input() public enabledMap = false;
   @Input() public queryMinSymbolsCount = 3;
   @Input() public validateOnSpecify = true;
@@ -359,7 +361,13 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           this.needReplaceQuery = this.dadataService.suggestionsLength === 1 || blurCall || onInitCall;
           this.blurCall = blurCall;
           this.dadataService.resetForm();
-          this.dadataService.parseAddress(res, onInitCall, this.hideHouseCheckbox, this.hideApartmentCheckbox);
+          const houseAndApartmentManipulations: HouseAndApartmentManipulations = {
+            hideApartmentCheckbox: this.hideApartmentCheckbox,
+            hideHouseCheckbox: this.hideHouseCheckbox,
+            selectApartmentCheckbox: this.selectApartmentCheckbox,
+            selectHouseCheckbox: this.selectHouseCheckbox
+          }
+          this.dadataService.parseAddress(res, onInitCall, houseAndApartmentManipulations);
           // onChange triggering guaranteed
           if (selectAddress || this.isOpenedFields.getValue()) {
             this.validationSkip = false;

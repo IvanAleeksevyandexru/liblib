@@ -181,3 +181,10 @@ export class FormConfig {
     this.index = Object.assign({...this.defaultState, code: 'DADATA.NEED_INDEX'});
   }
 }
+
+export interface HouseAndApartmentManipulations {
+  hideHouseCheckbox: boolean;
+  hideApartmentCheckbox: boolean;
+  selectHouseCheckbox: boolean;
+  selectApartmentCheckbox: boolean;
+}
