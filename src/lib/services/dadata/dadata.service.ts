@@ -240,7 +240,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
     });
   }
 
-  public parseAddress(data: NormalizedData, onInitCall: boolean, hideHouseCb: boolean, hideApartCb: boolean) {
+  public parseAddress(data: NormalizedData, onInitCall: boolean, hideHouseCb: boolean, hideApartCb: boolean, firstDadataObject: any) {
     const needSkipStreet = !!data.address.elements.find(item => item.level === 4 && this.skipStreetFias.includes(item.fiasCode))
     data.address.elements.forEach((elem, index, arr) => {
       let level = elem.level;
@@ -275,6 +275,30 @@ export class DadataService implements AutocompleteSuggestionProvider {
         const houseCheckbox = this.getFormControlByName('houseCheckbox');
         const apartmentControl = this.getFormControlByName('apartment');
         const apartmentCheckbox = this.getFormControlByName('apartmentCheckbox');
+
+        if (firstDadataObject?.fiasCode === data.address.fiasCode) {
+          const building1Control = this.getFormControlByName('building1');
+          const building2Control = this.getFormControlByName('building2');
+          const indexControl = this.getFormControlByName('index');
+          if (!houseControl.value && firstDadataObject.house) {
+            houseControl.setValue(firstDadataObject.house)
+          }
+          if (!apartmentControl.value && firstDadataObject.apartment) {
+            apartmentControl.setValue(firstDadataObject.apartment)
+          }
+          if (!apartmentControl.value && firstDadataObject.apartment) {
+            apartmentControl.setValue(firstDadataObject.apartment)
+          }
+          if (!building1Control.value && firstDadataObject.building1) {
+            building1Control.setValue(firstDadataObject.building1)
+          }
+          if (!building2Control.value && firstDadataObject.building2) {
+            building2Control.setValue(firstDadataObject.building2)
+          }
+          if (!indexControl.value && firstDadataObject.index) {
+            this.setValueByLevel(100, firstDadataObject.index);
+          }
+        }
 
         if (houseControl.disabled || houseCheckbox.value) {
           houseControl.disable({onlySelf: true});
