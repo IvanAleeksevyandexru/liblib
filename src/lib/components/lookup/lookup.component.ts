@@ -196,6 +196,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   public fixedItemsProvider = new FixedItemsProvider();
   public prevQuery: string;
 
+  private withFixedList = false;
+
   private destroyed = false;
 
   @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
@@ -226,7 +228,9 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     if (updateKeys.some((updateKey) => keys.includes(updateKey))) {
       this.update();
     } else if (setItemsKeys.some((setItemsKey) => keys.includes(setItemsKey))) {
-      this.setItems(this.itemsProvider ? [] : this.fixedItems, !!this.itemsProvider);
+      if (this.itemsProvider) {
+        this.setItems([], true);
+      }
     }
     this.check();
   }
@@ -244,7 +248,9 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
       virtualGroups: this.virtualGroups,
       virtualScroll: this.virtualScroll
     } as ListItemsOperationsContext);
-    this.setItems(this.itemsProvider ? [] : this.fixedItems, !!this.itemsProvider);
+    if (this.itemsProvider) {
+      this.setItems([], true);
+    }
     this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
   }
 
@@ -380,14 +386,18 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     }
     this.partialPageNumber = 0;
     this.partialsLoaded = false;
-    this.runSearchOrIncrementalSearch(true, queryOrMarker, () => {
-      if (this.items.length || this.showNotFound) {
-        this.updateSuggestion(queryOrMarker);
-        this.openDropdown();
-      } else {
-        this.closeDropdown();
-      }
-    });
+    if (this.prevQuery === queryOrMarker) {
+      this.openDropdown();
+    } else {
+      this.runSearchOrIncrementalSearch(true, queryOrMarker, () => {
+        if (this.items.length || this.showNotFound) {
+          this.updateSuggestion(queryOrMarker);
+          this.openDropdown();
+        } else {
+          this.closeDropdown();
+        }
+      });
+    }
   }
 
   public getRenderedItems() {
@@ -408,49 +418,55 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     if (rootSearch && this.searching || !rootSearch && (this.searching || this.partialsLoading)) {
       return;
     }
-
-    const provider = this.itemsProvider ? this.itemsProvider : this.fixedItemsProvider.setSource(this.internalFixedItems);
-    const config = this.createSearchConfiguration(queryOrMarker === SHOW_ALL_MARKER);
-    let query = queryOrMarker === SHOW_ALL_MARKER ? '' : queryOrMarker as string;
-    let promiseOrObservable = null;
-    if (this.incrementalLoading) {
-      promiseOrObservable = (provider as LookupPartialProvider).searchPartial(query, this.partialPageNumber, config);
+    // сделано для того, чтобы большие фиксированные списки не рендерились сразу при получении списка
+    if (this.fixedItems.length && !this.internalFixedItems.length) {
+      this.internalFixedItems = this.listService.createListItems(this.fixedItems);
+      this.withFixedList = true;
+      this.runSearchOrIncrementalSearch(rootSearch, queryOrMarker, callback);
     } else {
-      if (this.prevQuery === this.query && this.cachedResponse) {
-        this.openDropdown();
-        return;
-      }
-      if(this.removeTags && query) {
-        query = this.removeQueryTags(query);
-      }
-      promiseOrObservable = (provider as LookupProvider).search(query, config);
-    }
-    const activeSearch = promiseOrObservable instanceof Promise ?
-      from(promiseOrObservable) : promiseOrObservable as Observable<Array<any>>;
-    this.activeQuery = queryOrMarker;
-    if (rootSearch) {
-      this.searching = true;
-    } else {
-      this.partialsLoading = true;
-    }
-    ((activeToken) => {
-      activeSearch.subscribe((items: Array<any>) => {
-        this.prevQuery = this.query;
-        this.searching = this.partialsLoading = false;
-        if (this.insureSearchActiveToken === activeToken) {
-          this.processNewItems(rootSearch, items);
-          if (callback) {
-            callback();
-          }
+      const provider = this.itemsProvider ? this.itemsProvider : this.fixedItemsProvider.setSource(this.internalFixedItems);
+      const config = this.createSearchConfiguration(queryOrMarker === SHOW_ALL_MARKER);
+      let query = queryOrMarker === SHOW_ALL_MARKER ? '' : queryOrMarker as string;
+      let promiseOrObservable = null;
+      if (this.incrementalLoading) {
+        promiseOrObservable = (provider as LookupPartialProvider).searchPartial(query, this.partialPageNumber, config);
+      } else {
+        if (this.prevQuery === this.query && this.cachedResponse) {
+          this.openDropdown();
+          return;
         }
-        this.changeDetector.detectChanges();
-      }, e => {
-        console.error(e);
-        this.searching = this.partialsLoading = false;
-        this.closeDropdown();
-      });
-    })(this.insureSearchActiveToken);
-    this.changeDetector.detectChanges();
+        if (this.removeTags && query) {
+          query = this.removeQueryTags(query);
+        }
+        promiseOrObservable = (provider as LookupProvider).search(query, config);
+      }
+      const activeSearch = promiseOrObservable instanceof Promise ?
+        from(promiseOrObservable) : promiseOrObservable as Observable<Array<any>>;
+      this.activeQuery = queryOrMarker;
+      if (rootSearch) {
+        this.searching = true;
+      } else {
+        this.partialsLoading = true;
+      }
+      ((activeToken) => {
+        activeSearch.subscribe((items: Array<any>) => {
+          this.prevQuery = this.query;
+          this.searching = this.partialsLoading = false;
+          if (this.insureSearchActiveToken === activeToken) {
+            this.processNewItems(rootSearch, items);
+            if (callback) {
+              callback();
+            }
+          }
+          this.changeDetector.detectChanges();
+        }, e => {
+          console.error(e);
+          this.searching = this.partialsLoading = false;
+          this.closeDropdown();
+        });
+      })(this.insureSearchActiveToken);
+      this.changeDetector.detectChanges();
+    }
   }
 
   // все что prepareItems + запись в список отображения
@@ -476,12 +492,15 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     if (!this.disabled && !this.expanded && (this.items.length || this.showNotFound)) {
       this.expanded = true;
       this.highlight(null);
-      this.changeDetector.detectChanges();
       if (this.containerOverlap) {
         this.positioningDescriptor = {master: this.fieldContainer, slave: this.listContainer,
           destroyOnScroll: true, destroyCallback: this.closeDropdown.bind(this)} as PositioningRequest;
         this.positioningManager.attach(this.positioningDescriptor);
       }
+      if (this.virtualScroll && this.query === '') {
+        this.virtualScrollController.scrollToIndex(0, 'auto');
+      }
+      this.changeDetector.detectChanges();
       this.opened.emit();
     }
   }
@@ -635,21 +654,34 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                        forceTranslate = false, refreshHeight = false, callback?: (items?: Array<ListItem>) => void) {
     const query = highlightQuery === null ? null : (highlightQuery === SHOW_ALL_MARKER ? '' : highlightQuery as string);
     const indexing = {noIndex: initialIndex === null, indexBase: initialIndex || undefined};
-    const newItems = this.listService.createListItems(items, indexing);
-    this.listService.translateFormat(newItems, forceTranslate, indexing).subscribe((formattedItems: Array<ListItem>) => {
-      this.listService.highlightSubstring(formattedItems, query);
-      const done = () => {
-        if (callback) {
-          callback(formattedItems);
-        }
-        this.changeDetector.detectChanges();
-      };
-      if (this.virtualScroll && this.fieldContainer && refreshHeight) {
-        this.listService.evaluateItemsSizeAsync(formattedItems, this.fieldContainer.nativeElement.clientWidth, {}).subscribe(done);
-      } else {
-        done();
+    let newItems = [];
+    if (this.withFixedList) {
+      newItems = items;
+    } else {
+      newItems = this.listService.createListItems(items, indexing);
+    }
+    if (forceTranslate) {
+      this.listService.translateFormat(newItems, forceTranslate, indexing).subscribe((formattedItems: Array<ListItem>) => {
+        this.highlightItems(formattedItems, query, callback, refreshHeight);
+      });
+    } else {
+      this.highlightItems(newItems, query, callback, refreshHeight);
+    }
+  }
+
+  private highlightItems(formattedItems: Array<any | ListItem>, query: string, callback?: (items?: Array<ListItem>) => void, refreshHeight = false): void {
+    this.listService.highlightSubstring(formattedItems, query);
+    const done = () => {
+      if (callback) {
+        callback(formattedItems);
       }
-    });
+      this.changeDetector.detectChanges();
+    };
+    if (this.virtualScroll && this.fieldContainer && refreshHeight) {
+      this.listService.evaluateItemsSizeAsync(formattedItems, this.fieldContainer.nativeElement.clientWidth, {}).subscribe(done);
+    } else {
+      done();
+    }
   }
 
   private resetItemIfNotConsistent() {
