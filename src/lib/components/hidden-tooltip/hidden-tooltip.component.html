@@ -7,12 +7,11 @@
   (click)="toggleHidden()"
 >{{caption}}</a>
 <div [class.question]="questionMode" [class.closed]="!hidden" (click)="toggleHidden()"></div>
-<div class="content" [ngClass]="{
-    'hidden-content': hidden,
-    'no-offset': offset,
-    'mt-16': !beautiful,
-    'beautiful mt-4 text-plain': beautiful
-  }">
+<div class="content {{beautiful ? 'beautiful mt-4 text-plain' : offsetTopContent}}"
+     [ngClass]="{
+      'hidden-content': hidden,
+      'no-offset': !offset
+     }">
   <div *ngIf="closable" class="close" (click)="toggleHidden()"></div>
   <ng-content></ng-content>
 </div>
