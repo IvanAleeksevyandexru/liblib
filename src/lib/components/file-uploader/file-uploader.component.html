@@ -1,0 +1,19 @@
+<div class="file-uploader" [class.invalid]="invalidDisplayed">
+
+  <div class="file mb-24" *ngFor="let file of files; let i = $index;">
+    <span class="icon {{extension(file.name)}}"></span>
+    {{file.name}} <span class="size ml-8" *ngIf="file.size">|&nbsp;&nbsp;{{sizeInMB(file.size)}}</span>
+    <span class="delete" (click)="remove(i)">Удалить</span>
+  </div>
+
+  <div class="chose-dnd" libDragAndDrop (filesDropped)="onFilesDropped($event)">
+    <p class="text-center mb-12">Перетащите файлы или выберите на компьютере</p>
+    <p class="text-center">
+      <span class="select-file" (click)="fileInput.click()">
+        Выбрать файл
+        <input class="file-input" #fileInput [multiple]="multiple" type="file"/>
+      </span>
+    </p>
+  </div>
+
+</div>
