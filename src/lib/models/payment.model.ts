@@ -116,8 +116,10 @@ export interface PaymentItems {
   isMessage: boolean;
   hasPhoto?: boolean;
   attrs?: any; // Кастомный атрибут. Преобразованный addAttrs к объекту
-  appealAvailable?: boolean;
+  hasAppealDepartment?: boolean;
+  hasAppealPower?: boolean;
   refundAvailable?: boolean;
+  routeNumber?: string;
 }
 
 export interface PaymentDetails extends PaymentItems {
