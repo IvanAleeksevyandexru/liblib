@@ -59,7 +59,6 @@
     white-space: normal;
     box-sizing: border-box;
     background-color: white;
-    overflow: hidden;
 
     &.hidden {
       display: none;
@@ -152,6 +151,14 @@
           border-bottom: 3px double #A8ACB1;
         }
       }
+      &.hasSuggest {
+        .item-container {
+          border-bottom: none;
+        }
+        &.highlighted {
+          background-color: #E7ECF7;
+        }
+      }
     }
 
     .incremental-loading-icon {
@@ -210,6 +217,48 @@
           }
         }
       }
+    }
+  }
+
+  .suggests {
+    font-family: Lato, Arial, sans-serif;
+
+    .pl-16 {
+      padding-left: 16px;
+    }
+
+    .title {
+      font-size: 14px;
+      line-height: 20px;
+      color: #66727F;
+    }
+
+    ul {
+      list-style: none;
+      li {
+        padding: 12px 16px;
+        cursor: pointer;
+        &:hover {
+          background-color: #E7ECF7;
+        }
+        p {
+          font-size: 16px;
+          line-height: 24px;
+          color: #0B1F33;
+        }
+        span {
+          font-size: 14px;
+          line-height: 20px;
+          color: #66727F
+        }
+      }
+    }
+    .edit {
+      font-size: 14px;
+      line-height: 20px;
+      padding-bottom: 10px;
+      margin: 8px 16px 0 16px;
+      border-bottom: 1px solid #99B1E6;
     }
   }
 }
