@@ -18,7 +18,7 @@
   .buttons-container {
     position: absolute;
     width: auto;
-    height: 48px;
+    height: 52px;
     top: 0;
     right: 12px;
     display: flex;
@@ -33,13 +33,16 @@
     height: 24px;
     margin-top: 14px;
     cursor: pointer;
-    background: url(../../../assets/svg/input-clean.svg) 50% no-repeat;
+    background: url(../../../assets/svg/input-clean.svg) 0 no-repeat;
   }
-  .validation-container, .tip-container {
+  .validation-container, .tip-container, .clickable-question-tip {
     width: 32px;
     height: 24px;
-    margin-top: 11px;
+    margin-top: 14px;
     padding-left: 4px;
+  }
+  .clickable-question-tip {
+    cursor: pointer;
   }
   .password-eye {
     width: 32px;
@@ -81,4 +84,36 @@
 }
 .text-control.passwordField.withValidationError.withTip.withClearButton .text-input {// крестик + глаз + ошибка + ?
   padding-right: 132px; //8+24+32+32+32+4
+}
+
+.bg-white {
+  .text-input {
+    background: #FFFFFF;
+    &.invalid {
+      background: rgba(238, 63, 88, 0.16);
+    }
+    &.focused {
+      background: #FFFFFF;
+    }
+  }
+}
+.shadow {
+  .text-input {
+    box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
+  }
+}
+.with-active-icon {
+  .text-input {
+    padding-right: 52px;
+    &.clearable {
+      padding-right: 92px;
+    }
+  }
+  .clear-button {
+    border-right: 2px solid #9DACCE;
+    right: 38px;
+    padding-right: 14px;
+    width: 38px;
+    position: absolute;
+  }
 }

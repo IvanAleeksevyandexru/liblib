@@ -209,10 +209,18 @@ export class FeedsGepsComponent implements OnInit, OnChanges, OnDestroy {
     return this.feeds && !this.feeds.length && !this.feedsIsLoading;
   }
 
-  public isAmount(feed: FeedModel) {
-    if (feed.data.snippets && feed.data.snippets.length && feed.data.snippets[0].originalAmount) {
-      return feed.data.snippets[0].originalAmount;
+  public discountIsActual(feed: FeedModel): boolean {
+    return feed.data.snippets[0].discountDate && moment(feed.data.snippets[0].discountDate) >= moment();
+  }
+
+  public getAmount(feed: FeedModel) {
+    if (feed.data.snippets?.length) {
+      if (!this.discountIsActual(feed) && feed.data.snippets[0].originalAmount) {
+        return feed.data.snippets[0].originalAmount;
+      }
+      return feed.data.snippets[0].sum;
     }
+    return null;
   }
 
   public isAttach(feed: FeedModel) {
@@ -267,7 +275,7 @@ export class FeedsGepsComponent implements OnInit, OnChanges, OnDestroy {
 
   private injectBanners(feeds: FeedItemModel[]): FeedItemModel[] {
     const part: FeedItemModel[] = [].concat(feeds);
-    if (part.length > 1) {
+    if (part.length > 0) {
       const banner = this.getActualBanner();
       if (banner) {
         if (part.length > 3) {
@@ -283,6 +291,9 @@ export class FeedsGepsComponent implements OnInit, OnChanges, OnDestroy {
 
   private getActualBanner(): FeedBannerModel {
     const banners = this.getGroupBanners();
+    if (this.activeBanners === banners.length) {
+      this.activeBanners = 0;
+    }
     const banner = banners.length && this.activeBanners < banners.length ? banners[this.activeBanners] : null;
     return banner ? {path: this.bannerPlace + '.' + banner.mnemonic} : null;
   }

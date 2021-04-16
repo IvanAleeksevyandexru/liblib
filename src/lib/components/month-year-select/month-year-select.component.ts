@@ -1,10 +1,13 @@
-import { Component, Input, Output, OnInit, OnChanges, SimpleChanges, ViewChild,
-  ElementRef, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import {
+  Component, Input, Output, OnInit, OnChanges, SimpleChanges, ViewChild,
+  ElementRef, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy
+} from '@angular/core';
 import { MonthYear } from '../../models/date-time.model';
 import * as moment_ from 'moment';
 const moment = moment_;
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-month-year-select',
   templateUrl: 'month-year-select.component.html',
   styleUrls: ['./month-year-select.component.scss']
@@ -86,6 +89,7 @@ export class MonthYearSelectComponent implements OnInit, OnChanges {
       this.monthsList = [];
     }
     this.updateButtons();
+    this.changeDetector.detectChanges();
   }
 
   public setYear(year: number) {
@@ -96,23 +100,27 @@ export class MonthYearSelectComponent implements OnInit, OnChanges {
       this.navigated.emit(new MonthYear(this.activeMonthYear.month, year));
       this.close();
     }
+    this.changeDetector.detectChanges();
   }
 
   public setMonth(month: number) {
     this.navigated.emit(new MonthYear(month, this.selectedYear || this.activeMonthYear.year));
     this.close();
+    this.changeDetector.detectChanges();
   }
 
   public prevMonth() {
     if (this.prevMonthAvailable && this.activeMonthYear) {
       this.navigatedPrevMonth.emit();
     }
+    this.changeDetector.detectChanges();
   }
 
   public nextMonth() {
     if (this.nextMonthAvailable && this.activeMonthYear) {
       this.navigatedNextMonth.emit();
     }
+    this.changeDetector.detectChanges();
   }
 
   public updateValue() {

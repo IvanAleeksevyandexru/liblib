@@ -22,12 +22,14 @@ export interface SearchSputnikSuggests {
 }
 
 export interface SimpleSputnikSuggest {
-  name: string;
-  image: string | null;
-  link: string | null;
+  name?: string;
+  image?: string | null;
+  link?: string | null;
   children?: SimpleSputnikSuggest[];
+  category?: string;
   lineBreak?: string;
   query?: string;
+  error?: boolean;
 }
 
 

@@ -1,0 +1,53 @@
+button {
+  width: 24px;
+  height: 100%;
+  border: none;
+  &:active, &:hover, &:focus {
+    border: none;
+    outline: none;
+  }
+}
+
+.lookup-button {
+  background: url(../../../assets/svg/field-icons/search-gray.svg) center no-repeat;
+  &.active {
+    background: url(../../../assets/svg/field-icons/search-blue.svg) center no-repeat;
+    cursor: pointer;
+  }
+  &.error {
+    background: url(../../../assets/svg/field-icons/search-red.svg) center no-repeat;
+  }
+}
+
+.send-button {
+  background: url(../../../assets/svg/field-icons/airplane-gray.svg) center no-repeat;
+  &.active {
+    background: url(../../../assets/svg/field-icons/airplane-blue.svg) center no-repeat;
+    cursor: pointer;
+  }
+  &.error {
+    background: url(../../../assets/svg/field-icons/airplane-red.svg) center no-repeat;
+  }
+}
+
+.lookup-button, .send-button {
+  &.loading {
+    top: 12px;
+    background: url(../../../assets/svg/search-loader.svg) center no-repeat;
+    animation: rotate 1.5s linear infinite;
+  }
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.button-wrap {
+  position: absolute;
+  height: 24px;
+  top: 14px;
+  right: 14px;
+  padding-left: 14px;
+}

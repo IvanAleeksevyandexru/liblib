@@ -1,21 +1,51 @@
 .disclaimer {
-  border: 1px solid #B6C6E8;
-  border-left: 0;
-  border-radius: 4px;
-  padding: 24px;
+  border-radius: 8px;
+  padding: 16px;
 
   &.shadow {
-    border: none;
-    border-radius: 8px;
     box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
   }
 
   .title {
-    font: bold 16px/24px Lato, Arial, sans-serif, "sans-serif";
+    font-size: 14px;
+    line-height: 20px;
+    color: #0B1F33;
+  }
+
+  .text {
+    font-size: 14px;
+    line-height: 20px;
+    color: #0B1F33;
   }
 
   .line {
-    width: 32px;
+    width: 24px;
     height: 4px;
+    display: none;
+  }
+
+  &.with-line-view {
+    padding: 24px;
+
+    &:not(.shadow) {
+      padding: 0;
+    }
+
+    .title {
+      font-size: 16px;
+      line-height: 24px;
+      color: #0B1F33;
+      width: calc(100% - 32px);
+    }
+
+    .text {
+      font-size: 14px;
+      line-height: 20px;
+      color: #66727F;
+    }
+
+    .line {
+      display: block;
+    }
   }
 }

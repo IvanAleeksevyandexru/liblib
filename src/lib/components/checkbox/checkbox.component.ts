@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, forwardRef, Input, OnDestroy, OnInit, } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnDestroy, OnInit, } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ValidationShowOn } from '../../models/common-enums';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
@@ -6,6 +6,7 @@ import { Validated } from '../../models/validation-show';
 import { FocusManager, Focusable } from '../../services/focus/focus.manager';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-checkbox',
   templateUrl: './checkbox.component.html',
   styleUrls: ['./checkbox.component.scss'],
@@ -34,12 +35,14 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor, Validate
 
   public invalidDisplayed: boolean;
   public focused: boolean;
+  private destroyed = false;
   private modelInitialization = true;
   private onTouchedCallback: () => void;
   private commit(value: any) {}
 
   constructor(
     private focusManager: FocusManager,
+    private changeDetector: ChangeDetectorRef
   ) { }
 
   public ngOnInit() {
@@ -54,6 +57,7 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor, Validate
   }
 
   public ngOnDestroy(): void {
+    this.destroyed = true;
     this.focusManager.unregister(this);
   }
 
@@ -71,6 +75,9 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor, Validate
       return; // управление @Input свойством, переинициализация моделью возможна только реальным значением
     }
     this.checked = !!value;
+    if (!this.destroyed) {
+      this.changeDetector.detectChanges();
+    }
   }
 
   public registerOnChange(func: any) {

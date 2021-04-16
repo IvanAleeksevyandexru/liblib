@@ -109,7 +109,8 @@ export class ConstantsService {
       id: 'permissions',
       name: 'TABS.PERMISSIONS.TITLE',
       url: '/permissions',
-      metric: {name: this.TABS_METRIC_NAME, action: 'permissions'}
+      metric: {name: this.TABS_METRIC_NAME, action: 'permissions'},
+      trusted: true
     }
   ]);
   public readonly LK_DEPT_TABS = new Tabs([
@@ -156,7 +157,7 @@ export class ConstantsService {
   public readonly LK_PARTNERS_TABS = new Tabs([
     {
       id: 'partners',
-      name: 'TABS.ORDERS.TITLE',
+      name: 'TABS.PARTNERS_ORDERS.TITLE',
       url: '/lk/orders/all',
       mnemonic: 'partnersOrders'
     }, {
@@ -170,6 +171,35 @@ export class ConstantsService {
       url: '/lk/history',
       mnemonic: 'partnersHistory'
     }
+  ]);
+  public readonly PAYMENT_TABS_FL = new Tabs([
+    {
+      id: 'toPay',
+      name: 'К оплате',
+      url: '/pay'
+    },
+    {
+      id: 'quittance',
+      name: 'По квитанции',
+      url: '/pay/quittance'
+    },
+    {
+      id: 'withoutQuittance',
+      name: 'По реквизитам',
+      url: '/pay/withoutQuittance',
+      hidden: true
+    },
+    {
+      id: 'history',
+      name: 'История',
+      url: '/pay/paymentHistory'
+    },
+    {
+      id: 'hidden',
+      name: 'Скрытые',
+      url: '/pay/hidden',
+      hidden: true
+    },
   ]);
   public readonly LK_SETTINGS_SIDE_TABS = new Tabs ([
     {
@@ -863,6 +893,7 @@ export class ConstantsService {
     [key: string]: DocumentType
   } = {
     MEDICAL_POLICY: 'MDCL_PLCY',
+    MEDICAL_POLICY_OLD: 'MDCL_PLCY_OLD',
     FOREIGN_PASSPORT: 'FRGN_PASS',
     DRIVING_LICENCE: 'RF_DRIVING_LICENSE',
     PASSPORT: 'RF_PASSPORT',
@@ -894,7 +925,8 @@ export class ConstantsService {
     DIVORCE_CERT: 'DIVORCE_CERT',
     SELF_EMPLOYED: 'SELF_EMPLOYED',
     DISABLED_PERSON: 'DISABLED_PERSON',
-    PARKING_PERMIT: 'REESTR_INVALIDOV'
+    PARKING_PERMIT: 'REESTR_INVALIDOV',
+    MEDICAL_ORG: 'MEDICAL_ORG'
   };
 
   public readonly FID_DOCUMENT_TYPES: DocumentType[] = [
@@ -956,12 +988,13 @@ export class ConstantsService {
   };
 
   public readonly ADDRESS_TYPE: {
-    [key: string]: 'PLV' | 'PRG' | 'OPS' | 'OLG'
+    [key: string]: 'PLV' | 'PRG' | 'OPS' | 'OLG' | 'PTA'
   } = {
     PLV: 'PLV',
     PRG: 'PRG',
     OPS: 'OPS',
-    OLG: 'OLG'
+    OLG: 'OLG',
+    PTA: 'PTA'
   };
 
   public readonly ELECTION_COMMON_DATE_FORMAT = 'DD.MM.YYYY';
@@ -987,4 +1020,10 @@ export class ConstantsService {
     'application/x-tar': 'TAR',
     'text/plain': 'TXT',
   };
+
+  public readonly CONVERT_LANG = {
+    RUS: {"q":"й","w":"ц","e":"у","r":"к","t":"е","y":"н","u":"г","i":"ш","o":"щ","p":"з","[":"х","{":"Х","]":"ъ","}":"Ъ",
+      "`":"ё","~":"Ё","a":"ф","s":"ы","d":"в","f":"а","g":"п","h":"р","j":"о","k":"л","l":"д",
+      "z":"я","x":"ч","c":"с","v":"м","b":"и","n":"т","m":"ь"}
+  }
 }

@@ -22,27 +22,74 @@
 
   &.main-page-new {
     box-sizing: border-box;
-    box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+    box-shadow: none;
 
     .search-input {
-      min-height: 64px;
-      font-size: 16px;
+      min-height: 48px;
+      font-size: 18px;
       line-height: 24px;
-      border: 2px solid #e4ecfd;
-      border-radius: 12px;
-      padding-left: 52px;
+      border: none;
+      //border-radius: 12px;
+      padding-left: 0;
+      padding-right: 0;
+      color: #fff;
+      background: transparent;
 
+      &::placeholder {
+        color: #AAC6FB;
+      }
       &:focus,
       &.focused {
-        border-width: 2px;
-        padding-left: 52px;
-        border-color: #4D83FA;
+        padding-left: 0;
+        border: none;
       }
+    }
 
+    .blocked {
+      display: flex;
+      align-items: center;
+    }
+
+    .blocked-wrap {
+      position: relative;
+    }
+
+    .search-value {
+      opacity: .5;
+      font-size: 18px;
+      line-height: 24px;
+    }
+
+    .clear-blocked, .search-clear {
+      position: absolute;
+      background: url(../../../assets/svg/circle_close_blue.svg) 0 0 no-repeat;
+      background-size: 100%;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      right: -30px;
+      top: 0;
+    }
+
+    .search-clear {
+      &.align-right {
+        right: 0;
+        top: 12px;
+      }
+    }
+
+    &::ng-deep {
+      lib-button button {
+        line-height: 16px;
+        display: none;
+      }
+    }
+
+    .search-go {
+      display: none;
     }
 
     .search-go,
-    .search-clear,
     .search-in-progress {
       background-size: 100%;
       height: 24px;
@@ -56,22 +103,34 @@
       }
     }
 
-    .search-clear {
-      background: url(../../../assets/svg/circle_close.svg) 0 0 no-repeat;
-      background-size: 100%;
-      right: 20px;
-      &.align-right {
-        right: 20px;
-      }
+    .search-button {
+      position: absolute;
+      right: 4px;
+      top: 4px
     }
 
     .search-go {
-      left: 20px;
+      top: 100%;
+      width: 100%;
+      height: 3px;
+      background: rgba(255, 255, 255, .34);
+      left: 0;
+      display: block;
     }
 
     .search-in-progress {
       right: 31px;
       top: 8px;
+    }
+    &.magnifying-glass-or-throbber-shown {
+      .search-input {
+        padding-right: 0;
+      }
+    }
+    &.clear-shown {
+      .search-input {
+        padding-right: 34px;
+      }
     }
   }
 
@@ -112,6 +171,10 @@
         background-color: #FFFFFF;
       }
     }
+  }
+
+  .static-content {
+    display: grid;
   }
 
   ::-webkit-input-placeholder {
@@ -227,7 +290,7 @@
     height: 48px;
     top: 0px;
     right: 48px;
-    background: url(../../../assets/svg/input-clean.svg) 7px 17px no-repeat;
+    background: url(../../../assets/svg/input-clean.svg) 5px 14px no-repeat;
     outline: none;
     cursor: pointer;
     &.align-right {
@@ -268,46 +331,102 @@
   .search-field {
     &.main-page-new {
 
-      .search-input {
-        min-height: 90px;
-        font-size: 24px;
-        border-width: 4px;
-        line-height: 32px;
-        padding-left: 75px;
+      .search-go {
+        display: block;
+      }
 
-        &:focus,
-        &.focused {
-          border-width: 4px;
-          padding-left: 75px;
+      &.clear-shown {
+        .search-input {
+          padding-right: 46px;
         }
       }
 
-      .search-go,
-      .search-clear,
+      .search-input {
+        min-height: 80px;
+        font-size: 36px;
+        line-height: 40px;
+        border: none;
+        background: transparent;
+        color: #fff
+      ;
+        &:focus,
+        &.focused {
+          //border-width: 4px;
+          //padding-left: 75px;
+        }
+      }
+
       .search-in-progress {
         height: 32px;
         width: 32px;
-        top: 28px;
-
+        top: 23px;
+      }
+      .search-go {
+        top: 100%;
+        width: 100%;
+        height: 3px;
+        background: rgba(255, 255, 255, .34);
+        left: 0;
       }
 
-      .search-clear {
-        background: url(../../../assets/svg/circle_close.svg) 0 0 no-repeat;
-        background-size: 100%;
-        right: 32px;
+      &.main-page-new {
+        .clear-blocked, .search-clear {
+          width: 32px;
+          height: 32px;
+        }
 
-        &.align-right {
-          right: 32px;
+        .clear-blocked {
+          right: -40px;
+          top: 5px;
+        }
+
+        .search-clear {
+          top: 24px;
         }
       }
 
-      .search-go {
-        left: 28px;
+      .search-button {
+        position: absolute;
+        right: 0px;
+        top: 14px;
+      }
+
+      .search-value {
+        font-size: 36px;
+        line-height: 40px;
+      }
+
+      &::ng-deep {
+        lib-button button {
+          line-height: 24px;
+          padding: 12px 32px;
+          display: none;
+        }
       }
 
       .search-in-progress {
         top: 20px;
         right: 39px;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .search-field {
+    &.main-page-new {
+
+      &.clear-shown {
+        .search-input {
+          padding-right: 228px;
+        }
+      }
+      .clear-blocked, .search-clear {
+        right: 128px;
+
+        &.align-right {
+          right: 171px;
+        }
       }
     }
   }

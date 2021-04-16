@@ -95,7 +95,6 @@
 
   .tabs-box {
     display: block;
-    padding: 4px 0;
     border-bottom: 1px solid #ced9f0;
   }
 }
@@ -126,6 +125,10 @@
   .counter {
     display: inline-block;
   }
+}
+
+.hide-for-mobile {
+  display: none;
 }
 
 @media all and (min-width: 1140px) {
@@ -160,5 +163,9 @@
       margin-top: 0;
       border: none;
     }
+  }
+
+  .hide-for-mobile {
+    display: block;
   }
 }

@@ -4,6 +4,7 @@ export * from './banners/banners.service';
 export * from './breadcrumbs/breadcrumbs.service';
 export * from './cookie/cookie.service';
 export * from './catalog/catalog.service';
+export * from './convert-lang/convert-lang.service';
 export * from './counters/counters.service';
 export * from './dadata/dadata.service';
 export * from './disclaimers/disclaimers.service';
@@ -45,4 +46,5 @@ export * from './user-agent/user-agent.service';
 export * from './ya-map/ya-map.service';
 export * from './ya-metric/ya-metric.service';
 export * from './constants.service';
+export * from './catalog-tabs/catalog-tabs.service';
 

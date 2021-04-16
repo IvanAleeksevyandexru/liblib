@@ -22,6 +22,7 @@ export interface Tab {
   custom?: {[key: string]: any}; // дополнительная информация
   click?: () => boolean; // обработчик выбора вкладки, способен отменять переход возвратом false
   queryParams?: any;
+  trusted?: boolean; // если указано, показывать вкладку только для подтвержденной УЗ
 }
 
 export class Tabs {
@@ -74,6 +75,12 @@ export class Tabs {
       if (!preserveSelected && tab.active) {
         this.selectFirstOneAvaialble();
       }
+    }
+  }
+
+  public showTab(tab: Tab) {
+    if (this.tabs && this.tabs.includes(tab)) {
+      tab.hidden = false;
     }
   }
 

@@ -1,6 +1,6 @@
 import {
   Component, ViewChild, Input, Output, OnInit, OnChanges, DoCheck, OnDestroy, AfterViewInit,
-  EventEmitter, ElementRef, forwardRef, SimpleChanges, ChangeDetectorRef, Optional, Host, SkipSelf, Self
+  EventEmitter, ElementRef, forwardRef, SimpleChanges, ChangeDetectorRef, Optional, Host, SkipSelf, Self, ChangeDetectionStrategy
 } from '@angular/core';
 import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListItem, ListElement, ListItemConverter } from '../../models/dropdown.model';
@@ -17,11 +17,13 @@ import { ConstantsService } from '../../services/constants.service';
 import { Translation, MultipleItemsLayout, LineBreak } from '../../models/common-enums';
 import { Observable, forkJoin } from 'rxjs';
 import { Width } from '../../models/width-height';
+import { Suggest, SuggestItem } from '../../models/suggest';
 
 /*
  * документация по ссылке https://confluence.egovdev.ru/pages/viewpage.action?pageId=170673869
  */
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-dropdown',
   templateUrl: 'dropdown.component.html',
   styleUrls: ['./dropdown.component.scss'],
@@ -44,6 +46,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public width?: Width | string;
+  @Input() public suggest?: Suggest;
 
   // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
   @Input() public formatter?: (item: ListItem, context?: { [name: string]: any }) => string;
@@ -98,6 +101,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   @Output() public closed = new EventEmitter<any>();
   // пре-рендер или обновление контента выпадашки
   @Output() public listed = new EventEmitter<Array<ListItem>>();
+
+  @Output() public selectSuggest = new EventEmitter<Suggest | SuggestItem>();
 
   public expanded: boolean;
   public destroyed = false;
@@ -243,7 +248,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     }
   }
 
-  public closeDropdown(raisedByOusideClick = false) {
+  public closeDropdown(raisedByOutsideClick = false) {
     if (this.expanded) {
       this.expanded = false;
       if (this.containerOverlap) {
@@ -252,7 +257,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
       }
       this.closed.emit();
     }
-    if (raisedByOusideClick) {
+    if (raisedByOutsideClick) {
       this.multipleItemsDetailsShown = false;
     }
   }
@@ -549,4 +554,13 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     this.listService.scrollTo(this.virtualScrollComponent || this.scrollComponent, item.findIndexAmong(this.internalDisplayed));
   }
 
+  public selectSuggestItem(item: SuggestItem): void {
+    this.selectSuggest.emit(item);
+    this.closeDropdown();
+  }
+
+  public editSuggestList(suggest: Suggest): void {
+    suggest.isEdit = true;
+    this.selectSuggest.emit(suggest);
+  }
 }

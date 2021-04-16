@@ -43,7 +43,7 @@
     .dropdown-arrow {
       display: block;
       position: absolute;
-      top: 10px;
+      top: 12px;
       right: 12px;
       background: url(../../../assets/svg/dropdown-expand.svg) no-repeat;
       width: 24px;
@@ -87,7 +87,7 @@
     display: block;
     border-style: none solid solid solid;
     box-sizing: border-box;
-    z-index: 2;
+    z-index: 4;
     &.hidden {
       display: none;
     }

@@ -36,11 +36,12 @@ export * from './gosbar/gosbar.component';
 export * from './header/header.component';
 export * from './hidden-tooltip/hidden-tooltip.component';
 export * from './image-slider/image-slider.component';
-export * from './info-card/info-card.component';
 export * from './informer/informer.component';
 export * from './integration-base/integration-base.component';
 export * from './invalid-results-tip/invalid-results-tip.component';
 export * from './lang-warn-modal/lang-warn-modal.component';
+export * from './language-select/language-select.component';
+export * from './light-header/light-header.component';
 export * from './loader/loader.component';
 export * from './location/location.component';
 export * from './location-select/location-select.component';
@@ -68,6 +69,7 @@ export * from './range-field/range-field.component';
 export * from './range-selector/range-selector.component';
 export * from './role-change/role-change.component';
 export * from './search-bar/search-bar.component';
+export * from './slider/slider.component';
 export * from './slider-images-modal/slider-images-modal.component';
 export * from './snippets/snippets.component';
 export * from './social-share/social-share.component';
@@ -76,7 +78,23 @@ export * from './standard-masked-input/standard-masked-input.component';
 export * from './tabs/tabs.component';
 export * from './tabs-aside/tabs-aside.component';
 export * from './tabs-light/tabs-light.component';
+export * from './tabs-scrolling/tabs-scrolling.component';
 export * from './throbber/throbber.component';
 export * from './user-menu/user-menu.component';
 export * from './validation-message/validation-message.component';
 export * from './virtual-scroll/virtual-scroll.component';
+export * from './small-footer/small-footer.component';
+export * from './social-links/social-links.component';
+export * from './button-for-input/button-for-input.component';
+export * from './search-sputnik/search-sputnik.component';
+export * from './menu-catalog/menu-catalog.component';
+export * from './menu-catalog-simple/menu-catalog-simple.component';
+export * from './catalog-tabs-list/catalog-tabs-list.component';
+export * from './catalog-tabs/catalog-tabs.component';
+export * from './catalog-tab-item/catalog-tab-item.component';
+
+export * from './user-roles/user-roles.component';
+export * from './region-cases/region-cases.component';
+
+
+

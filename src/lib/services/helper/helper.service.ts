@@ -295,7 +295,7 @@ export class HelperService {
     }
   }
 
-  public static convertEpguDadataAddressToEsiaAddress(dadataAddress: DadataResult, type: 'PLV' | 'PRG' | 'OPS' | 'OLG'): Address {
+  public static convertEpguDadataAddressToEsiaAddress(dadataAddress: DadataResult, type: 'PLV' | 'PRG' | 'OPS' | 'OLG' | 'PTA'): Address {
     return {
       type,
       countryId: 'RUS',
@@ -511,6 +511,10 @@ export class HelperService {
   public static internalUrlToRelative(url: string): string {
     return url && HelperService.isInternalUrl(url) ?
       HelperService.recoverProtocol(url).substring(HelperService.getCurrentHost().length) || '/' : url;
+  }
+
+  public static langIsRus(lang: string): boolean {
+    return lang === 'ru';
   }
 
   public static isUrlEqualToCurrent(url: string | {url: string, queryParams?: {[key: string]: string}}) {
