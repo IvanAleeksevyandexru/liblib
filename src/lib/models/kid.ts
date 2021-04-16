@@ -43,7 +43,7 @@ export class Kid {
   public tempId?: number;
   public age?: number;
   public edit?: boolean;
-  public state?: any;
+  public subscribe?: boolean;
   public birthCert?: Document | CommonCert;
   public passport?: Document;
   public cert?: CommonCert;
@@ -68,7 +68,7 @@ export class Kid {
     this.age = DatesHelperService.calcAge(this.birthDate);
 
     if (this.age < 18) {
-      this.state = 'subscription';
+      this.subscribe = true;
     }
 
     this.documents = {
