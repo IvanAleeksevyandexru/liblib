@@ -37,7 +37,14 @@
 }
 .catalog-item-title-small{
   font-size: 12px;
-  padding-bottom: 0;
+  & + .catalog-title-popular{
+    margin-top: 0;
+  }
+}
+.popular-region-wrap{
+  .catalog-title-popular:first-of-type{
+    margin-top: 0;
+  }
 }
 .pointer{
   cursor: pointer;

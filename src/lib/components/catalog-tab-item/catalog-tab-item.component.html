@@ -27,7 +27,7 @@
           </section>
         </div>
         <div  class="col-lg-6 col-3 col-md-6">
-          <section *ngIf="viewType !== 'main-page-view' && regionName && regionPopular?.length">
+          <section class="popular-region-wrap" *ngIf="viewType !== 'main-page-view' && regionName && regionPopular?.length">
             <h5 class="title-h6 catalog-item-title mt-40 catalog-item-title-small">
               Услуги для <span (click)="showRegionModal()" class="catalog-item-title-link pointer blue">
               <lib-region-cases caseItem="1" ></lib-region-cases>
