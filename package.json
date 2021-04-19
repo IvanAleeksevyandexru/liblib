@@ -1,6 +1,9 @@
 {
   "name": "epgu-lib",
   "version": "0.0.1229",
+  "publishConfig": {
+    "registry": "http://nexus.gosuslugi.local/content/repositories/npm-internal/"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,8 +11,12 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "set-version": "npm version $LIB_VERSION --allow-same-version",
+    "prelib-release": "npm run set-version",
+    "postlib-release": "cd ./dist/epgu-lib && npm publish",
     "lib-watch": "ng build epgu-lib --watch",
     "lib-build:prod": "cross-env ng build epgu-lib && npm run cp-lib-assets",
+    "lib-release": "npm run lib-build:prod",
     "cp-lib-assets": "cross-env cpx \"./src/assets/**/*\" \"./dist/epgu-lib/assets\""
   },
   "dependencies": {
