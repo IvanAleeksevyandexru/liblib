@@ -4,59 +4,61 @@
   <div class="container container-catalog-wrap">
     <div *ngIf="loaded else loading" class="catalog-tab-item">
       <a href class="close-catalog" (click)="closeCatalog($event)"></a>
-      <div *ngIf="code !== 'ministries'; else departments" class="grid-row details-block">
-        <div [ngClass]="(viewType !== 'main-page-view' && !regionPopular?.length) ? 'col-lg-12' : 'col-lg-6'"
-             class="col-lg-6 col-3 col-md-6 mob-container-wrap">
-          <section class="mob-container-wrap scroll-auto">
-            <div class="back-title text-plain bold" *ngIf="viewType === 'side-view'"
-                 (click)="closeSubCatalog()">{{backTitle}}</div>
-            <h3 *ngIf="code !== 'other'"
-                class="title-h6 catalog-item-title hide show-lg">
-                  Популярные услуги
-            </h3>
-            <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
-              <div [ngClass]="{'with-link-old-portal': checkOldPortalBanner() && code !== 'other'}" class="scroll-container">
-                <perfect-scrollbar [config]="{wheelPropagation: false}">
-                  <ng-container [ngTemplateOutlet]="populars"></ng-container>
-                </perfect-scrollbar>
+      <div *ngIf="code !== 'ministries'; else departments" class="details-block-wrap">
+        <div class="back-title text-plain bold" *ngIf="viewType === 'side-view'"
+             (click)="closeSubCatalog()">{{backTitle}}</div>
+        <div class="grid-row details-block">
+          <div [ngClass]="(viewType !== 'main-page-view' && !regionPopular?.length) ? 'col-lg-12' : 'col-lg-6'"
+               class="col-lg-6 col-3 col-md-6 mob-container-wrap">
+            <section class="mob-container-wrap scroll-auto">
+              <h3 *ngIf="code !== 'other'"
+                  class="title-h6 catalog-item-title hide show-lg">
+                Популярные услуги
+              </h3>
+              <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
+                <div [ngClass]="{'with-link-old-portal': checkOldPortalBanner() && code !== 'other'}" class="scroll-container">
+                  <perfect-scrollbar [config]="{wheelPropagation: false}">
+                    <ng-container [ngTemplateOutlet]="populars"></ng-container>
+                  </perfect-scrollbar>
+                </div>
               </div>
-            </div>
-            <div class="hide-lg mob-container-inner">
-              <ng-container [ngTemplateOutlet]="populars"></ng-container>
-            </div>
-          </section>
-        </div>
-        <div  class="col-lg-6 col-3 col-md-6">
-          <section class="popular-region-wrap" *ngIf="viewType !== 'main-page-view' && regionName && regionPopular?.length">
-            <h5 class="title-h6 catalog-item-title mt-40 catalog-item-title-small">
-              Услуги для <span (click)="showRegionModal()" class="catalog-item-title-link pointer blue">
+              <div class="hide-lg mob-container-inner">
+                <ng-container [ngTemplateOutlet]="populars"></ng-container>
+              </div>
+            </section>
+          </div>
+          <div  class="col-lg-6 col-3 col-md-6">
+            <section class="popular-region-wrap" *ngIf="viewType !== 'main-page-view' && regionName && regionPopular?.length">
+              <h5 class="title-h6 catalog-item-title mt-40 catalog-item-title-small">
+                Услуги для <span (click)="showRegionModal()" class="catalog-item-title-link pointer blue">
               <lib-region-cases caseItem="1" ></lib-region-cases>
             </span>
-            </h5>
-            <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
-              <div class="scroll-container">
-                <perfect-scrollbar [config]="{wheelPropagation: false}">
-                  <ng-container [ngTemplateOutlet]="regionPopularTmpl"></ng-container>
-                </perfect-scrollbar>
+              </h5>
+              <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
+                <div class="scroll-container">
+                  <perfect-scrollbar [config]="{wheelPropagation: false}">
+                    <ng-container [ngTemplateOutlet]="regionPopularTmpl"></ng-container>
+                  </perfect-scrollbar>
+                </div>
               </div>
-            </div>
-            <div class="hide-lg">
-              <ng-container [ngTemplateOutlet]="regionPopularTmpl"></ng-container>
-            </div>
-          </section>
-          <section *ngIf="viewType === 'main-page-view' && faqs?.length">
-            <h3 class="title-h6 catalog-item-title">Часто задаваемые вопросы</h3>
-            <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
-              <div [ngClass]="{'with-link-old-portal': checkOldPortalBanner()}" class="scroll-container">
-                <perfect-scrollbar [config]="{wheelPropagation: false}">
-                  <ng-container [ngTemplateOutlet]="popularFaq"></ng-container>
-                </perfect-scrollbar>
+              <div class="hide-lg">
+                <ng-container [ngTemplateOutlet]="regionPopularTmpl"></ng-container>
               </div>
-            </div>
-            <div class="hide-lg">
-              <ng-container [ngTemplateOutlet]="popularFaq"></ng-container>
-            </div>
-          </section>
+            </section>
+            <section *ngIf="viewType === 'main-page-view' && faqs?.length">
+              <h3 class="title-h6 catalog-item-title">Часто задаваемые вопросы</h3>
+              <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
+                <div [ngClass]="{'with-link-old-portal': checkOldPortalBanner()}" class="scroll-container">
+                  <perfect-scrollbar [config]="{wheelPropagation: false}">
+                    <ng-container [ngTemplateOutlet]="popularFaq"></ng-container>
+                  </perfect-scrollbar>
+                </div>
+              </div>
+              <div class="hide-lg">
+                <ng-container [ngTemplateOutlet]="popularFaq"></ng-container>
+              </div>
+            </section>
+          </div>
         </div>
       </div>
       <ng-template #departments>
@@ -108,7 +110,7 @@
             </ng-container>
           </ng-template>
 
-          <div class="mt-32 mt-lg-48 all-departments">
+          <div class="mt-lg-48 all-departments">
             <a class="blue uppercase" href="{{loadService.config.betaUrl}}structure">Все ведомства</a>
           </div>
         </div>
