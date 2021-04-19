@@ -6,8 +6,8 @@
       <a href class="close-catalog" (click)="closeCatalog($event)"></a>
       <div *ngIf="code !== 'ministries'; else departments" class="grid-row details-block">
         <div [ngClass]="(viewType !== 'main-page-view' && !regionPopular?.length) ? 'col-lg-12' : 'col-lg-6'"
-             class="col-lg-6 col-3 col-md-6">
-          <section>
+             class="col-lg-6 col-3 col-md-6 mob-container-wrap">
+          <section class="mob-container-wrap scroll-auto">
             <div class="back-title text-plain bold" *ngIf="viewType === 'side-view'"
                  (click)="closeSubCatalog()">{{backTitle}}</div>
             <h3 *ngIf="code !== 'other'"
@@ -21,7 +21,7 @@
                 </perfect-scrollbar>
               </div>
             </div>
-            <div class="hide-lg">
+            <div class="hide-lg mob-container-inner">
               <ng-container [ngTemplateOutlet]="populars"></ng-container>
             </div>
           </section>
@@ -63,37 +63,54 @@
         <div class="departments-wrap" *ngIf="departmentsData?.length">
           <div class="back-title text-plain bold" *ngIf="viewType === 'side-view'"
                (click)="closeSubCatalog()">Ведомства</div>
+
+
+          <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
             <div class="scroll-container">
               <perfect-scrollbar [config]="{wheelPropagation: false}">
                 <div class="grid-row">
-                  <ng-container *ngFor="let department of departmentsData; let i = index">
-                    <div class="col-lg-6 col-3 col-md-6 department-column" *ngIf="i % 3 === 0">
-                      <section class="department-column-start">
-                        <ng-template
-                          [ngTemplateOutletContext]="{department: departmentsData[i], isFirst: true}"
-                          [ngTemplateOutlet]="departmentsTmpl">
-                        </ng-template>
-                      </section>
-                      <section *ngIf="i + 1 < departmentsData.length">
-                        <ng-template
-                          [ngTemplateOutletContext]="{department: departmentsData[i + 1], isFirst: false}"
-                          [ngTemplateOutlet]="departmentsTmpl">
-                        </ng-template>
-                      </section>
-                      <section *ngIf="i + 2 < departmentsData.length">
-                        <ng-template
-                          [ngTemplateOutletContext]="{department: departmentsData[i + 2], isFirst: false}"
-                          [ngTemplateOutlet]="departmentsTmpl">
-                        </ng-template>
-                      </section>
-                    </div>
+                  <ng-container [ngTemplateOutlet]="departmentsWrap">
                   </ng-container>
                 </div>
               </perfect-scrollbar>
             </div>
-            <div class="mt-48 all-departments">
-              <a class="blue uppercase" href="{{loadService.config.betaUrl}}structure">Все ведомства</a>
+          </div>
+
+          <div class="hide-lg mob-container-inner">
+            <div>
+              <ng-container [ngTemplateOutlet]="departmentsWrap">
+              </ng-container>
             </div>
+          </div>
+
+          <ng-template #departmentsWrap>
+            <ng-container *ngFor="let department of departmentsData; let i = index">
+              <div class="col-lg-6 col-3 col-md-6 department-column" *ngIf="i % 3 === 0">
+                <section class="department-column-start">
+                  <ng-template
+                    [ngTemplateOutletContext]="{department: departmentsData[i], isFirst: true}"
+                    [ngTemplateOutlet]="departmentsTmpl">
+                  </ng-template>
+                </section>
+                <section *ngIf="i + 1 < departmentsData.length">
+                  <ng-template
+                    [ngTemplateOutletContext]="{department: departmentsData[i + 1], isFirst: false}"
+                    [ngTemplateOutlet]="departmentsTmpl">
+                  </ng-template>
+                </section>
+                <section *ngIf="i + 2 < departmentsData.length">
+                  <ng-template
+                    [ngTemplateOutletContext]="{department: departmentsData[i + 2], isFirst: false}"
+                    [ngTemplateOutlet]="departmentsTmpl">
+                  </ng-template>
+                </section>
+              </div>
+            </ng-container>
+          </ng-template>
+
+          <div class="mt-32 mt-lg-48 all-departments">
+            <a class="blue uppercase" href="{{loadService.config.betaUrl}}structure">Все ведомства</a>
+          </div>
         </div>
       </ng-template>
       <ng-template
