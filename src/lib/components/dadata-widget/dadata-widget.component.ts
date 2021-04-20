@@ -103,6 +103,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   public needReplaceQuery = false;
   public blurCall = false;
   public validationSkip = false;
+  public firstDadataObject: any = null;
 
   // для onBlur нормализации отменяет показ списка саджестов
   public disableOpening = false;
@@ -280,6 +281,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
         if (dadataQc === '0' && !this.errorCodes.length) {
             this.autocomplete.cancelSearchAndClose();
         }
+        if (this.normalizedData.address.fiasCode !== this.firstDadataObject?.fiasCode) {
+          this.firstDadataObject = null;
+        }
         const commitValue: DadataResult = {
           ...this.form.getRawValue(),
           fullAddress,
@@ -367,7 +371,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
             selectApartmentCheckbox: this.selectApartmentCheckbox,
             selectHouseCheckbox: this.selectHouseCheckbox
           }
-          this.dadataService.parseAddress(res, onInitCall, houseAndApartmentManipulations);
+          this.dadataService.parseAddress(res, onInitCall, houseAndApartmentManipulations, this.firstDadataObject);
           // onChange triggering guaranteed
           if (selectAddress || this.isOpenedFields.getValue()) {
             this.validationSkip = false;
@@ -490,6 +494,12 @@ export class DadataWidgetComponent extends CommonController implements AfterView
 
   public writeValue(obj: any): void {
     this.query = typeof obj === 'string' ? obj : '';
+    if (typeof obj === 'string') {
+      this.query = obj;
+    } else if (obj.fullAddress) {
+      this.query = obj.fullAddress;
+      this.firstDadataObject = obj;
+    }
     if (this.initValue) {
       this.query = this.initValue;
     }
