@@ -97,6 +97,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   @Output() public selectSuggest = new EventEmitter<Suggest | SuggestItem>();
 
   public errorCodes: Array<string> = [];
+  public hasPatternError = false;
   public query = '';
   public historyQuery = '';
   public lastQuery = '';
@@ -306,8 +307,11 @@ export class DadataWidgetComponent extends CommonController implements AfterView
         this.normalizeInProcess = false;
         this.commit(null);
       }
-      if (this.blurCall && !this.isOpenedFields.getValue() && (dadataQc === '1' || dadataQc === '2') && this.normalizedData.fiasLevel !== '-1' && !this.externalApiUrl) {
-        this.showWrongAddressDialog();
+      if (this.blurCall && !this.isOpenedFields.getValue() && (dadataQc === '1' || dadataQc === '2') && this.normalizedData.fiasLevel !== '-1') {
+        if (!this.externalApiUrl) {
+          this.showWrongAddressDialog();
+        }
+        this.errorCodes.push('Адрес не распознан');
       }
     });
   }
@@ -451,6 +455,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       !!this.normalizedData.address.elements.find(item => item.level === 4 && this.skipStreetFias.includes(item.fiasCode)) : false;
     this.dadataService.setErrorsByLevel(1, needSkipStreet);
     this.errorCodes = this.getErrorMessageCodes();
+    this.hasPatternError = !!Object.keys(this.formConfig).find(key => this.formConfig[key].regExpInvalid);
   }
 
   private getErrorMessageCodes(): Array<string> {
@@ -520,7 +525,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     if (this.normalizeInProcess) {
       return {inProcess: true};
     }
-    if (this.form.invalid || this.errorCodes.length || !this.query || !this.normalizedData) {
+    if (this.form.invalid || this.hasPatternError || this.errorCodes.length || !this.query || !this.normalizedData) {
       if (this.normalizeOnInit && !this.normalizedData) {
         this.normalizeFullAddress(this.query, true);
       }

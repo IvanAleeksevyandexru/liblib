@@ -142,6 +142,7 @@ export class FormConfig {
   private defaultState = {
     visible: true,
     isInvalid: false,
+    regExpInvalid: false
   };
 
   public region: FormState;
