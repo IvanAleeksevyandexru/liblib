@@ -313,6 +313,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
         }
         this.errorCodes.push('Адрес не распознан');
       }
+      this.cd.detectChanges();
     });
   }
 
