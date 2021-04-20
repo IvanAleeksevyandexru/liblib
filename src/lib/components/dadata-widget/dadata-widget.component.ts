@@ -501,7 +501,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
     this.query = typeof obj === 'string' ? obj : '';
     if (typeof obj === 'string') {
       this.query = obj;
-    } else if (obj.fullAddress) {
+    } else if (obj?.fullAddress) {
       this.query = obj.fullAddress;
       this.firstDadataObject = obj;
     }
