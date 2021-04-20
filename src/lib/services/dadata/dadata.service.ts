@@ -3,7 +3,7 @@ import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
 import {
   Addresses, DadataResult,
-  FormConfig,
+  FormConfig, HouseAndApartmentManipulations,
   NormalizedAddressElement,
   NormalizedData,
   SuggestionsResponse
@@ -240,7 +240,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
     });
   }
 
-  public parseAddress(data: NormalizedData, onInitCall: boolean, hideHouseCb: boolean, hideApartCb: boolean) {
+  public parseAddress(data: NormalizedData, onInitCall: boolean, houseAndApartmentManipulations: HouseAndApartmentManipulations) {
     const needSkipStreet = !!data.address.elements.find(item => item.level === 4 && this.skipStreetFias.includes(item.fiasCode))
     data.address.elements.forEach((elem, index, arr) => {
       let level = elem.level;
@@ -292,13 +292,21 @@ export class DadataService implements AutocompleteSuggestionProvider {
         }
 
         if (onInitCall) {
-          if (!houseControl.value && !hideHouseCb) {
+          if (!houseControl.value && !houseAndApartmentManipulations.hideHouseCheckbox) {
             houseCheckbox.setValue(true);
           }
-          if (!apartmentControl.value && !hideApartCb) {
+          if (!apartmentControl.value && !houseAndApartmentManipulations.hideApartmentCheckbox) {
             apartmentCheckbox.setValue(true);
           }
         }
+
+        if (houseAndApartmentManipulations.selectHouseCheckbox) {
+          houseCheckbox.setValue(true);
+        }
+        if (houseAndApartmentManipulations.selectApartmentCheckbox) {
+          apartmentCheckbox.setValue(true);
+        }
+
         this.setErrorsByLevel(level, needSkipStreet);
         this.setValidByQcCompete(data.dadataQcComplete, data.unparsedParts);
       }
