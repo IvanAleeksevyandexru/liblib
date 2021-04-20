@@ -166,7 +166,10 @@
     .details-block-wrap{
       display: flex;
       flex-direction: column;
-      height: 100%;
+      height: calc(100vh - 60px);
+    }
+    .popular-region-wrap{
+      margin-top: 20px;
     }
     .all-departments{
       padding: 32px 16px;
