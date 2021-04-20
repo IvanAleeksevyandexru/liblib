@@ -166,13 +166,13 @@
     .details-block-wrap{
       display: flex;
       flex-direction: column;
-      height: calc(100vh - 60px);
+      height: 100%;
     }
     .popular-region-wrap{
       margin-top: 20px;
     }
     .all-departments{
-      padding: 32px 16px;
+      padding: 32px 0;
       margin: 0;
     }
     .popular-region-wrap{
@@ -189,6 +189,7 @@
         transform: translateY(0);
         flex: 1;
         overflow: auto;
+        padding-bottom: 80px;
       }
     }
     .catalog-item-title{
@@ -228,7 +229,7 @@
         height: 100%;
       }
       .details-block {
-        padding: 32px 0;
+        padding: 32px 0 120px 0;
         display: flex;
         flex-direction: column;
         flex: 1;
