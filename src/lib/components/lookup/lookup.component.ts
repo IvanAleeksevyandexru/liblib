@@ -419,7 +419,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
       return;
     }
     // сделано для того, чтобы большие фиксированные списки не рендерились сразу при получении списка
-    if (this.fixedItems.length && !this.internalFixedItems.length) {
+    if (this.fixedItems?.length && !this.internalFixedItems?.length) {
       this.internalFixedItems = this.listService.createListItems(this.fixedItems);
       this.withFixedList = true;
       this.runSearchOrIncrementalSearch(rootSearch, queryOrMarker, callback);
