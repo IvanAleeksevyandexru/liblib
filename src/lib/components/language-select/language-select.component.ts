@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { LoadService } from '../../services/load/load.service';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from '../../services/cookie/cookie.service';
@@ -14,6 +14,8 @@ export class LanguageSelectComponent implements OnInit {
   public activeItem: string;
   public staticDomainLibAssetsPath = this.loadService.config.staticDomainLibAssetsPath;
   public showList = false;
+
+  @Output() public openChoice = new EventEmitter<boolean>(false);
 
   constructor(
     private loadService: LoadService,
@@ -32,12 +34,15 @@ export class LanguageSelectComponent implements OnInit {
     } else {
       this.showList = flag;
     }
+    this.openChoice.emit(this.showList);
   }
 
   public selectLang(lang: string) {
-    this.activeItem = lang;
-    this.translate.use(lang);
-    this.cookieService.set('userSelectedLanguage', lang);
+    if (this.activeItem !== lang) {
+      this.activeItem = lang;
+      this.translate.use(lang);
+      this.cookieService.set('userSelectedLanguage', lang);
+    }
     this.toggleList(false);
   }
 }
