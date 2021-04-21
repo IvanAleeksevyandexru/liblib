@@ -142,6 +142,7 @@ export class FormConfig {
   private defaultState = {
     visible: true,
     isInvalid: false,
+    regExpInvalid: false
   };
 
   public region: FormState;
@@ -180,4 +181,11 @@ export class FormConfig {
     });
     this.index = Object.assign({...this.defaultState, code: 'DADATA.NEED_INDEX'});
   }
+}
+
+export interface HouseAndApartmentManipulations {
+  hideHouseCheckbox: boolean;
+  hideApartmentCheckbox: boolean;
+  selectHouseCheckbox: boolean;
+  selectApartmentCheckbox: boolean;
 }

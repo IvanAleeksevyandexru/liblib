@@ -1,6 +1,12 @@
 <div class="dadata">
   <label class="input-label mb-8" *ngIf="label">{{label}}</label>
-  <div *ngIf="errorCodes && errorCodes.length" class="text-plain dadata-error mb-4">
+  <div class="text-plain dadata-error mb-4" *ngIf="hasPatternError">
+    Возможные значения: цифры, кириллица, точки, запятые, №, N, \, /, -, (, ), ", ;, _, +, <, >
+  </div>
+  <div *ngIf="form.get('index').getError('minlength')" class="text-plain dadata-error mb-4">
+    Индекс должен состоять из 6 символов
+  </div>
+  <div *ngIf="!hasPatternError && errorCodes && errorCodes.length" class="text-plain dadata-error mb-4">
     <span *ngFor="let errorCode of errorCodes; last as isLast">{{errorCode | libTranslate}}<span *ngIf="!isLast">, </span></span>
   </div>
   <div class="mt-8">
@@ -63,42 +69,42 @@
       <div class="address-row">
           <div *ngIf="formConfig.region.visible" class="address-item">
             <label class="input-label" for="region">{{'DADATA.REGION' | libTranslate}}</label>
-            <lib-plain-input [tabIndex]="4" [clearable]="true" [invalid]="formConfig.region.isInvalid" id="region"
+            <lib-plain-input maxlength="50" [tabIndex]="4" [clearable]="true" [invalid]="formConfig.region.isInvalid || form.get('region').invalid" id="region"
                              formControlName="region"></lib-plain-input>
           </div>
           <div *ngIf="formConfig.city.visible" class="address-item">
             <label class="input-label" for="city">{{'DADATA.CITY' | libTranslate}}</label>
-            <lib-plain-input [tabIndex]="5" [clearable]="true" [invalid]="formConfig.city.isInvalid" id="city"
+            <lib-plain-input maxlength="150" [tabIndex]="5" [clearable]="true" [invalid]="formConfig.city.isInvalid || form.get('city').invalid" id="city"
                              formControlName="city"></lib-plain-input>
           </div>
         <div *ngIf="formConfig.district.visible" class="address-item">
           <label class="input-label" for="district">{{'DADATA.DISTRICT' | libTranslate}}</label>
-          <lib-plain-input [tabIndex]="6" [clearable]="true" [invalid]="formConfig.district.isInvalid" id="district"
+          <lib-plain-input maxlength="100" [tabIndex]="6" [clearable]="true" [invalid]="formConfig.district.isInvalid || form.get('district').invalid" id="district"
                            formControlName="district"></lib-plain-input>
         </div>
         <div *ngIf="formConfig.town.visible" class="address-item">
           <label class="input-label" for="town">{{'DADATA.TOWN' | libTranslate}}</label>
-          <lib-plain-input [tabIndex]="7" [clearable]="true" [invalid]="formConfig.town.isInvalid" id="town"
+          <lib-plain-input maxlength="150" [tabIndex]="7" [clearable]="true" [invalid]="formConfig.town.isInvalid || form.get('town').invalid" id="town"
                            formControlName="town"></lib-plain-input>
         </div>
         <div *ngIf="formConfig.inCityDist.visible" class="address-item">
           <label class="input-label" for="inCityDist">{{'DADATA.IN_CITY_DIST' | libTranslate}}</label>
-          <lib-plain-input [tabIndex]="8" [clearable]="true" [invalid]="formConfig.inCityDist.isInvalid" id="inCityDist"
+          <lib-plain-input maxlength="150" [tabIndex]="8" [clearable]="true" [invalid]="formConfig.inCityDist.isInvalid || form.get('inCityDist').invalid" id="inCityDist"
                            formControlName="inCityDist"></lib-plain-input>
         </div>
         <div *ngIf="formConfig.street.visible" class="address-item">
           <label class="input-label" for="street">{{'DADATA.STREET' | libTranslate}}</label>
-          <lib-plain-input [tabIndex]="9" [clearable]="true" [invalid]="formConfig.street.isInvalid" id="street"
+          <lib-plain-input maxlength="100" [tabIndex]="9" [clearable]="true" [invalid]="formConfig.street.isInvalid || form.get('street').invalid" id="street"
                            formControlName="street"></lib-plain-input>
         </div>
         <div *ngIf="formConfig.additionalArea.visible" class="address-item">
           <label class="input-label" for="additionalArea">{{'DADATA.ADDITIONAL_AREA' | libTranslate}}</label>
-          <lib-plain-input [tabIndex]="10" [clearable]="true" [invalid]="formConfig.additionalArea.isInvalid" id="additionalArea"
+          <lib-plain-input maxlength="150" [tabIndex]="10" [clearable]="true" [invalid]="formConfig.additionalArea.isInvalid || form.get('additionalArea').invalid" id="additionalArea"
                            formControlName="additionalArea"></lib-plain-input>
         </div>
         <div *ngIf="formConfig.additionalStreet.visible" class="address-item additional-street">
           <label class="input-label" for="additionalStreet">{{'DADATA.ADDITIONAL_STREET' | libTranslate}}</label>
-          <lib-plain-input [tabIndex]="11" [clearable]="true" [invalid]="formConfig.additionalStreet.isInvalid" id="additionalStreet"
+          <lib-plain-input maxlength="150" [tabIndex]="11" [clearable]="true" [invalid]="formConfig.additionalStreet.isInvalid || form.get('additionalStreet').invalid" id="additionalStreet"
                            formControlName="additionalStreet"></lib-plain-input>
         </div>
         <div class="address-item"></div>
@@ -107,10 +113,10 @@
 
         <div class="address-item index-item">
           <label class="input-label" for="index">{{'DADATA.INDEX' | libTranslate}}</label>
-          <lib-base-masked-input *ngIf="indexMask" [mask]="indexMask" tabIndex="18" [clearable]="true" [maxlength]="6" formControlName="index"
+          <lib-base-masked-input *ngIf="indexMask" [mask]="indexMask" tabIndex="18" [clearable]="true" maxlength="6" formControlName="index"
                                  [invalid]="formConfig.index.isInvalid || (form.get('index').errors && form.get('index').errors['minlength'])" id="index">
           </lib-base-masked-input>
-          <lib-plain-input *ngIf="!indexMask" tabIndex="18" [clearable]="true" formControlName="index"
+          <lib-plain-input *ngIf="!indexMask" tabIndex="18" [clearable]="true" formControlName="index" maxlength="6"
                                  [invalid]="formConfig.index.isInvalid || (form.get('index').errors && form.get('index').errors['minlength'])" id="index">
           </lib-plain-input>
         </div>
@@ -118,7 +124,7 @@
           <div class="simple-field">
             <label class="input-label" for="house">{{'DADATA.HOUSE' | libTranslate}}</label>
             <div class="small-field">
-              <lib-plain-input [tabIndex]="12" [clearable]="true" [invalid]="formConfig.house.isInvalid" id="house"
+              <lib-plain-input maxlength="10" [tabIndex]="12" [clearable]="true" [invalid]="formConfig.house.isInvalid || form.get('house').invalid" id="house"
                                formControlName="house"></lib-plain-input>
             </div>
           </div>
@@ -132,14 +138,14 @@
         <div *ngIf="formConfig.building1.visible" class="address-item">
           <label class="input-label" for="building1">{{'DADATA.BUILDING1' | libTranslate}}</label>
           <div class="small-field">
-            <lib-plain-input [tabIndex]="14" [clearable]="true" [invalid]="formConfig.building1.isInvalid" id="building1"
+            <lib-plain-input maxlength="10" [tabIndex]="14" [clearable]="true" [invalid]="formConfig.building1.isInvalid || form.get('building1').invalid" id="building1"
                              formControlName="building1"></lib-plain-input>
           </div>
         </div>
         <div *ngIf="formConfig.building2.visible" class="address-item">
           <label class="input-label" for="building2">{{'DADATA.BUILDING2' | libTranslate}}</label>
           <div class="small-field">
-            <lib-plain-input [tabIndex]="15" [clearable]="true" [invalid]="formConfig.building2.isInvalid" id="building2"
+            <lib-plain-input maxlength="10" [tabIndex]="15" [clearable]="true" [invalid]="formConfig.building2.isInvalid || form.get('building2').invalid" id="building2"
                              formControlName="building2"></lib-plain-input>
           </div>
         </div>
@@ -147,7 +153,7 @@
           <div class="simple-field">
             <label class="input-label" for="apartment">{{(isOrg ? 'DADATA.OFFICE' : 'DADATA.APARTMENT') | libTranslate}}</label>
             <div class="small-field">
-              <lib-plain-input [tabIndex]="16" [clearable]="true" [invalid]="formConfig.apartment.isInvalid" id="apartment"
+              <lib-plain-input maxlength="10" [tabIndex]="16" [clearable]="true" [invalid]="formConfig.apartment.isInvalid || form.get('apartment').invalid" id="apartment"
                                formControlName="apartment"></lib-plain-input>
             </div>
           </div>

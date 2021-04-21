@@ -205,4 +205,12 @@
   .catalog-link-item-wrap{
     overflow-x: hidden;
   }
+  .main-page-view{
+    .catalog-link-item:hover{
+      opacity: .7;
+    }
+    .catalog-link-item.main-active:hover{
+      opacity: 1;
+    }
+  }
 }

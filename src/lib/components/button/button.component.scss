@@ -168,4 +168,9 @@ button::-moz-focus-inner {
       font-size: 13px;
     }
   }
+  .light{
+    button:hover{
+      background-color: rgba(29, 93, 235, 0.18);
+    }
+  }
 }

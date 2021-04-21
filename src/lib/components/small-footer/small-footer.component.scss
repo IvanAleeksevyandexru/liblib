@@ -8,10 +8,6 @@
     }
   }
 
-  .link-hover:hover {
-    color: #0B40B3;
-  }
-
   .app-btn {
     display: block;
     line-height: 0;
@@ -59,5 +55,9 @@
 }
 
 @media all and (min-width: 1140px) {
-
+  .footer-wrapper {
+    .link-hover:hover {
+      color: #0B1F33;
+    }
+  }
 }
