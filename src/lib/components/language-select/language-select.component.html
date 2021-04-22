@@ -8,11 +8,6 @@
     <div class="language-view-wrapper" [ngClass]="{'show-view': showList}">
       <div class="language-view">
         <div class="links">
-          <div class="item back flex-container justify-between align-items-center">
-            <a (click)="toggleList()" class="title-h6">
-              {{'HEADER.CHANGE_LANGUAGE.CHANGE' | libTranslate}}
-            </a>
-          </div>
           <div *ngFor="let lang of languages"
                class="item small-text flex-container align-items-center"
                (click)="selectLang(lang)">

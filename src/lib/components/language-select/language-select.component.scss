@@ -39,33 +39,13 @@
 
   &.show-view {
     left: 0;
+    margin-top: 58px;
   }
 
   .language-view {
     .links {
       .item {
         padding: 16px;
-
-        &.back {
-          border-bottom: 1px solid #E1E1E1;
-
-          a {
-            padding-left: 38px;
-            position: relative;
-
-            &:before {
-              content: '';
-              position: absolute;
-              width: 11px;
-              height: 6px;
-              top: 0;
-              left: 0;
-              margin-top: 10px;
-              background: url(../../../assets/svg/arrows/arrow_black.svg) no-repeat;
-              transform: rotate(90deg);
-            }
-          }
-        }
       }
     }
   }
