@@ -2,7 +2,8 @@
   "name": "@epgu/epgu-lib",
   "version": "1.0.333-1-test",
   "publishConfig": {
-    "registry": "http://nexus.gosuslugi.local/content/repositories/npm-internal/"
+    "registry": "http://nexus.gosuslugi.local/content/repositories/npm-internal/",
+    "access": "public"
   },
   "scripts": {
     "ng": "ng",
