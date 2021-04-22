@@ -39,7 +39,7 @@ export class CatalogTabsService {
     if (this.catalogTabsData[code]) {
       return of(this.getDataCatalogStoreData(code)[0]);
     }
-    return this.http.get<PopularFederal>(`${this.loadService.config.catalogApiUrl}categories/${code}`, {
+    return this.http.get<PopularFederal>(`${this.loadService.config.catalogApiService}catalog/person/categories/${code}`, {
       params: {
         _: `${Math.random()}`,
         platform: `EPGU_V3`,
@@ -90,7 +90,7 @@ export class CatalogTabsService {
     if (this.departmentsData) {
       return of(this.departmentsData);
     }
-    return this.http.get<Departments[]>(`${this.loadService.config.catalogApiUrl}departments/menu`, {
+    return this.http.get<Departments[]>(`${this.loadService.config.catalogApiService}departments`, {
       params: {
         _: `${Math.random()}`,
         region: `${this.loadService.attributes.selectedRegion}`

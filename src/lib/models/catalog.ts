@@ -1,11 +1,37 @@
+
 export interface PopularFederal {
-  id: number;
   code: string;
-  title: string;
   description: string;
-  icons: Icon[];
-  children: Children[];
-  passports: PassportChildren[];
+  icons?: CatalogServiceIcon[];
+  elements?: CatalogServiceElement[];
+  categories?: CatalogServiceCategory[];
+  name: string;
+  orderNumber?: number;
+  parentCode?: string;
+}
+
+export interface CatalogServiceCategory {
+  code: string;
+  parentCode: string;
+  name: string;
+  orderNumber?: number;
+  icons: CatalogServiceIcon[];
+  elements: CatalogServiceElement[];
+  otherPopularMore?: any;
+}
+
+export interface CatalogServiceElement {
+  code: number;
+  description?: string;
+  icons?: CatalogServiceIcon[];
+  name: string;
+  type: string;
+  url: string;
+}
+
+export interface CatalogServiceIcon {
+  url: string;
+  type: string;
 }
 
 export interface Icon {
@@ -118,19 +144,26 @@ export interface NewsItem {
   iconAlt: string;
 }
 
-export interface Departments {
-  categoryCode: string;
-  categoryName: string;
-  categorytId: number;
-  icons: Icon[];
-  passports: DepartmentPassport[];
+export interface DepartmentsData {
+  letter?: string;
+  more?: any;
+  data: Departments[];
 }
 
-export interface DepartmentPassport {
-  categorytId: number;
-  passportId: number;
-  passportTitle: string;
-  shortName: string;
+export interface Departments {
+  code: string;
+  name: string;
+  more?: any;
+  orderNumber: number;
+  icons?: CatalogServiceIcon[];
+  objects: CatalogServiceDepartment[];
+}
+
+export interface CatalogServiceDepartment {
+  type: string;
+  code: string;
+  name: string;
+  orderNumber: number;
   url: string;
 }
 
