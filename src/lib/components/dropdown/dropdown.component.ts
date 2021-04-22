@@ -402,6 +402,10 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   public unselect(item: ListItem, e: Event) {
     if (!this.destroyed && !this.disabled) {
       this.deselectItem(item);
+      this.touched = true;
+      if (this.onTouchedCallback) {
+        this.onTouchedCallback();
+      }
       e.stopPropagation();
     }
   }
