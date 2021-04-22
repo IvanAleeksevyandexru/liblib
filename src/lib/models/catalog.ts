@@ -66,19 +66,11 @@ export interface PassportChildren {
 }
 
 export interface RegionalPopular {
-  admLevel: number;
-  catalogTitle: string;
-  descr: string;
-  epguId: string;
-  epguPassport: boolean;
-  id: string;
-  isHab: boolean;
-  pId: number;
-  passportType: string;
-  shortTitle: string;
-  stateStructure: string;
-  stateStructureId: string;
-  title: string;
+  type: string;
+  code: string;
+  name: string;
+  orderNumber: number;
+  url: string;
 }
 
 export interface Faqs {

@@ -53,7 +53,7 @@ export class CatalogTabsService {
     if (this.catalogTabsData[code]) {
       return of(this.getDataCatalogStoreData(code)[1]);
     }
-    return this.http.get<RegionalPopular[]>(`${this.loadService.config.catalogApiUrl}passports/region/categories/${code}`, {
+    return this.http.get<RegionalPopular[]>(`${this.loadService.config.catalogApiService}catalog/person/categories/${code}/region`, {
       params: {
         _: `${Math.random()}`,
         platform: `EPGU_V3`,

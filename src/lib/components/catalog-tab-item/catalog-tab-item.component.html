@@ -144,7 +144,7 @@
         <h6 (click)="goToPopular(item)"
             *ngFor="let item of regionPopular | slice:0:(regionPopularMore ? undefined : itemsCounter)"
             class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular pointer">
-          {{item.catalogTitle}}
+          {{item.name}}
         </h6>
         <ng-container *ngIf="regionPopular && regionPopular.length > itemsCounter && !regionPopularMore">
           <div class="mt-28 text-plain blue" (click)="regionPopularMore = !regionPopularMore">
