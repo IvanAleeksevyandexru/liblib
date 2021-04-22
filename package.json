@@ -16,7 +16,7 @@
     "postlib-release": "cd ./dist/epgu-lib && npm publish",
     "lib-watch": "ng build epgu-lib --watch",
     "lib-build:prod": "cross-env ng build epgu-lib && npm run cp-lib-assets",
-    "lib-release": "npm run lib-build:prod",
+    "lib-release": "npm config set userconfig ./.npmrc && npm run lib-build:prod",
     "cp-lib-assets": "cross-env cpx \"./src/assets/**/*\" \"./dist/epgu-lib/assets\""
   },
   "dependencies": {
