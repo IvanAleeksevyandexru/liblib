@@ -197,12 +197,13 @@ export class EsiaApiService {
         ...(additional)
       }
     });
+    const getParams = decodeURIComponent(params.toString()); // Add-hoc: .toString() делает свой encode переменной go_back
 
     if (force) {
       this.cookieService.set('needOffer', 1);
     }
 
-    (window as any).location.href = `${this.loadService.config.esiaUrl}/profile/offer?${params.toString()}`;
+    (window as any).location.href = `${this.loadService.config.esiaUrl}/profile/offer?${getParams}`;
   }
 
 }
