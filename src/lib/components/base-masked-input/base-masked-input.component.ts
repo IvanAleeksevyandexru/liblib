@@ -152,6 +152,9 @@ export class BaseMaskedInputComponent
 
   public handleInput(value: string, e?: Event) {
     if (!this.composing) {
+      if (this.showMaskAsPlaceholder && value.indexOf(this.emptyMaskedValue) > 0) {
+        value = value.replace(this.emptyMaskedValue, '');
+      }
       this.attemptToApplyValue(value);
       if (this.commitOnInput) {
         setTimeout(() => {
