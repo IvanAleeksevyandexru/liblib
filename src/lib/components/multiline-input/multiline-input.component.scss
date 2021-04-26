@@ -31,6 +31,16 @@
         }
       }
     }
+    .clear-button {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      top: 14px;
+      right: 12px;
+      outline: none;
+      background: url(../../../assets/svg/input-clean.svg) 0 0 no-repeat;
+      cursor: pointer;
+    }
   }
 
   &.focused {
@@ -87,6 +97,9 @@
           text-overflow: ellipsis;
         }
       }
+    }
+    &.with-clear-button {
+      padding-right: 40px;
     }
   }
 }
