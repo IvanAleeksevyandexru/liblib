@@ -25,7 +25,8 @@ export class SputnikMapService {
     });
     const markerIcon = (window as any).L.icon({
       iconUrl: marks.iconImageHref,
-      iconSize: marks.iconImageSize
+      iconSize: marks.iconImageSize,
+      iconAnchor: marks.iconOffset,
     });
     const mapMarkerIcon = (window as any).L.sm.marker(coords, {
       icon: markerIcon
