@@ -28,6 +28,7 @@ export * from './feed-icon/feed-icon.component';
 export * from './feeds-header/feeds-header.component';
 export * from './feeds/feeds.component';
 export * from './feeds-geps/feeds-geps.component';
+export * from './file-extension-icon/file-extension-icon.component';
 export * from './filtered-list/filtered-list.component';
 export * from './footer/footer.component';
 export * from './frame/frame.component';
