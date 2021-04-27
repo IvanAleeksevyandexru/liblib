@@ -147,6 +147,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   @Input() public enableLangConvert = false;
   // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
   @Input() public stopSearch = false;
+  // доп. атрибуты
+  @Input() public addAttrs: {[key: string]: any} = {};
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -704,7 +706,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
       translation: this.translation,
       escapeHtml: this.escapeHtml,
       showAll,
-      queryMinSymbolsCount: this.queryMinSymbolsCount
+      queryMinSymbolsCount: this.queryMinSymbolsCount,
+      addAttrs: this.addAttrs
     };
   }
 
