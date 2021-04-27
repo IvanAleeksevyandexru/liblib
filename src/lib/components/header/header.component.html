@@ -60,8 +60,8 @@
         <div class="catalog-menu-wrap" *ngIf="showBurger">
           <ng-container *ngIf="burgerDemoMode; else burgerCatalogMode">
             <ng-container *ngIf="burgerWithCatalog; else burgerWithoutCatalog">
-              <lib-menu-catalog
-                (menuCatalogOpened)="onMenuCatalogClick($event)">
+              <lib-menu-catalog [languageChangeAvailable]="languageChangeAvailable"
+                                (menuCatalogOpened)="onMenuCatalogClick($event)">
               </lib-menu-catalog>
             </ng-container>
             <ng-template #burgerWithoutCatalog>
@@ -71,8 +71,8 @@
             </ng-template>
           </ng-container>
           <ng-template #burgerCatalogMode>
-            <lib-menu-catalog
-              (menuCatalogOpened)="onMenuCatalogClick($event)">
+            <lib-menu-catalog [languageChangeAvailable]="languageChangeAvailable"
+                              (menuCatalogOpened)="onMenuCatalogClick($event)">
             </lib-menu-catalog>
           </ng-template>
         </div>
@@ -124,7 +124,7 @@
         <a *ngIf="!user.authorized"
            href="{{loadService.config.betaUrl}}help"
            target="_self"
-           class="search-icon hide show-lg ml-lg-20">
+           class="search-icon hide show-lg ml-lg-20">?
         </a>
         <div class="ml-lg-20">
           <div class="login-wrapper">
@@ -148,7 +148,7 @@
             </lib-user-menu>
           </div>
         </div>
-        <div *ngIf="languageChangeAvailable" class="ml-16">
+        <div *ngIf="languageChangeAvailable" class="ml-12 hide show-lg">
           <lib-language-select></lib-language-select>
         </div>
       </div>

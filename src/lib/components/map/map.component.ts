@@ -18,6 +18,7 @@ export class MapComponent implements OnInit, OnChanges {
   @Input() public iconLayout: string;
   @Input() public iconImageHref: string;
   @Input() public iconImageSize: number[];
+  @Input() public iconOffset: number[];
   @Input() public selectAddress = false;
   @Input() public externalMode = false;
   @Input() public enterpriseYandexMapsEnabled = false;
@@ -50,6 +51,7 @@ export class MapComponent implements OnInit, OnChanges {
       iconLayout: this.iconLayout || 'default#image',
       iconImageHref: this.iconImageHref || `${this.staticDomain}/lib-assets/svg/blue-ya-marker.svg`,
       iconImageSize: this.iconImageSize || [27, 30],
+      iconOffset: this.iconOffset || (this.sputnikMapEnabled ? [14, 30] : [0, 15]),
     };
     mapService('map', controlsConfig, layoutConfig);
   }
