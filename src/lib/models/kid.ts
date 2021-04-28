@@ -47,6 +47,10 @@ export class Kid {
   public birthCert?: Document | CommonCert;
   public passport?: Document;
   public cert?: CommonCert;
+  public medDocStatus?: string;
+  public medOrgStatus?: string;
+  public snilsStatus?: string;
+  public state?: any;
   public documents?: {
     eTag?: string;
     stateFacts?: string[];
