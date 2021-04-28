@@ -38,6 +38,9 @@
     "CATALOG": {
       "ALL": "Весь каталог",
       "CLOSE": "Закрыть"
+    },
+    "CHANGE_LANGUAGE": {
+      "CHANGE": "Выбор языка"
     }
   },
   "FOOTER": {

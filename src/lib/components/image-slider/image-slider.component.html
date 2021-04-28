@@ -11,7 +11,7 @@
         <ng-container *ngTemplateOutlet="links?.length ? imageFeedA : imageFeedDiv"></ng-container>
       </div>
     </div>
-    <div *ngIf=" view !== 'logos' && controlsVisible" class="image-slider-controls">
+    <div *ngIf="view !== 'logos' && controlsVisible" class="image-slider-controls">
       <a class="prev-slider" (click)="slidePrev()" [ngClass]="{disabled: currentIndex === 0}"></a>
       <div *ngIf="showBullet" class="image-slider-dots">
         <a class="image-slider-dot" [class.active]="i === currentIndex" *ngFor="let dot of dots; index as i" (click)="slideTo(i)"></a>

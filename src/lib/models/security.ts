@@ -32,7 +32,7 @@ export interface Channel {
 
 export interface EventChannel {
   type: string;
-  value: string;
+  value: string | boolean;
 }
 
 export interface State {
