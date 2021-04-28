@@ -22,10 +22,10 @@ export class InformersService {
 
   public hints = {
     '03': {
-      'link': this.loadService.config.oplataUrl + '/pay?categories=fine'
+      'link': this.loadService.config.betaUrl + '/pay?categories=fine'
     },
     '05': {
-      'link': this.loadService.config.oplataUrl + '/pay?categories=fns',
+      'link': this.loadService.config.betaUrl + '/pay?categories=fns',
       'text': 'Вам начисляются пени'
     }
   };
