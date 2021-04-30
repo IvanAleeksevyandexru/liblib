@@ -2,8 +2,8 @@ import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output
 import { Catalog } from '../../models/main-page.model';
 import { Subscription } from 'rxjs';
 import { LoadService } from '../../services/load/load.service';
-import { MenuService } from "../../services/menu/menu.service";
-import { UserRole } from "../../models/menu-link";
+import { MenuService } from '../../services/menu/menu.service';
+import { UserRole } from '../../models/menu-link';
 import { CatalogTabsService } from '../../services/catalog-tabs/catalog-tabs.service';
 import { SharedService } from '../../services/shared/shared.service';
 import { CatalogData } from '../../models/catalog';

@@ -60,11 +60,16 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnInit(): void {
+    this.setItemCounters();
+  }
+
+  public setItemCounters() {
     this.itemsCounter = this.viewType === 'main-page-view' ? 3 : 5;
     this.popularMore = this.viewType === 'main-page-view' ? undefined : 5;
   }
 
   public ngOnChanges(changes: SimpleChanges) {
+    this.setItemCounters();
     if (this.code === 'ministries') {
       this.getDepartmentsData();
     } else {
