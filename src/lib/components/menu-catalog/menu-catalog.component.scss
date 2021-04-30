@@ -96,34 +96,29 @@
   position: fixed;
   top: 0;
   left: 0;
-  transition: transform 250ms ease-out;
+  transition: transform 250ms ease-in;
   z-index: 10;
   transform: translate3d(-100vw,64px,0);
   background-color: #ffffff;
-
+  will-change: tranform;
+  pointer-events: none;
   &.show{
     overflow: hidden;
+    pointer-events: auto;
     left: 0;
     bottom: 0;
     transform: translate3d(0,64px,0);
-    transition: transform 250ms ease-in;
+    transition: transform 150ms ease-out;
   }
 
   .back-language {
     border-bottom: 1px solid #E1E1E1;
     border-top: 1px solid #E1E1E1;
     padding: 16px 17px;
-    transition: left 250ms ease-in 0s;
-    transform: rotate3d(0,0,0,0deg);
     left: 0;
     max-height: 58px;
     width: 320px;
     position: fixed;
-
-    &.not-show {
-      left: -100vw;
-    }
-
     a {
       padding-left: 38px;
       position: relative;
@@ -226,7 +221,7 @@
   .catalog-menu{
     transform: translate3d(-100vw,0,0);
     &.show{
-      transform: translate3d(0,0,0);
+      transform: none;
     }
     .back-language{
       top: 64px;
@@ -287,6 +282,12 @@
 @media (min-width: 1140px) {
   .catalog-menu-icon:hover{
     filter: invert(35%) sepia(99%) saturate(4975%) hue-rotate(218deg) brightness(96%) contrast(92%);
+  }
+  .catalog-menu{
+    transform: translate3d(-100vw,0,0);
+    &.show{
+      transform: none;
+    }
   }
   .sub-catalog{
     &.show{
