@@ -176,7 +176,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public withReload(feed): boolean {
-    return !(this.isLk && !['KND_APPEAL', 'KND_APPEAL_DRAFT'].includes(feed.feedType) || this.isPartners);
+    return !(this.isLk && !['KND_APPEAL', 'KND_APPEAL_DRAFT', 'PAYMENT'].includes(feed.feedType) || this.isPartners);
   }
 
   public getUserData(): User {
@@ -193,7 +193,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public setUnreadFeedCls(feed: FeedModel): boolean {
-    return feed.unread && feed.feedType !== 'DRAFT' && feed.feedType !== 'PARTNERS_DRAFT' && feed.feedType !== 'KND_APPEAL_DRAFT';
+    const escapedFeedTypes = ['DRAFT', 'PARTNERS_DRAFT', 'KND_APPEAL_DRAFT'];
+    return feed.unread && !escapedFeedTypes.includes(feed.feedType);
   }
 
   public markAsFlag(feed: FeedModel): boolean {

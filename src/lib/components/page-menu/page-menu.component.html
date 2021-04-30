@@ -1,4 +1,5 @@
 <div #menu *ngIf="items" class="page-menu-wrapper">
+  <ng-content #title></ng-content>
   <div class="list-items flex-container-md flex-wrap-md block-lg">
     <ng-container *ngFor="let item of items">
       <div class="item">
