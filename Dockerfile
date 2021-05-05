@@ -4,4 +4,4 @@ WORKDIR /opt
 COPY *.json .npmrc ./
 RUN npm i
 COPY . .
-RUN npm run lib-release
+RUN npm config set userconfig ./.npmrc ; npm run lib-release

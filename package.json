@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-lib",
-  "version": "1.0.333-1-test-p3",
+  "version": "1.0.333-1-test-p4",
   "publishConfig": {
     "registry": "http://nexus.gosuslugi.local/content/repositories/npm-internal/",
     "access": "public"
@@ -16,7 +16,7 @@
     "postlib-release": "cd ./dist/epgu-lib && npm publish",
     "lib-watch": "ng build epgu-lib --watch",
     "lib-build:prod": "cross-env ng build epgu-lib && npm run cp-lib-assets",
-    "lib-release": "npm config set userconfig ./.npmrc && npm run lib-build:prod",
+    "lib-release": "npm run lib-build:prod",
     "cp-lib-assets": "cross-env cpx \"./src/assets/**/*\" \"./dist/epgu-lib/assets\""
   },
   "dependencies": {
