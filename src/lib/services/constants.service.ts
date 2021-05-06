@@ -368,6 +368,12 @@ export class ConstantsService {
       access: ['AL20']
     },
     {
+      id: 'empowerments',
+      name: 'PROFILE.TABS.EMPOWERMENTS',
+      url: '/profile/empowerments',
+      access: ['AL20']
+    },
+    {
       id: 'settings',
       name: 'PROFILE.TABS.SETTINGS',
       url: '/profile/settings'
