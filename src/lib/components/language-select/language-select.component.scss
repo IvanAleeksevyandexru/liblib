@@ -1,50 +1,86 @@
 .select-container {
   display: inline-block;
   position: relative;
-}
 
-.selected-item {
-  padding-right: 17px;
-  cursor: pointer;
-  position: relative;
-  min-width: 52px;
-  text-align: right;
-  &:after {
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 6px;
-    top: 50%;
-    right: 0;
-    margin-top: -3px;
-    background: url(../../../assets/svg/arrows/arrow_black.svg) no-repeat right;
+  .selected-item {
+    cursor: pointer;
+    position: relative;
+    min-width: 52px;
+    text-align: right;
+
+    @media all and (min-width: 1140px) {
+      padding-right: 17px;
+
+      &:after {
+        content: '';
+        position: absolute;
+        width: 10px;
+        height: 6px;
+        top: 50%;
+        right: 0;
+        margin-top: -3px;
+        background: url(../../../assets/svg/arrows/arrow_black.svg) no-repeat right;
+      }
+    }
   }
 }
 
-.lang-list {
-  border: 1px solid #E1E1E1;
-  border-radius: 8px;
-  box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
-  background-color: #FFFFFF;
-  position: absolute;
-  min-width: 98px;
+.language-view-wrapper {
+  background: #fff;
+  height: calc(100% - 56px);
+  max-height: 100vh;
+  position: fixed;
+  left: -100vw;
+  width: 100%;
+  top: 0px;
+  transition: left 250ms ease-in 0s;
+  transform: rotate3d(0,0,0,0deg);
   overflow: hidden;
-  right: -7px;
-  top: -16px;
-}
 
-.lang-list__item {
-  padding: 12px;
-  cursor: pointer;
-  &:hover {
-    background: rgba(29, 93, 235, 0.18);
+  &.show-view {
+    left: 0;
+    margin-top: 58px;
+  }
+
+  .language-view {
+    .links {
+      .item {
+        padding: 16px;
+      }
+    }
+  }
+
+  @media all and (min-width: 768px) {
+    top: 64px;
   }
 }
 
-.lang-list__item + .lang-list__item {
-  padding-top: 0;
-  .lang-ist__item-content {
-    padding-top: 12px;
-    border-top: 1px solid #E1E1E1;
+@media all and (min-width: 1140px) {
+  .lang-list {
+    border: 1px solid #E1E1E1;
+    border-radius: 8px;
+    box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
+    background-color: #FFFFFF;
+    position: absolute;
+    min-width: 98px;
+    overflow: hidden;
+    right: -7px;
+    top: -16px;
+  }
+
+  .lang-list__item {
+    padding: 12px;
+    cursor: pointer;
+    &:hover {
+      background: rgba(29, 93, 235, 0.18);
+    }
+  }
+
+  .lang-list__item + .lang-list__item {
+    padding-top: 0;
+    .lang-ist__item-content {
+      padding-top: 12px;
+      border-top: 1px solid #E1E1E1;
+    }
   }
 }

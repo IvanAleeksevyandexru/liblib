@@ -189,7 +189,7 @@ export class FeedsService {
         url += `draft/${feed.extId}`;
         break;
       case 'PAYMENT':
-        url += `payment/detail/paying/${feed.extId}`;
+        url = `${this.loadService.config.oplataUrl}/pay/details/${feed.extId}`;
         break;
       case 'EQUEUE':
         if (feed.data && feed.data.parentOrderId) {

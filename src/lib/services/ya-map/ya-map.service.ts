@@ -40,6 +40,7 @@ export class YaMapService {
               iconLayout: marks.iconLayout,
               iconImageHref: marks.iconImageHref,
               iconImageSize: marks.iconImageSize,
+              iconOffset: marks.iconOffset,
             });
           map.geoObjects.add(placemark);
         }

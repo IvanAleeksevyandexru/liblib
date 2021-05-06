@@ -402,6 +402,10 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   public unselect(item: ListItem, e: Event) {
     if (!this.destroyed && !this.disabled) {
       this.deselectItem(item);
+      this.touched = true;
+      if (this.onTouchedCallback) {
+        this.onTouchedCallback();
+      }
       e.stopPropagation();
     }
   }
@@ -491,11 +495,13 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
         this.toggle();
       }
     } else if (e.key === ' ') {  // пробел
-      if (this.expanded && this.multi && this.highlighted && !this.highlighted.unselectable) {
-        this.invertSelection(this.highlighted);
+      if (!this.localSearch) {
+        if (this.expanded && this.multi && this.highlighted && !this.highlighted.unselectable) {
+          this.invertSelection(this.highlighted);
+        }
+        e.preventDefault();
+        e.stopPropagation();
       }
-      e.preventDefault();
-      e.stopPropagation();
     } else if (e.key === 'Escape') { // esc
       this.closeDropdown();
     } else if (this.expanded) { // стрелки

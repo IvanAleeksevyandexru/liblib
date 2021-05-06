@@ -4,12 +4,9 @@
   cursor: pointer;
 
   .pin {
-    background: url('../../../assets/svg/location-pin.svg') 0 0 no-repeat;
+    margin-right: 8px;
     display: inline-block;
     vertical-align: middle;
-    width: 10px;
-    height: 15px;
-    margin-right: 8px;
   }
 
   .text {
@@ -27,15 +24,33 @@
     }
   }
 
+  &.blue {
+    .pin {
+      background: url('../../../assets/svg/location-pin.svg') 0 0 no-repeat;
+      width: 10px;
+      height: 15px;
+    }
+
+    .text {
+      color: #0D4CD3;
+
+      &:hover {
+        color: #1D5DEB;
+      }
+    }
+  }
+
   &.black {
     .pin {
       width: 12px;
       height: 12px;
       background: url('../../../assets/svg/location-pin-black.svg') 0 0 no-repeat;
     }
+
     .text {
       color: #0B1F33;
       white-space: nowrap;
+
       &:hover {
         color: #66727F;
       }
@@ -48,12 +63,19 @@
       height: 12px;
       background: url('../../../assets/svg/location-pin-red.svg') 0 0 no-repeat;
     }
+
     .text {
       color: #0B40B3;
       white-space: nowrap;
+
       &:hover {
         color: #1D5DEB;
       }
+    }
+  }
+  &.empty {
+    .pin{
+      display: none;
     }
   }
 }
