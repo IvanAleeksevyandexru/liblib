@@ -25,11 +25,11 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
   @Input() public invalid = false;
   // типы файлов строка через , без пробелов
   // png,jpg
-  @Input() public fileTypes = '';
-  @Input() public maxLength = 0;
+  @Input() public fileTypes?: string;
+  @Input() public maxLength?: number;
   // в байтах максимальный размер
   // 5Mb = 10485760 = 5 * 1024 * 1024
-  @Input() public maxFileSize = 0;
+  @Input() public maxFileSize?: number;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
 
   public invalidDisplayed: boolean;
