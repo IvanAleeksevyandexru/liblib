@@ -114,7 +114,7 @@
           </ng-template>
 
           <div class="mt-lg-48 hide show-lg all-departments">
-            <a class="blue uppercase" href="{{loadService.config.betaUrl}}structure">Все ведомства</a>
+            <a class="blue uppercase" href="{{loadService.config.betaUrl}}departments">Все ведомства</a>
           </div>
         </div>
       </ng-template>
@@ -124,17 +124,17 @@
           let-department="department">
             <h4 [class.department-column-start-header]="isFirst"
                 class="flex-container title-h6 mt-sm-40 mt-lg-48 mt-md-40 catalog-title-popular catalog-other-popular">
-                  <span *ngIf="department.icons[0]?.path" class="catalog-other-popular-icon mr-12">
-                      <img [src]="department.icons[0]?.path" alt="">
+                  <span *ngIf="department.icons[0]?.url" class="catalog-other-popular-icon mr-12">
+                      <img [src]="department.icons[0]?.url" alt="">
                   </span>
-                  <span>{{department.categoryName}}</span>
+                  <span>{{department.name}}</span>
             </h4>
-            <div *ngFor="let departmentPassport of department.passports | slice:0:(department.more ? undefined : 3)">
+            <div *ngFor="let departmentPassport of department.objects | slice:0:(department.more ? undefined : 3)">
               <h5 (click)="goToDepartment(departmentPassport)" class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 pointer">
-                {{departmentPassport.shortName || departmentPassport.passportTitle}}
+                {{departmentPassport.name}}
               </h5>
             </div>
-            <ng-container *ngIf="department.passports && department.passports.length > 3 && !department.more">
+            <ng-container *ngIf="department.objects && department.objects.length > 3 && !department.more">
               <div class="mt-28 text-plain blue" (click)="department.more = !department.more">
                 Показать все
               </div>
@@ -149,7 +149,7 @@
         <h6 (click)="goToPopular(item)"
             *ngFor="let item of regionPopular | slice:0:(regionPopularMore ? undefined : itemsCounter)"
             class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular pointer">
-          {{item.catalogTitle}}
+          {{item.name}}
         </h6>
         <ng-container *ngIf="regionPopular && regionPopular.length > itemsCounter && !regionPopularMore">
           <div class="mt-28 text-plain blue" (click)="regionPopularMore = !regionPopularMore">
@@ -161,7 +161,7 @@
         <ng-container *ngIf="code !== 'other' && popular && popular.length">
           <section class="catalog-title-popular-wrap" *ngFor="let item of popular | slice:0:(popularMore ? popularMore : undefined)">
             <h4 (click)="goToPopular(item)" class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular pointer">
-              {{item.catalogTitle}}
+              {{item.name}}
             </h4>
           </section>
           <ng-container *ngIf="popular.length > popularMore">
@@ -175,18 +175,18 @@
             <h4
               class="flex-container title-h6 mt-lg-48 mt-sm-40 mt-md-40 catalog-title-popular catalog-other-popular"
             >
-                      <span *ngIf="item.icons[0]?.path" class="catalog-other-popular-icon mr-12">
-                        <img [src]="item.icons[0]?.path" alt="">
+                      <span *ngIf="item.icons[0]?.url" class="catalog-other-popular-icon mr-12">
+                        <img [src]="item.icons[0]?.url" alt="">
                       </span>
-              <span>{{item.title}}</span>
+              <span>{{item.name}}</span>
             </h4>
-            <div *ngFor="let passport of item.passports | slice:0:(item.otherPopularMore ? undefined : itemsCounter)">
+            <div *ngFor="let passport of item.elements | slice:0:(item.otherPopularMore ? undefined : itemsCounter)">
               <h5 (click)="goToPopular(passport)" class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 pointer">
-                {{passport.catalogTitle}}
+                {{passport.name}}
               </h5>
             </div>
             <ng-container
-              *ngIf="item.passports && item.passports.length > itemsCounter && !item.otherPopularMore">
+              *ngIf="item.elements && item.elements.length > itemsCounter && !item.otherPopularMore">
               <div class="mt-32 text-plain blue" (click)="item.otherPopularMore = !item.otherPopularMore">
                 Показать все
               </div>

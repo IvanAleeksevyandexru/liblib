@@ -16,10 +16,9 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { LocationService } from '../../services/location/location.service';
 import { LoadService } from '../../services/load/load.service';
 import {
-  Children, DepartmentPassport,
+  CatalogServiceCategory, CatalogServiceElement, CatalogServiceDepartment,
   Departments, FaqCategories, FaqCategoriesCMS, FaqCategoriesCMSFaq,
   FaqCategoriesItem,
-  PassportChildren,
   PopularFederal,
   RegionalPopular
 } from '../../models/catalog';
@@ -37,9 +36,9 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   @Output() public subCatalogClose: EventEmitter<null> = new EventEmitter();
   @Output() public regionPopularEmpty: EventEmitter<boolean> = new EventEmitter();
 
-  public popular: PassportChildren[];
+  public popular: CatalogServiceElement[];
   public departmentsData: Departments[];
-  public otherPopular: Children[];
+  public otherPopular: CatalogServiceCategory[];
   public regionPopular: RegionalPopular[];
   public popularMore: undefined | number;
   public faqs: FaqCategoriesCMS[];
@@ -153,9 +152,9 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
 
   public createPopular(popular: PopularFederal): void {
     if (popular.code === 'other') {
-      this.otherPopular = popular.children;
+      this.otherPopular = popular.categories;
     } else {
-      this.popular = popular.passports;
+      this.popular = popular.elements;
     }
   }
 
@@ -201,13 +200,14 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     this.catalogClose.emit();
   }
 
-  public goToPopular(item: PassportChildren | RegionalPopular): void {
-    const link = item.epguPassport ? `group/${item.epguId}` : `${item.epguId}`;
+  public goToPopular(item: any): void {
+    const link = item.type !== 'PASSPORT'  ? `group${item.url}` : `${item.url}`;
     this.catalogClose.emit();
     location.href = `${this.loadService.config.betaUrl}${link}`;
   }
 
   public ngOnDestroy() {
+    this.catalogClose.emit();
   }
 
   public checkOldPortalBanner(): boolean {
@@ -216,7 +216,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
       && !localStorage.getItem('new-portal-banner-close');
   }
 
-  public goToDepartment(departmentPassport: DepartmentPassport): void {
+  public goToDepartment(departmentPassport: CatalogServiceDepartment): void {
     location.href = `${this.loadService.config.betaUrl}${departmentPassport.url}`;
   }
 }
