@@ -1,9 +1,20 @@
 <div class="file-uploader" [class.invalid]="invalidDisplayed">
-  <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
-  <div class="file mb-24" *ngFor="let file of files; let i = $index;">
-    <span class="icon {{extension(file.name)}}"></span>
-    {{file.name}} <span class="size ml-8" *ngIf="file.size">|&nbsp;&nbsp;{{sizeInMB(file.size)}}</span>
-    <span class="delete" (click)="remove(i)">Удалить</span>
+  <sub class="error-label mb-12" *ngIf="errorMessage">{{errorMessage}}</sub>
+  <div class="mb-24" *ngFor="let file of files; let i = index;">
+    <div class="file">
+      <span class="icon {{file.error ? 'err' : extension(file.name)}}"></span>
+      {{file.name}}&nbsp;
+      <ng-container *ngIf="!file.uploadInProcess">
+        <span class="size ml-8" *ngIf="file.size">|&nbsp;&nbsp;{{sizeInMB(file.size)}}</span>
+        <span class="delete" (click)="remove(i);">Удалить</span>
+      </ng-container>
+      <ng-container *ngIf="file.uploadInProcess">
+        <lib-throbber [size]="'throbber-small'"></lib-throbber>
+      </ng-container>
+    </div>
+    <sub *ngIf="file.error" class="error-label mt-8">
+      {{file.error}}
+    </sub>
   </div>
 
   <div class="chose-dnd" libDragAndDrop (filesDropped)="onFilesDropped($event)">
