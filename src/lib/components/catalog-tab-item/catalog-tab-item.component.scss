@@ -131,7 +131,13 @@
     }
   }
 }
-
+.main-page-view{
+  .departments-wrap{
+    .scroll-container {
+      height: calc(100vh - 372px);
+    }
+  }
+}
 .side-view {
   .catalog-item-title{
     margin-top: 0;
