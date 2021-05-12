@@ -120,7 +120,7 @@ export class HeaderComponent implements OnInit, OnChanges {
   }
 
   public burgerWithCatalogShow(currentPath): void {
-    let urls = ['/new', '/newsearch'];
+    let urls = ['/new', '/newsearch', '/departments'];
     if (this.isPortal) {
       urls.push('/');
     }
