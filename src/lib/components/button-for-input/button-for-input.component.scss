@@ -10,23 +10,30 @@ button {
 
 .lookup-button {
   background: url(../../../assets/svg/field-icons/search-gray.svg) center no-repeat;
+  background-size: contain;
+
   &.active {
     background: url(../../../assets/svg/field-icons/search-blue.svg) center no-repeat;
+    background-size: contain;
     cursor: pointer;
   }
   &.error {
     background: url(../../../assets/svg/field-icons/search-red.svg) center no-repeat;
+    background-size: contain;
   }
 }
 
 .send-button {
   background: url(../../../assets/svg/field-icons/airplane-gray.svg) center no-repeat;
+  background-size: contain;
   &.active {
     background: url(../../../assets/svg/field-icons/airplane-blue.svg) center no-repeat;
+    background-size: contain;
     cursor: pointer;
   }
   &.error {
     background: url(../../../assets/svg/field-icons/airplane-red.svg) center no-repeat;
+    background-size: contain;
   }
 }
 
@@ -34,6 +41,7 @@ button {
   &.loading {
     top: 12px;
     background: url(../../../assets/svg/search-loader.svg) center no-repeat;
+    background-size: contain;
     animation: rotate 1.5s linear infinite;
   }
 }
@@ -50,4 +58,21 @@ button {
   top: 14px;
   right: 14px;
   padding-left: 14px;
+}
+
+:host-context(.big) {
+  button {
+    width: 32px;
+
+    &.loading {
+      width: 26px;
+    }
+  }
+
+  .button-wrap {
+    height: 32px;
+    top: 16px;
+    right: 24px;
+    padding-left: 12px;
+  }
 }
