@@ -102,6 +102,8 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
 
   public getCatalogData(): void {
     this.loaded = false;
+    this.faqs = [];
+    this.regionPopular = [];
     forkJoin([
       this.catalogTabsService.getCatalogPopular(this.code).pipe(
         catchError((err) => of({}))
@@ -118,13 +120,15 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
           return of(this.catalogTabsService.getDataCatalogStoreData(this.code));
         }
         const multipleData = [];
-        data[2].faqCategories.items.forEach((item: FaqCategoriesItem) => {
-          multipleData.push(this.catalogTabsService.getFaqItemCategory(item.code, this.code))
-        })
-
-        return forkJoin(multipleData).pipe(map((faqItemCategory: any) => {
-          return data.concat([faqItemCategory]);
-        }))
+        if(data[2] && data[2].faqCategories && data[2].faqCategories.items && data[2].faqCategories.items.length) {
+          data[2].faqCategories.items.forEach((item: FaqCategoriesItem) => {
+            multipleData.push(this.catalogTabsService.getFaqItemCategory(item.code, this.code))
+          })
+          return forkJoin(multipleData).pipe(map((faqItemCategory: any) => {
+            return data.concat([faqItemCategory]);
+          }))
+        }
+        return of(data.concat([]))
       })
     ).subscribe((data: [PopularFederal, RegionalPopular[], Departments[], FaqCategoriesCMS[]]) => {
       this.catalogTabsService.storeCatalogData(data, this.code);

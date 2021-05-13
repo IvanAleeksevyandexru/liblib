@@ -160,7 +160,7 @@ export interface CatalogServiceDepartment {
 }
 
 export interface FaqCategories {
-  faqCategories: {
+  faqCategories?: {
     items: FaqCategoriesItem[];
   }
 }
