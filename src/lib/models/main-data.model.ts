@@ -9,7 +9,7 @@ export interface IMainData {
 }
 
 export interface ICatalog{
-  url: string;
+  ico: string;
   title: string;
   code: string;
   active?: boolean;

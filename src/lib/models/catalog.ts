@@ -200,7 +200,7 @@ export interface FaqCategoriesCMSFaq {
 }
 
 export interface CatalogData{
-  url: string;
+  ico: string;
   title: string;
   code: string;
   active?: boolean;
