@@ -13,3 +13,11 @@ export interface Contact {
   verifyingValue?: string;
   vrfValStu?: VrfValStu;
 }
+
+export interface CorpContact {
+  id: number;
+  oph: string;
+  simActiv: 'Y' | 'NO_ANSWER' | 'REFUSE' | 'DEACTIV';
+  orgName: string;
+  hidden: boolean;
+}
