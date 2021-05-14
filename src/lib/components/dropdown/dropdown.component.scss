@@ -41,7 +41,7 @@
       }
     }
     &.invalid {
-      border-color: #DF0024;
+      background: rgba(238,63,88,.16);
       &.expanded {
         border-color: #A8ACB1;
       }
