@@ -205,9 +205,8 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public goToPopular(item: any): void {
-    const link = item.type !== 'PASSPORT'  ? `group${item.url}` : `${item.url}`;
     this.catalogClose.emit();
-    location.href = `${this.loadService.config.betaUrl}${link}`;
+    location.href = item.type === 'LINK' ? item.url : `${this.loadService.config.betaUrl}${item.code}`;
   }
 
   public ngOnDestroy() {
