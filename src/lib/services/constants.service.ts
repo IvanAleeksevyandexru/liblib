@@ -444,7 +444,7 @@ export class ConstantsService {
     },
     {
       text: 'Сообщения',
-      type: 'APPEAL',
+      type: 'APPEAL,SIGN',
       id: 4,
       mnemonic: 'appeal'
     },
@@ -494,7 +494,7 @@ export class ConstantsService {
     },
     {
       text: 'Сообщения',
-      type: 'APPEAL',
+      type: 'APPEAL,SIGN',
       id: 7,
       mnemonic: 'appealEvents'
     },
