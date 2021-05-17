@@ -426,7 +426,7 @@ export class ConstantsService {
   public readonly ORDERS_CATEGORIES = [
     {
       text: 'Все',
-      type: 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER',
+      type: 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER,SIGN',
       id: 1,
       mnemonic: 'allEvents'
     },
