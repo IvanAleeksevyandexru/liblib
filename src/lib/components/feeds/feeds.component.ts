@@ -66,6 +66,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   private loadedFeedsCount = 0;
   private showMoreCount = 0;
   private afterFirstSearch = false;
+  private statusesMap = {
+    NEW: 'in_progress',
+    REQUEST: 'in_progress',
+    REQUEST_ERROR: 'reject',
+    DONE: 'executed'
+  };
   public isHeader: boolean;
 
   constructor(
@@ -153,6 +159,11 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         this.feedsIsLoading = false;
         this.addFeedsIsLoading = false;
         this.hasMore = feeds.hasMore;
+        this.feeds.forEach(item => {
+          if (item.feedType === 'SIGN') {
+            item.status = this.statusesMap[item.status] || item.status;
+          }
+        });
         this.emitEmptyFeedsEvent();
         this.loadedFeedsCount += this.feeds.length;
         this.yaMetricOnSearch(query);
