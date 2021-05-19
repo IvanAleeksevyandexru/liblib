@@ -46,7 +46,6 @@ export class UserRolesComponent implements OnInit {
 
   public openRolesList(): void {
     this.showRolesList = !this.showRolesList;
-    console.log(this.showRolesList);
   }
 
   public getRoleName(code: string): string {
