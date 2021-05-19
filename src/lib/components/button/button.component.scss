@@ -153,10 +153,13 @@ button::-moz-focus-inner {
 }
 
 .button-container {
-  display: inline-block;
+  display: block;
 }
 
 @media all and (min-width: 768px) {
+  .button-container {
+    display: inline-block;
+  }
   a, button {
     width: auto;
 
