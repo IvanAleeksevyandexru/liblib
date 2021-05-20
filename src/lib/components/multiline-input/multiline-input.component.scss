@@ -7,6 +7,7 @@
   padding: 16px;
   box-sizing: border-box;
   background-color: #F5F7FA;
+  border: 2px solid #F5F7FA;
 
   .multiline-wrapper {
     position: relative;
@@ -44,11 +45,15 @@
   }
 
   &.focused {
+    background-color: #F5F7FA;
     border: 2px solid #99B1E6;
   }
 
   &.invalid {
-    background-color: rgba(238,63,88,.16);
+    &:not(.focused) {
+      background-color: rgba(238, 63, 88, .16);
+      border-color: #f8dde4;
+    }
   }
 
   &[disabled], &.disabled {
@@ -66,7 +71,7 @@
       padding-left: 16px;
     }
     ::ng-deep .ps-content {
-      padding: 16px 0 16px 16px;
+      padding: 16px 10px 16px 16px;
     }
   }
   &.with-symbols-counter {
