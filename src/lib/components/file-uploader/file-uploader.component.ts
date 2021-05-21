@@ -34,6 +34,7 @@ export interface FileUpload {
   error: string;
   mnemonic: string;
   uploadInProcess: boolean;
+  file: File
 }
 
 @Component({
@@ -106,6 +107,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
           size: event[i].size,
           type: event[i].type,
           error: '',
+          file: event[i],
           lastModified: event[i].lastModified
         };
         this.files.push(file);
