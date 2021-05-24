@@ -143,6 +143,8 @@ export interface Bill {
   billLinks?: BillLink[];
   selectedByWhiteList?: boolean;
   supplierSource?: SupplierSource[];
+  fsspApplyButton?: boolean;
+  fsspRequestButton?: boolean;
   isMessage?: boolean;
   vehicle?: Vehicle;
   hasPhoto?: boolean;
