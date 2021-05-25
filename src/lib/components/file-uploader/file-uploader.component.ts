@@ -121,7 +121,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
             formData.append('objectType', '2');
             formData.append('objectId', this.orderId.toString());
           }
-          formData.append('mnemonic', btoa(file.name));
+          formData.append('mnemonic', btoa(name));
           this.saveFileToServer(formData, this.files[this.files.length - 1]);
         }
       }
