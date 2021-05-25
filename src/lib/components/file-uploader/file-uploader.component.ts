@@ -34,7 +34,7 @@ export interface FileUpload {
   error: string;
   mnemonic: string;
   uploadInProcess: boolean;
-  file: File
+  file: File;
 }
 
 @Component({
@@ -139,17 +139,17 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
   }
 
   private saveFileToServer(formData: FormData, file: FileUpload): void {
-    const process =  (file: FileUpload, withError: boolean) => {
+    const process =  (f: FileUpload, withError: boolean) => {
       if (withError) {
-        file.error = 'Во время загрузки возникла ошибка';
+        f.error = 'Во время загрузки возникла ошибка';
       }
-      file.uploadInProcess = false;
+      f.uploadInProcess = false;
       this.commit(this.files);
       this.check();
       this.cd.detectChanges();
-    }
+    };
 
-    this.fileUploaderService.saveFileToStorage(this.storageServiceUrl, formData).subscribe(res => {
+    this.fileUploaderService.saveFileToStorage(this.storageServiceUrl, formData).subscribe(() => {
       process(file, false);
     }, err => {
       process(file, true);
@@ -201,10 +201,6 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     this.emitFiles(event);
   }
 
-  public sizeInMB(size: number): string {
-    return (size / (1024 * 1024)).toFixed(2) + ' Мб';
-  }
-
   public extension(fileName: string): string {
     const nameArr = fileName.split('.');
     const ext = nameArr[nameArr.length - 1].toLowerCase();
@@ -247,7 +243,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
         return sum + fileSize;
       }, 0);
       if (currentSize + fullSize > this.maxFileSize) {
-        this.errorMessage = `Максимальный размер файлов превышает ${this.sizeInMB(this.maxFileSize)}`;
+        this.errorMessage = `Не удалось загрузить файл. Размер файла не должен превышать ${this.formatBytes(this.maxFileSize)}`;
         return false;
       }
     }
@@ -255,16 +251,16 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
   }
 
   public remove(index: number): void {
-    const deleteProcess = (index: number, deletedFile: FileUpload, withError: boolean) => {
+    const deleteProcess = (i: number, dFile: FileUpload, withError: boolean) => {
       if (withError) {
-        deletedFile.error = 'Во время удаления возникла ошибка';
+        dFile.error = 'Во время удаления возникла ошибка';
       }
-      deletedFile.uploadInProcess = false;
-      this.files.splice(index, 1);
+      dFile.uploadInProcess = false;
+      this.files.splice(i, 1);
       this.commit(this.files);
       this.check();
       this.cd.detectChanges();
-    }
+    };
 
     this.fileInput.nativeElement.value = '';
     this.touched = true;
@@ -272,11 +268,14 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     const objectType = '2';
     if (this.storageServiceUrl && this.orderId && !deletedFile.error) {
       deletedFile.uploadInProcess = true;
-      this.fileUploaderService.deleteFileFromStorage(this.storageServiceUrl, this.orderId.toString(), objectType, deletedFile.mnemonic).subscribe(res => {
-        deleteProcess(index, deletedFile, false);
-      }, err => {
+      this.fileUploaderService.deleteFileFromStorage(this.storageServiceUrl,
+                                                    this.orderId.toString(),
+                                                    objectType,
+                                                    deletedFile.mnemonic).subscribe(() => {
+                                                    deleteProcess(index, deletedFile, false);
+      }, () => {
         deleteProcess(index, deletedFile, true);
-      })
+      });
     } else {
       deleteProcess(index, deletedFile, false);
     }
@@ -291,5 +290,19 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
 
   public check() {
     this.invalidDisplayed = ValidationHelper.checkValidation(this, {touched: true});
+  }
+
+  public formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) {
+      return '0 б';
+    }
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['б', 'Кб', 'Мб', 'Гб', 'Тб', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
 }

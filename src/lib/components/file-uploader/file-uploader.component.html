@@ -5,7 +5,7 @@
       <span class="icon {{file.error ? 'err' : extension(file.name)}}"></span>
       {{file.name}}&nbsp;
       <ng-container *ngIf="!file.uploadInProcess">
-        <span class="size ml-8" *ngIf="file.size">|&nbsp;&nbsp;{{sizeInMB(file.size)}}</span>
+        <span class="size ml-8" *ngIf="file.size">|&nbsp;&nbsp;{{formatBytes(file.size)}}</span>
         <span class="delete" (click)="remove(i);">Удалить</span>
       </ng-container>
       <ng-container *ngIf="file.uploadInProcess">
@@ -27,4 +27,8 @@
     </p>
   </div>
 
+  <div class="hint mt-4" *ngIf="maxFileSize || fileTypes">
+    <ng-container *ngIf="fileTypes">Допустимые форматы файла: {{fileTypes}}</ng-container>
+    <ng-container *ngIf="maxFileSize">Допустимый размер файла &mdash; до {{formatBytes(maxFileSize)}}</ng-container>
+  </div>
 </div>
