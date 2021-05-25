@@ -10,7 +10,7 @@
       margin-top: 0px;
     }
 
-    @media all and (min-width: 768px) and (max-width: 1140px) {
+    @media all and (min-width: 768px) and (max-width: 1139px) {
       .item {
         margin-top: 24px;
         width: 208px;
@@ -24,6 +24,10 @@
   }
 
   @media all and (min-width: 1140px) {
+    .title-wrapper {
+      width: 280px;
+    }
+
     .list-items {
       position: absolute;
       width: 280px;
@@ -38,6 +42,22 @@
     &.fixed-bottom {
       position: absolute;
       height: auto;
+    }
+  }
+
+  &.padLikeMob {
+    @media all and (min-width: 768px) and (max-width: 1139px) {
+      .list-items {
+        .item {
+          margin-top: 16px;
+          width: 100%;
+          right: 0px;
+        }
+
+        > .item:nth-child(2), .item:nth-child(3) {
+          margin-top: 16px;
+        }
+      }
     }
   }
 }

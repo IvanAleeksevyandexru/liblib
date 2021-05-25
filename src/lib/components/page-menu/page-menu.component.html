@@ -1,9 +1,14 @@
-<div #menu *ngIf="items" class="page-menu-wrapper">
-  <ng-content #title></ng-content>
-  <div class="list-items flex-container-md flex-wrap-md block-lg">
+<div #menu *ngIf="items" class="page-menu-wrapper" [ngClass]="styleType">
+  <div class="title-wrapper">
+    <ng-content #title></ng-content>
+  </div>
+  <div class="list-items" [ngClass]="{'flex-container-md flex-wrap-md block-lg': !styleType}">
     <ng-container *ngFor="let item of items">
       <div class="item">
-        <a class="link-plain link-underline" (click)="onClick(item.id)">{{item.text}}</a>
+        <a class="link-plain"
+           [ngClass]="{'link-underline': !styleType}"
+           (click)="onClick(item.id)"
+        >{{item.text}}</a>
       </div>
     </ng-container>
   </div>

@@ -17,10 +17,13 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   // т.к. при внешнем редиректе не проходит условие.
 
   @Input() public items: IMenuItems[];
-  @Input() public offsetFromHeader = 56;
-  @Input() public offsetFromFooter = 56;
+  @Input() public offsetFromHeader: string | number = 56;
+  @Input() public offsetFromFooter: string | number = 56;
   @Input() public nameOfHeader = 'lib-header'; // хедеры могут быть любые
   @Input() public nameOfFooter = 'lib-footer'; // футеры могут быть любые
+  @Input() public styleType: '' | 'padLikeMob' = ''; // различные стилевые виды:
+  // '' - в мобиле статично в стопку, в паде статично в три колонки, в деске ездит по длине контента страницы; ссылки подчеркнуты
+  // 'padLikeMob' - в мобиле статично в стопку, в паде статично в стопку, в деске ездит по длине контента страницы; ссылки не подчеркнуты
 
   @Output() public onclick = new EventEmitter<string>();
 
@@ -108,12 +111,12 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
 
   private getHeaderAndTopHeight(): void {
     this.headerHeight = this.header.clientHeight;
-    this.needOffsetTop = this.headerHeight + this.offsetFromHeader;
+    this.needOffsetTop = this.headerHeight + +this.offsetFromHeader;
   }
 
   private getFooterAndBottomData(): void {
     this.footerHeight = this.footer.clientHeight;
-    this.needOffsetBottom = this.footerHeight + this.offsetFromFooter + this.menu.scrollHeight;
+    this.needOffsetBottom = this.footerHeight + +this.offsetFromFooter + this.menu.scrollHeight;
   }
 
   private getWidthWindow(): void {
