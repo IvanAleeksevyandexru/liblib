@@ -1,5 +1,4 @@
 <div class="file-uploader" [class.invalid]="invalidDisplayed">
-  <sub class="error-label mb-12" *ngIf="errorMessage">{{errorMessage}}</sub>
   <div class="mb-24" *ngFor="let file of files; let i = index;">
     <div class="file">
       <span class="icon {{file.error ? 'err' : extension(file.name)}}"></span>
@@ -12,10 +11,12 @@
         <lib-throbber [size]="'throbber-small'"></lib-throbber>
       </ng-container>
     </div>
-    <sub *ngIf="file.error" class="error-upload mt-24 mb-24">
+    <sub *ngIf="file.error" class="error-label mt-8">
       {{file.error}}
     </sub>
   </div>
+
+  <sub class="error-upload mb-24 mt-24" *ngIf="errorMessage">{{errorMessage}}</sub>
 
   <div class="chose-dnd" libDragAndDrop (filesDropped)="onFilesDropped($event)">
     <p class="text-center mb-12">Перетащите файлы или выберите на компьютере</p>
