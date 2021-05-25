@@ -28,7 +28,7 @@
   </div>
 
   <div class="hint mt-4" *ngIf="maxFileSize || fileTypes">
-    <ng-container *ngIf="fileTypes">Допустимые форматы файла: {{fileTypes}}</ng-container>
+    <ng-container *ngIf="fileTypes">Допустимые форматы файла: <span>{{fileTypes}} </span></ng-container>
     <ng-container *ngIf="maxFileSize">Допустимый размер файла &mdash; до {{formatBytes(maxFileSize)}}</ng-container>
   </div>
 </div>
