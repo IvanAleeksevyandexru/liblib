@@ -159,7 +159,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
   public ngOnInit() {
     this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
     if (this.fileTypes) {
-      this.fileTypesArray = this.fileTypes.split(',');
+      this.fileTypesArray = this.fileTypes.toLowerCase().split(',');
     }
   }
 
@@ -214,7 +214,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
   public checkFileTypes(file) {
     let result = true;
     const nameArr = file.name.split('.');
-    const fileType = nameArr[nameArr.length - 1];
+    const fileType = nameArr[nameArr.length - 1].toLowerCase();
     if (this.fileTypes) {
       if (this.fileTypesArray.indexOf(fileType) < 0) {
         this.errorMessage = `Расширение загружаемого файла не входит в список разрешенных: ${file.name}`;
