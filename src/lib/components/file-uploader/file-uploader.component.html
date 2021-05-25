@@ -16,7 +16,7 @@
     </sub>
   </div>
 
-  <sub class="error-upload mb-24 mt-24" *ngIf="errorMessage">{{errorMessage}}</sub>
+  <div class="error-upload mb-24 mt-24" *ngIf="errorMessage">{{errorMessage}}</div>
 
   <div class="chose-dnd" libDragAndDrop (filesDropped)="onFilesDropped($event)">
     <p class="text-center mb-12">Перетащите файлы или выберите на компьютере</p>
