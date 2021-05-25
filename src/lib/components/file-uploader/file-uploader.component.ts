@@ -100,8 +100,9 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
       const existingFile = this.findFile(event[i]);
       const checkType = this.checkFileTypes(event[i]);
       if (!existingFile && checkType) {
+        const name = unescape(encodeURIComponent(event[i].name));
         const file: FileUpload = {
-          mnemonic: btoa(event[i].name),
+          mnemonic: btoa(name),
           uploadInProcess: needUploadToServer,
           name: event[i].name,
           size: event[i].size,
