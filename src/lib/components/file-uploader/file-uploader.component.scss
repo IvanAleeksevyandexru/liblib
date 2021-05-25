@@ -120,9 +120,9 @@
     }
   }
 
-  sub.error-label {
-    font-size: 14px;
-    line-height: 20px;
+  sub.error-upload {
+    font: 14px/20px Lato, Arial, sans-serif;
+    color: #E11432;
   }
 
   ::ng-deep {
