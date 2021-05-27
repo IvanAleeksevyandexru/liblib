@@ -17,7 +17,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { from, Observable } from 'rxjs';
+import { from, Observable, Subscription } from 'rxjs';
 import { FocusManager } from '../../services/focus/focus.manager';
 import { InconsistentReaction, LineBreak, Translation } from '../../models/common-enums';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
@@ -41,6 +41,7 @@ import { VirtualScrollComponent } from '../virtual-scroll/virtual-scroll.compone
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { Width } from '../../models/width-height';
 import { Suggest, SuggestItem } from '../../models/suggest';
+import { SharedService } from '../../services/shared/shared.service';
 
 const SHOW_ALL_MARKER = {};
 
@@ -61,6 +62,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     private changeDetector: ChangeDetectorRef,
     private positioningManager: PositioningManager,
     protected focusManager: FocusManager,
+    private sharedService: SharedService,
     @Self() protected listService: ListItemsService,
     @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
 
@@ -149,6 +151,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   @Input() public enableLangConvert = false;
   // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
   @Input() public stopSearch = false;
+  // доп. атрибуты
+  @Input() public addAttrs: {[key: string]: any} = {};
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -201,6 +205,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   private withFixedList = false;
 
   private destroyed = false;
+  private sharedSubscription: Subscription;
 
   @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
   @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
@@ -213,10 +218,21 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
   public ngOnInit() {
     this.update();
+    if (this.addAttrs?.nameInput) {
+      this.sharedSubscription = this.sharedService.on(this.addAttrs.nameInput).subscribe((val) => {
+        if (val) {
+          this.prevQuery = '';
+          this.clearInput();
+        }
+      });
+    }
   }
 
   public ngOnDestroy() {
     this.destroyed = true;
+    if (this.sharedSubscription) {
+      this.sharedSubscription.unsubscribe();
+    }
   }
 
   public ngAfterViewInit() {
@@ -706,7 +722,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
       translation: this.translation,
       escapeHtml: this.escapeHtml,
       showAll,
-      queryMinSymbolsCount: this.queryMinSymbolsCount
+      queryMinSymbolsCount: this.queryMinSymbolsCount,
+      addAttrs: this.addAttrs
     };
   }
 
