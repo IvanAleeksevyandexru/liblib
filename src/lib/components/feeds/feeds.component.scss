@@ -227,6 +227,9 @@
 
     .feed-item-date {
       display: none;
+      &.payment-draft{
+        display: block;
+      }
     }
 
     .feed-item-controls-buttons {
