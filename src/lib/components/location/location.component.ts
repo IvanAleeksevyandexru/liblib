@@ -141,11 +141,15 @@ export class LocationComponent implements OnInit, OnDestroy {
       this.regionCode = `${this.searchItem.id}`;
     }
     this.cookieService.set('userSelectedRegion', this.regionCode);
-    this.locationService.clearRegion().subscribe(() => {
+    if (this.loadService.user.authorized) {
+      this.locationService.clearRegion().subscribe(() => {
+        onClearRegion();
+      }, () => {
+        onClearRegion();
+      });
+    } else {
       onClearRegion();
-    }, () => {
-      onClearRegion();
-    });
+    }
   }
 
   public onClose() {

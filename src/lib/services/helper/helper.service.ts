@@ -540,6 +540,19 @@ export class HelperService {
     return window.location.href.startsWith(givenUrl);
   }
 
+  // метод отправляет в буфер data
+  public static toClipboard(data: any, successCallback = () => {}): void {
+    const listener = (e: ClipboardEvent) => {
+      const clipboard = e.clipboardData || (window as any).clipboardData;
+      clipboard.setData('text', data);
+      successCallback();
+      e.preventDefault();
+    };
+    document.addEventListener('copy', listener, false);
+    document.execCommand('copy');
+    document.removeEventListener('copy', listener, false);
+  }
+
   // переходит по ссылке (относительной или абсолютной) структурированной как объект или как строка
   // предпочитает router для всех внутренних переходов (относительных или абсолютных) и location.href для внешних
   public navigate(url: string | {url: string, queryParams?: {[key: string]: string}}, newTab = false) {

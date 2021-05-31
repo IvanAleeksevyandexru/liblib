@@ -1,0 +1,4 @@
+include:
+  - project: appsec/cicd
+    file: /fedpgu/epgu-lib.yml
+

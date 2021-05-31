@@ -135,7 +135,7 @@
           <div *ngIf="isUpdated(feed)" class="updated">
             Обновлено
           </div>
-          <div class="feed-item-date">
+          <div class="feed-item-date" [ngClass]="{'payment-draft': isPaymentDraft(feed)}">
             <div *ngIf="isSnippetTypeIM(feed)" [innerHTML]="feed.date | timeToEvent:feed.data.snippets[0].type:'':inlineDate"></div>
             <div *ngIf="isSnippetTypeNotIM(feed)" [innerHTML]="feed.date | timeToEvent:getSnippetType(feed):feed.feedType:inlineDate"></div>
           </div>

@@ -1,6 +1,10 @@
 {
-  "name": "epgu-lib",
-  "version": "0.0.1245",
+  "name": "@epgu/epgu-lib",
+  "version": "0.1.8",
+  "publishConfig": {
+    "registry": "http://nexus.gosuslugi.local/content/repositories/npm-internal/",
+    "access": "public"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,8 +12,11 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "future-lib-release": "CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD | sed s/branch-prod-fed-//) && A=$(echo $CURRENT_BRANCH | cut -d'.' -f1) && B=$(echo $CURRENT_BRANCH | cut -d'.' -f2) && C=$(echo $CURRENT_BRANCH | cut -d'.' -f3) && D=$(echo $CURRENT_BRANCH | cut -d'.' -f4) && LIB_VERSION=${A}.${B}.${C}-${D} && CURRENT_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g') && echo $CURRENT_VERSION && echo $LIB_VERSION && if [ $CURRENT_VERSION != $LIB_VERSION ]                     \nthen\n        npm version $LIB_VERSION\nfi\n",
+    "postlib-release": "cd ./dist/epgu-lib && npm publish",
     "lib-watch": "ng build epgu-lib --watch",
     "lib-build:prod": "cross-env ng build epgu-lib && npm run cp-lib-assets",
+    "lib-release": "npm run lib-build:prod",
     "cp-lib-assets": "cross-env cpx \"./src/assets/**/*\" \"./dist/epgu-lib/assets\""
   },
   "dependencies": {

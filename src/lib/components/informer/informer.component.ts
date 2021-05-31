@@ -131,7 +131,7 @@ export class InformerComponent implements OnInit {
           this.getTextToHint(hint);
         }
 
-        if (response?.result) {
+        if (response && response?.result) {
           // есть начисления
           if (response.result.total) {
             const res = response.result;
