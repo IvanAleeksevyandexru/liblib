@@ -80,7 +80,7 @@
             </ng-container>
           </perfect-scrollbar>
 
-          <lib-virtual-scroll #virtualScroll *ngIf="virtualScroll && !staticList"
+          <lib-virtual-scroll #virtualScroll *ngIf="virtualScroll && !staticList && virtualScrollController"
               [scrollStrategy]="virtualScrollController"
               (scrollBottomReached)="loadNextPartial()">
 
