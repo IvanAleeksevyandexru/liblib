@@ -70,6 +70,7 @@ export class ConstantsService {
   public readonly TYPE_DS_LOGIN_ALLOWED: SecurityOptionType = 'dsLoginAllowed';
   public readonly TYPE_OTP: SecurityOptionType = 'otp';
   public readonly TYPE_NOTIFICATION_EMAIL: string = 'Notification.Channel.EMAIL';
+  public readonly TYPE_NOTIFICATION_LOGIN: string = 'Notification.Event.LOGIN';
   public readonly STATUS_VERIFYING: VrfValStu = 'VERIFYING';
   public readonly STATUS_VERIFIED: VrfStu = 'VERIFIED';
   public readonly STATUS_NOT_VERIFIED: VrfStu = 'NOT_VERIFIED';
@@ -370,6 +371,12 @@ export class ConstantsService {
       id: 'statements',
       name: 'PROFILE.TABS.STATEMENTS',
       url: '/profile/statements',
+      access: ['AL20']
+    },
+    {
+      id: 'empowerments',
+      name: 'PROFILE.TABS.EMPOWERMENTS',
+      url: '/profile/empowerments',
       access: ['AL20']
     },
     {

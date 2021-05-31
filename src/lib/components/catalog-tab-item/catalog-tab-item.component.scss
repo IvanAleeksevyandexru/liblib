@@ -131,7 +131,13 @@
     }
   }
 }
-
+.main-page-view{
+  .departments-wrap{
+    .scroll-container {
+      height: calc(100vh - 372px);
+    }
+  }
+}
 .side-view {
   .catalog-item-title{
     margin-top: 0;
@@ -163,6 +169,35 @@
 
 @media all and (max-width: 1139px) {
   .side-view{
+    .details-block-wrap{
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .popular-region-wrap{
+      margin-top: 20px;
+    }
+    .all-departments{
+      padding: 32px 0;
+      margin: 0;
+    }
+    .popular-region-wrap{
+      padding: 0 16px;
+    }
+    .departments-wrap{
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      .department-column-start-header{
+        margin-top: 40px;
+      }
+      .mob-container-inner{
+        transform: translateY(0);
+        flex: 1;
+        overflow: auto;
+        padding-bottom: 100px;
+      }
+    }
     .catalog-item-title{
       color: #000;
       padding: 8px 16px;
@@ -177,12 +212,9 @@
       background-color: #fff;
       border-bottom: 1px solid #E1E1E1;
       border-top: 1px solid #E1E1E1;
-      margin-right: -16px;
-      margin-left: -16px;
-      position: fixed;
+      position: static;
       z-index: 1;
       width: 100%;
-      top: 0;
       &:before{
         content: '';
         display: inline-block;
@@ -193,18 +225,39 @@
       }
     }
     &.catalog-tab-item-wrap{
-      overflow: auto;
+      height: 100%;
     }
     .catalog-tab-item {
-      padding: 89px 0 0 0;
-
+      height: 100%;
+      overflow: hidden;
+      padding: 0;
+      .mob-container-wrap{
+        height: 100%;
+      }
       .details-block {
-        padding-bottom: 40px;
+        padding: 32px 0 120px 0;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        overflow: auto;
+        .mob-container-inner{
+          transform: translateY(0);
+        }
+        .mob-container-wrap{
+          height: auto;
+        }
       }
     }
     .container-catalog-wrap{
-      padding: 0 16px;
+      padding: 0;
     }
+    .mob-container-inner{
+      padding: 0 16px;
+      transform: translateY(89px);
+    }
+  }
+  .scroll-auto{
+    overflow: auto;
   }
 }
 

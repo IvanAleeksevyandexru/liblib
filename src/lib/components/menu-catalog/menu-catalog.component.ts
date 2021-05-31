@@ -2,8 +2,8 @@ import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output
 import { Catalog } from '../../models/main-page.model';
 import { Subscription } from 'rxjs';
 import { LoadService } from '../../services/load/load.service';
-import { MenuService } from "../../services/menu/menu.service";
-import { UserRole } from "../../models/menu-link";
+import { MenuService } from '../../services/menu/menu.service';
+import { UserRole } from '../../models/menu-link';
 import { CatalogTabsService } from '../../services/catalog-tabs/catalog-tabs.service';
 import { SharedService } from '../../services/shared/shared.service';
 import { CatalogData } from '../../models/catalog';
@@ -15,16 +15,6 @@ import { CatalogData } from '../../models/catalog';
 })
 export class MenuCatalogComponent implements OnInit, OnDestroy {
 
-  @Output() public menuCatalogOpened = new EventEmitter<boolean>();
-  public currentCategoryCode: string;
-
-  @HostListener('document:click', ['$event'])
-  public onClickOut(event) {
-    if (event.target.classList.contains('catalog-menu')) {
-      this.onClose();
-    }
-  }
-
   public user = this.loadService.user;
   public showRolesList = false;
   public emptyRegionPopular: boolean;
@@ -35,6 +25,19 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
   public activeRole: UserRole;
   public subscription: Subscription;
   public subscriptionBurger: Subscription;
+  public isOpenLangMenu = false;
+
+  @Input() public languageChangeAvailable?: boolean;
+
+  @Output() public menuCatalogOpened?: EventEmitter<boolean> = new EventEmitter<boolean>();
+  public currentCategoryCode: string;
+
+  @HostListener('document:click', ['$event'])
+  public onClickOut(event) {
+    if (event.target.classList.contains('catalog-menu')) {
+      this.onClose();
+    }
+  }
 
   constructor(
     public loadService: LoadService,
@@ -129,5 +132,9 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.emptyRegionPopular = $event;
     });
+  }
+
+  public openLanguageMenu(evt: boolean) {
+    this.isOpenLangMenu = evt;
   }
 }

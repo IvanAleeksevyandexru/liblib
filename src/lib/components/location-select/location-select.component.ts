@@ -10,7 +10,7 @@ import { SharedService } from '../../services/shared/shared.service';
 })
 export class LocationSelectComponent implements OnInit {
 
-  @Input() public skinTheme?: string;
+  @Input() public skinTheme?: 'red' | 'black' | 'blue';
 
   public regionName: string;
 

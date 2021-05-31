@@ -168,6 +168,14 @@ lib-button {
 @media all and (min-width: 1140px) {
   .authorized-user {
     max-width: 100%;
+    &:hover{
+      .name:before{
+        background: url(../../../assets/svg/arrows/arrow_gosblue_hover.svg) no-repeat 0 0;
+      }
+    }
+    .name:hover{
+      color: #1D5DEB;
+    }
   }
   .link {
     &.with-icon {
