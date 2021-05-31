@@ -193,7 +193,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   public suggestion: string;
   public suggested: ListItem;
   public suggestionJustSelected = false;
-  public virtualScrollController;
+  public virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems.bind(this), true);
   public LineBreak = LineBreak;
   private insureSearchActiveToken = 0;
   // компонент может работать на заданном фиксированном списке значений или не внешнем поиске
@@ -659,7 +659,6 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
   public updateScrollHeight() {
     if (this.virtualScroll && this.virtualScrollComponent) {
-      this.virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems.bind(this), true);
       const items = this.items || [];
       const totalContentSize = items.reduce((acc, item) => acc + item.getItemHeight(), 0);
       this.virtualScrollComponent.setTotalContentSize(totalContentSize);
