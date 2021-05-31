@@ -27,6 +27,7 @@ export class MailDeliveryModalComponent implements OnInit {
   public isRussianPost = this.mailDeliveryService.isRussianPost;
 
   public destroy: () => void;
+  public config = this.loadService.config;
 
   constructor(
     public mailDeliveryService: MailDeliveryService,

@@ -15,17 +15,16 @@
     </div>
   </div>
   <a class="link-plain digital-assistant-link"
-     [ngClass]="{'hide-important': isOpenLangMenu}"
+     [ngClass]="{'lower-z': isOpenLangMenu}"
      [href]="loadService.config.betaUrl + 'newsearch'">
     {{'HEADER.MENU.DIGITAL_ASSISTANT' | libTranslate}}
   </a>
-  <!-- Ниже кнопка реализована из-за айфонов и яблочных падов. Они не воспринимают z-index по ходу -->
-  <div class="back-language flex-container justify-between align-items-center hide-lg" [ngClass]="{'not-show': !isOpenLangMenu}">
+  <div class="back-language flex-container justify-between align-items-center hide-lg">
     <a class="title-h6">
       {{'HEADER.CHANGE_LANGUAGE.CHANGE' | libTranslate}}
     </a>
   </div>
-  <div class="catalog-menu-content" [ngClass]="{'mt': isOpenLangMenu}">
+  <div class="catalog-menu-content">
     <div class="flex-1" *ngIf="catalog?.length" [class.hide]="!showMenu">
       <lib-catalog-tabs-list
         viewType="side-view"

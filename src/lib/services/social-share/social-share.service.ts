@@ -66,4 +66,12 @@ export class SocialShareService {
 
     SocialShareService.popup(url);
   }
+
+  public telegram(href: string, title?: string) {
+    let url  = 'https://t.me/share/url?';
+    url += 'url=' + encodeURIComponent(href || this.metaUrl);
+    url += '&text=' + encodeURIComponent(title || this.metaTitle);
+
+    SocialShareService.popup(url);
+  }
 }
