@@ -138,7 +138,13 @@
   },
   "BACK": "Back",
   "LANG": {
-    "ru": "RUS",
-    "en": "GBR"
+    "SHORT": {
+      "ru": "RUS",
+      "en": "ENG"
+    },
+    "FULL": {
+      "ru": "Русский",
+      "en": "English"
+    }
   }
 }
