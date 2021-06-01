@@ -367,6 +367,16 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       this.removeInProgress = false;
       this.changeDetector.detectChanges();
     };
+    const onRemoveError = () => {
+      this.translate.get('FEEDS.ERROR').subscribe((errorText: string) => {
+        this.notifier.error({
+          message: errorText
+        });
+        this.removeInProgress = false;
+        feed.removeInProgress = false;
+        this.changeDetector.detectChanges();
+      })
+    }
     if (!this.removeInProgress) {
       this.removeInProgress = true;
       feed.removeInProgress = true;
@@ -374,12 +384,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         this.feedsService.removeDraft(feed.extId)
           .pipe(
             switchMap(() => this.translate.get('FEEDS.DELETED'))
-          ).subscribe(onSubscribe);
+          ).subscribe(onSubscribe, onRemoveError);
       } else {
         this.feedsService.removeFeed(feed.id)
           .pipe(
             switchMap(() => this.translate.get('FEEDS.DELETED'))
-          ).subscribe(onSubscribe);
+          ).subscribe(onSubscribe, onRemoveError);
       }
     }
 
@@ -389,7 +399,13 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public showRemoveFeedButton(feed: FeedModel): boolean {
-    return ['overview', 'events', 'drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder;
+    return ['overview', 'events', 'drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder && !this.isPaymentDraft(feed);
+  }
+
+  public isPaymentDraft(feed: FeedModel): boolean {
+    return feed.feedType === 'DRAFT' && feed.data.snippets?.length &&  feed.data.snippets.some((item: SnippetModel) => {
+      return item.type === 'PAYMENT' && feed.status !== 'reject_no_pay' && !!item.sum;
+    });
   }
 
   public getIsArchive(): boolean {
