@@ -452,8 +452,14 @@
   },
   "BACK": "Назад",
   "LANG": {
-    "ru": "RUS",
-    "en": "GBR"
+    "SHORT": {
+      "ru": "RUS",
+      "en": "ENG"
+    },
+    "FULL": {
+      "ru": "Русский",
+      "en": "English"
+    }
   },
   "SUGGEST" : {
     "TITLE" : "Вы ранее заполняли",

@@ -10,7 +10,7 @@ import { HelperService } from '../helper/helper.service';
 import { AuthService } from '../auth/auth.service';
 import { SmuEventsService } from '../smu-events/smu-events.service';
 
-const EMPTY_CONFIG_STUB = {data: {user: {}}, attrs: {}, config: {}};
+const EMPTY_CONFIG_STUB = {data: {user: {}}, attrs: {}, config: {}, hidePageConfig: {}};
 
 @Injectable({
   providedIn: 'root'
@@ -165,6 +165,10 @@ export class LoadService {
 
   public get config(): any {
     return this.params.config;
+  }
+
+  public get hidePageConfig(): any {
+    return this.params.hidePageConfig;
   }
 
   public get attributes(): any {
