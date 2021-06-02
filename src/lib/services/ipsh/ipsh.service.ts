@@ -53,7 +53,7 @@ export class IpshService {
     return dateReg.test(date);
   }
 
-  public getBillsErrorByCode(code: number): string {
+  public getBillsErrorByCode(code: number): BillsErrors {
     if ([1, 18].includes(code)) {
       return BillsErrors.BillsNotFound;
     }

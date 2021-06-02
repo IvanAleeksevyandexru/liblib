@@ -111,11 +111,10 @@ export class HeaderComponent implements OnInit, OnChanges {
       const counter = this.countersService.getCounter(CounterTarget.USER);
       this.isUnread = !!(counter && counter.unread);
     });
-    if (this.languageChangeAvailable) {
-      this.translateSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-        this.roleChangeAvailable = HelperService.langIsRus(event.lang);
-      });
-    }
+
+    this.translateSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.roleChangeAvailable = HelperService.langIsRus(event.lang);
+    });
     this.roleChangeAvailable = HelperService.langIsRus(this.translate.currentLang);
   }
 
