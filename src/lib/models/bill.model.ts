@@ -67,6 +67,7 @@ export enum PaySystemCode {
 export enum BillsErrors {
   BillsCanceled = 'BILLS_CANCELED',
   BillsNotFound = 'BILLS_NOT_FOUND',
+  BillsNotFoundSuccess = 'BILLS_NOT_FOUND_SUCCESS',
   BillsPaid = 'BILLS_PAID',
   BillsServiceNotAvailable = 'BILLS_SERVICE_NOT_AVAILABLE',
   BillsPaymentImpossible = 'BILLS_PAYMENT_IMPOSSIBLE',
@@ -321,7 +322,7 @@ export interface ErrorInfo {
   message?: string;
   fkSmevVersion?: number;
   requestId?: string;
-  type: string;
+  type: BillsErrors;
   billNumber?: string;
   date?: string;
   supplier?: string;

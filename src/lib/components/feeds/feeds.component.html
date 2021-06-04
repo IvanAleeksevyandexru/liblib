@@ -3,13 +3,12 @@
               [defaultHeaders]="!isHeader">
 </lib-throbber>
 
-<ng-container *ngFor="let feed of feeds ; trackBy: trackById; let i = index; ">
-  <ng-container *ngIf="withReload(feed)">
+<ng-container *ngFor="let feed of feeds ; trackBy: trackById; let i = index;">
+  <ng-container *ngIf="!withReload(feed)">
     <a [routerLink]="openDetails(feed)"
        (click)="onFeedClick($event, feed)"
        class="feed-item"
-       [ngClass]="setFeedItemCls(feed)"
-       *ngFor="let feed of feeds ; trackBy: trackById; let i = index; ">
+       [ngClass]="setFeedItemCls(feed)">
 
       <ng-container
         [ngTemplateOutlet]="feedTemplate"
@@ -17,12 +16,11 @@
     </a>
   </ng-container>
 
-  <ng-container *ngIf="!withReload(feed)">
+  <ng-container *ngIf="withReload(feed)">
     <a [href]="openDetails(feed)"
        (click)="onFeedClick($event, feed)"
        class="feed-item"
-       [ngClass]="setFeedItemCls(feed)"
-       *ngFor="let feed of feeds ; trackBy: trackById; let i = index; ">
+       [ngClass]="setFeedItemCls(feed)">
 
       <ng-container
         [ngTemplateOutlet]="feedTemplate"
@@ -137,7 +135,7 @@
           <div *ngIf="isUpdated(feed)" class="updated">
             Обновлено
           </div>
-          <div class="feed-item-date">
+          <div class="feed-item-date" [ngClass]="{'payment-draft': isPaymentDraft(feed)}">
             <div *ngIf="isSnippetTypeIM(feed)" [innerHTML]="feed.date | timeToEvent:feed.data.snippets[0].type:'':inlineDate"></div>
             <div *ngIf="isSnippetTypeNotIM(feed)" [innerHTML]="feed.date | timeToEvent:getSnippetType(feed):feed.feedType:inlineDate"></div>
           </div>

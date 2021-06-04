@@ -176,7 +176,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public withReload(feed): boolean {
-    return !(this.isLk && !['KND_APPEAL', 'KND_APPEAL_DRAFT'].includes(feed.feedType) || this.isPartners);
+    return !(this.isLk && !['KND_APPEAL', 'KND_APPEAL_DRAFT', 'PAYMENT'].includes(feed.feedType) || this.isPartners);
   }
 
   public getUserData(): User {
@@ -193,7 +193,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public setUnreadFeedCls(feed: FeedModel): boolean {
-    return feed.unread && feed.feedType !== 'DRAFT' && feed.feedType !== 'PARTNERS_DRAFT' && feed.feedType !== 'KND_APPEAL_DRAFT';
+    const escapedFeedTypes = ['DRAFT', 'PARTNERS_DRAFT', 'KND_APPEAL_DRAFT'];
+    return feed.unread && !escapedFeedTypes.includes(feed.feedType);
   }
 
   public markAsFlag(feed: FeedModel): boolean {
@@ -351,6 +352,16 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       this.removeInProgress = false;
       this.changeDetector.detectChanges();
     };
+    const onRemoveError = () => {
+      this.translate.get('FEEDS.ERROR').subscribe((errorText: string) => {
+        this.notifier.error({
+          message: errorText
+        });
+        this.removeInProgress = false;
+        feed.removeInProgress = false;
+        this.changeDetector.detectChanges();
+      })
+    }
     if (!this.removeInProgress) {
       this.removeInProgress = true;
       feed.removeInProgress = true;
@@ -358,12 +369,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         this.feedsService.removeDraft(feed.extId)
           .pipe(
             switchMap(() => this.translate.get('FEEDS.DELETED'))
-          ).subscribe(onSubscribe);
+          ).subscribe(onSubscribe, onRemoveError);
       } else {
         this.feedsService.removeFeed(feed.id)
           .pipe(
             switchMap(() => this.translate.get('FEEDS.DELETED'))
-          ).subscribe(onSubscribe);
+          ).subscribe(onSubscribe, onRemoveError);
       }
     }
 
@@ -373,7 +384,13 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public showRemoveFeedButton(feed: FeedModel): boolean {
-    return ['overview', 'events', 'drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder;
+    return ['overview', 'events', 'drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder && !this.isPaymentDraft(feed);
+  }
+
+  public isPaymentDraft(feed: FeedModel): boolean {
+    return feed.feedType === 'DRAFT' && feed.data.snippets?.length &&  feed.data.snippets.some((item: SnippetModel) => {
+      return item.type === 'PAYMENT' && feed.status !== 'reject_no_pay' && !!item.sum;
+    });
   }
 
   public getIsArchive(): boolean {

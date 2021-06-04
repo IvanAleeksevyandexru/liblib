@@ -37,10 +37,24 @@
   <div class="lookup-list-wrapper">
     <div class="lookup-context-positioning" #dropdownList [class.context-positioned]="contextMenuPosition">
       <div class="lookup-context-shift">{{query}}</div>
-      <div class="lookup-list-container" [ngClass]="{hidden: !expanded}" [class.incremental-loading]="partialsLoading" libStopScreenScroll>
+      <div class="lookup-list-container" [ngClass]="{hidden: !expanded }" [class.incremental-loading]="partialsLoading" libStopScreenScroll>
         <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll"
             [config]="{suppressScrollX: true, wheelPropagation: false}"
             (psYReachEnd)="loadNextPartial()">
+          <div class="suggests mt-8 mb-8" *ngIf="suggest && suggest.list.length">
+            <p class="title pl-16">{{'SUGGEST.TITLE' | libTranslate}}</p>
+            <ul class="mt-4">
+              <li *ngFor="let item of suggest.list" (click)="selectSuggestItem(item)">
+                <p>{{item.value}}</p>
+                <ng-container *ngIf="item.hints">
+                  <span *ngFor="let hint of item.hints">{{hint.value}} </span>
+                </ng-container>
+              </li>
+            </ul>
+            <p class="edit mt-4">
+              <a (click)="editSuggestList(suggest)">{{'SUGGEST.EDIT_LIST' | libTranslate}}</a>
+            </p>
+          </div>
           <ng-container *ngFor="let suggestion of suggestions">
             <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{suggestion: suggestion}"></ng-container>
           </ng-container>
@@ -48,6 +62,20 @@
         <lib-virtual-scroll #virtualScroll *ngIf="virtualScroll"
             [scrollStrategy]="virtualScrollController"
             (scrollBottomReached)="loadNextPartial()">
+          <div class="suggests mt-8 mb-8" *ngIf="suggest && suggest.list && suggest.list.length">
+            <p class="title pl-16">{{'SUGGEST.TITLE' | libTranslate}}</p>
+            <ul class="mt-4">
+              <li *ngFor="let item of suggest.list" (click)="selectSuggestItem(item)">
+                <p>{{item.value}}</p>
+                <ng-container *ngIf="item.hints">
+                  <span *ngFor="let hint of item.hints">{{hint.value}} </span>
+                </ng-container>
+              </li>
+            </ul>
+            <p class="pl-16 edit mt-4">
+              <a (click)="editSuggestList(suggest)">{{'SUGGEST.EDIT_LIST' | libTranslate}}</a>
+            </p>
+          </div>
           <ng-container *libVirtualFor="let suggestion of suggestions">
             <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{suggestion: suggestion}"></ng-container>
           </ng-container>
@@ -60,7 +88,7 @@
             </div>
           </div>
         </div>
-        <div class="additional-item">
+        <div class="additional-item" #additionalItem>
           <ng-content></ng-content>
         </div>
       </div>
@@ -74,7 +102,8 @@
        [class.unselectable]="suggestion.unselectable"
        [class.line-before]="suggestion.lineBreak === LineBreak.BEFORE || suggestion.lineBreak === LineBreak.BOTH"
        [class.line-after]="suggestion.lineBreak === LineBreak.AFTER || suggestion.lineBreak === LineBreak.BOTH"
-       [class.separator]="suggestion.lineBreak === LineBreak.SELF">
+       [class.separator]="suggestion.lineBreak === LineBreak.SELF"
+       [class.hasSuggest]="suggest && suggest.list">
     <div class="structure-container">
       <div *ngIf="highlightSubstring || truncateSubstring" class="item-container" [class.truncated]="truncateSubstring && !suggestion.highlightedAll">
         <span class="lookup-item-text" [innerHTML]="suggestion.highlightText"></span>

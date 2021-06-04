@@ -39,9 +39,12 @@ export class MultilineInputComponent
   @Input() public maxHeight = 200;
   @Input() public fullHeightScroll = true;
   @Input() public width?: Width | string;
+  @Input() public hideCounter = false;
+  @Input() public clearable = false;
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();
+  @Output() public cleared = new EventEmitter<void>();
   @ViewChild('input') protected inputElement: ElementRef;
 
   public htmlValue = '';
@@ -286,6 +289,23 @@ export class MultilineInputComponent
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
     this.check();
+  }
+
+  public returnFocus(e?: Event) {
+    if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement)) {
+      this.inputElement.nativeElement.focus();
+      HelperService.resetSelection(this.inputElement.nativeElement);
+    }
+  }
+
+  public clearValue(e: Event) {
+    if (!this.disabled) {
+      this.writeValue(null);
+      this.commit(null);
+      this.cleared.emit();
+      this.returnFocus(e);
+    }
+    e.stopPropagation();
   }
 
   public check(): void {

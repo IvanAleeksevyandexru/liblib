@@ -32,13 +32,6 @@ export class InformerComponent implements OnInit {
   public linkHint: string;
   public mnemonicHint: string;
 
-  private links = {
-    al10: '/profile/personal',
-    no_debt: `${this.loadService.config.oplataUrl}pay`,
-    error: `${this.loadService.config.oplataUrl}pay`,
-    debt: `${this.loadService.config.oplataUrl}pay`,
-    no_rights: '/help/faq/yuridicheskim_licam/2761'
-  };
   private debtForYaMetric: DebtYaMetricInterface = {};
 
   constructor(
@@ -71,10 +64,6 @@ export class InformerComponent implements OnInit {
   }
 
   private setExtraDebtData(res): void {
-    // цена без скидки
-    if (res.originalAmount && res.originalAmount !== 0) {
-      this.dataInformer.price = res.originalAmount;
-    }
     // цена со скидкой или просто цена
     this.dataInformer.priceDiscount = res.amount;
 
@@ -83,37 +72,27 @@ export class InformerComponent implements OnInit {
   }
 
   private getTextToHint(code: string): void {
-    if (this.informersService.hints[code].textWithDay) {
-      if (+this.hintResponse.days === 1) {
-        this.hintText = 'Остался последний день ';
-      } else {
-        this.hintText = this.declinePipe.transform(this.hintResponse.days, ['Остался', 'Осталось', 'Осталось'], false) +
-          ' ' + this.declinePipe.transform(this.hintResponse.days, ['день', 'дня', 'дней']) + ' ';
-      }
-      this.hintText += this.informersService.hints[code].textWithDay;
-    } else {
+    if (this.informersService.hints[code] && code === '03') {
+      this.hintText = 'Скидка истекает через' + ' ' + this.declinePipe.transform(this.hintResponse.days, ['день', 'дня', 'дней']) + ' ';
+      } else if(this.informersService.hints[code] && code === '05') {
       this.hintText = this.informersService.hints[code].text;
     }
-    this.linkHint = this.informersService.hints[code].link;
-    this.mnemonicHint = code;
   }
 
   private getInformerShortData() {
-    this.informersService.getDataInformer().subscribe((response: InformerShortInterface) => {
-
-        if (response.hint) {
+    this.informersService.getDataInformer()
+      .subscribe((response: InformerShortInterface) => {
+        if (response?.hint) {
           this.hintResponse = response.hint;
           const hint = Object.keys(this.informersService.hints).find((code) => {
             return this.hintResponse.code === code;
           });
           this.getTextToHint(hint);
-        } else if (this.loadService.user.userType === 'P') {
-          this.getTextToHint('00');
         }
 
-        if (response.error?.code === 50) {
+        if (response?.error?.code === 50) {
           this.setData('NO_RIGHTS');
-        } else if (response.result) {
+        } else if (response?.result) {
           // есть начисления
           if (response.result.total) {
             const res = response.result;
@@ -127,6 +106,7 @@ export class InformerComponent implements OnInit {
                 this.debtForYaMetric.types = Object.assign(this.debtForYaMetric.types, {[TypeDebt[type]]: res[TypeDebt[type]].amount});
               }
             }
+            this.dataInformer.type = debtCount.length === 1 ? TypeDebt[debtCount[0]]: 'all';
             this.dataInformer.docs = this.declinePipe.transform(res.total, this.getWord(debtCount));
             this.setExtraDebtData(res);
             // инфа для метрики
@@ -171,11 +151,10 @@ export class InformerComponent implements OnInit {
         break;
     }
     this.yaMetricService.yaMetricInformerMain(type, this.debtForYaMetric);
-
-    if (['al10', 'no_rights'].includes(this.statusInformer)) {
-      this.router.navigate([this.links[this.statusInformer]]);
+    if (this.loadService.config.viewType === 'PORTAL') {
+      this.router.navigate(['/pay']);
     } else {
-      location.href = this.links[this.statusInformer];
+      location.href = `${this.loadService.config.betaUrl}pay`;
     }
   }
 

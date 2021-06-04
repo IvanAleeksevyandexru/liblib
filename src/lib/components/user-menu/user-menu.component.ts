@@ -6,7 +6,7 @@ import { Category } from '../../models/category';
 import { MenuLink } from '../../models/menu-link';
 import { Tabs, Tab, MAIN_TABS } from '../../models/tabs';
 import { User } from '../../models/user';
-import { CounterTarget } from '../../models/counter';
+import { CounterData, CounterTarget } from '../../models/counter';
 import { UserMenuState } from '../../models/user-menu';
 import { Router } from '@angular/router';
 import { CountersService } from '../../services/counters/counters.service';
@@ -30,8 +30,9 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public menuOffset: number;
   public user: User;
   public staticUrls: object;
-  public settingsCounter;
-  public userCounter;
+  // public settingsCounter: CounterData; Это вроде уже не нужно. Но пока пусть будет. Мб передумают
+  public userCounter: CounterData;
+  public partnersCounter: CounterData;
   public avatarError = false;
   public mainTabs: Tabs = null;
   public tabsSubscription: Subscription;
@@ -83,14 +84,15 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public ngOnInit() {
     if (!this.links.length) {
-      this.links = this.menuService.getUserMenuLinks();
+      this.links = this.menuService.getUserMenuDefaultLinks();
     }
     this.user = this.loadService.user as User;
     this.userRoles = this.menuService.getUserRoles(this.user);
     this.activeRole = this.userRoles.find((role) => role.isActive);
     this.staticUrls = this.menuService.getStaticItemUrls();
     this.countersService.counters$.subscribe(_ => {
-      this.settingsCounter = this.countersService.getCounter(CounterTarget.SETTINGS);
+      this.partnersCounter = this.countersService.getCounter(CounterTarget.PARTNERS);
+      //this.settingsCounter = this.countersService.getCounter(CounterTarget.SETTINGS);
       this.userCounter = this.countersService.getCounter(CounterTarget.USER);
     });
     this.tabsSubscription = this.tabsService.register(MAIN_TABS).subscribe((tabs: Tabs) => {
@@ -191,6 +193,20 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       this.titleChangeRole = 'HEADER.MENU.CHANGE_ROLE';
     } else {
       this.titleChangeRole = 'HEADER.MENU.LOGIN_ORG';
+    }
+  }
+
+  public needCounter(type: string): boolean {
+    const types = ['notifications', 'partnersOrders'];
+    return types.includes(type);
+  }
+
+  public getKindOfCounter(type: string): CounterData {
+    switch (type) {
+      case 'notifications':
+        return this.userCounter;
+      case 'partnersOrders':
+        return this.partnersCounter;
     }
   }
 

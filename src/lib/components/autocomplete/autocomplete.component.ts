@@ -17,6 +17,7 @@ import { ListItemsService, ListItemsVirtualScrollController } from '../../servic
 import { PositioningManager, PositioningRequest } from '../../services/positioning/positioning.manager';
 import { Width } from '../../models/width-height';
 import { from, Observable } from 'rxjs';
+import { Suggest, SuggestItem } from '../../models/suggest';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -93,6 +94,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   @Input() public disableOpening = false;
   // при слабом коннекте запускать поиск последнего введенного значения #dadata
   @Input() public searchLastValue = false;
+  @Input() public suggest?: Suggest;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -105,12 +107,15 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   @Output() public opened = new EventEmitter();
   @Output() public closed = new EventEmitter();
   @Output() public fetched = new EventEmitter();
+  @Output() public selectSuggest = new EventEmitter<Suggest | SuggestItem>();
+
 
   @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
   @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
   @ViewChild('searchBar', {static: false}) public searchBar: SearchBarComponent;
   @ViewChild('dropdownField', {static: false}) private valuesContainer: ElementRef;
   @ViewChild('dropdownList', {static: false}) private listContainer: ElementRef;
+  @ViewChild('additionalItem', {static: false}) private additionalItem: ElementRef;
 
   public query = '';
   public activeQuery = '';
@@ -149,7 +154,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   }
 
   public openDropdown() {
-    if (!this.disableOpening && !this.disabled && !this.expanded && (this.suggestions.length || this.showNotFound)) {
+    if (!this.disableOpening && !this.disabled && !this.expanded && (this.suggestions.length || this.additionalItem.nativeElement.children?.length || this.showNotFound)) {
       this.expanded = true;
       this.highlighted = null;
       this.changeDetector.detectChanges();
@@ -266,7 +271,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
     }
     // не делать запрос, если не изменилась модель
     if (!this.modelChanged) {
-      if (this.suggestions.length || this.showNotFound) {
+      if (this.suggestions.length || this.additionalItem.nativeElement.children.length || this.showNotFound) {
         this.openDropdown();
       } else {
         this.closeDropdown();
@@ -281,7 +286,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
     this.partialPageNumber = 0;
     this.partialsLoaded = false;
     this.runSearchOrIncrementalSearch(true, query, () => {
-      if (this.suggestions.length || this.showNotFound) {
+      if (this.suggestions.length || this.additionalItem.nativeElement.children.length || this.showNotFound) {
         this.updateSuggestion(query);
         this.openDropdown();
       } else {
@@ -470,6 +475,16 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
       queryMinSymbolsCount: this.queryMinSymbolsCount,
       partialPageSize: this.incrementalPageSize
     };
+  }
+
+  public selectSuggestItem(item: SuggestItem): void {
+    this.closeDropdown();
+    this.selectSuggest.emit(item);
+  }
+
+  public editSuggestList(suggest: Suggest): void {
+    suggest.isEdit = true;
+    this.selectSuggest.emit(suggest);
   }
 
 }

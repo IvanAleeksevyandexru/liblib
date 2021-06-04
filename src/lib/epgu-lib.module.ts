@@ -28,7 +28,6 @@ import { FooterComponent } from './components/footer/footer.component';
 import { FooterCmsComponent } from './components/footer/footer-cms/footer-cms.component';
 import { FooterCopyrightComponent } from './components/footer/footer-copyright/footer-copyright.component';
 import { ModalSearchComponent } from './components/modal-search/modal-search.component';
-import { InfoCardComponent } from './components/info-card/info-card.component';
 import { SliderBannerComponent } from './components/banner-slider/banner-slider.component';
 import { StaticBannerComponent } from './components/banner-static/banner-static.component';
 import { QuizComponent } from './components/quiz/quiz.component';
@@ -160,6 +159,7 @@ import { CatalogTabsComponent } from './components/catalog-tabs/catalog-tabs.com
 import { CatalogTabsListComponent } from './components/catalog-tabs-list/catalog-tabs-list.component';
 import { CatalogTabItemComponent } from './components/catalog-tab-item/catalog-tab-item.component';
 import { UserRolesComponent } from './components/user-roles/user-roles.component';
+import { RegionCasesComponent } from './components/region-cases/region-cases.component';
 
 
 registerLocaleData(localeRu, 'ru');
@@ -183,7 +183,6 @@ registerLocaleData(localeRu, 'ru');
     SearchSputnikComponent,
     ConfirmActionComponent,
     DocumentDetailsComponent,
-    InfoCardComponent,
     SliderBannerComponent,
     StaticBannerComponent,
     QuizComponent,
@@ -309,7 +308,8 @@ registerLocaleData(localeRu, 'ru');
     CatalogTabsComponent,
     CatalogTabsListComponent,
     CatalogTabItemComponent,
-    UserRolesComponent
+    UserRolesComponent,
+    RegionCasesComponent
   ],
   imports: [
     CommonModule,
@@ -341,7 +341,6 @@ registerLocaleData(localeRu, 'ru');
     SearchSputnikComponent,
     ConfirmActionComponent,
     DocumentDetailsComponent,
-    InfoCardComponent,
     SliderBannerComponent,
     StaticBannerComponent,
     QuizComponent,
@@ -459,7 +458,8 @@ registerLocaleData(localeRu, 'ru');
     CatalogTabsComponent,
     CatalogTabsListComponent,
     CatalogTabItemComponent,
-    UserRolesComponent
+    UserRolesComponent,
+    RegionCasesComponent
   ],
   providers: [
     GosbarService,

@@ -3,7 +3,7 @@ import { LoadService } from '../load/load.service';
 import { HttpClient } from '@angular/common/http';
 import {
   Addresses, DadataResult,
-  FormConfig,
+  FormConfig, HouseAndApartmentManipulations,
   NormalizedAddressElement,
   NormalizedData,
   SuggestionsResponse
@@ -156,30 +156,30 @@ export class DadataService implements AutocompleteSuggestionProvider {
 
   public initForm(isSimpleMode: boolean, withCountries: boolean): void {
     this.simpleMode = isSimpleMode;
+    const validation = [Validators.pattern('(^([-А-Яа-яёЁ0-9,.();№N\'_+<>\\\\/"\\s]+)$)|(^$)')];
     this.form = this.fb.group({
-      region: new FormControl(''),
-      city: new FormControl(''),
-      district: new FormControl(''),
-      town: new FormControl(''),
-      inCityDist: new FormControl(''),
-      street: new FormControl(''),
-      additionalArea: new FormControl(''),
-      additionalStreet: new FormControl(''),
-      house: new FormControl(''),
+      region: new FormControl('', validation),
+      city: new FormControl('', validation),
+      district: new FormControl('', validation),
+      town: new FormControl('', validation),
+      inCityDist: new FormControl('', validation),
+      street: new FormControl('', validation),
+      additionalArea: new FormControl('', validation),
+      additionalStreet: new FormControl('', validation),
+      house: new FormControl('', validation),
       houseCheckbox: new FormControl(false),
       houseCheckboxClosed: new FormControl(false),
-      building1: new FormControl(''),
-      building2: new FormControl(''),
-      apartment: new FormControl(''),
+      building1: new FormControl('', validation),
+      building2: new FormControl('', validation),
+      apartment: new FormControl('', validation),
       apartmentCheckbox: new FormControl(false),
       apartmentCheckboxClosed: new FormControl(false),
-      index: new FormControl(''),
+      index: new FormControl('', [Validators.maxLength(6), Validators.minLength(6)]),
       geoLat: new FormControl(''),
       geoLon: new FormControl(''),
     });
 
     if (withCountries) {
-      this.form.get('index').setValidators([Validators.maxLength(6), Validators.minLength(6)]);
       this.form.addControl('country', new FormControl(''))
     }
 
@@ -213,6 +213,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
     this.qc = '';
     const url = `${this.externalApiUrl ? this.externalApiUrl : this.loadService.config.nsiApiUrl}dadata/suggestions`;
     return this.http.get<SuggestionsResponse>(url, {
+      withCredentials: true,
       params: {
         q: query
       }
@@ -232,13 +233,14 @@ export class DadataService implements AutocompleteSuggestionProvider {
   public normalize(address: string): Observable<NormalizedData> {
     const url = `${this.externalApiUrl ? this.externalApiUrl : this.loadService.config.nsiApiUrl}dadata/normalize`;
     return this.http.get<NormalizedData>(url, {
+      withCredentials: true,
       params: {
         q: address
       }
     });
   }
 
-  public parseAddress(data: NormalizedData, onInitCall: boolean, hideHouseCb: boolean, hideApartCb: boolean) {
+  public parseAddress(data: NormalizedData, onInitCall: boolean, houseAndApartmentManipulations: HouseAndApartmentManipulations, firstDadataObject: any) {
     const needSkipStreet = !!data.address.elements.find(item => item.level === 4 && this.skipStreetFias.includes(item.fiasCode))
     data.address.elements.forEach((elem, index, arr) => {
       let level = elem.level;
@@ -274,6 +276,30 @@ export class DadataService implements AutocompleteSuggestionProvider {
         const apartmentControl = this.getFormControlByName('apartment');
         const apartmentCheckbox = this.getFormControlByName('apartmentCheckbox');
 
+        if (firstDadataObject?.fiasCode === data.address.fiasCode) {
+          const building1Control = this.getFormControlByName('building1');
+          const building2Control = this.getFormControlByName('building2');
+          const indexControl = this.getFormControlByName('index');
+          if (!houseControl.value && firstDadataObject.house) {
+            houseControl.setValue(firstDadataObject.house)
+          }
+          if (!apartmentControl.value && firstDadataObject.apartment) {
+            apartmentControl.setValue(firstDadataObject.apartment)
+          }
+          if (!apartmentControl.value && firstDadataObject.apartment) {
+            apartmentControl.setValue(firstDadataObject.apartment)
+          }
+          if (!building1Control.value && firstDadataObject.building1) {
+            building1Control.setValue(firstDadataObject.building1)
+          }
+          if (!building2Control.value && firstDadataObject.building2) {
+            building2Control.setValue(firstDadataObject.building2)
+          }
+          if (!indexControl.value && firstDadataObject.index) {
+            this.setValueByLevel(100, firstDadataObject.index);
+          }
+        }
+
         if (houseControl.disabled || houseCheckbox.value) {
           houseControl.disable({onlySelf: true});
         } else {
@@ -290,13 +316,21 @@ export class DadataService implements AutocompleteSuggestionProvider {
         }
 
         if (onInitCall) {
-          if (!houseControl.value && !hideHouseCb) {
+          if (!houseControl.value && !houseAndApartmentManipulations.hideHouseCheckbox) {
             houseCheckbox.setValue(true);
           }
-          if (!apartmentControl.value && !hideApartCb) {
+          if (!apartmentControl.value && !houseAndApartmentManipulations.hideApartmentCheckbox) {
             apartmentCheckbox.setValue(true);
           }
         }
+
+        if (houseAndApartmentManipulations.selectHouseCheckbox) {
+          houseCheckbox.setValue(true);
+        }
+        if (houseAndApartmentManipulations.selectApartmentCheckbox) {
+          apartmentCheckbox.setValue(true);
+        }
+
         this.setErrorsByLevel(level, needSkipStreet);
         this.setValidByQcCompete(data.dadataQcComplete, data.unparsedParts);
       }
@@ -406,57 +440,60 @@ export class DadataService implements AutocompleteSuggestionProvider {
         const controlConfig = this.formConfig[this.levelMap[key]];
         const control = this.getFormControlByLevel(key);
         const isHiddenLvl = this.isElementHidden(this.levelMap[key]);
+        controlConfig.regExpInvalid = !new RegExp('(^([-А-Яа-яёЁ0-9,.();№N\'_+<>\\\\/"\\s]+)$)|(^$)').test(control.value ? control.value : '');
         let isInvalid = false;
-        switch (key) {
-          // Район + если не заполнен Город
-          // Город + если не заполнен Район
-          case 3:
-          case 4:
-            isInvalid = !(this.getFormControlByLevel(3).value || this.getFormControlByLevel(4).value);
-            break;
-          // Нас пункт + если заполнен Район
-          case 6:
-            isInvalid = isHiddenLvl ? false :
-              this.getFormControlByLevel(3).value ? !control.value : false;
-            break;
-          // Улица
-          case 7: {
-            if (needSkipStreet) {
-              isInvalid = false;
-            } else {
+        if (!controlConfig.regExpInvalid) {
+          switch (key) {
+            // Район + если не заполнен Город
+            // Город + если не заполнен Район
+            case 3:
+            case 4:
+              isInvalid = !(this.getFormControlByLevel(3).value || this.getFormControlByLevel(4).value);
+              break;
+            // Нас пункт + если заполнен Район
+            case 6:
               isInvalid = isHiddenLvl ? false :
-                this.getFormControlByLevel(4).value ?
-                  (this.getFormControlByLevel(6).value ? false : !control.value) : false;
+                this.getFormControlByLevel(3).value ? !control.value : false;
+              break;
+            // Улица
+            case 7: {
+              if (needSkipStreet) {
+                isInvalid = false;
+              } else {
+                isInvalid = isHiddenLvl ? false :
+                  this.getFormControlByLevel(4).value ?
+                    (this.getFormControlByLevel(6).value ? false : !control.value) : false;
+              }
+              break;
             }
-            break;
-          }
-          case 11: {
-            const houseCheckbox = this.form.get('houseCheckbox');
-            isInvalid = isHiddenLvl || houseCheckbox.value ? false : !control.value;
-            break;
-          }
-          case 14:
-            const apartmentCheckbox = this.form.get('apartmentCheckbox');
-            isInvalid = isHiddenLvl || apartmentCheckbox.value ? false : !control.value;
-            break;
-          case 12:
-          case 13: {
-            if (!this.simpleMode) {
+            case 11: {
               const houseCheckbox = this.form.get('houseCheckbox');
-              if (houseCheckbox.value) {
-                isInvalid = !(this.getFormControlByLevel(key === 13 ? 12 : 13).value || control.value);
+              isInvalid = isHiddenLvl || houseCheckbox.value ? false : !control.value;
+              break;
+            }
+            case 14:
+              const apartmentCheckbox = this.form.get('apartmentCheckbox');
+              isInvalid = isHiddenLvl || apartmentCheckbox.value ? false : !control.value;
+              break;
+            case 12:
+            case 13: {
+              if (!this.simpleMode) {
+                const houseCheckbox = this.form.get('houseCheckbox');
+                if (houseCheckbox.value) {
+                  isInvalid = !(this.getFormControlByLevel(key === 13 ? 12 : 13).value || control.value);
+                } else {
+                  isInvalid = false;
+                }
               } else {
                 isInvalid = false;
               }
-            } else {
-              isInvalid = false;
+              break;
             }
-            break;
+            default:
+              isInvalid = !control.value;
           }
-          default:
-            isInvalid = !control.value;
         }
-        controlConfig.isInvalid = isInvalid;
+        controlConfig.isInvalid = controlConfig.regExpInvalid || isInvalid;
       });
     }
   }
@@ -500,11 +537,12 @@ export class DadataService implements AutocompleteSuggestionProvider {
     }
   }
 
-  public addKladrToCommitValue(commitValue: DadataResult, normalizedElements: Array<NormalizedAddressElement>): void {
+  public addAddressInfoToCommitValue(commitValue: DadataResult, normalizedElements: Array<NormalizedAddressElement>): void {
     normalizedElements.forEach(elem => {
       const elemName = this.levelMap[elem.level];
       commitValue[`${elemName}Kladr`] = elem.kladrCode;
-    })
+      commitValue[`${elemName}Fias`] = elem.fiasCode;
+    });
   }
 
 }

@@ -101,7 +101,7 @@ export class HeaderComponent implements OnInit, OnChanges {
 
   public ngOnInit(): void {
     this.initUserMenuState();
-    if(this.burgerDemoMode) {
+    if (this.burgerDemoMode) {
       this.burgerWithCatalogShow(location.pathname);
     }
     this.loadService.userTypeNA$.subscribe(type => {
@@ -111,18 +111,20 @@ export class HeaderComponent implements OnInit, OnChanges {
       const counter = this.countersService.getCounter(CounterTarget.USER);
       this.isUnread = !!(counter && counter.unread);
     });
-    if (this.languageChangeAvailable) {
-      this.translateSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-        this.roleChangeAvailable = HelperService.langIsRus(event.lang);
-      });
-    }
+
+    this.translateSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.roleChangeAvailable = HelperService.langIsRus(event.lang);
+    });
     this.roleChangeAvailable = HelperService.langIsRus(this.translate.currentLang);
   }
 
   public burgerWithCatalogShow(currentPath): void {
-    let urls = ['/new', '/newsearch'];
+    let urls = ['/new', '/newsearch', '/departments', '/pay'];
     if (this.isPortal) {
       urls.push('/');
+    }
+    if (currentPath === '/pay' || currentPath.startsWith('/pay/')) {
+      currentPath = '/pay';
     }
     this.burgerWithCatalog = urls.indexOf(currentPath) > -1;
   }
@@ -162,8 +164,11 @@ export class HeaderComponent implements OnInit, OnChanges {
     } as UserMenuState;
   }
 
-  public updateRole(code: string): void {
-    this.activeRoleCode = code;
+  public updateRole(code: string, url: string): void {
+    if (this.activeRoleCode !== code) {
+      this.activeRoleCode = code;
+      window.location.href = url;
+    }
   }
 
   public backClickHandler(): void {
@@ -219,8 +224,14 @@ export class HeaderComponent implements OnInit, OnChanges {
     clearTimeout(this.hideTimout);
   }
 
-  public onMenuCatalogClick(menuCatalogOpened: boolean) {
+  public onMenuCatalogClick(menuCatalogOpened: boolean, isCatalogSimple = false) {
     this.menuCatalogOpened = menuCatalogOpened;
+    const htmlEl = (document.getElementsByTagName('html')[0] as HTMLElement);
+    if (isCatalogSimple) {
+      htmlEl.classList.toggle('hide-scroll', menuCatalogOpened);
+    } else {
+      htmlEl.style.overflowY = menuCatalogOpened ? 'hidden' : 'auto';
+    }
     if (menuCatalogOpened) {
       this.hideUserMenu();
     }

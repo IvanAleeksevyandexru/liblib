@@ -70,6 +70,7 @@ export class ConstantsService {
   public readonly TYPE_DS_LOGIN_ALLOWED: SecurityOptionType = 'dsLoginAllowed';
   public readonly TYPE_OTP: SecurityOptionType = 'otp';
   public readonly TYPE_NOTIFICATION_EMAIL: string = 'Notification.Channel.EMAIL';
+  public readonly TYPE_NOTIFICATION_LOGIN: string = 'Notification.Event.LOGIN';
   public readonly STATUS_VERIFYING: VrfValStu = 'VERIFYING';
   public readonly STATUS_VERIFIED: VrfStu = 'VERIFIED';
   public readonly STATUS_NOT_VERIFIED: VrfStu = 'NOT_VERIFIED';
@@ -109,7 +110,8 @@ export class ConstantsService {
       id: 'permissions',
       name: 'TABS.PERMISSIONS.TITLE',
       url: '/permissions',
-      metric: {name: this.TABS_METRIC_NAME, action: 'permissions'}
+      metric: {name: this.TABS_METRIC_NAME, action: 'permissions'},
+      trusted: true
     }
   ]);
   public readonly LK_DEPT_TABS = new Tabs([
@@ -156,7 +158,7 @@ export class ConstantsService {
   public readonly LK_PARTNERS_TABS = new Tabs([
     {
       id: 'partners',
-      name: 'TABS.ORDERS.TITLE',
+      name: 'TABS.PARTNERS_ORDERS.TITLE',
       url: '/lk/orders/all',
       mnemonic: 'partnersOrders'
     }, {
@@ -363,6 +365,12 @@ export class ConstantsService {
       id: 'statements',
       name: 'PROFILE.TABS.STATEMENTS',
       url: '/profile/statements',
+      access: ['AL20']
+    },
+    {
+      id: 'empowerments',
+      name: 'PROFILE.TABS.EMPOWERMENTS',
+      url: '/profile/empowerments',
       access: ['AL20']
     },
     {
@@ -892,6 +900,7 @@ export class ConstantsService {
     [key: string]: DocumentType
   } = {
     MEDICAL_POLICY: 'MDCL_PLCY',
+    MEDICAL_POLICY_OLD: 'MDCL_PLCY_OLD',
     FOREIGN_PASSPORT: 'FRGN_PASS',
     DRIVING_LICENCE: 'RF_DRIVING_LICENSE',
     PASSPORT: 'RF_PASSPORT',
@@ -923,7 +932,8 @@ export class ConstantsService {
     DIVORCE_CERT: 'DIVORCE_CERT',
     SELF_EMPLOYED: 'SELF_EMPLOYED',
     DISABLED_PERSON: 'DISABLED_PERSON',
-    PARKING_PERMIT: 'REESTR_INVALIDOV'
+    PARKING_PERMIT: 'REESTR_INVALIDOV',
+    MEDICAL_ORG: 'MEDICAL_ORG'
   };
 
   public readonly FID_DOCUMENT_TYPES: DocumentType[] = [
@@ -985,12 +995,13 @@ export class ConstantsService {
   };
 
   public readonly ADDRESS_TYPE: {
-    [key: string]: 'PLV' | 'PRG' | 'OPS' | 'OLG'
+    [key: string]: 'PLV' | 'PRG' | 'OPS' | 'OLG' | 'PTA'
   } = {
     PLV: 'PLV',
     PRG: 'PRG',
     OPS: 'OPS',
-    OLG: 'OLG'
+    OLG: 'OLG',
+    PTA: 'PTA'
   };
 
   public readonly ELECTION_COMMON_DATE_FORMAT = 'DD.MM.YYYY';

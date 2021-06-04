@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { LoadService } from '../load/load.service';
 import { CookieService } from '../cookie/cookie.service';
 import { SearchService } from '../search/search.service';
 import { FrameType, MainPageContentInterface } from '../../models';
+import { IMainData } from '../../models/main-data.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class MainPageService {
   public config = this.loadService.config;
   public user = this.loadService.user;
   public executed = false;
-  public cfgData: any; // TODO: интерфейс
+  public mainBlocksData: IMainData;
   private mainBgType: BehaviorSubject<string> = new BehaviorSubject<string>('person');
   public mainBgType$ = this.mainBgType.asObservable();
 
@@ -73,11 +74,11 @@ export class MainPageService {
     return personType;
   }
 
-  public getCfgData(): any {
-    if (this.cfgData) {
-      return of(this.cfgData);
+  public getMainBlocksData(): Observable<IMainData> {
+    if (this.mainBlocksData) {
+      return of(this.mainBlocksData);
     }
-    return this.http.get(`${this.loadService.config.portalCfgUrl}main-page-data.json?_=${Math.random()}`, {
+    return this.http.get<IMainData>(`${this.loadService.config.mainBlocksData}?type=person&_=${Math.random()}`, {
       withCredentials: true
     });
   }

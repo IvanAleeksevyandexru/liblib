@@ -4,7 +4,7 @@ import {
   EventEmitter,
   HostListener,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy,
   OnInit,
   Output, SimpleChanges,
   ViewChild
@@ -15,13 +15,15 @@ import { LookupComponent } from '../lookup/lookup.component';
 import { SearchService } from '../../services/search/search.service';
 import { LoadService } from '../../services/load/load.service';
 import { ConstantsService } from '../../services';
+import { SharedService } from '../../services/shared/shared.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'lib-search-sputnik',
   templateUrl: './search-sputnik.component.html',
   styleUrls: ['./search-sputnik.component.scss']
 })
-export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges {
+export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
   @Input() public hideToIcon = false;
   @Input() public placeholder = 'Например: пособие 3-7 лет подробнее';
@@ -30,10 +32,12 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
   @Input() public cachedResponse?: boolean;
   @Input() public staticList?: boolean;
   @Input() public mainPageStyle = false;
+  @Input() public removeTags = false;
   @Input() public hideSearchResult = false;
   @Input() public setFocus = false;
   @Input() public setSearchValue = '';
   @Input() public disableSputnikData = false;
+  @Input() public highlightSubstring = true;
   @Input() public searchQuery = '';
   // активация автоматического перевода с английского
   @Input() public enableLangConvert = false;
@@ -63,6 +67,8 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
     return (item?.originalItem) || null;
   });
 
+  private sharedSubscription: Subscription;
+
   @ViewChild('searchBox') private searchBox;
   @ViewChild('lookup') public lookup: LookupComponent;
 
@@ -72,11 +78,13 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
     }
   }
 
-  constructor(private searchService: SearchService,
-              private loadService: LoadService) { }
+  constructor(
+    private searchService: SearchService,
+    private loadService: LoadService,
+    public sharedService: SharedService,
+  ) { }
 
   public ngOnInit() {
-
     if (this.hideToIcon) {
       this.showField = false;
     }
@@ -85,6 +93,11 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
         this.placeholder = placeholder;
       });
     }
+    this.sharedSubscription = this.sharedService.on('clearSearch').subscribe((val) => {
+      if (val && this.lookup) {
+        this.lookup.query = '';
+      }
+    });
   }
 
   public ngAfterViewInit() {}
@@ -101,9 +114,8 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
     }
   }
 
-  public toggleMagnifyingGlass() {
-    const query = this.lookup.query ? this.lookup.query.trim() : '';
-    this.showMagnifyingGlass = !query.length;
+  public ngOnDestroy(): void {
+    this.sharedSubscription.unsubscribe();
   }
 
   public formatter(item) {
@@ -161,10 +173,12 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges 
 
   public processSearchResult(list: ListItem[]): void {
     if (!this.stopSearch) {
-      const originalList = list.map(item => item.originalItem);
+      const error = list.length === 1 && list[0].originalItem.error;
+      const originalList = error ? [] : list.map(item => item.originalItem);
       this.sputnikSearchResult.emit({
         query: this.lookup.query,
-        originalList
+        originalList,
+        error
       });
     }
   }

@@ -2,7 +2,7 @@ html {
   height: 100%;
   overflow-x: hidden;
 
-  &.disable-scroll, &.menu-catalog-opened {
+  &.disable-scroll {
     overflow: hidden;
   }
   &.menu-catalog-opened {
@@ -305,6 +305,10 @@ ul.list-decimal {
     flex-wrap: wrap;
   }
 
+  .flex-nowrap#{$prefix} {
+    flex-flow: nowrap;
+  }
+
   .flex-row-wrap#{$prefix} {
     flex-flow: row wrap;
   }
@@ -514,7 +518,20 @@ ul.list-decimal {
   justify-content: center;
 }
 
+.hide-scroll{
+  overflow-y: hidden;
+}
+
 @media all and (min-width: 768px) {
+  .hide-scroll{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow-y: scroll!important;
+    z-index: 10;
+  }
   .balloon-button {
     width: auto;
     &.wide {
@@ -527,6 +544,17 @@ ul.list-decimal {
   }
 }
 @media all and (min-width: 1140px) {
+  html{
+    &.main-menu-catalog-opened{
+      position: fixed;
+      width: 100%;
+      top:0;
+      left: 0;
+      height: 100%;
+      overflow-y: scroll !important;
+      z-index: 10;
+    }
+  }
   .balloon-button {
     &.font-13{
       font-size: 13px;

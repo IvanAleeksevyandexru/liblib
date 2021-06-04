@@ -295,7 +295,7 @@ export class HelperService {
     }
   }
 
-  public static convertEpguDadataAddressToEsiaAddress(dadataAddress: DadataResult, type: 'PLV' | 'PRG' | 'OPS' | 'OLG'): Address {
+  public static convertEpguDadataAddressToEsiaAddress(dadataAddress: DadataResult, type: 'PLV' | 'PRG' | 'OPS' | 'OLG' | 'PTA'): Address {
     return {
       type,
       countryId: 'RUS',
@@ -538,6 +538,19 @@ export class HelperService {
     const baseUrl = url && urlIsCompound ? (url as any).url : url;
     const givenUrl = HelperService.relativeUrlToAbsolute(baseUrl);
     return window.location.href.startsWith(givenUrl);
+  }
+
+  // метод отправляет в буфер data
+  public static toClipboard(data: any, successCallback = () => {}): void {
+    const listener = (e: ClipboardEvent) => {
+      const clipboard = e.clipboardData || (window as any).clipboardData;
+      clipboard.setData('text', data);
+      successCallback();
+      e.preventDefault();
+    };
+    document.addEventListener('copy', listener, false);
+    document.execCommand('copy');
+    document.removeEventListener('copy', listener, false);
   }
 
   // переходит по ссылке (относительной или абсолютной) структурированной как объект или как строка

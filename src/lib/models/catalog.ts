@@ -1,11 +1,37 @@
+
 export interface PopularFederal {
-  id: number;
   code: string;
-  title: string;
   description: string;
-  icons: Icon[];
-  children: Children[];
-  passports: PassportChildren[];
+  icons?: CatalogServiceIcon[];
+  elements?: CatalogServiceElement[];
+  categories?: CatalogServiceCategory[];
+  name: string;
+  orderNumber?: number;
+  parentCode?: string;
+}
+
+export interface CatalogServiceCategory {
+  code: string;
+  parentCode: string;
+  name: string;
+  orderNumber?: number;
+  icons: CatalogServiceIcon[];
+  elements: CatalogServiceElement[];
+  otherPopularMore?: any;
+}
+
+export interface CatalogServiceElement {
+  code: number;
+  description?: string;
+  icons?: CatalogServiceIcon[];
+  name: string;
+  type: string;
+  url: string;
+}
+
+export interface CatalogServiceIcon {
+  url: string;
+  type: string;
 }
 
 export interface Icon {
@@ -19,6 +45,8 @@ export interface Children {
   title: string;
   parentId: number;
   passports: PassportChildren[];
+  icons?: Icon[];
+  otherPopularMore?: any;
 }
 
 export interface PassportChildren {
@@ -38,19 +66,11 @@ export interface PassportChildren {
 }
 
 export interface RegionalPopular {
-  admLevel: number;
-  catalogTitle: string;
-  descr: string;
-  epguId: string;
-  epguPassport: boolean;
-  id: string;
-  isHab: boolean;
-  pId: number;
-  passportType: string;
-  shortTitle: string;
-  stateStructure: string;
-  stateStructureId: string;
-  title: string;
+  type: string;
+  code: string;
+  name: string;
+  orderNumber: number;
+  url: string;
 }
 
 export interface Faqs {
@@ -116,3 +136,75 @@ export interface NewsItem {
   iconAlt: string;
 }
 
+export interface DepartmentsData {
+  letter?: string;
+  more?: any;
+  data: Departments[];
+}
+
+export interface Departments {
+  code: string;
+  name: string;
+  more?: any;
+  orderNumber: number;
+  icons?: CatalogServiceIcon[];
+  objects: CatalogServiceDepartment[];
+}
+
+export interface CatalogServiceDepartment {
+  type: string;
+  code: string;
+  name: string;
+  orderNumber: number;
+  url: string;
+}
+
+export interface FaqCategories {
+  faqCategories?: {
+    items: FaqCategoriesItem[];
+  }
+}
+
+export interface FaqCategoriesCMS {
+  children: FaqCategoriesCMSChildren[];
+  code: string;
+  faqs: FaqCategoriesCMSFaq[];
+  id: number;
+  orderNumber: number;
+  parentId: number;
+  title: string;
+  faqsMore?: any;
+}
+
+export interface FaqCategoriesCMSChildren {
+  code: string;
+  faqs: FaqCategoriesCMSFaq[];
+  id: number
+  orderNumber: number;
+  parentId: number;
+  title: string;
+}
+
+export interface FaqCategoriesCMSFaq {
+  answer: string;
+  categoryCode: string;
+  categoryId: number;
+  code: string;
+  id: number;
+  orderNumber: number;
+  personType: string[];
+  question: string;
+  shortAnswer: string;
+  shortQuestion?: string;
+  active?: boolean;
+}
+
+export interface CatalogData{
+  ico: string;
+  title: string;
+  code: string;
+  active?: boolean;
+  mainActive?: boolean;
+  sideActive?: boolean;
+  viewType?: string;
+}

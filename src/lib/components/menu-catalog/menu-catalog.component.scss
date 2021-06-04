@@ -6,13 +6,41 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  &.mt {
+    margin-top: 58px;
+  }
 }
+
 .digital-assistant-link{
   display: block;
   padding: 16px;
-  color: #fff;
-  background: linear-gradient(133.89deg, #322D6F 20.92%, #191240 81.4%);
+  position: relative;
+  background: #fff;
+  box-shadow: 0 2px 2px rgba(157, 172, 207, 0.08);
+  z-index: 13;
+
+  &:after{
+    content: '';
+    display: block;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    pointer-events: none;
+    background: url('../../../assets/svg/search-icons/search-blue.svg') 0 0 no-repeat;
+    background-size: cover;
+    right: 16px;
+    top: 16px;
+  }
+  &.lower-z {
+    z-index: 11;
+  }
 }
+
+.hide-important {
+  display: none !important;
+}
+
 .content-overlay {
   transform: rotate3d(0,0,0,0deg);
 }
@@ -29,11 +57,11 @@
   width: 100%;
   transition: background .15s ease;
 }
+
 .catalog-help{
-  border-top: 1px solid rgba(16, 24, 40, 0.1);
-  padding: 16px 18px;
-  background: #fff;
+  padding: 16px;
 }
+
 .catalog-help-link{
   font-size: 16px;
   line-height: 24px;
@@ -61,29 +89,56 @@
     background-image: url('../../../assets/svg/close.svg');
   }
 }
-.catalog-menu{
-  height: 100vh;
-  max-height: 100vh;
+.catalog-menu {
+  height: 100%;
+  max-height: 100%;
   overflow-y: auto;
   position: fixed;
-  left: -100vw;
-  top: 64px;
-  transition: left 250ms ease-in 0s;
+  top: 0;
+  left: 0;
+  transition: transform 250ms ease-in;
   z-index: 10;
-  transform: rotate3d(0,0,0,0deg);
+  transform: translate3d(-100vw,64px,0);
+  background-color: #ffffff;
+  will-change: tranform;
+  pointer-events: none;
   &.show{
-    height: 100vh;
-    max-height: 100vh;
     overflow: hidden;
-    position: fixed;
+    pointer-events: auto;
     left: 0;
-    width: 100%;
-    display: block;
-    top: -64px;
     bottom: 0;
-    transform: translateY(64px);
-    transition: left 250ms ease-out;
-    z-index: 10;
+    transform: translate3d(0,64px,0);
+    transition: transform 150ms ease-out;
+  }
+
+  .back-language {
+    border-bottom: 1px solid #E1E1E1;
+    border-top: 1px solid #E1E1E1;
+    padding: 16px 17px;
+    left: 0;
+    max-height: 58px;
+    width: 320px;
+    position: fixed;
+    a {
+      padding-left: 38px;
+      position: relative;
+
+      &:before {
+        content: '';
+        position: absolute;
+        width: 11px;
+        height: 6px;
+        top: 0;
+        left: 0;
+        margin-top: 10px;
+        background: url(../../../assets/svg/arrows/arrow_black.svg) no-repeat;
+        transform: rotate(90deg);
+      }
+    }
+
+    @media all and (max-width: 767px){
+      width: 100vw;
+    }
   }
 }
 .sub-catalog{
@@ -106,9 +161,6 @@
     left: 320px;
     width: 850px;
     transition: left 250ms ease-out;
-    &.empty-region-popular {
-      width: 425px;
-    }
   }
 }
 .catalog-menu-header{
@@ -138,6 +190,7 @@
   }
   .catalog-menu.show, .sub-catalog{
     top: 0;
+    width: 100%;
   }
   .sub-catalog.show {
     display: block;
@@ -146,6 +199,12 @@
   }
   .content-overlay{
     display: none;
+  }
+  .back-language{
+    position: fixed;
+    z-index: 12;
+    background: #fff;
+    top: 0;
   }
 }
 @media (min-width: 768px) and (max-width: 1139px) {
@@ -160,7 +219,15 @@
     border-radius: 0;
   }
   .catalog-menu{
-    top: 0;
+    transform: translate3d(-100vw,0,0);
+    &.show{
+      transform: none;
+    }
+    .back-language{
+      top: 64px;
+      z-index: 12;
+      background: #fff;
+    }
   }
 }
 @media (min-width: 768px) {
@@ -189,12 +256,16 @@
     &.show-with-sub {
       left: 1204px;
     }
-    &.show-with-empty-region-popular{
+    &.show-with-sub.show-with-empty-region-popular{
       left: 784px;
     }
   }
 }
 @media (max-width: 1139px) {
+  .catalog-menu-content{
+    overflow: auto;
+    height: calc(100% - 120px);
+  }
   .sub-catalog.show{
     top: -64px;
   }
@@ -206,5 +277,23 @@
     align-items: center;
     height: 64px;
     padding: 0 16px;
+  }
+}
+@media (min-width: 1140px) {
+  .catalog-menu-icon:hover{
+    filter: invert(35%) sepia(99%) saturate(4975%) hue-rotate(218deg) brightness(96%) contrast(92%);
+  }
+  .catalog-menu{
+    transform: translate3d(-100vw,0,0);
+    &.show{
+      transform: none;
+    }
+  }
+  .sub-catalog{
+    &.show{
+      &.empty-region-popular {
+        width: 425px;
+      }
+    }
   }
 }

@@ -286,6 +286,24 @@
         background-image: url(../../../assets/svg/menu-icons/aim.svg);
         margin-right: 0;
       }
+      &.clerk {
+        background-image: url(../../../assets/svg/menu-icons/clerk.svg);
+      }
+      &.power {
+        background-image: url(../../../assets/svg/menu-icons/power.svg);
+      }
+      &.enter {
+        background-image: url(../../../assets/svg/menu-icons/enter.svg);
+      }
+      &.folders {
+        background-image: url(../../../assets/svg/menu-icons/folders.svg);
+      }
+      &.letter {
+        background-image: url(../../../assets/svg/menu-icons/letter.svg);
+      }
+      &.clock {
+        background-image: url(../../../assets/svg/menu-icons/clock.svg);
+      }
     }
   }
 }
@@ -422,4 +440,25 @@ $PAD: 768px;
       }
     }
   }
+}
+
+@media all and (min-width: 1140px) {
+  .user-menu {
+    .menu-desk.container{
+      .user-menu-links-wrap {
+        padding: 0;
+        .item{
+          margin-bottom: 0;
+          display: flex;
+          padding: 16px;
+          align-items: center;
+          cursor: pointer;
+          &:hover{
+            background-color: #EDF2FE;
+          }
+        }
+      }
+    }
+  }
+
 }

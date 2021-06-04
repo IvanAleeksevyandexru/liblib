@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { LoadService } from '../../services/load/load.service';
 import { SharedService } from '../../services/shared/shared.service';
 import { Subscription } from 'rxjs';
+import { CatalogData } from '../../models/catalog';
 
 @Component({
   selector: 'lib-catalog-tabs',
@@ -10,7 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class CatalogTabsComponent implements OnInit, OnDestroy {
 
-  @Input() public catalog: any;
+  @Input() public catalog: CatalogData[];
   @Input() public mobile: boolean;
 
   public showCatalogTabItem: boolean;
@@ -36,7 +37,12 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
 
   public closeCatalog() {
     this.closeAllTabs();
+    this.toggleScroll(false);
     this.showCatalogTabItem = false;
+  }
+
+  public toggleScroll(menuOpened: boolean) {
+    document.getElementsByTagName('html')[0].classList.toggle('main-menu-catalog-opened', menuOpened);
   }
 
   public catalogTabListItemClick(item: any) {
@@ -45,6 +51,7 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
 
     if (item.mainActive) {
       item.mainActive = false;
+      this.toggleScroll(false);
       return;
     }
 
@@ -52,6 +59,7 @@ export class CatalogTabsComponent implements OnInit, OnDestroy {
 
     item.mainActive = !item.mainActive;
 
+    this.toggleScroll(item.mainActive);
     this.currentCategoryCode = item.code;
     this.showCatalogTabItem = item.mainActive;
   }

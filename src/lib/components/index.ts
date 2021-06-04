@@ -36,7 +36,6 @@ export * from './gosbar/gosbar.component';
 export * from './header/header.component';
 export * from './hidden-tooltip/hidden-tooltip.component';
 export * from './image-slider/image-slider.component';
-export * from './info-card/info-card.component';
 export * from './informer/informer.component';
 export * from './integration-base/integration-base.component';
 export * from './invalid-results-tip/invalid-results-tip.component';
@@ -87,7 +86,7 @@ export * from './virtual-scroll/virtual-scroll.component';
 export * from './small-footer/small-footer.component';
 export * from './social-links/social-links.component';
 export * from './button-for-input/button-for-input.component';
-
+export * from './search-sputnik/search-sputnik.component';
 export * from './menu-catalog/menu-catalog.component';
 export * from './menu-catalog-simple/menu-catalog-simple.component';
 export * from './catalog-tabs-list/catalog-tabs-list.component';
@@ -95,4 +94,7 @@ export * from './catalog-tabs/catalog-tabs.component';
 export * from './catalog-tab-item/catalog-tab-item.component';
 
 export * from './user-roles/user-roles.component';
+export * from './region-cases/region-cases.component';
+
+
 
