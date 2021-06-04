@@ -23,6 +23,8 @@ import {
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { FileUploaderService } from '../../services/file-uploader/file-uploader.service';
+import { v4 as uuidv4 } from 'uuid';
+
 
 const FILE_TYPES = ['png', 'jpg', 'jpeg', 'bmp', 'tif', 'gif', 'key', 'ppt', 'pdf', 'rar', 'zip', 'doc', 'txt', 'rtf', 'flv', 'mov', 'mpg', 'sig', 'xml'];
 
@@ -64,13 +66,14 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
   // типы файлов строка через , без пробелов
   // png,jpg
   @Input() public fileTypes?: string;
-  @Input() public maxLength?: number;
+  @Input() public maxFilesLength?: number;
   // в байтах максимальный размер
   // 5Mb = 10485760 = 5 * 1024 * 1024
   @Input() public maxFileSize?: number;
   @Input() public orderId?: number;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public storageServiceUrl = '';
+  @Input() public uploadMnemonicPrefix = '';
 
   @ViewChild('fileInput', {static: false}) public fileInput: ElementRef;
 
@@ -102,7 +105,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
       if (!existingFile && checkType) {
         const name = unescape(encodeURIComponent(event[i].name));
         const file: FileUpload = {
-          mnemonic: btoa(name),
+          mnemonic: this.getFileMnemonicByPrefix(this.uploadMnemonicPrefix),
           uploadInProcess: needUploadToServer,
           name: event[i].name,
           size: event[i].size,
@@ -226,9 +229,14 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
   }
 
   public checkFilesLength(length) {
-    if (this.maxLength) {
-      return length <= this.maxLength;
+    const filesLength = this.files ? this.files.length : 0;
+    if (this.maxFilesLength) {
+      if (filesLength + length > this.maxFilesLength) {
+        this.errorMessage = `Максимальное количество файлов: ${this.maxFilesLength}`;
+        return false;
+      }
     }
+
     return true;
   }
 
@@ -305,5 +313,10 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     const i = Math.floor(Math.log(bytes) / Math.log(k));
 
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+
+  public getFileMnemonicByPrefix(prefix) {
+    const uid = uuidv4 ? uuidv4() : '';
+    return prefix || '' + uid;
   }
 }

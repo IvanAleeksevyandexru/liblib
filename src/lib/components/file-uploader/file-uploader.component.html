@@ -19,7 +19,7 @@
   <div class="error-upload mb-24 mt-24" *ngIf="errorMessage">{{errorMessage}}</div>
 
   <div class="chose-dnd" libDragAndDrop (filesDropped)="onFilesDropped($event)">
-    <p class="text-center mb-12">Перетащите файлы или выберите на компьютере</p>
+    <p class="text-center mb-12">Перетащите {{maxFilesLength === 1 ? 'файл' : 'файлы'}} или выберите на компьютере</p>
     <p class="text-center">
       <span class="select-file" (click)="fileInput.click()">
         Выбрать файл

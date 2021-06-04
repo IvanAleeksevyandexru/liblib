@@ -136,3 +136,8 @@
     }
   }
 }
+@media all and (max-width: 767px) {
+  .file-uploader .chose-dnd {
+    padding: 24px 48px;
+  }
+}
