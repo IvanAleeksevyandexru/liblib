@@ -217,14 +217,12 @@ export class FeedsService {
         url += 'settings/social';
         break;
       case 'ACCOUNT':
+      case 'PROFILE':
         if (feed.data && feed.data.linked_to) {
           url += `${feed.data.linked_to}`;
         } else {
           url += 'settings/account';
         }
-        break;
-      case 'PROFILE':
-        url += 'settings/account';
         break;
       case 'ORGANIZATION':
       case 'BUSINESSMAN':
