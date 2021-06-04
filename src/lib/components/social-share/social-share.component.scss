@@ -62,10 +62,25 @@
 
   .new-social-links {
     margin-top: 16px;
-    width: 128px;
+    width: 182px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    .new-social-link {
+      &.vk img {
+        width: 33px;
+        height: 20px;
+      }
+      &.ok img, &.fb img {
+        width: 25px;
+        height: 24px;
+      }
+      &.tg img {
+        width: 24px;
+        height: 21px;
+      }
+    }
   }
 
   &.disabled {
@@ -94,7 +109,7 @@
     flex-direction: row;
 
     .new-social-links {
-      flex: 1 0 128px;
+      flex: 1 0 182px;
       width: 100%;
       margin-top: 0;
       margin-left: 32px;

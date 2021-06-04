@@ -30,7 +30,7 @@
       "PERMISSIONS": "Согласия",
       "HELP": "Помощь",
       "HELP_SUPPORT": "Помощь и поддержка",
-      "DIGITAL_ASSISTANT": "Цифровой ассистент",
+      "DIGITAL_ASSISTANT": "Найти информацию",
       "PARTNERS_ORDERS": "Уведомления",
       "SUBSCRIPTIONS": "Подписки",
       "HISTORY": "История операций"
@@ -38,6 +38,9 @@
     "CATALOG": {
       "ALL": "Весь каталог",
       "CLOSE": "Закрыть"
+    },
+    "CHANGE_LANGUAGE": {
+      "CHANGE": "Выбор языка"
     }
   },
   "FOOTER": {
@@ -449,8 +452,14 @@
   },
   "BACK": "Назад",
   "LANG": {
-    "ru": "RUS",
-    "en": "GBR"
+    "SHORT": {
+      "ru": "RUS",
+      "en": "ENG"
+    },
+    "FULL": {
+      "ru": "Русский",
+      "en": "English"
+    }
   },
   "SUGGEST" : {
     "TITLE" : "Вы ранее заполняли",

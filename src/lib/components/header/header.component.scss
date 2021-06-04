@@ -93,7 +93,14 @@
     width: 36px;
     height: 36px;
     cursor: pointer;
-    background-image: url(../../../assets/svg/question.svg);
+    border-radius: 22px;
+    font-weight: bold;
+    color: #fff;
+    font-size: 19px;
+    line-height: 36px;
+    background: rgba(29, 93, 235, 0.18);
+    justify-content: center;
+    
   }
 
   //.notifications {
@@ -234,6 +241,10 @@
     }
     .show-lg {
       display: flex;
+    }
+    .search-icon:hover{
+      background: rgba(29, 93, 235, 0.18);
+      color: #1D5DEB;
     }
   }
   //.notifications {
