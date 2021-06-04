@@ -119,12 +119,12 @@
       <div class="avatar-n-location-container flex-container justify-end align-items-center"
            [class.catalog-menu-opened]="menuCatalogOpened">
         <div class="hide show-lg ml-lg-64">
-          <lib-location-select></lib-location-select>
+          <lib-location-select skinTheme="empty"></lib-location-select>
         </div>
         <a *ngIf="!user.authorized"
            href="{{loadService.config.betaUrl}}help"
            target="_self"
-           class="search-icon hide show-lg ml-lg-20">
+           class="search-icon hide show-lg ml-lg-20">?
         </a>
         <div class="ml-lg-20">
           <div class="login-wrapper">

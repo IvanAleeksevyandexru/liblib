@@ -87,7 +87,7 @@ export * from './virtual-scroll/virtual-scroll.component';
 export * from './small-footer/small-footer.component';
 export * from './social-links/social-links.component';
 export * from './button-for-input/button-for-input.component';
-
+export * from './search-sputnik/search-sputnik.component';
 export * from './menu-catalog/menu-catalog.component';
 export * from './menu-catalog-simple/menu-catalog-simple.component';
 export * from './catalog-tabs-list/catalog-tabs-list.component';

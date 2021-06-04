@@ -81,7 +81,6 @@ export class MenuService {
     const appContext = this.loadService.attributes.appContext;
     const lkUrl = appContext === 'LK' ? '/' : this.loadService.config.lkUrl;
     const portalUrl = appContext === 'PORTAL' ? '/' : this.loadService.config.betaUrl;
-    const payHost = appContext === 'PAYMENT' ? '/' : this.loadService.config.oplataUrl;
     const partnersHost = appContext === 'PARTNERS' ? '/' : this.loadService.config.partnersUrl;
 
     return {
@@ -90,7 +89,7 @@ export class MenuService {
       'HEADER.MENU.HELP': `${portalUrl}help`,
       'HEADER.MENU.NOTIFICATIONS': `${lkUrl}overview`,
       'HEADER.MENU.ORDERS': `${lkUrl}orders/all`,
-      'HEADER.MENU.PAYMENT': `${payHost}pay`,
+      'HEADER.MENU.PAYMENT': `${portalUrl}pay`,
       'HEADER.MENU.DOCS': `${lkUrl}profile/personal`,
       'HEADER.MENU.PERMISSIONS': `${lkUrl}permissions`,
       'HEADER.MENU.SETTINGS': `${lkUrl}settings/account`,

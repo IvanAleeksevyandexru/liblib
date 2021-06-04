@@ -1,6 +1,7 @@
 .popup {
   padding: 0;
   .close {
+    z-index: 1;
     &:before, &:after {
       background-color: #FFFFFF;
     }
@@ -8,10 +9,16 @@
 }
 
 .popup-head {
-  background: url("../../../assets/img/mail-delivery/ezp-image-mob.png") rgb(16, 39, 55) 100% no-repeat;
   width: 100%;
   height: 200px;
-  background-size: contain;
+  background-color: #102738;
+  overflow: hidden;
+  position: relative;
+  img {
+    max-height: 100%;
+    position: absolute;
+    right: 16px;
+  }
 }
 
 .popup-body {
@@ -64,11 +71,14 @@
   }
 
   .popup-head {
-    background: url("../../../assets/img/mail-delivery/ezp-image-tab.png") no-repeat;
     width: 100%;
     height: 234px;
     display: flex;
     align-items: center;
+    border-radius: 4px 4px 0 0;
+    img {
+      right: 52px;
+    }
   }
 
   .popup-body {
@@ -96,7 +106,6 @@
   }
 
   .popup-head {
-    background: url("../../../assets/img/mail-delivery/ezp-image-dk.png") no-repeat;
     width: 100%;
     height: 234px;
     display: flex;
@@ -110,5 +119,6 @@
 
   .popup-title {
     max-width: 60%;
+    position: absolute;
   }
 }

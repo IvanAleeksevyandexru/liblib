@@ -1,23 +1,18 @@
 <div class="select-container" libClickOutside (clickOutside)="toggleList(false)">
   <div class="selected-item small-text flex-container align-items-center" (click)="toggleList(true)">
     <img src="{{staticDomainLibAssetsPath}}svg/languages/{{activeItem}}.svg" alt="" class="mr-8">
-    <span>{{'LANG.' + activeItem | libTranslate}}</span>
+    <span>{{'LANG.SHORT.' + activeItem | libTranslate}}</span>
   </div>
 
   <div class="hide-lg">
     <div class="language-view-wrapper" [ngClass]="{'show-view': showList}">
       <div class="language-view">
         <div class="links">
-          <div class="item back flex-container justify-between align-items-center">
-            <a (click)="toggleList()" class="title-h6">
-              {{'HEADER.CHANGE_LANGUAGE.CHANGE' | libTranslate}}
-            </a>
-          </div>
           <div *ngFor="let lang of languages"
                class="item small-text flex-container align-items-center"
                (click)="selectLang(lang)">
             <img src="{{staticDomainLibAssetsPath}}svg/languages/{{lang}}.svg" alt="" class="mr-8">
-            <span>{{'LANG.' + lang | libTranslate}}</span>
+            <span>{{'LANG.FULL.' + lang | libTranslate}}</span>
           </div>
         </div>
       </div>
@@ -29,7 +24,7 @@
       <div class="lang-list__item" (click)="toggleList(false)">
         <div class="lang-ist__item-content small-text flex-container align-items-center">
           <img src="{{staticDomainLibAssetsPath}}svg/languages/{{activeItem}}.svg" alt="" class="mr-8">
-          <span>{{'LANG.' + activeItem | libTranslate}}</span>
+          <span>{{'LANG.SHORT.' + activeItem | libTranslate}}</span>
         </div>
       </div>
       <ng-container *ngFor="let lang of languages">
@@ -38,7 +33,7 @@
              class="lang-list__item">
           <div class="lang-ist__item-content small-text flex-container align-items-center">
             <img src="{{staticDomainLibAssetsPath}}svg/languages/{{lang}}.svg" alt="" class="mr-8">
-            <span>{{'LANG.' + lang | libTranslate}}</span>
+            <span>{{'LANG.SHORT.' + lang | libTranslate}}</span>
           </div>
         </div>
       </ng-container>

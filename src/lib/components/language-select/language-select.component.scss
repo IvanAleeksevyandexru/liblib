@@ -30,48 +30,33 @@
   height: calc(100% - 56px);
   max-height: 100vh;
   position: fixed;
-  left: -100vw;
+  top: 0;
+  left: 0;
   width: 100%;
-  top: 0px;
-  transition: left 250ms ease-in 0s;
-  transform: rotate3d(0,0,0,0deg);
+  transition: transform 250ms ease-in;
+  transform: translate3d(-100vw,56px,0);
   overflow: hidden;
-
+  will-change: transform;
   &.show-view {
-    left: 0;
+    transform: translate3d(0,56px,0);
+    transition: transform 150ms ease-out;
   }
 
   .language-view {
     .links {
       .item {
         padding: 16px;
-
-        &.back {
-          border-bottom: 1px solid #E1E1E1;
-
-          a {
-            padding-left: 38px;
-            position: relative;
-
-            &:before {
-              content: '';
-              position: absolute;
-              width: 11px;
-              height: 6px;
-              top: 0;
-              left: 0;
-              margin-top: 10px;
-              background: url(../../../assets/svg/arrows/arrow_black.svg) no-repeat;
-              transform: rotate(90deg);
-            }
-          }
-        }
       }
     }
   }
 
   @media all and (min-width: 768px) {
-    top: 64px;
+    top: 0;
+    width: 320px;
+    transform: translate3d(-320px,124px,0);
+    &.show-view {
+      transform: translate3d(0,124px,0);
+    }
   }
 }
 

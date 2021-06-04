@@ -19,6 +19,11 @@
      [href]="loadService.config.betaUrl + 'newsearch'">
     {{'HEADER.MENU.DIGITAL_ASSISTANT' | libTranslate}}
   </a>
+  <div class="back-language flex-container justify-between align-items-center hide-lg">
+    <a class="title-h6">
+      {{'HEADER.CHANGE_LANGUAGE.CHANGE' | libTranslate}}
+    </a>
+  </div>
   <div class="catalog-menu-content">
     <div class="flex-1" *ngIf="catalog?.length" [class.hide]="!showMenu">
       <lib-catalog-tabs-list
