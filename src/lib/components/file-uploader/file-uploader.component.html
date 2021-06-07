@@ -2,10 +2,26 @@
   <div class="mb-24" *ngFor="let file of files; let i = index;">
     <div class="file">
       <span class="icon {{file.error ? 'err' : extension(file.name)}}"></span>
-      {{file.name}}&nbsp;
+      <div class="name" title="{{file.name}}">
+        <span>{{file.name}}</span>
+        <div class="hide-md show-sm" *ngIf="file.size">
+          <span class="achievement-file-size gray">{{file.size | fileSize}}</span>
+        </div>
+      </div>
       <ng-container *ngIf="!file.uploadInProcess">
-        <span class="size ml-8" *ngIf="file.size">|&nbsp;&nbsp;{{formatBytes(file.size)}}</span>
-        <span class="delete" (click)="remove(i);">Удалить</span>
+        <div class="flex-1-0" *ngIf="file.size">
+          <div class="hide-sm">
+            <span class="size ml-8" *ngIf="file.size">|&nbsp;&nbsp;{{formatBytes(file.size)}}</span>
+          </div>
+        </div>
+        <div class="flex-1-0 text-right">
+          <a class="hide-sm delete" (click)="onDeleteSavedFile(file.mnemonic)">Удалить</a>
+          <a
+            title="Удалить"
+            class="hide-md show-sm delete"
+            (click)="remove(i);">
+          </a>
+        </div>
       </ng-container>
       <ng-container *ngIf="file.uploadInProcess">
         <lib-throbber [size]="'throbber-small'"></lib-throbber>
