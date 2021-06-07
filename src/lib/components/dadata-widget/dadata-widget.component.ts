@@ -91,6 +91,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   @Input() public converter?: ListItemConverter;
 
   @Input() public suggest?: Suggest;
+  @Input() public suggestSeparator = ' ';
 
   @Output() public focus = new EventEmitter<any>();
   @Output() public blur = new EventEmitter<any>();

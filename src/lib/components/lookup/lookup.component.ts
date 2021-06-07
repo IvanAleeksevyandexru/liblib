@@ -78,7 +78,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   @Input() public cachedResponse?: boolean;
   @Input() public staticList?: boolean;
   @Input() public suggest?: Suggest;
-
+  @Input() public suggestSeparator = ' ';
 
   // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
   @Input() public formatter?: (item: ListItem, context: { [name: string]: any }) => string;

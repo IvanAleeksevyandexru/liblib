@@ -133,7 +133,7 @@
       <li *ngFor="let item of suggest.list" (click)="selectSuggestItem(item)">
         <p>{{item.value}}</p>
         <ng-container *ngIf="item.hints">
-          <span *ngFor="let hint of item.hints">{{hint.value}} </span>
+          <span *ngFor="let hint of item.hints; let last = last">{{hint.value}}{{!last ? suggestSeparator : ''}}</span>
         </ng-container>
       </li>
     </ul>

@@ -40,6 +40,7 @@ export class StandardMaskedInputComponent extends BaseMaskedInputComponent
   @Input() public commitOnInput = true;  // коммитить ли значение по input или по change
   @Input() public width?: Width | string;
   @Input() public suggest?: Suggest;
+  @Input() public suggestSeparator = ' ';
 
   @Input() public removeMaskSymbols: RemoveMaskSymbols | string = RemoveMaskSymbols.PLACEHOLDERS;
   @Input() public mask: (value: string) => Array<string> | Array<string | RegExp>;
