@@ -27,6 +27,18 @@ export class ModalService {
       setTimeout(() => {
         this.checkForScroll();
       });
+
+      if (!modalRules?.disableOutsideClickClosing) {
+        const elem = document.getElementsByClassName('popup-wrapper')[0];
+        if (elem) {
+          elem.addEventListener('click', ((ev: any) => {
+            if (ev.target.classList.contains('popup-wrapper')) {
+              modal.instance.destroy();
+              elem.removeEventListener('click', null);
+            }
+          }));
+        }
+      }
     }
     // ref.location.nativeElement.querySelector('.overlay').classList.add('show');
     return modal;
