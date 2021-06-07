@@ -12,27 +12,26 @@ export class TimeToEventGepsPipe implements PipeTransform {
     if (!date) {
       return '';
     }
-    const whiteSpace = hyphenation ? ' ' : '<br>';
 
+    const whiteSpace = hyphenation ? ' ' : '<br>';
     moment.locale('ru');
     const end = moment().startOf('day');
     const start = feed ? moment(date) : moment(date, 'DD.MM.YYYY HH:mm');
     let dateText;
 
     const daysDiff = end.diff(start.clone().startOf('day'), 'days');
-    const yearsDiff = end.diff(start, 'years');
+    const yearsDiff = moment().format('YYYY') === start.format('YYYY');
     const days = {
       0: 'Сегодня ',
       '-1': 'Завтра ',
       1: 'Вчера '
     };
 
-
     if (daysDiff <= 1) {
       dateText = days[daysDiff];
     }
 
-    if (yearsDiff === 0) {
+    if (yearsDiff) {
       return dateText ? dateText + whiteSpace + start.format('HH:mm') :
         start.format('DD MMMM') + whiteSpace + start.format('HH:mm');
     }

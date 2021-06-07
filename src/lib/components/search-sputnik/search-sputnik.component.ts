@@ -94,7 +94,7 @@ export class SearchSputnikComponent implements OnInit, AfterViewInit, OnChanges,
       });
     }
     this.sharedSubscription = this.sharedService.on('clearSearch').subscribe((val) => {
-      if (val) {
+      if (val && this.lookup) {
         this.lookup.query = '';
       }
     });

@@ -5,7 +5,6 @@ export interface IMainData {
   search: ISearch;
   payments: IPayment[];
   ls: ILs[];
-  'news-override': INewsOverride[];
   footer: IFooter;
 }
 
@@ -25,6 +24,7 @@ export interface ISearch {
 export interface IOffer {
   ico: string;
   title: string;
+  url: string;
 }
 
 export interface IPayment {
