@@ -10,8 +10,14 @@
     font: 16px/24px Lato, Arial, sans-serif;
     display: flex;
     justify-content: space-between;
+    min-width: 0;
     padding-left: 60px;
 
+    .name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     .size {
       color: #66727F;
     }
@@ -139,5 +145,18 @@
 @media all and (max-width: 767px) {
   .file-uploader .chose-dnd {
     padding: 24px 48px;
+  }
+  .file .delete {
+    width: 24px;
+    height: 24px;
+    background: url(../../../assets/svg/file-delete.svg) 0 0 no-repeat;
+    background-size: contain;
+    padding-left: 8px;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .file .delete {
+    padding-left: 24px;
   }
 }
