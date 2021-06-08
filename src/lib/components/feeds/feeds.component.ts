@@ -70,7 +70,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     NEW: 'in_progress',
     REQUEST: 'in_progress',
     REQUEST_ERROR: 'reject',
-    DONE: 'executed'
+    SIGN_REJECT: 'reject',
+    DONE: 'executed',
+    ERROR1: 'in_progress',
+    ERROR10: 'in_progress',
+    ERROR11: 'in_progress',
+    ERROR4: 'in_progress'
   };
   public isHeader: boolean;
 
