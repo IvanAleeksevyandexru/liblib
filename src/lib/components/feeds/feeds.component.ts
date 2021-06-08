@@ -79,6 +79,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   };
   private titlesMap = {
     DONE: 'Документы подписаны',
+    NEW: 'Запрос на подписание документов',
     REQUEST: 'Запрос на подписание документов',
     REQUEST_ERROR: 'Ошибка запроса',
     SIGN_REJECT: 'Подписание документов отклонено',
