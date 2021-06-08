@@ -77,6 +77,16 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     ERROR11: 'in_progress',
     ERROR4: 'in_progress'
   };
+  private titlesMap = {
+    DONE: 'Документы подписаны',
+    REQUEST: 'Запрос на подписание документов',
+    REQUEST_ERROR: 'Ошибка запроса',
+    SIGN_REJECT: 'Подписание документов отклонено',
+    ERROR1: 'Не удалось подписать документы',
+    ERROR10: 'Не удалось подписать документы',
+    ERROR11: 'Не удалось подписать документы',
+    ERROR4: 'Истекло время подписания документов',
+  };
   public isHeader: boolean;
 
   constructor(
@@ -169,6 +179,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
             if (!!['AL10', 'AL15'].includes(this.loadService.user.assuranceLevel)) {
               this.feeds.splice(index, 1);
             } else {
+              item.title = this.titlesMap[item.status];
               item.status = this.statusesMap[item.status] || item.status;
             }
           }
