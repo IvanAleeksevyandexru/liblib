@@ -1,11 +1,11 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="12" cy="12" r="10" stroke="#DCDEE0" stroke-width="4"/>
-<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
-<circle cx="12" cy="12" r="10" stroke="#EEEFEF" stroke-width="4"/>
-</mask>
-<g mask="url(#mask0)">
-<rect x="12.0782" y="-0.0025177" width="12.4918" height="24.2345" transform="rotate(-2.03252 12.0782 -0.0025177)" fill="#0B40B3"/>
-</g>
-<circle cx="12.2573" cy="2" r="2" fill="#0B40B3"/>
-<circle cx="12.9158" cy="21.9609" r="2" fill="#0B40B3"/>
+<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="13" cy="13" r="11" stroke="#D1D5DF" stroke-width="4"/>
+  <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="26" height="26">
+    <circle cx="13" cy="13" r="11" stroke="#E4ECFD" stroke-width="4"/>
+  </mask>
+  <g mask="url(#mask0)">
+    <rect x="13.085" y="-0.00292969" width="13.5328" height="26.254" transform="rotate(-2.03252 13.085 -0.00292969)" fill="#1D5DEB"/>
+  </g>
+  <ellipse cx="13.279" cy="2.16667" rx="2.16667" ry="2.16667" fill="#1D5DEB"/>
+  <ellipse cx="13.9919" cy="23.7917" rx="2.16667" ry="2.16667" fill="#1D5DEB"/>
 </svg>

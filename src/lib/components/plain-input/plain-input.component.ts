@@ -165,6 +165,10 @@ export class PlainInputComponent
     }
   }
 
+  public loseFocus() {
+    this.inputElement.nativeElement.blur();
+  }
+
   public handleInput(e: Event) {
     this.value = this.inputElement.nativeElement.value;
     if (this.commitOnInput) {
