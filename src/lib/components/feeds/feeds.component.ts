@@ -72,10 +72,10 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     REQUEST_ERROR: 'reject',
     SIGN_REJECT: 'reject',
     DONE: 'executed',
-    ERROR1: 'in_progress',
-    ERROR10: 'in_progress',
-    ERROR11: 'in_progress',
-    ERROR4: 'in_progress'
+    ERROR1: 'reject',
+    ERROR10: 'reject',
+    ERROR11: 'reject',
+    ERROR4: 'reject'
   };
   private titlesMap = {
     DONE: 'Документы подписаны',
@@ -180,7 +180,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
             if (!!['AL10', 'AL15'].includes(this.loadService.user.assuranceLevel)) {
               this.feeds.splice(index, 1);
             } else {
-              item.title = this.titlesMap[item.status];
+              item.title = this.titlesMap[item.status] || item.title;
               item.status = this.statusesMap[item.status] || item.status;
             }
           }
