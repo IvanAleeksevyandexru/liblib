@@ -124,7 +124,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
             formData.append('objectType', '2');
             formData.append('objectId', this.orderId.toString());
           }
-          formData.append('mnemonic', btoa(name));
+          formData.append('mnemonic', this.getFileMnemonicByPrefix(this.uploadMnemonicPrefix));
           this.saveFileToServer(formData, this.files[this.files.length - 1]);
         }
       }
@@ -317,6 +317,6 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
 
   public getFileMnemonicByPrefix(prefix) {
     const uid = uuidv4 ? uuidv4() : '';
-    return prefix || '' + uid;
+    return (prefix || '') + uid;
   }
 }
