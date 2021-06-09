@@ -95,6 +95,7 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   // при слабом коннекте запускать поиск последнего введенного значения #dadata
   @Input() public searchLastValue = false;
   @Input() public suggest?: Suggest;
+  @Input() public suggestSeparator = ' ';
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
