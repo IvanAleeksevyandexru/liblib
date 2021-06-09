@@ -23,7 +23,7 @@ import { SharedService } from '../../services/shared/shared.service';
 import { HelperService } from '../../services/helper/helper.service';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { CountersService } from '../../services/counters/counters.service';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 const moment = moment_;
 moment.locale('ru');
@@ -40,7 +40,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public isHide: boolean | null;
   @Input() public inlineDate = true;
   @Input() public snippets = false;
-  @Input() public search = '';
+  @Input() public search = this.route.snapshot.queryParamMap.get('q') || '';
   @Input() public selectedCategory: any;
   @Input() public count = 0;
   @Input() public types: string | null;
@@ -70,6 +70,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     public feedsService: FeedsService,
     public loadService: LoadService,
     public notifier: NotifierService,
@@ -84,7 +85,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public ngOnInit() {
     HelperService.mixinModuleTranslations(this.translate);
     this.getUserData();
-    if (!this.afterFirstSearch) {
+    if (!this.afterFirstSearch && !this.route.snapshot.queryParamMap.get('q')) {
       this.getFeeds();
     }
     this.updateFeeds();
@@ -135,6 +136,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getFeeds(lastFeedId: number | string = '', lastFeedDate: Date | string = '', query = '', pageSize = ''): void {
+    if (query === '') {
+      query = this.route.snapshot.queryParamMap.get('q') || '';
+    }
     this.afterFirstSearch = true;
     this.allFeedsLoaded = false;
     this.searching.emit(true);
