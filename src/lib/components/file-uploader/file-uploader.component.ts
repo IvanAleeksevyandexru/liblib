@@ -317,6 +317,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
 
   public getFileMnemonicByPrefix(prefix) {
     const uid = uuidv4 ? uuidv4() : '';
-    return (prefix || '') + uid;
+    const prefixStr = prefix || '';
+    return prefixStr + uid;
   }
 }
