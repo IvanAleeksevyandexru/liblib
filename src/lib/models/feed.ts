@@ -105,6 +105,7 @@ export interface FeedModel {
   detail?: FeedDetailModel;
   removeInProgress?: boolean;
   needAccept?: boolean;
+  servicePassportId?: string;
 }
 
 export interface FeedsModel {
