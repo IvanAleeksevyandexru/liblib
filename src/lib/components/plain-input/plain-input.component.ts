@@ -50,6 +50,7 @@ export class PlainInputComponent
   @Input() public uppercase = false;
   @Input() public width?: Width | string;
   @Input() public suggest?: Suggest;
+  @Input() public suggestSeparator = ' ';
 
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;

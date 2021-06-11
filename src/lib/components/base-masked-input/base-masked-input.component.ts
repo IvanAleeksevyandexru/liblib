@@ -58,6 +58,7 @@ export class BaseMaskedInputComponent
   @Input() public uppercase = false;
   @Input() public width?: string | Width;
   @Input() public suggest?: Suggest;
+  @Input() public suggestSeparator = ' ';
 
   // маска - это массив символов и/или регэкспов, каждый ответственен за свой символ в поле
   // пример: ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
