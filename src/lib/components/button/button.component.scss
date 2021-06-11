@@ -154,6 +154,9 @@ button::-moz-focus-inner {
 
 .button-container {
   display: block;
+  &.wide {
+    width: 100%;
+  }
 }
 
 @media all and (min-width: 768px) {
