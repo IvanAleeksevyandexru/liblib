@@ -47,6 +47,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public width?: Width | string;
   @Input() public suggest?: Suggest;
+  @Input() public suggestSeparator = ' ';
 
   // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
   @Input() public formatter?: (item: ListItem, context?: { [name: string]: any }) => string;
