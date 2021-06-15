@@ -203,7 +203,7 @@ export class LoadService {
         window.location = resp;
       });
     } else {
-      window.location.href = this.config.betaUrl + 'auth-provider/logout';
+      window.location.href = this.config.betaUrl + 'auth-provider/logout?_=' + Math.random();
     }
   }
 
