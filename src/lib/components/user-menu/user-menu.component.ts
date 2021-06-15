@@ -118,7 +118,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     } else {
       this.sendYaMetric('logout');
-      window.location.href = this.loadService.config.betaUrl + 'auth-provider/logout?_=' + Math.random();
+      window.location.href = this.loadService.config.betaUrl + 'auth/logout?_=' + Math.random();
     }
   }
 
