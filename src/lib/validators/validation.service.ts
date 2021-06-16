@@ -359,13 +359,11 @@ export class ValidationService {
     return someControlValid ? null : { formArrayInvalid: true };
   }
 
-  public static secureUrlValidator(hostnameMinLength = 5): ValidatorFn {
+  public static secureUrlValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-      const urlValidationRe = /^\s*(?:https:\/\/)([^-][a-zA-Zа-яА-Я0-9_-]*(?:\.[a-zA-Zа-яА-Я0-9_-]*[^-])+)(?:\?(?:[a-zA-Zа-яА-Я0-9_\-._~:/?#[\]@!$&'()*+,;=]*))?$|^(?:https:\/\/)([^-][а-яА-Я0-9_-]*(?:\.[а-яА-Я0-9_-]*[^-])+)(?:\?(?:[a-zA-Zа-яА-Я0-9_\-._~:/?#[\]@!$&'()*+,;=]*))?\s*$/gm;
-      const result = urlValidationRe.exec(control.value);
-      return result && ((result[1] && result[1].length >= hostnameMinLength) || (result[2] && result[2].length >= hostnameMinLength))
-        ? null
-        : { urlInvalid: true };
+      const ulrReg = /^(?:https:\/\/)(([a-zA-Zа-яА-Я\d_][a-zA-Zа-яА-Я\d_-]+)\.{1}([a-zA-Zа-яА-Я\d_-]+[a-zA-Zа-яА-Я\d_]))((\/{1}[a-zA-Zа-яА-Я\d_\-._~:?#[\]@!$&'()*+,;=]*){1})*$/i;
+      const result = ulrReg.exec(control.value);
+      return result ? null : { urlInvalid: true };
     };
   }
 

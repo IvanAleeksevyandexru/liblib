@@ -306,6 +306,7 @@
     .search-in-progress-cell {
       position: absolute;
       background: url(../../../assets/svg/search-loader.svg) 0 0 no-repeat;
+      background-size: contain;
       width: 24px;
       height: 24px;
       top: 12px;

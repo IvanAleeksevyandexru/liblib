@@ -185,13 +185,16 @@ export class ListItemsService implements OnInit, OnDestroy {
     ListItemHierarchyService.collapseNode(switchedElement, list, evt);
   }
 
-  public highlightSubstring(items: Array<ListItem>, query: string) {
+  public highlightSubstring(items: Array<ListItem>, query: string, formatContext?: { [name: string]: any }) {
     const opCtx = this.operationsContext;
-    if (items && opCtx.highlightSubstring && query) {
-      items.forEach((item: ListItem) => {
+    const formatter = this.operationsContext.formatter;
+    const listFormatter = this.operationsContext.listFormatter;
+    items.forEach((item: ListItem, index) => {
+      item.prepareFormatting(this.addIndexToCtx(formatContext, index), formatter, listFormatter);
+      if (items && opCtx.highlightSubstring && query) {
         item.prepareHighlighting(query, opCtx.highlightCaseSensitive, opCtx.highlightFromStartOnly);
-      });
-    }
+      }
+    });
   }
 
   public handleKeyboardNavigation(e: KeyboardEvent, items: Array<ListItem | AutocompleteSuggestion>,

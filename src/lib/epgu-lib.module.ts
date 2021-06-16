@@ -20,14 +20,12 @@ import { DragDropManager } from './services/drag-drop/drag-drop.manager';
 import { GridComponent } from './components/grid/grid.component';
 import { LoginComponent } from './components/login/login.component';
 import { LogoComponent } from './components/logo/logo.component';
-import { MenuComponent } from './components/menu/menu.component';
 import { UserMenuComponent } from './components/user-menu/user-menu.component';
 import { CounterComponent } from './components/counter/counter.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FooterCmsComponent } from './components/footer/footer-cms/footer-cms.component';
 import { FooterCopyrightComponent } from './components/footer/footer-copyright/footer-copyright.component';
-import { ModalSearchComponent } from './components/modal-search/modal-search.component';
 import { SliderBannerComponent } from './components/banner-slider/banner-slider.component';
 import { StaticBannerComponent } from './components/banner-static/banner-static.component';
 import { QuizComponent } from './components/quiz/quiz.component';
@@ -144,7 +142,6 @@ import { Setting } from './models/setting';
 import { MailDeliveryModalComponent } from './components/mail-delivery-modal/mail-delivery-modal.component';
 import { LocationSelectComponent } from './components/location-select/location-select.component';
 import { HeaderComponent } from './components/header/header.component';
-import { SearchSputnikComponent } from './components/search-sputnik/search-sputnik.component';
 import { FrameComponent } from './components/frame/frame.component';
 import { MenuCatalogComponent } from './components/menu-catalog/menu-catalog.component';
 import { MenuCatalogSimpleComponent } from './components/menu-catalog-simple/menu-catalog-simple.component';
@@ -160,6 +157,7 @@ import { CatalogTabsListComponent } from './components/catalog-tabs-list/catalog
 import { CatalogTabItemComponent } from './components/catalog-tab-item/catalog-tab-item.component';
 import { UserRolesComponent } from './components/user-roles/user-roles.component';
 import { RegionCasesComponent } from './components/region-cases/region-cases.component';
+import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
 
 
 registerLocaleData(localeRu, 'ru');
@@ -169,7 +167,6 @@ registerLocaleData(localeRu, 'ru');
     GridComponent,
     LoginComponent,
     LogoComponent,
-    MenuComponent,
     UserMenuComponent,
     CounterComponent,
     BreadcrumbsComponent,
@@ -179,8 +176,6 @@ registerLocaleData(localeRu, 'ru');
     FooterComponent,
     FooterCmsComponent,
     FooterCopyrightComponent,
-    ModalSearchComponent,
-    SearchSputnikComponent,
     ConfirmActionComponent,
     DocumentDetailsComponent,
     SliderBannerComponent,
@@ -309,7 +304,8 @@ registerLocaleData(localeRu, 'ru');
     CatalogTabsListComponent,
     CatalogTabItemComponent,
     UserRolesComponent,
-    RegionCasesComponent
+    RegionCasesComponent,
+    FileUploaderComponent
   ],
   imports: [
     CommonModule,
@@ -325,7 +321,6 @@ registerLocaleData(localeRu, 'ru');
     GridComponent,
     LoginComponent,
     LogoComponent,
-    MenuComponent,
     UserMenuComponent,
     CounterComponent,
     BreadcrumbsComponent,
@@ -337,8 +332,6 @@ registerLocaleData(localeRu, 'ru');
     ReactiveFormsModule,
     FooterCmsComponent,
     FooterCopyrightComponent,
-    ModalSearchComponent,
-    SearchSputnikComponent,
     ConfirmActionComponent,
     DocumentDetailsComponent,
     SliderBannerComponent,
@@ -459,7 +452,8 @@ registerLocaleData(localeRu, 'ru');
     CatalogTabsListComponent,
     CatalogTabItemComponent,
     UserRolesComponent,
-    RegionCasesComponent
+    RegionCasesComponent,
+    FileUploaderComponent
   ],
   providers: [
     GosbarService,
@@ -484,7 +478,6 @@ registerLocaleData(localeRu, 'ru');
     }
   ],
   entryComponents: [
-    ModalSearchComponent,
     LocationComponent,
     ConfirmActionComponent,
     DocumentDetailsComponent,

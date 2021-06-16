@@ -33,13 +33,6 @@ export class InformerComponent implements OnInit {
   public linkHint: string;
   public mnemonicHint: string;
 
-  private links = {
-    al10: '/profile/personal',
-    no_debt: `${this.loadService.config.oplataUrl}pay`,
-    error: `${this.loadService.config.oplataUrl}pay`,
-    debt: `${this.loadService.config.oplataUrl}pay`,
-    no_rights: '/help/faq/yuridicheskim_licam/2761'
-  };
   private debtForYaMetric: DebtYaMetricInterface = {};
 
   constructor(
@@ -131,7 +124,7 @@ export class InformerComponent implements OnInit {
           this.getTextToHint(hint);
         }
 
-        if (response?.result) {
+        if (response && response?.result) {
           // есть начисления
           if (response.result.total) {
             const res = response.result;
@@ -190,7 +183,11 @@ export class InformerComponent implements OnInit {
         break;
     }
     this.yaMetricService.yaMetricInformerMain(type, this.debtForYaMetric);
-    location.href = `${this.loadService.config.oplataUrl}pay`;
+    if (this.loadService.config.viewType === 'PORTAL') {
+      this.router.navigate(['/pay']);
+    } else {
+      location.href = `${this.loadService.config.betaUrl}pay`;
+    }
   }
 
 }

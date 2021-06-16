@@ -116,4 +116,12 @@
     width: 38px;
     position: absolute;
   }
+
+  &.big-icon {
+    .clear-button {
+      height: 32px;
+      margin-top: 16px;
+      right: 56px;
+    }
+  }
 }

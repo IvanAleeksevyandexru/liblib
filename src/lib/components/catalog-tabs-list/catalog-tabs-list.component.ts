@@ -24,6 +24,10 @@ export class CatalogTabsListComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy() {
   }
+  
+  public onReachEnd(): void {
+    console.log('end!!');
+  }
 
   public tabClick($event: any, item: CatalogData) {
     $event.preventDefault();

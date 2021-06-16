@@ -305,6 +305,10 @@ ul.list-decimal {
     flex-wrap: wrap;
   }
 
+  .flex-nowrap#{$prefix} {
+    flex-flow: nowrap;
+  }
+
   .flex-row-wrap#{$prefix} {
     flex-flow: row wrap;
   }

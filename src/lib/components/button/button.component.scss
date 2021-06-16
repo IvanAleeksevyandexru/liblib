@@ -152,7 +152,17 @@ button::-moz-focus-inner {
   border: 0;
 }
 
+.button-container {
+  display: block;
+  &.wide {
+    width: 100%;
+  }
+}
+
 @media all and (min-width: 768px) {
+  .button-container {
+    display: inline-block;
+  }
   a, button {
     width: auto;
 
@@ -166,6 +176,11 @@ button::-moz-focus-inner {
   a, button {
     &.font-13{
       font-size: 13px;
+    }
+  }
+  .light{
+    button:hover{
+      background-color: rgba(29, 93, 235, 0.18);
     }
   }
 }

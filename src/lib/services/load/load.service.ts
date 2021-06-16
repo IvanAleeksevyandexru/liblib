@@ -10,7 +10,7 @@ import { HelperService } from '../helper/helper.service';
 import { AuthService } from '../auth/auth.service';
 import { SmuEventsService } from '../smu-events/smu-events.service';
 
-const EMPTY_CONFIG_STUB = {data: {user: {}}, attrs: {}, config: {}};
+const EMPTY_CONFIG_STUB = {data: {user: {}}, attrs: {}, config: {}, hidePageConfig: {}};
 
 @Injectable({
   providedIn: 'root'
@@ -167,6 +167,10 @@ export class LoadService {
     return this.params.config;
   }
 
+  public get hidePageConfig(): any {
+    return this.params.hidePageConfig;
+  }
+
   public get attributes(): any {
     return this.params.attrs;
   }
@@ -199,7 +203,7 @@ export class LoadService {
         window.location = resp;
       });
     } else {
-      window.location.href = this.config.betaUrl + 'auth-provider/logout';
+      window.location.href = this.config.betaUrl + 'auth/logout?_=' + Math.random();
     }
   }
 
