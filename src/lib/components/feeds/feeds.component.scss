@@ -153,25 +153,25 @@
     content: "...";
     font-size: 35px;
     font-weight: 700;
-    margin-left: 24px;
     line-height: 10px;
     color: #0B1F33;
   }
 }
 .feed-suz-list-item {
+  position: relative;
+  padding-left: 20px;
   font-size: 14px;
   line-height: 20px;
   color: #0B1F33;
-  &:before{
-    content: "";
-    margin-left: 8px;
-    margin-right: 12px;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #0B1F33;
-    display: inline-block;
-    vertical-align: middle;
+  &::before{
+    position: absolute;
+    content: ".";
+    left: 0;
+    top: -4px;
+    font-size: 35px;
+    font-weight: 700;
+    line-height: 10px;
+    color: #0B1F33;
   }
 }
 
