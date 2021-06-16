@@ -60,6 +60,10 @@
   color: #626A73;
 }
 
+.feed-item-date {
+  display: none;
+}
+
 .feed-link {
   color: inherit;
   width: 100%;
@@ -142,9 +146,8 @@
   font-size: 14px;
   line-height: 20px;
 }
-
 .remove-feed {
-  display: none;
+  display: inline;
 }
 
 .width-full {
@@ -192,6 +195,9 @@
 }
 
 @media all and (min-width: 1140px) {
+  .feed-item-date {
+    display: block;
+  }
   .feed-item {
     &.feed-overview, &.feed-events, &.feed-drafts {
       padding: 24px;
@@ -210,6 +216,9 @@
     .feed-item-content {
       min-height: 48px;
     }
+  }
+  .remove-feed {
+    display: none;
   }
   .feed-overview:hover,
   .feed-events:hover,
