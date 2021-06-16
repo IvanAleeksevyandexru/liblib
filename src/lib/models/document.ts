@@ -65,6 +65,7 @@ export interface CommonCert {
   needToSetDefaultCert?: boolean;
   recordDate?: string | Date;
   issuedBy?: string;
+  updateCerts?: boolean;
 }
 
 export interface DocumentHistoryRequest {
