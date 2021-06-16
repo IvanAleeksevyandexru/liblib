@@ -153,7 +153,22 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     })
       .subscribe((feeds: FeedsModel) => {
         this.searching.emit(false);
-        this.feeds = this.feeds && this.feeds.length ? this.feeds.concat(feeds.items) : feeds.items;
+        const feedsItems = feeds.items.map<FeedModel>((feed) => ({
+          ...feed,
+          data: {
+            ...feed.data,
+            snippets: feed.data.snippets.map(({ type, json }) =>
+              type === 'CUSTOM'
+                ? { json: JSON.parse(json), type }
+                : { json, type }
+            ),
+          },
+        }));
+        this.feeds =
+          this.feeds && this.feeds.length
+            ? this.feeds.concat(feedsItems)
+            : feedsItems;
+
         this.feedsIsLoading = false;
         this.addFeedsIsLoading = false;
         this.hasMore = feeds.hasMore;

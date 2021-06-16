@@ -148,6 +148,16 @@
   line-height: 20px;
   font-weight: bold;
 }
+.over-three-specialty {
+  &:after {
+    content: "...";
+    font-size: 35px;
+    font-weight: 700;
+    margin-left: 24px;
+    line-height: 10px;
+    color: #0B1F33;
+  }
+}
 .feed-suz-list-item {
   font-size: 14px;
   line-height: 20px;
