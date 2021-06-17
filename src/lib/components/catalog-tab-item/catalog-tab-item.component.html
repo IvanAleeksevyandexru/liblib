@@ -207,7 +207,14 @@
                 <h6 (click)="toggleFaqsQuestions(faq)" class="title-h6 title-h6-light pointer">
                   {{faq.shortQuestion || faq.question}}
                 </h6>
-                <div [class.active]="faq.active" class="faq-answer" [innerHTML]="faq.answer || faq.shortAnswer"></div>
+                <ng-container *ngIf="faq.answer && faq.shortAnswer && faq.answer !== faq.shortAnswer  else shortAnswer">
+                  <div *ngIf="!faq.showMore" [class.active]="faq.active" class="faq-answer" [innerHTML]="faq.shortAnswer"></div>
+                  <div *ngIf="faq.showMore" [class.active]="faq.active" class="faq-answer" [innerHTML]="faq.answer"></div>
+                  <div (click)="faq.showMore = !faq.showMore" *ngIf="faq.active && !faq.showMore" class="link-plain pointer mt-12">Подробнее</div>
+                </ng-container>
+                <ng-template #shortAnswer>
+                  <div [class.active]="faq.active" class="faq-answer" [innerHTML]="faq.answer || faq.shortAnswer"></div>
+                </ng-template>
               </div>
             </div>
           </div>
