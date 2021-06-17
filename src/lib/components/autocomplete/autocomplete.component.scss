@@ -1,6 +1,7 @@
 .lookup {
   width: 100%;
   display: inline-block;
+
   .lookup-field {
     &.expanded {
       ::ng-deep .search-field {
@@ -10,10 +11,12 @@
       }
     }
   }
+
   .lookup-list-wrapper {
     position: relative;
     width: 100%;
   }
+
   .lookup-context-positioning {
     position: absolute;
     z-index: 7;
@@ -21,9 +24,11 @@
     overflow: visible;
     display: block;
     white-space: nowrap;
+
     .lookup-context-shift {
       display: none;
     }
+
     &.context-positioned {
       .lookup-context-shift {
         display: inline-block;
@@ -35,21 +40,24 @@
         line-height: 24px;
         padding-left: 16px;
       }
+
       .lookup-list-container {
         display: inline-block;
         top: -10px;
         border-style: solid;
         border-radius: 4px;
+
         &.hidden {
           display: none;
         }
       }
     }
   }
+
   .lookup-list-container {
     position: relative;
     width: 100%;
-    max-height: 300px;
+    max-height: 290px;
     display: block;
     border-style: none solid solid solid;
     border-color: #99B1E6;
@@ -60,26 +68,36 @@
     box-sizing: border-box;
     background-color: white;
 
+    @media all and (min-width: 768px) {
+      max-height: 266px;
+    }
+
     &.hidden {
       display: none;
     }
 
     ::ng-deep .ps {
-      max-height: 250px;
+      max-height: 290px;
+
+      @media all and (min-width: 768px) {
+        max-height: 266px;
+      }
+
       &.ps--active-y {
         .ps__rail-y {
           opacity: 1;
           background-color: white;
-          width: 10px;
-          border-left: 1px solid #A8ACB1;
+          width: 18px;
+
           .ps__thumb-y {
-            width: 7px;
+            width: 8px;
             background-color: #E9ECEE;
-            right: 1px;
+            right: 4px;
           }
         }
       }
     }
+
     &.incremental-loading {
       .lookup-item:last-child .item-container {
         padding-right: 45px;
@@ -90,14 +108,16 @@
       display: block;
       width: auto;
       cursor: pointer;
+      padding: 14px 0 0 16px;
+
       .structure-container {
         display: table;
         width: 100%;
-      }
-      .item-container {
-        padding: 15px 0 15px 16px;
-        min-height: 54px;
+        padding-bottom: 14px;
         border-bottom: 1px solid #E1E1E1;
+      }
+
+      .item-container {
         font-size: 16px;
         line-height: 24px;
 
@@ -105,56 +125,69 @@
           font-family: Lato, Arial, sans-serif;
           font-size: 16px;
           line-height: 24px;
-          color: #515A63;
+          color: #0B1F33;
         }
       }
+
       &.highlighted {
         background-color: #F5F7FA;
       }
+
       &.unselectable {
         .dropdown-item-text {
           color: #A8ACB1;
           cursor: default;
         }
+
         &.highlighted {
           background-color: unset;
         }
       }
+
       &.line-before {
         .structure-container {
           border-top: 1px solid #A8ACB1;
           padding-top: 6px;
         }
+
         padding-top: 0;
       }
+
       &.line-after {
         .structure-container {
           border-bottom: 1px solid #A8ACB1;
           padding-bottom: 6px;
         }
+
         padding-bottom: 0;
-        &+.line-before {
+
+        & + .line-before {
           .structure-container {
             border-top: none;
             padding-top: 0;
           }
+
           padding-top: 6px;
         }
       }
+
       &.separator {
         .item-container {
           display: none;
         }
+
         .structure-container {
           height: 0;
           padding: 0;
           border-bottom: 3px double #A8ACB1;
         }
       }
+
       &.hasSuggest {
         .item-container {
           border-bottom: none;
         }
+
         &.highlighted {
           background-color: #E7ECF7;
         }
@@ -174,17 +207,19 @@
         display: flex;
         height: 52px;
         align-items: center;
+
         .item-container {
           .looiup-item-text {
             font-family: Lato, Arial, sans-serif;
             font-size: 16px;
             line-height: 24px;
-            color: #515A63;
+            color: #0B1F33;
           }
         }
       }
     }
   }
+
   .lookup-list-container {
     ::ng-deep {
       .lookup-item {
@@ -194,9 +229,11 @@
             color: #0B40B3;
             font-weight: 600;
           }
+
           &.truncated {
             .lookup-item-text .highlighted {
               font-size: 0;
+
               &:before {
                 content: '...';
                 font-weight: normal;
@@ -206,10 +243,12 @@
             }
           }
         }
+
         &.highlighted {
           .item-container .lookup-item-text .highlighted {
             background-color: #E7ECF7;
           }
+
           &.unselectable {
             .item-container .lookup-item-text .highlighted {
               background-color: unset;
@@ -235,17 +274,21 @@
 
     ul {
       list-style: none;
+
       li {
         padding: 12px 16px;
         cursor: pointer;
+
         &:hover {
           background-color: #E7ECF7;
         }
+
         p {
           font-size: 16px;
           line-height: 24px;
           color: #0B1F33;
         }
+
         span {
           font-size: 14px;
           line-height: 20px;
@@ -253,6 +296,7 @@
         }
       }
     }
+
     .edit {
       font-size: 14px;
       line-height: 20px;
