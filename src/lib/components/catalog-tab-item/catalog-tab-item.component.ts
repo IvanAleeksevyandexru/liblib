@@ -1,12 +1,14 @@
 import {
-  Component,
+  AfterViewChecked,
+  AfterViewInit,
+  Component, ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges
+  SimpleChanges, ViewChild
 } from '@angular/core';
 import { forkJoin, of } from 'rxjs';
 import { GosbarService } from '../../services/gosbar/gosbar.service';
@@ -49,6 +51,8 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   public regionName = this.locationService.userSelectedRegionName;
   public regionPopularMore: boolean;
 
+  @ViewChild('faqAnswerWrap', {static: false}) private faqAnswerWrap: ElementRef;
+
   constructor(
     private catalogTabsService: CatalogTabsService,
     private sharedService: SharedService,
@@ -74,6 +78,15 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.getCatalogData();
     }
+  }
+
+  public setTargetAttrToFaqLinks() {
+    setTimeout(() => {
+      Array.from(this.faqAnswerWrap.nativeElement.getElementsByTagName('A'))
+        .forEach((link: Element) => {
+          link.setAttribute('target', '_blank');
+      });
+    })
   }
 
   public getDepartmentsData(): void {
@@ -143,6 +156,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
       }
       this.loaded = true;
       this.getBackTitle();
+      this.setTargetAttrToFaqLinks();
     }, () => {
       // TODO: обработка ошибок
       this.loaded = true;

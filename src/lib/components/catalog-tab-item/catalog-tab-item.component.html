@@ -45,7 +45,7 @@
                 <ng-container [ngTemplateOutlet]="regionPopularTmpl"></ng-container>
               </div>
             </section>
-            <section *ngIf="viewType === 'main-page-view' && faqs?.length">
+            <section #faqAnswerWrap *ngIf="viewType === 'main-page-view' && faqs?.length">
               <h3 class="title-h6 catalog-item-title">Часто задаваемые вопросы</h3>
               <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
                 <div [ngClass]="{'with-link-old-portal': checkOldPortalBanner()}" class="scroll-container">
