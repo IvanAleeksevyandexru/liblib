@@ -124,7 +124,7 @@
           let-department="department">
             <h4 [class.department-column-start-header]="isFirst"
                 class="flex-container title-h6 mt-sm-40 mt-lg-48 mt-md-40 catalog-title-popular catalog-other-popular">
-                  <span *ngIf="department.icons[0]?.url" class="catalog-other-popular-icon mr-12">
+                  <span *ngIf="department.icons && department.icons[0]?.url" class="catalog-other-popular-icon mr-12">
                       <img [src]="department.icons[0]?.url" alt="">
                   </span>
                   <span>{{department.name}}</span>
@@ -175,7 +175,7 @@
             <h4
               class="flex-container title-h6 mt-lg-48 mt-sm-40 mt-md-40 catalog-title-popular catalog-other-popular"
             >
-                      <span *ngIf="item.icons[0]?.url" class="catalog-other-popular-icon mr-12">
+                      <span *ngIf="item.icons && item.icons[0]?.url" class="catalog-other-popular-icon mr-12">
                         <img [src]="item.icons[0]?.url" alt="">
                       </span>
               <span>{{item.name}}</span>
@@ -207,7 +207,7 @@
                 <h6 (click)="toggleFaqsQuestions(faq)" class="title-h6 title-h6-light pointer">
                   {{faq.shortQuestion || faq.question}}
                 </h6>
-                <div [class.active]="faq.active" class="faq-answer" [innerHTML]="faq.shortAnswer || faq.answer"></div>
+                <div [class.active]="faq.active" class="faq-answer" [innerHTML]="faq.answer || faq.shortAnswer"></div>
               </div>
             </div>
           </div>

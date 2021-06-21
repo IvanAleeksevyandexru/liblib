@@ -78,7 +78,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   @Input() public cachedResponse?: boolean;
   @Input() public staticList?: boolean;
   @Input() public suggest?: Suggest;
-
+  @Input() public suggestSeparator = ' ';
 
   // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
   @Input() public formatter?: (item: ListItem, context: { [name: string]: any }) => string;
@@ -193,7 +193,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   public suggestion: string;
   public suggested: ListItem;
   public suggestionJustSelected = false;
-  public virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems.bind(this));
+  public virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems.bind(this), true);
   public LineBreak = LineBreak;
   private insureSearchActiveToken = 0;
   // компонент может работать на заданном фиксированном списке значений или не внешнем поиске
@@ -487,7 +487,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
   // все что prepareItems + запись в список отображения
   public processNewItems(rootSearch: boolean, items: Array<any>) {
-    this.prepareItems(items, this.items.length, this.activeQuery, false, !!this.itemsProvider, (newItems: Array<ListItem>) => {
+    this.prepareItems(items, this.items.length, this.activeQuery, false, !!this.itemsProvider || this.virtualScroll, (newItems: Array<ListItem>) => {
       if (this.incrementalLoading) {
         if (newItems.length) {
           this.items = rootSearch ? newItems : this.items.concat(newItems);

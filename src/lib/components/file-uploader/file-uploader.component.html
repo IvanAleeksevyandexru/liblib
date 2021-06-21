@@ -1,0 +1,51 @@
+<div class="file-uploader" [class.invalid]="invalidDisplayed">
+  <div class="mb-24" *ngFor="let file of files; let i = index;">
+    <div class="file">
+      <span class="icon {{file.error ? 'err' : extension(file.name)}}"></span>
+      <div class="name" title="{{file.name}}">
+        <span>{{file.name}}</span>
+        <div class="hide-md show-sm" *ngIf="file.size">
+          <span class="achievement-file-size gray">{{file.size | fileSize}}</span>
+        </div>
+      </div>
+      <ng-container *ngIf="!file.uploadInProcess">
+        <div class="flex-1-0" *ngIf="file.size">
+          <div class="hide-sm">
+            <span class="size ml-8" *ngIf="file.size">|&nbsp;&nbsp;{{formatBytes(file.size)}}</span>
+          </div>
+        </div>
+        <div class="flex-1-0 text-right">
+          <a class="hide-sm delete" (click)="remove(i)">Удалить</a>
+          <a
+            title="Удалить"
+            class="hide-md show-sm delete"
+            (click)="remove(i);">
+          </a>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="file.uploadInProcess">
+        <lib-throbber [size]="'throbber-small'"></lib-throbber>
+      </ng-container>
+    </div>
+    <sub *ngIf="file.error" class="error-label mt-8">
+      {{file.error}}
+    </sub>
+  </div>
+
+  <div class="error-upload mb-24 mt-24" *ngIf="errorMessage">{{errorMessage}}</div>
+
+  <div class="chose-dnd" libDragAndDrop (filesDropped)="onFilesDropped($event)">
+    <p class="text-center mb-12">Перетащите {{maxFilesLength === 1 ? 'файл' : 'файлы'}} или выберите на компьютере</p>
+    <p class="text-center">
+      <span class="select-file" (click)="fileInput.click()">
+        Выбрать файл
+        <input class="file-input" #fileInput [multiple]="multiple" type="file"/>
+      </span>
+    </p>
+  </div>
+
+  <div class="hint mt-4" *ngIf="maxFileSize || fileTypes">
+    <ng-container *ngIf="fileTypes">Допустимые форматы файла: <span>{{fileTypes}} </span></ng-container>
+    <ng-container *ngIf="maxFileSize">Допустимый размер файла &mdash; до {{formatBytes(maxFileSize)}}</ng-container>
+  </div>
+</div>

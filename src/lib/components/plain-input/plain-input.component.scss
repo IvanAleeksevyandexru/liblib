@@ -160,4 +160,14 @@ textarea.text-input {
     padding-right: 14px;
     width: 38px;
   }
+
+  &.big-icon {
+    .clear-button {
+      height: 32px;
+      width: 42px;
+      margin-top: 16px;
+      padding-right: 16px;
+      right: 56px;
+    }
+  }
 }

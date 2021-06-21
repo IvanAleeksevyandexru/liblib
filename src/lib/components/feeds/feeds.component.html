@@ -121,6 +121,18 @@
             </ng-template>
             <div class="remove-notice" *ngIf="showExpiryForLk(feed)">{{feed.data.expiryDate | timeLeft}}</div>
           </ng-template>
+          <ng-container *ngFor="let snippet of feed.data.snippets">
+            <ng-container *ngIf="snippet.type === 'CUSTOM'">
+              <div class="feed-suz-title mb-8 mt-12">{{snippet.json.suzName}}</div>
+              <ul class="feed-suz-list" [class.over-three-specialty]="snippet.json.specialties.length > 3">
+                <ng-container *ngFor="let specialty of snippet.json.specialties | slice: 0: 3">
+                  <ng-container *ngFor="let item of specialty | keyvalue">
+                    <li class="feed-suz-list-item">{{item.key}}</li>
+                  </ng-container>
+                </ng-container>
+              </ul>
+            </ng-container>
+          </ng-container>
           <div *ngIf="isOrderCreator(feed)">
             <ng-container
               [ngTemplateOutlet]="author"

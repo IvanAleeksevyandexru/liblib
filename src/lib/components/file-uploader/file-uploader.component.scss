@@ -1,0 +1,162 @@
+.file-uploader {
+
+  .hint {
+    font: 16px/24px Lato, Arial, sans-serif;
+    color: #66727F;
+  }
+
+  .file {
+    position: relative;
+    font: 16px/24px Lato, Arial, sans-serif;
+    display: flex;
+    justify-content: space-between;
+    min-width: 0;
+    padding-left: 60px;
+
+    .name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .size {
+      color: #66727F;
+    }
+    .delete {
+      color:#0D4CD3;
+      font: 14px/20x Lato, Arial, sans-serif;;
+      margin-left: auto;
+      cursor: pointer;
+    }
+    .icon {
+      position: absolute;
+      left: 0;
+      right: 0;
+      width: 48px;
+      height: 23px;
+      background: url(../../../assets/svg/file-types.svg) no-repeat;
+      &.png {
+        background-position: 0 -73px;
+      }
+      &.jpg,
+      &.jpeg,{
+        background-position: 0 -109px;
+      }
+      &.bmp {
+        background-position: 0 -145px;
+      }
+      &.tif {
+        background-position: 0 -181px;
+      }
+      &.gif {
+        background-position: 0 -217px;
+      }
+      &.key {
+        background-position: 0 -253px;
+      }
+      &.ppt {
+        background-position: 0 -289px;
+      }
+      &.pdf {
+        background-position: 0 -325px;
+      }
+      &.rar {
+        background-position: 0 -361px;
+      }
+      &.zip {
+        background-position: 0 -397px;
+      }
+      &.doc {
+        background-position: 0 -433px;
+      }
+      &.txt {
+        background-position: 0 -469px;
+      }
+      &.rtf {
+        background-position: 0 -505px;
+      }
+      &.flv {
+        background-position: 0 -541px;
+      }
+      &.mov {
+        background-position: 0 -577px;
+      }
+      &.mpg {
+        background-position: 0 -613px;
+      }
+      &.sig {
+        background-position: 0 -649px;
+      }
+      &.xml {
+        background-position: 0 -685px;
+      }
+      &.err {
+        background-position: 0 -721px;
+      }
+
+    }
+  }
+
+  .chose-dnd {
+    border: 2px dashed #99B1E6;
+    border-radius: 12px;
+    padding: 24px 0;
+
+    .file-input {
+      display: none;
+    }
+
+    .select-file {
+      color: #0D4CD3;
+      cursor: pointer;
+      padding: 4px 0 4px 32px;
+      font: 16px/24px Lato, Arial, sans-serif;
+      background: url(../../../assets/svg/file-uploader.svg) no-repeat 0 center;
+    }
+
+    p {
+      font: 16px/24px Lato, Arial, sans-serif;
+      color: #66727F;
+    }
+  }
+
+  &.invalid {
+    .chose-dnd {
+      border: none;
+      background: rgba(238,63,88,.16);
+    }
+  }
+
+  sub.error-upload {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .error-upload {
+    font: 14px/20px Lato, Arial, sans-serif;
+    color: #E11432;
+  }
+
+  ::ng-deep {
+    .throbber-small {
+      margin: 0;
+    }
+  }
+}
+@media all and (max-width: 767px) {
+  .file-uploader .chose-dnd {
+    padding: 24px 48px;
+  }
+  .file .delete {
+    width: 24px;
+    height: 24px;
+    background: url(../../../assets/svg/file-delete.svg) 0 0 no-repeat;
+    background-size: contain;
+    padding-left: 8px;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .file .delete {
+    padding-left: 24px;
+  }
+}
