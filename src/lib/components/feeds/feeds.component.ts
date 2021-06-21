@@ -157,11 +157,11 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
           ...feed,
           data: {
             ...feed.data,
-            snippets: feed?.data?.snippets?.map(({ type, json }) =>
-              type === 'CUSTOM'
-                ? { json: JSON.parse(json), type }
-                : { json, type }
-            ),
+            snippets: feed?.data?.snippets?.map((item) => {
+              return item.type === 'CUSTOM'
+                ? { json: JSON.parse(item.json), type: item.type }
+                : item
+          }),
           },
         }));
         this.feeds =
