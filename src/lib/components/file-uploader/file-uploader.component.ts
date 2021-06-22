@@ -97,10 +97,14 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     const needUploadToServer = this.storageServiceUrl && !!this.orderId;
 
     if (!maxFilesSize || !filesLength) {
+      this.fileInput.nativeElement.value = '';
       return false;
     }
     for (let i = 0; i < event.length; i++) {
       const existingFile = this.findFile(event[i]);
+      if (existingFile) {
+        this.errorMessage = 'Файл уже загружен: ' + event[i].name;
+      }
       const checkType = this.checkFileTypes(event[i]);
       if (!existingFile && checkType) {
         const name = unescape(encodeURIComponent(event[i].name));
@@ -134,6 +138,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
       this.commit(this.files);
       this.check();
     }
+    this.fileInput.nativeElement.value = '';
   }
 
   constructor(private host: ElementRef<HTMLInputElement>,
