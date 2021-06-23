@@ -344,6 +344,12 @@ export class ConstantsService {
       access: ['AL20']
     },
     {
+      id: 'education',
+      name: 'PROFILE.TABS.EDUCATION',
+      url: '/profile/education',
+      access: ['AL20']
+    },
+    {
       id: 'privileges',
       name: 'PROFILE.TABS.PRIVILEGES',
       url: '/profile/privileges',
