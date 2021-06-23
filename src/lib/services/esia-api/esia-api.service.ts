@@ -13,6 +13,8 @@ export interface Citizenship {
   msgKey: string;
 }
 
+type RestVersion = 0 | 1 | 2 | 3 | 'digital' | 'smevint' | 'registration' | 'mobid';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -48,13 +50,13 @@ export class EsiaApiService {
     this.userOid = this.loadService.user.userId ? this.loadService.user.userId.toString() : null;
   }
 
-  private setUrl(input: string, version: 0 | 1 | 2 | 3 | 'digital' | 'smevint' | 'registration' | 'mobid'  = 0): string {
+  private setUrl(input: string, version: RestVersion = 0): string {
     return this.host + this.versions[version] + input.replace(/prn_oid/, this.userOid);
   }
 
   public getRequest(
     method: string,
-    version: 0 | 1 | 2 | 3 | 'digital' | 'smevint' | 'registration' | 'mobid'  = 0,
+    version: RestVersion = 0,
     extra?: {
       headers?: { name: string, value: string | string[] }[],
       options?: any
@@ -70,7 +72,7 @@ export class EsiaApiService {
 
   public postRequest(
     method: string,
-    version: 0 | 1 | 2 | 3 | 'digital' | 'smevint' | 'registration' | 'mobid'  = 0,
+    version: RestVersion = 0,
     body?: any,
     extra?: {
       headers?: { name: string, value: string | string[] }[],
@@ -87,7 +89,7 @@ export class EsiaApiService {
 
   public putRequest(
     method: string,
-    version: 0 | 1 | 2 | 3 | 'digital' | 'smevint' | 'registration' | 'mobid'  = 0,
+    version: RestVersion = 0,
     body?: any,
     extra?: {
       headers?: { name: string, value: string | string[] }[],
@@ -104,7 +106,7 @@ export class EsiaApiService {
 
   public deleteRequest(
     method: string,
-    version: 0 | 1 | 2 | 3 | 'digital' | 'smevint' | 'registration' | 'mobid'  = 0,
+    version: RestVersion = 0,
     body?: any,
     extra?: {
       headers?: { name: string, value: string | string[] }[],

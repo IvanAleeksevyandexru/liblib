@@ -297,7 +297,7 @@ export class HelperService {
   }
 
   public static convertEpguDadataAddressToEsiaAddress(dadataAddress: DadataResult, type: 'PLV' | 'PRG' | 'OPS' | 'OLG' | 'PTA'): Address {
-    return {
+    const address: Address = {
       type,
       countryId: 'RUS',
       addressStr: dadataAddress.addressStr,
@@ -316,6 +316,15 @@ export class HelperService {
       building: dadataAddress.building2, // строение
       flat: dadataAddress.apartment // квартира
     };
+    if (dadataAddress.hasOwnProperty('house')) {
+      address.houseType = dadataAddress.houseShortType;
+      address.houseTypeFull = dadataAddress.houseType;
+    }
+    if (dadataAddress.hasOwnProperty('building1')) {
+      address.frameType = dadataAddress.building1ShortType;
+      address.frameTypeFull = dadataAddress.building1Type;
+    }
+    return address;
   }
 
   public static formatAddress(address: Address): string {
@@ -328,13 +337,13 @@ export class HelperService {
         let prefix = '';
         switch (item) {
           case 'house':
-            prefix = 'д. ';
+            prefix = address.hasOwnProperty('house_type') ? `${address.houseType}. ` : 'д. ';
             break;
           case 'building':
             prefix = 'стр. ';
             break;
           case 'frame':
-            prefix = 'корп. ';
+            prefix = address.hasOwnProperty('frame_type') ? `${address.frameType}. ` : 'корп. ';
             break;
           case 'flat':
             prefix = 'кв. ';
