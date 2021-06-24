@@ -197,6 +197,8 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     } else {
       this.files = null;
     }
+    this.check();
+    this.cd.detectChanges();
   }
 
   public registerOnChange( fn: () => void ) {
