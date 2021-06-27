@@ -20,6 +20,6 @@ export class FileUploaderService {
   public deleteFileFromStorage(url: string, orderId: string, objectType: string, mnemonic: string): Observable<any> {
     return this.http.delete(`${url}${orderId}/${objectType}?mnemonic=${mnemonic}`, {
       withCredentials: true
-    })
+    });
   }
 }
