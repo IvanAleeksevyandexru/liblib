@@ -5,7 +5,6 @@ import { Avatar } from '../../models/avatar';
 import { UserTypeParams } from '../../models/user-type-params';
 import { Document } from '../../models/document';
 import { Person, PersonData, User, Role } from '../../models/user';
-import { ConstantsService } from '../constants.service';
 import { HelperService } from '../helper/helper.service';
 import { AuthService } from '../auth/auth.service';
 import { SmuEventsService } from '../smu-events/smu-events.service';
@@ -27,7 +26,6 @@ export class LoadService {
 
   constructor(
     private http: HttpClient,
-    private constants: ConstantsService,
     private smuEventsService: SmuEventsService,
     private authService: AuthService
   ) {
@@ -69,7 +67,7 @@ export class LoadService {
       if (person.trusted) {
         user.level = 3;
       } else {
-        const hasVerifiedDocument = personData.docs.some((document: Document) => document.vrfStu === this.constants.STATUS_VERIFIED);
+        const hasVerifiedDocument = personData.docs.some((document: Document) => document.vrfStu === 'VERIFIED');
 
         // если у пользователя есть СНИЛС и хотя бы один подтвержденный документ;
         if (user.snils && hasVerifiedDocument) {
