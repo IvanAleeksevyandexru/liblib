@@ -105,12 +105,17 @@
       display: none;
     }
 
-    .select-file {
+    .select-file,
+    .select-photo {
       color: #0D4CD3;
       cursor: pointer;
       padding: 4px 0 4px 32px;
       font: 16px/24px Lato, Arial, sans-serif;
       background: url(../../../assets/svg/file-uploader.svg) no-repeat 0 center;
+    }
+
+    .select-photo {
+      background: url(../../../assets/svg/photo-camera.svg) no-repeat 0 center;
     }
 
     p {
@@ -159,4 +164,8 @@
   .file .delete {
     padding-left: 24px;
   }
+
+ .select-photo {
+   display: none;
+ }
 }
