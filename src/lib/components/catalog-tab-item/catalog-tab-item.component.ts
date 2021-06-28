@@ -89,6 +89,10 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     })
   }
 
+  public goToCategory(faq: FaqCategoriesCMSFaq): void {
+    window.open(`${this.loadService.config.betaUrl}help/faq/${faq.categoryCode}/${faq.id}`, '_blank')
+  }
+
   public getDepartmentsData(): void {
     this.loaded = false;
     this.catalogTabsService.getDepartmentsData().subscribe((departmentsData: Departments[]) => {
