@@ -6,6 +6,7 @@ import { NotificationPeriodItem } from '../models/notifications';
 import { DocumentType } from '../models/document';
 import { HorizontalAlign, VerticalAlign } from '../models/positioning';
 import { VrfStu, VrfValStu } from '../models/verifying-status';
+import { LoadService } from './load/load.service';
 
 @Injectable(
   {
@@ -13,6 +14,8 @@ import { VrfStu, VrfValStu } from '../models/verifying-status';
   }
 )
 export class ConstantsService {
+
+  constructor(private loadService: LoadService){}
 
   // время с последнего нажатия клавиши до запуска поиска
   public static readonly DEFAULT_QUERY_DEBOUNCE = 700;
@@ -230,9 +233,9 @@ export class ConstantsService {
       url: '/settings/login'
     },
     {
-      id: 'cards',
-      name: 'SETTINGS.TABS.CARDS',
-      url: '/settings/cards'
+      id: this.loadService.config.hideBankAccounts ? 'cards' : 'cards-and-accounts',
+      name: this.loadService.config.hideBankAccounts ? 'SETTINGS.TABS.CARDS' : 'SETTINGS.TABS.CARDS_AND_ACCOUNTS',
+      url: this.loadService.config.hideBankAccounts ? '/settings/cards' : '/settings/cards-and-accounts'
     },
     {
       id: 'mail',
