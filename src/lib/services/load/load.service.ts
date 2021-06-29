@@ -8,6 +8,7 @@ import { Person, PersonData, User, Role } from '../../models/user';
 import { HelperService } from '../helper/helper.service';
 import { AuthService } from '../auth/auth.service';
 import { SmuEventsService } from '../smu-events/smu-events.service';
+import { ConstantsService } from '../constants.service';
 
 const EMPTY_CONFIG_STUB = {data: {user: {}}, attrs: {}, config: {}, hidePageConfig: {}};
 
@@ -27,7 +28,8 @@ export class LoadService {
   constructor(
     private http: HttpClient,
     private smuEventsService: SmuEventsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private constants: ConstantsService,
   ) {
   }
 
@@ -67,7 +69,7 @@ export class LoadService {
       if (person.trusted) {
         user.level = 3;
       } else {
-        const hasVerifiedDocument = personData.docs.some((document: Document) => document.vrfStu === 'VERIFIED');
+        const hasVerifiedDocument = personData.docs.some((document: Document) => document.vrfStu === this.constants.STATUS_VERIFIED);
 
         // если у пользователя есть СНИЛС и хотя бы один подтвержденный документ;
         if (user.snils && hasVerifiedDocument) {

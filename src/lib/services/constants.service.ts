@@ -14,9 +14,6 @@ import { LoadService } from './load/load.service';
   }
 )
 export class ConstantsService {
-
-  constructor(private loadService: LoadService){}
-
   // время с последнего нажатия клавиши до запуска поиска
   public static readonly DEFAULT_QUERY_DEBOUNCE = 700;
   // селекторы парентовых элементов за скроллом которых надо следить чтобы обновлять программные координаты выпадашек
@@ -233,9 +230,16 @@ export class ConstantsService {
       url: '/settings/login'
     },
     {
-      id: this.loadService.config.hideBankAccounts ? 'cards' : 'cards-and-accounts',
-      name: this.loadService.config.hideBankAccounts ? 'SETTINGS.TABS.CARDS' : 'SETTINGS.TABS.CARDS_AND_ACCOUNTS',
-      url: this.loadService.config.hideBankAccounts ? '/settings/cards' : '/settings/cards-and-accounts'
+      id: 'cards',
+      name: 'SETTINGS.TABS.CARDS',
+      url: '/settings/cards',
+      hidden: false
+    },
+    {
+      id: 'cards-and-accounts',
+      name: 'SETTINGS.TABS.CARDS_AND_ACCOUNTS',
+      url: '/settings/cards-and-accounts',
+      hidden: true
     },
     {
       id: 'mail',
