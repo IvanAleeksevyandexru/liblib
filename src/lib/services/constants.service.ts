@@ -6,6 +6,7 @@ import { NotificationPeriodItem } from '../models/notifications';
 import { DocumentType } from '../models/document';
 import { HorizontalAlign, VerticalAlign } from '../models/positioning';
 import { VrfStu, VrfValStu } from '../models/verifying-status';
+import { LoadService } from './load/load.service';
 
 @Injectable(
   {
@@ -13,7 +14,6 @@ import { VrfStu, VrfValStu } from '../models/verifying-status';
   }
 )
 export class ConstantsService {
-
   // время с последнего нажатия клавиши до запуска поиска
   public static readonly DEFAULT_QUERY_DEBOUNCE = 700;
   // селекторы парентовых элементов за скроллом которых надо следить чтобы обновлять программные координаты выпадашек
@@ -232,7 +232,14 @@ export class ConstantsService {
     {
       id: 'cards',
       name: 'SETTINGS.TABS.CARDS',
-      url: '/settings/cards'
+      url: '/settings/cards',
+      hidden: false
+    },
+    {
+      id: 'cards-and-accounts',
+      name: 'SETTINGS.TABS.CARDS_AND_ACCOUNTS',
+      url: '/settings/cards-and-accounts',
+      hidden: true
     },
     {
       id: 'mail',
