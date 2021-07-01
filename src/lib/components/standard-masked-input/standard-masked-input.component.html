@@ -16,8 +16,7 @@
   <div class="text-control masked-input" [ngClass]="contextClass ? [contextClass] : []"
        [class.withClearButton]="clearable && !disabled && !empty && !readOnly"
        [class.withTip]="questionTip && questionTipPosition === MessagePosition.INSIDE && (!validationOverride || !(invalidDisplayed && validationMessages))"
-       [class.withValidationError]="validationPosition === MessagePosition.INSIDE && invalidDisplayed && validationMessages"
-       (click)="returnFocus($event)">
+       [class.withValidationError]="validationPosition === MessagePosition.INSIDE && invalidDisplayed && validationMessages">
     <div class="input-container plain-input">
       <input #input
              [attr.type]="type"
