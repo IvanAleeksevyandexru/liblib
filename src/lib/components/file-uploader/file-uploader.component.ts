@@ -104,6 +104,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     }
 
     if (!this.multiple && this.files && this.files.length) {
+      this.errorMessage = 'Нельзя загрузить больше одного файла';
       return false;
     }
 
@@ -116,6 +117,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
       if (event[i].size === 0) {
         this.errorMessage = 'Не удалось загрузить файл ' + event[i].name + '. Файл не должен быть пустым';
       }
+
       const checkType = this.checkFileTypes(event[i]);
       if (!existingFile && checkType && event[i].size > 0) {
         const name = unescape(encodeURIComponent(event[i].name));
