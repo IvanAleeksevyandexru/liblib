@@ -8,7 +8,7 @@ import { Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { RelativeDate, Range, RangeListItem } from '../../models/date-time.model';
 import { DatesHelperService } from '../../services/dates-helper/dates-helper.service';
-import { Translation } from '../../models/common-enums';
+import { Align, Translation } from '../../models/common-enums';
 import { Width } from '../../models/width-height';
 import * as moment_ from 'moment';
 const moment = moment_;
@@ -51,6 +51,7 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
   // свойства для календаря
   @Input() public minDate: Date | RelativeDate | string;
   @Input() public maxDate: Date | RelativeDate | string;
+  @Input() public datePickerAlign: Align | string = Align.ADJUST;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
