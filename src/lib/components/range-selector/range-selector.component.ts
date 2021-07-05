@@ -80,7 +80,7 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
     this.changeDetector.detectChanges();
   }
 
-  public selectRange(item: RangeListItem) {
+  public selectItem(item: RangeListItem) {
     this.returnFocus();
     if (item.customRange) {
       this.customRangeSelectingMode = true;
@@ -88,7 +88,7 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
       this.changeDetector.detectChanges();
     } else {
       if (item.selected) {
-        return;
+        return false;
       } else {
         // !!! ВНИМАНИЕ изменяем рейндж внутри оригинального (не-кастомного) listItem
         this.customRange = null;
@@ -171,9 +171,9 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
       return '';
     }
     if (this.textModelValue) {
-      return range.start + '-' + range.end;
+      return range.start + ' — ' + range.end;
     } else {
-      return moment(range.start).format(STD_DATE_FORMAT) + '-' + moment(range.end).format(STD_DATE_FORMAT);
+      return moment(range.start).format(STD_DATE_FORMAT) + ' — ' + moment(range.end).format(STD_DATE_FORMAT);
     }
   }
 
