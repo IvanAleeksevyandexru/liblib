@@ -121,18 +121,9 @@
             </ng-template>
             <div class="remove-notice" *ngIf="showExpiryForLk(feed)">{{feed.data.expiryDate | timeLeft}}</div>
           </ng-template>
-          <ng-container *ngFor="let snippet of feed.data.snippets">
-            <ng-container *ngIf="snippet.type === 'CUSTOM'">
-              <div *ngIf="snippet?.json?.suzName" class="feed-suz-title mb-8 mt-12">{{snippet.json.suzName}}</div>
-              <ul class="feed-suz-list" *ngIf="snippet?.json?.specialties.length" [class.over-three-specialty]="snippet?.json?.specialties?.length > 3">
-                <ng-container *ngFor="let specialty of snippet?.json?.specialties | slice: 0: 3">
-                  <ng-container *ngFor="let item of specialty | keyvalue">
-                    <li class="feed-suz-list-item">{{item.key}}</li>
-                  </ng-container>
-                </ng-container>
-              </ul>
-            </ng-container>
-          </ng-container>
+<!--          <ng-container *ngFor="let snippet of feed.data.snippets">-->
+<!--            -->
+<!--          </ng-container>-->
           <div *ngIf="isOrderCreator(feed)">
             <ng-container
               [ngTemplateOutlet]="author"
@@ -160,12 +151,24 @@
     </div>
   </div>
   <ng-container *ngIf="checkSnippetsExists(feed) && notEqueueType(feed, page)">
-    <div *ngFor="let snippet of feed.data.snippets">
-      <lib-snippets
-        *ngIf="showSnippets(snippet, feed)"
-        [snippet]="snippet"
-        [feed]="feed">
-      </lib-snippets>
+    <div *ngFor="let snippet of feed.data.snippets">2
+      <ng-container *ngIf="snippet.type === 'CUSTOM' else defaultSnippets">
+        <div *ngIf="snippet?.json?.suzName" class="feed-suz-title mb-8 mt-12">{{snippet.json.suzName}}</div>
+        <ul class="feed-suz-list" *ngIf="snippet?.json?.specialties.length" [class.over-three-specialty]="snippet?.json?.specialties?.length > 3">
+          <ng-container *ngFor="let specialty of snippet?.json?.specialties | slice: 0: 3">
+            <ng-container *ngFor="let item of specialty | keyvalue">
+              <li class="feed-suz-list-item">{{item.key}}</li>
+            </ng-container>
+          </ng-container>
+        </ul>
+      </ng-container>
+      <ng-container #defaultSnippets>
+        <lib-snippets
+          *ngIf="showSnippets(snippet, feed)"
+          [snippet]="snippet"
+          [feed]="feed">
+        </lib-snippets>
+      </ng-container>
     </div>
   </ng-container>
 </ng-template>
