@@ -221,6 +221,9 @@
       background-size: inherit;
     }
   }
+  .custom-snippet-wrap {
+    margin-left: 50px;
+  }
 }
 
 @media all and (min-width: 1140px) {
@@ -284,5 +287,11 @@
   }
   .feed-item-controls-buttons {
     min-width: 130px;
+  }
+}
+
+@media all and (max-width: 767px){
+  .custom-snippet-wrap {
+    margin-left: 40px;
   }
 }
