@@ -191,8 +191,8 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
       return (
         existingFile.name         === file.name &&
         existingFile.lastModified === file.lastModified &&
-        existingFile.size         === file.size &&
-        existingFile.type         === file.type
+        existingFile.size         === file.size
+        // existingFile.type         === file.type
       );
     });
   }
