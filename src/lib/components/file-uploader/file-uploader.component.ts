@@ -102,6 +102,12 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
       this.photoInput.nativeElement.value = '';
       return false;
     }
+
+    if (!this.multiple && this.files && this.files.length) {
+      this.errorMessage = 'Нельзя загрузить больше одного файла';
+      return false;
+    }
+
     for (let i = 0; i < event.length; i++) {
       const existingFile = this.findFile(event[i]);
       if (existingFile) {
@@ -111,6 +117,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
       if (event[i].size === 0) {
         this.errorMessage = 'Не удалось загрузить файл ' + event[i].name + '. Файл не должен быть пустым';
       }
+
       const checkType = this.checkFileTypes(event[i]);
       if (!existingFile && checkType && event[i].size > 0) {
         const name = unescape(encodeURIComponent(event[i].name));
@@ -197,6 +204,8 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     } else {
       this.files = null;
     }
+    this.check();
+    this.cd.detectChanges();
   }
 
   public registerOnChange( fn: () => void ) {
