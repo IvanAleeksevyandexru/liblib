@@ -1,7 +1,9 @@
 <div class="catalog-menu-icon"
      [class.show]="showMenu"
      [class.not-authorized]="!loadService.user.authorized"
-     (click)="onMenuClick(!!catalog?.length)"></div>
+     (click)="onMenuClick(!!catalog?.length)">
+</div>
+
 <div [class.show]="showMenu" class="catalog-menu">
   <div class="hide show-md hide-lg">
     <div class="catalog-menu-logo-wrap">
@@ -14,11 +16,15 @@
       </div>
     </div>
   </div>
-  <a class="link-plain digital-assistant-link"
-     [ngClass]="{'lower-z': isOpenLangMenu}"
-     [href]="loadService.config.betaUrl + 'newsearch'">
-    {{'HEADER.MENU.DIGITAL_ASSISTANT' | libTranslate}}
-  </a>
+  <div class="digital-assistant-link hide-md" [ngClass]="{'lower-z': isOpenLangMenu}">
+    <div class="flex-container align-items-center">
+      <a class="link-plain" href="{{loadService.config.betaUrl}}help" target="_self">{{'HEADER.HELP' | libTranslate}}</a>
+      <a class="ml-24"
+         [href]="loadService.config.betaUrl + 'newsearch'">
+        <img class="search-icon" [src]="loadService.config.staticDomainLibAssetsPath + 'svg/search-icons/search-blue.svg'">
+      </a>
+    </div>
+  </div>
   <div class="back-language flex-container justify-between align-items-center hide-lg">
     <a class="title-h6">
       {{'HEADER.CHANGE_LANGUAGE.CHANGE' | libTranslate}}
@@ -26,18 +32,30 @@
   </div>
   <div class="catalog-menu-content">
     <div class="flex-1" *ngIf="catalog?.length" [class.hide]="!showMenu">
+      <div *ngIf="roleChangeAvailable" class="roles-list" [ngClass]="{'mb-16': !showRolesList}">
+        <div class="user-role" [class.opened]="showRolesList" (click)="openRolesList()">
+          {{'HEADER.CATALOG.SERVICES' | libTranslate}}
+          <span [ngClass]="{'link-plain': !showRolesList}">
+            {{'HEADER.CATALOG.FOR' | libTranslate}} {{getRoleName(activeRoleCode).toUpperCase()}}
+          </span>
+        </div>
+        <div class="list" *ngIf="showRolesList" [ngClass]="{'mt-8': showRolesList}">
+          <ng-container *ngFor="let role of userRoles; let first = first">
+            <a *ngIf="role.code !== activeRoleCode"
+               class="list-item-wrap"
+               (click)="updateRole(role.code, role.url)">
+              <div class="list-item link-plain">{{role.name}}</div>
+            </a>
+          </ng-container>
+        </div>
+      </div>
       <lib-catalog-tabs-list
         viewType="side-view"
         [catalog]="catalog"
         (catalogTabListItemClick)="catalogTabListItemClick($event)"
       ></lib-catalog-tabs-list>
-      <div class="catalog-help hide-lg">
-        <div class="flex-container justify-between align-items-center">
-          <a class="link" [href]="loadService.config.betaUrl + 'help'">Помощь и поддержка</a>
-          <div *ngIf="languageChangeAvailable" class="hide-lg">
-            <lib-language-select (openChoice)="openLanguageMenu($event)"></lib-language-select>
-          </div>
-        </div>
+      <div *ngIf="languageChangeAvailable" class="language-wrapper hide-lg">
+        <lib-language-select (openChoice)="openLanguageMenu($event)"></lib-language-select>
       </div>
     </div>
   </div>

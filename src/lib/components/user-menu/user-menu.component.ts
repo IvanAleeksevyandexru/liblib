@@ -1,6 +1,6 @@
 import {
   Component, NgModuleRef, HostListener, isDevMode, ViewChild, ChangeDetectorRef,
-  Input, OnInit, AfterViewInit, OnDestroy
+  Input, OnInit, AfterViewInit, OnDestroy, Output, EventEmitter
 } from '@angular/core';
 import { Category } from '../../models/category';
 import { MenuLink } from '../../models/menu-link';
@@ -19,6 +19,7 @@ import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { HelperService } from '../../services/helper/helper.service';
 import { Subscription } from 'rxjs';
 import { AccessesService } from '../../services/accesses/accesses.service';
+import { Translation } from '../../models/common-enums';
 
 @Component({
   selector: 'lib-user-menu',
@@ -29,28 +30,26 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public categories: Category[] = [];
   public menuOffset: number;
   public user: User;
-  public staticUrls: object;
   // public settingsCounter: CounterData; Это вроде уже не нужно. Но пока пусть будет. Мб передумают
   public userCounter: CounterData;
   public partnersCounter: CounterData;
-  public avatarError = false;
   public mainTabs: Tabs = null;
   public tabsSubscription: Subscription;
   public titleChangeRole: string;
   public userRoles;
   public activeRole;
-  public showRolesList = false;
-  public showAllMenu = true;
-  public staticList = true;
+  public Translation = Translation;
 
   @Input() public state: UserMenuState;
   @Input() public rolesListEnabled = false;
   @Input() public searchSputnikEnabled = false;
   @Input() public position: 'left' | 'right' = 'right';
   @Input() public links: MenuLink[] = [];
+  @Input() public translation: Translation | string = Translation.APP;
+
+  @Output() public closeMenu: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('menuDesk') public menuDesk;
-  @ViewChild('menuMobile') public menuMobile;
 
   @HostListener('document:keydown', ['$event'])
   public onKeydownComponent(event: KeyboardEvent) {
@@ -83,16 +82,12 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngOnInit() {
-    if (!this.links.length) {
-      this.links = this.menuService.getUserMenuDefaultLinks();
-    }
     this.user = this.loadService.user as User;
     this.userRoles = this.menuService.getUserRoles(this.user);
     this.activeRole = this.userRoles.find((role) => role.isActive);
-    this.staticUrls = this.menuService.getStaticItemUrls();
     this.countersService.counters$.subscribe(_ => {
       this.partnersCounter = this.countersService.getCounter(CounterTarget.PARTNERS);
-      //this.settingsCounter = this.countersService.getCounter(CounterTarget.SETTINGS);
+      // this.settingsCounter = this.countersService.getCounter(CounterTarget.SETTINGS);
       this.userCounter = this.countersService.getCounter(CounterTarget.USER);
     });
     this.tabsSubscription = this.tabsService.register(MAIN_TABS).subscribe((tabs: Tabs) => {
@@ -122,10 +117,6 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  public getUrl(menuItemName: string): string {
-    return this.staticUrls[menuItemName] || '';
-  }
-
   public onClose() {
     const html = document.getElementsByTagName('html')[0];
     html.classList.remove('disable-scroll');
@@ -137,23 +128,9 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.state.active && !this.state.isMobileView;
   }
 
-  public showMobileView() {
-    return this.state.active && this.state.isMobileView;
-  }
-
-  public menuItemClick(link: MenuLink): void {
-    this.sendYaMetric(link.mnemonic);
-    this.onClose();
-    if (link.handler) {
-      link.handler(link);
-    } else {
-      this.helperService.navigate(link.url);
-    }
-  }
-
   public menuStaticItemClick(itemName: string, mnemonic): void {
-    const staticUrl = this.getUrl(itemName);
-    return this.menuItemClick({url: staticUrl, mnemonic: mnemonic} as MenuLink);
+    this.menuService.menuStaticItemClick(itemName, mnemonic);
+    this.onClose();
   }
 
   public selectTab(tab: Tab) {

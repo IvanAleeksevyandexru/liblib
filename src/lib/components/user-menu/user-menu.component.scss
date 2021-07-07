@@ -6,76 +6,12 @@
     padding: 0 13px;
   }
 
-  .menu-header {
-    display: flex;
-    position: relative;
-    min-height: 72px;
-    padding-top: 40px;
-    padding-bottom: 20px;
-
-    .avatar-wrapper {
-      display: inline-block;
-      overflow: hidden;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-    }
-
-    .no-avatar,
-    .avatar {
-      width: 28px;
-      height: 28px;
-    }
-
-    .no-avatar {
-      background-color: #D1D5DF;
-      background-image: url(../../../assets/svg/no-avatar.svg);
-      background-size: 100%;
-
-      &.female{
-        background-image: url(../../../assets/svg/avatars/default-avatar-f.svg);
-      }
-      &.male{
-        background-image: url(../../../assets/svg/avatars/default-avatar-m.svg);
-      }
-
-      &.business {
-        background-color: transparent;
-        background-image: url(../../../assets/svg/avatar-business.svg);
-        &.female{
-          background-image: url(../../../assets/svg/avatars/default-avatar-ip-f.svg);
-        }
-        &.male{
-          background-image: url(../../../assets/svg/avatars/default-avatar-ip-m.svg);
-        }
-      }
-
-      &.legal {
-        background-color: transparent;
-        background-image: url(../../../assets/svg/avatars/default-avatar-ul.svg);
-      }
-    }
-
-    .name {
-      display: inline-block;
-      width: 70%;
-      height: 100%;
-      margin-left: 16px;
-      vertical-align: top;
-      font-size: 14px;
-      line-height: 20px;
-      word-wrap: break-word;
-    }
-
-    .close-menu {
-      position: absolute;
-      top: 30px;
-      right: 8px;
-      width: 14px;
-      height: 14px;
-      background: url(../../../assets/svg/close.svg) center no-repeat;
-      background-size: 14px;
-    }
+  .close-menu {
+    width: 24px;
+    height: 24px;
+    background: url(../../../assets/svg/close-large-24.svg) center no-repeat;
+    background-size: 24px;
+    display: block;
   }
 
   //&-links, &-tabs,
@@ -264,6 +200,9 @@
       height: 24px;
       background-size: 24px;
       margin-right: 16px;
+      background-size: cover;
+      background-repeat: no-repeat;
+
       &.bell {
         background-image: url(../../../assets/svg/menu-icons/bell.svg);
       }
@@ -275,6 +214,15 @@
       }
       &.wallet {
         background-image: url(../../../assets/svg/menu-icons/wallet.svg);
+      }
+      &.person {
+        background-image: url(../../../assets/svg/menu-icons/person.svg);
+      }
+      &.suitecase {
+        background-image: url(../../../assets/svg/menu-icons/suitecase.svg);
+      }
+      &.exit {
+        background-image: url(../../../assets/svg/menu-icons/exit.svg);
       }
       &.hand-break {
         background-image: url(../../../assets/svg/menu-icons/hand-break.svg);

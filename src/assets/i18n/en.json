@@ -5,6 +5,7 @@
     "REGISTER": "Register",
     "EXIT": "Exit",
     "ALL_ROLES": "All my roles",
+    "HELP": "Help",
     "MENU": {
       "CATALOG": "Services catalog",
       "NEWS": "News",
@@ -25,7 +26,9 @@
     },
     "CATALOG": {
       "ALL": "Catalog all",
-      "CLOSE": "Close"
+      "CLOSE": "Close",
+      "SERVICES": "SERVICES",
+      "FOR": "FOR"
     }
   },
   "FOOTER": {
