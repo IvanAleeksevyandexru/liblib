@@ -23,7 +23,7 @@
             <ng-container *ngFor="let link of links">
               <li (click)="menuStaticItemClick(link.title, link.mnemonic)"
                   class="item justify-between align-items-center"
-                  [ngClass]="{'hide-lg': link.showSeparatelyOnDesk}">
+                  [ngClass]="{'hide-lg-important': link.showSeparatelyOnDesk}">
                 <div class="flex-container">
                   <div class="icon {{link.icon}}"></div>
                   <span class="text-plain">{{link.title | libTranslate}}</span>
