@@ -74,6 +74,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public storageServiceUrl = '';
   @Input() public uploadMnemonicPrefix = '';
+  @Input() public hidePhoto: boolean;
 
   @ViewChild('fileInput', {static: false}) public fileInput: ElementRef;
   @ViewChild('photoInput', {static: false}) public photoInput: ElementRef;
