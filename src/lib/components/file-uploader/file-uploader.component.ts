@@ -76,6 +76,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
   @Input() public uploadMnemonicPrefix = '';
 
   @ViewChild('fileInput', {static: false}) public fileInput: ElementRef;
+  @ViewChild('photoInput', {static: false}) public photoInput: ElementRef;
 
   public invalidDisplayed: boolean;
   public onChange: (FileList) => void;
@@ -97,12 +98,28 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     const needUploadToServer = this.storageServiceUrl && !!this.orderId;
 
     if (!maxFilesSize || !filesLength) {
+      this.fileInput.nativeElement.value = '';
+      this.photoInput.nativeElement.value = '';
       return false;
     }
+
+    if (!this.multiple && this.files && this.files.length) {
+      this.errorMessage = 'Нельзя загрузить больше одного файла';
+      return false;
+    }
+
     for (let i = 0; i < event.length; i++) {
       const existingFile = this.findFile(event[i]);
+      if (existingFile) {
+        this.errorMessage = 'Файл уже загружен: ' + event[i].name;
+      }
+
+      if (event[i].size === 0) {
+        this.errorMessage = 'Не удалось загрузить файл ' + event[i].name + '. Файл не должен быть пустым';
+      }
+
       const checkType = this.checkFileTypes(event[i]);
-      if (!existingFile && checkType) {
+      if (!existingFile && checkType && event[i].size > 0) {
         const name = unescape(encodeURIComponent(event[i].name));
         const file: FileUpload = {
           mnemonic: this.getFileMnemonicByPrefix(this.uploadMnemonicPrefix),
@@ -134,6 +151,8 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
       this.commit(this.files);
       this.check();
     }
+    this.fileInput.nativeElement.value = '';
+    this.photoInput.nativeElement.value = '';
   }
 
   constructor(private host: ElementRef<HTMLInputElement>,
@@ -185,6 +204,8 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     } else {
       this.files = null;
     }
+    this.check();
+    this.cd.detectChanges();
   }
 
   public registerOnChange( fn: () => void ) {
@@ -272,6 +293,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     };
 
     this.fileInput.nativeElement.value = '';
+    this.photoInput.nativeElement.value = '';
     this.touched = true;
     const deletedFile = this.files[index];
     const objectType = '2';
