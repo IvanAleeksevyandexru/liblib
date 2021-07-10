@@ -37,7 +37,7 @@
   <div class="chose-dnd" libDragAndDrop (filesDropped)="onFilesDropped($event)">
     <p class="text-center mb-12">Перетащите {{maxFilesLength === 1 ? 'файл' : 'файлы'}} или выберите на компьютере</p>
 
-    <p class="text-center">
+    <p class="text-center" [hidden]="hidePhoto">
       <span class="select-photo" (click)="photoInput.click()">
         Сделать фото
         <input type="file" class="file-input" #photoInput [multiple]="multiple" accept="image/*" capture />
