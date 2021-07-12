@@ -74,6 +74,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public storageServiceUrl = '';
   @Input() public uploadMnemonicPrefix = '';
+  @Input() public hidePhoto: boolean;
 
   @ViewChild('fileInput', {static: false}) public fileInput: ElementRef;
   @ViewChild('photoInput', {static: false}) public photoInput: ElementRef;
@@ -191,8 +192,8 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
       return (
         existingFile.name         === file.name &&
         existingFile.lastModified === file.lastModified &&
-        existingFile.size         === file.size &&
-        existingFile.type         === file.type
+        existingFile.size         === file.size
+        // existingFile.type         === file.type
       );
     });
   }
