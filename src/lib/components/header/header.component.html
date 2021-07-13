@@ -87,7 +87,7 @@
            [class.catalog-menu-opened]="menuCatalogOpened">
         <div class="hide show-md">
           <ul class="links flex-container-md">
-            <div class="hide show-lg">
+            <div *ngIf="user.authorized" class="hide show-lg">
               <li *ngFor="let link of links" class="item flex-container align-items-center mr-24">
                 <ng-container *ngIf="link.showSeparatelyOnDesk">
                   <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
@@ -120,7 +120,7 @@
             </li>
           </ul>
         </div>
-        <div class="ml-md-64 ml-lg-20">
+        <div class="ml-lg-20" [ngClass]="{'ml-md-64': user.authorized}">
           <div class="login-wrapper">
             <div class="login flex-container justify-end overflow-container">
               <lib-login [useButton]="true" class="hide"
@@ -141,9 +141,6 @@
                            [translation]="translation">
             </lib-user-menu>
           </div>
-        </div>
-        <div *ngIf="languageChangeAvailable" class="ml-12 hide show-lg">
-          <lib-language-select></lib-language-select>
         </div>
       </div>
     </div>

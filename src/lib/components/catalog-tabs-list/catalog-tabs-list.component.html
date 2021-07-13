@@ -13,9 +13,6 @@
 
 <ng-template #contentOfComponent>
   <div class="flex-container-lg catalog-link-item-wrap">
-    <ng-container *ngIf="viewType === 'side-view'">
-      <lib-user-roles></lib-user-roles>
-    </ng-container>
     <a href
        [ngClass]="{
             'main-active':  item.mainActive && viewType === 'main-page-view',

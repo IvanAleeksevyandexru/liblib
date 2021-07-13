@@ -20,6 +20,7 @@ export class TabsScrollingComponent implements OnInit, OnChanges {
   @Input() public tabs: LightTab[];
   @Input() public initActiveTab: string; // id таба, который должен быть включен по умолчанию
   @Input() public styleView: 'underlined' = 'underlined';
+  @Input() public backgroundColor: 'fff' | 'transparent' = 'fff';
   @Input() public translation: Translation | string = Translation.APP;
 
   @Output() public changeTab = new EventEmitter<LightTab>();

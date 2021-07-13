@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LoadService } from '../../services/load/load.service';
 import { MenuService } from '../../services/menu/menu.service';
@@ -17,7 +17,6 @@ import { HelperService } from '../../services/helper/helper.service';
 export class MenuCatalogComponent implements OnInit, OnChanges, OnDestroy {
 
   public user = this.loadService.user;
-  public showRolesList = false;
   public emptyRegionPopular: boolean;
   public showSubCatalog: boolean;
   public catalog = this.catalogTabsService.catalogTabsList;
@@ -26,7 +25,6 @@ export class MenuCatalogComponent implements OnInit, OnChanges, OnDestroy {
   public activeRole: UserRole;
   public subscription: Subscription;
   public subscriptionBurger: Subscription;
-  public isOpenLangMenu = false;
   public roleChangeAvailable = true;
   private translateSubscription: Subscription;
   public activeRoleCode: string;
@@ -42,6 +40,8 @@ export class MenuCatalogComponent implements OnInit, OnChanges, OnDestroy {
       this.onClose();
     }
   }
+
+  @ViewChild('catalogMenu') private catalogMenu: ElementRef<HTMLDivElement>;
 
   constructor(
     public loadService: LoadService,
@@ -138,7 +138,6 @@ export class MenuCatalogComponent implements OnInit, OnChanges, OnDestroy {
 
     this.currentCategoryCode = item.code;
     this.showSubCatalog = item.sideActive;
-
   }
 
   public subCatalogClose(): void {
@@ -153,21 +152,9 @@ export class MenuCatalogComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public openLanguageMenu(evt: boolean) {
-    this.isOpenLangMenu = evt;
-  }
-
-  public openRolesList(): void {
-    this.showRolesList = !this.showRolesList;
-  }
-
-  public getRoleName(code: string): string {
-    return this.userRoles.find(role => role.code === code).secondName;
-  }
-
-  public updateRole(code: string, url: string): void {
-    if (this.activeRoleCode !== code) {
-      this.activeRoleCode = code;
-      window.location.href = url;
+    if (evt) {
+      const top = this.catalogMenu.nativeElement.scrollTop + 56;
+      setTimeout( () => this.catalogMenu.nativeElement.scrollTop = top, 0);
     }
   }
 

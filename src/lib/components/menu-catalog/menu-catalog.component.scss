@@ -5,7 +5,8 @@
   width: 320px;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  overflow: auto;
+  height: calc(100% - 120px);
 
   &.mt {
     margin-top: 58px;
@@ -51,10 +52,6 @@
   transition: background .15s ease;
 }
 
-.language-wrapper {
-  padding: 16px;
-}
-
 .catalog-help-link {
   font-size: 16px;
   line-height: 24px;
@@ -83,43 +80,6 @@
 
   &.show {
     background-image: url('../../../assets/svg/close.svg');
-  }
-}
-
-.roles-list {
-  position: relative;
-  padding: 20px 23px 0 16px;
-
-  .user-role {
-    cursor: pointer;
-    position: relative;
-
-    &:after {
-      content: '';
-      position: absolute;
-      width: 10px;
-      height: 6px;
-      top: 50%;
-      right: 0;
-      margin-top: -3px;
-      background: url(../../../assets/svg/arrows/arrow_gosblue.svg) no-repeat right;
-    }
-
-    &.opened:after {
-      -webkit-transform: rotate(180deg);
-      -moz-transform: rotate(180deg);
-      -ms-transform: rotate(180deg);
-      -o-transform: rotate(180deg);
-      transform: rotate(180deg);
-    }
-  }
-
-  .list {
-    .list-item-wrap {
-      cursor: pointer;
-      padding: 12px 0;
-      display: block;
-    }
   }
 }
 
@@ -306,13 +266,12 @@
       left: 784px;
     }
   }
+  .catalog-menu-content {
+    height: calc(100% - 64px);
+  }
 }
 
 @media (max-width: 1139px) {
-  .catalog-menu-content {
-    overflow: auto;
-    height: calc(100% - 120px);
-  }
   .sub-catalog.show {
     top: -64px;
   }
@@ -328,6 +287,9 @@
 }
 
 @media (min-width: 1140px) {
+  .catalog-menu-content {
+    height: 100%;
+  }
   .catalog-menu-icon:hover {
     filter: invert(35%) sepia(99%) saturate(4975%) hue-rotate(218deg) brightness(96%) contrast(92%);
   }
