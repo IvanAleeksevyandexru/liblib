@@ -158,8 +158,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
           data: {
             ...feed.data,
             snippets: feed?.data?.snippets?.map((item) => {
-              return item.type === 'CUSTOM'
-                ? { json: JSON.parse(item?.json), type: item?.type }
+              return item.type === 'CUSTOM' && item.json
+                ? { json: JSON.parse(item.json), type: item?.type }
                 : item;
           }),
           },
@@ -195,7 +195,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public withReload(feed): boolean {
-    return !(this.isLk && !['KND_APPEAL', 'KND_APPEAL_DRAFT', 'PAYMENT'].includes(feed.feedType) || this.isPartners);
+    return !(this.isLk && !['KND_APPEAL', 'KND_APPEAL_DRAFT', 'PAYMENT'].includes(feed.feedType) || this.isPartners) || !!(feed.data && feed.data.p16url);
   }
 
   public getUserData(): User {

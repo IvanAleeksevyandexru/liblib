@@ -199,7 +199,11 @@ export class FeedsService {
         }
         break;
       case 'ORDER':
-        url += `order/${feed.id}`;
+        if (feed.data && feed.data.p16url) {
+          url = `${feed.data.p16url}`;
+        } else {
+          url += `order/${feed.id}`;
+        }
         break;
       case 'CLAIM':
         url += `claim/${feed.id}`;
