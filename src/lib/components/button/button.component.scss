@@ -7,6 +7,10 @@
     background-color: #E4ECFD;
     padding: 6px 16px;
     border-radius: 8px;
+
+    &.md {
+      padding: 14px 32px;
+    }
   }
 }
 
