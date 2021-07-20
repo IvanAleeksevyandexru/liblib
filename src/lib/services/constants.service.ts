@@ -439,7 +439,7 @@ export class ConstantsService {
   public readonly ORDERS_CATEGORIES = [
     {
       text: 'Все',
-      type: 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER',
+      type: 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER,SIGN',
       id: 1,
       mnemonic: 'allEvents'
     },
@@ -457,7 +457,7 @@ export class ConstantsService {
     },
     {
       text: 'Сообщения',
-      type: 'APPEAL',
+      type: 'APPEAL,SIGN',
       id: 4,
       mnemonic: 'appeal'
     },
@@ -507,7 +507,7 @@ export class ConstantsService {
     },
     {
       text: 'Сообщения',
-      type: 'APPEAL',
+      type: 'APPEAL,SIGN',
       id: 7,
       mnemonic: 'appealEvents'
     },

@@ -247,6 +247,9 @@ export class FeedsService {
       case 'KND_APPEAL_DRAFT':
         url = `${this.loadService.config.kndDomain}form/appeal/${feed.extId}?isDraft=true`;
         break;
+      case 'SIGN':
+        url += `sign-feed/${feed.id}`;
+        break;
     }
 
     return url;
