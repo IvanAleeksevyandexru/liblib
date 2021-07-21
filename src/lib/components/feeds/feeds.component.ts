@@ -66,6 +66,28 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   private loadedFeedsCount = 0;
   private showMoreCount = 0;
   private afterFirstSearch = false;
+  private statusesMap = {
+    NEW: 'in_progress',
+    REQUEST: 'in_progress',
+    REQUEST_ERROR: 'reject',
+    SIGN_REJECT: 'reject',
+    DONE: 'executed',
+    ERROR1: 'reject',
+    ERROR10: 'reject',
+    ERROR11: 'reject',
+    ERROR4: 'reject'
+  };
+  private titlesMap = {
+    DONE: 'Документы подписаны',
+    NEW: 'Запрос на подписание документов',
+    REQUEST: 'Запрос на подписание документов',
+    REQUEST_ERROR: 'Ошибка запроса',
+    SIGN_REJECT: 'Подписание документов отклонено',
+    ERROR1: 'Не удалось подписать документы',
+    ERROR10: 'Не удалось подписать документы',
+    ERROR11: 'Не удалось подписать документы',
+    ERROR4: 'Истекло время подписания документов',
+  };
   public isHeader: boolean;
 
   constructor(
@@ -172,6 +194,16 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         this.feedsIsLoading = false;
         this.addFeedsIsLoading = false;
         this.hasMore = feeds.hasMore;
+        this.feeds.forEach((item, index) => {
+          if (item.feedType === 'SIGN') {
+            if (!!['AL10', 'AL15'].includes(this.loadService.user.assuranceLevel)) {
+              this.feeds.splice(index, 1);
+            } else {
+              item.title = this.titlesMap[item.status] || item.title;
+              item.status = this.statusesMap[item.status] || item.status;
+            }
+          }
+        });
         this.emitEmptyFeedsEvent();
         this.loadedFeedsCount += this.feeds.length;
         this.yaMetricOnSearch(query);
