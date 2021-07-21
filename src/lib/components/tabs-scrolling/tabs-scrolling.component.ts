@@ -29,9 +29,17 @@ export class TabsScrollingComponent implements OnInit, OnChanges {
 
   public ngOnInit() {
     if (this.tabs && this.tabs.length) {
-      if (this.initActiveTab) {
-        this.activeTab = this.tabs.find(item => item.id === this.initActiveTab);
+      const url = location.pathname.split('/');
+      if (url[url.length - 1] !== this.tabs[0].id) {
+        this.activeTab = this.tabs.find((tab: LightTab) => {
+          return tab.id === url[url.length - 1];
+        });
+      } else {
+        if (this.initActiveTab) {
+          this.activeTab = this.tabs.find(item => item.id === this.initActiveTab);
+        }
       }
+
       if (!this.activeTab) {
         this.activeTab = this.tabs[0];
       }
