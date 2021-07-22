@@ -159,6 +159,7 @@ import { UserRolesComponent } from './components/user-roles/user-roles.component
 import { RegionCasesComponent } from './components/region-cases/region-cases.component';
 import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
 import { FileExtensionIconComponent } from './components/file-extension-icon/file-extension-icon.component';
+import { DragSliderComponent } from './components/drag-slider/drag-slider.component';
 
 
 registerLocaleData(localeRu, 'ru');
@@ -301,6 +302,7 @@ registerLocaleData(localeRu, 'ru');
     LanguageSelectComponent,
     RoundLoaderComponent,
     SliderComponent,
+    DragSliderComponent,
     CatalogTabsComponent,
     CatalogTabsListComponent,
     CatalogTabItemComponent,
@@ -448,6 +450,7 @@ registerLocaleData(localeRu, 'ru');
     LanguageSelectComponent,
     RoundLoaderComponent,
     SliderComponent,
+    DragSliderComponent,
     MenuCatalogSimpleComponent,
     SmallFooterComponent,
     CatalogTabsComponent,
