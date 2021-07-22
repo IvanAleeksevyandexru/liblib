@@ -106,12 +106,6 @@ export class ConstantsService {
       name: 'TABS.MESSAGES.TITLE',
       url: '/messages',
       metric: {name: this.TABS_METRIC_NAME, action: 'messages'}
-    }, {
-      id: 'permissions',
-      name: 'TABS.PERMISSIONS.TITLE',
-      url: '/permissions',
-      metric: {name: this.TABS_METRIC_NAME, action: 'permissions'},
-      trusted: true
     }
   ]);
   public readonly LK_DEPT_TABS = new Tabs([
@@ -296,12 +290,6 @@ export class ConstantsService {
       id: 'statements',
       name: 'PROFILE.TABS.STATEMENTS',
       url: '/profile/statements',
-      access: ['AL20']
-    },
-    {
-      id: 'empowerments',
-      name: 'PROFILE.TABS.EMPOWERMENTS',
-      url: '/profile/empowerments',
       access: ['AL20']
     },
     {
