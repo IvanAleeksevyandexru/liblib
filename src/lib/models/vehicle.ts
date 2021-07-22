@@ -31,7 +31,6 @@ export interface Vehicle {
   productionYear?: number;
   // Кастомные поля
   type?: DocumentType;
-  duplicate?: boolean;
 }
 
 export interface Brand {
