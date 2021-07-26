@@ -80,14 +80,14 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   };
   private titlesMap = {
     DONE: 'Документы подписаны',
-    NEW: 'Запрос на подписание документов',
     REQUEST: 'Запрос на подписание документов',
     REQUEST_ERROR: 'Ошибка запроса',
     SIGN_REJECT: 'Подписание документов отклонено',
-    ERROR1: 'Не удалось подписать документы',
-    ERROR10: 'Не удалось подписать документы',
-    ERROR11: 'Не удалось подписать документы',
-    ERROR4: 'Истекло время подписания документов',
+    EXPIRED: 'Истекло время подписания документов',
+    ERROR: 'Ошибка запроса',
+    RESULT_FILE_NOT_FOUND: 'Ошибка запроса',
+    FILE_MAP_FAIL: 'Ошибка запроса',
+    MIMETYPE_LENGTH_INCORRECT: 'Ошибка запроса'
   };
   public isHeader: boolean;
 
