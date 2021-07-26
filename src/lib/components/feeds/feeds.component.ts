@@ -107,7 +107,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public ngOnInit() {
     HelperService.mixinModuleTranslations(this.translate);
     this.getUserData();
-    if (!this.afterFirstSearch && !this.route.snapshot.queryParamMap.get('q')) {
+    if (!this.afterFirstSearch ) {
       this.getFeeds();
     }
     this.updateFeeds();
