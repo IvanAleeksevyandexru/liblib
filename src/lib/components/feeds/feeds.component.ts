@@ -70,12 +70,13 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     NEW: 'in_progress',
     REQUEST: 'in_progress',
     REQUEST_ERROR: 'reject',
-    SIGN_REJECT: 'reject',
+    SIGN_REJECT: 'in_progress',
     DONE: 'executed',
-    ERROR1: 'reject',
-    ERROR10: 'reject',
-    ERROR11: 'reject',
-    ERROR4: 'reject'
+    EXPIRED: 'in_progress',
+    ERROR: 'reject',
+    RESULT_FILE_NOT_FOUND: 'reject',
+    FILE_MAP_FAIL: 'reject',
+    MIMETYPE_LENGTH_INCORRECT: 'reject'
   };
   private titlesMap = {
     DONE: 'Документы подписаны',
