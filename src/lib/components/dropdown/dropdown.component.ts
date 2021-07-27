@@ -84,6 +84,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   @Input() public virtualScroll = false;
   // включает поле поиска в выпадающую область, позволяет фильтровать отображаемые значения
   @Input() public localSearch = false;
+  // заменять ё -> e й -> и
+  @Input() public escapeSimilarLetters = false;
   @Input() public highlightSubstring = true;
 
   // источник значений, массив элементов
@@ -345,7 +347,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
 
   public setPartialIndex(partialNumber: number) {
     if (this.localSearch || this.incrementalLoading) {
-      this.fixedItemsProvider.search(this.filteringQuery).subscribe((filteredAll: Array<ListItem>) => {
+      this.fixedItemsProvider.search(this.filteringQuery, null, this.escapeSimilarLetters).subscribe((filteredAll: Array<ListItem>) => {
         const highlightIfNeeded = (filteredItems: Array<ListItem>) => {
           if (this.filteringQuery && this.highlightSubstring) {
             this.listService.highlightSubstring(filteredItems, this.filteringQuery);
