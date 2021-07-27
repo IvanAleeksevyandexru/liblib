@@ -70,23 +70,24 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     NEW: 'in_progress',
     REQUEST: 'in_progress',
     REQUEST_ERROR: 'reject',
-    SIGN_REJECT: 'reject',
+    SIGN_REJECT: 'in_progress',
     DONE: 'executed',
-    ERROR1: 'reject',
-    ERROR10: 'reject',
-    ERROR11: 'reject',
-    ERROR4: 'reject'
+    EXPIRED: 'in_progress',
+    ERROR: 'reject',
+    RESULT_FILE_NOT_FOUND: 'reject',
+    FILE_MAP_FAIL: 'reject',
+    MIMETYPE_LENGTH_INCORRECT: 'reject'
   };
   private titlesMap = {
     DONE: 'Документы подписаны',
-    NEW: 'Запрос на подписание документов',
     REQUEST: 'Запрос на подписание документов',
     REQUEST_ERROR: 'Ошибка запроса',
     SIGN_REJECT: 'Подписание документов отклонено',
-    ERROR1: 'Не удалось подписать документы',
-    ERROR10: 'Не удалось подписать документы',
-    ERROR11: 'Не удалось подписать документы',
-    ERROR4: 'Истекло время подписания документов',
+    EXPIRED: 'Истекло время подписания документов',
+    ERROR: 'Ошибка запроса',
+    RESULT_FILE_NOT_FOUND: 'Ошибка запроса',
+    FILE_MAP_FAIL: 'Ошибка запроса',
+    MIMETYPE_LENGTH_INCORRECT: 'Ошибка запроса'
   };
   public isHeader: boolean;
 
@@ -107,7 +108,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public ngOnInit() {
     HelperService.mixinModuleTranslations(this.translate);
     this.getUserData();
-    if (!this.afterFirstSearch && !this.route.snapshot.queryParamMap.get('q')) {
+    if (!this.afterFirstSearch ) {
       this.getFeeds();
     }
     this.updateFeeds();
