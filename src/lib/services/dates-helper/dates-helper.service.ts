@@ -144,8 +144,8 @@ export class DatesHelperService {
     return asText ? new Range<string>(startDateText, endDateText) : new Range<Date>(startDate, endDate);
   }
 
-  public static isExpiredDate(date: MomentInput): boolean {
-    return moment(date, 'DD.MM.YYYY').isBefore(moment(), 'days');
+  public static isExpiredDate(date: MomentInput, format = 'DD.MM.YYYY'): boolean {
+    return moment(date, format).isBefore(moment(), 'days');
   }
 
   public static isExpiredDateAfter(date: MomentInput, amount: DurationInputArg1, units: DurationInputArg2): boolean {
