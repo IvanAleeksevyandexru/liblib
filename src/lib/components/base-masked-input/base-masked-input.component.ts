@@ -185,27 +185,6 @@ export class BaseMaskedInputComponent
     this.touched = touched;
   }
 
-  public notifyFocusEvent(e: Event) {
-    const inp = this.inputElement.nativeElement;
-
-    this.focusManager.notifyFocusMayChanged(this, e.type === 'focus');
-    const valueChangedOnBlur = e.type !== 'focus' && inp.value !== this.valueOnFocus;
-    if ((HelperService.isSafari() || HelperService.isIE()) && valueChangedOnBlur) {
-      this.forceChange();
-    }
-
-    if (e.type === 'focus' && !this.removeMaskSymbolsIfNeeded(inp.value) && inp.setSelectionRange) {
-      setTimeout(() => {
-        inp.setSelectionRange(0, 0);
-        inp.focus();
-      });
-    }
-
-    if (this.positionInInput !== 0) {
-      this.goToFixPosition(this.positionInInput, this.positionInInput);
-    }
-  }
-
   public handleBlur() {
     this.focused = false;
     this.check();
@@ -215,6 +194,19 @@ export class BaseMaskedInputComponent
 
   public handleFocus() {
     this.touched = this.focused = true;
+
+    const inp = this.inputElement.nativeElement;
+    if (!this.removeMaskSymbolsIfNeeded(inp.value) && inp.setSelectionRange) {
+      setTimeout(() => {
+        inp.setSelectionRange(0, 0);
+        inp.focus();
+      });
+    }
+
+    if (this.positionInInput !== 0) {
+      this.goToFixPosition(this.positionInInput, this.positionInInput);
+    }
+
     HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue);
     this.valueOnFocus = this.inputElement.nativeElement.value;
     this.check();
