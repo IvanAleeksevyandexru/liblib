@@ -60,6 +60,9 @@ export class SearchBarComponent
   @Input() public disabled = false;
   @Input() public invalid = false;
 
+  // bg цвет input
+  @Input() public bgInputField = '#f5f7fa';
+
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public width?: Width | string;
   @Input() public clearable = true;  // разрешает очистить поле если есть значение
