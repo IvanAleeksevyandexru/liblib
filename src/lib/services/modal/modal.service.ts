@@ -1,5 +1,4 @@
 import { ComponentFactory, ComponentFactoryResolver, Injectable, Injector, NgModuleRef, Type, ViewContainerRef } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +26,21 @@ export class ModalService {
       setTimeout(() => {
         this.checkForScroll();
       });
+
+      if (!modalRules?.disableOutsideClickClosing) {
+        const elem = document.getElementsByClassName('popup-wrapper')[0];
+        if (elem) {
+          elem.addEventListener('click', ((ev: any) => {
+            if (ev.target.classList.contains('popup-wrapper')) {
+              if (typeof modalRules?.outsideClick === 'function') {
+                modalRules?.outsideClick();
+              }
+              modal.instance.destroy();
+              elem.removeEventListener('click', null);
+            }
+          }));
+        }
+      }
     }
     // ref.location.nativeElement.querySelector('.overlay').classList.add('show');
     return modal;

@@ -47,4 +47,5 @@ export * from './ya-map/ya-map.service';
 export * from './ya-metric/ya-metric.service';
 export * from './constants.service';
 export * from './catalog-tabs/catalog-tabs.service';
+export * from './file-uploader/file-uploader.service';
 

@@ -14,6 +14,7 @@ export class HiddenTooltipComponent implements OnInit {
   @Input() public beautiful = false; // использовать подложку
   @Input() public closable = false; // возможность закрыть на крестик
   @Input() public questionMode = false; // значок хинта вместо caption, если true - caption не будет показан
+  @Input() public offsetTopContent = 'mt-16'; // отступ открытого контента от заголовка
 
   constructor() { }
 

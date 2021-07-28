@@ -31,7 +31,9 @@ $checkbox-active-color: #0D4CD3;
       background-color: #1D5DEB;
     }
   }
-  &:disabled + .checkbox {
+  &:disabled + .checkbox,
+  &:hover:disabled + .checkbox {
+    cursor: default;
     background-color: #D1D5DF;
     border-color: #86909C;
     &:before {
@@ -39,7 +41,8 @@ $checkbox-active-color: #0D4CD3;
     }
   }
 
-  &:disabled:checked + .checkbox {
+  &:disabled:checked + .checkbox,
+  &:hover:disabled + .checkbox {
     &:before {
       display: block;
       background-color: #86909C;
@@ -70,6 +73,7 @@ $checkbox-active-color: #0D4CD3;
   box-sizing: border-box;
   border-radius: 4px;
   border: 2px solid $checkbox-active-color;
+  cursor: pointer;
   //box-sizing: content-box;
   /*&.focused {
     border: 2px dotted $checkbox-active-color;
@@ -81,6 +85,7 @@ $checkbox-active-color: #0D4CD3;
   line-height: 19px;
   color: #515a63;
   min-height: 24px;
+  cursor: default;
 }
 
 .checkbox-description {

@@ -121,6 +121,9 @@
             </ng-template>
             <div class="remove-notice" *ngIf="showExpiryForLk(feed)">{{feed.data.expiryDate | timeLeft}}</div>
           </ng-template>
+<!--          <ng-container *ngFor="let snippet of feed.data.snippets">-->
+<!--            -->
+<!--          </ng-container>-->
           <div *ngIf="isOrderCreator(feed)">
             <ng-container
               [ngTemplateOutlet]="author"
@@ -149,11 +152,37 @@
   </div>
   <ng-container *ngIf="checkSnippetsExists(feed) && notEqueueType(feed, page)">
     <div *ngFor="let snippet of feed.data.snippets">
-      <lib-snippets
-        *ngIf="showSnippets(snippet, feed)"
-        [snippet]="snippet"
-        [feed]="feed">
-      </lib-snippets>
+      <ng-container *ngIf="snippet.type === 'CUSTOM' else defaultSnippets">
+        <div class="custom-snippet-wrap">
+          <ng-container *ngIf="snippet?.json?.programName; else customProgramSnippet">
+            <div class="mt-12">
+              <div class="text-plain small-text">
+                {{snippet?.json?.firstName}} {{snippet?.json?.middleName}} {{snippet?.json?.lastName}}
+              </div>
+              <div *ngIf="snippet?.json?.programName" class="text-plain small-text mt-4">
+                <span class="gray">Программа</span>: {{snippet.json.programName}}
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #customProgramSnippet>
+            <div *ngIf="snippet?.json?.suzName" class="feed-suz-title mb-8 mt-12">{{snippet.json.suzName}}</div>
+            <ul class="feed-suz-list" *ngIf="snippet?.json?.specialties?.length" [class.over-three-specialty]="snippet?.json?.specialties?.length > 3">
+              <ng-container *ngFor="let specialty of snippet?.json?.specialties | slice: 0: 3">
+                <ng-container *ngFor="let item of specialty | keyvalue">
+                  <li class="feed-suz-list-item">{{item.key}}</li>
+                </ng-container>
+              </ng-container>
+            </ul>
+          </ng-template>
+        </div>
+      </ng-container>
+      <ng-template #defaultSnippets>
+        <lib-snippets
+          *ngIf="showSnippets(snippet, feed)"
+          [snippet]="snippet"
+          [feed]="feed">
+        </lib-snippets>
+      </ng-template>
     </div>
   </ng-container>
 </ng-template>
