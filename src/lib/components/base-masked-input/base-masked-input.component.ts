@@ -10,7 +10,7 @@ const conformToMask = conformTo.default;
 import * as createTextMask from '../../../../../../node_modules/text-mask-core/src/createTextMaskInputElement';
 const createTextMaskInputElement = createTextMask.default; */
 import { InputAutocomplete, RemoveMaskSymbols } from '../../models/common-enums';
-import { FocusManager, Focusable } from '../../services/focus/focus.manager';
+import { Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { HelperService } from '../../services/helper/helper.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
@@ -33,7 +33,6 @@ export class BaseMaskedInputComponent
   implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated {
 
   constructor(
-    private focusManager: FocusManager,
     private changeDetection: ChangeDetectorRef,
     @Optional() @Host() @SkipSelf()
     private controlContainer: ControlContainer,
@@ -114,7 +113,6 @@ export class BaseMaskedInputComponent
   public ngAfterViewInit() {
     this.setupMask();
     this.attemptToApplyValue(this.lastModelValue);
-    this.focusManager.register(this);
     this.check();
   }
 
@@ -142,7 +140,6 @@ export class BaseMaskedInputComponent
   }
 
   public ngOnDestroy() {
-    this.focusManager.unregister(this);
     this.destroyed = true;
   }
 
@@ -199,7 +196,6 @@ export class BaseMaskedInputComponent
     if (!this.removeMaskSymbolsIfNeeded(inp.value) && inp.setSelectionRange) {
       setTimeout(() => {
         inp.setSelectionRange(0, 0);
-        inp.focus();
       });
     }
 
@@ -235,7 +231,6 @@ export class BaseMaskedInputComponent
     if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement) && !isSuggest) {
       this.inputElement.nativeElement.focus();
       HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue);
-      this.focusManager.notifyFocusMayChanged(this, true);
     }
   }
 
