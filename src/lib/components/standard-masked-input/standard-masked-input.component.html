@@ -16,7 +16,8 @@
   <div class="text-control masked-input" [ngClass]="contextClass ? [contextClass] : []"
        [class.withClearButton]="clearable && !disabled && !empty && !readOnly"
        [class.withTip]="questionTip && questionTipPosition === MessagePosition.INSIDE && (!validationOverride || !(invalidDisplayed && validationMessages))"
-       [class.withValidationError]="validationPosition === MessagePosition.INSIDE && invalidDisplayed && validationMessages">
+       [class.withValidationError]="validationPosition === MessagePosition.INSIDE && invalidDisplayed && validationMessages"
+       (click)="returnFocus($event)">
     <div class="input-container plain-input">
       <input #input
              [attr.type]="type"
@@ -32,8 +33,8 @@
              [class.focused]="focused"
              [class.uppercase]="uppercase"
              [class.is-suggest]="suggest && suggest.list.length"
-             (blur)="handleBlur()"
-             (focus)="handleFocus()"
+             (blur)="notifyFocusEvent($event)"
+             (focus)="notifyFocusEvent($event)"
              (input)="handleInput($event.target.value, $event)"
              (change)="handleChange($event.target.value, $event)"
              (keyup.enter)="forceChange()"
