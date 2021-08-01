@@ -18,7 +18,7 @@ import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { HelperService } from '../../services/helper/helper.service';
 
 const HIDE_TIMOUT = 300;
@@ -63,6 +63,7 @@ export class HeaderComponent implements OnInit, OnChanges {
   @Input() public showBurger = true;
   @Input() public catalog?: Catalog[];
   @Input() public languageChangeAvailable: boolean;
+  @Input() public closeStatisticPopup$: Observable<boolean>;
 
   @Output() public backClick = new EventEmitter<any>();
 
