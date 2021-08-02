@@ -1,5 +1,5 @@
 import { ListItem } from './dropdown.model';
-import { ConstantsService } from '../services/constants.service';
+import { ConstantsService } from '../services/constants/constants.service';
 import * as moment_ from 'moment';
 
 const moment = moment_;

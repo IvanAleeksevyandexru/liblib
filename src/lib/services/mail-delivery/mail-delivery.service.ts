@@ -12,7 +12,7 @@ import {
   GepsUpdateAddresses, SubscriptionHint
 } from '../../models/mail-delivery';
 import { LoadService } from '../../services/load/load.service';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../constants/constants.service';
 import { CookieService } from '../../services/cookie/cookie.service';
 import { SubscriptionItem } from '../../models/mail-delivery';
 

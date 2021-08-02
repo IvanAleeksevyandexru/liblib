@@ -1,12 +1,9 @@
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from '../../models/user';
 import { FeedsService } from '../../services/feeds/feeds.service';
-import { FeedModel, FeedsModel, SnippetModel } from '../../models/feed';
-import * as moment_ from 'moment';
+import { FeedsModel, SnippetModel } from '../../models/feed';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { LoadService } from '../../services/load/load.service';
-
-const moment = moment_;
 
 @Component({
   selector: 'lib-equeue',

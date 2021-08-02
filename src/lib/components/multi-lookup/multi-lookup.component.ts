@@ -11,7 +11,7 @@ import { ListItemsService, FixedItemsProvider, ListItemsOperationsContext } from
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { Translation, MultipleItemsLayout } from '../../models/common-enums';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../../services/constants/constants.service';
 import { Width } from '../../models/width-height';
 
 @Component({

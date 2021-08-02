@@ -11,7 +11,7 @@ import {
   OnDestroy, NgModuleRef, ChangeDetectorRef, ViewChildren, QueryList, ChangeDetectionStrategy
 } from '@angular/core';
 import { SliderImage } from '../../models/slider-image';
-import { SliderImagesModalComponent } from '../slider-images-modal/slider-images-modal.component';
+import { SliderImagesModalComponent } from './slider-images-modal/slider-images-modal.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { LoadService } from '../../services/load/load.service';
 import { DragDropManager } from '../../services/drag-drop/drag-drop.manager';

@@ -15,11 +15,11 @@ import { MenuService } from '../../services/menu/menu.service';
 import { FeedsComponent } from '../feeds/feeds.component';
 import { UserMenuState, CounterTarget, MenuLink, Category, CounterData, Catalog } from '../../models';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { HelperService } from '../../services/helper/helper.service';
+import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
 
 const HIDE_TIMOUT = 300;
 

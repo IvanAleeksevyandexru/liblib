@@ -34,7 +34,7 @@ import {
   LookupPartialProvider,
   LookupProvider
 } from '../../models/dropdown.model';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../../services/constants/constants.service';
 import { PositioningManager, PositioningRequest } from '../../services/positioning/positioning.manager';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { VirtualScrollComponent } from '../virtual-scroll/virtual-scroll.component';

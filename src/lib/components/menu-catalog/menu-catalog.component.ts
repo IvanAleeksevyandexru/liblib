@@ -1,5 +1,4 @@
 import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Catalog } from '../../models/main-page.model';
 import { Subscription } from 'rxjs';
 import { LoadService } from '../../services/load/load.service';
 import { MenuService } from '../../services/menu/menu.service';

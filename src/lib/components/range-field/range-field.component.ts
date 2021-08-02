@@ -13,7 +13,7 @@ import { BrokenDateFixStrategy } from '../../models/common-enums';
 import { Subscription, Observer } from 'rxjs';
 import { HelperService } from '../../services/helper/helper.service';
 import { DatesHelperService } from '../../services/dates-helper/dates-helper.service';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../../services/constants/constants.service';
 import * as moment_ from 'moment';
 const moment = moment_;
 

@@ -12,7 +12,7 @@ import { AutocompleteSuggestion, AutocompleteSuggestionProvider } from '../../mo
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ConstantsService } from '../constants.service';
+import { ConstantsService } from '../constants/constants.service';
 
 @Injectable()
 export class DadataService implements AutocompleteSuggestionProvider {

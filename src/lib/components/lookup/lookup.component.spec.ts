@@ -14,7 +14,7 @@ import { TestHelper } from '../../mocks/test.helper';
 import { LoadServiceStub } from '../../mocks/load.service.stub';
 import { LoadService } from '../../services/load/load.service';
 import { SafeHtmlPipe } from '../../pipes/safe-html/safe-html.pipe';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../../services/constants/constants.service';
 import { BLUR_TO_FOCUS_COMMON_DELAY } from '../../services/focus/focus.manager';
 
 const DEFAULT_QUERY_DEBOUNCE = ConstantsService.DEFAULT_QUERY_DEBOUNCE;

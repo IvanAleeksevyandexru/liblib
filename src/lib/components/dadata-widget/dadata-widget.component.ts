@@ -13,7 +13,7 @@ import {
 import { DadataService } from '../../services/dadata/dadata.service';
 import { DadataResult, HouseAndApartmentManipulations, NormalizedData } from '../../models/dadata';
 import { debounceTime, distinctUntilChanged, filter, finalize, switchMap, take, takeUntil } from 'rxjs/operators';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../../services/constants/constants.service';
 import {
   AbstractControl,
   ControlValueAccessor,

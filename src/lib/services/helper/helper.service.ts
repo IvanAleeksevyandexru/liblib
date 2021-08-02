@@ -8,7 +8,7 @@ import { FileLink } from '../../models/file-link';
 import { DadataResult } from '../../models/dadata';
 import { Address } from '../../models/address';
 import { LoadService } from '../load/load.service';
-import { ConstantsService } from '../constants.service';
+import { ConstantsService } from '../constants/constants.service';
 
 @Injectable({
   providedIn: 'root'

@@ -4,7 +4,7 @@ import { Subscription, Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DragDropBinding, DragDropType, DragDropDirection, DragDropOffsetType, DragState } from '../../models/drag-drop.model';
 import { HelperService } from '../helper/helper.service';
-import { ConstantsService } from '../constants.service';
+import { ConstantsService } from '../constants/constants.service';
 
 @Injectable({
   providedIn: 'root'

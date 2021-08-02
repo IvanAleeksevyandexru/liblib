@@ -6,7 +6,7 @@ import { LibTranslateServiceStub } from '../../mocks/translate.service.stub';
 import { LibTranslatePipe } from '../../pipes/translate/translate.pipe';
 import { LoadService } from '../../services/load/load.service';
 import { LoadServiceStub } from '../../mocks/load.service.stub';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../../services/constants/constants.service';
 
 describe('CaptchaComponent', () => {
   let component: CaptchaComponent;

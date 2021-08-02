@@ -2,7 +2,7 @@ import { ElementRef, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Translation, TipDirection } from '../../models/common-enums';
 import { PositioningRequest } from '../../models/positioning';
 import { PositioningManager } from '../../services/positioning/positioning.manager';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../../services/constants/constants.service';
 
 const OVERLAP_POSITIONING = ConstantsService.BUBBLE_OVERLAP_POSITIONING;
 

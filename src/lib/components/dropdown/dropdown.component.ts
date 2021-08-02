@@ -13,7 +13,7 @@ import { PositioningManager, PositioningRequest } from '../../services/positioni
 import { ListItemsService, ListItemsOperationsContext,
   FixedItemsProvider, ListItemsVirtualScrollController } from '../../services/list-item/list-items.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../../services/constants/constants.service';
 import { Translation, MultipleItemsLayout, LineBreak } from '../../models/common-enums';
 import { Observable, forkJoin } from 'rxjs';
 import { Width } from '../../models/width-height';

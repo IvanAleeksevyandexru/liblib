@@ -5,7 +5,7 @@ import { TranslateStore, TranslateLoader, TranslateService, TranslateFakeCompile
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LoadService } from '../load/load.service';
 import { HelperService } from '../helper/helper.service';
-import { ConstantsService } from '../constants.service';
+import { ConstantsService } from '../constants/constants.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 

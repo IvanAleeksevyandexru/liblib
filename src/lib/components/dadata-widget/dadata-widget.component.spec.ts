@@ -14,7 +14,7 @@ import { TranslateServiceStub, LibTranslateServiceStub } from '../../mocks/trans
 import { LibTranslatePipe, AppTranslatePipe } from '../../pipes/translate/translate.pipe';
 import { SafeHtmlPipe } from '../../pipes/safe-html/safe-html.pipe';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../../services/constants/constants.service';
 
 describe('DadataWidgetComponent', () => {
   let component: DadataWidgetComponent;

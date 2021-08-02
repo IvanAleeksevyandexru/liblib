@@ -12,7 +12,7 @@ import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { ListItemsService, FixedItemsProvider,
   ListItemsOperationsContext, ListItemsVirtualScrollController } from '../../services/list-item/list-items.service';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../../services/constants/constants.service';
 import { Translation, LineBreak } from '../../models/common-enums';
 import { Width, Height } from '../../models/width-height';
 

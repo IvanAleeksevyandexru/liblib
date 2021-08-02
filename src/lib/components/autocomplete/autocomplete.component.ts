@@ -6,7 +6,7 @@ import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCES
 import { AutocompleteSuggestion,
   AutocompleteSuggestionProvider, AutocompleteSuggestionPartialProvider } from '../../models/dropdown.model';
 import { HelperService } from '../../services/helper/helper.service';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../../services/constants/constants.service';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { VirtualScrollComponent } from '../virtual-scroll/virtual-scroll.component';

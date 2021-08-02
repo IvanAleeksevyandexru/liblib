@@ -8,7 +8,7 @@ import { debounceTime } from 'rxjs/operators';
 import { Focusable, FocusManager } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { Width } from '../../models/width-height';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../../services/constants/constants.service';
 import { SearchSyncControl } from '../../models/common-enums';
 import { HelperService } from '../../services/helper/helper.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';

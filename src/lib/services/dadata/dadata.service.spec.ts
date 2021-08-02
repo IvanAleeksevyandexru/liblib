@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { LoadService } from '../load/load.service';
 import { LoadServiceStub } from '../../mocks/load.service.stub';
 import { DadataService } from './dadata.service';
-import { ConstantsService } from '../constants.service';
+import { ConstantsService } from '../constants/constants.service';
 
 describe('DadataService', () => {
 

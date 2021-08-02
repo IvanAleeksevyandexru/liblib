@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConstantsService } from '../constants.service';
+import { ConstantsService } from '../constants/constants.service';
 import { LoadService } from '../load/load.service';
 import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';

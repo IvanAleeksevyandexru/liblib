@@ -1,6 +1,6 @@
 import { ListItem, LookupProvider, LookupPartialProvider } from '../../models/dropdown.model';
 import { ListItemHierarchyService } from './list-items.hierarchy';
-import { ConstantsService } from '../constants.service';
+import { ConstantsService } from '../constants/constants.service';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 

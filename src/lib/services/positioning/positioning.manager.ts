@@ -1,7 +1,7 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { Subscription, Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ConstantsService } from '../constants.service';
+import { ConstantsService } from '../constants/constants.service';
 import { PositioningRequest, HorizontalAlign, VerticalAlign } from '../../models/positioning';
 
 export { PositioningRequest } from '../../models/positioning'; // реэкспорт для удобства

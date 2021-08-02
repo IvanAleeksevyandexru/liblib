@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DepartmentComponent } from './department.component';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../../services/constants/constants.service';
 import { LibTranslateService } from '../../services/translate/translate.service';
 import { LibTranslateServiceStub } from '../../mocks/translate.service.stub';
 import { LibTranslatePipe } from '../../pipes/translate/translate.pipe';

@@ -1,5 +1,5 @@
 import {
-  Component, ViewChild, ElementRef, HostListener, Input, Output, EventEmitter, SimpleChanges,
+  Component, ViewChild, ElementRef, Input, Output, EventEmitter, SimpleChanges,
   OnInit, OnChanges, DoCheck, AfterViewInit, OnDestroy, ChangeDetectorRef, forwardRef, Optional, Host, SkipSelf, ChangeDetectionStrategy
 } from '@angular/core';
 import { ControlValueAccessor, ValidationErrors, AbstractControl, ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -13,13 +13,11 @@ import { FocusManager } from '../../services/focus/focus.manager';
 import { DatesHelperService } from '../../services/dates-helper/dates-helper.service';
 import { ValidationHelper } from '../../services/validation-helper/validation.helper';
 import { HelperService } from '../../services/helper/helper.service';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../../services/constants/constants.service';
 import { PositioningManager, PositioningRequest } from '../../services/positioning/positioning.manager';
 import { DragDropManager } from '../../services/drag-drop/drag-drop.manager';
 import { DragDropBinding, DragDropType, DragDropDirection, DragDropOffsetType, DragState } from '../../models/drag-drop.model';
 import { RelativeDate, Range, MonthYear, DateProperties, DatePropertiesPublisher } from '../../models/date-time.model';
-import { Subscription, fromEvent } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { Width } from '../../models/width-height';
 import * as moment_ from 'moment';
 const moment = moment_;

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LoadService } from './load.service';
-import { ConstantsService } from '../constants.service';
+import { ConstantsService } from '../constants/constants.service';
 
 describe('LoadService', () => {
   beforeEach(() => TestBed.configureTestingModule({

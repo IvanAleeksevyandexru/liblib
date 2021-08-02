@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ConstantsService } from '../../services/constants.service';
+import { ConstantsService } from '../../services/constants/constants.service';
 import { LoadService } from '../../services/load/load.service';
 import { LoadServiceStub } from '../../mocks/load.service.stub';
 

@@ -8,7 +8,7 @@ import { Person, PersonData, User, Role } from '../../models/user';
 import { HelperService } from '../helper/helper.service';
 import { AuthService } from '../auth/auth.service';
 import { SmuEventsService } from '../smu-events/smu-events.service';
-import { ConstantsService } from '../constants.service';
+import { ConstantsService } from '../constants/constants.service';
 
 const EMPTY_CONFIG_STUB = {data: {user: {}}, attrs: {}, config: {}, hidePageConfig: {}};
 

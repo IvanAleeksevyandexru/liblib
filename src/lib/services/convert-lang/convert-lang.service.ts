@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConstantsService } from "../constants.service";
+import { ConstantsService } from "../constants/constants.service";
 
 @Injectable()
 export class ConvertLangService {

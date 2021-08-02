@@ -1,6 +1,8 @@
 import { Component, Directive, EventEmitter, OnDestroy } from '@angular/core';
 
-@Directive()
+@Directive({
+  selector: ''
+})
 export class CommonController implements OnDestroy {
   protected destroyed$ = new EventEmitter<void>();
 

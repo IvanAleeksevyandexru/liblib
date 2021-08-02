@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { TabsService } from './tabs.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ConstantsService } from '../constants.service';
+import { ConstantsService } from '../constants/constants.service';
 
 describe('TabsService', () => {
   beforeEach(async () => {
