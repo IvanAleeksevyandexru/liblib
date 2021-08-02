@@ -540,6 +540,9 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
     this.check();
+    if (!this.destroyed) {
+      this.changeDetector.detectChanges();
+    }
   }
 
   public check(): void {
