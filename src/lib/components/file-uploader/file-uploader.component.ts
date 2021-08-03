@@ -299,7 +299,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
         dFile.error = 'Во время удаления возникла ошибка';
       }
       dFile.uploadInProcess = false;
-      this.files.splice(i, 1);
+      this.files = this.files.filter((file, fileIndex) => fileIndex !== i);
       this.commit(this.files);
       this.check();
       this.cd.detectChanges();
