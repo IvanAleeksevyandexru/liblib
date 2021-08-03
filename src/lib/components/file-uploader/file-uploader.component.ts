@@ -146,7 +146,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
           file: event[i],
           lastModified: event[i].lastModified
         };
-        this.files.push(file);
+        this.files = [...this.files, file];
 
         if (needUploadToServer) {
           const formData = new FormData();
