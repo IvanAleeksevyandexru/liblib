@@ -60,8 +60,12 @@ export interface CommonCert {
   departmentDoc?: string;
   getDateDoc?: string;
   actNo?: string;
+  actDate?: string | Date;
+  actRecordFound?: boolean;
+  needToSetDefaultCert?: boolean;
   recordDate?: string | Date;
   issuedBy?: string;
+  updateCerts?: boolean;
 }
 
 export interface DocumentHistoryRequest {

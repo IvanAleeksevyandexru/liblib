@@ -1,7 +1,7 @@
 import { Injectable, isDevMode } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { HelperService } from '../helper/helper.service';
 import { CookieService } from '../cookie/cookie.service';
 import { LoadService } from '../load/load.service';
@@ -25,9 +25,11 @@ export class EsiaApiService {
     0: '/rs/',
     1: '/esia-rs/api/public/v1/',
     2: '/esia-rs/api/public/v2/',
+    3: '/esia-rs/api/public/v3/',
     digital: '/digital/api/public/v1/',
     smevint: '/smevint/api/public/v1/',
-    registration: '/registration/api/public/v1/'
+    registration: '/registration/api/public/v1/',
+    mobid: '/mob-id-back/api/public/v1/'
   };
 
   private citizenship: Citizenship[];
@@ -46,13 +48,13 @@ export class EsiaApiService {
     this.userOid = this.loadService.user.userId ? this.loadService.user.userId.toString() : null;
   }
 
-  private setUrl(input: string, version: 0 | 1 | 2 | 'digital' | 'smevint' | 'registration'  = 0): string {
+  private setUrl(input: string, version: 0 | 1 | 2 | 3 | 'digital' | 'smevint' | 'registration' | 'mobid'  = 0): string {
     return this.host + this.versions[version] + input.replace(/prn_oid/, this.userOid);
   }
 
   public getRequest(
     method: string,
-    version: 0 | 1 | 2 | 'digital' | 'smevint' | 'registration'  = 0,
+    version: 0 | 1 | 2 | 3 | 'digital' | 'smevint' | 'registration' | 'mobid'  = 0,
     extra?: {
       headers?: { name: string, value: string | string[] }[],
       options?: any
@@ -68,7 +70,7 @@ export class EsiaApiService {
 
   public postRequest(
     method: string,
-    version: 0 | 1 | 2 | 'digital' | 'smevint' | 'registration'  = 0,
+    version: 0 | 1 | 2 | 3 | 'digital' | 'smevint' | 'registration' | 'mobid'  = 0,
     body?: any,
     extra?: {
       headers?: { name: string, value: string | string[] }[],
@@ -85,7 +87,7 @@ export class EsiaApiService {
 
   public putRequest(
     method: string,
-    version: 0 | 1 | 2 | 'digital' | 'smevint' | 'registration'  = 0,
+    version: 0 | 1 | 2 | 3 | 'digital' | 'smevint' | 'registration' | 'mobid'  = 0,
     body?: any,
     extra?: {
       headers?: { name: string, value: string | string[] }[],
@@ -102,7 +104,7 @@ export class EsiaApiService {
 
   public deleteRequest(
     method: string,
-    version: 0 | 1 | 2 | 'digital' | 'smevint' | 'registration'  = 0,
+    version: 0 | 1 | 2 | 3 | 'digital' | 'smevint' | 'registration' | 'mobid'  = 0,
     body?: any,
     extra?: {
       headers?: { name: string, value: string | string[] }[],
@@ -187,14 +189,22 @@ export class EsiaApiService {
     });
   }
 
-  public goToOffer(force = true, backUrl?: string): void {
+  public goToOffer(force = true, backUrl?: string, additional?: {[key: string]: string}): void {
     const url = backUrl ? backUrl : (window as any).location.href;
+
+    const params = new HttpParams({
+      fromObject: {
+        go_back: encodeURIComponent(url),
+        ...(additional)
+      }
+    });
+    const getParams = decodeURIComponent(params.toString()); // Add-hoc: .toString() делает свой encode переменной go_back
 
     if (force) {
       this.cookieService.set('needOffer', 1);
     }
 
-    (window as any).location.href = `${this.loadService.config.esiaUrl}/profile/offer?go_back=${encodeURIComponent(url)}`;
+    (window as any).location.href = `${this.loadService.config.esiaUrl}/profile/offer?${getParams}`;
   }
 
 }

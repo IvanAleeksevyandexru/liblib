@@ -11,6 +11,7 @@ export interface VehiclesContainer {
 }
 
 export interface Vehicle {
+  duplicate?: boolean;
   eTag?: string;
   id?: number;
   stateFacts?: string[];

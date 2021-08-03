@@ -125,7 +125,7 @@
   .scroll-container {
     position: relative;
     width: 100%;
-    height: calc(100vh - 116px);
+    height: calc(100vh - 56px);
   }
   .catalog-tab-list-wrap{
     top: 72px;
@@ -204,5 +204,13 @@
 @media (min-width: 1140px) {
   .catalog-link-item-wrap{
     overflow-x: hidden;
+  }
+  .main-page-view{
+    .catalog-link-item:hover{
+      opacity: .7;
+    }
+    .catalog-link-item.main-active:hover{
+      opacity: 1;
+    }
   }
 }

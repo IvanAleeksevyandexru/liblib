@@ -6,6 +6,7 @@ import { NotificationPeriodItem } from '../models/notifications';
 import { DocumentType } from '../models/document';
 import { HorizontalAlign, VerticalAlign } from '../models/positioning';
 import { VrfStu, VrfValStu } from '../models/verifying-status';
+import { LoadService } from './load/load.service';
 
 @Injectable(
   {
@@ -13,7 +14,6 @@ import { VrfStu, VrfValStu } from '../models/verifying-status';
   }
 )
 export class ConstantsService {
-
   // время с последнего нажатия клавиши до запуска поиска
   public static readonly DEFAULT_QUERY_DEBOUNCE = 700;
   // селекторы парентовых элементов за скроллом которых надо следить чтобы обновлять программные координаты выпадашек
@@ -70,6 +70,7 @@ export class ConstantsService {
   public readonly TYPE_DS_LOGIN_ALLOWED: SecurityOptionType = 'dsLoginAllowed';
   public readonly TYPE_OTP: SecurityOptionType = 'otp';
   public readonly TYPE_NOTIFICATION_EMAIL: string = 'Notification.Channel.EMAIL';
+  public readonly TYPE_NOTIFICATION_LOGIN: string = 'Notification.Event.LOGIN';
   public readonly STATUS_VERIFYING: VrfValStu = 'VERIFYING';
   public readonly STATUS_VERIFIED: VrfStu = 'VERIFIED';
   public readonly STATUS_NOT_VERIFIED: VrfStu = 'NOT_VERIFIED';
@@ -231,7 +232,14 @@ export class ConstantsService {
     {
       id: 'cards',
       name: 'SETTINGS.TABS.CARDS',
-      url: '/settings/cards'
+      url: '/settings/cards',
+      hidden: false
+    },
+    {
+      id: 'cards-and-accounts',
+      name: 'SETTINGS.TABS.CARDS_AND_ACCOUNTS',
+      url: '/settings/cards-and-accounts',
+      hidden: true
     },
     {
       id: 'mail',
@@ -343,6 +351,12 @@ export class ConstantsService {
       access: ['AL20']
     },
     {
+      id: 'education',
+      name: 'PROFILE.TABS.EDUCATION',
+      url: '/profile/education',
+      access: ['AL20']
+    },
+    {
       id: 'privileges',
       name: 'PROFILE.TABS.PRIVILEGES',
       url: '/profile/privileges',
@@ -364,6 +378,12 @@ export class ConstantsService {
       id: 'statements',
       name: 'PROFILE.TABS.STATEMENTS',
       url: '/profile/statements',
+      access: ['AL20']
+    },
+    {
+      id: 'empowerments',
+      name: 'PROFILE.TABS.EMPOWERMENTS',
+      url: '/profile/empowerments',
       access: ['AL20']
     },
     {
@@ -419,7 +439,7 @@ export class ConstantsService {
   public readonly ORDERS_CATEGORIES = [
     {
       text: 'Все',
-      type: 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER',
+      type: 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER,SIGN',
       id: 1,
       mnemonic: 'allEvents'
     },
@@ -437,7 +457,7 @@ export class ConstantsService {
     },
     {
       text: 'Сообщения',
-      type: 'APPEAL',
+      type: 'APPEAL,SIGN',
       id: 4,
       mnemonic: 'appeal'
     },
@@ -487,7 +507,7 @@ export class ConstantsService {
     },
     {
       text: 'Сообщения',
-      type: 'APPEAL',
+      type: 'APPEAL,SIGN',
       id: 7,
       mnemonic: 'appealEvents'
     },

@@ -14,7 +14,6 @@ import { DeclinePipe } from '../../pipes/decline/decline.pipe';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { LoadService } from '../../services/load/load.service';
 import { Router } from '@angular/router';
-import { ProfileService } from '../../services/profile/profile.service';
 
 @Component({
   selector: 'lib-informer',
@@ -33,13 +32,6 @@ export class InformerComponent implements OnInit {
   public linkHint: string;
   public mnemonicHint: string;
 
-  private links = {
-    al10: '/profile/personal',
-    no_debt: `${this.loadService.config.oplataUrl}pay`,
-    error: `${this.loadService.config.oplataUrl}pay`,
-    debt: `${this.loadService.config.oplataUrl}pay`,
-    no_rights: '/help/faq/yuridicheskim_licam/2761'
-  };
   private debtForYaMetric: DebtYaMetricInterface = {};
 
   constructor(
@@ -48,16 +40,11 @@ export class InformerComponent implements OnInit {
     private yaMetricService: YaMetricService,
     private loadService: LoadService,
     private router: Router,
-    private profileService: ProfileService,
   ) {
   }
 
   public ngOnInit() {
-    if (['L', 'B'].includes(this.loadService.user.type)) {
-      this.checkRights();
-    } else {
-      this.getInformerShortData();
-    }
+    this.getInformerShortData();
   }
 
   private setData(type: TypeDataOfInformers) {
@@ -66,34 +53,6 @@ export class InformerComponent implements OnInit {
     this.dataInformer.button = `INFORMER.${type}.BUTTON`;
 
     this.statusInformer = type.toLowerCase() as TypeStatus;
-  }
-
-  private checkRights(): void {
-    const rights = this.informersService.checkRightsForLAndB();
-
-    if (rights) {
-      this.getInformerShortData();
-    } else {
-      if (this.loadService.user.type === 'L' && this.loadService.user.autorityId) {
-        this.profileService.getDelegatedRights().subscribe(
-          (data) => {
-            const rightsEnabled = data && data.authorities && data.authorities.some((elem) => {
-              return elem.mnemonic === 'INFORMER';
-            });
-            if (rightsEnabled) {
-              this.getInformerShortData();
-            } else {
-              this.setData('NO_RIGHTS');
-            }
-          },
-          () => {
-            this.setData('NO_RIGHTS');
-          }
-        );
-      } else {
-        this.setData('NO_RIGHTS');
-      }
-    }
   }
 
   private getWord(debtCount: Array<string>): string[] {
@@ -114,7 +73,7 @@ export class InformerComponent implements OnInit {
 
   private getTextToHint(code: string): void {
     if (this.informersService.hints[code] && code === '03') {
-      this.hintText = 'Скидка истекает через' + ' ' + this.hintResponse.days + ' ' + this.informersService.getWord(this.hintResponse.days, "день") + ' ';
+      this.hintText = 'Скидка истекает через' + ' ' + this.declinePipe.transform(this.hintResponse.days, ['день', 'дня', 'дней']) + ' ';
       } else if(this.informersService.hints[code] && code === '05') {
       this.hintText = this.informersService.hints[code].text;
     }
@@ -125,13 +84,15 @@ export class InformerComponent implements OnInit {
       .subscribe((response: InformerShortInterface) => {
         if (response?.hint) {
           this.hintResponse = response.hint;
-          var hint = Object.keys(this.informersService.hints).find((code) => {
+          const hint = Object.keys(this.informersService.hints).find((code) => {
             return this.hintResponse.code === code;
           });
           this.getTextToHint(hint);
         }
 
-        if (response && response?.result) {
+        if (response?.error?.code === 50) {
+          this.setData('NO_RIGHTS');
+        } else if (response?.result) {
           // есть начисления
           if (response.result.total) {
             const res = response.result;
@@ -190,7 +151,11 @@ export class InformerComponent implements OnInit {
         break;
     }
     this.yaMetricService.yaMetricInformerMain(type, this.debtForYaMetric);
-    location.href = `${this.loadService.config.oplataUrl}pay`;
+    if (this.loadService.config.viewType === 'PORTAL') {
+      this.router.navigate(['/pay']);
+    } else {
+      location.href = `${this.loadService.config.betaUrl}pay`;
+    }
   }
 
 }

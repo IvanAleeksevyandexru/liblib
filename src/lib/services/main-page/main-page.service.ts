@@ -16,7 +16,7 @@ export class MainPageService {
   public config = this.loadService.config;
   public user = this.loadService.user;
   public executed = false;
-  public cfgData: IMainData;
+  public mainBlocksData: IMainData;
   private mainBgType: BehaviorSubject<string> = new BehaviorSubject<string>('person');
   public mainBgType$ = this.mainBgType.asObservable();
 
@@ -74,11 +74,11 @@ export class MainPageService {
     return personType;
   }
 
-  public getCfgData(): Observable<IMainData> {
-    if (this.cfgData) {
-      return of(this.cfgData);
+  public getMainBlocksData(): Observable<IMainData> {
+    if (this.mainBlocksData) {
+      return of(this.mainBlocksData);
     }
-    return this.http.get<IMainData>(`${this.loadService.config.portalCfgUrl}main-page-data.json?_=${Math.random()}`, {
+    return this.http.get<IMainData>(`${this.loadService.config.mainBlocksData}?type=person&_=${Math.random()}`, {
       withCredentials: true
     });
   }

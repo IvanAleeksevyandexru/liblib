@@ -43,15 +43,6 @@ export class FocusManager {
 
   public notifyFocusMayChanged(targetedComponent: any, isFocusEvent: boolean) {
     if (isFocusEvent) {
-      if (this.documentSuspended) {
-        this.documentSuspended = false;
-        setTimeout(() => {
-          if (!this.lastKnownFocusedComponent && document.activeElement !== document.body) {
-            this.publishFocusState(targetedComponent);
-          }
-        });
-        return;
-      }
       this.awaitingFocusReceiving = false;
       this.publishFocusState(targetedComponent);
     } else {

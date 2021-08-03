@@ -18,7 +18,7 @@ import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { HelperService } from '../../services/helper/helper.service';
 
 const HIDE_TIMOUT = 300;
@@ -63,6 +63,7 @@ export class HeaderComponent implements OnInit, OnChanges {
   @Input() public showBurger = true;
   @Input() public catalog?: Catalog[];
   @Input() public languageChangeAvailable: boolean;
+  @Input() public closeStatisticPopup$: Observable<boolean>;
 
   @Output() public backClick = new EventEmitter<any>();
 
@@ -111,18 +112,20 @@ export class HeaderComponent implements OnInit, OnChanges {
       const counter = this.countersService.getCounter(CounterTarget.USER);
       this.isUnread = !!(counter && counter.unread);
     });
-    if (this.languageChangeAvailable) {
-      this.translateSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-        this.roleChangeAvailable = HelperService.langIsRus(event.lang);
-      });
-    }
+
+    this.translateSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.roleChangeAvailable = HelperService.langIsRus(event.lang);
+    });
     this.roleChangeAvailable = HelperService.langIsRus(this.translate.currentLang);
   }
 
   public burgerWithCatalogShow(currentPath): void {
-    let urls = ['/new', '/newsearch'];
+    let urls = ['/new', '/newsearch', '/departments', '/pay'];
     if (this.isPortal) {
       urls.push('/');
+    }
+    if (currentPath === '/pay' || currentPath.startsWith('/pay/')) {
+      currentPath = '/pay';
     }
     this.burgerWithCatalog = urls.indexOf(currentPath) > -1;
   }

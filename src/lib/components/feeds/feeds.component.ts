@@ -23,7 +23,7 @@ import { SharedService } from '../../services/shared/shared.service';
 import { HelperService } from '../../services/helper/helper.service';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { CountersService } from '../../services/counters/counters.service';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 const moment = moment_;
 moment.locale('ru');
@@ -40,7 +40,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public isHide: boolean | null;
   @Input() public inlineDate = true;
   @Input() public snippets = false;
-  @Input() public search = '';
+  @Input() public search = this.route.snapshot.queryParamMap.get('q') || '';
   @Input() public selectedCategory: any;
   @Input() public count = 0;
   @Input() public types: string | null;
@@ -66,10 +66,34 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   private loadedFeedsCount = 0;
   private showMoreCount = 0;
   private afterFirstSearch = false;
+  private statusesMap = {
+    NEW: 'in_progress',
+    REQUEST: 'in_progress',
+    REQUEST_ERROR: 'reject',
+    SIGN_REJECT: 'in_progress',
+    DONE: 'executed',
+    EXPIRED: 'in_progress',
+    ERROR: 'reject',
+    RESULT_FILE_NOT_FOUND: 'reject',
+    FILE_MAP_FAIL: 'reject',
+    MIMETYPE_LENGTH_INCORRECT: 'reject'
+  };
+  private titlesMap = {
+    DONE: 'Документы подписаны',
+    REQUEST: 'Запрос на подписание документов',
+    REQUEST_ERROR: 'Ошибка запроса',
+    SIGN_REJECT: 'Подписание документов отклонено',
+    EXPIRED: 'Истекло время подписания документов',
+    ERROR: 'Ошибка запроса',
+    RESULT_FILE_NOT_FOUND: 'Ошибка запроса',
+    FILE_MAP_FAIL: 'Ошибка запроса',
+    MIMETYPE_LENGTH_INCORRECT: 'Ошибка запроса'
+  };
   public isHeader: boolean;
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     public feedsService: FeedsService,
     public loadService: LoadService,
     public notifier: NotifierService,
@@ -84,7 +108,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public ngOnInit() {
     HelperService.mixinModuleTranslations(this.translate);
     this.getUserData();
-    if (!this.afterFirstSearch) {
+    if (!this.afterFirstSearch ) {
       this.getFeeds();
     }
     this.updateFeeds();
@@ -135,6 +159,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getFeeds(lastFeedId: number | string = '', lastFeedDate: Date | string = '', query = '', pageSize = ''): void {
+    if (query === '') {
+      query = this.route.snapshot.queryParamMap.get('q') || '';
+    }
     this.afterFirstSearch = true;
     this.allFeedsLoaded = false;
     this.searching.emit(true);
@@ -149,10 +176,35 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     })
       .subscribe((feeds: FeedsModel) => {
         this.searching.emit(false);
-        this.feeds = this.feeds && this.feeds.length ? this.feeds.concat(feeds.items) : feeds.items;
+        const feedsItems = feeds.items.map<FeedModel>((feed) => ({
+          ...feed,
+          data: {
+            ...feed.data,
+            snippets: feed?.data?.snippets?.map((item) => {
+              return item.type === 'CUSTOM' && item.json
+                ? { json: JSON.parse(item.json), type: item?.type }
+                : item;
+          }),
+          },
+        }));
+        this.feeds =
+          this.feeds && this.feeds.length
+            ? this.feeds.concat(feedsItems)
+            : feedsItems;
+
         this.feedsIsLoading = false;
         this.addFeedsIsLoading = false;
         this.hasMore = feeds.hasMore;
+        this.feeds.forEach((item, index) => {
+          if (item.feedType === 'SIGN') {
+            if (!!['AL10', 'AL15'].includes(this.loadService.user.assuranceLevel)) {
+              this.feeds.splice(index, 1);
+            } else {
+              item.title = this.titlesMap[item.status] || item.title;
+              item.status = this.statusesMap[item.status] || item.status;
+            }
+          }
+        });
         this.emitEmptyFeedsEvent();
         this.loadedFeedsCount += this.feeds.length;
         this.yaMetricOnSearch(query);
@@ -176,7 +228,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public withReload(feed): boolean {
-    return !(this.isLk && !['KND_APPEAL', 'KND_APPEAL_DRAFT'].includes(feed.feedType) || this.isPartners);
+    return !(this.isLk && !['KND_APPEAL', 'KND_APPEAL_DRAFT', 'PAYMENT'].includes(feed.feedType) || this.isPartners) || !!(feed.data && feed.data.p16url);
   }
 
   public getUserData(): User {
@@ -193,7 +245,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public setUnreadFeedCls(feed: FeedModel): boolean {
-    return feed.unread && feed.feedType !== 'DRAFT' && feed.feedType !== 'PARTNERS_DRAFT' && feed.feedType !== 'KND_APPEAL_DRAFT';
+    const escapedFeedTypes = ['DRAFT', 'PARTNERS_DRAFT', 'KND_APPEAL_DRAFT'];
+    return feed.unread && !escapedFeedTypes.includes(feed.feedType);
   }
 
   public markAsFlag(feed: FeedModel): boolean {
@@ -351,6 +404,16 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       this.removeInProgress = false;
       this.changeDetector.detectChanges();
     };
+    const onRemoveError = () => {
+      this.translate.get('FEEDS.ERROR').subscribe((errorText: string) => {
+        this.notifier.error({
+          message: errorText
+        });
+        this.removeInProgress = false;
+        feed.removeInProgress = false;
+        this.changeDetector.detectChanges();
+      })
+    }
     if (!this.removeInProgress) {
       this.removeInProgress = true;
       feed.removeInProgress = true;
@@ -358,12 +421,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         this.feedsService.removeDraft(feed.extId)
           .pipe(
             switchMap(() => this.translate.get('FEEDS.DELETED'))
-          ).subscribe(onSubscribe);
+          ).subscribe(onSubscribe, onRemoveError);
       } else {
         this.feedsService.removeFeed(feed.id)
           .pipe(
             switchMap(() => this.translate.get('FEEDS.DELETED'))
-          ).subscribe(onSubscribe);
+          ).subscribe(onSubscribe, onRemoveError);
       }
     }
 
@@ -373,7 +436,13 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public showRemoveFeedButton(feed: FeedModel): boolean {
-    return ['overview', 'events', 'drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder;
+    return ['overview', 'events', 'drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder && !this.isPaymentDraft(feed);
+  }
+
+  public isPaymentDraft(feed: FeedModel): boolean {
+    return feed.feedType === 'DRAFT' && feed.data.snippets?.length &&  feed.data.snippets.some((item: SnippetModel) => {
+      return item.type === 'PAYMENT' && feed.status !== 'reject_no_pay' && !!item.sum;
+    });
   }
 
   public getIsArchive(): boolean {

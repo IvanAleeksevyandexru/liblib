@@ -58,6 +58,7 @@ export class BaseMaskedInputComponent
   @Input() public uppercase = false;
   @Input() public width?: string | Width;
   @Input() public suggest?: Suggest;
+  @Input() public suggestSeparator = ' ';
 
   // маска - это массив символов и/или регэкспов, каждый ответственен за свой символ в поле
   // пример: ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
@@ -70,7 +71,7 @@ export class BaseMaskedInputComponent
   @Input() public placeholderSymbol = '_';
   // когда true ввод/удаление символов не влияет на оставшуюся часть строки
   // когда false ввод/удаление символов в середине строки сдвигает символы в данном блоке (до след фиксированного символа или конца)
-  @Input() public keepCharPositions = true;
+  @Input() public keepCharPositions = false;
   // конвертирует маску в плейсхолдер и показывает его переопределяя свойство placeholder
   @Input() public showMaskAsPlaceholder = false;
   // дает возможность изменить уже принятую к показу строку в момент ввода до вывода ее в инпут
@@ -152,6 +153,9 @@ export class BaseMaskedInputComponent
 
   public handleInput(value: string, e?: Event) {
     if (!this.composing) {
+      if (this.showMaskAsPlaceholder && value.indexOf(this.emptyMaskedValue) > 0) {
+        value = value.replace(this.emptyMaskedValue, '');
+      }
       this.attemptToApplyValue(value);
       if (this.commitOnInput) {
         setTimeout(() => {
@@ -193,7 +197,6 @@ export class BaseMaskedInputComponent
     if (e.type === 'focus' && !this.removeMaskSymbolsIfNeeded(inp.value) && inp.setSelectionRange) {
       setTimeout(() => {
         inp.setSelectionRange(0, 0);
-        inp.focus();
       });
     }
 

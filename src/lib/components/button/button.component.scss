@@ -17,7 +17,7 @@ a, button {
   outline: none;
   border: 2px solid transparent;
   border-radius: 8px;
-  padding: 12px 24px;
+  padding: 12px 40px;
   text-align: center;
   font-size: 16px;
   line-height: 24px;
@@ -148,11 +148,28 @@ a, button {
   }
 }
 
+.small-paddings {
+  a, button {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
 button::-moz-focus-inner {
   border: 0;
 }
 
+.button-container {
+  display: block;
+  &.wide {
+    width: 100%;
+  }
+}
+
 @media all and (min-width: 768px) {
+  .button-container {
+    display: inline-block;
+  }
   a, button {
     width: auto;
 
@@ -166,6 +183,11 @@ button::-moz-focus-inner {
   a, button {
     &.font-13{
       font-size: 13px;
+    }
+  }
+  .light{
+    button:hover{
+      background-color: rgba(29, 93, 235, 0.18);
     }
   }
 }

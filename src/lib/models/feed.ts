@@ -30,6 +30,7 @@ export interface SnippetModel {
   type?: string;
   parentOrderId?: number;
   id?: number;
+  json?: string;
 }
 
 export interface OrderCreator {
@@ -40,6 +41,7 @@ export interface OrderCreator {
 }
 
 export interface FeedDataModel {
+  p16url?: string;
   linked_to?: string;
   parentOrderId?: number;
   imOrgName?: string;
@@ -109,6 +111,7 @@ export interface FeedModel {
   detail?: FeedDetailModel;
   removeInProgress?: boolean;
   needAccept?: boolean;
+  servicePassportId?: string;
 }
 
 export interface FeedsModel {
