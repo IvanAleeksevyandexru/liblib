@@ -17,8 +17,9 @@ import { AuthService } from '../../services/auth/auth.service';
 import { TabsService } from '../../services/tabs/tabs.service';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { HelperService } from '../../services/helper/helper.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AccessesService } from '../../services/accesses/accesses.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'lib-user-menu',
@@ -48,6 +49,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() public searchSputnikEnabled = false;
   @Input() public position: 'left' | 'right' = 'right';
   @Input() public links: MenuLink[] = [];
+  @Input() public closeStatisticPopup$: Observable<boolean>;
 
   @ViewChild('menuDesk') public menuDesk;
   @ViewChild('menuMobile') public menuMobile;
@@ -151,9 +153,15 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  public menuStaticItemClick(itemName: string, mnemonic): void {
+  public menuStaticItemClick(itemName: string, mnemonic) {
     const staticUrl = this.getUrl(itemName);
-    return this.menuItemClick({url: staticUrl, mnemonic: mnemonic} as MenuLink);
+    if (this.closeStatisticPopup$) {
+      this.closeStatisticPopup$.pipe(take(1)).subscribe(condition => {
+        if (condition) { this.menuItemClick({url: staticUrl, mnemonic } as MenuLink); }
+      });
+    } else {
+      this.menuItemClick({url: staticUrl, mnemonic } as MenuLink);
+    }
   }
 
   public selectTab(tab: Tab) {

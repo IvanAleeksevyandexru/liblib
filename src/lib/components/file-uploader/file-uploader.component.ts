@@ -260,9 +260,13 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
 
   public checkFilesLength(length) {
     const filesLength = this.files ? this.files.length : 0;
-    if (this.maxFilesLength) {
-      if (filesLength + length > this.maxFilesLength) {
-        this.errorMessage = `Максимальное количество файлов: ${this.maxFilesLength}`;
+    const newFilesLength = filesLength + length;
+
+    const multipleCondition = this.multiple ? this.maxFilesLength : 1;
+
+    if (this.maxFilesLength || !this.multiple) {
+      if ((newFilesLength > multipleCondition)) {
+        this.errorMessage = `Максимальное количество файлов: ${multipleCondition}`;
         return false;
       }
     }

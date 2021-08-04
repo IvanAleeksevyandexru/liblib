@@ -35,6 +35,7 @@ export class ModalService {
               if (typeof modalRules?.outsideClick === 'function') {
                 modalRules?.outsideClick();
               }
+              modal.instance.cancelHandler?.();
               modal.instance.destroy();
               elem.removeEventListener('click', null);
             }
