@@ -13,6 +13,7 @@ import { TranslateModule } from '../../../pipes/translate/translate.module';
     EdsLoaderComponent
   ],
   exports: [EdsLoaderComponent],
+  entryComponents: [EdsLoaderComponent],
 })
 export class EdsLoaderModule {
 }

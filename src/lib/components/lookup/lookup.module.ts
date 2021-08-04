@@ -10,21 +10,23 @@ import { SearchBarModule } from '../search-bar/search-bar.module';
 import { VirtualScrollModule } from '../virtual-scroll/virtual-scroll.module';
 import { LoaderModule } from '../loader/loader.module';
 import { LookupComponent } from './lookup.component';
+import { TranslateModule } from '../../pipes/translate/translate.module';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    PerfectScrollbarModule,
-    SafeHtmlModule,
-    SubstModule,
-    ClickOutsideModule,
-    VirtualForOfModule,
-    SearchBarModule,
-    VirtualScrollModule,
-    LoaderModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        PerfectScrollbarModule,
+        SafeHtmlModule,
+        SubstModule,
+        ClickOutsideModule,
+        VirtualForOfModule,
+        SearchBarModule,
+        VirtualScrollModule,
+        LoaderModule,
+        TranslateModule
+    ],
   declarations: [
     LookupComponent
   ],

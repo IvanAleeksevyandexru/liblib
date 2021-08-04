@@ -15,6 +15,7 @@ import { ButtonModule } from '../../button/button.module';
     EdsErrorComponent
   ],
   exports: [EdsErrorComponent],
+  entryComponents: [EdsErrorComponent],
 })
 export class EdsErrorModule {
 }

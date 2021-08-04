@@ -10,21 +10,25 @@ import { SearchBarModule } from '../search-bar/search-bar.module';
 import { FormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { VirtualScrollModule } from '../virtual-scroll/virtual-scroll.module';
+import { DeclineModule } from '../../pipes/decline/decline.module';
+import { VirtualForOfModule } from '../../directives/virtual-for-of/virtual-for-of.module';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ClickOutsideModule,
-    SafeHtmlModule,
-    TranslateModule,
-    SubstModule,
-    StopScreenScrollModule,
-    SearchBarModule,
-    FormsModule,
-    PerfectScrollbarModule,
-    VirtualScrollModule,
-  ],
+    imports: [
+        CommonModule,
+        ClickOutsideModule,
+        SafeHtmlModule,
+        TranslateModule,
+        SubstModule,
+        StopScreenScrollModule,
+        SearchBarModule,
+        FormsModule,
+        PerfectScrollbarModule,
+        VirtualScrollModule,
+        DeclineModule,
+        VirtualForOfModule,
+    ],
   declarations: [
     DropdownComponent
   ],

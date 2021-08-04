@@ -5,16 +5,18 @@ import { InvalidResultsTipModule } from '../invalid-results-tip/invalid-results-
 import { QuestionHelpTipModule } from '../question-help-tip/question-help-tip.module';
 import { BaseMaskedInputModule } from '../base-masked-input/base-masked-input.module';
 import { StandardMaskedInputComponent } from './standard-masked-input.component';
+import { TranslateModule } from '../../pipes/translate/translate.module';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ValidationMessageModule,
-    InvalidResultsTipModule,
-    QuestionHelpTipModule,
-    BaseMaskedInputModule
-  ],
+    imports: [
+        CommonModule,
+        ValidationMessageModule,
+        InvalidResultsTipModule,
+        QuestionHelpTipModule,
+        BaseMaskedInputModule,
+        TranslateModule
+    ],
   declarations: [
     StandardMaskedInputComponent
   ],

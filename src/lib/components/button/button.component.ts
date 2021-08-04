@@ -1,15 +1,4 @@
-import {
-  AfterContentChecked,
-  AfterContentInit, AfterViewChecked,
-  AfterViewInit, ChangeDetectorRef,
-  Component,
-  ContentChild,
-  ContentChildren, ElementRef,
-  Input,
-  OnInit,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'lib-button',
@@ -38,7 +27,8 @@ export class ButtonComponent implements OnInit, AfterViewChecked {
 
   constructor(
     private cd: ChangeDetectorRef
-  ) { }
+  ) {
+  }
 
   public ngOnInit() {
 

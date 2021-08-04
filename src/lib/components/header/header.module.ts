@@ -5,6 +5,13 @@ import { StopScreenScrollModule } from '../../directives/stop-screen-scroll/stop
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { FeedsModule } from '../feeds/feeds.module';
 import { LangWarnModalModule } from '../lang-warn-modal/lang-warn-modal.module';
+import { LoginModule } from '../login/login.module';
+import { UserMenuModule } from '../user-menu/user-menu.module';
+import { MenuCatalogModule } from '../menu-catalog/menu-catalog.module';
+import { MenuCatalogSimpleModule } from '../menu-catalog-simple/menu-catalog-simple.module';
+import { LogoModule } from '../logo/logo.module';
+import { LanguageSelectModule } from '../language-select/language-select.module';
+import { LocationSelectModule } from '../location-select/location-select.module';
 
 
 @NgModule({
@@ -13,7 +20,14 @@ import { LangWarnModalModule } from '../lang-warn-modal/lang-warn-modal.module';
     StopScreenScrollModule,
     PerfectScrollbarModule,
     FeedsModule,
-    LangWarnModalModule
+    LangWarnModalModule,
+    LoginModule,
+    UserMenuModule,
+    MenuCatalogModule,
+    MenuCatalogSimpleModule,
+    LogoModule,
+    LanguageSelectModule,
+    LocationSelectModule
   ],
   declarations: [
     HeaderComponent

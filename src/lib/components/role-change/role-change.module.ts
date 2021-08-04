@@ -5,16 +5,18 @@ import { TranslateModule } from '../../pipes/translate/translate.module';
 import { SearchBarModule } from '../search-bar/search-bar.module';
 import { FormsModule } from '@angular/forms';
 import { PagingControlsModule } from '../paging-controls/paging-controls.module';
+import { HighlightModule } from '../../pipes/highlight/highlight.module';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    TranslateModule,
-    SearchBarModule,
-    FormsModule,
-    PagingControlsModule,
-  ],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        SearchBarModule,
+        FormsModule,
+        PagingControlsModule,
+        HighlightModule,
+    ],
   declarations: [
     RoleChangeComponent
   ],

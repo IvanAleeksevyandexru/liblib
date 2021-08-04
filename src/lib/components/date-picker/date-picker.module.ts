@@ -6,18 +6,18 @@ import { StandardMaskedInputModule } from '../standard-masked-input/standard-mas
 import { FormsModule } from '@angular/forms';
 import { ClickOutsideModule } from '../../directives/click-outside/click-out.module';
 import { TranslateModule } from '../../pipes/translate/translate.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MonthYearSelectModule } from '../month-year-select/month-year-select.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ValidationMessageModule,
-    StandardMaskedInputModule,
-    FormsModule,
-    ClickOutsideModule,
-    TranslateModule,
-    BrowserAnimationsModule,
-  ],
+    imports: [
+        CommonModule,
+        ValidationMessageModule,
+        StandardMaskedInputModule,
+        FormsModule,
+        ClickOutsideModule,
+        TranslateModule,
+        MonthYearSelectModule,
+    ],
   declarations: [
     DatePickerComponent
   ],

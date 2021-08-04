@@ -1,5 +1,5 @@
 import { CommonCert, Document, DocumentType } from './document';
-import { DatesHelperService } from '../services';
+import { DatesHelperService } from '../services/dates-helper/dates-helper.service';
 
 export interface Kid {
   eTag?: string;

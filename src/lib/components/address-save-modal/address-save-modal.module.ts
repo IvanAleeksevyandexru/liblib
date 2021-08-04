@@ -15,6 +15,9 @@ import { ButtonModule } from '../button/button.module';
   ],
   exports: [
     AddressSaveModalComponent
+  ],
+  entryComponents: [
+    AddressSaveModalComponent
   ]
 })
 export class AddressSaveModalModule { }
