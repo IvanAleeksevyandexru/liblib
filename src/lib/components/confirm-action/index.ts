@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../confirm-action-public_api';

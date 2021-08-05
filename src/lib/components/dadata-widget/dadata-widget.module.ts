@@ -4,7 +4,7 @@ import { DadataWidgetComponent } from './dadata-widget.component';
 import { AutocompleteModule } from 'epgu-lib/lib/components/autocomplete';
 import { TranslateModule } from '../../pipes/translate/translate.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CheckboxModule } from '../checkbox/checkbox.module';
+import { CheckboxModule } from 'epgu-lib/lib/components/checkbox';
 import { PlainInputModule } from '../plain-input/plain-input.module';
 import { DropdownModule } from '../dropdown/dropdown.module';
 import { MapModule } from '../map/map.module';

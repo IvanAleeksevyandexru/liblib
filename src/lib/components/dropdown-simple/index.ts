@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../dropdown-simple-public_api';

@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../hidden-tooltip-public_api';
