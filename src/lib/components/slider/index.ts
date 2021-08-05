@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../slider-public_api';

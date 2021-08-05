@@ -76,7 +76,6 @@ export * from './lib/components/range-selector/index';
 export * from './lib/components/region-cases/index';
 export * from './lib/components/role-change/index';
 export * from './lib/components/search-bar/index';
-export * from './lib/components/slider/index';
 export * from './lib/components/small-footer/index';
 export * from './lib/components/snippets/index';
 export * from './lib/components/social-links/index';
