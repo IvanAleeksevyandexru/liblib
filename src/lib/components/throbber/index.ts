@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../throbber-public_api';

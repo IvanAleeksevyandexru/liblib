@@ -81,7 +81,6 @@ export * from './lib/components/tabs/index';
 export * from './lib/components/tabs-aside/index';
 export * from './lib/components/tabs-light/index';
 export * from './lib/components/tabs-scrolling/index';
-export * from './lib/components/throbber/index';
 export * from './lib/components/throbber-hexagon/index';
 export * from './lib/components/user-menu/index';
 export * from './lib/components/user-roles/index';
