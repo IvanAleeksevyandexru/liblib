@@ -4,7 +4,7 @@ import { TranslateModule } from '../../../pipes/translate/translate.module';
 import { EdsPinComponent } from './eds-pin.component';
 import { EdsItemModule } from '../eds-item/eds-item.module';
 import { StandardInputModule } from '../../standard-input/standard-input.module';
-import { ButtonModule } from '../../button/button.module';
+import { ButtonModule } from 'epgu-lib/lib/components/button';
 import { FormsModule } from '@angular/forms';
 
 

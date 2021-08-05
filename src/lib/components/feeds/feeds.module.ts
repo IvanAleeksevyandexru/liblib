@@ -5,7 +5,7 @@ import { ThrobberModule } from '../throbber/throbber.module';
 import { RouterModule } from '@angular/router';
 import { LoaderModule } from '../loader/loader.module';
 import { TranslateModule } from '../../pipes/translate/translate.module';
-import { ButtonModule } from '../button/button.module';
+import { ButtonModule } from 'epgu-lib/lib/components/button';
 import { FeedIconModule } from '../feed-icon/feed-icon.module';
 import { HighlightModule } from '../../pipes/highlight/highlight.module';
 import { RemoveQuotesModule } from '../../pipes/remove-quotes/remove-quotes.module';

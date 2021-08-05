@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LocationComponent } from './location.component';
 import { TranslateModule } from '../../pipes/translate/translate.module';
 import { RadioModule } from '../radio/radio.module';
-import { ButtonModule } from '../button/button.module';
+import { ButtonModule } from 'epgu-lib/lib/components/button';
 import { LookupModule } from '../lookup/lookup.module';
 import { FormsModule } from '@angular/forms';
 

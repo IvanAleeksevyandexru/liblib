@@ -18,6 +18,14 @@
       "@angular/*": [
         "./node_modules/@angular/*"
       ],
+      "epgu-lib/*": [
+        "src/*",
+        "dist/epgu-lib/*"
+      ],
+      "epgu-lib": [
+        "src",
+        "dist/epgu-lib"
+      ],
       "@ifc/plugin": ["src/assets/vendor/ifccommon-lib.js"],
       "@ifc/common": ["src/assets/vendor/ifcplugin-lib.js"]
     },

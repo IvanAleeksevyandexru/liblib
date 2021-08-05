@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login.component';
 import { CounterModule } from '../counter/counter.module';
 import { TranslateModule } from '../../pipes/translate/translate.module';
-import { ButtonModule } from '../button/button.module';
 import { RouterModule } from '@angular/router';
+import { ButtonModule } from 'epgu-lib/lib/components/button';
 
 
 @NgModule({
