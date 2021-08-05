@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatePickerComponent } from './date-picker.component';
-import { ValidationMessageModule } from '../validation-message/validation-message.module';
+import { ValidationMessageModule } from 'epgu-lib/lib/components/validation-message';
 import { StandardMaskedInputModule } from '../standard-masked-input/standard-masked-input.module';
 import { FormsModule } from '@angular/forms';
 import { ClickOutsideModule } from '../../directives/click-outside/click-out.module';

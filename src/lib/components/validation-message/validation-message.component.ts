@@ -1,10 +1,10 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
-import { ValidationMessages } from '../../models/validation-show';
-import { PipedMessage } from '../../models/piped-message';
-import { Translation } from '../../models/common-enums';
-import { ValidationHelper } from '../../services/validation-helper/validation.helper';
-import { HelperService } from '../../services/helper/helper.service';
+import { ValidationMessages } from 'epgu-lib/lib/models';
+import { PipedMessage } from 'epgu-lib/lib/models';
+import { Translation } from 'epgu-lib/lib/models';
+import { ValidationHelper } from 'epgu-lib/lib/services/validation-helper';
+import { HelperService } from 'epgu-lib/lib/services/helper';
 
 class Message {
   constructor(str: string | PipedMessage | any, key: string, isDefault = false) {

@@ -110,7 +110,6 @@ export * from './lib/components/throbber/index';
 export * from './lib/components/throbber-hexagon/index';
 export * from './lib/components/user-menu/index';
 export * from './lib/components/user-roles/index';
-export * from './lib/components/validation-message/index';
 export * from './lib/components/virtual-scroll/index';
 
 export * from './lib/services/accesses/index';
