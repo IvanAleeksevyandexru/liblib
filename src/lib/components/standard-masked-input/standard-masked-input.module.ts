@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ValidationMessageModule } from 'epgu-lib/lib/components/validation-message';
 import { InvalidResultsTipModule } from '../invalid-results-tip/invalid-results-tip.module';
-import { QuestionHelpTipModule } from '../question-help-tip/question-help-tip.module';
+import { QuestionHelpTipModule } from 'epgu-lib/lib/components/question-help-tip';
 import { StandardMaskedInputComponent } from './standard-masked-input.component';
 import { TranslateModule } from '../../pipes/translate/translate.module';
 import { BaseMaskedInputModule } from 'epgu-lib/lib/components/base-masked-input';

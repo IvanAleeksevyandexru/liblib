@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../question-help-tip-public_api';

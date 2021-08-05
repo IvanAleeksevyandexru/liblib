@@ -80,7 +80,6 @@ export * from './lib/components/page-menu/index';
 export * from './lib/components/paging-controls/index';
 export * from './lib/components/plain-input/index';
 export * from './lib/components/pso/index';
-export * from './lib/components/question-help-tip/index';
 export * from './lib/components/quiz/index';
 export * from './lib/components/radio/index';
 export * from './lib/components/range-field/index';
