@@ -22,8 +22,6 @@ export * from './lib/components/captcha/index';
 export * from './lib/components/catalog-tab-item/index';
 export * from './lib/components/catalog-tabs/index';
 export * from './lib/components/catalog-tabs-list/index';
-export * from './lib/components/confirm-action/index';
-export * from './lib/components/counter/index';
 export * from './lib/components/dadata-modal/index';
 export * from './lib/components/dadata-widget/index';
 export * from './lib/components/date-picker/index';
