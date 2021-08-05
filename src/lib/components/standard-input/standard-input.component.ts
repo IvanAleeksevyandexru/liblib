@@ -11,7 +11,7 @@ import {
   Output
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
-import { PlainInputComponent } from '@epgu/epgu-lib/lib/components/plain-input';
+import { PlainInputComponent } from 'epgu-lib/lib/components/plain-input';
 import { PipedMessage } from '../../models/piped-message';
 import { InputAutocomplete, MessagePosition, TipDirection, Translation } from '../../models/common-enums';
 import { Focusable } from '../../services/focus/focus.manager';

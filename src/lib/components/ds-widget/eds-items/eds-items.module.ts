@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '../../../pipes/translate/translate.module';
 import { EdsItemsComponent } from './eds-items.component';
 import { EdsItemModule } from '../eds-item/eds-item.module';
-import { PagingControlsModule } from '@epgu/epgu-lib/lib/components/paging-controls';
+import { PagingControlsModule } from 'epgu-lib/lib/components/paging-controls';
 
 
 @NgModule({

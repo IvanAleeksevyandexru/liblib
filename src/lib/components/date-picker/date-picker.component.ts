@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, ValidationErrors, AbstractControl, ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { StandardMaskedInputComponent } from '@epgu/epgu-lib/lib/components/standard-masked-input';
+import { StandardMaskedInputComponent } from 'epgu-lib/lib/components/standard-masked-input';
 import { PipedMessage } from '../../models/piped-message';
 import { HorizontalAlign } from '../../models/positioning';
 import { Translation, Align, TipDirection, BrokenDateFixStrategy, MessagePosition, RemoveMaskSymbols } from '../../models/common-enums';

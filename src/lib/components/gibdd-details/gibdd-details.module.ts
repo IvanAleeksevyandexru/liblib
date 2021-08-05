@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { GibddDetailsComponent } from './gibdd-details.component';
 import { TranslateModule } from '../../pipes/translate/translate.module';
 import { ToMoneyModule } from '../../pipes/to-money/to-money.module';
-import { ThrobberModule } from '@epgu/epgu-lib/lib/components/throbber';
+import { ThrobberModule } from 'epgu-lib/lib/components/throbber';
 import { MapModule } from '../map/map.module';
-import { ButtonModule } from '@epgu/epgu-lib/lib/components/button';
+import { ButtonModule } from 'epgu-lib/lib/components/button';
 import { ImageSliderModule } from '../image-slider/image-slider.module';
 
 

@@ -18,11 +18,11 @@
       "@angular/*": [
         "./node_modules/@angular/*"
       ],
-      "@epgu/epgu-lib/*": [
+      "epgu-lib/*": [
         "src/*",
         "dist/epgu-lib/*"
       ],
-      "@epgu/epgu-lib": [
+      "epgu-lib": [
         "src",
         "dist/epgu-lib"
       ],

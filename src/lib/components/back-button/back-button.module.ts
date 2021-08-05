@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BackButtonComponent } from './back-button.component';
-import { ButtonModule } from '@epgu/epgu-lib/lib/components/button';
+import { ButtonModule } from 'epgu-lib/lib/components/button';
 import { TranslateModule } from '../../pipes/translate/translate.module';
 
 @NgModule({

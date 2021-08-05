@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PipedMessageModule } from '@epgu/epgu-lib/lib/pipes/piped-message';
+import { PipedMessageModule } from 'epgu-lib/lib/pipes/piped-message';
 import { ValidationMessageComponent } from './validation-message.component';
-import { TranslateModule } from '@epgu/epgu-lib/lib/pipes/translate';
+import { TranslateModule } from 'epgu-lib/lib/pipes/translate';
 
 
 @NgModule({
