@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../checkbox-public_api';
