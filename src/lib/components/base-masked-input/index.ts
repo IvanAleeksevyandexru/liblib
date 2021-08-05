@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../base-masked-input-public_api';

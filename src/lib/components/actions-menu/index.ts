@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../action-menu-public_api';

@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../autocomplete-public_api';

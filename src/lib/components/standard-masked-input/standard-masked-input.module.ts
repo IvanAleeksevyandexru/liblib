@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ValidationMessageModule } from 'epgu-lib/lib/components/validation-message';
 import { InvalidResultsTipModule } from '../invalid-results-tip/invalid-results-tip.module';
 import { QuestionHelpTipModule } from '../question-help-tip/question-help-tip.module';
-import { BaseMaskedInputModule } from '../base-masked-input/base-masked-input.module';
 import { StandardMaskedInputComponent } from './standard-masked-input.component';
 import { TranslateModule } from '../../pipes/translate/translate.module';
+import { BaseMaskedInputModule } from 'epgu-lib/lib/components/base-masked-input';
 
 
 @NgModule({
