@@ -1,0 +1,7 @@
+{
+  "ngPackage": {
+    "lib": {
+      "entryFile": "../../loader-public_api"
+    }
+  }
+}

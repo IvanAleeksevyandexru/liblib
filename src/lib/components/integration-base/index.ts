@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../integration-base-public_api';

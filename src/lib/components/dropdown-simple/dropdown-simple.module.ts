@@ -6,7 +6,7 @@ import { ClickOutsideModule } from '../../directives/click-outside/click-out.mod
 import { SafeHtmlModule } from '../../pipes/safe-html/safe-html.module';
 import { VirtualScrollModule } from '../virtual-scroll/virtual-scroll.module';
 import { StopScreenScrollModule } from '../../directives/stop-screen-scroll/stop-screen-scroll.module';
-import { DropdownSimpleComponent } from './dropdown-simple.component';
+import { DropdownSimpleComponent } from 'epgu-lib/lib/components/dropdown-simple';
 
 
 @NgModule({

@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../loader-public_api';

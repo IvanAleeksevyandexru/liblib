@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ButtonComponent } from './button.component';
 import { RoundLoaderModule } from '../round-loader/round-loader.module';
-// import { LoaderModule } from '../loader/loader.module';
+// import { LoaderModule } from 'epgu-lib/lib/components/loader';
 
 @NgModule({
   imports: [

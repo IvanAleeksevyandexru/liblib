@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FeedsComponent } from './feeds.component';
 import { ThrobberModule } from '../throbber/throbber.module';
 import { RouterModule } from '@angular/router';
-import { LoaderModule } from '../loader/loader.module';
+import { LoaderModule } from 'epgu-lib/lib/components/loader';
 import { TranslateModule } from '../../pipes/translate/translate.module';
 import { ButtonModule } from 'epgu-lib/lib/components/button';
 import { FeedIconModule } from '../feed-icon/feed-icon.module';

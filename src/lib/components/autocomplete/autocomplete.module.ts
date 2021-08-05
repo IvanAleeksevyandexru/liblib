@@ -5,7 +5,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { TranslateModule } from '../../pipes/translate/translate.module';
 import { SearchBarModule } from 'epgu-lib/lib/components/search-bar';
 import { VirtualScrollModule } from '../virtual-scroll/virtual-scroll.module';
-import { LoaderModule } from '../loader/loader.module';
+import { LoaderModule } from 'epgu-lib/lib/components/loader';
 import { StopScreenScrollModule } from '../../directives/stop-screen-scroll/stop-screen-scroll.module';
 import { ClickOutsideModule } from '../../directives/click-outside/click-out.module';
 import { SubstModule } from '../../pipes/subst/subst.module';
