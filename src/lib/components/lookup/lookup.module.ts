@@ -8,7 +8,7 @@ import { ClickOutsideModule } from '../../directives/click-outside/click-out.mod
 import { VirtualForOfModule } from '../../directives/virtual-for-of/virtual-for-of.module';
 import { SearchBarModule } from 'epgu-lib/lib/components/search-bar';
 import { VirtualScrollModule } from '../virtual-scroll/virtual-scroll.module';
-import { LoaderModule } from '../loader/loader.module';
+import { LoaderModule } from 'epgu-lib/lib/components/loader';
 import { LookupComponent } from './lookup.component';
 import { TranslateModule } from '../../pipes/translate/translate.module';
 
