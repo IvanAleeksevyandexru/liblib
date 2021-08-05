@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../lookup-public_api';

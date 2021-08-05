@@ -54,7 +54,6 @@ export * from './lib/components/location/index';
 export * from './lib/components/location-select/index';
 export * from './lib/components/login/index';
 export * from './lib/components/logo/index';
-export * from './lib/components/lookup/index';
 export * from './lib/components/map/index';
 export * from './lib/components/menu-catalog/index';
 export * from './lib/components/menu-catalog-simple/index';

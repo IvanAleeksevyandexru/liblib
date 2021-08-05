@@ -4,7 +4,7 @@ import { LocationComponent } from './location.component';
 import { TranslateModule } from '../../pipes/translate/translate.module';
 import { RadioModule } from '../radio/radio.module';
 import { ButtonModule } from 'epgu-lib/lib/components/button';
-import { LookupModule } from '../lookup/lookup.module';
+import { LookupModule } from  'epgu-lib/lib/components/lookup';
 import { FormsModule } from '@angular/forms';
 
 
