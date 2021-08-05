@@ -57,7 +57,6 @@ export * from './lib/components/logo/index';
 export * from './lib/components/map/index';
 export * from './lib/components/menu-catalog/index';
 export * from './lib/components/menu-catalog-simple/index';
-export * from './lib/components/modal-placeholder/index';
 export * from './lib/components/month-picker/index';
 export * from './lib/components/month-year-select/index';
 export * from './lib/components/multi-lookup/index';

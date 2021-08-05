@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../modal-placeholder-public_api';
