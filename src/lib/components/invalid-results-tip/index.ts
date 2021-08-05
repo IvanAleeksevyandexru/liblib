@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../invalid-results-tip-public_api';

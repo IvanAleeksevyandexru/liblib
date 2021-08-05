@@ -57,7 +57,6 @@ export * from './lib/components/hidden-tooltip/index';
 export * from './lib/components/image-slider/index';
 export * from './lib/components/informer/index';
 export * from './lib/components/integration-base/index';
-export * from './lib/components/invalid-results-tip/index';
 export * from './lib/components/lang-warn-modal/index';
 export * from './lib/components/language-select/index';
 export * from './lib/components/light-header/index';

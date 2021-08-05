@@ -1,0 +1,7 @@
+{
+  "ngPackage": {
+    "lib": {
+      "entryFile": "../../invalid-results-tip-public_api"
+    }
+  }
+}
