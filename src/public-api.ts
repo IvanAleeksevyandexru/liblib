@@ -72,7 +72,6 @@ export * from './lib/components/small-footer/index';
 export * from './lib/components/snippets/index';
 export * from './lib/components/social-links/index';
 export * from './lib/components/social-share/index';
-export * from './lib/components/standard-masked-input/index';
 export * from './lib/components/tabs/index';
 export * from './lib/components/tabs-aside/index';
 export * from './lib/components/throbber-hexagon/index';

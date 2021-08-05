@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../standard-masked-input-public_api';
