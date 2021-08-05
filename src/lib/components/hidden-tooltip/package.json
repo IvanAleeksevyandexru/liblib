@@ -1,0 +1,7 @@
+{
+  "ngPackage": {
+    "lib": {
+      "entryFile": "../../hidden-tooltip-public_api"
+    }
+  }
+}
