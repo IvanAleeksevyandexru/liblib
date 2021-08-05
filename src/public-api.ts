@@ -64,7 +64,6 @@ export * from './lib/components/modal-placeholder/index';
 export * from './lib/components/month-picker/index';
 export * from './lib/components/month-year-select/index';
 export * from './lib/components/multi-lookup/index';
-export * from './lib/components/multiline-input/index';
 export * from './lib/components/notifier/index';
 export * from './lib/components/page-menu/index';
 export * from './lib/components/paging-controls/index';

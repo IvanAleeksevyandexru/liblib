@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../multiline-input-public_api';
