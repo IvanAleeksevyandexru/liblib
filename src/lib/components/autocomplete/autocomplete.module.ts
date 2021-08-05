@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { TranslateModule } from '../../pipes/translate/translate.module';
-import { SearchBarModule } from '../search-bar/search-bar.module';
+import { SearchBarModule } from 'epgu-lib/lib/components/search-bar';
 import { VirtualScrollModule } from '../virtual-scroll/virtual-scroll.module';
 import { LoaderModule } from '../loader/loader.module';
 import { StopScreenScrollModule } from '../../directives/stop-screen-scroll/stop-screen-scroll.module';

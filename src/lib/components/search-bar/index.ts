@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../search-bar-public_api';

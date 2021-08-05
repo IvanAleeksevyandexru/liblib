@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RoleChangeComponent } from './role-change.component';
 import { TranslateModule } from '../../pipes/translate/translate.module';
-import { SearchBarModule } from '../search-bar/search-bar.module';
+import { SearchBarModule } from 'epgu-lib/lib/components/search-bar';
 import { FormsModule } from '@angular/forms';
 import { PagingControlsModule } from '../paging-controls/paging-controls.module';
 import { HighlightModule } from '../../pipes/highlight/highlight.module';

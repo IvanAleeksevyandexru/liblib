@@ -7,7 +7,7 @@ import { SafeHtmlModule } from '../../pipes/safe-html/safe-html.module';
 import { VirtualForOfModule } from '../../directives/virtual-for-of/virtual-for-of.module';
 import { VirtualScrollModule } from '../virtual-scroll/virtual-scroll.module';
 import { FilteredListComponent } from './filtered-list.component';
-import { SearchBarModule } from '../search-bar/search-bar.module';
+import { SearchBarModule } from 'epgu-lib/lib/components/search-bar';
 import { TranslateModule } from '../../pipes/translate/translate.module';
 
 

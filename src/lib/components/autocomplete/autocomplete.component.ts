@@ -7,7 +7,7 @@ import { AutocompleteSuggestion,
   AutocompleteSuggestionProvider, AutocompleteSuggestionPartialProvider } from '../../models/dropdown.model';
 import { HelperService } from '../../services/helper/helper.service';
 import { ConstantsService } from '../../services/constants/constants.service';
-import { SearchBarComponent } from '../search-bar/search-bar.component';
+import { SearchBarComponent } from 'epgu-lib/lib/components/search-bar';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { VirtualScrollComponent } from '../virtual-scroll/virtual-scroll.component';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
