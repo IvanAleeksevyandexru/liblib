@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../filtered-list-public_api';
