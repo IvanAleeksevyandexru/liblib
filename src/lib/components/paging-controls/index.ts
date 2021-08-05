@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../paging-controls-public_api';
