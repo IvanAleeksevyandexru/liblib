@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, ValidationErrors, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DatePickerComponent } from '../date-picker/date-picker.component';
-import { StandardMaskedInputComponent } from 'epgu-lib/lib/components/standard-masked-input';
+import { StandardMaskedInputComponent } from '@epgu/epgu-lib/lib/components/standard-masked-input';
 import { FocusManager, FocusState } from '../../services/focus/focus.manager';
 import { ValidationShowOn, ValidationMessages } from '../../models/validation-show';
 import { PipedMessage } from '../../models/piped-message';

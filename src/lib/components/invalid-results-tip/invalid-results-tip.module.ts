@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ValidationMessageModule } from 'epgu-lib/lib/components/validation-message';
+import { ValidationMessageModule } from '@epgu/epgu-lib/lib/components/validation-message';
 import { StopClickPropagationModule } from '../../directives/stop-click-propagation/stop-click-propagation.module';
 import { ClickOutsideModule } from '../../directives/click-outside/click-out.module';
 import { InvalidResultsTipComponent } from './invalid-results-tip.component';

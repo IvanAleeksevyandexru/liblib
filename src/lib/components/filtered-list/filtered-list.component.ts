@@ -5,7 +5,7 @@ import {
 import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListItem, ListElement, ListItemConverter } from '../../models/dropdown.model';
 import { of, forkJoin } from 'rxjs';
-import { SearchBarComponent } from 'epgu-lib/lib/components/search-bar';
+import { SearchBarComponent } from '@epgu/epgu-lib/lib/components/search-bar';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { VirtualScrollComponent } from '../virtual-scroll/virtual-scroll.component';
 import { Validated, ValidationShowOn } from '../../models/validation-show';

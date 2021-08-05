@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FeedsComponent } from './feeds.component';
-import { ThrobberModule } from 'epgu-lib/lib/components/throbber';
+import { ThrobberModule } from '@epgu/epgu-lib/lib/components/throbber';
 import { RouterModule } from '@angular/router';
-import { LoaderModule } from 'epgu-lib/lib/components/loader';
+import { LoaderModule } from '@epgu/epgu-lib/lib/components/loader';
 import { TranslateModule } from '../../pipes/translate/translate.module';
-import { ButtonModule } from 'epgu-lib/lib/components/button';
+import { ButtonModule } from '@epgu/epgu-lib/lib/components/button';
 import { FeedIconModule } from '../feed-icon/feed-icon.module';
 import { HighlightModule } from '../../pipes/highlight/highlight.module';
 import { RemoveQuotesModule } from '../../pipes/remove-quotes/remove-quotes.module';

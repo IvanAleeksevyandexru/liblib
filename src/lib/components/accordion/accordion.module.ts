@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccordionComponent } from './accordion.component';
-import { ExpansionPanelModule } from 'epgu-lib/lib/components/expansion-panel';
+import { ExpansionPanelModule } from '@epgu/epgu-lib/lib/components/expansion-panel';
 
 @NgModule({
   imports: [

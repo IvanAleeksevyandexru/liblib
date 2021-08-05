@@ -6,7 +6,7 @@ import { SafeHtmlModule } from '../../pipes/safe-html/safe-html.module';
 import { TranslateModule } from '../../pipes/translate/translate.module';
 import { SubstModule } from '../../pipes/subst/subst.module';
 import { StopScreenScrollModule } from '../../directives/stop-screen-scroll/stop-screen-scroll.module';
-import { SearchBarModule } from 'epgu-lib/lib/components/search-bar';
+import { SearchBarModule } from '@epgu/epgu-lib/lib/components/search-bar';
 import { FormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { VirtualScrollModule } from '../virtual-scroll/virtual-scroll.module';

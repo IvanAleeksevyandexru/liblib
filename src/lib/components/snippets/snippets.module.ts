@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SnippetsComponent } from './snippets.component';
-import { ButtonModule } from 'epgu-lib/lib/components/button';
+import { ButtonModule } from '@epgu/epgu-lib/lib/components/button';
 import { TimeToEventModule } from '../../pipes/time-to-event/time-to-event.module';
 import { RemoveTagsModule } from '../../pipes/remove-tags/remove-tags.module';
 import { LimitStringModule } from '../../pipes/limit-string/limit-string.module';

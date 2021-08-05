@@ -4,7 +4,7 @@ import { MultiLookupComponent } from './multi-lookup.component';
 import { TranslateModule } from '../../pipes/translate/translate.module';
 import { SubstModule } from '../../pipes/subst/subst.module';
 import { SafeHtmlModule } from '../../pipes/safe-html/safe-html.module';
-import { LookupModule } from  'epgu-lib/lib/components/lookup';
+import { LookupModule } from  '@epgu/epgu-lib/lib/components/lookup';
 import { FormsModule } from '@angular/forms';
 import { DeclineModule } from '../../pipes/decline/decline.module';
 
