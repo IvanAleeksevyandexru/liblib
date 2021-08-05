@@ -6,7 +6,7 @@ import { StandardMaskedInputModule } from 'epgu-lib/lib/components/standard-mask
 import { FormsModule } from '@angular/forms';
 import { ClickOutsideModule } from '../../directives/click-outside/click-out.module';
 import { TranslateModule } from '../../pipes/translate/translate.module';
-import { MonthYearSelectModule } from '../month-year-select/month-year-select.module';
+import { MonthYearSelectModule } from 'epgu-lib/lib/components/month-year-select';
 
 @NgModule({
     imports: [
