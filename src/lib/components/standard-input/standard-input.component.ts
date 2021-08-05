@@ -1,12 +1,21 @@
-import { Component, ViewChild, Input, Output, ElementRef, EventEmitter,
-  OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, SimpleChanges, forwardRef } from '@angular/core';
-import { ControlValueAccessor, ValidationErrors, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { PlainInputComponent } from '../plain-input/plain-input.component';
+import {
+  AfterViewInit,
+  Component,
+  DoCheck,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
+import { PlainInputComponent } from 'epgu-lib/lib/components/plain-input';
 import { PipedMessage } from '../../models/piped-message';
-import { InputAutocomplete, TipDirection, MessagePosition, Translation } from '../../models/common-enums';
+import { InputAutocomplete, MessagePosition, TipDirection, Translation } from '../../models/common-enums';
 import { Focusable } from '../../services/focus/focus.manager';
-import { ValidationDetailed, ValidationShowOn, ValidationMessages } from '../../models/validation-show';
-import { HelperService } from '../../services/helper/helper.service';
+import { ValidationDetailed, ValidationMessages, ValidationShowOn } from '../../models/validation-show';
 import { Width } from '../../models/width-height';
 
 @Component({
@@ -52,7 +61,7 @@ export class StandardInputComponent extends PlainInputComponent
   // когда показывать некорректность поля (как правило начальное пустое поле не считается корректным, но отображать это не нужно)
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   // сообщения валидации вместе с параметрами вывода, работает только совместно с validation
-  @Input() public validationMessages: string | PipedMessage | ValidationMessages | { [key: string]: string | PipedMessage} = null;
+  @Input() public validationMessages: string | PipedMessage | ValidationMessages | { [key: string]: string | PipedMessage } = null;
   // определяет должна ли валидация скрывать информационный тип (показываться вместо) или показываться в дополнение
   @Input() public validationOverride = true;
   // транслитерация и эскейп для валидации

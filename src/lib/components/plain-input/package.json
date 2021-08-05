@@ -1,0 +1,7 @@
+{
+  "ngPackage": {
+    "lib": {
+      "entryFile": "../../plain-input-public_api"
+    }
+  }
+}

@@ -61,7 +61,6 @@ export * from './lib/components/month-picker/index';
 export * from './lib/components/month-year-select/index';
 export * from './lib/components/multi-lookup/index';
 export * from './lib/components/notifier/index';
-export * from './lib/components/plain-input/index';
 export * from './lib/components/pso/index';
 export * from './lib/components/quiz/index';
 export * from './lib/components/range-field/index';

@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../plain-input-public_api';

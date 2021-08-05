@@ -5,7 +5,7 @@ import { AutocompleteModule } from 'epgu-lib/lib/components/autocomplete';
 import { TranslateModule } from '../../pipes/translate/translate.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxModule } from 'epgu-lib/lib/components/checkbox';
-import { PlainInputModule } from '../plain-input/plain-input.module';
+import { PlainInputModule } from  'epgu-lib/lib/components/plain-input';
 import { DropdownModule } from '../dropdown/dropdown.module';
 import { MapModule } from '../map/map.module';
 import { BaseMaskedInputModule } from 'epgu-lib/lib/components/base-masked-input';
