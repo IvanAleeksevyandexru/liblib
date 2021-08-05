@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FeedsComponent } from './feeds.component';
-import { ThrobberModule } from '../throbber/throbber.module';
+import { ThrobberModule } from 'epgu-lib/lib/components/throbber';
 import { RouterModule } from '@angular/router';
 import { LoaderModule } from 'epgu-lib/lib/components/loader';
 import { TranslateModule } from '../../pipes/translate/translate.module';

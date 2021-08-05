@@ -5,7 +5,7 @@ import { TranslateModule } from '../../pipes/translate/translate.module';
 import { PlainInputModule } from '../plain-input/plain-input.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'epgu-lib/lib/components/button';
-import { ThrobberModule } from '../throbber/throbber.module';
+import { ThrobberModule } from 'epgu-lib/lib/components/throbber';
 
 @NgModule({
   imports: [
