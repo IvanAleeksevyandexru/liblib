@@ -23,6 +23,9 @@ import { FormsModule } from '@angular/forms';
   exports: [
     LocationComponent
   ],
+  entryComponents: [
+    LocationComponent
+  ]
 })
 export class LocationModule {
 }

@@ -15,6 +15,9 @@ import { SliderImagesModalComponent } from './slider-images-modal/slider-images-
   exports: [ImageSliderComponent,
     SliderImagesModalComponent
   ],
+  entryComponents: [
+    SliderImagesModalComponent
+  ],
 })
 export class ImageSliderModule {
 }

@@ -14,5 +14,6 @@ import { ButtonModule } from '../button/button.module';
     DadataModalComponent
   ],
   exports: [ DadataModalComponent ],
+  entryComponents: [ DadataModalComponent ],
 })
 export class DadataModalModule { }

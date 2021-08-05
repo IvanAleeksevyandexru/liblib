@@ -8,19 +8,21 @@ import { VirtualForOfModule } from '../../directives/virtual-for-of/virtual-for-
 import { VirtualScrollModule } from '../virtual-scroll/virtual-scroll.module';
 import { FilteredListComponent } from './filtered-list.component';
 import { SearchBarModule } from '../search-bar/search-bar.module';
+import { TranslateModule } from '../../pipes/translate/translate.module';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    PerfectScrollbarModule,
-    SubstModule,
-    SafeHtmlModule,
-    VirtualForOfModule,
-    VirtualScrollModule,
-    SearchBarModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        PerfectScrollbarModule,
+        SubstModule,
+        SafeHtmlModule,
+        VirtualForOfModule,
+        VirtualScrollModule,
+        SearchBarModule,
+        TranslateModule
+    ],
   declarations: [
     FilteredListComponent
   ],

@@ -21,6 +21,7 @@ import { FormsModule } from '@angular/forms';
     EdsPinComponent
   ],
   exports: [EdsPinComponent],
+  entryComponents: [EdsPinComponent],
 })
 export class EdsPinModule {
 }

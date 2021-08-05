@@ -7,6 +7,8 @@ import { RouterModule } from '@angular/router';
 import { CheckboxModule } from '../checkbox/checkbox.module';
 import { FormsModule } from '@angular/forms';
 import { BannerStaticModule } from '../banner-static/banner-static.module';
+import { HighlightModule } from '../../pipes/highlight/highlight.module';
+import { TimeToEventGepsModule } from '../../pipes/time-to-event-geps/time-to-event-geps.module';
 
 
 @NgModule({
@@ -18,6 +20,8 @@ import { BannerStaticModule } from '../banner-static/banner-static.module';
     CheckboxModule,
     FormsModule,
     BannerStaticModule,
+    HighlightModule,
+    TimeToEventGepsModule,
   ],
   declarations: [
     FeedsGepsComponent

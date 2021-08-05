@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CatalogTabsComponent } from './catalog-tabs.component';
 import { CatalogTabItemModule } from '../catalog-tab-item/catalog-tab-item.module';
+import { CatalogTabsListModule } from '../catalog-tabs-list/catalog-tabs-list.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    CatalogTabItemModule,
-  ],
+    imports: [
+        CommonModule,
+        CatalogTabItemModule,
+        CatalogTabsListModule,
+    ],
   declarations: [
     CatalogTabsComponent
   ],

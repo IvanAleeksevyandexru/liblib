@@ -7,6 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxModule } from '../checkbox/checkbox.module';
 import { PlainInputModule } from '../plain-input/plain-input.module';
 import { BaseMaskedInputModule } from '../base-masked-input/base-masked-input.module';
+import { DropdownModule } from '../dropdown/dropdown.module';
+import { MapModule } from '../map/map.module';
 
 @NgModule({
   imports: [
@@ -18,6 +20,8 @@ import { BaseMaskedInputModule } from '../base-masked-input/base-masked-input.mo
     PlainInputModule,
     BaseMaskedInputModule,
     FormsModule,
+    DropdownModule,
+    MapModule,
   ],
   declarations: [
     DadataWidgetComponent

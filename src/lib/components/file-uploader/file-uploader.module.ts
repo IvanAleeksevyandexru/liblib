@@ -3,14 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FileUploaderComponent } from './file-uploader.component';
 import { ThrobberModule } from '../throbber/throbber.module';
 import { DragAndDropModule } from '../../directives/drag-and-drop/drag-and-drop.module';
+import { FileSizeModule } from '../../pipes/file-size/file-size.module';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ThrobberModule,
-    DragAndDropModule,
-  ],
+    imports: [
+        CommonModule,
+        ThrobberModule,
+        DragAndDropModule,
+        FileSizeModule,
+    ],
   declarations: [
     FileUploaderComponent,
   ],

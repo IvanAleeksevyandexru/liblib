@@ -16,5 +16,6 @@ import { ConfirmActionComponent } from './confirm-action.component';
     ConfirmActionComponent
   ],
   exports: [ ConfirmActionComponent ],
+  entryComponents: [ ConfirmActionComponent ],
 })
 export class ConfirmActionModule { }

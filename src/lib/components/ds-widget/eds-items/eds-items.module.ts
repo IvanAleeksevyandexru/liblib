@@ -17,6 +17,7 @@ import { PagingControlsModule } from '../../paging-controls/paging-controls.modu
     EdsItemsComponent
   ],
   exports: [EdsItemsComponent],
+  entryComponents: [EdsItemsComponent],
 })
 export class EdsItemsModule {
 }
