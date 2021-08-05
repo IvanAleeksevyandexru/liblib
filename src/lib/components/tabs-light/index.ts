@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../tabs-light-public_api';
