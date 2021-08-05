@@ -1,1 +1,1 @@
-export * from './public_api';
+export * from '../../month-picker-public_api';
