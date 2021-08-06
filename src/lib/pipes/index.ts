@@ -16,6 +16,7 @@ export * from './remove-colon/remove-colon.pipe';
 export * from './remove-quotes/remove-quotes.pipe';
 export * from './remove-tags/remove-tags.pipe';
 export * from './replace/replace.pipe';
+export * from './reverse/reverse.pipe';
 export * from './safe-html/safe-html.pipe';
 export * from './subst/subst.pipe';
 export * from './time-left/time-left.pipe';
