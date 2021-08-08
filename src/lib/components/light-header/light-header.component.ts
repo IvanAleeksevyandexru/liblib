@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
 export class LightHeaderComponent {
 
   @Input() public title: string;
-  @Input() private otherMainPage: string;
+  @Input() public otherMainPage: string;
 
   constructor() { }
 
