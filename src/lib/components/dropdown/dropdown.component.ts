@@ -36,8 +36,12 @@ import { Suggest, SuggestItem } from '../../models/suggest';
 export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated {
 
   constructor(
-    private focusManager: FocusManager, protected changeDetector: ChangeDetectorRef, private positioningManager: PositioningManager,
-    @Self() protected listService: ListItemsService, @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
+    private focusManager: FocusManager,
+    protected changeDetector: ChangeDetectorRef,
+    private positioningManager: PositioningManager,
+    @Self() protected listService: ListItemsService,
+    @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer
+  ) { }
 
   @Input() public contextClass?: string;  // класс-маркер для deep стилей
   @Input() public formControlName?: string;
@@ -77,6 +81,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   @Input() public translation: Translation | string = Translation.NONE;
   // позиционировать выпадающий список программно на fixed координатах (выпадашка может выходить за пределы диалоговых окон)
   @Input() public containerOverlap = false;
+  // определяет направление разворачивания списка. false - вниз, true - вверх
+  @Input() public rollUp = false;
   // постраничная подгрузка итемов в результатах и размер блока
   @Input() public incrementalLoading = false;
   @Input() public incrementalPageSize = ConstantsService.DEFAULT_ITEMS_INCREMENTAL_PAGE_SIZE;

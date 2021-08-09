@@ -309,6 +309,17 @@
     }
   }
 
+  &.roll-up {
+    .expanded {
+      border-radius: 0 0 4px 4px;
+    }
+    .dropdown-list-container {
+      border-style: solid solid none solid;
+      border-radius: 4px 4px 0 0;
+      bottom: 52px;
+    }
+  }
+
   .additional-item {
     border-top: 1px solid #A7A7AB;
     font-size: 12px;
@@ -321,18 +332,6 @@
   .suggests {
     padding: 8px 0 12px 0;
     font-family: Lato, Arial, sans-serif;
-
-    .ml-16 {
-      margin-left: 16px;
-    }
-
-    .mr-16 {
-      margin-right: 16px;
-    }
-
-    .pl-16 {
-      padding-left: 16px;
-    }
 
     .title {
       font-size: 14px;

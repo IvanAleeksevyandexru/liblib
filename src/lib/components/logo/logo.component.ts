@@ -7,8 +7,10 @@ import { LoadService } from '../../services/load/load.service';
   styleUrls: ['./logo.component.scss']
 })
 export class LogoComponent implements OnInit {
+
   @Input() public width?: string;
   @Input() public logoHref = '/';
+  @Input() private otherMainPage: string;
 
   public url: string;
   public viewType = this.loadService.config.viewType;
@@ -16,7 +18,7 @@ export class LogoComponent implements OnInit {
   constructor(private loadService: LoadService) { }
 
   public ngOnInit() {
-    this.url = this.loadService.config.baseUrl;
+    this.url = this.otherMainPage || this.loadService.config.baseUrl;
   }
 
 }
