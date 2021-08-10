@@ -79,54 +79,48 @@
         <div>
           <lib-logo width="126" [logoHref]="logoHref"></lib-logo>
         </div>
-        <div *ngIf="!user.authorized" class="hide show-lg ml-lg-48">
-          <div *ngIf="roleChangeAvailable" class="flex-container align-items-center roles-list">
-            <span class="user-role" [class.opened]="showRolesList"
-                  (click)="openRolesList()">{{getRoleName(activeRoleCode)}}</span>
-
-            <div class="list" *ngIf="showRolesList">
-              <a *ngFor="let role of userRoles; let first = first"
-                 class="list-item-wrap"
-                 [class.active]="role.code === activeRoleCode"
-                 (click)="updateRole(role.code, role.url)">
-                <div class="list-item link-plain"
-                   [ngClass]="{'ml-40': !first}">{{role.name}}</div>
-              </a>
-            </div>
-          </div>
+        <div class="hide show-md ml-md-24">
+          <lib-location-select skinTheme="empty"></lib-location-select>
         </div>
       </div>
-      <!--   Оставляю, т.к. могут передумать на счет ссылок. Нужна будет доработка стилей   -->
-      <!--<div class="hide show-lg"
-           [class.col-lg-3]="!user.authorized"
-           [class.col-lg-4]="user.authorized">
-        <div class="flex-container align-items-center">
-          <ul class="links flex-container-lg">
-            <li class="item flex-container align-items-center" [class.mr-24]="user.authorized" *ngFor="let link of links">
-              <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
-                 (click)="redirect($event, link)"
-                 [href]="link.url">{{link.title | appTranslate}}</a>
-              <ng-template #categoryLink>
-                <a class="category-link"
-                   [href]="link.url"
-                   (mouseenter)="openCategories()"
-                   (mouseleave)="closeCategories()">{{link.title | appTranslate}}</a>
-              </ng-template>
+      <div class="avatar-n-location-container flex-container justify-end align-items-center"
+           [class.catalog-menu-opened]="menuCatalogOpened">
+        <div class="hide show-md">
+          <ul class="links flex-container-md">
+            <div *ngIf="user.authorized" class="hide show-lg">
+              <li *ngFor="let link of links" class="item flex-container align-items-center mr-24">
+                <ng-container *ngIf="link.showSeparatelyOnDesk">
+                  <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
+                     (click)="redirect($event, link)"
+                     [href]="link.url">
+                    <span *ngIf="translation === Translation.NONE">{{link.title}}</span>
+                    <span *ngIf="translation === Translation.APP">{{link.title | appTranslate}}</span>
+                    <span *ngIf="translation === Translation.LIB">{{link.title | libTranslate}}</span>
+                  </a>
+                  <ng-template #categoryLink>
+                    <a class="category-link"
+                       [href]="link.url"
+                       (mouseenter)="openCategories()"
+                       (mouseleave)="closeCategories()">
+                      <span *ngIf="translation === Translation.NONE">{{link.title}}</span>
+                      <span *ngIf="translation === Translation.APP">{{link.title | appTranslate}}</span>
+                      <span *ngIf="translation === Translation.LIB">{{link.title | libTranslate}}</span>
+                    </a>
+                  </ng-template>
+                </ng-container>
+              </li>
+            </div>
+            <li class="item flex-container align-items-center mr-24">
+              <a href="{{loadService.config.betaUrl}}help" target="_self">{{'HEADER.HELP' | libTranslate}}</a>
+            </li>
+            <li class="item flex-container align-items-center mr-24">
+              <a [href]="loadService.config.betaUrl + 'newsearch'">
+                <img class="search-icon" [src]="loadService.config.staticDomainLibAssetsPath + 'svg/search-icons/search-blue.svg'">
+              </a>
             </li>
           </ul>
         </div>
-      </div>-->
-      <div class="avatar-n-location-container flex-container justify-end align-items-center"
-           [class.catalog-menu-opened]="menuCatalogOpened">
-        <div class="hide show-lg ml-lg-64">
-          <lib-location-select skinTheme="empty"></lib-location-select>
-        </div>
-        <a *ngIf="!user.authorized"
-           href="{{loadService.config.betaUrl}}help"
-           target="_self"
-           class="search-icon hide show-lg ml-lg-20">?
-        </a>
-        <div class="ml-lg-20">
+        <div class="ml-lg-20" [ngClass]="{'ml-md-64': user.authorized}">
           <div class="login-wrapper">
             <div class="login flex-container justify-end overflow-container">
               <lib-login [useButton]="true" class="hide"
@@ -140,17 +134,14 @@
             </div>
           </div>
           <div class="user-menu-wrapper" *ngIf="user.authorized">
-            <lib-user-menu
-                #menu
-                [searchSputnikEnabled]="searchSputnikEnabled"
-                [state]="userMenuState"
-                [links]="links"
-                [closeStatisticPopup$]="closeStatisticPopup$">
+            <lib-user-menu #menu
+                           [searchSputnikEnabled]="searchSputnikEnabled"
+                           [state]="userMenuState"
+                           [links]="links"
+                           [translation]="translation"
+                           [closeStatisticPopup$]="closeStatisticPopup$">>
             </lib-user-menu>
           </div>
-        </div>
-        <div *ngIf="languageChangeAvailable" class="ml-12 hide show-lg">
-          <lib-language-select></lib-language-select>
         </div>
       </div>
     </div>
