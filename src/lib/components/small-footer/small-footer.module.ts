@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SmallFooterComponent } from './small-footer.component';
-import { AccordionModule } from 'epgu-lib/lib/components/accordion';
-import { ExpansionPanelModule } from 'epgu-lib/lib/components/expansion-panel';
 import { SocialLinksModule } from '../social-links/social-links.module';
 
 

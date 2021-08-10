@@ -1,0 +1,435 @@
+.search-field {
+  width: 100%;
+  display: inline-block;
+  //background-color: #F5F7FA;
+  position: relative;
+  box-sizing: border-box;
+  vertical-align: bottom;
+  border-radius: 4px;
+
+  .label-search-input {
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    line-height: 0;
+  }
+
+  .search-input {
+    padding: 0;
+    margin: 0;
+  }
+
+  &.main-page-new {
+    box-sizing: border-box;
+    box-shadow: none;
+
+    .search-input {
+      min-height: 48px;
+      font-size: 18px;
+      line-height: 24px;
+      border: none;
+      //border-radius: 12px;
+      padding-left: 0;
+      padding-right: 0;
+      color: #fff;
+      background: transparent;
+
+      &::placeholder {
+        color: #AAC6FB;
+      }
+      &:focus,
+      &.focused {
+        padding-left: 0;
+        border: none;
+      }
+    }
+
+    .blocked {
+      display: flex;
+      align-items: center;
+    }
+
+    .blocked-wrap {
+      position: relative;
+    }
+
+    .search-value {
+      opacity: .5;
+      font-size: 18px;
+      line-height: 24px;
+    }
+
+    .clear-blocked, .search-clear {
+      position: absolute;
+      background: url(../../../assets/svg/circle_close_blue.svg) 0 0 no-repeat;
+      background-size: 100%;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      right: -30px;
+      top: 0;
+    }
+
+    .search-clear {
+      &.align-right {
+        right: 0;
+        top: 12px;
+      }
+    }
+
+    &::ng-deep {
+      lib-button button {
+        line-height: 16px;
+        display: none;
+      }
+    }
+
+    .search-go {
+      display: none;
+    }
+
+    .search-go,
+    .search-in-progress {
+      background-size: 100%;
+      height: 24px;
+      background-position: 0 0;
+      width: 24px;
+      top: 20px;
+
+      &:hover {
+        background-size: 100%;
+        background-position: 0 0;
+      }
+    }
+
+    .search-button {
+      position: absolute;
+      right: 4px;
+      top: 4px
+    }
+
+    .search-go {
+      top: 100%;
+      width: 100%;
+      height: 3px;
+      background: rgba(255, 255, 255, .34);
+      left: 0;
+      display: block;
+    }
+
+    .search-in-progress {
+      right: 31px;
+      top: 8px;
+    }
+    &.magnifying-glass-or-throbber-shown {
+      .search-input {
+        padding-right: 0;
+      }
+    }
+    &.clear-shown {
+      .search-input {
+        padding-right: 34px;
+      }
+    }
+  }
+
+  .search-input, .static-content, .suggestion-container {
+    width: 100%;
+    min-height: 52px;
+    border: none;
+    border-radius: 4px;
+    font-family: Lato, Arial, sans-serif;
+    background-color: #F5F7FA;
+    font-size: 16px;
+    line-height: 24px;
+    padding-right: 16px;
+    color: #0B1F33;
+    outline: none;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    padding-left: 18px;
+    &:focus {
+      border: 2px solid #99B1E6;
+    }
+    &.shadowed { // элемент перекрыт статичным контентом и не должен быть видим
+      position: absolute;
+      width: 0;
+      height: 0;
+      opacity: 0;
+      border: none;
+      outline: none;
+      padding-top: 0;
+      padding-bottom: 0;
+      padding-left: 16px;
+    }
+    :host-context(.white-field),
+    :host-context(.menu-search)
+    {
+      .search-input {
+        border: 2px solid #FFFFFF;
+        background-color: #FFFFFF;
+      }
+    }
+  }
+
+  .static-content {
+    display: grid;
+  }
+
+  ::-webkit-input-placeholder {
+    color: #D1D5DF;
+  }
+  :-ms-input-placeholder {
+    color: #D1D5DF;
+  }
+  ::-moz-placeholder {
+    color: #D1D5DF;
+    opacity: 1;
+  }
+  :-moz-placeholder {
+    color: #D1D5DF;
+    opacity: 1;
+  }
+
+  .search-input, .static-content {
+    &:disabled {
+      background-color: #D1D5DF;
+      color: #66727F;
+    }
+    &.disabled {
+      background-color: #D1D5DF;
+      color: #66727F;
+    }
+    &.invalid {
+      background: rgba(238, 63, 88, 0.16);
+      border-color: rgba(238, 63, 88, 0.16);
+    }
+    &[disabled], &.disabled, &[readonly] {
+      background: #D1D5DF;
+      color: #66727F;
+      -webkit-text-fill-color: #66727F;
+    }
+  }
+  .search-input {
+    &.focused {
+      border: 2px solid #99B1E6;
+      padding-left: 16px;
+    }
+  }
+  .static-content-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .suggestion-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow-x: hidden;
+    border: none;
+    display: flex;
+    flex-flow: row;
+    flex-wrap: nowrap;
+    padding: 0;
+    .suggestion-spacer {
+      visibility: hidden;
+      height: 0;
+      max-height: 0;
+      margin-right: 1px;
+    }
+    .suggestion {
+      white-space: nowrap;
+      padding-top: 12px;
+      font-family: Lato, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 24px;
+      color: #aaa;
+      overflow: hidden;
+    }
+  }
+  &.magnifying-glass-or-throbber-shown {
+    .search-input, .static-content, .suggestion-container {
+      padding-right: 50px;
+    }
+  }
+  &.clear-shown {
+    .search-input, .static-content, .suggestion-container {
+      padding-right: 42px;
+    }
+    &.magnifying-glass-or-throbber-shown {
+      .search-input, .static-content, .suggestion-container {
+        padding-right: 84px;
+      }
+    }
+  }
+  .search-go {
+    position: absolute;
+    width: 52px;
+    height: 52px;
+    top: 0;
+    right: 7px;
+    background: url(../../../assets/svg/lookup-search-grey.svg) 16px 16px no-repeat;
+    outline: none;
+    cursor: pointer;
+    &:hover {
+      background: url(../../../assets/svg/lookup-search-hover.svg) 16px 16px no-repeat;
+    }
+    &.disabled {
+      background: url(../../../assets/svg/lookup-search-disabled.svg) 16px 16px no-repeat;
+      &:hover {
+        background: url(../../../assets/svg/lookup-search-disabled.svg) 16px 16px no-repeat;
+      }
+    }
+  }
+  .search-clear {
+    position: absolute;
+    width: 36px;
+    height: 48px;
+    top: 0px;
+    right: 48px;
+    background: url(../../../assets/svg/input-clean.svg) 5px 14px no-repeat;
+    outline: none;
+    cursor: pointer;
+    &.align-right {
+      right: 5px;
+    }
+  }
+  .search-in-progress {
+    position: absolute;
+    width: 52px;
+    height: 52px;
+    top: 0;
+    right: 7px;
+    .search-in-progress-cell {
+      position: absolute;
+      background: url(../../../assets/svg/search-loader.svg) 0 0 no-repeat;
+      background-size: contain;
+      width: 24px;
+      height: 24px;
+      top: 12px;
+      left: 11px;
+      animation: rotate 1.5s linear infinite;
+    }
+  }
+
+  &.menu-search {
+    .search-input:focus {
+      border-color: #ffffff;
+    }
+  }
+}
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+@media all and (min-width: 768px){
+  .search-field {
+    &.main-page-new {
+
+      .search-go {
+        display: block;
+      }
+
+      &.clear-shown {
+        .search-input {
+          padding-right: 46px;
+        }
+      }
+
+      .search-input {
+        min-height: 80px;
+        font-size: 36px;
+        line-height: 40px;
+        border: none;
+        background: transparent;
+        color: #fff
+      ;
+        &:focus,
+        &.focused {
+          //border-width: 4px;
+          //padding-left: 75px;
+        }
+      }
+
+      .search-in-progress {
+        height: 32px;
+        width: 32px;
+        top: 23px;
+      }
+      .search-go {
+        top: 100%;
+        width: 100%;
+        height: 3px;
+        background: rgba(255, 255, 255, .34);
+        left: 0;
+      }
+
+      &.main-page-new {
+        .clear-blocked, .search-clear {
+          width: 32px;
+          height: 32px;
+        }
+
+        .clear-blocked {
+          right: -40px;
+          top: 5px;
+        }
+
+        .search-clear {
+          top: 24px;
+        }
+      }
+
+      .search-button {
+        position: absolute;
+        right: 0px;
+        top: 14px;
+      }
+
+      .search-value {
+        font-size: 36px;
+        line-height: 40px;
+      }
+
+      &::ng-deep {
+        lib-button button {
+          line-height: 24px;
+          padding: 12px 32px;
+          display: none;
+        }
+      }
+
+      .search-in-progress {
+        top: 20px;
+        right: 39px;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .search-field {
+    &.main-page-new {
+
+      &.clear-shown {
+        .search-input {
+          padding-right: 228px;
+        }
+      }
+      .clear-blocked, .search-clear {
+        right: 128px;
+
+        &.align-right {
+          right: 171px;
+        }
+      }
+    }
+  }
+}
+

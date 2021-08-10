@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SafeHtmlModule } from '../../pipes/safe-html/safe-html.module';
 import { SearchBarComponent } from './search-bar.component';
-import { ButtonModule } from 'epgu-lib/lib/components/button';
+import { ButtonModule } from '../button/button.module';
 
 @NgModule({
   imports: [

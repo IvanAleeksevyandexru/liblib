@@ -38,7 +38,7 @@ import { ConstantsService } from '../../services/constants/constants.service';
 import { PositioningManager, PositioningRequest } from '../../services/positioning/positioning.manager';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { VirtualScrollComponent } from '../virtual-scroll/virtual-scroll.component';
-import { SearchBarComponent } from 'epgu-lib/lib/components/search-bar';
+import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { Width } from '../../models/width-height';
 import { Suggest, SuggestItem } from '../../models/suggest';
 import { SharedService } from '../../services/shared/shared.service';

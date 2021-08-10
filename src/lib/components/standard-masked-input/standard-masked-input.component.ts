@@ -3,7 +3,7 @@ import {
   OnInit, AfterViewInit, DoCheck, OnChanges, OnDestroy, forwardRef, TemplateRef, SimpleChanges
 } from '@angular/core';
 import { ControlValueAccessor, ValidationErrors, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BaseMaskedInputComponent } from 'epgu-lib/lib/components/base-masked-input';
+import { BaseMaskedInputComponent } from '../base-masked-input/base-masked-input.component';
 import { Focusable } from '../../services/focus/focus.manager';
 import { PipedMessage } from '../../models/piped-message';
 import { InputAutocomplete, TipDirection, MessagePosition, Translation, RemoveMaskSymbols } from '../../models/common-enums';

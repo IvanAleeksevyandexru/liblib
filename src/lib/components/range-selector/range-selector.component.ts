@@ -3,7 +3,7 @@ import {
   EventEmitter, forwardRef, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DropdownSimpleComponent } from 'epgu-lib/lib/components/dropdown-simple';
+import { DropdownSimpleComponent } from '../dropdown-simple/dropdown-simple.component';
 import { Focusable } from '../../services/focus/focus.manager';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
 import { RelativeDate, Range, RangeListItem } from '../../models/date-time.model';

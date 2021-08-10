@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlainInputComponent } from '../plain-input/plain-input.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
-import { SearchBarComponent } from 'epgu-lib/lib/components/search-bar';
+import { SearchBarComponent } from '../search-bar/search-bar.module';
 import { BaseMaskedInputComponent } from '../base-masked-input/base-masked-input.component';
 import { ThrobberComponent } from '../throbber/throbber.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';

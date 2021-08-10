@@ -1,0 +1,41 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@epgu/ui/components/*": [
+        "projects/ui/components/*"
+      ],
+      "@epgu/ui/pipes/*": [
+        "projects/ui/pipes/*"
+      ],
+      "@epgu/ui/directives/*": [
+        "projects/ui/directives/*"
+      ],
+      "@epgu/ui/services/*": [
+        "projects/ui/services/*"
+      ],
+      "@epgu/ui/models/*": [
+        "projects/ui/models/*"
+      ],
+      "@epgu/ui/models": [
+        "projects/ui/models"
+      ],
+      "@epgu/types": [
+        "projects/types/src"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableIvy": false,
+    "skipTemplateCodegen": true,
+    "strictMetadataEmit": true,
+    "fullTemplateTypeCheck": false,
+    "strictInjectionParameters": true,
+    "enableResourceInlining": true
+  },
+  "exclude": [
+    "src/test.ts",
+    "**/*.spec.ts"
+  ]
+}

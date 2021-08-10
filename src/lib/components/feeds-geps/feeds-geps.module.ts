@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FeedsGepsComponent } from './feeds-geps.component';
-import { ThrobberModule } from 'epgu-lib/lib/components/throbber';
+import { ThrobberModule } from '../throbber/throbber.module';
 import { TranslateModule } from '../../pipes/translate/translate.module';
 import { RouterModule } from '@angular/router';
-import { CheckboxModule } from 'epgu-lib/lib/components/checkbox';
+import { CheckboxModule } from '../checkbox/checkbox.module';
 import { FormsModule } from '@angular/forms';
 import { BannerStaticModule } from '../banner-static/banner-static.module';
 import { HighlightModule } from '../../pipes/highlight/highlight.module';

@@ -6,9 +6,9 @@ import { SafeHtmlModule } from '../../pipes/safe-html/safe-html.module';
 import { SubstModule } from '../../pipes/subst/subst.module';
 import { ClickOutsideModule } from '../../directives/click-outside/click-out.module';
 import { VirtualForOfModule } from '../../directives/virtual-for-of/virtual-for-of.module';
-import { SearchBarModule } from 'epgu-lib/lib/components/search-bar';
+import { SearchBarModule } from '../search-bar/search-bar.module';
 import { VirtualScrollModule } from '../virtual-scroll/virtual-scroll.module';
-import { LoaderModule } from 'epgu-lib/lib/components/loader';
+import { LoaderModule } from '../loader/loader.module';
 import { LookupComponent } from './lookup.component';
 import { TranslateModule } from '../../pipes/translate/translate.module';
 

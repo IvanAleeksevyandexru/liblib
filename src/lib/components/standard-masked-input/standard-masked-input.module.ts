@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ValidationMessageModule } from 'epgu-lib/lib/components/validation-message';
-import { InvalidResultsTipModule } from 'epgu-lib/lib/components/invalid-results-tip';
-import { QuestionHelpTipModule } from 'epgu-lib/lib/components/question-help-tip';
+import { ValidationMessageModule } from '../validation-message/validation-message.module';
+import { InvalidResultsTipModule } from '../invalid-results-tip/invalid-results-tip.module';
+import { QuestionHelpTipModule } from '../question-help-tip/question-help-tip.module';
 import { StandardMaskedInputComponent } from './standard-masked-input.component';
 import { TranslateModule } from '../../pipes/translate/translate.module';
-import { BaseMaskedInputModule } from 'epgu-lib/lib/components/base-masked-input';
+import { BaseMaskedInputModule } from '../base-masked-input/base-masked-input.module';
 
 
 @NgModule({

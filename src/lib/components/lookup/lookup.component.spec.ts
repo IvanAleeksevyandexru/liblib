@@ -3,7 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { LookupComponent } from './lookup.component';
-import { SearchBarComponent } from 'epgu-lib/lib/components/search-bar';
+import { SearchBarComponent } from '../search-bar/search-bar.module';
 import { ClickOutsideDirective } from '../../directives/click-outside/click-out.directive';
 import { ListItem, ListItemConverter, SubstringHighlightedItem, LookupProvider } from '../../models/dropdown.model';
 import { of, throwError, timer } from 'rxjs';

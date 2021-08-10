@@ -5,7 +5,7 @@ import {
 import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { from, Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { LookupComponent } from  'epgu-lib/lib/components/lookup';
+import { LookupComponent } from '../lookup/lookup.component';
 import { ListItem, ListItemConverter, LookupProvider, LookupPartialProvider } from '../../models/dropdown.model';
 import { ListItemsService, FixedItemsProvider, ListItemsOperationsContext } from '../../services/list-item/list-items.service';
 import { Validated, ValidationShowOn } from '../../models/validation-show';

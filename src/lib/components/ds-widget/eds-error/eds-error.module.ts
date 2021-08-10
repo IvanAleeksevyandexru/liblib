@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EdsErrorComponent } from './eds-error.component';
 import { TranslateModule } from '../../../pipes/translate/translate.module';
-import { ButtonModule } from 'epgu-lib/lib/components/button';
+import { ButtonModule } from '../../button/button.module';
 
 
 @NgModule({

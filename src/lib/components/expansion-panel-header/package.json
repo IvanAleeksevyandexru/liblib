@@ -1,7 +1,0 @@
-{
-  "ngPackage": {
-    "lib": {
-      "entryFile": "../../expansion-panel-header-public_api.ts"
-    }
-  }
-}

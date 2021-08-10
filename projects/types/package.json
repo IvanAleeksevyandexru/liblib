@@ -1,0 +1,20 @@
+{
+  "name": "@epgu/types",
+  "publishConfig": {
+    "registry": "http://nexus.gosuslugi.local/content/repositories/npm-internal/",
+    "access": "public"
+  },
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "dependencies": {
+    "typescript": "4.0.2"
+  }
+}
