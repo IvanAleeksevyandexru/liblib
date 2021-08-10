@@ -133,6 +133,15 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public menuStaticItemClick(itemName: string, mnemonic): void {
     this.menuService.menuStaticItemClick(itemName, mnemonic);
     this.onClose();
+    if (this.closeStatisticPopup$) {
+      this.closeStatisticPopup$.pipe(take(1)).subscribe(condition => {
+        if (condition) {
+          this.menuService.menuItemClick({url: this.menuService.getUrl(itemName), mnemonic } as MenuLink);
+        }
+      });
+    } else {
+      this.menuService.menuStaticItemClick(itemName, mnemonic);
+    }
   }
 
   public selectTab(tab: Tab) {
