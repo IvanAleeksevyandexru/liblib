@@ -17,7 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HelperService } from '../../services/helper/helper.service';
 
 const HIDE_TIMOUT = 300;
