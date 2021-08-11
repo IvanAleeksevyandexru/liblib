@@ -43,7 +43,6 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public showRolesList = false;
   public showAllMenu = true;
   public staticList = true;
-  public psoContainer = document.getElementById('pso-widget-container');
 
   @Input() public state: UserMenuState;
   @Input() public rolesListEnabled = false;
@@ -103,9 +102,6 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       this.changeDetector.detectChanges();
     });
     this.getTitleChangeRole();
-    if (this.psoContainer && (this.showMobileView() || (window as any).screen.width < 812)) {
-      document.getElementById('pso-widget-container').style.display = 'none';
-    }
   }
 
   public ngAfterViewInit() {
@@ -137,9 +133,6 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     html.classList.remove('disable-scroll');
     html.classList.remove('disable-scroll-sm');
     this.state.active = false;
-    if (this.psoContainer && (this.showMobileView() || (window as any).screen.width < 812)) {
-      document.getElementById('pso-widget-container').style.display = 'unset';
-    }
   }
 
   public showDeskView() {
