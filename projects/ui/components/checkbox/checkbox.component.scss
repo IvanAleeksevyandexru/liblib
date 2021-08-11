@@ -1,0 +1,112 @@
+$checkbox-default-color: #E5EAF5;
+$checkbox-active-color: #0D4CD3;
+
+:host {
+  outline: none;
+}
+
+.check {
+  display: flex;
+  position: relative;
+  padding-left: 40px;
+  margin-top: 10px;
+  vertical-align: top;
+  line-height: 30px;
+  font-size: 16px;
+  width: fit-content;
+}
+
+.check-input {
+  appearance: none;
+  position: absolute;
+  opacity: 0;
+
+  &:hover + .checkbox {
+    background: $checkbox-default-color;
+    border-color: #1D5DEB;
+  }
+  &:hover:checked + .checkbox {
+    background: #fff;
+    &:before {
+      background-color: #1D5DEB;
+    }
+  }
+  &:disabled + .checkbox,
+  &:hover:disabled + .checkbox {
+    cursor: default;
+    background-color: #D1D5DF;
+    border-color: #86909C;
+    &:before {
+      display: none;
+    }
+  }
+
+  &:disabled:checked + .checkbox,
+  &:hover:disabled + .checkbox {
+    &:before {
+      display: block;
+      background-color: #86909C;
+    }
+  }
+
+  &:checked + .checkbox,
+  &:active + .checkbox {
+    &:before {
+      content: '';
+      background: $checkbox-active-color url(../../../assets/svg/check_v2.svg) no-repeat 50%;
+      height: 14px;
+      position: absolute;
+      width: 14px;
+      border-radius: 2px;
+      background-size: 10px 8px;
+    }
+  }
+}
+
+.checkbox {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  padding: 3px;
+  margin-left: -36px;
+  background-color: #fff;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 2px solid $checkbox-active-color;
+  cursor: pointer;
+  //box-sizing: content-box;
+  /*&.focused {
+    border: 2px dotted $checkbox-active-color;
+  }*/
+}
+
+.labelText {
+  display: inline-block;
+  line-height: 19px;
+  color: #515a63;
+  min-height: 24px;
+  cursor: default;
+}
+
+.checkbox-description {
+  width: 310px;
+  padding-left: 40px;
+  font-size: 12px;
+  line-height: 16px;
+  pointer-events: none;
+
+  .description {
+    color: #515A63;
+  }
+
+  .error-message {
+    color: #d0021b;
+  }
+}
+
+@media all and (min-width: 768px){
+  .labelText {
+    padding-top: 3px;
+  }
+
+}

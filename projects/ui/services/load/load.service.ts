@@ -1,7 +1,8 @@
 import { Injectable, isDevMode } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
-import { Avatar, Document, UserTypeParams } from '@epgu/types';
+import { Avatar, UserTypeParams } from '@epgu/ui/models';
+import { Document } from '@epgu/ui/models/document';
 import { Person, PersonData, Role, User } from '@epgu/ui/models/user';
 import { HelperService } from '@epgu/ui/services/helper';
 import { AuthService } from '@epgu/ui/services/auth';

@@ -1,0 +1,158 @@
+.tabs-container {
+  background: #ffffff;
+  position: relative;
+  min-height: 24px;
+}
+
+.tabs-box {
+  display: none;
+}
+
+.selected-tab-item {
+  color: #0B40B3;
+
+  &:after {
+    display: inline-block;
+    width: 16px;
+    height: 8px;
+    content: '';
+    background: url(../../../assets/svg/arrow-back.svg) center no-repeat;
+    transform: rotate(-90deg);
+    margin-left: 6px;
+  }
+}
+
+.opened {
+  .tabs-wrapper {
+    position: absolute;
+    z-index: 2;
+  }
+
+  .tabs-box {
+    display: block;
+    border: 1px solid #B6C6E8;
+    background-color: #ffffff;
+    padding: 0 12px;
+    margin-top: 4px;
+
+    .tab-wrapper {
+      padding: 12px 5px 12px 0;
+    }
+
+    .tab-wrapper + .tab-wrapper {
+      border-top: 1px solid #B6C6E8;
+    }
+  }
+
+  .selected-tab-item:after {
+    transform: rotate(90deg);
+  }
+}
+
+.tab-wrapper {
+  color: #0B40B3;
+  cursor: pointer;
+}
+
+.dropdown-center {
+  .tabs-wrapper {
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: fit-content;
+    .tabs-box-mob {
+      text-align: center;
+    }
+  }
+}
+
+.dropdown-full {
+  .tabs-wrapper {
+    width: 100%;
+  }
+}
+
+@mixin tabs {
+  .tab-wrapper {
+    display: inline-block;
+  }
+  .tabs-box-mob {
+    display: none;
+  }
+  .tabs-box {
+    display: flex;
+    &.left {
+      justify-content: flex-start;
+    }
+    &.center {
+      justify-content: center;
+    }
+    &.full {
+      justify-content: space-between;
+    }
+  }
+
+  &.link {
+    .tab-wrapper {
+      border-bottom: 1px #0B40B3 dashed;
+      text-align: center;
+
+      &.active {
+        color: #000000;
+        border-bottom: none;
+        cursor: default;
+      }
+    }
+    .tabs-box {
+      &.left {
+        .tab-wrapper {
+          margin-right: 20px;
+        }
+      }
+      &.center {
+        .tab-wrapper {
+          margin-right: 10px;
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
+  &.button {
+    .tab-wrapper {
+      color: #515A63;
+      padding: 3px 12px;
+      text-align: center;
+      margin: auto 4px;
+
+      &.active {
+        background-color: #0B40B3;
+        color: #ffffff;
+        padding: 3px 12px;
+        border-radius: 5px;
+      }
+    }
+  }
+
+  .wrap-row {
+    flex-flow: row wrap;
+    justify-content: center;
+
+    .tab-wrapper {
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+  }
+}
+
+@media all and (min-width: 768px) {
+  .transform-sm {
+    @include tabs;
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .transform-md {
+    @include tabs;
+  }
+}

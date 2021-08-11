@@ -1,5 +1,6 @@
-import { CounterData, LineBreak } from '@epgu/types';
 import { BehaviorSubject } from 'rxjs';
+import { CounterData } from '@epgu/ui/models/counter';
+import { LineBreak } from '@epgu/ui/models/common-enums';
 
 export const MAIN_TABS = 'main_tabs'; // имя главных табов (условное, не обязано совпадать)
 export const ASIDE_TABS = 'aside_tabs'; // имя боковых навигационных табов (условное, не обязано совпадать)

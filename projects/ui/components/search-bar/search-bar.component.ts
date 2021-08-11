@@ -1,14 +1,31 @@
 import {
-  Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnChanges, OnDestroy, DoCheck,
-  SimpleChanges, forwardRef, ElementRef, ViewChild, ChangeDetectorRef, Optional, Host, SkipSelf, ChangeDetectionStrategy
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DoCheck,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  Host,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Output,
+  SimpleChanges,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
-import { ControlValueAccessor, ControlContainer, AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Focusable, FocusManager } from '@epgu/ui/services/focus';
 import { Validated } from '@epgu/ui/models/validation-show';
 import { ConstantsService } from '@epgu/ui/services/constants';
-import { SearchSyncControl, Width, ValidationShowOn } from '@epgu/types';
+import { SearchSyncControl, ValidationShowOn } from '@epgu/ui/models/common-enums';
+import { Width } from '@epgu/ui/models';
 import { HelperService } from '@epgu/ui/services/helper';
 import { ValidationHelper } from '@epgu/ui/services/validation-helper';
 import { ConvertLangService } from '@epgu/ui/services/convert-lang';

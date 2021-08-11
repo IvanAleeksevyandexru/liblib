@@ -3,8 +3,7 @@ import { fromEvent, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConstantsService } from '@epgu/ui/services/constants';
 
-import { PositioningRequest } from '@epgu/types';
-export { PositioningRequest } from '@epgu/types'; // реэкспорт для удобства
+import { PositioningRequest } from '@epgu/ui/models';
 
 @Injectable({
   providedIn: 'root'

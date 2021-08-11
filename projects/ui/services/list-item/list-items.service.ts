@@ -3,7 +3,7 @@ import { forkJoin, Observable, of, Subscription } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { LibTranslateService } from '@epgu/ui/services/translate';
 import { TranslateService } from '@ngx-translate/core';
-import { LineBreak, Translation } from '@epgu/types';
+import { LineBreak, Translation } from '@epgu/ui/models/common-enums';
 import { VirtualScrollComponent } from '@epgu/ui/components/virtual-scroll';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { AutocompleteSuggestion, ListElement, ListItem, ListItemConverter } from '@epgu/ui/models/dropdown';

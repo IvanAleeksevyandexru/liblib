@@ -1,0 +1,72 @@
+<div class="filtered-list" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" (keydown)="handleKeydownNavigation($event)"
+  [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max,
+              height: $any(height)?.base || height, 'min-height': $any(height)?.min, 'max-height': $any(height)?.max}">
+  <div class="search-field" [ngClass]="{disabled: disabled, invalid: invalidDisplayed}">
+    <lib-search-bar #searchBar
+      contextClass="list-filter"
+      [(ngModel)]="query"
+      [placeholder]="placeholder"
+      [tabIndex]="tabIndex"
+      [disabled]="disabled"
+      [clearable]="clearable"
+      [searching]="false"
+      [queryTimeout]="queryTimeout"
+      [queryMinSymbolsCount]="queryMinSymbolsCount"
+      [showMagnifyingGlass]="showMagnifyingGlass"
+      [showSearching]="false"
+      [searchOnlyIfFocused]="true"
+      [searchOnProgrammaticChange]="true"
+      (newSearch)="applyFilter($event)"
+      (focus)="handleFocus()"
+      (blur)="handleBlur()"
+      (cleared)="resetFilter()">
+    </lib-search-bar>
+  </div>
+  <div class="items-area" #itemsArea>
+    <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll"
+        [config]="{suppressScrollX: true, wheelPropagation: false}">
+      <ng-container *ngFor="let item of filteredItems">
+        <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
+      </ng-container>
+    </perfect-scrollbar>
+    <lib-virtual-scroll #virtualScroll *ngIf="virtualScroll"
+        [scrollStrategy]="virtualScrollController">
+      <ng-container *libVirtualFor="let item of filteredItems">
+        <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
+      </ng-container>
+    </lib-virtual-scroll>
+    <div *ngIf="showNotFound && internalItems.length && !filteredItems.length" class="items-list empty-list">
+      <div class="item-container">
+        <span class="item-text" [innerHTML]="'FILTERED_LIST.NOTHING_FOUND' | libTranslate | subst:activeQuery"></span>
+      </div>
+    </div>
+    <div class="gradient"></div>
+  </div>
+</div>
+<ng-template #singleItem let-item="item">
+  <div class="list-item" [attr.itemId]="item.id"
+      (click)="invertSelection(item)" [ngClass]="[item.groupLevel ? 'group-level-' + item.groupLevel : '']"
+      [class.selected]="item.selected"
+      [class.hidden]="item.hidden"
+      [class.disabled]="disabled"
+      [class.unselectable]="item.unselectable"
+      [class.highlighted]="item === highlighted"
+      [class.collapsable]="item.collapsable"
+      [class.line-before]="item.lineBreak === LineBreak.BEFORE || item.lineBreak === LineBreak.BOTH"
+      [class.line-after]="item.lineBreak === LineBreak.AFTER || item.lineBreak === LineBreak.BOTH"
+      [class.separator]="item.lineBreak === LineBreak.SELF">
+    <div class="structure-container" *ngIf="!item.hidden">
+      <div class="list-item-checkbox-wrapper" *ngIf="!item.unselectable && !(item.collapsable && virtualGroups && !multi)">
+        <div class="list-item-checkbox"></div>
+      </div>
+      <div class="item-container">
+        <span class="item-text" *ngIf="highlightSubstring && activeQuery" [innerHTML]="item.highlightFormatted | safeHtml"></span>
+        <span class="item-text" *ngIf="!(highlightSubstring && activeQuery) && escapeHtml">{{item.formatted}}</span>
+        <span class="item-text" *ngIf="!(highlightSubstring && activeQuery) && !escapeHtml" [innerHTML]="item.formatted | safeHtml"></span>
+        <div *ngIf="collapsableGroups && item.collapsable" class="expand-collapse"
+            [class.collapsed]="item.collapsed" (click)="expandCollapse(item, $event)"></div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+

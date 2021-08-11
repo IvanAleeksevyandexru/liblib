@@ -1,4 +1,7 @@
-import { Address, Contact, Document, Vehicle, ConfirmType, RegContextConfirmState } from '@epgu/types';
+import { Address, ConfirmType, RegContextConfirmState } from '@epgu/ui/models';
+import { Vehicle } from '@epgu/ui/models/vehicle';
+import { Contact } from '@epgu/ui/models/contact';
+import { Document } from '@epgu/ui/models/document';
 import { Person, PersonData, User } from '@epgu/ui/models/user';
 import { Kid } from '@epgu/ui/models/kid';
 

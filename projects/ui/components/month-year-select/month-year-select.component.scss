@@ -1,0 +1,223 @@
+.calendar-panel {
+  width: 100%;
+  background-color: #FFFFFF;
+  position: relative;
+  height: 56px;
+  .panel {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    padding: 14px 7px 14px 11px;
+    box-sizing: border-box;
+  }
+  .label {
+    font-family: Lato, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #0B1F33;
+  }
+  .dropdown {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #99B1E6;
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 1;
+    display: none;
+    &.expanded {
+      display: block;
+      .field-arrow {
+        transform: rotate(180deg);
+      }
+    }
+    .item {
+      display: block;
+      background-color: white;
+      padding: 4px;
+      text-align: center;
+      cursor: pointer;
+    }
+  }
+  ::ng-deep .ps {
+    &.ps--active-y {
+      .ps__rail-y {
+        opacity: 1;
+        background-color: white;
+      }
+    }
+  }
+  .prev-month, .month-year-field, .next-month, .field, .spacer {
+    flex-shrink: 0;
+  }
+  .spacer {
+    flex-grow: 1;
+  }
+  .month-year-field {
+    position: relative;
+  }
+
+  .field {
+    position: relative;
+    .select-field {
+      width: 100%;
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      .field-label {
+        min-width: 40px;
+      }
+      .field-arrow {
+        width: 24px;
+        height: 24px;
+        background: url(../../../assets/svg/select-arrow.svg) no-repeat;
+      }
+    }
+    .field-list {
+      left: -1px;
+      top: -3px;
+      width: inherit;
+      max-height: 225px;
+      ::ng-deep .ps {
+        max-height: 192px;
+        &.ps--active-y {
+          .ps__rail-y {
+            width: 4px;
+            .ps__thumb-y {
+              width: 4px;
+              background: #66727F;
+              opacity: .5;
+              border-radius: 8px;
+            }
+          }
+          .items-list {
+            width: calc(100% - 4px);
+          }
+          .field-overlay {
+            width: calc(100% - 4px);
+          }
+        }
+      }
+      .field-overlay {
+        padding: 4px 0 4px 12px;
+        width: 100%;
+        border-bottom: 1px solid #99B1E6;
+        background-color: #FFFFFF;
+      }
+      .item {
+        padding: 4px 0;
+        margin: 0 4px;
+        text-align: center;
+        &:hover {
+          border-radius: 8px;
+          background-color: #F5F7FA;
+        }
+      }
+    }
+  }
+
+  .month-field {
+    &.field {
+      width: 104px;
+      padding: 2px 2px 2px 12px;
+    }
+  }
+
+  .year-field {
+    .select-field {
+      justify-content: center;
+    }
+    &.field {
+      width: 90px;
+      padding: 2px 2px 2px 12px;
+      justify-content: center;
+    }
+  }
+
+  .joined-field {
+    .select-field {
+      .field-arrow {
+        background: url(../../../assets/svg/dropdown-expand.svg) 0 -3px;
+      }
+      &.expanded {
+        .field-arrow {
+          background: url(../../../assets/svg/dropdown-collapse.svg) 0 -3px;
+        }
+      }
+    }
+    .item {
+      &.selected {
+        background-color: #0B40B3;
+        border-radius: 8px;
+        .label {
+          color: white;
+        }
+      }
+    }
+    .joined-dropdown {
+      position: absolute;
+      top: 30px;
+      left: -50%;
+      width: 220px;
+      height: 216px;
+      &.expanded {
+        display: flex;
+        flex-flow: row;
+        flex-wrap: nowrap;
+      }
+      .month-panel {
+        display: flex;
+        flex-flow: row;
+        flex-wrap: wrap;
+        width: 160px;
+        flex-shrink: 0;
+        align-content: flex-start;
+        border-right: 1px solid #99b1e6;
+        padding: 2px;
+        .month {
+          width: 50%;
+        }
+      }
+      .years-panel {
+        height: 100%;
+        background-color: #F3F5FB;
+        flex-grow: 1;
+        padding: 2px;
+        ::ng-deep .ps {
+          .ps__rail-y {
+            width: 7px;
+            .ps__thumb-y {
+              width: 5px;
+              right: 1px;
+            }
+          }
+          &.ps--active-y {
+            .year.item {
+              margin-right: 7px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .prev-month, .next-month {
+    width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+  .prev-month {
+    background-image: url(../../../assets/svg/month-picker-prev-month.svg);
+    background-position: 30% 50%;
+    &.disabled {
+      background-image: url(../../../assets/svg/month-picker-prev-month-disabled.svg);
+    }
+  }
+  .next-month {
+    background-image: url(../../../assets/svg/month-picker-next-month.svg);
+    background-position: 70% 50%;
+    &.disabled {
+      background-image: url(../../../assets/svg/month-picker-next-month-disabled.svg);
+    }
+  }
+}

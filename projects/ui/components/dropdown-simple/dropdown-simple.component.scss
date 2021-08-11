@@ -1,0 +1,297 @@
+// общие функциональные/стркутурные стили
+.dropdown {
+  width: 100%;
+  display: inline-block;
+  position: static;
+
+  .dropdown-field {
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    cursor: pointer;
+
+    &.expanded {
+    }
+
+    &.disabled {
+      cursor: default;
+
+      .dropdown-arrow {
+        background: url(../../../assets/svg/dropdown-expand-disabled.svg) no-repeat;
+
+        &:hover {
+          background: url(../../../assets/svg/dropdown-expand-disabled.svg) no-repeat;
+        }
+
+        &.expanded {
+          background: url(../../../assets/svg/dropdown-collapse-disabled.svg) no-repeat;
+
+          &:hover {
+            background: url(../../../assets/svg/dropdown-collapse-disabled.svg) no-repeat;
+          }
+        }
+      }
+    }
+
+    &.invalid {
+    }
+
+    .dropdown-item {
+      width: 100%;
+      display: block;
+      overflow: hidden;
+      white-space: nowrap;
+
+      .dropdown-item-container {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      &.clearable {
+        padding-right: 20px;
+      }
+    }
+
+    .dropdown-arrow {
+      display: block;
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: url(../../../assets/svg/dropdown-expand.svg) no-repeat;
+      width: 24px;
+      height: 24px;
+      outline: none;
+
+      &:hover {
+        background: url(../../../assets/svg/dropdown-expand-hover.svg) no-repeat;
+      }
+
+      &.expanded {
+        background: url(../../../assets/svg/dropdown-collapse.svg) no-repeat;
+
+        &:hover {
+          background: url(../../../assets/svg/dropdown-collapse-hover.svg) no-repeat;
+        }
+      }
+    }
+
+    .remove-item {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 14px;
+      right: 38px;
+      cursor: pointer;
+      background: url(../../../assets/svg/input-clean.svg) 0 0 no-repeat;
+    }
+
+    .focusable-input {
+      position: absolute;
+      width: 0;
+      height: 0;
+      opacity: 0;
+      border: none;
+      outline: none;
+    }
+  }
+
+  .dropdown-list-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .dropdown-list-container {
+    position: absolute;
+    width: 100%;
+    display: block;
+    border-style: none solid solid solid;
+    box-sizing: border-box;
+    z-index: 4;
+
+    &.hidden {
+      display: none;
+    }
+
+    .dropdown-list-area {
+      width: auto;
+      height: auto;
+      overflow-x: hidden;
+
+      .dropdown-item {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        cursor: pointer;
+
+        .dropdown-item-container {
+          display: block;
+          border-style: solid;
+        }
+
+        &.hidden {
+          display: none;
+        }
+
+        &.unselectable {
+          cursor: default;
+        }
+
+        &.line-before .dropdown-item-container {
+          border-top-width: 1px;
+        }
+
+        &.line-after {
+          .dropdown-item-container {
+            border-bottom-width: 1px;
+          }
+
+          & + .line-before .dropdown-item-container {
+            border-top: none;
+          }
+        }
+
+        &.separator .dropdown-item-container {
+          height: 0;
+          padding: 0;
+          border-bottom-width: 3px;
+          border-bottom-style: double;
+
+          .item-text {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+// стандартный скин, ниже могут быть добавлены другие скины ниже
+.standard-skin {
+  .item-text {
+    font-family: Lato, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #0B1F33;
+  }
+
+  .dropdown-field {
+    border: 2px solid transparent;
+    border-radius: 4px;
+    background-color: #F5F7FA;
+    padding: 14px 58px 14px 16px;
+
+    &.expanded {
+      border: 2px solid #99B1E6;
+      border-radius: 4px 4px 0 0;
+
+      &.invalid {
+        background-color: rgba(238, 63, 88, 0.16);
+      }
+    }
+
+    &.disabled {
+      background-color: #D1D5DF;
+
+      .item-text {
+        color: #86909C;
+      }
+    }
+
+    &.invalid {
+      background-color: rgba(238, 63, 88, 0.16);
+    }
+  }
+
+  .dropdown-list-container {
+    border-style: none solid solid solid;
+    border-color: #99B1E6;
+    border-width: 2px;
+    border-radius: 0 0 4px 4px;
+    background-color: white;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    ::ng-deep .ps {
+      max-height: 200px;
+
+      @media all and (min-width: 768px) {
+        max-height: 266px;
+      }
+
+      &.ps--active-y {
+        .ps__rail-y {
+          opacity: 1;
+          background-color: white;
+          width: 18px;
+
+          .ps__thumb-y {
+            width: 8px;
+            background-color: #E9ECEE;
+            right: 6px;
+          }
+        }
+
+        .dropdown-list-area {
+          width: calc(100% - 18px);
+        }
+      }
+    }
+
+    .dropdown-list-area {
+      .dropdown-item {
+        padding: 14px 0 0 16px;
+
+        .dropdown-item-container {
+          padding-bottom: 14px;
+          border-bottom: 1px solid #E1E1E1;
+        }
+
+        .item-text {
+          color: #0B1F33;
+        }
+
+        &.highlighted {
+          background-color: #F5F7FA;
+        }
+
+        &.selected {
+          background-color: #0D4CD3;
+
+          .item-text {
+            color: white;
+          }
+
+          .dropdown-item-container {
+            border-bottom: none;
+          }
+
+          &.highlighted {
+            background-color: #0D4CD3;
+
+            .item-text {
+              color: white;
+            }
+          }
+        }
+
+        &.unselectable {
+          .item-text {
+            color: #A8ACB1;
+          }
+
+          &.highlighted {
+            background-color: unset;
+          }
+        }
+
+        &.separator .dropdown-item-container {
+          padding: 0;
+        }
+      }
+    }
+  }
+}
+
+// ... другие скины могут быть описаны здесь..
+
+

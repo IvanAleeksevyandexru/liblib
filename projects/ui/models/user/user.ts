@@ -2,15 +2,15 @@ import {
   Address,
   Biometric,
   ConfirmType,
-  Contact,
-  Document,
   Org,
   RegContextConfirmState,
   Social,
   UserTypeParams,
-  Vehicle
-} from '@epgu/types';
+} from '@epgu/ui/models';
 import { Kid } from '@epgu/ui/models/kid';
+import { Contact } from '@epgu/ui/models/contact';
+import { Vehicle } from '@epgu/ui/models/vehicle';
+import { Document } from '@epgu/ui/models/document';
 
 export interface PersonData {
   addresses?: Address[];

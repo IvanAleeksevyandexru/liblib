@@ -11,11 +11,12 @@ import { ConstantsService } from '@epgu/ui/services/constants';
 import { SearchBarComponent } from '@epgu/ui/components/search-bar';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { VirtualScrollComponent } from '@epgu/ui/components/virtual-scroll';
-import { Translation, LineBreak, Width, Suggest, ValidationShowOn, SuggestItem } from '@epgu/types';
+import { Width, Suggest, SuggestItem, PositioningRequest } from '@epgu/ui/models';
 import { FocusManager } from '@epgu/ui/services/focus';
 import { ListItemsService, ListItemsVirtualScrollController } from '@epgu/ui/services/list-item';
-import { PositioningManager, PositioningRequest } from '@epgu/ui/services/positioning';
+import { PositioningManager } from '@epgu/ui/services/positioning';
 import { from, Observable } from 'rxjs';
+import { Translation, ValidationShowOn, LineBreak } from '@epgu/ui/models/common-enums';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

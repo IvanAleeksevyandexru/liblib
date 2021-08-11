@@ -1,4 +1,4 @@
-import { CommonCert, Document, DocumentType } from '@epgu/types';
+import { CommonCert, Document, DocumentType } from '@epgu/ui/models/document';
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 
 export interface Kid {

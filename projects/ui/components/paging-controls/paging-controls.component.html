@@ -1,0 +1,23 @@
+<div class="page-controls {{classList}}">
+  <div class="first-page nav-button" *ngIf="tailButtons" [ngClass]="{disabled: currentPage === 1}" >
+    <a class="page-ref" (click)="setPageIf(1, currentPage !== 1)"></a>
+  </div>
+  <div class="prev-page nav-button" *ngIf="prevNextButtons" [ngClass]="{disabled: currentPage === 1}" >
+    <a class="page-ref" (click)="setPageIf(currentPage - 1, currentPage !== 1)"></a>
+  </div>
+  <ng-container *ngIf="numericButtons">
+    <div *ngFor="let page of numericControlStructure" class="nav-button page-item" [ngClass]="{'current-page': page === currentPage}">
+      <div *ngIf="page === -1" class="separator"><span>...</span></div>
+      <ng-container *ngIf="page !== -1">
+        <span *ngIf="page === currentPage" class="page-ref text-plain">{{page}}</span>
+        <a *ngIf="page !== currentPage" class="page-ref text-plain" (click)="setPage(page)">{{page}}</a>
+      </ng-container>
+    </div>
+  </ng-container>
+  <div class="next-page nav-button" *ngIf="prevNextButtons" [ngClass]="{disabled: currentPage === lastPage}">
+    <a class="page-ref" (click)="setPageIf(currentPage + 1, currentPage !== lastPage)"></a>
+  </div>
+  <div class="last-page nav-button" *ngIf="tailButtons" [ngClass]="{disabled: currentPage === lastPage}" >
+    <a class="page-ref" (click)="setPageIf(lastPage, currentPage !== lastPage)"></a>
+  </div>
+</div>

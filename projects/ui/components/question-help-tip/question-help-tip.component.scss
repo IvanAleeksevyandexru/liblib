@@ -1,0 +1,25 @@
+@import 'bubble-base.component.scss';
+.question-icon {
+  background: url(../../../assets/svg/question-tip-icon.svg) no-repeat;
+  cursor: pointer;
+  &.force-show {
+    background: url(../../../assets/svg/question-blue.svg) no-repeat;
+  }
+  &.hover-controlled {
+    &.hovered {
+      background: url(../../../assets/svg/question-blue.svg) no-repeat;
+    }
+  }
+  .question-tip {
+    min-width: 200px;
+    min-height: 150px;
+    background-color: white;
+    .dialog-content {
+      font-family: Lato, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: normal;
+      color: #515A63;
+    }
+  }
+}

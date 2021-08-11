@@ -1,0 +1,33 @@
+<div class="tabs-container"
+     [ngClass]="[styleView,
+                'transform-' + transformSize,
+                'dropdown-' + dropdownWidth,
+                'dropdown-' + dropdownAlign,
+                showTabs ? 'opened' : '']">
+  <div class="tabs-wrapper">
+    <div class="tabs-box-mob">
+      <span class="tab-item selected-tab-item small-text"
+            (click)="toggleTabsList($event)"
+            libClickOutside
+            (clickOutside)="showTabs = false">
+        <span *ngIf="translation === Translation.NONE">{{activeTab.name}}</span>
+        <span *ngIf="translation === Translation.APP">{{activeTab.name | appTranslate}}</span>
+        <span *ngIf="translation === Translation.LIB">{{activeTab.name | libTranslate}}</span>
+      </span>
+    </div>
+    <ul class="tabs-box" [ngClass]="[tabsAlign, wrapRow ? 'wrap-row' : '']">
+      <ng-container *ngFor="let tab of tabs">
+        <li class="tab-wrapper"
+            *ngIf="!tab.hidden && !(showTabs && activeTab.id === tab.id)"
+            (click)="onTabClick($event, tab)"
+            [ngClass]="{'active': activeTab.id === tab.id}">
+          <span class="tab-item small-text">
+            <span *ngIf="translation === Translation.NONE">{{tab.name}}</span>
+            <span *ngIf="translation === Translation.APP">{{tab.name | appTranslate}}</span>
+            <span *ngIf="translation === Translation.LIB">{{tab.name | libTranslate}}</span>
+          </span>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { LineBreak } from '@epgu/types';
+import { LineBreak } from '@epgu/ui/models/common-enums';
 import { HelperService } from '@epgu/ui/services/helper';
 
 export const NO_ORIGINAL = {};

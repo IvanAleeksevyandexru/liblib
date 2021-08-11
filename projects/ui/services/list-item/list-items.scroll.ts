@@ -5,7 +5,7 @@ import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { ListItem, AutocompleteSuggestion } from '@epgu/ui/models/dropdown';
 import { Subject, Observable, of } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { LineBreak } from '@epgu/types';
+import { LineBreak } from '@epgu/ui/models/common-enums';
 
 const EVAL_HEIGHT_INDEX_INCREMENT = 100;
 const EVAL_HEIGHT_MEASURE_STYLES = {

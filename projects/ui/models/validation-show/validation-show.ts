@@ -1,7 +1,7 @@
 import { ValidationErrors } from '@angular/forms';
 import { HelperService } from '@epgu/ui/services/helper';
-import { Translation, ValidationShowOn, MessagePosition } from '@epgu/types';
 import { PipedMessage } from '@epgu/ui/models/piped-message';
+import { MessagePosition, Translation, ValidationShowOn } from '@epgu/ui/models/common-enums';
 
 const CONST_PATTERN = /^[A-Z_]+$/;
 const SIMPLE_PATTERN = /^[a-z_/-]+$/;

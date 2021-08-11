@@ -1,0 +1,42 @@
+$person: #F6F7F7;
+$legal: #FAF6F0;
+$business: #F6F7F7;
+$default: #FFFFFF;
+
+.frame {
+  padding: 32px 32px 32px 24px;
+  border-radius: 12px;
+  cursor: default;
+
+  &.small {
+    padding: 12px 12px 24px 12px;
+  }
+
+  &.effects {
+    box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 24px 48px #E6EBF5;
+    }
+  }
+
+  &.default {
+    background: $default;
+  }
+
+  &.person {
+    background: $person;
+  }
+
+  &.legal {
+    background: $legal;
+  }
+
+  &.business {
+    background: $business;
+  }
+  &.disable {
+    background: #fff url(../../../assets/svg/coming_soon_service.svg) no-repeat right 12px top 12px;
+  }
+}

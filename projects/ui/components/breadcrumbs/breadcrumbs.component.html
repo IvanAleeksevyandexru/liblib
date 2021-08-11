@@ -1,0 +1,21 @@
+<div class="breadcrumbs" *ngIf="links$ | async as links">
+  <div class="items container hide show-md" *ngIf="links.length">
+    <ng-container *ngFor="let link of links; let last = last">
+      <ng-container *ngIf="last || !link.url; else link.isAbs ? absUrl : relUrl">
+        <span *ngIf="translation === Translation.NONE" class="text-overflow">{{link.name}}</span>
+        <span *ngIf="translation === Translation.APP" class="text-overflow">{{link.name | appTranslate}}</span>
+        <span *ngIf="translation === Translation.LIB" class="text-overflow">{{link.name | libTranslate}}</span>
+      </ng-container>
+      <ng-template #relUrl>
+        <a *ngIf="translation === Translation.NONE" [routerLink]="link.url" class="text-overflow">{{link.name}}</a>
+        <a *ngIf="translation === Translation.APP" [routerLink]="link.url" class="text-overflow">{{link.name | appTranslate}}</a>
+        <a *ngIf="translation === Translation.LIB" [routerLink]="link.url" class="text-overflow">{{link.name | libTranslate}}</a>
+      </ng-template>
+      <ng-template #absUrl>
+        <a *ngIf="translation === Translation.NONE" [href]="link.url" class="text-overflow">{{link.name}}</a>
+        <a *ngIf="translation === Translation.APP" [href]="link.url" class="text-overflow">{{link.name | appTranslate}}</a>
+        <a *ngIf="translation === Translation.LIB" [href]="link.url" class="text-overflow">{{link.name | libTranslate}}</a>
+      </ng-template>
+    </ng-container>
+  </div>
+</div>

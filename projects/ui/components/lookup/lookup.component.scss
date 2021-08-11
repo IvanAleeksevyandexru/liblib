@@ -1,0 +1,316 @@
+@import '../autocomplete/autocomplete.component.scss';
+.lookup {
+  position: relative;
+  .static-list {
+    position: static !important;
+
+    &.lookup-list-container {
+      max-height: none;
+    }
+  }
+  .lookup-field {
+    height: 52px;
+    &.expanded {
+      ::ng-deep .search-field {
+        .search-input, .static-content {
+          border-radius: 4px 4px 0 0;
+        }
+      }
+    }
+    &.with-expand-button {
+      .expand-collapse {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: url(../../../assets/svg/dropdown-expand.svg) 10px 11px no-repeat;
+        width: 48px;
+        height: 48px;
+        outline: none;
+        cursor: pointer;
+        &.expanded {
+          background: url(../../../assets/svg/dropdown-collapse.svg) 10px 11px no-repeat;
+        }
+      }
+      ::ng-deep {
+        .search-field {
+          .search-input, .static-content, .suggestion-container {
+            padding-right: 64px;
+          }
+          &.magnifying-glass-or-throbber-shown {
+            .search-input, .static-content, .suggestion-container {
+              padding-right: 100px;
+            }
+          }
+          &.clear-shown {
+            .search-input, .static-content, .suggestion-container {
+              padding-right: 90px;
+            }
+            &.magnifying-glass-or-throbber-shown {
+              .search-input, .static-content, .suggestion-container {
+                padding-right: 132px;
+              }
+            }
+          }
+          .search-go, .search-in-progress {
+            right: 48px;
+          }
+          .search-clear {
+            right: 96px;
+            &.align-right {
+              right: 53px;
+            }
+          }
+        }
+      }
+    }
+    &.disabled {
+      .expand-collapse {
+        background: url(../../../assets/svg/dropdown-expand-disabled.svg) 10px 11px no-repeat;
+      }
+    }
+
+  }
+
+  &.main-page-new {
+    .lookup-field {
+      height: 48px;
+
+      &.expanded {
+        ::ng-deep .search-field {
+          .search-input, .static-content {
+            border-radius: 12px;
+          }
+        }
+      }
+    }
+
+    .lookup-context-positioning {
+      position: static;
+    }
+
+    .lookup-list-container {
+      margin-top: 8px;
+      border: none;
+      box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+      border-radius: 12px;
+      max-height: 100%;
+      margin-bottom: 0;
+
+      ::ng-deep {
+        .ps {
+          max-height: 100%;
+
+          &.ps--active-y .ps__rail-y {
+            border-left: none;
+            background: inherit;
+          }
+        }
+      }
+
+      .lookup-item {
+
+        .item-container {
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
+        &.highlighted {
+          background: #F5F7FA;
+        }
+
+        &.line-before {
+          .structure-container {
+            padding-top: 0;
+            border-color: #E1E1E1;
+          }
+        }
+
+        .lookup-item-text {
+          color: #0B1F33;
+        }
+
+        .structure-container {
+          ::ng-deep {
+            .item-container {
+              padding-left: 17px;
+              padding-right: 24px;
+              border-bottom: none;
+
+              .item-content {
+                display: flex;
+                align-items: flex-start;
+              }
+
+              .icon {
+                width: 24px;
+                height: 24px;
+                background-repeat: no-repeat;
+                background-size: 24px 24px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .lookup-list-container .lookup-item {
+    .expand-collapse {
+      display: none;
+      width: 24px;
+      height: 20px;
+      background: url(../../../assets/svg/dropdown-expand.svg) no-repeat;
+      &.collapsed {
+        background: url(../../../assets/svg/dropdown-collapse.svg) no-repeat;
+      }
+    }
+    &.group-level-1 {
+      padding-left: 16px;
+    }
+    &.group-level-2 {
+      padding-left: 32px;
+    }
+    &.group-level-3 {
+      padding-left: 48px;
+    }
+    &.group-level-4 {
+      padding-left: 64px;
+    }
+    &.collapsable {
+      .expand-collapse {
+        display: inline-block;
+      }
+    }
+    &.hidden {
+      display: none;
+    }
+  }
+
+  .lookup-list-container .lookup-list-area {
+    ::ng-deep {
+      .lookup-item .item-container .lookup-item-text {
+        &.highlight-part {
+          color: #0D4CD3;
+        }
+      }
+    }
+  }
+
+  &.menu-search {
+    .lookup-list-container {
+      border-color: #fff;
+      max-height: 450px;
+      ::ng-deep .ps {
+        max-height: 400px;
+      }
+    }
+  }
+
+  .suggests {
+    padding: 8px 0 12px 0;
+    font-family: Lato, Arial, sans-serif;
+
+    .ml-16 {
+      margin-left: 16px;
+    }
+
+    .mr-16 {
+      margin-right: 16px;
+    }
+
+    .pl-16 {
+      padding-left: 16px;
+    }
+
+    .title {
+      font-size: 14px;
+      line-height: 20px;
+      color: #66727F;
+    }
+
+    ul {
+      list-style: none;
+      li {
+        padding: 12px 16px;
+        cursor: pointer;
+        &:hover {
+          background-color: #E7ECF7;
+        }
+        p {
+          font-size: 16px;
+          line-height: 24px;
+          color: #0B1F33;
+        }
+        span {
+          font-size: 14px;
+          line-height: 20px;
+          color: #66727F
+        }
+      }
+    }
+    .edit {
+      border-bottom: 1px solid #99B1E6;
+      font-size: 14px;
+      line-height: 20px;
+      padding-bottom: 10px;
+    }
+  }
+}
+
+@media all and (max-width: 767px) {
+  .static-list {
+    border-top: 1px solid #e1e1e1;
+    .lookup-item {
+      .item-container {
+        border: none !important;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 768px) {
+  .lookup {
+    &.main-page-new {
+      .lookup-field {
+        height: 80px;
+      }
+
+
+      .lookup-list-container .lookup-item .structure-container {
+        ::ng-deep {
+          .item-container {
+            padding-left: 33px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media all and (min-width: 768px) and (max-width: 1140px) {
+  .static-list {
+    position: static !important;
+    border-top: 1px solid #e1e1e1;
+
+    .lookup-list-container {
+      max-height: none !important;
+    }
+
+    .lookup-item {
+      .item-container {
+        border: none !important;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 1140px){
+  .lookup {
+    &.main-page-new {
+      .lookup-list-container {
+        margin-bottom: 30px;
+      }
+    }
+  }
+}

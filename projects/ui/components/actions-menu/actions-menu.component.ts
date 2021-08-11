@@ -1,5 +1,5 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { Action } from '@epgu/types';
+import { Action } from '@epgu/ui/models';
 
 @Component({
   selector: 'lib-actions-menu',

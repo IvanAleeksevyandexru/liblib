@@ -1,15 +1,8 @@
 import { Injectable } from '@angular/core';
-import {
-  ContactType,
-  HorizontalAlign,
-  NotificationPeriodItem,
-  SecurityOptionType,
-  VerticalAlign,
-  VrfStu,
-  VrfValStu,
-  DocumentType
-} from '@epgu/types';
-import { Tabs } from '@epgu/ui/models';
+import { HorizontalAlign, NotificationPeriodItem, SecurityOptionType, Tabs, VerticalAlign, } from '@epgu/ui/models';
+import { VrfStu, VrfValStu } from '@epgu/ui/models/verifying-status';
+import { ContactType } from '@epgu/ui/models/contact';
+import { DocumentType } from '@epgu/ui/models/document';
 
 @Injectable(
   {

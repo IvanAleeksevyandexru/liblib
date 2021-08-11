@@ -20,9 +20,6 @@
       ],
       "@epgu/ui/models": [
         "projects/ui/models"
-      ],
-      "@epgu/types": [
-        "projects/types/src"
       ]
     }
   },

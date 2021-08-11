@@ -1,0 +1,17 @@
+.im-icon{
+  height: 40px;
+  width: auto;
+}
+.im{
+  margin-top: 24px;
+}
+@media all and (min-width: 768px) {
+  .im{
+    margin-top: 0;
+  }
+}
+@media all and (min-width: 1140px) {
+  .im{
+    margin-top: 32px;
+  }
+}

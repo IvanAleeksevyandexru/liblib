@@ -1,0 +1,17 @@
+<a
+  *ngIf="!questionMode"
+  class="link-plain"
+  [class.caption]="!arrowHidden"
+  [class.large]="large"
+  [class.closed]="hidden"
+  (click)="toggleHidden()"
+>{{caption}}</a>
+<div [class.question]="questionMode" [class.closed]="!hidden" (click)="toggleHidden()"></div>
+<div class="content {{beautiful ? 'beautiful mt-4 text-plain' : offsetTopContent}}"
+     [ngClass]="{
+      'hidden-content': hidden,
+      'no-offset': !offset
+     }">
+  <div *ngIf="closable" class="close" (click)="toggleHidden()"></div>
+  <ng-content></ng-content>
+</div>

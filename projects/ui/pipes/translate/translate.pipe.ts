@@ -1,16 +1,16 @@
 import { Pipe, PipeTransform, Injectable, ChangeDetectorRef, Optional } from '@angular/core';
-// import { LibTranslateService } from '../../services/translate/translate.service';
+import { LibTranslateService } from '@epgu/ui/services/translate';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-// @Pipe({
-//   name: 'libTranslate', pure: false
-// })
-// export class LibTranslatePipe extends TranslatePipe implements PipeTransform {
-//
-//   constructor(translate: LibTranslateService, changeDetection: ChangeDetectorRef) {
-//     super(translate, changeDetection);
-//   }
-// }
+@Pipe({
+  name: 'libTranslate', pure: false
+})
+export class LibTranslatePipe extends TranslatePipe implements PipeTransform {
+
+  constructor(translate: LibTranslateService, changeDetection: ChangeDetectorRef) {
+    super(translate, changeDetection);
+  }
+}
 
 @Injectable()
 @Pipe({

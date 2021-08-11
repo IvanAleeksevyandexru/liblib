@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
-import { AppTranslatePipe } from './translate.pipe';
+import { AppTranslatePipe, LibTranslatePipe } from './translate.pipe';
 
 @NgModule({
   imports: [],
   declarations: [
-    AppTranslatePipe
+    AppTranslatePipe,
+    LibTranslatePipe
   ],
   exports: [
-    AppTranslatePipe
+    AppTranslatePipe,
+    LibTranslatePipe
   ]
 })
 export class TranslateModule {

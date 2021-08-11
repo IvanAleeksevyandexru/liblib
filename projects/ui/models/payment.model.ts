@@ -1,14 +1,7 @@
-import {
-  BillAttr,
-  BillLink,
-  PayMethod,
-  PayRequsites,
-  ServiceCategoryCode,
-  SupplierSource,
-  Vehicle,
-  ExtendedGibddDetails
-} from '@epgu/types';
 import { Observable } from 'rxjs';
+import { BillAttr, BillLink, PayMethod, PayRequsites, ServiceCategoryCode, SupplierSource } from '@epgu/ui/models/bill';
+import { Vehicle } from '@epgu/ui/models/vehicle';
+import { ExtendedGibddDetails } from '@epgu/ui/models/gibdd-fine';
 
 export type PaymentStatus = 'NEW' | 'PAY_SERVICE_CONFIRMATION' | 'PAY_SERVICE_CONFIRMED' | 'BANK_PAY_ORDER_CONFIRMATION' |
   'BANK_PAY_ORDER_CONFIRMED' | 'SERVICE_PROVIDER_CONFIRMATION' | 'SERVICE_PROVIDER_CONFIRMED' | 'BANK_PAY_CONFIRMATION' |

@@ -1,0 +1,59 @@
+<div [class]="'plain-input' + (contextClass ? ' ' + contextClass : '')" [ngClass]="{multiline: multiline, invalid: invalidDisplayed, focused: focused, disabled: disabled}" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+  <input #input *ngIf="!multiline"
+         [attr.name]="name"
+         [attr.type]="type || 'text'"
+         [attr.tabIndex]="tabIndex"
+         [attr.id]="id ? id : null"
+         [attr.minlength]="minlength"
+         [attr.maxlength]="maxlength"
+         [attr.placeholder]="placeholder"
+         [attr.autocomplete]="autocomplete === undefined ? null : autocomplete"
+         [value]="value"
+         [disabled]="disabled"
+         [readOnly]="readOnly"
+         class="text-input"
+         [class.invalid]="invalidDisplayed"
+         [class.focused]="focused"
+         [class.clearable]="clearable"
+         [class.uppercase]="uppercase"
+         [class.is-suggest]="suggest && suggest.list.length"
+         (change)="handleChange($event)"
+         (input)="handleInput($event)"
+         (blur)="notifyFocusEvent($event)"
+         (focus)="notifyFocusEvent($event)"
+         (keyup.enter)="forceChange()"/>
+  <textarea #input *ngIf="multiline"
+            [attr.name]="name"
+            [attr.id]="id ? id : null"
+            [attr.tabIndex]="tabIndex"
+            [attr.maxlength]="maxlength"
+            [attr.placeholder]="placeholder"
+            [disabled]="disabled"
+            [readOnly]="readOnly"
+            class="text-input"
+            [class.invalid]="invalidDisplayed"
+            [class.focused]="focused"
+            [class.clearable]="clearable"
+            [class.uppercase]="uppercase"
+            (change)="handleChange($event)"
+            (input)="handleInput($event)"
+            (blur)="notifyFocusEvent($event)"
+            (focus)="notifyFocusEvent($event)"
+  >{{value}}</textarea>
+  <div *ngIf="clearable && !disabled && value && focused" (click)="clearValue($event)" class="clear-button"></div>
+  <div class="suggests" *ngIf="focused && suggest && suggest.list.length">
+    <p class="title pl-16">{{'SUGGEST.TITLE' | libTranslate}}</p>
+    <ul class="mt-4">
+      <li *ngFor="let item of suggest.list" (click)="selectSuggestItem(item)">
+        <p>{{item.value}}</p>
+        <ng-container *ngIf="item.hints">
+          <span *ngFor="let hint of item.hints; let last = last">{{hint.value}}{{!last ? suggestSeparator : ''}}</span>
+        </ng-container>
+      </li>
+    </ul>
+    <p class="pl-16 edit mt-4">
+      <a (click)="editSuggestList(suggest)">{{'SUGGEST.EDIT_LIST' | libTranslate}}</a>
+    </p>
+  </div>
+
+</div>

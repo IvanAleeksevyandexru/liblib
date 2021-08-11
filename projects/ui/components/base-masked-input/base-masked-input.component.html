@@ -1,0 +1,40 @@
+<div [ngClass]="contextClass ? [contextClass] : []" class="plain-input"
+     [class.withClearButton]="clearable && !disabled && !empty && !readOnly"
+     [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+  <input #input type="text"
+         [attr.name]="name"
+         [attr.id]="id ? id : null"
+         [attr.tabIndex]="tabIndex"
+         [attr.placeholder]="placeholder"
+         [attr.autocomplete]="autocomplete === undefined ? null : autocomplete"
+         [disabled]="disabled"
+         [readOnly]="readOnly"
+         class="text-input masked-input"
+         [class.invalid]="invalidDisplayed"
+         [class.focused]="focused"
+         [class.clearable]="clearable"
+         [class.uppercase]="uppercase"
+         [class.is-suggest]="suggest && suggest.list.length"
+         (blur)="notifyFocusEvent($event)"
+         (focus)="notifyFocusEvent($event)"
+         (input)="handleInput($event.target.value, $event)"
+         (change)="handleChange($event.target.value, $event)"
+         (keyup.enter)="forceChange()"
+         (compositionstart)="compositionStart()"
+         (compositionend)="compositionEnd($event.target.value)"/>
+  <div *ngIf="clearable && !disabled && !empty && focused" (click)="clearValue($event)" class="clear-button"></div>
+  <div class="suggests" *ngIf="focused && suggest && suggest.list.length">
+    <p class="title pl-16">{{'SUGGEST.TITLE' | libTranslate}}</p>
+    <ul class="mt-4">
+      <li *ngFor="let item of suggest.list" (click)="selectSuggestItem(item)">
+        <p>{{item.value}}</p>
+        <ng-container *ngIf="item.hints">
+          <span *ngFor="let hint of item.hints; let last = last">{{hint.value}}{{!last ? suggestSeparator : ''}}</span>
+        </ng-container>
+      </li>
+    </ul>
+    <p class="pl-16 edit mt-4">
+      <a (click)="editSuggestList(suggest)">{{'SUGGEST.EDIT_LIST' | libTranslate}}</a>
+    </p>
+  </div>
+</div>

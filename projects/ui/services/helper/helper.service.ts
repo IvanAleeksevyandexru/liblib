@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ConstantsService } from '@epgu/ui/services/constants';
-import { Address, DadataResult, FileLink } from '@epgu/types';
+import { Address, DadataResult, FileLink } from '@epgu/ui/models';
 
 @Injectable({
   providedIn: 'root'

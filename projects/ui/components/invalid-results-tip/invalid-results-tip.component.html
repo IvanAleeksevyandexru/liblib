@@ -1,0 +1,13 @@
+<div class="dialog-icon error-icon" #errorIcon  (click)="toggle()"
+     [ngClass]="{hidden: !invalidDisplayed, 'hover-controlled': showOnHover, 'force-show': forceShow === true, 'force-hide': forceShow === false, hovered: hovered}"
+     (mouseenter)="markHovered()" (mouseleave)="markUnhovered()" libClickOutside (clickOutside)="hideDialog()" libStopClickPropagation>
+  <div class="dialog-container error-tip-container" #errorTipContainer [ngClass]="tipDirection || 'right'">
+    <div class="tail-shadow"></div>
+    <div class="validation-error-tip dialog">
+      <div class="error-content dialog-content">
+        <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages" translation="none" [escapeHtml]="false"></lib-validation-message>
+      </div>
+    </div>
+    <div class="tail-mask"></div>
+  </div>
+</div>
