@@ -102,6 +102,9 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       this.changeDetector.detectChanges();
     });
     this.getTitleChangeRole();
+    if (this.showMobileView()) {
+      document.getElementById('pso-widget-container').style.display = 'none';
+    }
   }
 
   public ngAfterViewInit() {
@@ -133,6 +136,9 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     html.classList.remove('disable-scroll');
     html.classList.remove('disable-scroll-sm');
     this.state.active = false;
+    if (this.showMobileView()) {
+      document.getElementById('pso-widget-container').style.display = 'unset';
+    }
   }
 
   public showDeskView() {
