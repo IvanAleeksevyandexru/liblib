@@ -1,6 +1,7 @@
 import { CounterData } from './counter';
 import { LineBreak } from './common-enums';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { UserAssuranceLevel } from './user-type-params';
 
 export const MAIN_TABS = 'main_tabs'; // имя главных табов (условное, не обязано совпадать)
 export const ASIDE_TABS = 'aside_tabs'; // имя боковых навигационных табов (условное, не обязано совпадать)
@@ -109,4 +110,5 @@ export interface LightTab {
   name: string;
   hidden?: boolean;
   active?: boolean;
+  access?: UserAssuranceLevel[];
 }

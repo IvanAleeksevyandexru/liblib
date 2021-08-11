@@ -37,7 +37,7 @@ export class UserRolesComponent implements OnInit {
     private menuService: MenuService
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.loadService.userTypeNA$.subscribe(type => {
       this.activeRoleCode = type;
     });

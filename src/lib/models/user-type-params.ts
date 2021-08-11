@@ -1,3 +1,5 @@
+export type UserAssuranceLevel = 'AL10' | 'AL15' | 'AL20';
+
 export class UserTypeParams {
   public catalogType: 'EMPLOYEE' | 'BUSINESSMAN' | 'PARTNERS' | '';
   public departmentsType: 'EMPLOYEE' | 'BUSINESSMAN' | 'FOREIGNER' | 'PARTNERS' | '';
