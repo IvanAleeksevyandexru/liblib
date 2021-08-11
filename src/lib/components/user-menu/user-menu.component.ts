@@ -139,7 +139,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
     } else {
-      this.menuItemClick(itemName, mnemonic);
+      this.menuService.menuItemClick({url: itemName, mnemonic} as MenuLink);
     }
     this.onClose();
   }
