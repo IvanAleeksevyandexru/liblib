@@ -5,10 +5,10 @@ import { Avatar } from '../../models/avatar';
 import { UserTypeParams } from '../../models/user-type-params';
 import { Document } from '../../models/document';
 import { Person, PersonData, User, Role } from '../../models/user';
-import { ConstantsService } from '../constants.service';
 import { HelperService } from '../helper/helper.service';
 import { AuthService } from '../auth/auth.service';
 import { SmuEventsService } from '../smu-events/smu-events.service';
+import { ConstantsService } from '../constants.service';
 
 const EMPTY_CONFIG_STUB = {data: {user: {}}, attrs: {}, config: {}, hidePageConfig: {}};
 
@@ -27,9 +27,9 @@ export class LoadService {
 
   constructor(
     private http: HttpClient,
-    private constants: ConstantsService,
     private smuEventsService: SmuEventsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private constants: ConstantsService,
   ) {
   }
 

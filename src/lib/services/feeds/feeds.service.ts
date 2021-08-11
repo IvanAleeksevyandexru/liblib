@@ -199,7 +199,11 @@ export class FeedsService {
         }
         break;
       case 'ORDER':
-        url += `order/${feed.id}`;
+        if (feed.data && feed.data.p16url) {
+          url = `${feed.data.p16url}`;
+        } else {
+          url += `order/${feed.id}`;
+        }
         break;
       case 'CLAIM':
         url += `claim/${feed.id}`;
@@ -235,13 +239,20 @@ export class FeedsService {
         url += `settings/signature`;
         break;
       case 'ACCOUNT_CHILD':
-        url += `profile/family/child/${feed.extId}/docs`;
+        if (feed.data && feed.data.linked_to) {
+          url += `${feed.data.linked_to}`;
+        } else {
+          url += `profile/family/child/${feed.extId}/docs`;
+        }
         break;
       case 'KND_APPEAL':
         url = `${this.loadService.config.kndDomain}appeal/${feed.extId}`;
         break;
       case 'KND_APPEAL_DRAFT':
         url = `${this.loadService.config.kndDomain}form/appeal/${feed.extId}?isDraft=true`;
+        break;
+      case 'SIGN':
+        url += `sign-feed/${feed.id}`;
         break;
     }
 

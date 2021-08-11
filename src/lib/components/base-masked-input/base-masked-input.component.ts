@@ -71,7 +71,7 @@ export class BaseMaskedInputComponent
   @Input() public placeholderSymbol = '_';
   // когда true ввод/удаление символов не влияет на оставшуюся часть строки
   // когда false ввод/удаление символов в середине строки сдвигает символы в данном блоке (до след фиксированного символа или конца)
-  @Input() public keepCharPositions = true;
+  @Input() public keepCharPositions = false;
   // конвертирует маску в плейсхолдер и показывает его переопределяя свойство placeholder
   @Input() public showMaskAsPlaceholder = false;
   // дает возможность изменить уже принятую к показу строку в момент ввода до вывода ее в инпут
