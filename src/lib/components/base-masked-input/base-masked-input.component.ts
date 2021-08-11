@@ -197,7 +197,6 @@ export class BaseMaskedInputComponent
     if (e.type === 'focus' && !this.removeMaskSymbolsIfNeeded(inp.value) && inp.setSelectionRange) {
       setTimeout(() => {
         inp.setSelectionRange(0, 0);
-        inp.focus();
       });
     }
 

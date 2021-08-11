@@ -440,7 +440,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
         const controlConfig = this.formConfig[this.levelMap[key]];
         const control = this.getFormControlByLevel(key);
         const isHiddenLvl = this.isElementHidden(this.levelMap[key]);
-        controlConfig.regExpInvalid = !new RegExp('(^([-А-Яа-яёЁ0-9,.();№N\'_+<>\\\\/"\\sIVX]+)$)|(^$)').test(control.value ? control.value : '');
+        controlConfig.regExpInvalid = !new RegExp('(^([-А-Яа-яёЁ0-9IVXLCivxlc,.();№N\'_+<>\\\\/"\\s]+)$)|(^$)').test(control.value ? control.value : '');
         let isInvalid = false;
         if (!controlConfig.regExpInvalid) {
           switch (key) {

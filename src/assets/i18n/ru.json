@@ -255,7 +255,7 @@
         "SUBTITLE": "Вы еще не подавали ни одного заявления",
         "BUTTON" : "Заказать услугу"
       },
-      "ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER": {
+      "ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER,SIGN": {
         "TITLE": "Список заявлений пуст",
         "SUBTITLE": "Вы еще не подавали ни одного заявления",
         "BUTTON": "Заказать услугу"
@@ -450,7 +450,7 @@
       "VALIDITY_TO": "по"
     }
   },
-  "BACK": "Назад",
+  "BACK": "Вернуться",
   "LANG": {
     "SHORT": {
       "ru": "RUS",

@@ -66,6 +66,29 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   private loadedFeedsCount = 0;
   private showMoreCount = 0;
   private afterFirstSearch = false;
+  private statusesMap = {
+    NEW: 'in_progress',
+    REQUEST: 'in_progress',
+    REQUEST_ERROR: 'reject',
+    SIGN_REJECT: 'in_progress',
+    DONE: 'executed',
+    EXPIRED: 'in_progress',
+    ERROR: 'reject',
+    RESULT_FILE_NOT_FOUND: 'reject',
+    FILE_MAP_FAIL: 'reject',
+    MIMETYPE_LENGTH_INCORRECT: 'reject'
+  };
+  private titlesMap = {
+    DONE: 'Документы подписаны',
+    REQUEST: 'Запрос на подписание документов',
+    REQUEST_ERROR: 'Ошибка запроса',
+    SIGN_REJECT: 'Подписание документов отклонено',
+    EXPIRED: 'Истекло время подписания документов',
+    ERROR: 'Ошибка запроса',
+    RESULT_FILE_NOT_FOUND: 'Ошибка запроса',
+    FILE_MAP_FAIL: 'Ошибка запроса',
+    MIMETYPE_LENGTH_INCORRECT: 'Ошибка запроса'
+  };
   public isHeader: boolean;
 
   constructor(
@@ -85,7 +108,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public ngOnInit() {
     HelperService.mixinModuleTranslations(this.translate);
     this.getUserData();
-    if (!this.afterFirstSearch && !this.route.snapshot.queryParamMap.get('q')) {
+    if (!this.afterFirstSearch ) {
       this.getFeeds();
     }
     this.updateFeeds();
@@ -158,9 +181,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
           data: {
             ...feed.data,
             snippets: feed?.data?.snippets?.map((item) => {
-              return item.type === 'CUSTOM'
-                ? { json: JSON.parse(item.json), type: item.type }
-                : item
+              return item.type === 'CUSTOM' && item.json
+                ? { json: JSON.parse(item.json), type: item?.type }
+                : item;
           }),
           },
         }));
@@ -172,6 +195,16 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         this.feedsIsLoading = false;
         this.addFeedsIsLoading = false;
         this.hasMore = feeds.hasMore;
+        this.feeds.forEach((item, index) => {
+          if (item.feedType === 'SIGN') {
+            if (!!['AL10', 'AL15'].includes(this.loadService.user.assuranceLevel)) {
+              this.feeds.splice(index, 1);
+            } else {
+              item.title = this.titlesMap[item.status] || item.title;
+              item.status = this.statusesMap[item.status] || item.status;
+            }
+          }
+        });
         this.emitEmptyFeedsEvent();
         this.loadedFeedsCount += this.feeds.length;
         this.yaMetricOnSearch(query);
@@ -195,7 +228,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public withReload(feed): boolean {
-    return !(this.isLk && !['KND_APPEAL', 'KND_APPEAL_DRAFT', 'PAYMENT'].includes(feed.feedType) || this.isPartners);
+    return !(this.isLk && !['KND_APPEAL', 'KND_APPEAL_DRAFT', 'PAYMENT'].includes(feed.feedType) || this.isPartners) || !!(feed.data && feed.data.p16url);
   }
 
   public getUserData(): User {

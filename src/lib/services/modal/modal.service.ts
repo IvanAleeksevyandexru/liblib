@@ -1,5 +1,4 @@
 import { ComponentFactory, ComponentFactoryResolver, Injectable, Injector, NgModuleRef, Type, ViewContainerRef } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +32,10 @@ export class ModalService {
         if (elem) {
           elem.addEventListener('click', ((ev: any) => {
             if (ev.target.classList.contains('popup-wrapper')) {
+              if (typeof modalRules?.outsideClick === 'function') {
+                modalRules?.outsideClick();
+              }
+              modal.instance.cancelHandler?.();
               modal.instance.destroy();
               elem.removeEventListener('click', null);
             }
