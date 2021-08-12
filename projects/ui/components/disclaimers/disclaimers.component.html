@@ -1,0 +1,53 @@
+<div class="disclaimers" *ngIf="disclaimerPack.length > 0">
+  <ng-container *ngFor="let disclaimerGroup of disclaimerPack; let lastGroup = last">
+    <ng-container *ngFor="let disclaimer of disclaimerGroup; let last = last">
+      <div *ngIf="showDisclaimer(disclaimer)"
+           class="disclaimer {{disclaimer.level}} {{disclaimer.mnemonic}}"
+           id="disclaimer_{{disclaimer.id}}"
+           [hidden]="disclaimer.isHidden"
+           [ngClass]="{'mb-4': !(lastGroup && last), 'main-page': isMainPage}">
+        <div class="container">
+          <div class="level-icon-{{disclaimer.level}}">
+            <div class="close" (click)="closeDisclaimer(disclaimer.id, disclaimer.isPriority);"></div>
+            <div class="title-h4 title">{{'DISCLAIMER.TITLE' | libTranslate}}</div>
+            <div class="description">
+              <div class="text-plain mt-16 mt-md-4">{{disclaimer.message}}</div>
+              <div *ngIf="disclaimer.notificationEnabled" class="mt-8">
+                <a class="small-text" (click)="showSubscription($event);">{{'DISCLAIMER.SUBSCRIBE' | libTranslate}}</a>
+                <div class="subscribe mt-24 hide" [formGroup]="emailsFormGroup[disclaimer.id]">
+                  <div class="text-plain">{{'DISCLAIMER.ADDRESS_LABEL' | libTranslate}}</div>
+                  <div class="mt-8 input-email">
+                    <lib-plain-input type="email"
+                                     name="email_{{disclaimer.id}}"
+                                     [clearable]="!disclaimer.readOnly"
+                                     formControlName="email"
+                                     [readOnly]="disclaimer.readOnly"
+                                     [contextClass]="disclaimer.readOnly ? 'disabled' : ''"
+                                     maxlength="255">
+                    </lib-plain-input>
+                  </div>
+                  <div class="text-plain mt-16 hide-md">{{'DISCLAIMER.ERROR_LABEL' | libTranslate}}</div>
+                  <div class="mt-16 mt-md-8 button-email">
+                    <lib-button type="button"
+                                size="md"
+                                [disabled]="!emailsFormGroup[disclaimer.id].get('email').valid"
+                                (click)="sendSubscription(disclaimer)">
+                      {{'DISCLAIMER.GET_NOTIFICATION' | libTranslate}}
+                    </lib-button>
+                  </div>
+                  <div class="text-plain mt-16 hide show-md">{{'DISCLAIMER.ERROR_LABEL' | libTranslate}}</div>
+                </div>
+              </div>
+              <div *ngIf="disclaimer.noticeText && !disclaimer.loading" class="notice-block {{disclaimer.level}} mt-24">
+                <div class="notice text-plain">{{disclaimer.noticeText | libTranslate:{email: disclaimer.noticeEmail} }}</div>
+              </div>
+              <div *ngIf="disclaimer.loading" class="mt-24">
+                <lib-throbber size="throbber-small" [inlineHeader]="'DISCLAIMER.LOADER' | libTranslate"></lib-throbber>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>

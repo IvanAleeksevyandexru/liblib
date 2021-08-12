@@ -1,0 +1,13 @@
+<section *ngIf="equeueDataExist()">
+  <h2 class="title-h3 black title-equeue mt-32">Ближайшие записи</h2>
+  <div *ngFor="let item of equeueData | slice : 0 : 2; trackBy: trackById; ">
+    <a (click)="onEqueueClick(true)" routerLink="{{getEqueueLink(item)}}" class="mt-24 call-doctor-item">
+      <div class="call-doctor-date flex-container align-items-center mb-12"><span class="call-doctor-clock"></span>{{item.localDate | date: 'd MMMM yyyy HH:mm'}}</div>
+      <p class="call-doctor-text">{{item.orgName}} {{item.address}}</p>
+    </a>
+  </div>
+  <div class="mt-24 text-center" *ngIf="hasMore">
+    <a (click)="onEqueueClick(false)" class="small-text blue" [routerLink]="['/orders/all']" [queryParams]="{type: 'EQUEUE'}">Посмотреть все записи</a>
+  </div>
+</section>
+
