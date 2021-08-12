@@ -1,0 +1,63 @@
+.snippet-icon{
+  width: 40px;
+  height: 40px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  margin-right: 24px;
+  flex: 0 0 auto;
+}
+.snippet-equeue{
+  background-image: url(../../../assets/svg/snippets/calendar.svg);
+}
+.snippet-pay{
+  background-image: url(../../../assets/svg/snippets/pay.svg);
+}
+.snippet-pay-reminder{
+  background-image: url(../../../assets/svg/snippets/bill.svg);
+}
+.snippet-draft{
+  background-image: url(../../../assets/svg/snippets/draft.svg);
+}
+.snippet-kindergarten{
+  background-image: url(../../../assets/svg/snippets/kindergarten.svg);
+}
+.snippets{
+  border-radius: 4px;
+  padding: 24px;
+  margin-top: 16px;
+  background-color: #F5F7FA;
+}
+.night{
+  color: #0B1F33;
+}
+.gray{
+  color: #66727F;
+}
+.snippets-data{
+  flex: 1 1 auto;
+}
+.snippet-button-container{
+  margin: 24px 0 8px 0;
+}
+@media all and (min-width: 768px) {
+  .snippets{
+    margin-top: 16px;
+    margin-left: 48px;
+  }
+  .snippet-button-container{
+    display: inline-block;
+  }
+}
+@media all and (min-width: 1140px) {
+  .snippets{
+    display: flex;
+    align-items: center;
+  }
+  .snippet-button-container{
+    margin: 0;
+    padding-left: 50px;
+    flex: 1 0 auto;
+    text-align: right;
+  }
+}

@@ -1,0 +1,284 @@
+// мапа для статусов фидов
+.feed-status {
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+}
+
+// галочка
+.status-1,
+.status-12,
+.status-16,
+.status-32,
+.status-35,
+.status-6,
+.status-done {
+  background-image: url('../../../assets/svg/statuses/done.svg');
+}
+
+// красный крест
+.status--1,
+.status-10,
+.status-11,
+.status-30,
+.status-4,
+.status-5,
+.status-8,
+.status-42,
+.status-43,
+.status-52,
+.status-53,
+.status-reject,
+.status-reject_no_pay {
+  background-image: url('../../../assets/svg/statuses/reject.svg');
+}
+
+.status-doc_done {
+  background-image: url('../../../assets/svg/statuses/doc-done.svg');
+}
+
+.status-doc_reject {
+  background-image: url('../../../assets/svg/statuses/doc-reject.svg');
+}
+
+.status-inbox, .status-new_comment {
+  background-image: url('../../../assets/svg/statuses/inbox.svg');
+}
+
+.status-0, .status-edit, .status-draft {
+  background-image: url('../../../assets/svg/statuses/edit.svg');
+}
+
+.feed-PAYMENT {
+  .status-reject {
+    background-image: url('../../../assets/svg/statuses/pay_error.svg');
+  }
+
+  .status-in_progress {
+    background-image: url('../../../assets/svg/statuses/pay_in_progress.svg');
+  }
+
+  .status-done,
+  .status-executed {
+    background-image: url('../../../assets/svg/statuses/pay_executed.svg');
+  }
+
+  // добавляем статусы ИПШ
+  .status-executed {
+    &.BANK_PAY_CONFIRMED {
+      background-image: url('../../../assets/svg/statuses/pay_executed.svg');
+    }
+  }
+
+  .status-done {
+    &.BANK_PAY_CONFIRMATION,
+    &.SERVICE_PROVIDER_CONFIRMED {
+      background-image: url('../../../assets/svg/statuses/pay_executed.svg');
+    }
+
+    &.PAY_SERVICE_CONFIRMED,
+    &.SERVICE_PROVIDER_CONFIRMATION,
+    &.BANK_PAY_ORDER_CONFIRMATION,
+    &.BANK_PAY_ORDER_CONFIRMED {
+      background-image: url('../../../assets/svg/statuses/pay_in_progress.svg');
+    }
+  }
+
+  .status-in_progress {
+    &.PAY_SERVICE_CONFIRMATION,
+    &.INCOMPLETE,
+    &.NEW,
+    &.PAY_BANK_ORDER_REFUND,
+    &.PAY_BANK_ORDER_REFUNDED,
+    &.SERVICE_PROVIDER_ORDER_REFUND,
+    &.SERVICE_PROVIDER_ORDER_REFUNDED,
+    &.PAY_SERVICE_ORDER_REFUND {
+      background-image: url('../../../assets/svg/statuses/pay_in_progress.svg');
+    }
+
+    &.PAY_SERVICE_ABORTING,
+    &.SERVICE_PROVIDER_ABORTING {
+      background-image: url('../../../assets/svg/statuses/pay_error.svg');
+    }
+
+    .PAY_SERVICE_ORDER_REFUNDED {
+      background-image: url('../../../assets/svg/statuses/pay_refunded.svg');
+    }
+  }
+
+  .status-reject {
+    &.BANK_PAY_ABORTING,
+    &.BANK_PAY_ABORTED,
+    &.SERVICE_PROVIDER_ABORTED,
+    &.PAY_SERVICE_ABORTED,
+    &.PAYMENT_ABORTED,
+    &.PAYMENT_CREATION_ERROR,
+    &.PAYMENT_DENIED,
+    &.PAYMENT_REFUND_DENIED,
+    &.PAYMENT_REFUNDED,
+    &.RETURNED {
+      background-image: url('../../../assets/svg/statuses/pay_error.svg');
+    }
+  }
+
+}
+
+.feed-FEEDBACK {
+  .status-new, .status-assigned, .status-in_progress, .status-waiting  {
+    background-image: url('../../../assets/svg/statuses/clock.svg');
+  }
+  .status-solved, .status-closed, status-done {
+    background-image: url('../../../assets/svg/statuses/done.svg');
+  }
+  .status-canceled{
+    background-image: url('../../../assets/svg/statuses/reject.svg');
+  }
+  .status-request_info{
+    background-image: url('../../../assets/svg/statuses/info_message.svg');
+  }
+}
+
+.feed-BIOMETRICS {
+  .status-executed {
+    background-image: url('../../../assets/svg/statuses/bio-executed.svg');
+  }
+
+  .status-blocked {
+    background-image: url('../../../assets/svg/statuses/bio-blocked.svg');
+  }
+
+  .status-reject {
+    background-image: url('../../../assets/svg/statuses/bio-reject.svg');
+  }
+}
+
+.feed-ACCOUNT, .feed-PROFILE {
+  .status-create {
+    background-image: url('../../../assets/svg/statuses/account-create.svg');
+  }
+
+  .status-in_progress {
+    background-image: url('../../../assets/svg/statuses/account-progress.svg');
+  }
+
+  .status-done {
+    background-image: url('../../../assets/svg/statuses/account-done.svg');
+  }
+
+  .status-executed {
+    background-image: url('../../../assets/svg/statuses/done.svg');
+  }
+
+  .status-reject {
+    background-image: url('../../../assets/svg/statuses/account-reject.svg');
+  }
+}
+
+.feed-ACCOUNT, .feed-LINKED_ACCOUNT, .feed-ACCOUNT_CHILD {
+  .status-in_progress {
+    background-image: url('../../../assets/svg/statuses/account-progress-doc.svg');
+  }
+  .status-invite_to_subscribe {
+    background-image: url('../../../assets/svg/statuses/warn.svg');
+  }
+}
+
+.feed-CLAIM{
+  .status-done, .status-44, .status-6 {
+    background-image: url('../../../assets/svg/statuses/done.svg');
+  }
+  .status-in_progress, .status-43, .status-45, .status-14, .status-56  {
+    background-image: url('../../../assets/svg/statuses/order_in_progress.svg');
+  }
+  .status-executed, .status-55, .status-57 {
+    background-image: url('../../../assets/svg/statuses/executed.svg');
+  }
+  .status-reject, .status-47, .status-22, .status-48, .status-49, .status-58{
+    background-image: url('../../../assets/svg/statuses/reject.svg');
+  }
+}
+
+.feed-ORGANIZATION {
+  .status-in_progress {
+    background-image: url('../../../assets/svg/statuses/briefcase-blue.svg');
+  }
+
+  .status-executed {
+    background-image: url('../../../assets/svg/statuses/briefcase-green.svg');
+  }
+
+  .status-reject {
+    background-image: url('../../../assets/svg/statuses/briefcase-gray.svg');
+  }
+}
+
+.feed-BUSINESSMAN{
+  .status-reject {
+    background-image: url('../../../assets/svg/statuses/tie-gray.svg');
+  }
+}
+
+.feed-ESIGNATURE {
+  .status-in_progress {
+    background-image: url('../../../assets/svg/statuses/flash-yellow.svg');
+  }
+
+  .status-executed {
+    background-image: url('../../../assets/svg/statuses/flash-blue.svg');
+  }
+
+  .status-reject {
+    background-image: url('../../../assets/svg/statuses/flash-red.svg');
+  }
+}
+
+// троеточие
+.status-115,
+.status-14,
+.status-15,
+.status-17,
+.status-2,
+.status-21,
+.status-29,
+.status-31,
+.status-33,
+.status-34,
+.status-37,
+.status-40,
+.status-7,
+.status-9,
+.status-in_progress {
+  background-image: url('../../../assets/svg/statuses/order_in_progress.svg');
+}
+
+// пин карты города
+.status-25,
+.status-26,
+.status-invite_to_equeue {
+  background-image: url('../../../assets/svg/statuses/invite_to_equeue.svg');
+}
+
+// флажок
+.status-3,
+.status-38,
+.status-39,
+.status-executed {
+  background-image: url('../../../assets/svg/statuses/executed.svg');
+}
+
+.feed-im .status-edit, .status-50 {
+  background-image: url('../../../assets/svg/statuses/im.svg');
+}
+
+.status-warn,
+.status-42 {
+  background-image: url('../../../assets/svg/statuses/warn.svg');
+}
+
+.status-84, .status-clock {
+  background-image: url('../../../assets/svg/statuses/clock.svg');
+}
+
+.status-outbox {
+  background-image: url('../../../assets/svg/statuses/recieve.svg');
+}
