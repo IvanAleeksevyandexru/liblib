@@ -1,0 +1,148 @@
+:host {
+  width: 100%;
+}
+.throbber-hexagon {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hexagon {
+    overflow: visible;
+    background-color: transparent;
+    transform: rotateX(180deg);
+
+    .throbber-hexagon-base, .throbber-hexagon-line-animation {
+      fill: transparent;
+      stroke-miterlimit: 10;
+      stroke-width: 4px;
+    }
+
+    .throbber-hexagon-base {
+      stroke: none;
+    }
+
+    .throbber-hexagon-line-animation {
+      stroke: #f9c12c;
+      stroke-linecap: round;
+      animation: dash 2.5s linear;
+      animation-iteration-count: infinite;
+    }
+
+    .throbber-hexagon-dot-animation {
+      stroke: #f9c12c;
+      fill: transparent;
+      stroke-linecap: round;
+      animation: dash2 2.5s linear;
+      animation-iteration-count: infinite;
+      stroke-width: 10px;
+      stroke-miterlimit: 10;
+    }
+
+    @keyframes dash {
+      0% {
+        stroke-dasharray: 260.22 173.48;
+        stroke-dashoffset: -867.4;
+      }
+      25% {
+        stroke: #57dee1;
+      }
+      50% {
+        stroke-dasharray: 260.22 173.48;
+        stroke: #f51047;
+      }
+      75% {
+        stroke: #33bf02;
+      }
+      100% {
+        stroke-dasharray: 260.22 173.48;
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes dash2 {
+      0% {
+        stroke-dasharray: 1 431.7;
+        stroke-dashoffset: -867.4;
+      }
+      25% {
+        stroke: #57dee1;
+      }
+      50% {
+        stroke-dasharray: 1 431.7;
+        stroke: #f51047;
+      }
+      75% {
+        stroke: #33bf02;
+      }
+      100% {
+        stroke-dasharray: 1 431.7;
+        stroke-dashoffset: 0;
+      }
+    }
+  }
+
+  .gif {
+    display: none;
+  }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .throbber-hexagon {
+    .hexagon {
+      display: none;
+    }
+
+    .gif {
+      display: block;
+      //background-image: url("../../../assets/gif/throbber-hexagon.gif");
+      //background-size: contain;
+      //background-repeat: no-repeat;
+      //background-position: center;
+
+      img {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@mixin global-classes($prefix) {
+  .throbber-hexagon {
+    .hexagon, .gif {
+      &.small#{$prefix} {
+        width: 20px;
+        height: 24px;
+      }
+
+      &.medium#{$prefix} {
+        width: 36px;
+        height: 40px;
+      }
+
+      &.large#{$prefix} {
+        width: 72px;
+        height: 68px;
+      }
+
+      &.big#{$prefix} {
+        width: 87px;
+        height: 100px;
+      }
+    }
+  }
+}
+
+@include global-classes('');
+
+@media all and (min-width: 768px) {
+  @include global-classes('-md');
+}
+
+@media all and (min-width: 1140px) {
+  @include global-classes('-lg');
+}

@@ -1,0 +1,47 @@
+.throbber-place {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: -7px;
+  right: 50px;
+}
+
+.grid-row {
+  grid-gap: 17px;
+}
+
+.select-radio {
+  .throbber-place {
+    top: -17px;
+    right: 0;
+  }
+}
+
+.current-location {
+  padding-right: 24px;
+}
+
+.submit {
+  width: 100%;
+}
+
+@media all and (min-width: 768px) {
+  .submit {
+    width: 130px;
+  }
+  .location {
+    .popup {
+      width: 640px;
+      padding: 32px;
+    }
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .location {
+    .popup {
+      width: 592px;
+      padding: 32px;
+    }
+  }
+}

@@ -1,0 +1,66 @@
+.banner-inner-container {
+  position: relative;
+
+  &.place-for-cross {
+    padding-right: 32px;
+  }
+}
+
+.closable, :host-context(.closable-group) {
+  .banner-inner-container {
+    padding-right: 32px;
+  }
+}
+
+.banner-container {
+	position: relative;
+	width: 100%;
+	height: auto;
+	background: transparent;
+	border: 1px solid #B6C6E8;
+	border-radius: 4px;
+	padding: 20px 0;
+  box-sizing: border-box;
+
+  &.portal-main-page-lower {
+    border-radius: 12px;
+  }
+
+	&.hidden {
+		display: none;
+	}
+
+	&.no-border {
+		border: none;
+	}
+
+	&.no-border-radius {
+		border-radius: initial;
+	}
+
+  &.no-padding {
+    padding: 0;
+  }
+
+  &.lk-geps-subscribed {
+    padding: 0 24px;
+  }
+
+	.close-banner {
+		position: absolute;
+		width: 16px;
+		height: 16px;
+		background: url(../../../assets/svg/banner-close.svg) no-repeat;
+    background-size: contain;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    cursor: pointer;
+
+    &.top {
+      top: 12px;
+      right: 12px;
+      transform: none;
+    }
+  }
+}
