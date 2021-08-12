@@ -23,15 +23,15 @@ import { ProfileService } from '../../services/profile/profile.service';
 })
 export class InformerComponent implements OnInit {
 
-  // отображение в сжатом состоянии
-  @Input() public isMini = false;
+  @Input() public isMainPage = false;
+  @Input() public showAllInformers = false;
 
   public statusInformer: TypeStatus = 'load';
   public dataInformer = new DataInformer();
   public hintResponse: HintInterface;
   public hintText: string;
   public linkHint: string;
-  public mnemonicHint: string;
+  public config = this.loadService.config;
 
   private debtForYaMetric: DebtYaMetricInterface = {};
 
@@ -107,8 +107,8 @@ export class InformerComponent implements OnInit {
 
   private getTextToHint(code: string): void {
     if (this.informersService.hints[code] && code === '03') {
-      this.hintText = 'Скидка истекает через' + ' ' + this.hintResponse.days + ' ' + this.informersService.getWord(this.hintResponse.days, "день") + ' ';
-      } else if(this.informersService.hints[code] && code === '05') {
+      this.hintText = `Скидка истекает через ${this.hintResponse.days}&nbsp;${this.informersService.getWord(this.hintResponse.days, 'день')}`;
+    } else if (this.informersService.hints[code] && code === '05') {
       this.hintText = this.informersService.hints[code].text;
     }
   }
@@ -118,7 +118,7 @@ export class InformerComponent implements OnInit {
       .subscribe((response: InformerShortInterface) => {
         if (response?.hint) {
           this.hintResponse = response.hint;
-          var hint = Object.keys(this.informersService.hints).find((code) => {
+          const hint = Object.keys(this.informersService.hints).find((code) => {
             return this.hintResponse.code === code;
           });
           this.getTextToHint(hint);
@@ -138,7 +138,7 @@ export class InformerComponent implements OnInit {
                 this.debtForYaMetric.types = Object.assign(this.debtForYaMetric.types, {[TypeDebt[type]]: res[TypeDebt[type]].amount});
               }
             }
-            this.dataInformer.type = debtCount.length === 1 ? TypeDebt[debtCount[0]]: 'all';
+            this.dataInformer.type = debtCount.length === 1 ? TypeDebt[debtCount[0]] : 'all';
             this.dataInformer.docs = this.declinePipe.transform(res.total, this.getWord(debtCount));
             this.setExtraDebtData(res);
             // инфа для метрики
@@ -187,6 +187,14 @@ export class InformerComponent implements OnInit {
       this.router.navigate(['/pay']);
     } else {
       location.href = `${this.loadService.config.betaUrl}pay`;
+    }
+  }
+
+  public redirectToQuittance() {
+    if (this.loadService.config.viewType === 'PORTAL') {
+      this.router.navigate(['/pay/quittance']);
+    } else {
+      location.href = `${this.loadService.config.betaUrl}pay/quittance`;
     }
   }
 

@@ -1,21 +1,25 @@
-.block-informer-hint{
-  background: rgba(248, 178, 0, .12);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+.informers-container {
+  width: 100%;
 }
+
+.informer-main {
+  cursor: pointer;
+  flex-direction: column;
+  overflow: hidden;
+  width: 100%;
+}
+
+.informer-content {
+  padding: 24px;
+  width: 100%;
+}
+
 .price-discount{
   font-size: 32px;
   line-height: 40px;
   color: #E11432;
 }
-.button-container{
-  padding: 0 24px 24px;
-}
-.debt{
-  padding: 24px 0;
-}
+
 .informer-top-wrap {
   display: flex;
   justify-content: center;
@@ -25,10 +29,11 @@
   &.no_debt {
     background: rgba(45, 195, 106, 0.1);
   }
-  &.error, &.al10{
+  &.error, &.al10 {
     background: rgba(248, 178, 0, .12);
   }
 }
+
 .informer-top-wrap-debt {
   height: 68px;
   &.stateDuty{
@@ -50,16 +55,19 @@
     background: #E4ECFD url("../../../assets/svg/informer/tax.svg") 50% 50% no-repeat;
   }
 }
+
 .informer-bottom-wrap {
   padding: 16px 0;
   text-align: center;
 }
-.price{
-  color: #86909C;
+
+.block-informer-hint {
+  background: rgba(248, 178, 0, .12);
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
-.block-informer-wrap {
- width: 100%;
-}
+
 .informer-hint-icon {
   flex: 0 0 auto;
   width: 20px;
@@ -68,248 +76,277 @@
   background: url("../../../assets/svg/informer/warning.svg") 0 0 no-repeat;
   background-size: contain;
 }
+
 .informer-hint-text {
   color: #0B1F33;
   font-size: 12px;
   line-height: 16px;
 }
-.informer-main {
-  background-color: #fff;
-  box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
-  border-radius: 12px;
-  cursor: pointer;
-  flex-direction: column;
-  overflow: hidden;
-  &.loading{
-    min-height: 130px;
-    justify-content: center;
-  }
+
+.loading {
+  min-height: 130px;
+  justify-content: center;
+
   .loader {
     align-self: center;
   }
+}
 
-  .without-debt {
-    width: 100%;
+.debt{
+  width: 100%;
+}
 
-    .icon-no-debt {
-      width: 54px;
-      height: 40px;
-    }
+.without-debt {
+  width: 100%;
 
-    .search {
-      background: url("../../../assets/svg/informer/error.svg") 0 0 no-repeat;
-      background-size: contain;
-      width: 34px;
-      height: 40px;
-    }
-
-    .ok {
-      background: url("../../../assets/svg/informer/success.svg") 0 0 no-repeat;
-      background-size: contain;
-    }
-
-    .warn {
-      background: url("../../../assets/svg/informer/error.svg") 0 0 no-repeat;
-      background-size: contain;
-      width: 34px;
-      height: 40px;
-    }
+  .icon-no-debt {
+    width: 54px;
+    height: 40px;
   }
 
-  .debt {
-    width: 100%;
+  .search, .warn {
+    background: url("../../../assets/svg/informer/error.svg") 0 0 no-repeat;
+    background-size: contain;
+    width: 34px;
+    height: 40px;
   }
 
-  .prices {
-    width: 100%;
-  }
-
-  .btn {
-    width: 100%;
+  .ok {
+    background: url("../../../assets/svg/informer/success.svg") 0 0 no-repeat;
+    background-size: contain;
   }
 }
 
-@media  (min-width: 768px) and (max-width: 1139px) {
-  .debt {
-    padding: 24px;
-    .price-discount {
-      margin-left: 0!important;
-    }
-    .debt-title, .debt-text {
-      text-align: left;
-      margin-left: 0;
+.main-page-view {
+  .informer-content {
+    padding: 16px 24px;
+  }
+
+  .informer-top-wrap {
+    &.no_debt, &.error, &.al10 {
+      background: #FFFFFF;
     }
   }
-  .button-container{
-    padding: 0 16px 0 0;
-    display: flex;
-    align-items: center;
-  }
-  .informer-main{
-    &.with-debt{
-      flex-direction: row;
+}
+
+.quittance-informer {
+  padding: 24px;
+}
+
+@media (max-width: 767px) {
+  .main-page-view {
+    .informer-top-wrap {
       justify-content: flex-start;
-      &.loading{
-        justify-content: center;
+    }
+
+    .without-debt {
+      .informer-top-wrap {
+        padding: 16px 24px;
+        min-height: 64px;
+      }
+
+      .icon-no-debt {
+        width: 32px;
+        height: 24px;
+        margin-right: 16px;
+      }
+
+      .search, .warn {
+        width: 22px;
+        height: 24px;
+      }
+
+      .title-no-debt {
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: normal;
       }
     }
   }
+
+  .quittance-informer {
+    padding: 16px 24px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1139px) {
+  .informers-container {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+  }
+
+  .informer-main{
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .main-page-view {
+    height: 100%;
+
+    .button-container {
+      display: none;
+    }
+  }
+
+  .informer-content {
+    padding: 24px;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+  }
+
   .informer-top-wrap-debt {
     width: 88px;
     height: auto;
     display: flex;
     flex-direction: column;
     flex: 1 0 auto;
-  }
-}
 
-
-@media all and (min-width: 768px) {
-  .informer-top-wrap-debt{
     &.with-hint {
       width: 140px;
     }
   }
-  .block-informer-hint{
+
+  .block-informer-hint {
     padding: 0 16px;
-    display: flex;
     flex-direction: column;
     align-items: flex-start;
   }
-  .informer-hint-icon{
-    margin-bottom: 8px;
-  }
+
   .informer-top-wrap {
     justify-content: flex-start;
     padding: 24px 32px;
   }
+
   .informer-bottom-wrap {
     padding: 24px 32px;
   }
-  .informer-main {
+
+  .debt {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    height: 100%;
+
+    .debt-title, .debt-text {
+      text-align: left;
+    }
+  }
+
+  .without-debt {
+    .icon-no-debt {
+      width: 34px;
+      height: 24px;
+
+      &.search, &.warn{
+        width: 19px;
+        height: 24px;
+      }
+    }
+  }
+
+  .main-page-view {
+    .informer-content {
+      padding: 24px;
+    }
+
     .without-debt {
       .icon-no-debt {
-        width: 34px;
-        height: 24px;
-        margin-right: 24px;
-        &.search, &.warn{
-          width: 19px;
-          height: 24px;
-        }
+        width: 74px;
+        height: 56px;
       }
 
-      .title-no-debt {
-        padding-right: 24px;
-        width: 100%;
+      .search, .warn {
+        width: 46px;
+        height: 56px;
       }
     }
 
-    .debt {
-      .docs {
-        width: 100%;
-      }
-
-      .prices {
-        margin: 0 8px;
-        text-align: right;
-      }
-    }
-
-    .btn {
-      width: auto;
+    .price-discount{
+      font-size: 24px;
+      line-height: 32px;
     }
   }
 
-  .mini {
-    &.informer-main {
-      .debt {
-        .price, .btn  {
-          margin-left: 24px;
-        }
-
-        .price-discount {
-          margin-left: 20px;
-        }
-      }
-    }
+  .addition-informer {
+    height: 100%;
+    width: 30%;
   }
+
+  .quittance-informer {
+    flex-flow: column;
+    text-align: center;
+    justify-content: center;
+    height: 100%;
+  }
+
 }
 
 @media all and (min-width: 1140px) {
-  .informer-top-wrap-debt{
+  .informers-container {
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+  }
+
+  .informer-main:not(.main-page-view) {
+    height: 280px;
+
+    .informer-content {
+      height: calc(100% - 68px);
+    }
+  }
+
+  .informer-main.main-page-view {
+    height: 100%;
+  }
+
+  .informer-content {
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+  }
+
+  .informer-top-wrap {
+    flex-flow: column;
+    text-align: center;
+    flex: 1 0 auto;
+  }
+
+  .informer-top-wrap-debt {
     &.with-hint {
       width: auto;
     }
   }
-  .block-informer-hint{
-    flex-direction: row;
-    align-items: center;
+
+  .block-informer-hint {
     padding: 0 24px;
   }
-  .informer-hint-icon{
-    margin-bottom: 0;
-  }
-  .informer-bottom-wrap{
+
+  .informer-bottom-wrap {
     padding: 0;
     height: 96px;
     display: flex;
     align-items: center;
   }
-  .informer-top-wrap {
-    flex: 1 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 24px;
-    text-align: center;
-    &.no_debt{
-      padding: 24px;
+
+  .without-debt {
+    height: 100%;
+
+    .icon-no-debt {
+      width: 74px;
+      height: 56px;
+
+      &.search, &.warn {
+        width: 46px;
+        height: 56px;
+      }
     }
   }
-  .icon-no-debt{
-    margin-bottom: 20px;
-  }
-  .mini {
-    &.informer-main {
-      &.with-debt{
-        min-height: 280px;
-        .debt {
-          padding: 0 24px;
-        }
-      }
-      &.loading{
-        min-height: 280px;
-      }
-      .without-debt {
-        height: 100%;
-        min-height: 280px;
-        .icon-no-debt {
-          width: 74px;
-          height: 56px;
-          margin-right: 0;
-          &.search, &.warn{
-            width: 40px;
-            height: 56px;
-          }
-        }
 
-        .title-no-debt {
-          padding-right: 0;
-        }
-      }
-
-      .debt {
-        .prices{
-          text-align: center;
-        }
-        .btn, .price-discount, .price {
-          margin-left: 0;
-        }
-      }
-
-      .btn {
-        width: 100%;
-      }
-    }
+  .quittance-informer {
+    padding: 16px 24px;
   }
 }
