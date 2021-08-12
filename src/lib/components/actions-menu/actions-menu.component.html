@@ -1,19 +1,24 @@
 <div class="actions-menu-button hide-lg" [class.disabled]="disabled" (click)="showMenu = true"></div>
 <div
   class="actions-menu"
-  [ngClass]="{'hide-lg': actions.length <= countOutside, 'active': showMenu, 'disabled': disabled}"
->
+  [ngClass]="{
+    'hide-lg': actions.length <= countOutside,
+    'active': showMenu,
+    'disabled': disabled,
+    'closable': closable
+  }">
   <ng-container *ngFor="let link of actions; let i = index">
     <div class="mb-16" [class.hide-lg]="i < countOutside">
-      <a *ngIf="link.href" class="link-plain small-text" [href]="link.href" target="_blank">{{link.title | appTranslate}}</a>
-      <a *ngIf="!link.href" class="link-plain small-text" (click)="link.handler()">{{link.title | appTranslate}}</a>
+      <a *ngIf="link.href" class="link-plain text-plain" [href]="link.href" target="_blank">{{link.title | appTranslate}}</a>
+      <a *ngIf="!link.href" class="link-plain text-plain" (click)="link.handler()">{{link.title | appTranslate}}</a>
     </div>
   </ng-container>
+  <div class="close-menu" (click)="showMenu = false"></div>
 </div>
 <div class="actions hide show-lg" [class.disabled]="disabled">
   <ng-container *ngFor="let link of actions | slice:0:countOutside">
-    <a *ngIf="link.href" class="link-plain small-text" [href]="link.href" target="_blank">{{link.title | appTranslate}}</a>
-    <a *ngIf="!link.href" class="link-plain small-text" (click)="link.handler()">{{link.title | appTranslate}}</a>
+    <a *ngIf="link.href" class="link-plain text-plain" [href]="link.href" target="_blank">{{link.title | appTranslate}}</a>
+    <a *ngIf="!link.href" class="link-plain text-plain" (click)="link.handler()">{{link.title | appTranslate}}</a>
   </ng-container>
   <a
     class="actions-menu-button"
