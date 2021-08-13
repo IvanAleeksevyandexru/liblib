@@ -9,7 +9,9 @@
   }">
   <ng-container *ngFor="let link of actions; let i = index">
     <div class="mb-16" [class.hide-lg]="i < countOutside">
-      <a *ngIf="link.href" class="link-plain text-plain" [href]="link.href" target="_blank">{{link.title | appTranslate}}</a>
+      <a *ngIf="link.href" class="link-plain text-plain" [href]="link.href" [target]="link.target || '_blank'">
+        {{link.title | appTranslate}}
+      </a>
       <a *ngIf="!link.href" class="link-plain text-plain" (click)="link.handler()">{{link.title | appTranslate}}</a>
     </div>
   </ng-container>
@@ -17,7 +19,9 @@
 </div>
 <div class="actions hide show-lg" [class.disabled]="disabled">
   <ng-container *ngFor="let link of actions | slice:0:countOutside">
-    <a *ngIf="link.href" class="link-plain text-plain" [href]="link.href" target="_blank">{{link.title | appTranslate}}</a>
+    <a *ngIf="link.href" class="link-plain text-plain" [href]="link.href" [target]="link.target || '_blank'">
+      {{link.title | appTranslate}}
+    </a>
     <a *ngIf="!link.href" class="link-plain text-plain" (click)="link.handler()">{{link.title | appTranslate}}</a>
   </ng-container>
   <a
