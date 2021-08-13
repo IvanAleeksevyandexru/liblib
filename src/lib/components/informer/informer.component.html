@@ -4,7 +4,7 @@
         statusInformer !== 'debt' ? 'justify-center': 'justify-between with-debt',
         isMainPage ? 'main-page-view' : ''
      ]"
-       class="informer-main flex-container shadow-block" (click)="redirectAndSendYaMetric()">
+       class="informer-main flex-container shadow-block hovered-block" (click)="redirectAndSendYaMetric()">
     <div *ngIf="statusInformer === 'load'; else loaded" class="loader">
       <lib-throbber-hexagon [size]="'large'"></lib-throbber-hexagon>
     </div>
@@ -55,7 +55,7 @@
           </div>
         </div>
 
-        <div class="button-container mt-24 mt-md-0 mt-lg-16">
+        <div *ngIf="!isMainPage" class="button-container mt-24 mt-md-0 mt-lg-16">
           <lib-button [size]="'md'" [width]="'wide'" (click)="redirectAndSendYaMetric()">
             {{dataInformer.button | libTranslate}}
           </lib-button>
@@ -65,7 +65,7 @@
   </div>
 
   <div *ngIf="showAllInformers" class="addition-informer mt-20 mt-md-0 mt-lg-20 ml-md-32 ml-lg-0">
-    <div class="quittance-informer shadow-block pointer flex-container align-items-center" (click)="redirectToQuittance()">
+    <div class="quittance-informer shadow-block hovered-block pointer flex-container align-items-center" (click)="redirectToQuittance()">
       <img src="{{config.staticDomainLibAssetsPath}}svg/informer/barcode.svg"
            class="mr-16 mr-md-0 mr-lg-16 mb-md-8 mb-lg-0">
       <p class="text-plain" [innerHTML]="'INFORMER.PAYMENTS_BY_QUITTANCE' | libTranslate"></p>

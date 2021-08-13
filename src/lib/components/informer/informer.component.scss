@@ -284,6 +284,12 @@
 }
 
 @media all and (min-width: 1140px) {
+  .main-page-view {
+    .informer-content {
+      justify-content: center;
+    }
+  }
+
   .informers-container {
     height: 100%;
     display: flex;

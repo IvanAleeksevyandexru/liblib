@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { InformersService } from '../../services/informers/informers.service';
 import {
   DataInformer,
@@ -15,11 +15,13 @@ import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { LoadService } from '../../services/load/load.service';
 import { Router } from '@angular/router';
 import { ProfileService } from '../../services/profile/profile.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'lib-informer',
   templateUrl: './informer.component.html',
-  styleUrls: ['./informer.component.scss']
+  styleUrls: ['./informer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InformerComponent implements OnInit {
 
@@ -42,6 +44,7 @@ export class InformerComponent implements OnInit {
     private loadService: LoadService,
     private router: Router,
     private profileService: ProfileService,
+    private cd: ChangeDetectorRef,
   ) {
   }
 
@@ -68,7 +71,11 @@ export class InformerComponent implements OnInit {
       this.getInformerShortData();
     } else {
       if (this.loadService.user.type === 'L' && this.loadService.user.autorityId) {
-        this.profileService.getDelegatedRights().subscribe(
+        this.profileService.getDelegatedRights().pipe(
+          finalize(() => {
+            this.cd.detectChanges();
+          })
+        ).subscribe(
           (data) => {
             const rightsEnabled = data && data.authorities && data.authorities.some((elem) => {
               return elem.mnemonic === 'INFORMER';
@@ -114,8 +121,11 @@ export class InformerComponent implements OnInit {
   }
 
   private getInformerShortData() {
-    this.informersService.getDataInformer()
-      .subscribe((response: InformerShortInterface) => {
+    this.informersService.getDataInformer().pipe(
+      finalize(() => {
+        this.cd.detectChanges();
+      })
+    ).subscribe((response: InformerShortInterface) => {
         if (response?.hint) {
           this.hintResponse = response.hint;
           const hint = Object.keys(this.informersService.hints).find((code) => {
