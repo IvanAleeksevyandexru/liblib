@@ -1,6 +1,31 @@
 .file-wrapper {
-  .name {
-    text-overflow: ellipsis;
-    overflow: hidden;
+  position: relative;
+
+  .overflow {
+    width: 100%;
+  }
+
+  .texts {
+    min-width: 0;
+
+    .name {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+
+  .actions {
+    position: relative;
+  }
+
+  ::ng-deep {
+    lib-actions-menu {
+      .actions-menu-button, .actions {
+        top: 0;
+        right: 0;
+        position: relative;
+      }
+    }
   }
 }

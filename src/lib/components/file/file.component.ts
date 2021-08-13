@@ -10,6 +10,7 @@ import { File } from '../../models/file-link';
 export class FileComponent implements OnInit {
 
   @Input() public file: File;
+  @Input() public countOutside: number;
 
   constructor() { }
 

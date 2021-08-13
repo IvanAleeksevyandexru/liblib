@@ -13,7 +13,7 @@ export interface File {
 
 export interface FileActions {
   title: string; // Название действия
-  link: string; // Ссылка
+  href: string; // Ссылка
   target?: '_self' | '_blank' | '_parent' | '_top'; // По умолчанию _blank
 }
 
