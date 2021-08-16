@@ -14,6 +14,7 @@ export class BackButtonComponent implements OnInit {
   @Input() public view?: 'link' | 'button' | 'custom' | 'custom-button' = 'link';
   @Input() public handle?: string;
   @Input() public updateCounters?: boolean;
+  @Input() public title?: string; // вместо дефолтного с переводом через appTranslate
 
   @Output() public customClick = new EventEmitter<void>();
 
@@ -24,7 +25,7 @@ export class BackButtonComponent implements OnInit {
   ) {
   }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
   }
 
   public goBack(event: Event): void {
