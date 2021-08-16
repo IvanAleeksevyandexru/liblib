@@ -1,7 +1,0 @@
-{
-  "ngPackage": {
-    "lib": {
-      "entryFile": "../../multiline-input-public_api"
-    }
-  }
-}

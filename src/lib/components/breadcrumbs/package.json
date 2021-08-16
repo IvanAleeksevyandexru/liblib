@@ -1,7 +1,0 @@
-{
-  "ngPackage": {
-    "lib": {
-      "entryFile": "../../breadcrumbs-public_api"
-    }
-  }
-}

@@ -1,7 +1,0 @@
-{
-  "ngPackage": {
-    "lib": {
-      "entryFile": "../../filtered-list-public_api"
-    }
-  }
-}

@@ -1,7 +1,0 @@
-{
-  "ngPackage": {
-    "lib": {
-      "entryFile": "../../base-masked-input-public_api.ts"
-    }
-  }
-}

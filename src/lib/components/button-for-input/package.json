@@ -1,7 +1,0 @@
-{
-  "ngPackage": {
-    "lib": {
-      "entryFile": "../../button-for-input-public_api"
-    }
-  }
-}

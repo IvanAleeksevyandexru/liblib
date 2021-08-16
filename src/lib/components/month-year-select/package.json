@@ -1,7 +1,0 @@
-{
-  "ngPackage": {
-    "lib": {
-      "entryFile": "../../month-year-select-public_api"
-    }
-  }
-}

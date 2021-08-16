@@ -1,9 +1,0 @@
-<div class="virtual-scroll-container">
-  <perfect-scrollbar #scrollComponent [config]="{suppressScrollX: true, wheelPropagation: false, minScrollbarLength: 30, maxScrollbarLength: 30}">
-    <div #contentWrapper class="virtual-scroll-content-wrapper">
-      <ng-content></ng-content>
-    </div>
-    <div class="virtual-scroll-spacer" [style.height]="scrollViewport ? scrollViewport._totalContentHeight : ''">
-    </div>
-  </perfect-scrollbar>
-</div>

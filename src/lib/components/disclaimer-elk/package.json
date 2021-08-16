@@ -1,7 +1,0 @@
-{
-  "ngPackage": {
-    "lib": {
-      "entryFile": "../../disclaimer-elk-public_api"
-    }
-  }
-}

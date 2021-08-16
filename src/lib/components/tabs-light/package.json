@@ -1,7 +1,0 @@
-{
-  "ngPackage": {
-    "lib": {
-      "entryFile": "../../tabs-light-public_api"
-    }
-  }
-}

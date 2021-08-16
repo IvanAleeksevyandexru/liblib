@@ -1,7 +1,0 @@
-{
-  "ngPackage": {
-    "lib": {
-      "entryFile": "../../paging-controls-public_api"
-    }
-  }
-}
