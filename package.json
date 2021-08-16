@@ -17,7 +17,7 @@
     "lib-watch": "cross-env NODE_OPTIONS=--max_old_space_size=5110 ng build ui --watch",
     "lib-build:prod": "cross-env NODE_OPTIONS=--max_old_space_size=5110 ng build ui && npm run cp-lib-assets",
     "lib-release": "npm run lib-build:prod",
-    "cp-lib-assets": "cross-env cpx \"./src/assets/**/*\" \"./dist/ui/assets\""
+    "cp-lib-assets": "cross-env cpx \"./projects/assets/**/*\" \"./dist/ui/assets\""
   },
   "dependencies": {
     "@angular/animations": "11.0.0",
