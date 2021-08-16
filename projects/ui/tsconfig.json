@@ -6,11 +6,17 @@
       "@epgu/ui/components/*": [
         "projects/ui/components/*"
       ],
-      "@epgu/ui/pipes/*": [
-        "projects/ui/pipes/*"
+      "@epgu/ui/controls": [
+        "projects/ui/controls"
       ],
-      "@epgu/ui/directives/*": [
-        "projects/ui/directives/*"
+      "@epgu/ui/pipes": [
+        "projects/ui/pipes"
+      ],
+      "@epgu/ui/base": [
+        "projects/ui/base"
+      ],
+      "@epgu/ui/directives": [
+        "projects/ui/directives"
       ],
       "@epgu/ui/services/*": [
         "projects/ui/services/*"

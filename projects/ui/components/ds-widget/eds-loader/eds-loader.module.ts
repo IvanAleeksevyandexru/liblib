@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EdsLoaderComponent } from './eds-loader.component';
-import { TranslateModule } from '@epgu/ui/pipes/translate';
+import { TranslateModule } from '@epgu/ui/pipes';
 
 
 @NgModule({

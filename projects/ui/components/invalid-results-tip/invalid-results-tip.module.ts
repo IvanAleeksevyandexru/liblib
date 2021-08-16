@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ValidationMessageModule } from '@epgu/ui/components/validation-message';
-import { StopClickPropagationModule } from '@epgu/ui/directives/stop-click-propagation';
-import { ClickOutsideModule } from '@epgu/ui/directives/click-outside';
+import { ClickOutsideModule, StopClickPropagationModule } from '@epgu/ui/directives';
 import { InvalidResultsTipComponent } from './invalid-results-tip.component';
 
 
@@ -16,6 +15,7 @@ import { InvalidResultsTipComponent } from './invalid-results-tip.component';
   declarations: [
     InvalidResultsTipComponent
   ],
-  exports: [ InvalidResultsTipComponent ],
+  exports: [InvalidResultsTipComponent],
 })
-export class InvalidResultsTipModule { }
+export class InvalidResultsTipModule {
+}

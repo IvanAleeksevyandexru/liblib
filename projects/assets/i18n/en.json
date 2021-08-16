@@ -1,0 +1,150 @@
+{
+  "HEADER": {
+    "PERSONAL_AREA": "Personal Area",
+    "LOGIN_LINK": "Log in",
+    "REGISTER": "Register",
+    "EXIT": "Exit",
+    "ALL_ROLES": "All my roles",
+    "MENU": {
+      "CATALOG": "Services catalog",
+      "NEWS": "News",
+      "DOCS": "Documents",
+      "SERVICES": "Services",
+      "PAYMENT": "Payments",
+      "SUPPORT": "Support",
+      "PROFILE": "Profile",
+      "SETTINGS": "Settings and Security",
+      "SETTINGS_MENU": "Settings",
+      "LOGIN_IE": "Login as businessman",
+      "LOGIN_ORG": "Login as organization",
+      "CHANGE_ROLE": "Change role",
+      "ORDERS": "Statements",
+      "MESSAGES": "State post",
+      "BLOG": "Blog",
+      "HELP": "Support"
+    },
+    "CATALOG": {
+      "ALL": "Catalog all",
+      "CLOSE": "Close"
+    }
+  },
+  "FOOTER": {
+    "COPYRIGHT": "The official internet portal of Public services, {{currentYear}}"
+  },
+  "LOCATION": {
+    "TITLE": "Point your location",
+    "DESCRIPTION": "Set of provided Services depends on your current location",
+    "CURRENT": "Your current location",
+    "CHANGE": "You can switch the Region",
+    "AUTO-SELECT": "Detect automatically",
+    "MANUAL-SELECT": "Select manually",
+    "AUTO-SELECT-ERROR": "Failed to detect",
+    "SUBMIT": "Submit",
+    "FAIL": "Select the Region"
+  },
+  "WEEKDAYS": {
+    "MONDAY": "mo",
+    "TUESDAY": "tu",
+    "WEDNESDAY": "we",
+    "THURSDAY": "th",
+    "FRIDAY": "fr",
+    "SATURDAY": "sa",
+    "SUNDAY": "su"
+  },
+  "MONTHS": {
+    "JANUARY": "January",
+    "FEBRUARY": "February",
+    "MARCH": "March",
+    "APRIL": "April",
+    "MAY": "May",
+    "JUNE": "June",
+    "JULY": "July",
+    "AUGUST": "August",
+    "SEPTEMBER": "September",
+    "OCTOBER": "October",
+    "NOVEMBER": "November",
+    "DECEMBER": "December"
+  },
+  "DADATA": {
+    "SPECIFY": "Specify the address more accurately",
+    "DELETE": "Delete",
+    "NO_HOUSE": "No house number",
+    "NO_APARTMENT": "No apartment number",
+    "REGION": "Region",
+    "CITY": "City/town",
+    "DISTRICT": "District",
+    "TOWN": "Locality",
+    "IN_CITY_DIST": "District in a city",
+    "STREET": "Street",
+    "ADDITIONAL_AREA": "Extra area",
+    "ADDITIONAL_STREET": "Street in extra area",
+    "HOUSE": "House",
+    "BUILDING1": "Building",
+    "BUILDING2": "Edifice",
+    "APARTMENT": "Apartment",
+    "INDEX": "Postal code",
+    "WRONG_TOWN": "City or locality name is required",
+    "WRONG_TOWN_OTHER_CASE": "Check if the city or locality name is correct",
+    "WRONG_STREET": "Street name is required",
+    "WRONG_STREET_OTHER_CASE": "Check if the street name is correct",
+    "WRONG_ADDRESS": "Check if the address is correct",
+    "WRONG_COUNTRY": "Specify address in Russia, no foreign address is allowed",
+    "NEED_REGION": "Region name is required",
+    "NEED_CITY": "City name is required",
+    "NEED_CITY_OTHER_CASE": "Check if the city name is correct",
+    "NEED_DISTRICT": "District name is required",
+    "NEED_DISTRICT_OTHER_CASE": "Check if the district name is correct",
+    "NEED_TOWN": "Locality name is required",
+    "NEED_IN_CITY_DIST": "District name in the city is required",
+    "NEED_STREET": "Street name is required",
+    "NEED_ADDITIONAL_AREA": "Extra area name is required",
+    "NEED_ADDITIONAL_STREET": "Street name in the extra area is required",
+    "NEED_HOUSE": "House number is required",
+    "NEED_HOUSE_OTHER_CASE": "Check if the house number is correct",
+    "NEED_BUILDING1": "Building number is required",
+    "NEED_BUILDING2": "Edifice number is required",
+    "NEED_APARTMENT": "Apartment number is required",
+    "NEED_APARTMENT_OTHER_CASE": "Office (suite) number is required",
+    "NEED_INDEX": "Postal code (index) is required",
+    "NEED_INDEX_OTHER_CASE": "Check if the postal code (index) name is correct",
+    "MODAL": {
+      "TITLE": "Impossible to save",
+      "SIMPLE_TEXT": "The address is missing from",
+      "LINK": "the Russian address directory",
+      "PURPOSE_TEXT": "Perhaps, you meant?",
+      "SAVE_TITLE": "Save this address?",
+      "SAVE_BUTTON": "Save the entered",
+      "RETURN_BUTTON": "Back to editing"
+    },
+    "NO_FIND_OPTION": "No required option found?",
+    "ENTER_MANUALLY": "Enter the address manually"
+  },
+  "DISCLAIMER": {
+    "TITLE": "Attention!",
+    "SUBSCRIBE": "Subscribe to notification",
+    "ADDRESS_LABEL": "E-mail",
+    "ERROR_LABEL": "We will let you know when the problem is resolved",
+    "GET_NOTIFICATION": "Get notification",
+    "LOADER": "Wait, please",
+    "ERROR": "Error. Try again",
+    "SUCCESS": "The notification will come to {{email}}",
+    "ALREADY_SUBSCRIBE": "{{email}} already subscribed"
+  },
+  "LANG_WARN": {
+    "TITLE": "This section is only available in Russian",
+    "TEXT": "We're sorry, but other services currently are not presented in English",
+    "GET_BACK": "Get back",
+    "CONTINUE": "Continue"
+  },
+  "BACK": "Back",
+  "LANG": {
+    "SHORT": {
+      "ru": "RUS",
+      "en": "ENG"
+    },
+    "FULL": {
+      "ru": "Русский",
+      "en": "English"
+    }
+  }
+}

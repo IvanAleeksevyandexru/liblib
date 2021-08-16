@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActionsMenuComponent } from './actions-menu.component';
-import { TranslateModule } from '@epgu/ui/pipes/translate';
+import { TranslateModule } from '@epgu/ui/pipes';
 
 @NgModule({
   imports: [

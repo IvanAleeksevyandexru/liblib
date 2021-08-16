@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges,
   Input, Output, EventEmitter, ViewChild, ChangeDetectorRef, ElementRef } from '@angular/core';
-import { BubbleBase } from '@epgu/ui/components/question-help-tip';
+import { BubbleBase } from '@epgu/ui/base';
 import { ValidationErrors } from '@angular/forms';
 import { ValidationMessages } from '@epgu/ui/models/validation-show';
 import { PipedMessage } from '@epgu/ui/models/piped-message';

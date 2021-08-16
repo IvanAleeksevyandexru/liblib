@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@epgu/ui/pipes/translate';
+import { TranslateModule } from '@epgu/ui/pipes';
 import { DocumentDetailsComponent } from './document-details.component';
 
 

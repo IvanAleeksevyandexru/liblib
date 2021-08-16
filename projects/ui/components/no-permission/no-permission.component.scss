@@ -1,0 +1,50 @@
+.permission-banner {
+  padding: 24px 17px;
+  margin-left: -17px;
+  margin-right: -17px;
+  text-align: center;
+  background: #f3f5fb;
+
+  .image {
+    display: inline-block;
+    width: 220px;
+    height: 173px;
+    background: url(../../../assets/svg/errors/no-digital-scopes.svg) no-repeat 0 0;
+    background-size: 100%;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .permission-banner {
+    position: relative;
+    padding: 32px;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 4px;
+    text-align: left;
+
+    .text {
+      width: 42%;
+    }
+
+    .image {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      width: 297px;
+      height: 234px;
+    }
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .permission-banner {
+    .text {
+      width: 52%;
+    }
+
+    .image {
+      bottom: -13px;
+    }
+  }
+}

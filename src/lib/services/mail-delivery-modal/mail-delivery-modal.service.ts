@@ -2,7 +2,7 @@ import { Injectable, NgModuleRef } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ModalService } from '../../services/modal/modal.service';
-import { MailDeliveryModalComponent } from '../../components/mail-delivery-modal-to-lk/mail-delivery-modal.component';
+import { MailDeliveryModalComponent } from '../../components/mail-delivery-modal/mail-delivery-modal.component';
 import { SubscriptionInfo } from '../../models/mail-delivery';
 import { LoadService } from '../../services/load/load.service';
 import { ConstantsService } from '../constants/constants.service';

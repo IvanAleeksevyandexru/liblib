@@ -1,0 +1,34 @@
+@mixin offsets($prefix) {
+  @for $i from 0 through 24 {
+    .mt#{$prefix}-#{$i * 4} {
+      margin-top: #{$i * 4}px;
+    }
+
+    .mb#{$prefix}-#{$i * 4} {
+      margin-bottom: #{$i * 4}px;
+    }
+
+    .ml#{$prefix}-#{$i * 4} {
+      margin-left: #{$i * 4}px;
+    }
+
+    .mr#{$prefix}-#{$i * 4} {
+      margin-right: #{$i * 4}px;
+    }
+
+  }
+}
+
+@include offsets('');
+
+@media all and (max-width: 767px) {
+  @include offsets('-sm');
+}
+
+@media all and (min-width: 768px) {
+  @include offsets('-md');
+}
+
+@media all and (min-width: 1140px) {
+  @include offsets('-lg');
+}

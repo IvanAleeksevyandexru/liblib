@@ -1,0 +1,55 @@
+<div [class.loading]="statusInformer === 'load'"
+     [ngClass]="(statusInformer !== 'debt' ? 'justify-center': 'justify-between with-debt')"
+     class="informer-main flex-container  mini" (click)="redirectAndSendYaMetric()">
+  <div *ngIf="statusInformer === 'load'; else loaded" class="loader">
+    <lib-throbber-hexagon [size]="'large'"></lib-throbber-hexagon>
+  </div>
+
+  <ng-template #loaded>
+    <div *ngIf="['error', 'no_debt', 'al10', 'no_rights'].includes(statusInformer)"
+         class="without-debt flex-container flex-column flex-row-md align-items-center flex-column-lg">
+      <div class="informer-top-wrap {{statusInformer}}">
+        <div class="icon-no-debt flex-0 mr-24 {{dataInformer.icon}}"></div>
+        <div class="title-h5">
+          {{dataInformer.title | libTranslate}}
+        </div>
+      </div>
+      <div class="informer-bottom-wrap">
+        <div class="link blue text-plain">{{dataInformer.button | libTranslate}}</div>
+      </div>
+    </div>
+
+    <ng-container *ngIf="statusInformer === 'debt' && hintText; else withoutHint">
+      <div class="informer-top-wrap-debt with-hint">
+        <div class="block-informer-hint flex-container align-items-center">
+          <div class="informer-hint-icon"></div>
+          <div class="informer-hint-text" [innerHTML]="hintText"></div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template  #withoutHint>
+      <div *ngIf="statusInformer === 'debt'" class="informer-top-wrap-debt {{dataInformer.type}}"></div>
+    </ng-template>
+
+    <div *ngIf="statusInformer === 'debt'" class="debt">
+      <div class="title-h5 text-center debt-title">
+        {{'INFORMER.DEBT.TO_PAY' | libTranslate }} {{dataInformer.docs}}
+      </div>
+      <div class="mt-8 mt-md-4 mt-lg-8 text-center debt-text">
+        <div class="text-right-md inline-md text-center-lg">
+          <div class="price-discount bold text-nowrap">
+            {{dataInformer.priceDiscount | toMoney}} <span class="normal">₽</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="statusInformer === 'debt'" class="button-container">
+      <lib-button [size]="'md'" [width]="'wide'" (click)="redirectAndSendYaMetric()">
+        {{dataInformer.button | libTranslate}}
+      </lib-button>
+    </div>
+  </ng-template>
+
+</div>

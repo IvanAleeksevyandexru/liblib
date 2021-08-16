@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EdsErrorComponent } from './eds-error.component';
-import { TranslateModule } from '@epgu/ui/pipes/translate';
-import { ButtonModule } from '@epgu/ui/components/button';
+import { TranslateModule } from '@epgu/ui/pipes';
+import { ButtonModule } from '@epgu/ui/base';
 
 
 @NgModule({

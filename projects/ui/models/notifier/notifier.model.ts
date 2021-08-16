@@ -15,7 +15,7 @@ export class Notifier {
 
 export class NotifierSetting {
   public singleNotifier?: boolean;
-  // public removeDelay?: number;
+  public removeDelay?: number;
   public maxNotificationsCount?: number;
   public showCloseAllCount?: number;
   public align?: 'right' | 'left';

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@epgu/ui/pipes/translate';
-import { ClickOutsideModule } from '@epgu/ui/directives/click-outside';
+import { TranslateModule } from '@epgu/ui/pipes';
+import { ClickOutsideModule } from '@epgu/ui/directives';
 import { TabsLightComponent } from './tabs-light.component';
 
 
@@ -14,6 +14,7 @@ import { TabsLightComponent } from './tabs-light.component';
   declarations: [
     TabsLightComponent
   ],
-  exports: [ TabsLightComponent ],
+  exports: [TabsLightComponent],
 })
-export class TabsLightModule { }
+export class TabsLightModule {
+}

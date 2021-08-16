@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DisclaimerComponent } from './disclaimers.component';
-import { ThrobberComponent } from '../throbber/throbber.component';
+import { ThrobberComponent } from '../../base/throbber/throbber.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DisclaimerService } from '../../services/disclaimers/disclaimers.service';
 import { CookieService } from '../../services/cookie/cookie.service';

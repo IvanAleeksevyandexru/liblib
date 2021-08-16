@@ -1,0 +1,91 @@
+.select-container {
+  display: inline-block;
+  position: relative;
+
+  .selected-item {
+    cursor: pointer;
+    position: relative;
+    min-width: 52px;
+    text-align: right;
+
+    @media all and (min-width: 1140px) {
+      padding-right: 17px;
+
+      &:after {
+        content: '';
+        position: absolute;
+        width: 10px;
+        height: 6px;
+        top: 50%;
+        right: 0;
+        margin-top: -3px;
+        background: url(../../../assets/svg/arrows/arrow_black.svg) no-repeat right;
+      }
+    }
+  }
+}
+
+.language-view-wrapper {
+  background: #fff;
+  height: calc(100% - 56px);
+  max-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: transform 250ms ease-in;
+  transform: translate3d(-100vw,56px,0);
+  overflow: hidden;
+  will-change: transform;
+  &.show-view {
+    transform: translate3d(0,56px,0);
+    transition: transform 150ms ease-out;
+  }
+
+  .language-view {
+    .links {
+      .item {
+        padding: 16px;
+      }
+    }
+  }
+
+  @media all and (min-width: 768px) {
+    top: 0;
+    width: 320px;
+    transform: translate3d(-320px,124px,0);
+    &.show-view {
+      transform: translate3d(0,124px,0);
+    }
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .lang-list {
+    border: 1px solid #E1E1E1;
+    border-radius: 8px;
+    box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
+    background-color: #FFFFFF;
+    position: absolute;
+    min-width: 98px;
+    overflow: hidden;
+    right: -7px;
+    top: -16px;
+  }
+
+  .lang-list__item {
+    padding: 12px;
+    cursor: pointer;
+    &:hover {
+      background: rgba(29, 93, 235, 0.18);
+    }
+  }
+
+  .lang-list__item + .lang-list__item {
+    padding-top: 0;
+    .lang-ist__item-content {
+      padding-top: 12px;
+      border-top: 1px solid #E1E1E1;
+    }
+  }
+}

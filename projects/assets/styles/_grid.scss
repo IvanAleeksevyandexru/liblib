@@ -1,0 +1,191 @@
+/* Для ИЕ11 гриды перерисовываются в либовском сервисе user-agent.
+   Перерисовка идет 1 раз. Добавляется класс grid-ie и далее этот элемент не обрабатывается.
+   Т.е. если сущесвуют элементы, которые могут быть hidden, верстка поедет. Лучше такое делать флексами.
+   Обрабатываются гриды только те, которые находятся в .grid-row с указанным в данном scss количеством колонок.
+*/
+
+/* autoprefixer grid: autoplace */
+$col-count: 3;
+$col-md-count: 6;
+$col-lg-count: 12;
+
+@mixin grid($prefix, $col-count) {
+  @for $i from 1 through $col-count {
+    .col#{$prefix}-#{$i} {
+      /* autoprefixer grid: ignore next */
+      grid-column-end: span $i;
+      -ms-grid-column-span: $i * 2 - 1 ;
+    }
+  }
+
+  @for $i from 1 through $col-count - 1 {
+    .push#{$prefix}-#{$i} {
+      /* autoprefixer grid: ignore next */
+      grid-column-start: $i + 1;
+      -ms-grid-column: $i * 2;
+    }
+  }
+}
+
+@mixin gridIe($prefix, $col-count) {
+  @for $i from 1 through $col-count * 2 {
+    .-ms-start#{$prefix}-#{$i} {
+      -ms-grid-column: $i !important;
+    }
+  }
+
+  @for $i from 1 through 5 {
+    .-ms-row#{$prefix}-#{$i} {
+      -ms-grid-row: $i !important;
+    }
+  }
+}
+
+.container {
+  box-sizing: border-box;
+  padding: 0 17px;
+  margin: 0 auto;
+}
+
+.grid-row {
+  display: grid;
+  grid-template-columns: repeat($col-count, 1fr);
+  grid-template-rows: auto;
+  grid-gap: 32px;
+
+  @include grid('', $col-count);
+  @include gridIe('-sm', $col-count);
+}
+
+.grid-none {
+  display: block;
+}
+
+.masonry {
+  display: grid;
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    display: -ms-grid;
+  }
+  column-gap: 32px;
+  row-gap: 16px;
+}
+
+
+@media all and (min-width: 768px) {
+  .container {
+    padding: 0 64px;
+  }
+
+  .grid-row,
+  .grid-row-md {
+    display: grid;
+    grid-template-columns: repeat($col-md-count, 1fr);
+    grid-template-rows: auto;
+    grid-gap: 32px;
+
+    @include grid('-md', $col-md-count);
+    @include gridIe('-md', $col-md-count);
+  }
+
+  .grid-none-md {
+    display: block;
+  }
+
+  .masonry {
+    grid-template-columns: repeat(1, minmax(566px,1fr));
+    -ms-grid-columns: minmax(400px, 1fr) minmax(400px, 1fr);
+
+    &.masonry-ie {
+      content: '';
+      display: table;
+      clear: both;
+      .masonry-brick {
+        float: left;
+        width: 46%;
+        margin: 0 2% 32px 2%;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .container {
+    max-width: 1366px;
+    padding: 0 75px;
+  }
+
+  .grid-row,
+  .grid-row-lg {
+    display: grid;
+    grid-template-columns: repeat($col-lg-count, 1fr);
+    grid-template-rows: auto;
+    grid-gap: 32px;
+
+    &.base-9 {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      grid-template-rows: auto;
+    }
+
+    @include grid('-lg', $col-lg-count);
+    @include gridIe('-lg', $col-lg-count);
+  }
+
+  .grid-none-lg {
+    display: block;
+  }
+
+  .masonry {
+    grid-template-columns: repeat(2, minmax(300px,1fr));
+  }
+}
+
+@media print {
+  @mixin grid($prefix, $col-count) {
+    @for $i from 1 through $col-count {
+      .col#{$prefix}-#{$i} {
+        /* autoprefixer grid: ignore next */
+        grid-column-end: span $i;
+        -ms-grid-column-span: $i * 2 - 1 ;
+      }
+    }
+
+    @for $i from 1 through $col-count - 1 {
+      .push#{$prefix}-#{$i} {
+        /* autoprefixer grid: ignore next */
+        grid-column-start: $i + 1;
+        -ms-grid-column: $i * 2;
+      }
+    }
+  }
+
+  @mixin gridIe($prefix, $col-count) {
+    @for $i from 1 through $col-count * 2 {
+      .-ms-start#{$prefix}-#{$i} {
+        -ms-grid-column: $i !important;
+      }
+    }
+
+    @for $i from 1 through 5 {
+      .-ms-row#{$prefix}-#{$i} {
+        -ms-grid-row: $i !important;
+      }
+    }
+  }
+
+  .container {
+    box-sizing: border-box;
+    padding: 0 17px;
+    margin: 0;
+  }
+
+  .grid-row {
+    display: grid;
+    grid-template-columns: repeat($col-count, 1fr);
+    grid-template-rows: auto;
+    grid-gap: 32px;
+
+    @include grid('', $col-count);
+    @include gridIe('sm', $col-count);
+  }
+}

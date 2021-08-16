@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DisclaimerComponent } from './disclaimers.component';
-import { TranslateModule } from '@epgu/ui/pipes/translate';
-import { PlainInputModule } from '@epgu/ui/components/plain-input';
+import { TranslateModule } from '@epgu/ui/pipes';
+import { PlainInputModule } from '@epgu/ui/controls';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ButtonModule } from '@epgu/ui/components/button';
-import { ThrobberModule } from '@epgu/ui/components/throbber';
+import { ButtonModule } from '@epgu/ui/base';
+import { ThrobberModule } from '@epgu/ui/base';
 
 @NgModule({
   imports: [

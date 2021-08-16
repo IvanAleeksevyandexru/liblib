@@ -1,0 +1,62 @@
+<div class="catalog-menu-icon"
+     [class.show]="showMenu"
+     [class.not-authorized]="!loadService.user.authorized"
+     (click)="onMenuClick(!!catalog?.length)"></div>
+<div [class.show]="showMenu" class="catalog-menu">
+  <div class="hide show-md hide-lg">
+    <div class="catalog-menu-logo-wrap">
+      <div class="catalog-menu-icon"
+           [class.show]="showMenu"
+           [class.not-authorized]="!loadService.user.authorized"
+           (click)="onMenuClick(!!catalog?.length)"></div>
+      <div class="ml-24">
+        <lib-logo width="126"></lib-logo>
+      </div>
+    </div>
+  </div>
+  <a class="link-plain digital-assistant-link"
+     [ngClass]="{'lower-z': isOpenLangMenu}"
+     [href]="loadService.config.betaUrl + 'newsearch'">
+    {{'HEADER.MENU.DIGITAL_ASSISTANT' | libTranslate}}
+  </a>
+  <div class="back-language flex-container justify-between align-items-center hide-lg">
+    <a class="title-h6">
+      {{'HEADER.CHANGE_LANGUAGE.CHANGE' | libTranslate}}
+    </a>
+  </div>
+  <div class="catalog-menu-content">
+    <div class="flex-1" *ngIf="catalog?.length" [class.hide]="!showMenu">
+      <lib-catalog-tabs-list
+        viewType="side-view"
+        [catalog]="catalog"
+        (catalogTabListItemClick)="catalogTabListItemClick($event)"
+      ></lib-catalog-tabs-list>
+      <div class="catalog-help hide-lg">
+        <div class="flex-container justify-between align-items-center">
+          <a class="link" [href]="loadService.config.betaUrl + 'help'">Помощь и поддержка</a>
+          <div *ngIf="languageChangeAvailable" class="hide-lg">
+            <lib-language-select (openChoice)="openLanguageMenu($event)"></lib-language-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sub-catalog" [ngClass]="{'empty-region-popular': emptyRegionPopular,'show': showSubCatalog}">
+  <ng-container *ngIf="showSubCatalog">
+    <lib-catalog-tab-item
+      viewType="side-view"
+      (catalogClose)="closeCatalog()"
+      (regionPopularEmpty)="regionPopularEmpty($event)"
+      (subCatalogClose)="subCatalogClose()"
+      [code]="currentCategoryCode"
+    ></lib-catalog-tab-item>
+  </ng-container>
+</div>
+<div class="content-overlay" [class.show]="showMenu"></div>
+<div (click)="onClose()"
+     [ngClass]="{show: showMenu, 'show-with-sub': showSubCatalog, 'show-with-empty-region-popular': emptyRegionPopular}"
+     class="close">
+</div>
+

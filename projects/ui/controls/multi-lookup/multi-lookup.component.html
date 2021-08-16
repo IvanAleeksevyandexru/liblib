@@ -1,0 +1,67 @@
+<div class="multi-lookup dropdown" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)"
+     [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+  <div class="lookup-field dropdown-field" [ngClass]="{multi: true, disabled: disabled, invalid: invalidDisplayed, clearable: clearable}">
+    <div class="dropdown-values" #dropdownValues [ngClass]="[multipleItemsLayout]" (click)="multipleSummaryOpenDetails($event)">
+      <div class="dropdown-values-custom" *ngIf="customMultipleItemsLayoutData" [innerHTML]="customMultipleItemsLayoutData | safeHtml"></div>
+      <div class="dropdown-values-summary" *ngIf="internalSelected && internalSelected.length">
+        {{'DROPDOWN.MULTIPLE_SUMMARY' | libTranslate | subst:(internalSelected.length | decline:['DROPDOWN.COUNT1' | libTranslate, 'DROPDOWN.COUNT2' | libTranslate, 'DROPDOWN.COUNT0' | libTranslate])}}
+      </div>
+      <div class="dropdown-values-container" *ngIf="internalSelected"
+           [ngClass]="{'panel-expanded': multipleItemsDetailsShown}">
+        <div *ngFor="let item of internalSelected" class="dropdown-value" [attr.tooltipContent]="item.textFormatted">
+          <div *ngIf="clearable" class="remove-item-wrapper"><a class="remove-item" (click)="removeItem(item)"></a></div>
+          <span *ngIf="escapeHtml" class="selected-value-text">{{item.formatted}}</span>
+          <span *ngIf="!escapeHtml" class="selected-value-text" [innerHTML]="item.formatted"></span>
+        </div>
+        <ng-container *ngIf="multipleItemsLayout === MultipleItemsLayout.WRAP">
+          <ng-container *ngTemplateOutlet="searchField"></ng-container>
+        </ng-container>
+      </div>
+    </div>
+    <ng-container *ngIf="multipleItemsLayout !== MultipleItemsLayout.WRAP">
+      <ng-container *ngTemplateOutlet="searchField"></ng-container>
+    </ng-container>
+  </div>
+</div>
+<ng-template #searchField>
+  <div class="search-field">
+    <lib-lookup #lookup
+                contextClass="lookup-search-field"
+                [(ngModel)]="lookupItem"
+                [tabIndex]="tabIndex"
+                [disabled]="disabled"
+                [placeholder]="placeholder"
+                [formatter]="formatter"
+                [converter]="converter"
+                [highlightSubstring]="highlightSubstring"
+                [truncateSubstring]="truncateSubstring"
+                [escapeHtml]="escapeHtml"
+                [containerOverlap]="containerOverlap"
+                [contextMenuPosition]="true"
+                [showMagnifyingGlass]="false"
+                [showSearching]="showSearching"
+                [clearable]="clearable"
+                [queryMinSymbolsCount]="queryMinSymbolsCount"
+                [searchOnFocus]="searchOnFocus"
+                [searchFromStartOnly]="searchFromStartOnly"
+                [searchCaseSensitive]="searchCaseSensitive"
+                [showNotFound]="showNotFound"
+                [showSuggestion]="showSuggestion"
+                [incrementalLoading]="incrementalLoading"
+                [incrementalPageSize]="incrementalPageSize"
+                [virtualScroll]="virtualScroll"
+                [collapsableGroups]="collapsableGroups"
+                [virtualGroups]="virtualGroups"
+                [itemsProvider]="provider"
+                [translation]="translation"
+                (changed)="appendItem($event)"
+                (listed)="emitListed($event)"
+                (focus)="handleFocus()"
+                (blur)="handleBlur()"
+                (opened)="handleOpening()"
+                (closed)="closed.emit()"
+                (click)="multipleItemsDetailsShown = false;"
+                (keydown)="removeWithBackspaceIfNeeded($event)">
+    </lib-lookup>
+  </div>
+</ng-template>

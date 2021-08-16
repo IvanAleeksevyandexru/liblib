@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockComponent } from '../../mocks/mock.component';
 import { FeedIconComponent } from '../feed-icon/feed-icon.component';
-import { ThrobberComponent } from '../throbber/throbber.component';
+import { ThrobberComponent } from '../../base/throbber/throbber.component';
 import { TranslateService } from '@ngx-translate/core';
 import { LibTranslateService } from '../../services/translate/translate.service';
 import { TranslateServiceStub, LibTranslateServiceStub } from '../../mocks/translate.service.stub';
@@ -19,8 +19,8 @@ import { LoadService } from '../../services/load/load.service';
 import { LoadServiceStub } from '../../mocks/load.service.stub';
 import { FeedsService } from '../../services/feeds/feeds.service';
 import { FeedsServiceStub } from '../../mocks/feeds.service.stub';
-import { ButtonComponent } from '../../components/button/button.component';
-import { LoaderComponent } from '../../components/loader/loader.component';
+import { ButtonComponent } from '../../base/button/button.component';
+import { LoaderComponent } from '../../base/loader/loader.component';
 
 describe('FeedsComponent', () => {
   let component: FeedsComponent;

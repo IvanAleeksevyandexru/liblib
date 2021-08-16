@@ -1,0 +1,47 @@
+<div class="user-menu show">
+  <div #menuDesk class="menu-desk container {{ position }}" [class.show]="showDeskView()">
+    <div class="menu-items-wrap">
+      <div>
+        <div class="separator show hide-md"></div>
+        <ul class="user-menu-links">
+          <li class="item justify-between align-items-center">
+          <span class="title-h6 bold">
+            <ng-container *ngIf="user.type === 'L'">{{(user.orgShortName || user.orgName)}}</ng-container>
+            <ng-container *ngIf="user.type === 'B'">{{(user.orgShortName || 'ИП ' + user.shortName)}}</ng-container>
+            <ng-container
+              *ngIf="user.type !== 'B' && user.type !== 'L'">{{user.firstName + ' ' + user.lastName[0] + '.'}}</ng-container>
+          </span>
+            <a [href]=""
+               (click)="menuStaticItemClick('HEADER.MENU.PROFILE', 'profile')">{{'HEADER.MENU.PROFILE' | libTranslate}}</a>
+          </li>
+        </ul>
+        <div class="separator"></div>
+        <ul class="user-menu-links user-menu-links-wrap">
+          <ng-container *ngIf="links?.length">
+            <ng-container *ngFor="let link of links">
+              <li (click)="menuStaticItemClick(link.title, link.mnemonic)" class="item justify-between align-items-center">
+                <div class="flex-container">
+                  <div class="icon {{link.icon}}"></div>
+                  <span class="text-plain">{{link.title | libTranslate}}</span>
+                </div>
+                <lib-counter *ngIf="needCounter(link.mnemonic)" class="counter" [counter]="getKindOfCounter(link.mnemonic)"></lib-counter>
+              </li>
+            </ng-container>
+          </ng-container>
+        </ul>
+      </div>
+      <div class="separator hide show-md"></div>
+      <div class="bottom-block">
+        <ul class="user-menu-links">
+          <li class="item justify-between">
+            <a [href]=""
+               (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">{{titleChangeRole | libTranslate}}</a>
+            <a [href]="" (click)="logout()">{{'HEADER.EXIT' | libTranslate}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-overlay" [class.show-md]="state.active"></div>
+</div>

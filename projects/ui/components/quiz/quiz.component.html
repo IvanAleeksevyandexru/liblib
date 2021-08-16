@@ -1,0 +1,73 @@
+<div class="quiz" [ngClass]="{'popup-wrapper': isDialogContent}" *ngIf="!asDialog">
+  <div class="quiz-content" [ngClass]="{popup: isDialogContent}">
+    <a class="close" (click)="cancelQuiz()" *ngIf="isDialogContent"></a>
+    <div class="title title-h2 mb-16 mb-lg-32">
+      <ng-container [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{text: quizInternal?.caption,
+          escapeHtml: escapeHtml, translation: translation, Translation: Translation}">
+      </ng-container>
+    </div>
+    <div class="quiz-block" *ngFor="let block of quizInternal?.blocks">
+      <div class="question-block" *ngFor="let question of block?.questions">
+        <div class="question title-h5 mb-24 mb-lg-32" *ngIf="question.question">
+          <ng-container [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{text: question.question,
+              escapeHtml: escapeHtml, translation: translation, Translation: Translation}">
+          </ng-container>
+        </div>
+        <div class="answers mb-8 mb-lg-16" [ngClass]="{'new-lines': newLines}">
+          <ng-container *ngIf="question.questionType === QuestionType.RADIO">
+            <div *ngFor="let answer of question.answers"
+                 class="answer text-plain"
+                 [ngClass]="{selected: answer === question.selectedAnswer, hidden: answer === question.defaultAnswer}"
+                 (click)="selectAnswer(question, answer);">
+              <ng-container [ngTemplateOutlet]="textTemplate"
+                            [ngTemplateOutletContext]="{text: answer.text, escapeHtml: escapeHtml, translation: translation, Translation: Translation}">
+              </ng-container>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="question.questionType === QuestionType.RATING">
+            <div *ngFor="let answer of question.answers" class="answer rate-answer"
+              [ngClass]="{selected: answer.selected, highlighted: answer.highlighted, hidden: answer === question.defaultAnswer}"
+              (click)="selectAnswer(question, answer)"
+              (mouseenter)="highlightAnswer(question, answer)" (mouseleave)="dehighlightAnswers(question)">
+            </div>
+          </ng-container>
+        </div>
+        <div class="legend text-sub mb-32" *ngIf="question.legend">
+          <ng-container [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{text: question.legend,
+              escapeHtml: escapeHtml, translation: translation, Translation: Translation}">
+          </ng-container>
+        </div>
+        <ng-container *ngIf="question.textComment && question.textComment.allowed">
+          <div class="extended-answer-header text-plain mb-8" *ngIf="question.textComment.caption">
+            <ng-container [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{text: question.textComment.caption,
+                escapeHtml: escapeHtml, translation: translation, Translation: Translation}">
+            </ng-container>
+          </div>
+          <div class="extended-answer mb-32">
+            <lib-plain-input
+              [multiline]="true"
+              [disabled]="question.textComment.disabled || false"
+              [placeholder]="question.textComment.placeholder ? (translation === Translation.APP ? (question.textComment.placeholder | appTranslate) : question.textComment.placeholder) : ''" [(ngModel)]="question.extendedAnswer"
+              [maxlength]="4000">
+            </lib-plain-input>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="buttons mb-lg-32 mb-md-32">
+      <div class="button-wrapper">
+        <lib-button [disabled]="!submitAllowed" (click)="submitQuiz()" size="md">{{'QUIZ.SUBMIT_QUIZ' | libTranslate}}</lib-button>
+      </div>
+      <div class="button-wrapper">
+        <lib-button color="white" (click)="cancelQuiz()" size="md">{{'QUIZ.CANCEL_QUIZ' | libTranslate}}</lib-button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="popup-wrapper fictive"><!--статичный признак модалки для modal сервиса--></div>
+<ng-template #textTemplate let-text="text" let-escapeHtml="escapeHtml" let-translation="translation" let-Translation="Translation">
+  <span *ngIf="translation === Translation.APP && escapeHtml">{{text | appTranslate}}</span>
+  <span *ngIf="translation === Translation.APP && !escapeHtml" [innerHTML]="text | appTranslate"></span>
+  <span *ngIf="translation === Translation.NONE && escapeHtml">{{text}}</span>
+  <span *ngIf="translation === Translation.NONE && !escapeHtml" [innerHTML]="text"></span>
+</ng-template>

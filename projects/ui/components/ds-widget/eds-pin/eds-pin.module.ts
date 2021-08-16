@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@epgu/ui/pipes/translate';
+import { TranslateModule } from '@epgu/ui/pipes';
 import { EdsPinComponent } from './eds-pin.component';
 import { EdsItemModule } from '@epgu/ui/components/ds-widget/eds-item';
-import { StandardInputModule } from '@epgu/ui/components/standard-input';
-import { ButtonModule } from '@epgu/ui/components/button';
+import { StandardInputModule } from '@epgu/ui/controls';
+import { ButtonModule } from '@epgu/ui/base';
 import { FormsModule } from '@angular/forms';
 
 

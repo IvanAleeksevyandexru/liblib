@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { SnippetModel, FeedModel } from '@epgu/ui/models';
+import { FeedModel, SnippetModel } from '@epgu/ui/models';
 import { LoadService } from '@epgu/ui/services/load';
 import { Router } from '@angular/router';
 import { FeedsService } from '@epgu/ui/services/feeds';
 import { SnippetsService } from '@epgu/ui/services/snippets';
 import * as moment_ from 'moment';
-import { DeclinePipe } from '@epgu/ui/pipes/decline';
+import { DeclinePipe } from '@epgu/ui/pipes';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
 
 const moment = moment_;
@@ -28,9 +28,11 @@ export class SnippetsComponent implements OnInit {
     private snippetsService: SnippetsService,
     public declinePipe: DeclinePipe,
     public yaMetricService: YaMetricService
-  ) {}
+  ) {
+  }
 
-  public ngOnInit() {}
+  public ngOnInit() {
+  }
 
   private onSnippetClick(snippet: SnippetModel, feed: FeedModel): void {
     const snippetCode = this.snippetsService.yaMetricSnippetMap(snippet, feed);

@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PipedMessageModule } from '@epgu/ui/pipes/piped-message';
+import { PipedMessageModule, TranslateModule } from '@epgu/ui/pipes';
 import { ValidationMessageComponent } from './validation-message.component';
-import { TranslateModule } from '@epgu/ui/pipes/translate';
 
 
 @NgModule({
@@ -14,6 +13,7 @@ import { TranslateModule } from '@epgu/ui/pipes/translate';
   declarations: [
     ValidationMessageComponent
   ],
-  exports: [ ValidationMessageComponent ],
+  exports: [ValidationMessageComponent],
 })
-export class ValidationMessageModule { }
+export class ValidationMessageModule {
+}
