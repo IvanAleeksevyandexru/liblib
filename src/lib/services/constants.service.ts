@@ -149,24 +149,6 @@ export class ConstantsService {
       break: 'after'
     }
   ]);
-  public readonly LK_PARTNERS_TABS = new Tabs([
-    {
-      id: 'partners',
-      name: 'TABS.PARTNERS_ORDERS.TITLE',
-      url: '/lk/orders/all',
-      mnemonic: 'partnersOrders'
-    }, {
-      id: 'subscriptions',
-      name: 'TABS.SUBSCRIPTIONS.TITLE',
-      url: '/lk/subscriptions',
-      mnemonic: 'partnersSubscriptions'
-    }, {
-      id: 'history',
-      name: 'TABS.HISTORY.TITLE',
-      url: '/lk/history',
-      mnemonic: 'partnersHistory'
-    }
-  ]);
   public readonly PAYMENT_TABS_FL = new Tabs([
     {
       id: 'toPay',
