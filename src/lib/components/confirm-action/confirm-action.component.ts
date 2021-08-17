@@ -28,6 +28,7 @@ export class ConfirmActionComponent implements OnInit {
     disabled?: boolean,
     handler: (d?) => {}
   }[];
+  public spaceButtonsBetween: boolean;
 
   public destroy: () => {};
 
