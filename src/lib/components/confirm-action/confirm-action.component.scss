@@ -20,7 +20,7 @@
 
 .buttons-between {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
 }
 
 .description {
@@ -53,6 +53,10 @@
 }
 
 @media all and (min-width: 768px) {
+  .buttons-between {
+    flex-direction: row;
+    justify-content: space-between;
+  }
   .icon {
     margin-right: 24px;
     width: auto;
