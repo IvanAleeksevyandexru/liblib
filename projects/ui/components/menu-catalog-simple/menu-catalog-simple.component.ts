@@ -3,6 +3,7 @@ import { Catalog, UserRole } from '@epgu/ui/models';
 import { Subscription } from 'rxjs';
 import { LoadService } from '@epgu/ui/services/load';
 import { MenuService } from '@epgu/ui/services/menu';
+import { User } from '@epgu/ui/models/user';
 
 @Component({
   selector: 'lib-menu-catalog-simple',
@@ -14,7 +15,7 @@ export class MenuCatalogSimpleComponent implements OnInit, OnDestroy {
   @Input() public catalog?: Catalog[];
   @Output() public menuCatalogOpened = new EventEmitter<boolean>();
 
-  public user = this.loadService.user;
+  public user = this.loadService.user as User;
   public showRolesList = false;
   public rolesListEnabled = true;
   public showMenu = false;

@@ -13,7 +13,7 @@ import { CountersService } from '@epgu/ui/services/counters';
 import { LoadService } from '@epgu/ui/services/load';
 import { MenuService } from '@epgu/ui/services/menu';
 import { FeedsComponent } from '@epgu/ui/components/feeds';
-import { Catalog, Category, MenuLink, UserMenuState } from '@epgu/ui/models';
+import { Catalog, Category, MenuLink, UserMenuState, UserRole } from '@epgu/ui/models';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { ModalService } from '@epgu/ui/services/modal';
 import { NavigationEnd, Router } from '@angular/router';
@@ -21,6 +21,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { HelperService } from '@epgu/ui/services/helper';
 import { LangWarnModalComponent } from '@epgu/ui/components/lang-warn-modal';
 import { CounterData, CounterTarget } from '@epgu/ui/models/counter';
+import { User } from '@epgu/ui/models/user';
 
 const HIDE_TIMOUT = 300;
 
@@ -31,8 +32,8 @@ const HIDE_TIMOUT = 300;
 })
 export class HeaderComponent implements OnInit, OnChanges {
 
-  public user = this.loadService.user;
-  public userRoles = this.menuService.getUserRoles(this.user);
+  public user = this.loadService.user as User;
+  public userRoles = this.menuService.getUserRoles(this.user) as UserRole[];
   public userMenuState: UserMenuState;
   public showNotifications: boolean;
   public isUnread: boolean;

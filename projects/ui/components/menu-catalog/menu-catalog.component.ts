@@ -5,6 +5,7 @@ import { MenuService } from '@epgu/ui/services/menu';
 import { CatalogData, UserRole } from '@epgu/ui/models';
 import { CatalogTabsService } from '@epgu/ui/services/catalog-tabs';
 import { SharedService } from '@epgu/ui/services/shared';
+import { User } from '@epgu/ui/models/user';
 
 @Component({
   selector: 'lib-menu-catalog',
@@ -13,7 +14,7 @@ import { SharedService } from '@epgu/ui/services/shared';
 })
 export class MenuCatalogComponent implements OnInit, OnDestroy {
 
-  public user = this.loadService.user;
+  public user = this.loadService.user as User;
   public showRolesList = false;
   public emptyRegionPopular: boolean;
   public showSubCatalog: boolean;
