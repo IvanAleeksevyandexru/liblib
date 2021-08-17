@@ -7,6 +7,7 @@ import { SearchService } from '@epgu/ui/services/search';
 import { MainPageContentInterface } from '@epgu/ui/models';
 import { FrameType } from '@epgu/ui/models';
 import { IMainData } from '@epgu/ui/models/main-data';
+import { User } from '@epgu/ui/models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class MainPageService {
 
   public mainPageData = new BehaviorSubject<MainPageContentInterface>(null);
   public config = this.loadService.config;
-  public user = this.loadService.user;
+  public user = this.loadService.user as User;
   public executed = false;
   public mainBlocksData: IMainData;
   private mainBgType: BehaviorSubject<string> = new BehaviorSubject<string>('person');
