@@ -7,6 +7,7 @@ import { PluralizePipe } from './pluralize.pipe';
     PluralizePipe
   ],
   exports: [PluralizePipe],
+  providers: [ PluralizePipe ]
 })
 export class PluralizeModule {
 }

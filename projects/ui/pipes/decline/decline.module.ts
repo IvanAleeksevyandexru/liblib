@@ -7,6 +7,7 @@ import { DeclinePipe } from './decline.pipe';
     DeclinePipe
   ],
   exports: [DeclinePipe],
+  providers: [DeclinePipe]
 })
 export class DeclineModule {
 }
