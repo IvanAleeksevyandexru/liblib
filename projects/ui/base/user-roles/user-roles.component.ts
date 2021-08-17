@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MenuService } from '@epgu/ui/services/menu';
 import { LoadService } from '@epgu/ui/services/load';
 import { User } from '@epgu/ui/models/user';
-import { UserRole } from '@epgu/ui/models/menu-link';
+import { UserRole } from '@epgu/ui/models';
 
 @Component({
   selector: 'lib-user-roles',
