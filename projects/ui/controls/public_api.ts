@@ -21,4 +21,4 @@ export * from './search-bar/index';
 export * from './standard-input/index';
 export * from './standard-masked-input/index';
 
-export * from './controls.module'
+export * from './controls.module';

@@ -4,8 +4,16 @@ import { LimitNumberModule, PipedMessageModule, TranslateModule } from '@epgu/ui
 import { ClickOutsideModule, StopClickPropagationModule } from '@epgu/ui/directives';
 import { RouterModule } from '@angular/router';
 
+
+
+
+
+import { StandardMaskedInputComponent } from './standard-masked-input/standard-masked-input.component';
+
 @NgModule({
-  declarations: [],
+  declarations: [
+    StandardMaskedInputComponent
+  ],
   imports: [
     CommonModule,
     TranslateModule,
@@ -15,7 +23,9 @@ import { RouterModule } from '@angular/router';
     StopClickPropagationModule,
     PipedMessageModule
   ],
-  exports: [],
+  exports: [
+    StandardMaskedInputComponent
+  ],
   entryComponents: []
 })
 export class ControlsModule {
