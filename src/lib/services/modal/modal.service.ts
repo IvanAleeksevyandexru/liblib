@@ -25,7 +25,8 @@ export class ModalService {
       document.documentElement.classList.add('modal-opened');
       setTimeout(() => {
         this.checkForScroll();
-      });
+      },
+        500);
 
       if (!modalRules?.disableOutsideClickClosing) {
         const elem = document.getElementsByClassName('popup-wrapper')[0];
