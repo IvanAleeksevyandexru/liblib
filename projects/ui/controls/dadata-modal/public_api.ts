@@ -3,4 +3,3 @@
  */
 
 export * from './dadata-modal.component';
-export * from './dadata-modal.module';
