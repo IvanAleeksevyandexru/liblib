@@ -5,14 +5,14 @@ import { TranslateModule } from '@epgu/ui/pipes';
 import { FormsModule } from '@angular/forms';
 import { PagingControlsModule } from '@epgu/ui/components/paging-controls';
 import { HighlightModule } from '@epgu/ui/pipes';
-import { SearchBarModule } from '@epgu/ui/controls';
+import { ControlsModule } from '@epgu/ui/controls';
 
 
 @NgModule({
     imports: [
         CommonModule,
         TranslateModule,
-        SearchBarModule,
+        ControlsModule,
         FormsModule,
         PagingControlsModule,
         HighlightModule,

@@ -144,9 +144,9 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   // источник значений в виде внешнего провайдера с полностью независимой возможно асинхронной логикой работы
   @Input() public itemsProvider: LookupProvider<ListElement | any> | LookupPartialProvider<ListElement | any>;
   // новый вид для ультрановой главной
-  @Input() public mainPageStyle: boolean = false;
+  @Input() public mainPageStyle = false;
   // скрывать результат поиска в независимости от наличия ответа
-  @Input() public hideSearchResult: boolean = false;
+  @Input() public hideSearchResult = false;
   // активация автоматического перевода с английского
   @Input() public enableLangConvert = false;
   // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
@@ -400,7 +400,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   }
 
   public lookupItems(queryOrMarker: string | {}, lookupAnyway: boolean = false) {
-    if ((this.mainPageStyle && this.stopSearch && !lookupAnyway) || (queryOrMarker !== SHOW_ALL_MARKER && (queryOrMarker as string).length < this.queryMinSymbolsCount)) {
+    if ((this.mainPageStyle && this.stopSearch && !lookupAnyway) || 
+    (queryOrMarker !== SHOW_ALL_MARKER && (queryOrMarker as string).length < this.queryMinSymbolsCount)) {
       this.cancelSearchAndClose();
       return;
     }
@@ -491,7 +492,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
   // все что prepareItems + запись в список отображения
   public processNewItems(rootSearch: boolean, items: Array<any>) {
-    this.prepareItems(items, this.items.length, this.activeQuery, false, !!this.itemsProvider || this.virtualScroll, (newItems: Array<ListItem>) => {
+    this.prepareItems
+    (items, this.items.length, this.activeQuery, false, !!this.itemsProvider || this.virtualScroll, (newItems: Array<ListItem>) => {
       if (this.incrementalLoading) {
         if (newItems.length) {
           this.items = rootSearch ? newItems : this.items.concat(newItems);

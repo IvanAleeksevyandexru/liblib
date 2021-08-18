@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@epgu/ui/pipes';
 import { EdsPinComponent } from './eds-pin.component';
 import { EdsItemModule } from '@epgu/ui/components/ds-widget/eds-item';
-import { StandardInputModule } from '@epgu/ui/controls';
+import { ControlsModule } from '@epgu/ui/controls';
 import { BaseModule } from '@epgu/ui/base';
 import { FormsModule } from '@angular/forms';
 
@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     TranslateModule,
     EdsItemModule,
-    StandardInputModule,
+    ControlsModule,
     BaseModule,
     FormsModule,
   ],

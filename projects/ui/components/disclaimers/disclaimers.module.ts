@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DisclaimerComponent } from './disclaimers.component';
 import { TranslateModule } from '@epgu/ui/pipes';
-import { PlainInputModule } from '@epgu/ui/controls';
+import { ControlsModule } from '@epgu/ui/controls';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BaseModule } from '@epgu/ui/base';
 
@@ -10,7 +10,7 @@ import { BaseModule } from '@epgu/ui/base';
   imports: [
     CommonModule,
     TranslateModule,
-    PlainInputModule,
+    ControlsModule,
     ReactiveFormsModule,
     BaseModule,
   ],

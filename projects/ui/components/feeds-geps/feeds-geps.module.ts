@@ -4,7 +4,7 @@ import { FeedsGepsComponent } from './feeds-geps.component';
 import { BaseModule } from '@epgu/ui/base';
 import { HighlightModule, TimeToEventGepsModule, TranslateModule } from '@epgu/ui/pipes';
 import { RouterModule } from '@angular/router';
-import { CheckboxModule } from '@epgu/ui/controls';
+import { ControlsModule } from '@epgu/ui/controls';
 import { FormsModule } from '@angular/forms';
 import { BannerStaticModule } from '@epgu/ui/components/banner-static';
 
@@ -15,7 +15,7 @@ import { BannerStaticModule } from '@epgu/ui/components/banner-static';
     BaseModule,
     TranslateModule,
     RouterModule,
-    CheckboxModule,
+    ControlsModule,
     FormsModule,
     BannerStaticModule,
     HighlightModule,

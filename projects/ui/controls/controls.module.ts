@@ -31,6 +31,16 @@ import { DropdownSimpleComponent } from './dropdown-simple/dropdown-simple.compo
 import { FileUploaderComponent } from './file-uploader/file-uploader.component';
 import { FilteredListComponent } from './filtered-list/filtered-list.component';
 import { LookupComponent } from './lookup/lookup.component';
+import { MonthPickerComponent } from './month-picker/month-picker.component';
+import { MonthYearSelectComponent } from './month-year-select/month-year-select.component';
+import { MultiLookupComponent } from './multi-lookup/multi-lookup.component';
+import { MultilineInputComponent } from './multiline-input/multiline-input.component';
+import { PlainInputComponent } from './plain-input/plain-input.component';
+import { RadioComponent } from './radio/radio.component';
+import { RangeFieldComponent } from './range-field/range-field.component';
+import { RangeSelectorComponent } from './range-selector/range-selector.component';
+import { SearchBarComponent } from './search-bar/search-bar.component';
+import { StandardInputComponent } from './standard-input/standard-input.component';
 import { StandardMaskedInputComponent } from './standard-masked-input/standard-masked-input.component';
 
 
@@ -47,6 +57,16 @@ import { StandardMaskedInputComponent } from './standard-masked-input/standard-m
     FileUploaderComponent,
     FilteredListComponent,
     LookupComponent,
+    MonthPickerComponent,
+    MonthYearSelectComponent,
+    MultiLookupComponent,
+    MultilineInputComponent,
+    PlainInputComponent,
+    RadioComponent,
+    RangeFieldComponent,
+    RangeSelectorComponent,
+    SearchBarComponent,
+    StandardInputComponent,
     StandardMaskedInputComponent
   ],
   imports: [
@@ -83,6 +103,16 @@ import { StandardMaskedInputComponent } from './standard-masked-input/standard-m
     FileUploaderComponent,
     FilteredListComponent,
     LookupComponent,
+    MonthPickerComponent,
+    MonthYearSelectComponent,
+    MultiLookupComponent,
+    MultilineInputComponent,
+    PlainInputComponent,
+    RadioComponent,
+    RangeFieldComponent,
+    RangeSelectorComponent,
+    SearchBarComponent,
+    StandardInputComponent,
     StandardMaskedInputComponent
   ],
   entryComponents: []

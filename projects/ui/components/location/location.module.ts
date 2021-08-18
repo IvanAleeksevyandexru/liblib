@@ -2,9 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LocationComponent } from './location.component';
 import { TranslateModule } from '@epgu/ui/pipes';
-import { RadioModule } from '@epgu/ui/controls';
+import { ControlsModule } from '@epgu/ui/controls';
 import { BaseModule } from '@epgu/ui/base';
-import { LookupModule } from '@epgu/ui/controls';
 import { FormsModule } from '@angular/forms';
 
 
@@ -12,9 +11,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     TranslateModule,
-    RadioModule,
+    ControlsModule,
     BaseModule,
-    LookupModule,
     FormsModule,
   ],
   declarations: [
