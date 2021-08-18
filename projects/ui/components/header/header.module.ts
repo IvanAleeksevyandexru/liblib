@@ -9,7 +9,7 @@ import { LoginModule } from '@epgu/ui/components/login';
 import { UserMenuModule } from '@epgu/ui/components/user-menu';
 import { MenuCatalogModule } from '@epgu/ui/components/menu-catalog';
 import { MenuCatalogSimpleModule } from '@epgu/ui/components/menu-catalog-simple';
-import { LanguageSelectModule, LogoModule } from '@epgu/ui/base';
+import { BaseModule } from '@epgu/ui/base';
 import { LocationSelectModule } from '@epgu/ui/components/location-select';
 
 
@@ -24,9 +24,8 @@ import { LocationSelectModule } from '@epgu/ui/components/location-select';
     UserMenuModule,
     MenuCatalogModule,
     MenuCatalogSimpleModule,
-    LogoModule,
-    LanguageSelectModule,
-    LocationSelectModule
+    LocationSelectModule,
+    BaseModule
   ],
   declarations: [
     HeaderComponent

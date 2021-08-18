@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SnippetsComponent } from './snippets.component';
-import { ButtonModule } from '@epgu/ui/base';
+import { BaseModule } from '@epgu/ui/base';
 import { LimitStringModule, RemoveTagsModule, TimeToEventModule } from '@epgu/ui/pipes';
 
 
 @NgModule({
   imports: [
     CommonModule,
-    ButtonModule,
+    BaseModule,
     TimeToEventModule,
     RemoveTagsModule,
     LimitStringModule,

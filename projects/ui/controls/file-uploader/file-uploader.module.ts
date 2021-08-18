@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FileUploaderComponent } from './file-uploader.component';
-import { ThrobberModule } from '@epgu/ui/base';
+import { BaseModule } from '@epgu/ui/base';
 import { DragAndDropModule } from '@epgu/ui/directives';
 import { FileSizeModule } from '@epgu/ui/pipes';
 
@@ -9,7 +9,7 @@ import { FileSizeModule } from '@epgu/ui/pipes';
 @NgModule({
   imports: [
     CommonModule,
-    ThrobberModule,
+    BaseModule,
     DragAndDropModule,
     FileSizeModule,
   ],

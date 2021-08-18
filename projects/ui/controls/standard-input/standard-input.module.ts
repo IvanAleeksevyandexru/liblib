@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ValidationMessageModule } from '@epgu/ui/components/validation-message';
 import { InvalidResultsTipModule } from '@epgu/ui/components/invalid-results-tip';
 import { PlainInputModule } from '../plain-input';
-import { QuestionHelpTipModule } from '@epgu/ui/base';
+import { BaseModule } from '@epgu/ui/base';
 import { StandardInputComponent } from './standard-input.component';
 
 
@@ -13,7 +13,7 @@ import { StandardInputComponent } from './standard-input.component';
     ValidationMessageModule,
     InvalidResultsTipModule,
     PlainInputModule,
-    QuestionHelpTipModule
+    BaseModule
   ],
   declarations: [
     StandardInputComponent

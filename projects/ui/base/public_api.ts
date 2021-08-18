@@ -17,3 +17,5 @@ export * from './question-help-tip/index';
 export * from './round-loader/index';
 export * from './throbber/index';
 export * from './user-roles/index';
+
+export * from './base.module'

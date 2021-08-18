@@ -1,5 +1,5 @@
 import { Component, ContentChildren, Input, OnInit, QueryList, AfterContentInit, OnDestroy } from '@angular/core';
-import { ExpansionPanelComponent } from '../expansion-panel';
+import { ExpansionPanelComponent } from '../expansion-panel/expansion-panel.component';
 
 @Component({
   selector: 'lib-accordion',

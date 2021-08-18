@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TabsAsideComponent } from './tabs-aside.component';
 import { ClickOutsideModule } from '@epgu/ui/directives';
 import { TranslateModule } from '@epgu/ui/pipes';
-import { CounterModule } from '@epgu/ui/base';
+import { BaseModule } from '@epgu/ui/base';
 
 
 @NgModule({
@@ -11,7 +11,7 @@ import { CounterModule } from '@epgu/ui/base';
     CommonModule,
     ClickOutsideModule,
     TranslateModule,
-    CounterModule,
+    BaseModule,
   ],
   declarations: [
     TabsAsideComponent

@@ -5,7 +5,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { SubstModule, TranslateModule } from '@epgu/ui/pipes';
 import { SearchBarModule } from '../search-bar';
 import { VirtualScrollModule } from '@epgu/ui/components/virtual-scroll';
-import { LoaderModule } from '@epgu/ui/base';
+import { BaseModule } from '@epgu/ui/base';
 import { ClickOutsideModule, StopScreenScrollModule, VirtualForOfModule } from '@epgu/ui/directives';
 import { AutocompleteComponent } from './autocomplete.component';
 
@@ -17,7 +17,7 @@ import { AutocompleteComponent } from './autocomplete.component';
     TranslateModule,
     SearchBarModule,
     VirtualScrollModule,
-    LoaderModule,
+    BaseModule,
     StopScreenScrollModule,
     ClickOutsideModule,
     SubstModule,

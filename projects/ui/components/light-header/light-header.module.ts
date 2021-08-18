@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LightHeaderComponent } from './light-header.component';
-import { LogoModule } from '@epgu/ui/base';
+import { BaseModule } from '@epgu/ui/base';
 
 
 @NgModule({
-    imports: [
-        CommonModule,
-        LogoModule,
-    ],
+  imports: [
+    CommonModule,
+    BaseModule,
+  ],
   declarations: [
     LightHeaderComponent
   ],

@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxModule } from '../checkbox';
 import { PlainInputModule } from '../plain-input';
 import { DropdownModule } from '../dropdown';
-import { MapModule } from '@epgu/ui/base';
+import { BaseModule } from '@epgu/ui/base';
 import { BaseMaskedInputModule } from '../base-masked-input';
 
 @NgModule({
@@ -21,7 +21,7 @@ import { BaseMaskedInputModule } from '../base-masked-input';
     BaseMaskedInputModule,
     FormsModule,
     DropdownModule,
-    MapModule,
+    BaseModule,
   ],
   declarations: [
     DadataWidgetComponent

@@ -6,7 +6,7 @@ import { SafeHtmlModule, SubstModule, TranslateModule } from '@epgu/ui/pipes';
 import { ClickOutsideModule, VirtualForOfModule } from '@epgu/ui/directives';
 import { SearchBarModule } from '../search-bar';
 import { VirtualScrollModule } from '@epgu/ui/components/virtual-scroll';
-import { LoaderModule } from '@epgu/ui/base';
+import { BaseModule } from '@epgu/ui/base';
 import { LookupComponent } from './lookup.component';
 
 
@@ -21,7 +21,7 @@ import { LookupComponent } from './lookup.component';
     VirtualForOfModule,
     SearchBarModule,
     VirtualScrollModule,
-    LoaderModule,
+    BaseModule,
     TranslateModule
   ],
   declarations: [

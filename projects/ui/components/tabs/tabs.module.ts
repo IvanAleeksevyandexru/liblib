@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TabsComponent } from './tabs.component';
 import { ClickOutsideModule } from '@epgu/ui/directives';
-import { CounterModule } from '@epgu/ui/base';
+import { BaseModule } from '@epgu/ui/base';
 import { TranslateModule } from '@epgu/ui/pipes';
 
 
@@ -10,7 +10,7 @@ import { TranslateModule } from '@epgu/ui/pipes';
   imports: [
     CommonModule,
     ClickOutsideModule,
-    CounterModule,
+    BaseModule,
     TranslateModule,
   ],
   declarations: [
