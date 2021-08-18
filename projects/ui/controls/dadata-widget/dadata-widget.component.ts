@@ -23,9 +23,9 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { AutocompleteComponent } from '../autocomplete';
+import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { ModalService } from '@epgu/ui/services/modal';
-import { DadataModalComponent } from '../dadata-modal';
+import { DadataModalComponent } from '../dadata-modal/dadata-modal.component';
 import { CommonController } from '@epgu/ui/directives';
 import { ValidationService } from '@epgu/ui/services/validators';
 import { BehaviorSubject, zip } from 'rxjs';

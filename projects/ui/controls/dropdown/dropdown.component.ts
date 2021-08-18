@@ -21,7 +21,7 @@ import {
 } from '@angular/core';
 import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListElement, ListItem, ListItemConverter } from '@epgu/ui/models/dropdown';
-import { SearchBarComponent } from '../search-bar';
+import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { VirtualScrollComponent } from '@epgu/ui/components/virtual-scroll';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { Focusable, FocusManager } from '@epgu/ui/services/focus';

@@ -8,7 +8,7 @@ import { AutocompleteSuggestion,
 import { Validated } from '@epgu/ui/models/validation-show';
 import { HelperService } from '@epgu/ui/services/helper';
 import { ConstantsService } from '@epgu/ui/services/constants';
-import { SearchBarComponent } from '../search-bar';
+import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { VirtualScrollComponent } from '@epgu/ui/components/virtual-scroll';
 import { Width, Suggest, SuggestItem, PositioningRequest } from '@epgu/ui/models';
