@@ -1,13 +1,10 @@
 import {
-  AfterContentChecked,
-  AfterContentInit, AfterViewChecked,
-  AfterViewInit, ChangeDetectorRef,
+  AfterViewChecked,
+  ChangeDetectorRef,
   Component,
-  ContentChild,
-  ContentChildren, ElementRef,
+  ElementRef,
   Input,
   OnInit,
-  TemplateRef,
   ViewChild
 } from '@angular/core';
 

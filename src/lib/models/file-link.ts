@@ -1,3 +1,5 @@
+import { Action } from './action';
+
 export interface FileLink {
   objectId: number | string;
   objectTypeId: number | string;
@@ -8,13 +10,7 @@ export interface File {
   text: string;
   typeOfFile?: FilesExtension; // Тип файла, по которому картинка подхватится
   weight?: string; // Вес файла в формате: 1.4 Мб
-  actions?: FileActions[]; // Действия с файлом
-}
-
-export interface FileActions {
-  title: string; // Название действия
-  href: string; // Ссылка
-  target?: '_self' | '_blank' | '_parent' | '_top'; // По умолчанию _blank
+  actions?: Action[]; // Действия с файлом
 }
 
 export type FilesExtension = 'xls' | 'csv' | // таблицы
