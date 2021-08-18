@@ -5,6 +5,9 @@
 
 .button-wrapper {
   margin: 0 0 20px 0;
+  &:last-child {
+    margin-right: 0;
+  }
 }
 
 .icon {
@@ -13,6 +16,11 @@
   img {
     max-width: 286px;
   }
+}
+
+.buttons-between {
+  display: flex;
+  flex-direction: column;
 }
 
 .description {
@@ -45,6 +53,10 @@
 }
 
 @media all and (min-width: 768px) {
+  .buttons-between {
+    flex-direction: row;
+    justify-content: space-between;
+  }
   .icon {
     margin-right: 24px;
     width: auto;
