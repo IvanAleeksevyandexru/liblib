@@ -42,6 +42,8 @@ import { RangeSelectorComponent } from './range-selector/range-selector.componen
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { StandardInputComponent } from './standard-input/standard-input.component';
 import { StandardMaskedInputComponent } from './standard-masked-input/standard-masked-input.component';
+import { TextMaskModule } from 'angular2-text-mask';
+import { InvalidResultsTipModule } from '@epgu/ui/components/invalid-results-tip';
 
 
 @NgModule({
@@ -90,6 +92,8 @@ import { StandardMaskedInputComponent } from './standard-masked-input/standard-m
     VirtualForOfModule,
     DragAndDropModule,
     FileSizeModule,
+    TextMaskModule,
+    InvalidResultsTipModule,
   ],
   exports: [
     AutocompleteComponent,

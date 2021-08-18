@@ -13,7 +13,7 @@ import {
   TemplateRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
-import { BaseMaskedInputComponent } from '../base-masked-input';
+import { BaseMaskedInputComponent } from '../base-masked-input/base-masked-input.component';
 import { Focusable } from '@epgu/ui/services/focus';
 import { PipedMessage } from '@epgu/ui/models/piped-message';
 import {

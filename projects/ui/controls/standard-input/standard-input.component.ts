@@ -11,7 +11,7 @@ import {
   Output
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
-import { PlainInputComponent } from '../plain-input';
+import { PlainInputComponent } from '../plain-input/plain-input.component';
 import { PipedMessage } from '@epgu/ui/models/piped-message';
 import {
   InputAutocomplete,

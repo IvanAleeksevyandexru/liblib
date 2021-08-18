@@ -12,7 +12,7 @@ import {
   Output
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DropdownSimpleComponent } from '../dropdown-simple';
+import { DropdownSimpleComponent } from '../dropdown-simple/dropdown-simple.component';
 import { Focusable } from '@epgu/ui/services/focus';
 import { Validated } from '@epgu/ui/models/validation-show';
 import { Range, RangeListItem, RelativeDate } from '@epgu/ui/models/date-time';

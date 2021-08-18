@@ -3,8 +3,8 @@ import {
   AfterViewInit, OnChanges, OnDestroy, SimpleChanges, ChangeDetectorRef
 } from '@angular/core';
 import { ControlValueAccessor, ValidationErrors, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DatePickerComponent } from '../date-picker';
-import { StandardMaskedInputComponent } from '../standard-masked-input';
+import { DatePickerComponent } from '../date-picker/date-picker.component';
+import { StandardMaskedInputComponent } from '../standard-masked-input/standard-masked-input.component';
 import { FocusManager, FocusState } from '@epgu/ui/services/focus';
 import { ValidationMessages } from '@epgu/ui/models/validation-show';
 import { PipedMessage } from '@epgu/ui/models/piped-message';

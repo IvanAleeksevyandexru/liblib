@@ -19,7 +19,7 @@ import {
 import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { forkJoin, from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { LookupComponent } from '../lookup';
+import { LookupComponent } from '../lookup/lookup.component';
 import { ListItem, ListItemConverter, LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
 import { FixedItemsProvider, ListItemsOperationsContext, ListItemsService } from '@epgu/ui/services/list-item';
 import { Validated } from '@epgu/ui/models/validation-show';
