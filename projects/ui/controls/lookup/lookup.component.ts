@@ -40,7 +40,7 @@ import { ConstantsService } from '@epgu/ui/services/constants';
 import { PositioningManager } from '@epgu/ui/services/positioning';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { VirtualScrollComponent } from '@epgu/ui/components/virtual-scroll';
-import { SearchBarComponent } from '../search-bar';
+import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { SharedService } from '@epgu/ui/services/shared';
 import { InconsistentReaction, LineBreak, Translation, ValidationShowOn } from '@epgu/ui/models/common-enums';
 

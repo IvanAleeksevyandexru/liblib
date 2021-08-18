@@ -3,4 +3,3 @@
  */
 
 export * from './dadata-widget.component';
-export * from './dadata-widget.module';

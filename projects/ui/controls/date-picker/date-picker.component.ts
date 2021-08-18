@@ -26,7 +26,7 @@ import {
   ValidationErrors
 } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { StandardMaskedInputComponent } from './../standard-masked-input';
+import { StandardMaskedInputComponent } from '../standard-masked-input/standard-masked-input.component';
 import { PipedMessage } from '@epgu/ui/models/piped-message';
 import { HorizontalAlign, PositioningRequest, Width } from '@epgu/ui/models';
 import {
