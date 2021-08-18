@@ -199,10 +199,13 @@ export class BaseMaskedInputComponent
         inp.setSelectionRange(0, 0);
       });
     }
+  }
 
-    if (this.positionInInput !== 0) {
-      this.goToFixPosition(this.positionInInput, this.positionInInput);
-    }
+  public handleClick(evt: Event): void {
+    setTimeout(() => {
+      this.loseFocus();
+      this.returnFocus();
+    });
   }
 
   public handleBlur() {
@@ -214,7 +217,7 @@ export class BaseMaskedInputComponent
 
   public handleFocus() {
     this.touched = this.focused = true;
-    HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue);
+    HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue, this.positionInInput);
     this.valueOnFocus = this.inputElement.nativeElement.value;
     this.check();
     if (this.onTouchedCallback) {
@@ -241,7 +244,7 @@ export class BaseMaskedInputComponent
 
     if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement) && !isSuggest) {
       this.inputElement.nativeElement.focus();
-      HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue);
+      HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue, this.positionInInput);
       this.focusManager.notifyFocusMayChanged(this, true);
     }
   }
@@ -263,7 +266,6 @@ export class BaseMaskedInputComponent
     if (!this.disabled) {
       this.writeValue(null);
       this.commit(null);
-      this.goToFixPosition(this.positionInInput, this.positionInInput);
       this.cleared.emit();
       this.returnFocus(e);
     }
@@ -341,10 +343,6 @@ export class BaseMaskedInputComponent
   public editSuggestList(suggest: Suggest): void {
     suggest.isEdit = true;
     this.selectSuggest.emit(suggest);
-  }
-
-  public goToFixPosition(start: number, end: number): void {
-    this.inputElement.nativeElement.setSelectionRange(start, end);
   }
 
 }
