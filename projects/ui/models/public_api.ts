@@ -1,5 +1,4 @@
 export * from './payment.model';
-export * from './setting';
 export * from './tabs';
 export * from './accesses.model';
 export * from './account-event';

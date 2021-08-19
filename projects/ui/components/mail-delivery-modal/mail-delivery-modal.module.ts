@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MailDeliveryModalComponent } from './mail-delivery-modal.component';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -11,6 +10,7 @@ import { MailDeliveryModalComponent } from './mail-delivery-modal.component';
     MailDeliveryModalComponent
   ],
   exports: [MailDeliveryModalComponent],
+  entryComponents: [MailDeliveryModalComponent]
 })
 export class MailDeliveryModalModule {
 }
