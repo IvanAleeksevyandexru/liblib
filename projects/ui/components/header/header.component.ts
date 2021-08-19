@@ -12,7 +12,6 @@ import {
 import { CountersService } from '@epgu/ui/services/counters';
 import { LoadService } from '@epgu/ui/services/load';
 import { MenuService } from '@epgu/ui/services/menu';
-import { FeedsComponent } from '@epgu/ui/components/feeds';
 import { Catalog, Category, MenuLink, UserMenuState, UserRole } from '@epgu/ui/models';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { ModalService } from '@epgu/ui/services/modal';
@@ -35,7 +34,6 @@ export class HeaderComponent implements OnInit, OnChanges {
   public user = this.loadService.user as User;
   public userRoles = this.menuService.getUserRoles(this.user) as UserRole[];
   public userMenuState: UserMenuState;
-  public showNotifications: boolean;
   public isUnread: boolean;
   public activeRoleCode: string;
   public showCategories: boolean;
@@ -52,13 +50,10 @@ export class HeaderComponent implements OnInit, OnChanges {
   private closeBurger = new BehaviorSubject(false);
   public closeBurger$ = this.closeBurger.asObservable();
 
-  @ViewChild(FeedsComponent) public feedsComponent: FeedsComponent;
-
   @Input() public userCounter: CounterData;
   @Input() public comingSoon?: boolean;
   @Input() public isPortal = false;
   @Input() public links?: MenuLink[] = [];
-  @Input() public mergeHeaderMenu?: boolean;
   @Input() public rolesListEnabled?: boolean;
   @Input() public searchSputnikEnabled?: boolean;
   @Input() public logoHref?: string;
@@ -74,7 +69,6 @@ export class HeaderComponent implements OnInit, OnChanges {
   @HostListener('document:keydown', ['$event'])
   public onKeydownComponent(event: KeyboardEvent) {
     if (event.key === 'Escape') {
-      this.showNotifications = false;
       this.showRolesList = false;
     }
   }
@@ -83,9 +77,6 @@ export class HeaderComponent implements OnInit, OnChanges {
   public onClickOut(event) {
     if (!event.target.classList.contains('user-role')) {
       this.showRolesList = false;
-    }
-    if (!event.target.classList.contains('bell')) {
-      this.showNotifications = false;
     }
   }
 
@@ -122,7 +113,7 @@ export class HeaderComponent implements OnInit, OnChanges {
   }
 
   public burgerWithCatalogShow(currentPath): void {
-    let urls = ['/new', '/newsearch', '/departments', '/pay'];
+    const urls = ['/new', '/newsearch', '/departments', '/pay'];
     if (this.isPortal) {
       urls.push('/');
     }
