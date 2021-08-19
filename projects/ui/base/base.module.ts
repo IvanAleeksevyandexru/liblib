@@ -21,7 +21,7 @@ import { QuestionHelpTipComponent } from './question-help-tip/question-help-tip.
 import { RoundLoaderComponent } from './round-loader/round-loader.component';
 import { ThrobberComponent } from './throbber/throbber.component';
 import { UserRolesComponent } from './user-roles/user-roles.component';
-import { LimitNumberModule, PipedMessageModule, TranslateModule } from '@epgu/ui/pipes';
+import { LimitNumberModule, PipedMessageModule, TranslatePipeModule } from '@epgu/ui/pipes';
 import { ClickOutsideModule, StopClickPropagationModule } from '@epgu/ui/directives';
 import { RouterModule } from '@angular/router';
 
@@ -51,7 +51,7 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     CommonModule,
-    TranslateModule,
+    TranslatePipeModule,
     LimitNumberModule,
     ClickOutsideModule,
     RouterModule,

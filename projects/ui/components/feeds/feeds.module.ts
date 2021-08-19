@@ -10,7 +10,7 @@ import {
   RemoveTagsModule,
   TimeLeftModule,
   TimeToEventModule,
-  TranslateModule
+  TranslatePipeModule
 } from '@epgu/ui/pipes';
 import { FeedIconModule } from '@epgu/ui/components/feed-icon';
 import { SnippetsModule } from '@epgu/ui/components/snippets';
@@ -20,7 +20,7 @@ import { SnippetsModule } from '@epgu/ui/components/snippets';
   imports: [
     CommonModule,
     RouterModule,
-    TranslateModule,
+    TranslatePipeModule,
     BaseModule,
     FeedIconModule,
     HighlightModule,

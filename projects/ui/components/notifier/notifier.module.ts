@@ -2,13 +2,13 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NotifierService } from '@epgu/ui/services/notifier';
 import { NotifierComponent } from './notifier.component';
-import { TranslateModule } from '@epgu/ui/pipes';
+import { TranslatePipeModule } from '@epgu/ui/pipes';
 import { NotifierSetting } from '@epgu/ui/models/notifier';
 
 @NgModule({
   imports: [
     CommonModule,
-    TranslateModule,
+    TranslatePipeModule,
   ],
   declarations: [
     NotifierComponent

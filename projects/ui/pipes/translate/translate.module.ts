@@ -12,5 +12,5 @@ import { AppTranslatePipe, LibTranslatePipe } from './translate.pipe';
     LibTranslatePipe
   ]
 })
-export class TranslateModule {
+export class TranslatePipeModule {
 }

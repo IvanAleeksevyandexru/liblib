@@ -6,7 +6,7 @@ import {
   PipedMessageModule,
   SafeHtmlModule,
   SubstModule,
-  TranslateModule
+  TranslatePipeModule
 } from '@epgu/ui/pipes';
 import {
   ClickOutsideModule, DragAndDropModule,
@@ -73,7 +73,7 @@ import { InvalidResultsTipModule } from '@epgu/ui/components/invalid-results-tip
   ],
   imports: [
     CommonModule,
-    TranslateModule,
+    TranslatePipeModule,
     LimitNumberModule,
     ClickOutsideModule,
     RouterModule,

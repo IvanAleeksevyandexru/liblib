@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@epgu/ui/pipes';
+import { TranslatePipeModule } from '@epgu/ui/pipes';
 import { EdsPinComponent } from './eds-pin.component';
 import { EdsItemModule } from '@epgu/ui/components/ds-widget/eds-item';
 import { ControlsModule } from '@epgu/ui/controls';
@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     CommonModule,
-    TranslateModule,
+    TranslatePipeModule,
     EdsItemModule,
     ControlsModule,
     BaseModule,
