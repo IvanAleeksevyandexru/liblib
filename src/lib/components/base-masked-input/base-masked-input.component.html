@@ -15,6 +15,7 @@
          [class.clearable]="clearable"
          [class.uppercase]="uppercase"
          [class.is-suggest]="suggest && suggest.list.length"
+         (click)="handleClick($event)"
          (blur)="notifyFocusEvent($event)"
          (focus)="notifyFocusEvent($event)"
          (input)="handleInput($event.target.value, $event)"

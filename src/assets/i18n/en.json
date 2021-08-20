@@ -5,27 +5,41 @@
     "REGISTER": "Register",
     "EXIT": "Exit",
     "ALL_ROLES": "All my roles",
+    "HELP": "Help",
     "MENU": {
       "CATALOG": "Services catalog",
       "NEWS": "News",
       "DOCS": "Documents",
       "SERVICES": "Services",
       "PAYMENT": "Payments",
-      "SUPPORT": "Support",
       "PROFILE": "Profile",
+      "SUPPORT": "Support",
+      "NOTIFICATIONS": "Notifications",
       "SETTINGS": "Settings and Security",
       "SETTINGS_MENU": "Settings",
       "LOGIN_IE": "Login as businessman",
       "LOGIN_ORG": "Login as organization",
       "CHANGE_ROLE": "Change role",
+      "PARTNERS_ORDERS": "Уведомления",
+      "SYSTEMS": "Systems",
+      "ACCESS_GROUPS": "Access groups",
+      "SERVICE_CENTERS": "Services centers",
+      "OPERATION_HISTORY": "Operation history",
+      "POWERS": "Powers",
       "ORDERS": "Statements",
       "MESSAGES": "State post",
       "BLOG": "Blog",
-      "HELP": "Support"
+      "HELP": "Support",
+      "PERMISSIONS": "Permissions",
+      "DIGITAL_ASSISTANT": "Digital assistant",
+      "SUBSCRIPTIONS": "Subscriptions",
+      "HISTORY": "History"
     },
     "CATALOG": {
       "ALL": "Catalog all",
-      "CLOSE": "Close"
+      "CLOSE": "Close",
+      "SERVICES": "SERVICES",
+      "FOR": "FOR"
     }
   },
   "FOOTER": {
