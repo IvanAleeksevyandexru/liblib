@@ -42,5 +42,4 @@ export * from './social';
 export * from './suggest';
 export * from './throbber';
 export * from './user-menu';
-export * from './user-type-params';
 export * from './width-height';

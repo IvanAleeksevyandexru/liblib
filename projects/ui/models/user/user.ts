@@ -5,12 +5,12 @@ import {
   Org,
   RegContextConfirmState,
   Social,
-  UserTypeParams,
 } from '@epgu/ui/models';
 import { Kid } from '@epgu/ui/models/kid';
 import { Contact } from '@epgu/ui/models/contact';
 import { Vehicle } from '@epgu/ui/models/vehicle';
 import { Document } from '@epgu/ui/models/document';
+import { UserTypeParams } from '@epgu/ui/models/user-type-params';
 
 export interface PersonData {
   addresses?: Address[];
