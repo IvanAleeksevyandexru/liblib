@@ -43,6 +43,7 @@ export class HeaderComponent implements OnInit {
   public burgerWithCatalog = true;
   public burgerDemoMode = this.loadService.config.burgerDemoMode;
   public Translation = Translation;
+  public psoContainer = document.getElementById('pso-widget-container');
 
   private closeBurger = new BehaviorSubject(false);
   public closeBurger$ = this.closeBurger.asObservable();
@@ -144,11 +145,17 @@ export class HeaderComponent implements OnInit {
 
     const html = document.getElementsByTagName('html')[0];
     html.classList.add('disable-scroll-sm');
+    if (this.psoContainer && (window as any).screen.width < 812) {
+      this.psoContainer.style.display = 'none';
+    }
   }
 
   public hideUserMenu() {
     if (this.menu) {
       this.menu.onClose();
+      if (this.psoContainer && (window as any).screen.width < 812) {
+        this.psoContainer.style.display = 'unset';
+      }
     }
   }
 

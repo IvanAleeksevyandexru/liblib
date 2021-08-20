@@ -5,6 +5,9 @@
 
 .button-wrapper {
   margin: 0 0 20px 0;
+  &:last-child {
+    margin-right: 0;
+  }
 }
 
 .icon {
@@ -15,12 +18,45 @@
   }
 }
 
+.buttons-between {
+  display: flex;
+  flex-direction: column;
+}
+
 .description {
+  width: 100%;
   text-align: center;
   white-space: pre-line;
+  color: inherit;
+
+  ::ng-deep {
+    .figure-content {
+      white-space: normal;
+
+      figure {
+        &:not(:last-child) {
+          margin-bottom: 24px;
+        }
+
+        img {
+          display: block;
+          margin: 0 auto;
+        }
+
+        figcaption {
+          margin-top: 16px;
+          text-align: center;
+        }
+      }
+    }
+  }
 }
 
 @media all and (min-width: 768px) {
+  .buttons-between {
+    flex-direction: row;
+    justify-content: space-between;
+  }
   .icon {
     margin-right: 24px;
     width: auto;
