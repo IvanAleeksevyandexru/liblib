@@ -15,16 +15,13 @@
     }
   }
 
-  .actions {
-    position: relative;
-  }
-
   ::ng-deep {
     lib-actions-menu {
       .actions-menu-button, .actions {
         top: 0;
         right: 0;
         position: relative;
+        align-items: center;
       }
     }
   }
