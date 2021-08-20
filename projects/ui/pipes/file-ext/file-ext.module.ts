@@ -7,6 +7,7 @@ import { FileExtPipe } from './file-ext.pipe';
     FileExtPipe
   ],
   exports: [FileExtPipe],
+  providers: [FileExtPipe]
 })
 export class FileExtModule {
 }
