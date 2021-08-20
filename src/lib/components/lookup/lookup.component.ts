@@ -95,6 +95,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   @Input() public clearable = false;
   // показ выпадашки со значением "не найдено" если результат поиска пустой (вкл), отсутствие выпадашки (выкл)
   @Input() public showNotFound = false;
+  // кастомное сообщение, когда результат поиска пустой, если включен showNotFound
+  @Input() public customNotFoundMessage: string;
   // экранирование хтмл при выводе
   @Input() public escapeHtml = false;
   // перевод итемов виджетом (в этом случае .text это код транслитерации)

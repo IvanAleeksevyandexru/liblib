@@ -20,6 +20,12 @@ html {
   }
 }
 
+@media all and (max-width: 1139px) {
+  html.disable-scroll-sm-md {
+    overflow: hidden;
+  }
+}
+
 body {
   display: flex;
   flex-direction: column;
