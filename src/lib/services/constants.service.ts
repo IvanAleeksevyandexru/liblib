@@ -215,11 +215,6 @@ export class ConstantsService {
       break: 'after'
     },
     {
-      id: 'blocked',
-      name: 'MESSAGES.TABS.BLOCKED',
-      url: '/settings/blacklist'
-    },
-    {
       id: 'settings',
       name: 'MESSAGES.TABS.SETTINGS',
       url: '/settings/mail'
