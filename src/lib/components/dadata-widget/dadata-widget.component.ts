@@ -297,6 +297,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           lng: this.normalizedData.geo_lon,
           fiasCode: this.normalizedData.address.fiasCode,
           okato: this.normalizedData.okato,
+          oktmo: this.normalizedData.oktmo,
           hasErrors: this.errorCodes.length,
           kladrCode: this.dadataService.kladrCode,
           regionCode: (this.dadataService.kladrCode && this.dadataService.kladrCode.substring(0, 2)) || ''
