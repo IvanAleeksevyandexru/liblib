@@ -125,13 +125,6 @@ export class ConstantsService {
       url: '/messages',
       metric: { name: this.TABS_METRIC_NAME, action: 'messages' },
     },
-    {
-      id: 'permissions',
-      name: 'TABS.PERMISSIONS.TITLE',
-      url: '/permissions',
-      metric: { name: this.TABS_METRIC_NAME, action: 'permissions' },
-      trusted: true,
-    },
   ]);
   public readonly LK_DEPT_TABS = new Tabs([
     {
