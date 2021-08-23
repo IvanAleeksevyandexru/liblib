@@ -18,6 +18,7 @@ import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.compo
 import { ModalService } from '../../services/modal/modal.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
+
 import { HelperService } from '../../services/helper/helper.service';
 
 const HIDE_TIMOUT = 300;
@@ -68,6 +69,20 @@ export class HeaderComponent implements OnInit {
 
   @ViewChild('menu') private menu;
 
+  public isMenuOpened$ = this.menuService.menuIsOpen$;
+
+  constructor(
+    public loadService: LoadService,
+    private menuService: MenuService,
+    private countersService: CountersService,
+    public translate: TranslateService,
+    private modalService: ModalService,
+    private moduleRef: NgModuleRef<any>,
+    private router: Router,
+  ) {
+    this.onRouteChange();
+  }
+
   @HostListener('document:keydown', ['$event'])
   public onKeydownComponent(event: KeyboardEvent) {
     if (event.key === 'Escape') {
@@ -86,18 +101,6 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-
-  constructor(
-    public loadService: LoadService,
-    private menuService: MenuService,
-    private countersService: CountersService,
-    public translate: TranslateService,
-    private modalService: ModalService,
-    private moduleRef: NgModuleRef<any>,
-    private router: Router
-  ) {
-    this.onRouteChange();
-  }
 
   public ngOnInit(): void {
     this.initUserMenuState();
@@ -127,7 +130,7 @@ export class HeaderComponent implements OnInit {
 
   private onRouteChange(): void {
     if (this.burgerDemoMode) {
-      this.router.events.subscribe((evt) => {
+      this.router.events.subscribe(evt => {
         if (evt instanceof NavigationEnd) {
           this.burgerWithCatalogShow(evt.url);
         }
@@ -148,6 +151,12 @@ export class HeaderComponent implements OnInit {
     if (this.psoContainer && (window as any).screen.width < 812) {
       this.psoContainer.style.display = 'none';
     }
+    this.menuService.toggleMenu(true);
+    this.userMenuState = {
+      active: true,
+      isMobileView,
+    };
+
   }
 
   public hideUserMenu() {
@@ -226,5 +235,13 @@ export class HeaderComponent implements OnInit {
     this.hideTimout = setTimeout(() => {
       this.showCategories = false;
     }, HIDE_TIMOUT);
+  }
+  public onToggleMenu() {
+
+    if (this.menu.state.active) {
+      this.hideUserMenu();
+    } else {
+      this.showUserMenu(false);
+    }
   }
 }

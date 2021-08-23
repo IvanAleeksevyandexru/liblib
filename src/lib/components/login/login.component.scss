@@ -1,13 +1,4 @@
-.authorized-user {
-  padding-top: 20px;
-  border-top: 1px solid #eeeeee;
-}
-
-.actions {
-  .roles {
-    font-family: Lato-Bold, Arial, sans-serif;
-  }
-}
+$blue: #0d4cd3;
 
 lib-button {
   display: inline-block;
@@ -24,6 +15,14 @@ lib-button {
   font-size: 14px;
   line-height: 20px;
 
+  @media all and (max-width: 1139px) {
+    &.partners_link {
+      &:before {
+        top: 1px;
+      }
+    }
+  }
+
   &.only-icon {
     text-indent: 100%;
     white-space: nowrap;
@@ -39,17 +38,21 @@ lib-button {
       top: -10px;
       width: 16px;
       height: 16px;
-      background: url(../../../assets/svg/login.svg) 0 0 no-repeat;
+      background: url('/assets/svg/login.svg') 0 0 no-repeat;
       background-size: 100%;
+
+      @media all and (min-width: 1140px) {
+        top: 1px;
+      }
     }
 
     &:hover:before {
-      background-image: url(../../../assets/svg/login-hover.svg);
+      background-image: url('/assets/svg/login-hover.svg');
     }
 
     &.logout:before {
       height: 12px;
-      background-image: url(../../../assets/svg/logout.svg);
+      background-image: url('/assets/svg/logout.svg');
     }
   }
 }
@@ -60,8 +63,11 @@ lib-button {
   height: 38px;
   border-top: none;
   padding-top: 0;
-  padding-left: 56px;
   cursor: pointer;
+
+  @media all and (min-width: 1140px) {
+    max-width: 100%;
+  }
 
   .user-data {
     max-width: 256px;
@@ -73,72 +79,9 @@ lib-button {
     height: 12px;
     left: 8px;
     top: 26px;
-  }
-
-  .avatar-wrapper {
-    position: absolute;
-    display: block;
-    overflow: hidden;
-    top: 0;
-    right: 18px;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: 2px solid rgba(13, 76, 211, 0.2);
-  }
-
-  .avatar,
-  .no-avatar {
-    width: 36px;
-    height: 36px;
-  }
-
-  .no-avatar {
-    background-color: #D1D5DF;
-    background-image: url(../../../assets/svg/no-avatar.svg);
-    background-size: 100%;
-
-    &.female {
-      background-image: url(../../../assets/svg/avatars/default-avatar-f.svg);
-    }
-
-    &.male {
-      background-image: url(../../../assets/svg/avatars/default-avatar-m.svg);
-    }
-
-    &.business {
-      background-color: transparent;
-      background-image: url(../../../assets/svg/avatars/default-avatar-ip-m.svg);
-
-      &.female {
-        background-image: url(../../../assets/svg/avatars/default-avatar-ip-f.svg);
-      }
-
-      &.male {
-        background-image: url(../../../assets/svg/avatars/default-avatar-ip-m.svg);
-      }
-    }
-
-    &.legal {
-      background-color: transparent;
-      background-image: url(../../../assets/svg/avatars/default-avatar-ul.svg);
-    }
-  }
-
-  .name {
-    font-size: 14px;
-    line-height: 20px;
-
-    &:before {
-      content: '';
-      display: inline-block;
-      position: absolute;
-      background: url(../../../assets/svg/arrows/arrow_gosblue.svg) no-repeat 0 0;
-      background-size: cover;
-      width: 10px;
-      height: 6px;
-      top: 16px;
-      right: 0;
+    @media all and (min-width: 768px) {
+      left: auto;
+      right: 14px;
     }
   }
 
@@ -146,43 +89,6 @@ lib-button {
     font-size: 12px;
     line-height: 20px;
     color: #a5aeb3;
-  }
-}
-
-@media all and (min-width: 768px) {
-  .authorized-user {
-    padding-left: 12px;
-  }
-}
-
-@media all and (max-width: 1139px) {
-  .link {
-    &.partners_link {
-      &:before {
-        top: 1px
-      }
-    }
-  }
-}
-
-@media all and (min-width: 1140px) {
-  .authorized-user {
-    max-width: 100%;
-    &:hover{
-      .name:before{
-        background: url(../../../assets/svg/arrows/arrow_gosblue_hover.svg) no-repeat 0 0;
-      }
-    }
-    .name:hover{
-      color: #1D5DEB;
-    }
-  }
-  .link {
-    &.with-icon {
-      &:before {
-        top: 1px;
-      }
-    }
   }
 }
 
@@ -199,39 +105,67 @@ lib-button {
   }
 }
 
-@media all and (min-width: 768px) {
-  .authorized-user {
-    .counter-circle {
-      left: auto;
-      right: 14px;
-    }
+lib-user-avatar {
+  margin-right: 18px;
+  @media all and (max-width: 767px) {
+    margin-right: 24px;
+  }
+
+  &:before {
+    content: '';
+    display: inline-block;
+    position: absolute;
+
+    top: 16px;
+    right: 0;
   }
 }
 
-@media all and (max-width: 767px) {
-  .authorized-user {
-    &:not(.hide-arrow):before {
-      content: '';
-      position: absolute;
-      top: 16px;
-      right: 7px;
-      width: 10px;
-      height: 6px;
-      background: url(../../../assets/svg/arrows/arrow_gosblue.svg) no-repeat 0 0;
-    }
+.toggle-menu {
+  display: block;
+  position: relative;
+  width: 16px;
+  height: 16px;
 
-    .avatar-wrapper {
-      right: 32px;
-    }
+  &:before,
+  &:after {
+    position: absolute;
+    left: 50%;
+    top: 70%;
+    content: ' ';
 
-    .close-menu {
-      position: absolute;
-      right: 0;
-      top: 8px;
-      width: 24px;
-      height: 24px;
-      background: url(../../../assets/svg/close-large-24.svg) center no-repeat;
-      background-size: 24px;
+    width: 1px;
+    background-color: $blue;
+    transform-origin: 0.5px 0.5px;
+
+    // TODO: блокируется отрисовка при переходе из /overview => /settings/account
+    // transition: all 150ms ease;
+  }
+  &:before {
+    transform: translate(-0.25px, -0.25px) rotate(225deg);
+    height: calc(70% + 0.25px);
+  }
+  &:after {
+    transform: translate(-0.25px, -0.25px) rotate(-225deg);
+    height: 70%;
+  }
+
+  &:hover {
+    border-color: darken($blue, 20%);
+  }
+
+  &.opened {
+    &:before,
+    &:after {
+      top: 50%;
+      height: 140%;
+      transform-origin: center;
+    }
+    &:before {
+      transform: translate(-50%, -50%) rotate(225deg);
+    }
+    &:after {
+      transform: translate(-50%, -50%) rotate(-225deg);
     }
   }
 }

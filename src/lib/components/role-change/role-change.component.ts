@@ -13,27 +13,31 @@ const PAGE_SIZE = 5;
 @Component({
   selector: 'lib-role-change',
   templateUrl: './role-change.component.html',
-  styleUrls: ['./role-change.component.scss']
+  styleUrls: ['./role-change.component.scss'],
 })
 export class RoleChangeComponent implements OnInit {
-
   public roles: Role[] = [];
   public filteredRoles: Role[] = [];
   public displayRoles: Role[] = [];
   public user: User;
-  public query: string = this.activatedRoute.snapshot.queryParamMap.get('q') || '';
-  public rUrl: string = this.activatedRoute.snapshot.queryParamMap.get('rUrl') || '';
-  public type: string = this.activatedRoute.snapshot.queryParamMap.get('type') || '';
+  public query: string =
+    this.activatedRoute.snapshot.queryParamMap.get('q') || '';
+  public rUrl: string =
+    this.activatedRoute.snapshot.queryParamMap.get('rUrl') || '';
+  public type: string =
+    this.activatedRoute.snapshot.queryParamMap.get('type') || '';
   public isCreatedBusiness: boolean;
   public isMoreRoles: boolean;
-  public createUrl: string = this.loadService.config.esiaUrl + '/profile/user/emps';
+  public createUrl: string =
+    this.loadService.config.esiaUrl + '/profile/user/emps';
   public pageSize = PAGE_SIZE;
-  public activePage: number = parseInt(this.activatedRoute.snapshot.queryParamMap.get('page'), 10) || 1;
+  public activePage: number =
+    parseInt(this.activatedRoute.snapshot.queryParamMap.get('page'), 10) || 1;
   public total: number;
   public urlPage: string;
 
   private appContext = this.loadService.attributes.appContext;
-
+  public avatar$ = this.loadService.avatar.asObservable();
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -41,7 +45,7 @@ export class RoleChangeComponent implements OnInit {
     private esiaApi: EsiaApiService,
     private loadService: LoadService,
     private redirectsService: RedirectsService,
-    public translate: TranslateService
+    public translate: TranslateService,
   ) {
     this.activatedRoute.queryParams.subscribe(params => {
       const page = 'page';
@@ -69,7 +73,10 @@ export class RoleChangeComponent implements OnInit {
       };
 
       if (!isPrivatePerson) {
-        this.roles.forEach(role => role.current = (role.oid === Number(this.loadService.user.orgOid)));
+        this.roles.forEach(
+          role =>
+            (role.current = role.oid === Number(this.loadService.user.orgOid)),
+        );
       }
 
       this.roles.unshift(privatePerson);
@@ -108,58 +115,36 @@ export class RoleChangeComponent implements OnInit {
     if (role.current) {
       return;
     }
-    const prevRole = this.roles.find((someRole) => someRole.current);
+    const prevRole = this.roles.find(someRole => someRole.current);
 
-    let params = {_: Math.random().toString()};
+    let params = { _: Math.random().toString() };
     if (role.oid) {
-      params = Object.assign(params, {orgId: role.oid.toString()});
+      params = Object.assign(params, { orgId: role.oid.toString() });
     }
-    this.http.get(`${this.loadService.config.lkApiUrl}users/switch`, {
-      withCredentials: true,
-      params
-    }).subscribe(response => {
-      if (this.rUrl && this.appContext === 'LK') {
-        window.location.href = this.loadService.config.betaUrl + this.rUrl;
-      } else {
-        if (prevRole.type === 'PRIVATE' && role.type !== 'PRIVATE' && this.appContext !== 'PARTNERS') {
-          this.redirectsService.redirectToOrganizationView();
+    this.http
+      .get(`${this.loadService.config.lkApiUrl}users/switch`, {
+        withCredentials: true,
+        params,
+      })
+      .subscribe(response => {
+        if (this.rUrl && this.appContext === 'LK') {
+          window.location.href = this.loadService.config.betaUrl + this.rUrl;
         } else {
-          window.location.href = '/';
+          if (
+            prevRole.type === 'PRIVATE' &&
+            role.type !== 'PRIVATE' &&
+            this.appContext !== 'PARTNERS'
+          ) {
+            this.redirectsService.redirectToOrganizationView();
+          } else {
+            window.location.href = '/';
+          }
         }
-      }
-    });
+      });
 
     if (event) {
       event.preventDefault();
     }
-  }
-
-  /**
-   * Показываем аватар при наличии ссылки на него и, если пользватель физическое лицо,
-   * либо руководитель предприятия
-   *
-   * @param role Роль пользователя
-   */
-  public isShowAvatar(role: Role): boolean {
-    return !!this.user.person.person.avatarLink && this.privateOrBusiness(role);
-  }
-
-  /**
-   * Определяем роль физического лица или руководитель Предприятия
-   *
-   * @param role Роль пользователя
-   */
-  public privateOrBusiness(role: Role): boolean {
-    return role.type === 'PRIVATE' || (role.type === 'BUSINESS' && role.chief === true);
-  }
-
-  /**
-   * Определяем роль физического лица d ИП, если он сотрудник
-   *
-   * @param role Роль пользователя
-   */
-  public empRole(role: Role): boolean {
-    return role.type === 'BUSINESS' && role.chief !== true;
   }
 
   /**
@@ -170,14 +155,17 @@ export class RoleChangeComponent implements OnInit {
   public pageChanged(pageNum): void {
     const startPosition = (pageNum - 1) * this.pageSize;
     this.activePage = pageNum;
-    this.displayRoles = this.filteredRoles.slice(startPosition, startPosition + this.pageSize);
+    this.displayRoles = this.filteredRoles.slice(
+      startPosition,
+      startPosition + this.pageSize,
+    );
 
     if (this.roles.length > PAGE_SIZE) {
       const navigationExtras: NavigationExtras = {
         queryParams: {
           page: pageNum,
           q: this.query,
-        }
+        },
       };
 
       if (this.urlPage !== pageNum.toString()) {
@@ -207,20 +195,23 @@ export class RoleChangeComponent implements OnInit {
    */
   private filterRoles(query: string, activePage, type: string): void {
     this.filteredRoles = this.roles.filter(item => {
-        if (query && (item.shortName.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-          item.fullName && item.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-          (item.ogrn ? (item.ogrn.indexOf(query) !== -1) : false))) {
-          return true;
-        } else {
-          // agency и legal не разделяем, а person должен быть private
-          type = type === 'person' ? 'private': type;
-          let personType = item.type.toLowerCase();
-          personType = personType === 'agency' ? 'legal' : personType;
-          type = type === 'agency' ? 'legal' : type;
-          return personType?.indexOf(type) > -1;
-        }
+      if (
+        query &&
+        (item.shortName.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+          (item.fullName &&
+            item.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1) ||
+          (item.ogrn ? item.ogrn.indexOf(query) !== -1 : false))
+      ) {
+        return true;
+      } else {
+        // agency и legal не разделяем, а person должен быть private
+        type = type === 'person' ? 'private' : type;
+        let personType = item.type.toLowerCase();
+        personType = personType === 'agency' ? 'legal' : personType;
+        type = type === 'agency' ? 'legal' : type;
+        return personType?.indexOf(type) > -1;
       }
-    );
+    });
 
     if (this.filteredRoles.length === 1 && type && activePage === 1) {
       this.switchRole(this.filteredRoles[0]);

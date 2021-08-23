@@ -1,0 +1,104 @@
+import {
+  Component,
+  ChangeDetectionStrategy,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
+import { Avatar, Role, User } from '../../models';
+
+@Component({
+  selector: 'lib-user-avatar',
+  templateUrl: './user-avatar.component.html',
+  styleUrls: ['./user-avatar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class UserAvatarComponent {
+  @Input()
+  public avatar: Avatar;
+  @Input()
+  public height = '64';
+  @Input()
+  public hideEdit = false;
+  @Input()
+  public user: User;
+  @Input()
+  public role?: Role;
+  @Output()
+  public edit = new EventEmitter<void>();
+
+  public avatarError = false;
+
+  // TODO: Возможно поведение при ИП будет отличаться, сейчас как у руководителя
+  public get isIPRole(): boolean {
+    return this.role?.type === 'BUSINESS' || this.user.type === 'B';
+  }
+  public get isLegalRole(): boolean {
+    return this.role?.type === 'LEGAL' || this.user.type === 'L';
+  }
+
+  public get isPrivatePerson(): boolean {
+    return this.user.type !== 'B' && this.user.type !== 'L';
+  }
+
+  /** Определяем роль физического лица и ИП, если он сотрудник. */
+  public get isEmployee(): boolean {
+    if (!this.role) {
+      return false;
+    }
+    return this.role.type === 'BUSINESS' && this.role.chief !== true;
+  }
+
+  /** Определяем роль физического лица или руководитель Предприятия. */
+  public get isPrivateOrBusinessChief(): boolean {
+    if (!this.role) {
+      return this.isPrivatePerson;
+    }
+    return (
+      this.role.type === 'PRIVATE' ||
+      (this.role.type === 'BUSINESS' && this.role.chief === true)
+    );
+  }
+
+  /** Первые буквы фамилии и имени. */
+  public get userFirstLetters(): string {
+    const regex = /[a-zA-Zа-яА-ЯёЁ]/;
+    let lastNameLetter = 'Ф';
+    let firstNameLetter = 'И';
+    if (regex.test(this.user.lastName)) {
+      lastNameLetter = this.user.lastName.match(regex).toString().toUpperCase();
+    }
+    if (regex.test(this.user.firstName)) {
+      firstNameLetter = this.user.firstName
+        .match(regex)
+        .toString()
+        .toUpperCase();
+    }
+    return lastNameLetter + firstNameLetter;
+  }
+
+  /** Возвращает цвет для заливки фона в зависимости от имени, если нет аватара. */
+  public getNoAvatarColor(userName: string): string {
+    let hash = 0;
+    let color = '#';
+
+    if (!userName) {
+      return color + '333333';
+    }
+
+    const strLength = userName.length;
+
+    for (let i = 0; i < strLength; i++) {
+      // tslint:disable-next-line: no-bitwise
+      hash = userName.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    for (let i = 0; i < 3; i++) {
+      // tslint:disable-next-line: no-bitwise
+      const value = (hash >> (i * 8)) & 0xff;
+      color += ('00' + value.toString(16)).substr(-2);
+    }
+
+    return color;
+  }
+}

@@ -160,6 +160,8 @@ import { RegionCasesComponent } from './components/region-cases/region-cases.com
 import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
 import { ReversePipe } from './pipes/reverse/reverse.pipe';
 import { FileExtensionIconComponent } from './components/file-extension-icon/file-extension-icon.component';
+import { UserAvatarComponent } from './components/user-avatar/user-avatar.component';
+
 
 
 registerLocaleData(localeRu, 'ru');
@@ -310,6 +312,7 @@ registerLocaleData(localeRu, 'ru');
     FileUploaderComponent,
     ReversePipe,
     FileExtensionIconComponent,
+    UserAvatarComponent
   ],
   imports: [
     CommonModule,
@@ -460,6 +463,7 @@ registerLocaleData(localeRu, 'ru');
     FileUploaderComponent,
     ReversePipe,
     FileExtensionIconComponent,
+    UserAvatarComponent
   ],
   providers: [
     GosbarService,
