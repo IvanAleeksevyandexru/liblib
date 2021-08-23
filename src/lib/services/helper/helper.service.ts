@@ -337,13 +337,13 @@ export class HelperService {
         let prefix = '';
         switch (item) {
           case 'house':
-            prefix = address.hasOwnProperty('house_type') ? `${address.houseType}. ` : 'д. ';
+            prefix = address.hasOwnProperty('houseType') ? `${address.houseType}. ` : 'д. ';
             break;
           case 'building':
             prefix = 'стр. ';
             break;
           case 'frame':
-            prefix = address.hasOwnProperty('frame_type') ? `${address.frameType}. ` : 'корп. ';
+            prefix = address.hasOwnProperty('frameType') ? `${address.frameType}. ` : 'корп. ';
             break;
           case 'flat':
             prefix = 'кв. ';
