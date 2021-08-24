@@ -1,12 +1,16 @@
 <div *ngIf="roleChangeAvailable" [class.authorized]="user.authorized" class="roles-list">
   <div class="user-role text-plain flex-container align-items-center justify-between"
-       [class.opened]="showRolesList" (click)="openRolesList()">
+       [class.opened]="showRolesList"
+       (click)="openRolesList()">
       <div class="flex-1 user-role-inner">
-        Услуги для <span class="blue link user-role-inner">{{getRoleName(activeRoleCode)}}</span>
+        {{'HEADER.CATALOG.SERVICES' | libTranslate}}
+        <span class="link-plain user-role-inner" [ngClass]="{'link-plain': !showRolesList}">
+          {{'HEADER.CATALOG.FOR' | libTranslate}} {{getRoleName(activeRoleCode)}}
+        </span>
       </div>
       <div class="toggle-role-icon user-role-inner"></div>
   </div>
-  <div class="list" *ngIf="showRolesList">
+  <div class="list" *ngIf="showRolesList" [ngClass]="{'mt-8': showRolesList}">
     <div *ngFor="let role of userRoles; let first = first" class="list-item-wrap">
       <a class="list-item link-plain"
          *ngIf="role.code !== activeRoleCode"

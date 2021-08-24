@@ -1,44 +1,39 @@
 .roles-list {
-  .toggle-role-icon{
+  .toggle-role-icon {
     width: 12px;
     height: 10px;
     margin-right: 4px;
     background: url('../../../assets/svg/arrows/arrow_gray.svg') 50% 50% no-repeat;
-    transform: rotateZ(180deg);
   }
-  .opened{
-    .toggle-role-icon{
-      transform: rotateZ(0);
+
+  .opened {
+    .toggle-role-icon {
+      transform: rotateZ(180deg);
     }
   }
+
   .user-role {
     padding: 20px 16px 16px;
     text-transform: uppercase;
     cursor: pointer;
   }
-  .list-item{
+
+  .list-item {
     display: block;
     padding-bottom: 24px;
   }
-  .list-item-wrap{
+
+  .list-item-wrap {
     padding-left: 16px;
-    .list-item{
-      &:hover{
+
+    .list-item {
+      &:hover {
         color: #1d5deb;
       }
     }
   }
 }
-.roles-list.authorized{
-  display: none;
-}
-@media (min-width: 768px) {
-  .roles-list{
 
-  }
-}
-@media (min-width: 1140px) {
-  .roles-list{
-    display: none;
-  }
+.roles-list.authorized {
+  display: none;
 }
