@@ -20,6 +20,7 @@ export class ConfirmActionComponent implements OnInit {
   public closeButton = true;
   public imagesPosition: 'left' | 'above' = 'left';
   public maxWidth: number;
+  public popupClassModifier: string;
   public buttons: {
     title: string,
     type: 'anchor' | undefined,
