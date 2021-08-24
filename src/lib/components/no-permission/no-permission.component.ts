@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { LoadService } from '../../services';
-import { CookieService } from '../../services';
+import { LoadService } from '../../services/load/load.service';
+import { CookieService } from '../../services/cookie/cookie.service';
 
 @Component({
   selector: 'lib-no-permission',
