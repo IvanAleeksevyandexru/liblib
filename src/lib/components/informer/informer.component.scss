@@ -129,8 +129,12 @@
   }
 }
 
-.quittance-informer {
+.addition-informer__block {
   padding: 24px;
+}
+
+.addition-informer-loader {
+  min-height: 64px;
 }
 
 @media (max-width: 767px) {
@@ -164,7 +168,7 @@
     }
   }
 
-  .quittance-informer {
+  .addition-informer__block {
     padding: 16px 24px;
   }
 }
@@ -274,7 +278,7 @@
     width: 30%;
   }
 
-  .quittance-informer {
+  .addition-informer__block {
     flex-flow: column;
     text-align: center;
     justify-content: center;
@@ -354,5 +358,9 @@
 
   .quittance-informer {
     padding: 16px 24px;
+  }
+
+  .restrictions-informer {
+    padding: 16px;
   }
 }
