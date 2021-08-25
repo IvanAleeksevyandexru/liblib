@@ -31,6 +31,8 @@ export class MenuCatalogComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() public languageChangeAvailable?: boolean;
 
+  @Input() public showLocationSelect?: boolean;
+
   @Output() public menuCatalogOpened?: EventEmitter<boolean> = new EventEmitter<boolean>();
   public currentCategoryCode: string;
 
