@@ -11,7 +11,7 @@ export class CatalogTabsListComponent implements OnInit, OnDestroy {
 
   @Input() public catalog: CatalogData[];
   @Input() public viewType: 'main-page-view' | 'side-view';
-  @Input() public showLocationSelect: boolean;
+  @Input() public alwaysShowLocationSelect: boolean;
   @Output() public catalogTabListItemClick = new EventEmitter<CatalogData>();
 
   constructor(
