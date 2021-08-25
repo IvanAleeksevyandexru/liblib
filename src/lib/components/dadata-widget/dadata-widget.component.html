@@ -14,6 +14,7 @@
   </div>
   <div>
     <lib-autocomplete #autocomplete
+                      [bgInputField]="bgInputField"
                       contextClass="dadata-autocomplete"
                       [tabIndex]="0"
                       [invalid]="!!errorCodes.length || form.invalid || (invalid && !normalizeInProcess)"
