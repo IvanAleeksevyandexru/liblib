@@ -61,7 +61,7 @@ export class SearchBarComponent
   @Input() public invalid = false;
 
   // bg цвет input
-  @Input() public bgInputField = '#f5f7fa';
+  @Input() public bgInputField?: string;
 
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public width?: Width | string;
