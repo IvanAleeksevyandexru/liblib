@@ -64,6 +64,9 @@ export class HeaderComponent implements OnInit {
   @Input() public translation: Translation | string = Translation.APP;
   @Input() public closeStatisticPopup$: Observable<boolean>;
 
+  @Input() public alwaysShowLocationSelect = false;
+  @Input() public hideBurgerDesc = false;
+
   @Output() public backClick = new EventEmitter<any>();
 
   @ViewChild('menu') private menu;
