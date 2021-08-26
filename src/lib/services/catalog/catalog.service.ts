@@ -31,6 +31,12 @@ export class CatalogService {
       params.set('platform', this.loadService.config.platform);
     }
 
+    if (request.mfcCode) {
+      params.set('mfcCode', request.mfcCode);
+    } else if (request.ext_id) {
+      params.set('ext_id', request.mfcCode);
+    }
+
     return this.http.get<Service>(`${this.catalogUrl}services/${request.sid}_${request.eid}?${params}`, {
       withCredentials: true
     });

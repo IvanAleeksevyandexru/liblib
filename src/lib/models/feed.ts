@@ -41,6 +41,7 @@ export interface OrderCreator {
 }
 
 export interface FeedDataModel {
+  p16url?: string;
   linked_to?: string;
   parentOrderId?: number;
   imOrgName?: string;
@@ -67,6 +68,10 @@ export interface FeedDataModel {
   needConfirm?: boolean;
   messageType?: string;
   draftAutoDeleted?: string;
+  ppzType?: string;
+  ppzNum?: string;
+  ppzRegion?: string;
+  mfcName?: string;
 }
 
 export interface BranchModel {

@@ -1,11 +1,22 @@
-import { Component, Input, OnInit} from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterContentInit, AfterViewChecked,
+  AfterViewInit, ChangeDetectorRef,
+  Component,
+  ContentChild,
+  ContentChildren, ElementRef,
+  Input,
+  OnInit,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 
 @Component({
   selector: 'lib-button',
   templateUrl: 'button.component.html',
   styleUrls: ['./button.component.scss']
 })
-export class ButtonComponent implements OnInit {
+export class ButtonComponent implements OnInit, AfterViewChecked {
   @Input() public type: 'button' | 'anchor' | 'search' | 'new-search' = 'button'; // тип: кнопка, ссылка, с иконкой поиска
   @Input() public size: 'md' | 'lg' | '' = ''; // размер: средний, большой; если не указан - размер минимальный
   @Input() public fontSize: number | null; // размер-шрифта
@@ -20,11 +31,24 @@ export class ButtonComponent implements OnInit {
   @Input() public theme: 'light' | 'light left-btn' | 'light right-btn' | '' = ''; // тема отображения кнопки для нового дизайна
   @Input() public buttonType: 'submit' | 'reset' | 'button' = 'button';
 
-  public active = false;
+  @ViewChild('contentData', {static: false}) content: ElementRef;
 
-  constructor() { }
+  public active = false;
+  public smallPaddings = false;
+
+  constructor(
+    private cd: ChangeDetectorRef
+  ) { }
 
   public ngOnInit() {
+
+  }
+
+  public ngAfterViewChecked() {
+    if (this.content?.nativeElement && !this.smallPaddings) {
+      this.smallPaddings = this.content.nativeElement.innerHTML.length > 16;
+      this.cd.detectChanges();
+    }
   }
 
   public onClick(event: Event): void {
