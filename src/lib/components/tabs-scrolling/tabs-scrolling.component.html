@@ -1,4 +1,6 @@
-<div class="tabs-container" [ngClass]="[styleView, showTabs ? 'opened' : '']">
+<div class="tabs-container"
+     [ngClass]="[styleView, showTabs ? 'opened' : '']"
+     [style.backgroundColor]="'#' + backgroundColor">
   <perfect-scrollbar [config]="scrollConfig">
     <div class="tabs-box flex-container justify-start">
       <ng-container *ngFor="let tab of tabs">

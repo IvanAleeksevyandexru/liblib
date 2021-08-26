@@ -1,59 +1,56 @@
 .nav {
   position: relative;
-  background: #eeefef;
+  background: rgba(29, 93, 235, 0.06);
   user-select: none;
+  border-radius: 8px;
 }
 
 .overview {
   position: relative;
   width: 100%;
-  padding: 12px 85px 12px 16px;
-  border-bottom: 1px solid #ced9f0;
+  padding: 14px 38px 14px 16px;
   cursor: pointer;
 
   .overview-text {
     position: relative;
     display: inline-block;
-    padding-right: 36px;
-    line-height: 24px;
+    padding-right: 38px;
 
     .counter {
       position: absolute;
-      top: 5px;
       right: -2px;
+    }
+  }
+
+  .toggle-button {
+    position: absolute;
+    top: 23px;
+    right: 22px;
+    width: 7px;
+    height: 12px;
+    cursor: pointer;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 12px;
+      height: 7px;
+      background: url(../../../assets/svg/arrows/arrow_gosblue.svg) no-repeat;
+      background-size: 100%;
+    }
+
+    .counter-circle {
+      top: 1px;
+      right: -1px;
+      width: 8px;
+      height: 8px;
     }
   }
 }
 
-.toggle-button {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url(../../../assets/svg/arrow-down-circle.svg) no-repeat;
-    background-size: 100%;
-  }
-
-  .counter-circle {
-    top: 1px;
-    right: -1px;
-    width: 8px;
-    height: 8px;
-  }
-}
-
 .break-before {
-
   .tab:before {
     content: '';
     padding-bottom: 24px;
@@ -64,7 +61,6 @@
 }
 
 .break-after {
-
   .tab:after {
     content: '';
     padding-top: 24px;
@@ -79,40 +75,40 @@
 }
 
 .opened {
-  .overview {
-    height: 0;
-    padding: 0;
-    border: none;
-
-    .overview-text {
-      display: none;
-    }
-  }
-
   .toggle-button:before {
     transform: rotate(180deg);
   }
 
   .tabs-box {
+    position: absolute;
+    width: 100%;
     display: block;
-    border-bottom: 1px solid #ced9f0;
+    background-color: #ffffff;
+    box-shadow: 0px 1px 4px #E3EBFC, 0px 6px 16px rgba(230, 235, 245, 0.8);
+    border-radius: 0px 0px 8px 8px;
+    z-index: 1;
+    padding: 0 16px 16px 16px;
   }
 }
 
 .tab-wrapper {
-  padding: 12px 16px;
+  padding-top: 16px;
+
   .tab {
     color: #0b40b3;
     text-decoration: none;
   }
+
   &.active .tab {
     cursor: default;
     color: #000000;
   }
+
   &.disabled .tab {
     cursor: default;
     color: gray;
   }
+
   &.hidden {
     display: none;
   }
@@ -120,7 +116,6 @@
 
 .tab {
   display: block;
-  line-height: 24px;
 
   .counter {
     display: inline-block;
