@@ -19,7 +19,7 @@
   </div>
   <lib-counter class="counter-circle" [counter]="userCounter"></lib-counter>
   <a class="close-menu" *ngIf="menuOpened" (click)="onCloseMenu($event)"></a>
-  <div class="user-data hide show-md">
+  <div class="user-data hide show-lg">
     <div class="text-plain blue name text-overflow">
       <ng-container *ngIf="user.type === 'L'">{{(user.orgShortName || user.orgName)}}</ng-container>
       <ng-container *ngIf="user.type === 'B'">{{(user.orgShortName || 'ИП ' + user.shortName)}}</ng-container>

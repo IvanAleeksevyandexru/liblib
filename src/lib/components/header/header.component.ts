@@ -4,7 +4,6 @@ import {
   HostListener,
   Input,
   NgModuleRef,
-  OnChanges,
   OnInit,
   Output,
   ViewChild
@@ -13,12 +12,12 @@ import { CountersService} from '../../services/counters/counters.service';
 import { LoadService } from '../../services/load/load.service';
 import { MenuService } from '../../services/menu/menu.service';
 import { FeedsComponent } from '../feeds/feeds.component';
-import { UserMenuState, CounterTarget, MenuLink, Category, CounterData, Catalog } from '../../models';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { UserMenuState, CounterTarget, MenuLink, Category, CounterData, Catalog, Translation } from '../../models';
+import { TranslateService } from '@ngx-translate/core';
 import { LangWarnModalComponent } from '../lang-warn-modal/lang-warn-modal.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HelperService } from '../../services/helper/helper.service';
 
 const HIDE_TIMOUT = 300;
@@ -28,24 +27,23 @@ const HIDE_TIMOUT = 300;
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit, OnChanges {
+export class HeaderComponent implements OnInit {
 
   public user = this.loadService.user;
   public userRoles = this.menuService.getUserRoles(this.user);
   public userMenuState: UserMenuState;
   public showNotifications: boolean;
   public isUnread: boolean;
-  public activeRoleCode: string;
   public showCategories: boolean;
   public emptyCategories = true;
   public hideTimout: any;
   public categories: Category[] = [];
   public showRolesList: boolean;
   public menuCatalogOpened: boolean;
-  public roleChangeAvailable = true;
-  private translateSubscription: Subscription;
   public burgerWithCatalog = true;
   public burgerDemoMode = this.loadService.config.burgerDemoMode;
+  public Translation = Translation;
+  public psoContainer = document.getElementById('pso-widget-container');
 
   private closeBurger = new BehaviorSubject(false);
   public closeBurger$ = this.closeBurger.asObservable();
@@ -63,6 +61,8 @@ export class HeaderComponent implements OnInit, OnChanges {
   @Input() public showBurger = true;
   @Input() public catalog?: Catalog[];
   @Input() public languageChangeAvailable: boolean;
+  @Input() public translation: Translation | string = Translation.APP;
+  @Input() public closeStatisticPopup$: Observable<boolean>;
 
   @Output() public backClick = new EventEmitter<any>();
 
@@ -104,22 +104,18 @@ export class HeaderComponent implements OnInit, OnChanges {
     if (this.burgerDemoMode) {
       this.burgerWithCatalogShow(location.pathname);
     }
-    this.loadService.userTypeNA$.subscribe(type => {
-      this.activeRoleCode = type;
-    });
+    if (!this.links.length && this.user.authorized) {
+      this.links = this.menuService.getUserMenuDefaultLinks();
+    }
     this.countersService.counters$.subscribe(() => {
       const counter = this.countersService.getCounter(CounterTarget.USER);
       this.isUnread = !!(counter && counter.unread);
     });
 
-    this.translateSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      this.roleChangeAvailable = HelperService.langIsRus(event.lang);
-    });
-    this.roleChangeAvailable = HelperService.langIsRus(this.translate.currentLang);
   }
 
   public burgerWithCatalogShow(currentPath): void {
-    let urls = ['/new', '/newsearch', '/departments', '/pay'];
+    const urls = ['/new', '/newsearch', '/departments', '/pay'];
     if (this.isPortal) {
       urls.push('/');
     }
@@ -149,11 +145,17 @@ export class HeaderComponent implements OnInit, OnChanges {
 
     const html = document.getElementsByTagName('html')[0];
     html.classList.add('disable-scroll-sm');
+    if (this.psoContainer && (window as any).screen.width < 812) {
+      this.psoContainer.style.display = 'none';
+    }
   }
 
   public hideUserMenu() {
     if (this.menu) {
       this.menu.onClose();
+      if (this.psoContainer && (window as any).screen.width < 812) {
+        this.psoContainer.style.display = 'unset';
+      }
     }
   }
 
@@ -164,23 +166,8 @@ export class HeaderComponent implements OnInit, OnChanges {
     } as UserMenuState;
   }
 
-  public updateRole(code: string, url: string): void {
-    if (this.activeRoleCode !== code) {
-      this.activeRoleCode = code;
-      window.location.href = url;
-    }
-  }
-
   public backClickHandler(): void {
     this.backClick.emit();
-  }
-
-  public openRolesList(): void {
-    this.showRolesList = !this.showRolesList;
-  }
-
-  public getRoleName(code: string): string {
-    return this.userRoles.find(role => role.code === code).name;
   }
 
   public redirect(event: Event, link: MenuLink): void {
@@ -198,10 +185,8 @@ export class HeaderComponent implements OnInit, OnChanges {
     event.preventDefault();
     if (url && !HelperService.langIsRus(this.translate.currentLang)) {
       this.showLangWarnModal(url, isAbsUrl);
-    } else if (!isAbsUrl) {
-      this.router.navigate([url]);
     } else {
-      location.href = url;
+      this.menuService.menuStaticItemClick(link.title, link.mnemonic);
     }
   }
 
@@ -241,11 +226,5 @@ export class HeaderComponent implements OnInit, OnChanges {
     this.hideTimout = setTimeout(() => {
       this.showCategories = false;
     }, HIDE_TIMOUT);
-  }
-
-  public ngOnChanges() {
-    if (this.translateSubscription) {
-      this.translateSubscription.unsubscribe();
-    }
   }
 }

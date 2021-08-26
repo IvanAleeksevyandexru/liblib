@@ -44,6 +44,7 @@ export class RadioComponent implements OnInit, ControlValueAccessor, Focusable, 
   @Output() public changed = new EventEmitter<string>();
 
   public focused: boolean;
+  private destroyed = false;
   private modelInitialization = true;
   private onTouchedCallback: () => void;
   private commit(value: any) {}
@@ -65,6 +66,7 @@ export class RadioComponent implements OnInit, ControlValueAccessor, Focusable, 
   }
 
   public ngOnDestroy(): void {
+    this.destroyed = true;
     this.focusManager.unregister(this);
   }
 
@@ -97,6 +99,9 @@ export class RadioComponent implements OnInit, ControlValueAccessor, Focusable, 
 
   public setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
+    if (!this.destroyed) {
+      this.changeDetector.detectChanges();
+    }
   }
 
   public notifyFocusEvent(e: Event, id): void {

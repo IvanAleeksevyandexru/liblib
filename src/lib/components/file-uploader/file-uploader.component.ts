@@ -58,6 +58,19 @@ export interface FileUpload {
   ]
 })
 export class FileUploaderComponent implements OnInit, ControlValueAccessor, Validated, DoCheck {
+  public get files(): FileUpload[] | null {
+    return this.filesValue?.filter(({size}) => size > 0);
+  }
+
+  public set files(files: FileUpload[] | null) {
+    this.filesValue = files?.filter(({size}) => size > 0);
+  }
+
+  constructor(private host: ElementRef<HTMLInputElement>,
+              private fileUploaderService: FileUploaderService,
+              private cd: ChangeDetectorRef,
+              @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {
+  }
 
   public control: AbstractControl;
   @Input() public formControlName?: string;
@@ -74,15 +87,18 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public storageServiceUrl = '';
   @Input() public uploadMnemonicPrefix = '';
+  @Input() public hidePhoto: boolean;
 
   @ViewChild('fileInput', {static: false}) public fileInput: ElementRef;
+  @ViewChild('photoInput', {static: false}) public photoInput: ElementRef;
 
   public invalidDisplayed: boolean;
   public onChange: (FileList) => void;
-  public files: FileUpload[] | null = null;
   public touched = false;
   public fileTypesArray: string[];
   public errorMessage = '';
+
+  private filesValue: FileUpload[] | null = null;
   private commit(value: any) {}
 
 
@@ -97,12 +113,28 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     const needUploadToServer = this.storageServiceUrl && !!this.orderId;
 
     if (!maxFilesSize || !filesLength) {
+      this.fileInput.nativeElement.value = '';
+      this.photoInput.nativeElement.value = '';
       return false;
     }
+
+    if (!this.multiple && this.files && this.files.length) {
+      this.errorMessage = 'Нельзя загрузить больше одного файла';
+      return false;
+    }
+
     for (let i = 0; i < event.length; i++) {
       const existingFile = this.findFile(event[i]);
+      if (existingFile) {
+        this.errorMessage = `Файл уже загружен: ${  event[i].name}`;
+      }
+
+      if (event[i].size === 0) {
+        this.errorMessage = `Не удалось загрузить файл ${  event[i].name  }. Файл не должен быть пустым`;
+      }
+
       const checkType = this.checkFileTypes(event[i]);
-      if (!existingFile && checkType) {
+      if (!existingFile && checkType && event[i].size > 0) {
         const name = unescape(encodeURIComponent(event[i].name));
         const file: FileUpload = {
           mnemonic: this.getFileMnemonicByPrefix(this.uploadMnemonicPrefix),
@@ -114,7 +146,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
           file: event[i],
           lastModified: event[i].lastModified
         };
-        this.files.push(file);
+        this.files = [...this.files, file];
 
         if (needUploadToServer) {
           const formData = new FormData();
@@ -134,12 +166,8 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
       this.commit(this.files);
       this.check();
     }
-  }
-
-  constructor(private host: ElementRef<HTMLInputElement>,
-              private fileUploaderService: FileUploaderService,
-              private cd: ChangeDetectorRef,
-              @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {
+    this.fileInput.nativeElement.value = '';
+    this.photoInput.nativeElement.value = '';
   }
 
   private saveFileToServer(formData: FormData, file: FileUpload): void {
@@ -172,8 +200,8 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
       return (
         existingFile.name         === file.name &&
         existingFile.lastModified === file.lastModified &&
-        existingFile.size         === file.size &&
-        existingFile.type         === file.type
+        existingFile.size         === file.size
+        // existingFile.type         === file.type
       );
     });
   }
@@ -185,6 +213,8 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     } else {
       this.files = null;
     }
+    this.check();
+    this.cd.detectChanges();
   }
 
   public registerOnChange( fn: () => void ) {
@@ -230,9 +260,13 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
 
   public checkFilesLength(length) {
     const filesLength = this.files ? this.files.length : 0;
-    if (this.maxFilesLength) {
-      if (filesLength + length > this.maxFilesLength) {
-        this.errorMessage = `Максимальное количество файлов: ${this.maxFilesLength}`;
+    const newFilesLength = filesLength + length;
+
+    const multipleCondition = this.multiple ? this.maxFilesLength : 1;
+
+    if (this.maxFilesLength || !this.multiple) {
+      if ((newFilesLength > multipleCondition)) {
+        this.errorMessage = `Максимальное количество файлов: ${multipleCondition}`;
         return false;
       }
     }
@@ -265,13 +299,14 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
         dFile.error = 'Во время удаления возникла ошибка';
       }
       dFile.uploadInProcess = false;
-      this.files.splice(i, 1);
+      this.files = this.files.filter((file, fileIndex) => fileIndex !== i);
       this.commit(this.files);
       this.check();
       this.cd.detectChanges();
     };
 
     this.fileInput.nativeElement.value = '';
+    this.photoInput.nativeElement.value = '';
     this.touched = true;
     const deletedFile = this.files[index];
     const objectType = '2';
@@ -312,7 +347,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
 
     const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))  } ${  sizes[i]}`;
   }
 
   public getFileMnemonicByPrefix(prefix) {
