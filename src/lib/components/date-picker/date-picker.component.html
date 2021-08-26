@@ -46,7 +46,7 @@
           [questionTip]="questionTip"
           [questionTipPosition]="questionTipPosition === MessagePosition.INSIDE ? questionTipPosition : MessagePosition.NOWHERE"
         ></lib-standard-masked-input>
-        <div class="calendar-icon" [class.disabled]="disabled" (click)="toggle(false)"></div>
+        <div class="calendar-icon" *ngIf="!(text && focused) || !focused || (focused && text === emptyText())" [class.disabled]="disabled" (click)="toggle(false)"></div>
       </div>
     </div>
     <div class="calendar-wrapper" [ngClass]="{'simple-panel': asSimplePanel}">

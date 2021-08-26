@@ -14,7 +14,7 @@ import { Suggest, SuggestItem } from '../../models/suggest';
 @Component({
   selector: 'lib-standard-masked-input',
   templateUrl: 'standard-masked-input.component.html',
-  styleUrls: ['./standard-masked-input.component.scss', '../plain-input/plain-input.component.scss'],
+  styleUrls: ['../standard-input/standard-input.component.scss', '../plain-input/plain-input.component.scss'],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => StandardMaskedInputComponent),

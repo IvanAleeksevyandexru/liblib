@@ -200,6 +200,9 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   }
 
   public setItems(value: Array<any>) {
+    if (value[0].id !== 'empty-item') {
+      value.unshift(new ListItem({id: 'empty-item', text: this.placeholder, unselectable: this.multi}));
+    }
     this.internalItems = this.listService.createListItems(value);
     this.updateFormatting();
     this.fixedItemsProvider.setSource(this.internalItems);
@@ -415,11 +418,18 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
       if (this.onTouchedCallback) {
         this.onTouchedCallback();
       }
-      e.stopPropagation();
+      e?.stopPropagation();
     }
   }
 
   public invertSelection(item: ListItem) {
+    if (item.id === 'empty-item') {
+      this.internalSelected.forEach(item => this.unselect(item, null));
+      if (!this.multi) {
+        this.closeDropdown();
+      }
+      return;
+    }
     this.returnFocus();
     if (item.selected) {
       if (this.multi) {

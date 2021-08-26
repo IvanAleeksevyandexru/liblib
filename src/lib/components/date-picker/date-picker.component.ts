@@ -180,6 +180,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   public activeMonthYear: MonthYear = null;
   public minimumDate = this.getMinimumDate();
   public maximumDate = this.getMaximumDate();
+  public focused = false;
 
   private destroyed = false;
 
@@ -462,10 +463,12 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
 
   public handleBlur() {
     this.closeCalendar();
+    this.focused = false;
     this.blur.emit();
   }
 
   public handleFocus() {
+    this.focused = true;
     if (!this.expanded && !HelperService.isTouchDevice()) {
       this.openCalendar();
     }
@@ -925,7 +928,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       this.shortDateFormat : this.dateFormat) : this.emptyText();
   }
 
-  private emptyText() {
+  public emptyText() {
     return this.dateMask.map((symbol) => symbol instanceof RegExp ? '_' : symbol).join('');
   }
 

@@ -33,9 +33,6 @@ $border-color: #99B1E6;
               background: rgba(238, 63, 88, 0.16);
             }
           }
-          .buttons-container {
-            right: 36px;
-          }
         }
       }
 
@@ -61,11 +58,11 @@ $border-color: #99B1E6;
       position: absolute;
       display: block;
       width: 24px;
-      height: 40px;
-      top: 6px;
-      right: 12px;
+      height: 24px;
+      top: 14px;
+      right: 16px;
       cursor: pointer;
-      background: url(../../../assets/svg/calendar-icon.svg) 3px 10px no-repeat;
+      background: url(../../../assets/svg/calendar-icon.svg) 0 0 no-repeat;
 
       &.disabled {
         cursor: default;
