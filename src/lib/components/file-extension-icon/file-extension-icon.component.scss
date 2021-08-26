@@ -1,0 +1,77 @@
+.file-icon-container {
+  position: relative;
+  width: 46px;
+  height: 24px;
+}
+
+.file-icon-text {
+  color: #FFFFFF;
+  font-size: 14px;
+  line-height: 23px;
+  position: absolute;
+  bottom: 0;
+  right: 4px;
+}
+
+.XLS, .XLSX, .CSV {
+  path {
+    fill: #12826E;
+  }
+}
+
+.PDF {
+  path {
+    fill: #FF8A00;
+  }
+}
+
+.PNG, .JPG, .JPEG {
+  path {
+    fill: #16A086;
+  }
+}
+
+.BMP, .TIF, .TIFF, .GIF {
+  path {
+    fill: #0B40B3;
+  }
+}
+
+.KEY, .PPT, .PPTX {
+  path {
+    fill: #851F82;
+  }
+}
+
+.RAR, .ZIP {
+  path {
+    fill: #9DACCE;
+  }
+}
+
+.DOC, .DOCX, .TXT, .RTF {
+  path {
+    fill: #0D4CD3;
+  }
+}
+
+.FLV, .MOV, .MPG, .WAV, .MP3, .MP4 {
+  path {
+    fill: #1D5DEB;
+  }
+}
+
+.SIG, .XML {
+  path {
+    fill: #86909C;
+  }
+}
+
+.x_x {
+  .file-icon-text {
+    right: 8px;
+  }
+  path {
+    fill: #EE3F58;
+  }
+}

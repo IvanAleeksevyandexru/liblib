@@ -197,6 +197,7 @@ export interface FaqCategoriesCMSFaq {
   shortAnswer: string;
   shortQuestion?: string;
   active?: boolean;
+  showMore?: boolean;
 }
 
 export interface CatalogData{

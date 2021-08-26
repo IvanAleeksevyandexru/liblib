@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-lib",
-  "version": "3.0.371-3-universityv2",
+  "version": "3.0.378-2-core-frontv2",
   "publishConfig": {
     "registry": "http://nexus.gosuslugi.local/content/repositories/npm-internal/",
     "access": "public"
@@ -21,11 +21,11 @@
   },
   "dependencies": {
     "@angular/animations": "11.0.0",
+    "@angular/cdk": "11.0.0",
     "@angular/common": "11.0.0",
     "@angular/compiler": "11.0.0",
     "@angular/core": "11.0.0",
     "@angular/forms": "11.0.0",
-    "@angular/cdk": "11.0.0",
     "@angular/platform-browser": "11.0.0",
     "@angular/platform-browser-dynamic": "11.0.0",
     "@angular/router": "11.0.0",
@@ -100,9 +100,9 @@
     "webpack-shell-plugin": "0.5.0"
   },
   "peerDependencies": {
+    "@angular/cdk": "11.0.0",
     "@angular/common": "11.0.0",
     "@angular/core": "11.0.0",
-    "@angular/cdk": "11.0.0",
     "angular2-text-mask": "9.0.0",
     "moment": "2.24.0",
     "ngx-perfect-scrollbar": "8.0.0"

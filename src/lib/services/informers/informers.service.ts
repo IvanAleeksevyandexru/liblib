@@ -16,10 +16,6 @@ export class InformersService {
   ) {
   }
 
-  public isAL10(): boolean {
-    return this.loadService.user.assuranceLevel === 'AL10';
-  }
-
   public hints = {
     '03': {
       'link': this.loadService.config.betaUrl + '/pay?categories=fine'
@@ -30,53 +26,8 @@ export class InformersService {
     }
   };
 
-  public words = {
-    'платеж': ['платеж', 'платежей', 'платежа'],
-    'задолженность': ['задолженность', 'задолженностей', 'задолженности'],
-    'штраф': ['штраф', 'штрафов', 'штрафа'],
-    'счет': ['счёт', 'счетов', 'счёта'],
-    'госпошлина': ['госпошлина', 'госпошлин', 'госпошлины'],
-    'начисление': ['начисление', 'начислений', 'начисления'],
-    'выбран': ['Выбран', 'Выбрано', 'Выбрано'],
-    'выбрана': ['Выбрана', 'Выбрано', 'Выбрано'],
-    'выбрано': ['Выбрано', 'Выбрано', 'Выбрано'],
-    'судебная': ['судебная', 'судебных', 'судебных'],
-    'налоговая': ['налоговая', 'налоговых', 'налоговых'],
-    'судебная задолженность': ['судебная задолженность', 'судебных задолженностей', 'судебных задолженности'],
-    'налоговая задолженность': ['налоговая задолженность', 'налоговых задолженностей', 'налоговых задолженности'],
-    'день': ['день', 'дней', 'дня'],
-    'остался': ['Остался', 'Осталось', 'Осталось'],
-    'транспортное средство': ['транспортное средство', 'транспортных средств', 'транспортных средства'],
-    'случай': ['случай', 'случаев', 'случая'],
-    'смерть': ['смерть', 'смертей', 'смерти']
-  };
-
-  public wordsGender = {
-    'Выставлен': {
-      'stateDuty': 'Выставлена',
-      'fns': 'Выставлена',
-      'account': 'Выставлен'
-    }
-  };
-
-  public getWord(count, word): string {
-    if (!word) return '';
-    if (!this.words[word]) return word;
-
-    var rest10 = count % 10;
-    var rest100 = count % 100;
-    if (11 <= rest100 && rest100 <= 14) {
-      return this.words[word][1]
-    } else if (1 < rest10 && rest10 < 5) {
-      return this.words[word][2]
-    } else if (5 <= rest10 && rest10 <= 9 || rest10 == 0) {
-      return this.words[word][1]
-    }
-    return this.words[word][0]
-  }
-
-  public getWordByGender(gender, word): string {
-    return this.wordsGender[word][gender];
+  public isAL10(): boolean {
+    return this.loadService.user.assuranceLevel === 'AL10';
   }
 
   public checkRightsForLAndB(): boolean {

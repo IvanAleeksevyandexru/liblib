@@ -106,12 +106,6 @@ export class ConstantsService {
       name: 'TABS.MESSAGES.TITLE',
       url: '/messages',
       metric: {name: this.TABS_METRIC_NAME, action: 'messages'}
-    }, {
-      id: 'permissions',
-      name: 'TABS.PERMISSIONS.TITLE',
-      url: '/permissions',
-      metric: {name: this.TABS_METRIC_NAME, action: 'permissions'},
-      trusted: true
     }
   ]);
   public readonly LK_DEPT_TABS = new Tabs([
@@ -202,88 +196,6 @@ export class ConstantsService {
       hidden: true
     },
   ]);
-  public readonly LK_SETTINGS_SIDE_TABS = new Tabs ([
-    {
-      id: 'account',
-      name: 'SETTINGS.TABS.ACCOUNT',
-      url: '/settings/account'
-    },
-    {
-      id: 'biometry',
-      name: 'SETTINGS.TABS.BIOMETRY',
-      url: '/settings/biometry',
-      access: ['AL20']
-    },
-    {
-      id: 'notifications',
-      name: 'SETTINGS.TABS.NOTIFICATIONS',
-      url: '/settings/notifications'
-    },
-    {
-      id: 'social',
-      name: 'SETTINGS.TABS.SOCIAL',
-      url: '/settings/social'
-    },
-    {
-      id: 'login',
-      name: 'SETTINGS.TABS.LOGIN',
-      url: '/settings/login'
-    },
-    {
-      id: 'cards',
-      name: 'SETTINGS.TABS.CARDS',
-      url: '/settings/cards',
-      hidden: false
-    },
-    {
-      id: 'cards-and-accounts',
-      name: 'SETTINGS.TABS.CARDS_AND_ACCOUNTS',
-      url: '/settings/cards-and-accounts',
-      hidden: true
-    },
-    {
-      id: 'mail',
-      name: 'SETTINGS.TABS.MAIL',
-      url: '/settings/mail'
-    },
-    {
-      id: 'esignature',
-      name: 'SETTINGS.TABS.SIGNATURE',
-      url: '/settings/signature',
-      access: ['AL15', 'AL20']
-    },
-    {
-      id: 'events',
-      name: 'SETTINGS.TABS.EVENTS',
-      url: '/settings/events'
-    },
-    {
-      id: 'requests',
-      name: 'SETTINGS.TABS.REQUESTS',
-      url: '/settings/requests',
-      access: ['AL20']
-    },
-    {
-      id: 'applications',
-      name: 'SETTINGS.TABS.APPLICATIONS',
-      url: '/settings/applications'
-    },
-    {
-      id: 'blacklist',
-      name: 'SETTINGS.TABS.BLACK_LIST',
-      url: '/settings/blacklist'
-    },
-    {
-      id: 'portals',
-      name: 'SETTINGS.TABS.PORTALS',
-      url: '/settings/portals'
-    },
-    {
-      id: 'system-permissions',
-      name: 'SETTINGS.TABS.PERMISSIONS',
-      url: '/settings/system-permissions'
-    }
-  ]);
 
   public readonly LK_MESSAGES_SIDE_TABS = new Tabs([
     {
@@ -301,11 +213,6 @@ export class ConstantsService {
       name: 'MESSAGES.TABS.ARCHIVED',
       url: '/messages/archive',
       break: 'after'
-    },
-    {
-      id: 'blocked',
-      name: 'MESSAGES.TABS.BLOCKED',
-      url: '/settings/blacklist'
     },
     {
       id: 'settings',
@@ -381,12 +288,6 @@ export class ConstantsService {
       access: ['AL20']
     },
     {
-      id: 'empowerments',
-      name: 'PROFILE.TABS.EMPOWERMENTS',
-      url: '/profile/empowerments',
-      access: ['AL20']
-    },
-    {
       id: 'settings',
       name: 'PROFILE.TABS.SETTINGS',
       url: '/profile/settings'
@@ -439,7 +340,7 @@ export class ConstantsService {
   public readonly ORDERS_CATEGORIES = [
     {
       text: 'Все',
-      type: 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER',
+      type: 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER,SIGN',
       id: 1,
       mnemonic: 'allEvents'
     },
@@ -457,7 +358,7 @@ export class ConstantsService {
     },
     {
       text: 'Сообщения',
-      type: 'APPEAL',
+      type: 'APPEAL,SIGN',
       id: 4,
       mnemonic: 'appeal'
     },
@@ -507,7 +408,7 @@ export class ConstantsService {
     },
     {
       text: 'Сообщения',
-      type: 'APPEAL',
+      type: 'APPEAL,SIGN',
       id: 7,
       mnemonic: 'appealEvents'
     },

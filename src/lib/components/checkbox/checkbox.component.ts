@@ -91,6 +91,9 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor, Validate
   public setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
     this.check();
+    if (!this.destroyed) {
+      this.changeDetector.detectChanges();
+    }
   }
 
   public check() {

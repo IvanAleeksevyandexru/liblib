@@ -75,6 +75,7 @@ export enum BillsErrors {
   BillsHasUnidentifiedBills = 'BILLS_HAS_UNIDENTIFIED_BILLS',
   BillsInvalidArguments = 'BILLS_INVALID_ARGUMENTS',
   BillsNoAccessRights = 'BILLS_NO_ACCESS_RIGHTS',
+  BillsNoAccessRightsUL = 'BILLS_NO_ACCESS_RIGHTS_UL',
   BillsDateEvaluated = 'BILLS_DATE_EVALUATED',
   BillsUncorrectNumber = 'BILLS_UNCORRECT_NUMBER',
   Default = 'DEFAULT'
@@ -143,12 +144,16 @@ export interface Bill {
   billLinks?: BillLink[];
   selectedByWhiteList?: boolean;
   supplierSource?: SupplierSource[];
+  fsspApplyButton?: boolean;
+  fsspRequestButton?: boolean;
   isMessage?: boolean;
   vehicle?: Vehicle;
   hasPhoto?: boolean;
   attrs?: any; // Кастомный атрибут. Преобразованный addAttrs к объекту
-  appealAvailable?: boolean;
+  hasAppealDepartment?: boolean;
+  hasAppealPower?: boolean;
   refundAvailable?: boolean;
+  routeNumber?: string;
 }
 
 export interface BillSumm {
