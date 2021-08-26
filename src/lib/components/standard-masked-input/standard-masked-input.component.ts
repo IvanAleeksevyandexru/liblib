@@ -46,7 +46,7 @@ export class StandardMaskedInputComponent extends BaseMaskedInputComponent
   @Input() public mask: (value: string) => Array<string> | Array<string | RegExp>;
   @Input() public showConstantMaskSymbols = true;
   @Input() public placeholderSymbol = '_';
-  @Input() public keepCharPositions = true;
+  @Input() public keepCharPositions = false;
   @Input() public showMaskAsPlaceholder = false;
   @Input() public formatter?: (value: string) => false | string | object;
 
