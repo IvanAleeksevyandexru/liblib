@@ -1,33 +1,45 @@
 <div class="popup-wrapper">
-  <div class="popup">
+  <div class="popup eds-error">
     <a class="close" (click)="onCancel()"></a>
-    <ng-container *ngIf="type === 'not_found'">
-      <h4 class="title title-h2 mb-32">{{'DS_WIDGET.MODAL_ERROR.NOT_FOUND.TITLE' | libTranslate}}</h4>
-      <div class="text-plain black mb-16">{{'DS_WIDGET.MODAL_ERROR.NOT_FOUND.LIST_TITLE' | libTranslate}}</div>
+    <ng-container *ngIf="type === 'old_version'">
+      <h3 class="title title-h3 mb-24 popup-title">{{'DS_WIDGET.MODAL_ERROR.NOT_FOUND.TITLE' | libTranslate}}</h3>
+      <h5 class="title-h5 black bold mb-16">{{'DS_WIDGET.MODAL_ERROR.NOT_FOUND.LIST_TITLE' | libTranslate}}</h5>
       <ol class="text-plain black">
-        <li [innerHTML]="'DS_WIDGET.MODAL_ERROR.NOT_FOUND.STEP_1' | libTranslate:{link:loadService.config.dsWidget.pluginUpload}"></li>
-        <li [innerHTML]="'DS_WIDGET.MODAL_ERROR.NOT_FOUND.STEP_2' | libTranslate:{link:loadService.config.dsWidget.ministry}"></li>
-        <li [innerHTML]="'DS_WIDGET.MODAL_ERROR.NOT_FOUND.STEP_3' | libTranslate:{host:loadService.config.dsWidget.currentHost}"></li>
-        <li [innerHTML]="'DS_WIDGET.MODAL_ERROR.NOT_FOUND.STEP_4' | libTranslate:{link:loadService.config.dsWidget.manual}"></li>
+        <li class="ordered-item mb-12">
+          <div class="blu-digitale mr-12">1.</div>
+          <span
+            [innerHTML]="'DS_WIDGET.MODAL_ERROR.NOT_FOUND.STEP_1' | libTranslate:{link:loadService.config.dsWidget.pluginUpload}"></span>
+        </li>
+        <li class="ordered-item mb-12">
+          <div class="blu-digitale mr-12">2.</div>
+          <span
+            [innerHTML]="'DS_WIDGET.MODAL_ERROR.NOT_FOUND.STEP_2' | libTranslate:{link:loadService.config.dsWidget.ministry}"></span>
+        </li>
+        <li class="ordered-item mb-12">
+          <div class="blu-digitale mr-12">3.</div>
+          <div
+            [innerHTML]="'DS_WIDGET.MODAL_ERROR.NOT_FOUND.STEP_3' | libTranslate:{betaUrl:loadService.config.betaUrl}"></div>
+        </li>
+        <li class="ordered-item">
+          <div class="blu-digitale mr-12">4.</div>
+          <div [innerHTML]="'DS_WIDGET.MODAL_ERROR.NOT_FOUND.STEP_4' | libTranslate"></div>
+        </li>
       </ol>
     </ng-container>
-    <ng-container *ngIf="type === 'old_version'">
-      <h4 class="title title-h2 mb-32">{{'DS_WIDGET.MODAL_ERROR.OLD_VERSION.TITLE' | libTranslate}}</h4>
-      <div class="text-plain black mb-16">
+    <ng-container *ngIf="type === 'not_found'">
+      <h3 class="title title-h3 mb-24 popup-title">{{'DS_WIDGET.MODAL_ERROR.OLD_VERSION.TITLE' | libTranslate}}</h3>
+      <div class="text-plain black mb-12">
         {{'DS_WIDGET.MODAL_ERROR.OLD_VERSION.STEP_1' | libTranslate}}
       </div>
-      <div class="text-plain black mb-16">
+      <div class="text-plain black mb-12">
         {{'DS_WIDGET.MODAL_ERROR.OLD_VERSION.STEP_2' | libTranslate}}
       </div>
       <div
-        class="text-plain black mb-16"
-        [innerHTML]="'DS_WIDGET.MODAL_ERROR.OLD_VERSION.STEP_3' | libTranslate:{link:loadService.config.dsWidget.pluginUpload}">
-      </div>
-      <div class="text-plain black mb-16">
-        {{'DS_WIDGET.MODAL_ERROR.OLD_VERSION.STEP_4' | libTranslate}}
+        class="text-plain black mb-24"
+        [innerHTML]="'DS_WIDGET.MODAL_ERROR.OLD_VERSION.STEP_3' | libTranslate">
       </div>
       <div class="button-wrapper">
-        <lib-button color="blue" size="md" (click)="onCancel()"></lib-button>
+        <lib-button color="blue" [type]="'anchor'" target="_blank" [link]="loadService.config.dsWidget.pluginUpload">{{'DS_WIDGET.MODAL_ERROR.OLD_VERSION.GO_TO_DS_LANDING' | libTranslate}}</lib-button>
       </div>
     </ng-container>
   </div>
