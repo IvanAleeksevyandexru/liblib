@@ -1,4 +1,4 @@
-<div class="informers-container">
+<div class="informers-container" [ngClass]="{'full-height': isMainPage}">
   <div [class.loading]="statusInformer === 'load'"
        [ngClass]="[
         statusInformer !== 'debt' ? 'justify-center': 'justify-between with-debt',

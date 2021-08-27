@@ -173,6 +173,9 @@
   .informers-container {
     display: flex;
     align-items: stretch;
+  }
+
+  .full-height {
     height: 100%;
   }
 
@@ -291,9 +294,12 @@
   }
 
   .informers-container {
-    height: 100%;
     display: flex;
     flex-flow: column;
+  }
+
+  .full-height {
+    height: 100%;
   }
 
   .informer-main:not(.main-page-view) {
