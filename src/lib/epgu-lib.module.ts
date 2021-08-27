@@ -160,6 +160,7 @@ import { RegionCasesComponent } from './components/region-cases/region-cases.com
 import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
 import { ReversePipe } from './pipes/reverse/reverse.pipe';
 import { FileExtensionIconComponent } from './components/file-extension-icon/file-extension-icon.component';
+import { DragSliderComponent } from './components/drag-slider/drag-slider.component';
 
 
 registerLocaleData(localeRu, 'ru');
@@ -302,6 +303,7 @@ registerLocaleData(localeRu, 'ru');
     LanguageSelectComponent,
     RoundLoaderComponent,
     SliderComponent,
+    DragSliderComponent,
     CatalogTabsComponent,
     CatalogTabsListComponent,
     CatalogTabItemComponent,
@@ -450,6 +452,7 @@ registerLocaleData(localeRu, 'ru');
     LanguageSelectComponent,
     RoundLoaderComponent,
     SliderComponent,
+    DragSliderComponent,
     MenuCatalogSimpleComponent,
     SmallFooterComponent,
     CatalogTabsComponent,

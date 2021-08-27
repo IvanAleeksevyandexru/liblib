@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { InformersService } from '../../services/informers/informers.service';
 import {
   DataInformer,
@@ -14,23 +14,25 @@ import { DeclinePipe } from '../../pipes/decline/decline.pipe';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { LoadService } from '../../services/load/load.service';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'lib-informer',
   templateUrl: './informer.component.html',
-  styleUrls: ['./informer.component.scss']
+  styleUrls: ['./informer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InformerComponent implements OnInit {
 
-  // отображение в сжатом состоянии
-  @Input() public isMini = false;
+  @Input() public isMainPage = false;
+  @Input() public showAllInformers = false;
 
   public statusInformer: TypeStatus = 'load';
   public dataInformer = new DataInformer();
   public hintResponse: HintInterface;
   public hintText: string;
   public linkHint: string;
-  public mnemonicHint: string;
+  public config = this.loadService.config;
 
   private debtForYaMetric: DebtYaMetricInterface = {};
 
@@ -40,6 +42,7 @@ export class InformerComponent implements OnInit {
     private yaMetricService: YaMetricService,
     private loadService: LoadService,
     private router: Router,
+    private cd: ChangeDetectorRef,
   ) {
   }
 
@@ -74,14 +77,17 @@ export class InformerComponent implements OnInit {
   private getTextToHint(code: string): void {
     if (this.informersService.hints[code] && code === '03') {
       this.hintText = 'Скидка истекает через' + ' ' + this.declinePipe.transform(this.hintResponse.days, ['день', 'дня', 'дней']) + ' ';
-      } else if(this.informersService.hints[code] && code === '05') {
+      } else if (this.informersService.hints[code] && code === '05') {
       this.hintText = this.informersService.hints[code].text;
     }
   }
 
   private getInformerShortData() {
-    this.informersService.getDataInformer()
-      .subscribe((response: InformerShortInterface) => {
+    this.informersService.getDataInformer().pipe(
+      finalize(() => {
+        this.cd.detectChanges();
+      })
+    ).subscribe((response: InformerShortInterface) => {
         if (response?.hint) {
           this.hintResponse = response.hint;
           const hint = Object.keys(this.informersService.hints).find((code) => {
@@ -106,7 +112,7 @@ export class InformerComponent implements OnInit {
                 this.debtForYaMetric.types = Object.assign(this.debtForYaMetric.types, {[TypeDebt[type]]: res[TypeDebt[type]].amount});
               }
             }
-            this.dataInformer.type = debtCount.length === 1 ? TypeDebt[debtCount[0]]: 'all';
+            this.dataInformer.type = debtCount.length === 1 ? TypeDebt[debtCount[0]] : 'all';
             this.dataInformer.docs = this.declinePipe.transform(res.total, this.getWord(debtCount));
             this.setExtraDebtData(res);
             // инфа для метрики
@@ -155,6 +161,14 @@ export class InformerComponent implements OnInit {
       this.router.navigate(['/pay']);
     } else {
       location.href = `${this.loadService.config.betaUrl}pay`;
+    }
+  }
+
+  public redirectToQuittance() {
+    if (this.loadService.config.viewType === 'PORTAL') {
+      this.router.navigate(['/pay/quittance']);
+    } else {
+      location.href = `${this.loadService.config.betaUrl}pay/quittance`;
     }
   }
 
