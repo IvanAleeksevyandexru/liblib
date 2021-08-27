@@ -84,13 +84,15 @@ export class MailDeliveryService {
   }
 
   // Запрос данных о доступных подписках
-  public getAvailableSubscription(): Observable<AllSubscriptionResponse> {
+  public getAvailableSubscription(isModal = false): Observable<AllSubscriptionResponse> {
     const region = this.loadService.attributes.selectedRegion;
+    const withHidden = !isModal;
     return this.http.get<AllSubscriptionResponse>(`${this.loadService.config.gepsApiUrl}subscription/v2/`,
       {
         withCredentials: true,
         params: {
           region,
+          withHidden: String(withHidden),
           _: String(Math.random())
         }
       }).pipe(
@@ -106,6 +108,9 @@ export class MailDeliveryService {
   // Обновление данных о статусе подписки
   public updateSubscriptionState(code: string, curStatus: DeliverySubscribeStatus, newStatus: DeliverySubscribeStatus): Observable<any> {
     let isFirstSubscribe = this.constants.MAIL_DELIVERY_FIRST_SUBSCRIBE_STATUSES.includes(curStatus);
+    if (code === 'PR_MVD') {
+      isFirstSubscribe = curStatus === 'NOT_SUBSCRIBED';
+    }
     const url = `${this.loadService.config.gepsApiUrl}subscription/v2/${code}`;
     const body = {status: newStatus};
 
