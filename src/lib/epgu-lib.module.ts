@@ -161,6 +161,7 @@ import { FileUploaderComponent } from './components/file-uploader/file-uploader.
 import { ReversePipe } from './pipes/reverse/reverse.pipe';
 import { FileExtensionIconComponent } from './components/file-extension-icon/file-extension-icon.component';
 import { DragSliderComponent } from './components/drag-slider/drag-slider.component';
+import { TrimFileTypesPipe } from './pipes/trim-file-types/trim-file-types.pipe';
 
 
 registerLocaleData(localeRu, 'ru');
@@ -312,6 +313,7 @@ registerLocaleData(localeRu, 'ru');
     FileUploaderComponent,
     ReversePipe,
     FileExtensionIconComponent,
+    TrimFileTypesPipe
   ],
   imports: [
     CommonModule,

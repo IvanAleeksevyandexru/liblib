@@ -84,16 +84,15 @@ export class MailDeliveryService {
   }
 
   // Запрос данных о доступных подписках
-  public getAvailableSubscription(isModal = false): Observable<AllSubscriptionResponse> {
+  public getAvailableSubscription(withHidden = false): Observable<AllSubscriptionResponse> {
     const region = this.loadService.attributes.selectedRegion;
-    const withHidden = !isModal;
     return this.http.get<AllSubscriptionResponse>(`${this.loadService.config.gepsApiUrl}subscription/v2/`,
       {
         withCredentials: true,
         params: {
           region,
-          withHidden: String(withHidden),
-          _: String(Math.random())
+          _: String(Math.random()),
+          withHidden: withHidden.toString()
         }
       }).pipe(
       tap(response => {
