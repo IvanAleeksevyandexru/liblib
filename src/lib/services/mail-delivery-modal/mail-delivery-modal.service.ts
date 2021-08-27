@@ -49,7 +49,7 @@ export class MailDeliveryModalService {
       return of(null);
     }
 
-    return this.mailDeliveryService.getAvailableSubscription().pipe(
+    return this.mailDeliveryService.getAvailableSubscription(false).pipe(
       switchMap((response) => {
         let subscribable = [];
         if (response && response.items) {
@@ -60,7 +60,7 @@ export class MailDeliveryModalService {
           }
 
           subscribable = response.items.filter(item => {
-            if(item.code === this.constants.MAIL_DELIVERY_COPY_POST_CODE) {
+            if (item.code === this.constants.MAIL_DELIVERY_COPY_POST_CODE) {
               return false;
             }
             if (['NOT_SUBSCRIBED', 'REMIND_LATER'].includes(item.status)) {
