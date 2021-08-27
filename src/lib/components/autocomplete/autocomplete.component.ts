@@ -48,6 +48,10 @@ export class AutocompleteComponent implements OnInit, DoCheck, ControlValueAcces
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public maxlength?: number;
   @Input() public commitOnInput = false;
+
+  // bg цвет input
+  @Input() public bgInputField: string;
+
   @Input() public width?: string | Width;
   // показ лупы
   @Input() public showMagnifyingGlass = true;

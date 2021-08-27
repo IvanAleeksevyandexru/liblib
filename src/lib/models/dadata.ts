@@ -136,6 +136,8 @@ export interface DadataResult {
   apartmentCheckboxClosed: boolean;
   index: string;
   type?: 'PLV' | 'PRG' | 'OPS' | 'OLG' | 'PTA';
+  okato: string;
+  oktmo: string;
 }
 
 export class FormConfig {

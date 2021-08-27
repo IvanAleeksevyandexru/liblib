@@ -28,11 +28,15 @@ export class ConfirmActionComponent implements OnInit {
     disabled?: boolean,
     handler: (d?) => {}
   }[];
+  public spaceButtonsBetween: boolean;
 
   public destroy: () => {};
 
+  public cancelHandler?: () => {};
+
   @HostListener('document:keydown', ['$event']) public onKeydownComponent(event: KeyboardEvent): void {
     if (event.key === 'Escape' || event.key === 'Esc') {
+      this.cancelHandler?.();
       this.destroy();
     }
   }
@@ -51,6 +55,7 @@ export class ConfirmActionComponent implements OnInit {
   }
 
   public onCancel(): void {
+    this.cancelHandler?.();
     this.destroy();
   }
 

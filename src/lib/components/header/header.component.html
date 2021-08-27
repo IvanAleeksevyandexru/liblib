@@ -91,8 +91,7 @@
               <li *ngFor="let link of links" class="item flex-container align-items-center mr-24">
                 <ng-container *ngIf="link.showSeparatelyOnDesk">
                   <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
-                     (click)="redirect($event, link)"
-                     [href]="link.url">
+                     (click)="redirect($event, link)">
                     <span *ngIf="translation === Translation.NONE">{{link.title}}</span>
                     <span *ngIf="translation === Translation.APP">{{link.title | appTranslate}}</span>
                     <span *ngIf="translation === Translation.LIB">{{link.title | libTranslate}}</span>
@@ -138,7 +137,8 @@
                            [searchSputnikEnabled]="searchSputnikEnabled"
                            [state]="userMenuState"
                            [links]="links"
-                           [translation]="translation">
+                           [translation]="translation"
+                           [closeStatisticPopup$]="closeStatisticPopup$">>
             </lib-user-menu>
           </div>
         </div>

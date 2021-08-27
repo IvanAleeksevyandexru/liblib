@@ -154,6 +154,13 @@ a, button {
   }
 }
 
+.small-paddings {
+  a, button {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
 button::-moz-focus-inner {
   border: 0;
 }

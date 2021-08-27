@@ -174,9 +174,12 @@
   }
 }
 
-.feed-ACCOUNT, .feed-LINKED_ACCOUNT {
+.feed-ACCOUNT, .feed-LINKED_ACCOUNT, .feed-ACCOUNT_CHILD {
   .status-in_progress {
     background-image: url('../../../assets/svg/statuses/account-progress-doc.svg');
+  }
+  .status-invite_to_subscribe {
+    background-image: url('../../../assets/svg/statuses/warn.svg');
   }
 }
 

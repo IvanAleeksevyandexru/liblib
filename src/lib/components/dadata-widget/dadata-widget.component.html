@@ -3,7 +3,7 @@
     <label class="text-plain small-text" *ngIf="label">{{label}}</label>
   </div>
   <div class="text-plain small-text dadata-error mb-4" *ngIf="hasPatternError">
-    Возможные значения: цифры, кириллица, точки, запятые, №, N, \, /, -, (, ), ", ;, _, +, <, >
+    Возможные значения: цифры, кириллица, римские цифры, точки, запятые, №, N, \, /, -, (, ), ", ;, _, +, <, >
   </div>
   <div *ngIf="form.get('index').getError('minlength')" class="text-plain small-text dadata-error mb-4">
     Индекс должен состоять из 6 символов
@@ -14,6 +14,7 @@
   </div>
   <div>
     <lib-autocomplete #autocomplete
+                      [bgInputField]="bgInputField"
                       contextClass="dadata-autocomplete"
                       [tabIndex]="0"
                       [invalid]="!!errorCodes.length || form.invalid || (invalid && !normalizeInProcess)"
@@ -155,7 +156,7 @@
             <div class="mb-4"><label class="text-plain small-text" for="house">{{'DADATA.HOUSE' | libTranslate}}</label>
             </div>
             <div class="small-field">
-              <lib-plain-input maxlength="10" [tabIndex]="12" [clearable]="true"
+              <lib-plain-input maxlength="20" [tabIndex]="12" [clearable]="true"
                                [invalid]="formConfig.house.isInvalid || form.get('house').invalid" id="house"
                                formControlName="house"></lib-plain-input>
             </div>

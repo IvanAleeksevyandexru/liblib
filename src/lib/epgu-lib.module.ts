@@ -158,6 +158,7 @@ import { CatalogTabItemComponent } from './components/catalog-tab-item/catalog-t
 import { UserRolesComponent } from './components/user-roles/user-roles.component';
 import { RegionCasesComponent } from './components/region-cases/region-cases.component';
 import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
+import { ReversePipe } from './pipes/reverse/reverse.pipe';
 import { FileExtensionIconComponent } from './components/file-extension-icon/file-extension-icon.component';
 import { DragSliderComponent } from './components/drag-slider/drag-slider.component';
 
@@ -309,6 +310,7 @@ registerLocaleData(localeRu, 'ru');
     UserRolesComponent,
     RegionCasesComponent,
     FileUploaderComponent,
+    ReversePipe,
     FileExtensionIconComponent,
   ],
   imports: [
@@ -459,6 +461,7 @@ registerLocaleData(localeRu, 'ru');
     UserRolesComponent,
     RegionCasesComponent,
     FileUploaderComponent,
+    ReversePipe,
     FileExtensionIconComponent,
   ],
   providers: [

@@ -174,4 +174,19 @@ export class DatesHelperService {
     return new Date(str);
   }
 
+  // Метод считает, сколько лет прошло с даты
+  public static calcAge(value: string | Date): number {
+    if (value) {
+      if (value instanceof Date) {
+        return moment().diff(moment(value), 'y');
+      } else if (value.match(/\d{2}\.\d{2}.\d{4}/)) {
+        return moment().diff(moment(value, 'DD.MM.YYYY'), 'y');
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
 }

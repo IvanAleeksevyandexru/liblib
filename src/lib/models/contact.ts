@@ -12,6 +12,11 @@ export interface Contact {
   isCfmCodeExpired?: boolean;
   verifyingValue?: string;
   vrfValStu?: VrfValStu;
+  vrfDays?: any;
+  vrfDate?: any;
+  errMsg?: any;
+  repeatTime?: any;
+  repeatCount?: any;
 }
 
 export interface CorpContact {

@@ -2,7 +2,7 @@ import { VrfStu, VrfValStu } from './verifying-status';
 
 export type DocumentType = 'RF_DRIVING_LICENSE' | 'BRTH_CERT' | 'RF_BRTH_CERT' | 'FID_BRTH_CERT' | 'OLD_BRTH_CERT' | 'MDCL_PLCY' |
   'MLTR_ID' | 'RF_PASSPORT' | 'RF_INT_PASSPORT' | 'FRGN_PASS' | 'FID_DOC' | 'RSDNC_PERMIT' | 'RFG_CERT' |
-  'CERT_REG_IMM' | 'DIVORCE_CERT' | 'MARRIED_CERT' | 'FATHERHOOD_CERT' |
+  'CERT_REG_IMM' | 'DIVORCE_CERT' | 'MARRIED_CERT' | 'FATHERHOOD_CERT' | 'DEATH_CERT' |
   'NAME_CHANGE_CERT' | 'MDCL_BRTH_CERT' | 'KID_RF_BRTH_CERT' | 'DRUGS_INQUIRY' | 'NO_CRIMINAL_INQUIRY' |
   'REESTR_INVALIDOV'
   // Кастомные типы
@@ -62,8 +62,10 @@ export interface CommonCert {
   actNo?: string;
   actDate?: string | Date;
   actRecordFound?: boolean;
+  needToSetDefaultCert?: boolean;
   recordDate?: string | Date;
   issuedBy?: string;
+  updateCerts?: boolean;
 }
 
 export interface DocumentHistoryRequest {

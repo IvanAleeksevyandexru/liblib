@@ -17,9 +17,10 @@ import { AuthService } from '../../services/auth/auth.service';
 import { TabsService } from '../../services/tabs/tabs.service';
 import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 import { HelperService } from '../../services/helper/helper.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AccessesService } from '../../services/accesses/accesses.service';
 import { Translation } from '../../models/common-enums';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'lib-user-menu',
@@ -39,6 +40,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public userRoles;
   public activeRole;
   public Translation = Translation;
+  public psoContainer = document.getElementById('pso-widget-container');
 
   @Input() public state: UserMenuState;
   @Input() public rolesListEnabled = false;
@@ -46,6 +48,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() public position: 'left' | 'right' = 'right';
   @Input() public links: MenuLink[] = [];
   @Input() public translation: Translation | string = Translation.APP;
+  @Input() public closeStatisticPopup$: Observable<boolean>;
 
   @Output() public closeMenu: EventEmitter<any> = new EventEmitter();
 
@@ -122,6 +125,9 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     html.classList.remove('disable-scroll');
     html.classList.remove('disable-scroll-sm');
     this.state.active = false;
+    if (this.psoContainer && (window as any).screen.width < 812) {
+      this.psoContainer.style.display = 'unset';
+    }
   }
 
   public showDeskView() {
@@ -129,7 +135,17 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public menuStaticItemClick(itemName: string, mnemonic): void {
-    this.menuService.menuStaticItemClick(itemName, mnemonic);
+    if (this.closeStatisticPopup$) {
+      this.closeStatisticPopup$.pipe(
+        take(1)
+      ).subscribe(condition => {
+        if (condition) {
+          this.menuService.menuStaticItemClick(itemName, mnemonic);
+        }
+      });
+    } else {
+      this.menuService.menuStaticItemClick(itemName, mnemonic);
+    }
     this.onClose();
   }
 

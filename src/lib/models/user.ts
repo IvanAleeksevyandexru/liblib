@@ -132,6 +132,7 @@ export interface User {
   orgOgrn?: string;
   orgOid?: string;
   orgPosition?: string | null;
+  orgPowers?: string;
   orgShortName?: string;
   orgType?: 'L' | 'B';
   person?: PersonData;
@@ -148,6 +149,7 @@ export interface User {
   registrationAddress?: string;
   snils?: string;
   soc?: Social[];
+  systemAuthority?: string;
   userId?: number;
   userName?: string;
   userType?: string;
