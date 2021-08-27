@@ -78,9 +78,9 @@ export class ValidationService {
     return str.match(symbolsArr);
   }
 
-  public static maxLengthWordValidator(length: number): ValidatorFn {
+  public static maxLengthWordValidator(length: number, pattern: RegExp | string = ' '): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
-      const arrWords = control.value ? control.value.replace(/[\r\n]+/g, ' ').split(' ') : [];
+      const arrWords = control.value ? control.value.replace(/[\r\n]+/g, ' ').split(pattern) : [];
       return arrWords.some(word => word.length > length) ? {maxLengthWord: true} : null;
     };
   }
