@@ -13,6 +13,7 @@ export class DisclaimerElkComponent implements OnInit {
   @Input() public noBorder = false;
   @Input() public noShadow = false;
   @Input() public horizontalLine = false;
+  @Input() public onlyTitle = false;
 
   constructor() { }
 
