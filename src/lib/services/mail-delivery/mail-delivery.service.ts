@@ -120,6 +120,11 @@ export class MailDeliveryService {
       isFirstSubscribe = true;
     }
 
+    if (code === this.constants.MAIL_DELIVERY_COPY_POST_CODE &&
+      this.constants.MAIL_DELIVERY_SUBSCRIBED_STATUS.includes(curStatus)) {
+      isFirstSubscribe = false;
+    }
+
     if (isFirstSubscribe) {
       return this.http.post<any>(url, body, {withCredentials: true});
     } else {
