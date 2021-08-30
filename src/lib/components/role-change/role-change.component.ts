@@ -5,7 +5,9 @@ import { LoadService } from '../../services/load/load.service';
 import { Role, User } from '../../models/user';
 import { RedirectsService } from '../../services/redirects/redirects.service';
 import { EsiaApiService } from '../../services/esia-api/esia-api.service';
-import { HelperService, LibTranslateService, ModalService } from '../../services';
+import { ModalService } from '../../services/modal/modal.service';
+import { LibTranslateService } from '../../services/translate/translate.service';
+import { HelperService } from '../../services/helper/helper.service';
 import { ConfirmActionComponent } from '../confirm-action/confirm-action.component';
 
 const COUNT_ROLES_PER_ADD_BUTTON = 3;
