@@ -17,7 +17,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { from, Observable } from 'rxjs';
+import { from, Observable, Subscription } from 'rxjs';
 import { FocusManager } from '../../services/focus/focus.manager';
 import { InconsistentReaction, LineBreak, Translation } from '../../models/common-enums';
 import { Validated, ValidationShowOn } from '../../models/validation-show';
@@ -41,6 +41,7 @@ import { VirtualScrollComponent } from '../virtual-scroll/virtual-scroll.compone
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { Width } from '../../models/width-height';
 import { Suggest, SuggestItem } from '../../models/suggest';
+import { SharedService } from '../../services/shared/shared.service';
 
 const SHOW_ALL_MARKER = {};
 
@@ -61,6 +62,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     private changeDetector: ChangeDetectorRef,
     private positioningManager: PositioningManager,
     protected focusManager: FocusManager,
+    private sharedService: SharedService,
     @Self() protected listService: ListItemsService,
     @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
 
@@ -76,7 +78,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   @Input() public cachedResponse?: boolean;
   @Input() public staticList?: boolean;
   @Input() public suggest?: Suggest;
-
+  @Input() public suggestSeparator = ' ';
 
   // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
   @Input() public formatter?: (item: ListItem, context: { [name: string]: any }) => string;
@@ -147,6 +149,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   @Input() public enableLangConvert = false;
   // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
   @Input() public stopSearch = false;
+  // доп. атрибуты
+  @Input() public addAttrs: {[key: string]: any} = {};
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -189,7 +193,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   public suggestion: string;
   public suggested: ListItem;
   public suggestionJustSelected = false;
-  public virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems.bind(this));
+  public virtualScrollController = new ListItemsVirtualScrollController(this.getRenderedItems.bind(this), true);
   public LineBreak = LineBreak;
   private insureSearchActiveToken = 0;
   // компонент может работать на заданном фиксированном списке значений или не внешнем поиске
@@ -199,6 +203,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   private withFixedList = false;
 
   private destroyed = false;
+  private sharedSubscription: Subscription;
 
   @ViewChild('scrollComponent') private scrollComponent: PerfectScrollbarComponent;
   @ViewChild('virtualScroll') private virtualScrollComponent: VirtualScrollComponent;
@@ -211,10 +216,21 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
   public ngOnInit() {
     this.update();
+    if (this.addAttrs?.nameInput) {
+      this.sharedSubscription = this.sharedService.on(this.addAttrs.nameInput).subscribe((val) => {
+        if (val) {
+          this.prevQuery = '';
+          this.clearInput();
+        }
+      });
+    }
   }
 
   public ngOnDestroy() {
     this.destroyed = true;
+    if (this.sharedSubscription) {
+      this.sharedSubscription.unsubscribe();
+    }
   }
 
   public ngAfterViewInit() {
@@ -453,10 +469,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
           this.prevQuery = this.query;
           this.searching = this.partialsLoading = false;
           if (this.insureSearchActiveToken === activeToken) {
-            this.processNewItems(rootSearch, items);
-            if (callback) {
-              callback();
-            }
+            this.processNewItems(rootSearch, items, callback);
           }
           this.changeDetector.detectChanges();
         }, e => {
@@ -470,8 +483,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   }
 
   // все что prepareItems + запись в список отображения
-  public processNewItems(rootSearch: boolean, items: Array<any>) {
-    this.prepareItems(items, this.items.length, this.activeQuery, false, !!this.itemsProvider, (newItems: Array<ListItem>) => {
+  public processNewItems(rootSearch: boolean, items: Array<any>, callback?: () => void) {
+    this.prepareItems(items, this.items.length, this.activeQuery, false, !!this.itemsProvider || this.virtualScroll, (newItems: Array<ListItem>) => {
       if (this.incrementalLoading) {
         if (newItems.length) {
           this.items = rootSearch ? newItems : this.items.concat(newItems);
@@ -485,6 +498,9 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
       this.listService.alignGroupsTreeIfNeeded(this.items, this.itemsProvider ? this.items : this.internalFixedItems);
       this.updateScrollHeight();
       this.listed.emit(this.items);
+      if (callback) {
+        callback();
+      }
     });
   }
 
@@ -704,7 +720,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
       translation: this.translation,
       escapeHtml: this.escapeHtml,
       showAll,
-      queryMinSymbolsCount: this.queryMinSymbolsCount
+      queryMinSymbolsCount: this.queryMinSymbolsCount,
+      addAttrs: this.addAttrs
     };
   }
 

@@ -1,4 +1,5 @@
 <div [ngClass]="contextClass ? [contextClass] : []" class="plain-input"
+     [class.withClearButton]="clearable && !disabled && !empty && !readOnly"
      [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <input #input type="text"
          [attr.name]="name"
@@ -14,6 +15,7 @@
          [class.clearable]="clearable"
          [class.uppercase]="uppercase"
          [class.is-suggest]="suggest && suggest.list.length"
+         (click)="handleClick($event)"
          (blur)="notifyFocusEvent($event)"
          (focus)="notifyFocusEvent($event)"
          (input)="handleInput($event.target.value, $event)"
@@ -28,7 +30,7 @@
       <li *ngFor="let item of suggest.list" (click)="selectSuggestItem(item)">
         <p>{{item.value}}</p>
         <ng-container *ngIf="item.hints">
-          <span *ngFor="let hint of item.hints">{{hint.value}} </span>
+          <span *ngFor="let hint of item.hints; let last = last">{{hint.value}}{{!last ? suggestSeparator : ''}}</span>
         </ng-container>
       </li>
     </ul>

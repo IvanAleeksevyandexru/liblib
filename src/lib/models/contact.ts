@@ -12,4 +12,17 @@ export interface Contact {
   isCfmCodeExpired?: boolean;
   verifyingValue?: string;
   vrfValStu?: VrfValStu;
+  vrfDays?: any;
+  vrfDate?: any;
+  errMsg?: any;
+  repeatTime?: any;
+  repeatCount?: any;
+}
+
+export interface CorpContact {
+  id: number;
+  oph: string;
+  simActiv: 'Y' | 'NO_ANSWER' | 'REFUSE' | 'DEACTIV';
+  orgName: string;
+  hidden: boolean;
 }

@@ -58,6 +58,7 @@ export class BaseMaskedInputComponent
   @Input() public uppercase = false;
   @Input() public width?: string | Width;
   @Input() public suggest?: Suggest;
+  @Input() public suggestSeparator = ' ';
 
   // маска - это массив символов и/или регэкспов, каждый ответственен за свой символ в поле
   // пример: ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
@@ -70,7 +71,7 @@ export class BaseMaskedInputComponent
   @Input() public placeholderSymbol = '_';
   // когда true ввод/удаление символов не влияет на оставшуюся часть строки
   // когда false ввод/удаление символов в середине строки сдвигает символы в данном блоке (до след фиксированного символа или конца)
-  @Input() public keepCharPositions = true;
+  @Input() public keepCharPositions = false;
   // конвертирует маску в плейсхолдер и показывает его переопределяя свойство placeholder
   @Input() public showMaskAsPlaceholder = false;
   // дает возможность изменить уже принятую к показу строку в момент ввода до вывода ее в инпут
@@ -196,13 +197,15 @@ export class BaseMaskedInputComponent
     if (e.type === 'focus' && !this.removeMaskSymbolsIfNeeded(inp.value) && inp.setSelectionRange) {
       setTimeout(() => {
         inp.setSelectionRange(0, 0);
-        inp.focus();
       });
     }
+  }
 
-    if (this.positionInInput !== 0) {
-      this.goToFixPosition(this.positionInInput, this.positionInInput);
-    }
+  public handleClick(evt: Event): void {
+    setTimeout(() => {
+      this.loseFocus();
+      this.returnFocus();
+    });
   }
 
   public handleBlur() {
@@ -214,7 +217,7 @@ export class BaseMaskedInputComponent
 
   public handleFocus() {
     this.touched = this.focused = true;
-    HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue);
+    HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue, this.positionInInput);
     this.valueOnFocus = this.inputElement.nativeElement.value;
     this.check();
     if (this.onTouchedCallback) {
@@ -241,7 +244,7 @@ export class BaseMaskedInputComponent
 
     if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement) && !isSuggest) {
       this.inputElement.nativeElement.focus();
-      HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue);
+      HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue, this.positionInInput);
       this.focusManager.notifyFocusMayChanged(this, true);
     }
   }
@@ -263,7 +266,6 @@ export class BaseMaskedInputComponent
     if (!this.disabled) {
       this.writeValue(null);
       this.commit(null);
-      this.goToFixPosition(this.positionInInput, this.positionInInput);
       this.cleared.emit();
       this.returnFocus(e);
     }
@@ -341,10 +343,6 @@ export class BaseMaskedInputComponent
   public editSuggestList(suggest: Suggest): void {
     suggest.isEdit = true;
     this.selectSuggest.emit(suggest);
-  }
-
-  public goToFixPosition(start: number, end: number): void {
-    this.inputElement.nativeElement.setSelectionRange(start, end);
   }
 
 }

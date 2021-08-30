@@ -37,7 +37,7 @@ export class UserRolesComponent implements OnInit {
     private menuService: MenuService
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.loadService.userTypeNA$.subscribe(type => {
       this.activeRoleCode = type;
     });
@@ -46,7 +46,6 @@ export class UserRolesComponent implements OnInit {
 
   public openRolesList(): void {
     this.showRolesList = !this.showRolesList;
-    console.log(this.showRolesList);
   }
 
   public getRoleName(code: string): string {

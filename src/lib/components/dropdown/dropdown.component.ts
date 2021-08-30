@@ -36,8 +36,12 @@ import { Suggest, SuggestItem } from '../../models/suggest';
 export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy, ControlValueAccessor, Focusable, Validated {
 
   constructor(
-    private focusManager: FocusManager, protected changeDetector: ChangeDetectorRef, private positioningManager: PositioningManager,
-    @Self() protected listService: ListItemsService, @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
+    private focusManager: FocusManager,
+    protected changeDetector: ChangeDetectorRef,
+    private positioningManager: PositioningManager,
+    @Self() protected listService: ListItemsService,
+    @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer
+  ) { }
 
   @Input() public contextClass?: string;  // класс-маркер для deep стилей
   @Input() public formControlName?: string;
@@ -47,6 +51,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   @Input() public width?: Width | string;
   @Input() public suggest?: Suggest;
+  @Input() public suggestSeparator = ' ';
 
   // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
   @Input() public formatter?: (item: ListItem, context?: { [name: string]: any }) => string;
@@ -76,6 +81,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   @Input() public translation: Translation | string = Translation.NONE;
   // позиционировать выпадающий список программно на fixed координатах (выпадашка может выходить за пределы диалоговых окон)
   @Input() public containerOverlap = false;
+  // определяет направление разворачивания списка. false - вниз, true - вверх
+  @Input() public rollUp = false;
   // постраничная подгрузка итемов в результатах и размер блока
   @Input() public incrementalLoading = false;
   @Input() public incrementalPageSize = ConstantsService.DEFAULT_ITEMS_INCREMENTAL_PAGE_SIZE;
@@ -83,6 +90,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   @Input() public virtualScroll = false;
   // включает поле поиска в выпадающую область, позволяет фильтровать отображаемые значения
   @Input() public localSearch = false;
+  // заменять ё -> e й -> и
+  @Input() public escapeSimilarLetters = false;
   @Input() public highlightSubstring = true;
 
   // источник значений, массив элементов
@@ -344,7 +353,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
 
   public setPartialIndex(partialNumber: number) {
     if (this.localSearch || this.incrementalLoading) {
-      this.fixedItemsProvider.search(this.filteringQuery).subscribe((filteredAll: Array<ListItem>) => {
+      this.fixedItemsProvider.search(this.filteringQuery, null, this.escapeSimilarLetters).subscribe((filteredAll: Array<ListItem>) => {
         const highlightIfNeeded = (filteredItems: Array<ListItem>) => {
           if (this.filteringQuery && this.highlightSubstring) {
             this.listService.highlightSubstring(filteredItems, this.filteringQuery);
@@ -537,6 +546,9 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   public setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
     this.check();
+    if (!this.destroyed) {
+      this.changeDetector.detectChanges();
+    }
   }
 
   public check(): void {

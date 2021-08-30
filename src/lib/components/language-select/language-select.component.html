@@ -1,40 +1,14 @@
-<div class="select-container" libClickOutside (clickOutside)="toggleList(false)">
-  <div class="selected-item small-text flex-container align-items-center" (click)="toggleList(true)">
-    <img src="{{staticDomainLibAssetsPath}}svg/languages/{{activeItem}}.svg" alt="" class="mr-8">
-    <span>{{'LANG.' + activeItem | libTranslate}}</span>
+<div class="language-container">
+  <div class="selected-item title-h6" [ngClass]="{'blue': !showList}" (click)="toggleList()">
+    {{'LANG.FULL.' + activeItem | libTranslate}}
   </div>
-
-  <div class="hide-lg">
-    <div class="language-view-wrapper" [ngClass]="{'show-view': showList}">
-      <div class="language-view">
-        <div class="links">
-          <div *ngFor="let lang of languages"
-               class="item small-text flex-container align-items-center"
-               (click)="selectLang(lang)">
-            <img src="{{staticDomainLibAssetsPath}}svg/languages/{{lang}}.svg" alt="" class="mr-8">
-            <span>{{'LANG.' + lang | libTranslate}}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div *ngIf="showList" class="hide show-lg">
-    <div class="lang-list">
-      <div class="lang-list__item" (click)="toggleList(false)">
-        <div class="lang-ist__item-content small-text flex-container align-items-center">
-          <img src="{{staticDomainLibAssetsPath}}svg/languages/{{activeItem}}.svg" alt="" class="mr-8">
-          <span>{{'LANG.' + activeItem | libTranslate}}</span>
-        </div>
-      </div>
+  <div class="language-view-wrapper" [ngClass]="{'hide': !showList}">
+    <div class="links">
       <ng-container *ngFor="let lang of languages">
         <div *ngIf="lang !== activeItem"
-             (click)="selectLang(lang)"
-             class="lang-list__item">
-          <div class="lang-ist__item-content small-text flex-container align-items-center">
-            <img src="{{staticDomainLibAssetsPath}}svg/languages/{{lang}}.svg" alt="" class="mr-8">
-            <span>{{'LANG.' + lang | libTranslate}}</span>
-          </div>
+             class="item link-plain"
+             (click)="selectLang(lang)">
+          {{'LANG.FULL.' + lang | libTranslate}}
         </div>
       </ng-container>
     </div>

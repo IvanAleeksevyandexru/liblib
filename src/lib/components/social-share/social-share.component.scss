@@ -62,10 +62,32 @@
 
   .new-social-links {
     margin-top: 16px;
-    width: 128px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    .new-social-link {
+      display: flex;
+      align-items: center;
+      margin-right: 24px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &.vk img {
+        width: 32px;
+        height: 20px;
+      }
+      &.ok img, &.fb img {
+        width: 24px;
+        height: 24px;
+      }
+      &.tg img {
+        width: 24px;
+        height: 21px;
+      }
+    }
   }
 
   &.disabled {
@@ -94,8 +116,7 @@
     flex-direction: row;
 
     .new-social-links {
-      flex: 1 0 128px;
-      width: 100%;
+      flex: 1 0 auto;
       margin-top: 0;
       margin-left: 32px;
     }
