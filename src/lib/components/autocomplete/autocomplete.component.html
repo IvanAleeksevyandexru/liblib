@@ -3,6 +3,7 @@
   <div class="lookup-field" #dropdownField [ngClass]="{invalid: invalid, expanded: expanded}">
     <lib-search-bar #searchBar
       contextClass="lookup-input"
+      [bgInputField]="bgInputField"
       [tabIndex]="tabIndex"
       [disabled]="disabled"
       [maxlength]="maxlength"

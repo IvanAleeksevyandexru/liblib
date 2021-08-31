@@ -19,6 +19,7 @@ import { ModalService } from '../../services/modal/modal.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HelperService } from '../../services/helper/helper.service';
+import { take } from 'rxjs/operators';
 
 const HIDE_TIMOUT = 300;
 
@@ -43,6 +44,7 @@ export class HeaderComponent implements OnInit {
   public burgerWithCatalog = true;
   public burgerDemoMode = this.loadService.config.burgerDemoMode;
   public Translation = Translation;
+  public psoContainer = document.getElementById('pso-widget-container');
 
   private closeBurger = new BehaviorSubject(false);
   public closeBurger$ = this.closeBurger.asObservable();
@@ -62,6 +64,11 @@ export class HeaderComponent implements OnInit {
   @Input() public languageChangeAvailable: boolean;
   @Input() public translation: Translation | string = Translation.APP;
   @Input() public closeStatisticPopup$: Observable<boolean>;
+
+  @Input() public alwaysShowLocationSelect = false;
+  @Input() public hideBurgerDesc = false;
+
+  @Input() public reloadAbsoluteInternalLinks = false;
 
   @Output() public backClick = new EventEmitter<any>();
 
@@ -144,11 +151,17 @@ export class HeaderComponent implements OnInit {
 
     const html = document.getElementsByTagName('html')[0];
     html.classList.add('disable-scroll-sm');
+    if (this.psoContainer && (window as any).screen.width < 812) {
+      this.psoContainer.style.display = 'none';
+    }
   }
 
   public hideUserMenu() {
     if (this.menu) {
       this.menu.onClose();
+      if (this.psoContainer && (window as any).screen.width < 812) {
+        this.psoContainer.style.display = 'unset';
+      }
     }
   }
 
@@ -179,7 +192,13 @@ export class HeaderComponent implements OnInit {
     if (url && !HelperService.langIsRus(this.translate.currentLang)) {
       this.showLangWarnModal(url, isAbsUrl);
     } else {
-      this.menuService.menuStaticItemClick(link.title, link.mnemonic);
+      if (this.closeStatisticPopup$) {
+        this.closeStatisticPopup$.pipe(take(1)).subscribe(condition => {
+          if (condition) { this.menuService.menuStaticItemClick(link.title, link.mnemonic); }
+        });
+      } else {
+        this.menuService.menuStaticItemClick(link.title, link.mnemonic);
+      }
     }
   }
 

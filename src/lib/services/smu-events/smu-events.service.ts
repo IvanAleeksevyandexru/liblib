@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { SmuEvent, SmuEventRequest, SmuParamsAsObj } from "../../models/smu";
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,7 @@ export class SmuEventsService {
     this.smuInit = true;
   }
 
-  public notify(e) {
+  public notify(e: SmuEvent) {
     if (this.smuInit) {
       const smuEvent = JSON.stringify(e);
       switch (this.platform) {
@@ -56,5 +57,10 @@ export class SmuEventsService {
           throw new TypeError('invalid "platfrom" type');
       }
     }
+  }
+
+  public pushEvent(type: string, params: SmuParamsAsObj): void {
+    const event = new SmuEventRequest(type, params);
+    this.notify(event);
   }
 }

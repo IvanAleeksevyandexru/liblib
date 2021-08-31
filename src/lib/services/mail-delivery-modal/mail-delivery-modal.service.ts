@@ -49,7 +49,7 @@ export class MailDeliveryModalService {
       return of(null);
     }
 
-    return this.mailDeliveryService.getAvailableSubscription().pipe(
+    return this.mailDeliveryService.getAvailableSubscription(false).pipe(
       switchMap((response) => {
         let subscribable = [];
         if (response && response.items) {

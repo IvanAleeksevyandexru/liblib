@@ -55,7 +55,7 @@ export class MenuService {
   public getUserMenuDefaultLinks(): MenuLink[] {
     return [{
       title: 'HEADER.MENU.NOTIFICATIONS',
-      mnemonic: 'notifications',
+      mnemonic: 'overview', // правка изза выборов
       icon: 'bell'
     }, {
       title: 'HEADER.MENU.ORDERS',
@@ -89,7 +89,7 @@ export class MenuService {
       'HEADER.PERSONAL_AREA': `${lkUrl}overview`,
       'HEADER.MENU.PROFILE': `${lkUrl}settings/account`,
       'HEADER.MENU.HELP': `${portalUrl}help`,
-      'HEADER.MENU.NOTIFICATIONS': `${lkUrl}notifications`,
+      'HEADER.MENU.NOTIFICATIONS': `${lkUrl}overview`, // правка изза выборов
       'HEADER.MENU.ORDERS': `${lkUrl}orders`,
       'HEADER.MENU.PAYMENT': `${portalUrl}pay`,
       'HEADER.MENU.DOCS': `${lkUrl}profile`,
