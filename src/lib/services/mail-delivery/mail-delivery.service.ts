@@ -113,12 +113,21 @@ export class MailDeliveryService {
     const url = `${this.loadService.config.gepsApiUrl}subscription/v2/${code}`;
     const body = {status: newStatus};
 
+
     if (code === this.constants.MAIL_DELIVERY_COPY_POST_CODE &&
-      (this.constants.MAIL_DELIVERY_FIRST_SUBSCRIBE_STATUSES.includes(curStatus) ||
-       this.constants.MAIL_DELIVERY_NOT_SUBSCRIBED_STATUS.includes(curStatus))
-      ) {
-          isFirstSubscribe = false;
-        }
+      this.constants.MAIL_DELIVERY_FIRST_SUBSCRIBE_STATUSES.includes(curStatus)) {
+      isFirstSubscribe = false;
+    }
+
+    if (code === this.constants.MAIL_DELIVERY_COPY_POST_CODE &&
+      this.constants.MAIL_DELIVERY_NOT_SUBSCRIBED_STATUS.includes(curStatus)) {
+      isFirstSubscribe = true;
+    }
+
+    if (code === this.constants.MAIL_DELIVERY_COPY_POST_CODE &&
+      this.constants.MAIL_DELIVERY_SUBSCRIBED_STATUS.includes(curStatus)) {
+      isFirstSubscribe = false;
+    }
 
     if (isFirstSubscribe) {
       return this.http.post<any>(url, body, {withCredentials: true});
