@@ -127,7 +127,7 @@
   .status-new, .status-assigned, .status-in_progress, .status-waiting  {
     background-image: url('../../../assets/svg/statuses/clock.svg');
   }
-  .status-solved, .status-closed, status-done {
+  .status-solved, .status-closed, .status-done {
     background-image: url('../../../assets/svg/statuses/done.svg');
   }
   .status-canceled{

@@ -57,7 +57,7 @@
   <div class="header merge-header">
     <div class="inner container flex-container justify-between align-items-center">
       <div class="logo-n-type-page-container flex-container align-items-center">
-        <div class="catalog-menu-wrap" *ngIf="showBurger">
+        <div class="catalog-menu-wrap" [class.hide-burger-desk]="hideBurgerDesc" *ngIf="showBurger">
           <ng-container *ngIf="burgerDemoMode; else burgerCatalogMode">
             <ng-container *ngIf="burgerWithCatalog; else burgerWithoutCatalog">
               <lib-menu-catalog [languageChangeAvailable]="languageChangeAvailable"
@@ -72,7 +72,8 @@
           </ng-container>
           <ng-template #burgerCatalogMode>
             <lib-menu-catalog [languageChangeAvailable]="languageChangeAvailable"
-                              (menuCatalogOpened)="onMenuCatalogClick($event)">
+                              (menuCatalogOpened)="onMenuCatalogClick($event)"
+                              [alwaysShowLocationSelect]="alwaysShowLocationSelect">
             </lib-menu-catalog>
           </ng-template>
         </div>

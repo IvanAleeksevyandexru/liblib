@@ -161,7 +161,8 @@ import { FileUploaderComponent } from './components/file-uploader/file-uploader.
 import { ReversePipe } from './pipes/reverse/reverse.pipe';
 import { FileExtensionIconComponent } from './components/file-extension-icon/file-extension-icon.component';
 import { UserAvatarComponent } from './components/user-avatar/user-avatar.component';
-
+import { DragSliderComponent } from './components/drag-slider/drag-slider.component';
+import { TrimFileTypesPipe } from './pipes/trim-file-types/trim-file-types.pipe';
 
 
 registerLocaleData(localeRu, 'ru');
@@ -304,6 +305,7 @@ registerLocaleData(localeRu, 'ru');
     LanguageSelectComponent,
     RoundLoaderComponent,
     SliderComponent,
+    DragSliderComponent,
     CatalogTabsComponent,
     CatalogTabsListComponent,
     CatalogTabItemComponent,
@@ -312,7 +314,8 @@ registerLocaleData(localeRu, 'ru');
     FileUploaderComponent,
     ReversePipe,
     FileExtensionIconComponent,
-    UserAvatarComponent
+    UserAvatarComponent,
+    TrimFileTypesPipe
   ],
   imports: [
     CommonModule,
@@ -453,6 +456,7 @@ registerLocaleData(localeRu, 'ru');
     LanguageSelectComponent,
     RoundLoaderComponent,
     SliderComponent,
+    DragSliderComponent,
     MenuCatalogSimpleComponent,
     SmallFooterComponent,
     CatalogTabsComponent,

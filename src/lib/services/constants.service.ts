@@ -215,11 +215,6 @@ export class ConstantsService {
       break: 'after'
     },
     {
-      id: 'blocked',
-      name: 'MESSAGES.TABS.BLOCKED',
-      url: '/settings/blacklist'
-    },
-    {
       id: 'settings',
       name: 'MESSAGES.TABS.SETTINGS',
       url: '/settings/mail'
@@ -807,7 +802,11 @@ export class ConstantsService {
 
   public readonly MAIL_DELIVERY_FIRST_SUBSCRIBE_STATUSES = ['REMIND_LATER', 'NOT_SUBSCRIBED', 'DENY_SUBSCRIPTION'];
   public readonly MAIL_DELIVERY_SUBSCRIBED_STATUS = 'SUBSCRIBED';
+  public readonly MAIL_DELIVERY_UNSUBSCRIBED_STATUS = 'UNSUBSCRIBED';
+  public readonly MAIL_DELIVERY_NOT_SUBSCRIBED_STATUS = 'NOT_SUBSCRIBED';
+  public readonly MAIL_DELIVERY_DENY_SUBSCRIPTION_STATUS = 'DENY_SUBSCRIPTION';
   public readonly MAIL_DELIVERY_RUSSIAN_POST_CODE = 'PR';
+  public readonly MAIL_DELIVERY_COPY_POST_CODE = 'EZP_COPY';
 
   public readonly INTEGRATION_MODULE_QUERY = 50;
   public readonly INTEGRATION_MODULE_APPROVE = 51;
@@ -849,6 +848,7 @@ export class ConstantsService {
     FATHERHOOD_CERT: 'FATHERHOOD_CERT',
     MARRIED_CERT: 'MARRIED_CERT',
     DIVORCE_CERT: 'DIVORCE_CERT',
+    DEATH_CERT: 'DEATH_CERT',
     SELF_EMPLOYED: 'SELF_EMPLOYED',
     DISABLED_PERSON: 'DISABLED_PERSON',
     PARKING_PERMIT: 'REESTR_INVALIDOV',
