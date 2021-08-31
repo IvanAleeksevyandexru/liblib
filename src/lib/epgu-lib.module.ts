@@ -314,7 +314,7 @@ registerLocaleData(localeRu, 'ru');
     FileUploaderComponent,
     ReversePipe,
     FileExtensionIconComponent,
-    TrimFileTypesPipe
+    TrimFileTypesPipe,
     FileComponent,
   ],
   imports: [
