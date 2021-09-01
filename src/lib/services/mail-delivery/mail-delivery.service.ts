@@ -107,13 +107,17 @@ export class MailDeliveryService {
   // Обновление данных о статусе подписки
   public updateSubscriptionState(code: string, curStatus: DeliverySubscribeStatus, newStatus: DeliverySubscribeStatus): Observable<any> {
     let isFirstSubscribe = this.constants.MAIL_DELIVERY_FIRST_SUBSCRIBE_STATUSES.includes(curStatus);
+    if (code === 'PR_MVD') {
+      isFirstSubscribe = curStatus === 'NOT_SUBSCRIBED';
+    }
     const url = `${this.loadService.config.gepsApiUrl}subscription/v2/${code}`;
     const body = {status: newStatus};
 
+
     if (code === this.constants.MAIL_DELIVERY_COPY_POST_CODE &&
       this.constants.MAIL_DELIVERY_FIRST_SUBSCRIBE_STATUSES.includes(curStatus)) {
-          isFirstSubscribe = false;
-        }
+      isFirstSubscribe = false;
+    }
 
     if (code === this.constants.MAIL_DELIVERY_COPY_POST_CODE &&
       this.constants.MAIL_DELIVERY_NOT_SUBSCRIBED_STATUS.includes(curStatus)) {
