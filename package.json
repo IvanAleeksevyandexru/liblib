@@ -17,7 +17,8 @@
     "lib-watch": "ng build epgu-lib --watch",
     "lib-build:prod": "cross-env ng build epgu-lib && npm run cp-lib-assets",
     "lib-release": "npm run lib-build:prod",
-    "cp-lib-assets": "cross-env cpx \"./src/assets/**/*\" \"./dist/epgu-lib/assets\""
+    "cp-lib-assets": "cross-env cpx \"./src/assets/**/*\" \"./dist/epgu-lib/assets\"",
+    "publish": "cd dist/epgu-lib/ && npm publish"
   },
   "dependencies": {
     "@angular/animations": "11.0.0",
