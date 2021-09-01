@@ -55,3 +55,15 @@ export enum CounterTarget {
 }
 
 export type CounterFilter  = (key: string) => boolean;
+
+export interface CounterResponse {
+  counter: CounterResponseItem[];
+  total: number;
+  unread: number;
+}
+
+export interface CounterResponseItem {
+  total: number;
+  type: CounterType;
+  unread: number;
+}

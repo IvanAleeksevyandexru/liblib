@@ -2,7 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoadService } from '../load/load.service';
-import { CounterData, CounterFilter, CountersModel, CounterTarget, CounterType } from '../../models/counter';
+import {
+  CounterData,
+  CounterFilter,
+  CounterResponse,
+  CountersModel,
+  CounterTarget,
+  CounterType
+} from '../../models/counter';
 import { switchMap } from 'rxjs/operators';
 
 @Injectable({
@@ -35,7 +42,7 @@ export class CountersService {
     private loadService: LoadService
   ) { }
 
-  public setCounters(data: any) {
+  public setCounters(data: CounterResponse) {
     const model: CountersModel = {
       total: data.total || 0,
       counters: {}
@@ -89,14 +96,13 @@ export class CountersService {
 
   public loadCounters() {
     if (this.loadService.user.authorized) {
-      this.doCountersApiRequest().subscribe((data: any) => {
+      this.doCountersApiRequest().subscribe((data: CounterResponse) => {
         this.setCounters(data);
       });
     }
   }
 
-  // TODO: описать интерфейс
-  public doCountersApiRequest(isHide?: boolean): Observable<any> {
+  public doCountersApiRequest(isHide?: boolean): Observable<CounterResponse> {
     let params = {
       types: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,CLAIM,PROFILE,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE,PARTNERS,BUSINESSMAN,KND_APPEAL,LINKED_ACCOUNT',
       isArchive: 'false',
@@ -105,7 +111,7 @@ export class CountersService {
     if (isHide !== undefined) {
       params = Object.assign(params, {isHide: false});
     }
-    return this.http.get(
+    return this.http.get<CounterResponse>(
       `${this.loadService.config.lkApiUrl}feeds/counters`,
       {
         params,
