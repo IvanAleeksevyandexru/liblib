@@ -141,11 +141,6 @@ export class HeaderComponent implements OnInit {
   public showUserMenu(isMobileView: boolean) {
     this.menuService.closeBurgerOutside.next(true);
 
-    this.userMenuState = {
-      active: true,
-      isMobileView
-    } as UserMenuState;
-
     const html = document.getElementsByTagName('html')[0];
     html.classList.add('disable-scroll-sm');
     if (this.psoContainer && (window as any).screen.width < 812) {
