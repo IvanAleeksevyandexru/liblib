@@ -84,11 +84,11 @@
 }
 
 .loading {
-  min-height: 130px;
+  min-height: 120px;
   justify-content: center;
 
   .loader {
-    align-self: center;
+    margin: auto;
   }
 }
 
@@ -129,8 +129,12 @@
   }
 }
 
-.quittance-informer {
-  padding: 24px;
+.addition-informer__block {
+  padding: 16px 24px;
+}
+
+.addition-informer-loader {
+  min-height: 64px;
 }
 
 @media (max-width: 767px) {
@@ -162,10 +166,6 @@
         font-weight: normal;
       }
     }
-  }
-
-  .quittance-informer {
-    padding: 16px 24px;
   }
 }
 
@@ -277,13 +277,16 @@
     width: 30%;
   }
 
-  .quittance-informer {
+  .addition-informer__block {
     flex-flow: column;
     text-align: center;
     justify-content: center;
-    height: 100%;
   }
 
+  .addition-informer-loader, .addition-informer__block {
+    height: 100%;
+    min-height: 136px;
+  }
 }
 
 @media all and (min-width: 1140px) {
@@ -358,7 +361,7 @@
     }
   }
 
-  .quittance-informer {
-    padding: 16px 24px;
+  .addition-informer__block {
+    padding: 16px;
   }
 }

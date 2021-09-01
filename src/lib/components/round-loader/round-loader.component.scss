@@ -4,6 +4,10 @@
   background: url(../../../assets/svg/small-round-loader.svg) center no-repeat;
   animation: rotate 1.5s linear infinite;
   margin: auto;
+
+  &.color__blue {
+    background: url(../../../assets/svg/small-round-loader-blue.svg) center no-repeat;
+  }
 }
 
 @keyframes rotate {
