@@ -64,6 +64,7 @@ export class HeaderComponent implements OnInit {
   @Input() public languageChangeAvailable: boolean;
   @Input() public translation: Translation | string = Translation.APP;
   @Input() public closeStatisticPopup$: Observable<boolean>;
+  @Input() public loginWithNode = true;
 
   @Input() public alwaysShowLocationSelect = false;
   @Input() public hideBurgerDesc = false;
