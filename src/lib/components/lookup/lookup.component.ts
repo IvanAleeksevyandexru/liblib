@@ -226,6 +226,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         }
       });
     }
+    this.searching = this.searchIconForcedShowing;
   }
 
   public ngOnDestroy() {
