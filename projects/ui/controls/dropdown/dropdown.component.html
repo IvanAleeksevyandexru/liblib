@@ -1,5 +1,6 @@
 <div class="dropdown"
      [ngClass]="contextClass ? [contextClass] : []"
+     [class.roll-up]="rollUp"
      (click)="returnFocus($event)"
      libClickOutside
      (clickOutside)="closeDropdown(true);"
@@ -119,7 +120,7 @@
 
 <ng-template #suggestTmpl let-suggest="suggest">
   <div class="suggests" *ngIf="suggest && suggest.list.length">
-    <p class="title pl-16">{{'SUGGEST.TITLE' | libTranslate}}</p>
+    <p class="title ml-16">{{'SUGGEST.TITLE' | libTranslate}}</p>
     <ul class="mt-4">
       <li *ngFor="let item of suggest.list" (click)="selectSuggestItem(item)">
         <p>{{item.value}}</p>

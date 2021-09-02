@@ -32,6 +32,7 @@
           [containerOverlap]="containerOverlap"
           (click)="toggle(true)"
           (change)="handleChange($event.target.value)"
+          (input)="handleInput($event.target.value)"
           (focus)="handleFocus()"
           (blur)="handleBlur()"
           (cleared)="resetToEmpty()"

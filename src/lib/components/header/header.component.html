@@ -1,0 +1,149 @@
+<div class="header" [ngClass]="{'hide show-lg': !comingSoon}" *ngIf="!mergeHeaderMenu; else mergeHeaderMenuTmpl">
+  <div class="inner container grid-row-lg flex-container align-items-center">
+    <div class="col-lg-12 flex-container align-items-center"
+         [ngClass]="{'justify-end': user.authorized}">
+      <div *ngIf="comingSoon">
+        <a href="" class="back-to-portal" (click)="backClickHandler()">Вернуться к старой версии</a>
+      </div>
+      <div class="mr-40 hide show-lg">
+        <lib-location-select></lib-location-select>
+      </div>
+
+      <div *ngIf="!user.authorized && !comingSoon && roleChangeAvailable" class="hide show-lg">
+        <div class="flex-container align-items-center">
+          <div *ngFor="let role of userRoles; let first = first" class="list-item-wrap"
+               [class.active]="role.code === activeRoleCode">
+            <a class="list-item link-plain" (click)="updateRole(role.code)"
+               [ngClass]="{'ml-40': !first}"
+               [href]="role.url">{{role.name}}</a>
+          </div>
+        </div>
+      </div>
+      <div class="user-menu-wrapper hide show-lg">
+        <div *ngIf="user.authorized"
+             class="notifications">
+
+          <a class="bell"
+             [class.unread]="isUnread"
+             (click)="this.showNotifications = !this.showNotifications;"
+             [title]="isUnread ? 'У вас есть непрочитанные уведомления' : 'У вас нет непрочитанных уведомлений'"></a>
+
+          <div *ngIf="showNotifications" class="notifications-list" libStopScreenScroll>
+            <a class="close" (click)="this.showNotifications = !this.showNotifications;"></a>
+            <h6 class="title-h6">Последние события</h6>
+            <perfect-scrollbar [config]="{suppressScrollX: true, wheelPropagation: false}"
+                               (psYReachEnd)="feedsComponent.showMore()">
+              <lib-feeds
+                page="header"
+                [autoload]="true"
+                [count]="10"
+                types="ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE,KND_APPEAL"
+              ></lib-feeds>
+            </perfect-scrollbar>
+          </div>
+        </div>
+        <div class="login-wrapper" (click)="showUserMenu(false)">
+          <div class="login flex-container justify-end overflow-container">
+            <lib-login></lib-login>
+          </div>
+        </div>
+        <lib-user-menu [state]="userMenuState" [links]="links"></lib-user-menu>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #mergeHeaderMenuTmpl>
+  <div class="header merge-header">
+    <div class="inner container flex-container justify-between align-items-center">
+      <div class="logo-n-type-page-container flex-container align-items-center">
+        <div class="catalog-menu-wrap" [class.hide-burger-desk]="hideBurgerDesc" *ngIf="showBurger">
+          <ng-container *ngIf="burgerDemoMode; else burgerCatalogMode">
+            <ng-container *ngIf="burgerWithCatalog; else burgerWithoutCatalog">
+              <lib-menu-catalog [languageChangeAvailable]="languageChangeAvailable"
+                                (menuCatalogOpened)="onMenuCatalogClick($event)">
+              </lib-menu-catalog>
+            </ng-container>
+            <ng-template #burgerWithoutCatalog>
+              <lib-menu-catalog-simple
+                (menuCatalogOpened)="onMenuCatalogClick($event, true)">
+              </lib-menu-catalog-simple>
+            </ng-template>
+          </ng-container>
+          <ng-template #burgerCatalogMode>
+            <lib-menu-catalog [languageChangeAvailable]="languageChangeAvailable"
+                              (menuCatalogOpened)="onMenuCatalogClick($event)"
+                              [alwaysShowLocationSelect]="alwaysShowLocationSelect">
+            </lib-menu-catalog>
+          </ng-template>
+        </div>
+        <div>
+          <lib-logo width="126" [logoHref]="logoHref"></lib-logo>
+        </div>
+        <div class="hide show-md ml-md-24">
+          <lib-location-select skinTheme="empty"></lib-location-select>
+        </div>
+      </div>
+      <div class="avatar-n-location-container flex-container justify-end align-items-center"
+           [class.catalog-menu-opened]="menuCatalogOpened">
+        <div class="hide show-md">
+          <ul class="links flex-container-md">
+            <div *ngIf="user.authorized" class="hide show-lg">
+              <li *ngFor="let link of links" class="item flex-container align-items-center mr-24">
+                <ng-container *ngIf="link.showSeparatelyOnDesk">
+                  <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
+                     (click)="redirect($event, link)">
+                    <span *ngIf="translation === Translation.NONE">{{link.title}}</span>
+                    <span *ngIf="translation === Translation.APP">{{link.title | appTranslate}}</span>
+                    <span *ngIf="translation === Translation.LIB">{{link.title | libTranslate}}</span>
+                  </a>
+                  <ng-template #categoryLink>
+                    <a class="category-link"
+                       [href]="link.url"
+                       (mouseenter)="openCategories()"
+                       (mouseleave)="closeCategories()">
+                      <span *ngIf="translation === Translation.NONE">{{link.title}}</span>
+                      <span *ngIf="translation === Translation.APP">{{link.title | appTranslate}}</span>
+                      <span *ngIf="translation === Translation.LIB">{{link.title | libTranslate}}</span>
+                    </a>
+                  </ng-template>
+                </ng-container>
+              </li>
+            </div>
+            <li class="item flex-container align-items-center mr-24">
+              <a href="{{loadService.config.betaUrl}}help" target="_self">{{'HEADER.HELP' | libTranslate}}</a>
+            </li>
+            <li class="item flex-container align-items-center mr-24">
+              <a [href]="loadService.config.betaUrl + 'newsearch'">
+                <img class="search-icon" [src]="loadService.config.staticDomainLibAssetsPath + 'svg/search-icons/search-blue.svg'">
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="ml-lg-20" [ngClass]="{'ml-md-64': user.authorized}">
+          <div class="login-wrapper">
+            <div class="login flex-container justify-end overflow-container">
+              <lib-login [useButton]="true" class="hide"
+                         [ngClass]="{'show': user.authorized, 'show-lg': !user.authorized}"
+                         [menuOpened]="userMenuState.active"
+                         (closeMenu)="hideUserMenu()"
+                         (userClick)="showUserMenu(false)"
+                         [userCounter]="userCounter">
+              </lib-login>
+              <lib-login *ngIf="!user.authorized" [onlyText]="true" class="login-mobile-icon"></lib-login>
+            </div>
+          </div>
+          <div class="user-menu-wrapper" *ngIf="user.authorized">
+            <lib-user-menu #menu
+                           [searchSputnikEnabled]="searchSputnikEnabled"
+                           [state]="userMenuState"
+                           [links]="links"
+                           [translation]="translation"
+                           [closeStatisticPopup$]="closeStatisticPopup$">>
+            </lib-user-menu>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
