@@ -91,6 +91,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   };
   public isHeader: boolean;
 
+  public getFeedTypeName = this.feedsService.getFeedTypeName;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -228,7 +230,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public withReload(feed): boolean {
-    return !(this.isLk && !['KND_APPEAL', 'KND_APPEAL_DRAFT', 'PAYMENT'].includes(feed.feedType) || this.isPartners) || !!(feed.data && feed.data.p16url);
+    const otherDomainFeeds = ['KND_APPEAL', 'KND_APPEAL_DRAFT', 'PAYMENT'];
+    return !(this.isLk && !otherDomainFeeds.includes(feed.feedType) || this.isPartners) || !!(feed.data && feed.data.p16url);
   }
 
   public getUserData(): User {
@@ -247,10 +250,6 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public setUnreadFeedCls(feed: FeedModel): boolean {
     const escapedFeedTypes = ['DRAFT', 'PARTNERS_DRAFT', 'KND_APPEAL_DRAFT'];
     return feed.unread && !escapedFeedTypes.includes(feed.feedType);
-  }
-
-  public markAsFlag(feed: FeedModel): boolean {
-    return feed.hasLegal || feed.isLegal || feed.data.hasRegLetter;
   }
 
   public isFormattedLoginName(feed: FeedModel): boolean {
@@ -281,6 +280,10 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     return true;
   }
 
+  public isDraft(feed: FeedModel): boolean {
+    return ['DRAFT', 'PARTNERS_DRAFT', 'KND_APPEAL_DRAFT'].includes(feed.feedType);
+  }
+
   public getSnippetsDate(feed: FeedModel): string {
     if (feed.data && feed.data.snippets && feed.data.snippets.length) {
       const date = feed.data.snippets[0].localDate || feed.data.snippets[0].date;
@@ -290,7 +293,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getSnippetsOrgName(feed: FeedModel): string {
-    if (this.checkSnippetsExists(feed)) {
+    if (feed.data.snippets?.length) {
       return feed.data.snippets[0].orgName || '';
     }
     return '';
@@ -436,7 +439,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public showRemoveFeedButton(feed: FeedModel): boolean {
-    return ['overview', 'events', 'drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder && !this.isPaymentDraft(feed);
+    return ['drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder && !this.isPaymentDraft(feed);
   }
 
   public isPaymentDraft(feed: FeedModel): boolean {

@@ -287,4 +287,62 @@ export class FeedsService {
     }
     return params;
   }
+
+  public getFeedTypeName(feedType: string): string {
+    let type = '';
+    switch (feedType) {
+      case 'ORDER':
+        type = 'Заявление';
+        break;
+      case 'PAYMENT':
+        type = 'Платеж';
+        break;
+      case 'CALENDAR':
+      case 'EPGU':
+      case 'EQUEUE':
+        type = 'Запись на прием';
+        break;
+      case 'FEEDBACK':
+        type = 'Техподдержка';
+        break;
+      case 'DRAFT':
+        type = 'Черновик';
+        break;
+      case 'GEPS':
+        type = 'Госпочта';
+        break;
+      case 'KND_APPEAL':
+      case 'KND_APPEAL_DRAFT':
+        type = 'Обжалование КНД';
+        break;
+      case 'APPEAL':
+        type = 'Сообщения';
+        break;
+      case 'CLAIM':
+        type = 'Обжалования';
+        break;
+      case 'ELECTION':
+        type = 'Выборы';
+        break;
+      case 'PARTNERS_DRAFT':
+      case 'PARTNERS':
+        type = 'Партнеры';
+        break;
+      case 'ACCOUNT_CHILD':
+      case 'ORGANIZATION':
+      case 'ESIGNATURE':
+      case 'BUSINESSMAN':
+      case 'ACCOUNT':
+      case 'PROFILE':
+      case 'BIOMETRICS':
+        type = 'Системные';
+        break;
+      case 'SIGN':
+        type = 'Госключ';
+        break;
+      default:
+        type = 'Заявление';
+    }
+    return type;
+  }
 }
