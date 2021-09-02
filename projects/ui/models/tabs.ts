@@ -39,23 +39,21 @@ export class Tabs {
         this.visible = something.visible;
       }
     }
-    this.notifier = new BehaviorSubject<Tab | undefined>(this.getActiveTab());
+    this.notifier = new BehaviorSubject<Tab>(this.getActiveTab());
   }
 
   public tabs: Array<Tab> = []; // список табов с собственными состояниями скрытия/активности
   public name: string | any; // имя табов для идентификации в сервисе
   public visible?: boolean; // видимость контрола табов, связанного с этим именем
-  private notifier: BehaviorSubject<Tab | undefined>;
+  private notifier: BehaviorSubject<Tab>;
 
-  public setActiveTab(tab: Tab | undefined) {
-    if (tab) {
-      (this.tabs || []).forEach((anyTab: Tab) => anyTab.active = false);
-      if (this.tabs && this.tabs.includes(tab)) {
-        tab.active = true;
-        this.notifier.next(tab);
-      } else {
-        this.notifier.next(undefined);
-      }
+  public setActiveTab(tab: Tab) {
+    (this.tabs || []).forEach((anyTab: Tab) => anyTab.active = false);
+    if (this.tabs && this.tabs.includes(tab)) {
+      tab.active = true;
+      this.notifier.next(tab);
+    } else {
+      this.notifier.next(null);
     }
   }
 

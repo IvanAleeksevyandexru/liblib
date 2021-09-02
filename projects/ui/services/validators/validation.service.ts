@@ -29,7 +29,7 @@ export class ValidationService {
     snils: [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, ' ', /\d/, /\d/],
     inn: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
     index: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
-    year:  [/\d/, /\d/, /\d/, /\d/],
+    year: [/\d/, /\d/, /\d/, /\d/],
     seriesNumberPassport: [/\d/, /\d/, ' ', /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
     issueId: [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/],
     seriesNumberForeign: [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
@@ -78,9 +78,9 @@ export class ValidationService {
     return str.match(symbolsArr);
   }
 
-  public static maxLengthWordValidator(length: number): ValidatorFn {
+  public static maxLengthWordValidator(length: number, pattern: RegExp | string = ' '): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
-      const arrWords = control.value ? control.value.replace(/[\r\n]+/g, ' ').split(' ') : [];
+      const arrWords = control.value ? control.value.replace(/[\r\n]+/g, ' ').split(pattern) : [];
       return arrWords.some(word => word.length > length) ? {maxLengthWord: true} : null;
     };
   }
@@ -96,6 +96,7 @@ export class ValidationService {
   public static twoCyrillicSymbolsInDocSeries(control: AbstractControl) {
     return new RegExp('^[А-ЯЁа-яё]{2}').test(control.value) ? null : {wrongCyrillicSeries: true};
   }
+
   public static latinSymbolsInDocSeries(minLength: number, maxLength: number) {
     return (control: AbstractControl) => {
       return new RegExp(`^[IVXLCivxlc]{${minLength},${maxLength}}\$`).test(control.value) ? null : {wrongLatinSeries: true};
@@ -112,7 +113,7 @@ export class ValidationService {
   }
 
   // замена возвращаемого кода ошибки (маппинг)
-  public static map(map: { [key: string]: string}, validator: (control: AbstractControl) => any) {
+  public static map(map: { [key: string]: string }, validator: (control: AbstractControl) => any) {
     return (control: AbstractControl) => {
       const original = validator(control);
       if (HelperService.isObject(original)) {
@@ -131,7 +132,7 @@ export class ValidationService {
     return (control: AbstractControl) => {
       const linkedControl = linkedControlGetter();
       if (linkedControl && linkedControl instanceof AbstractControl && !(linkedControl instanceof FormGroup)
-          && !rechecked.includes(linkedControl)) {
+        && !rechecked.includes(linkedControl)) {
         rechecked.push(linkedControl); // блокировка бесконечного цикла если элементы чекают друг друга
         try {
           linkedControl.updateValueAndValidity();
@@ -302,11 +303,11 @@ export class ValidationService {
     if (new RegExp(regexp).test(control.value)) {
       const hyphenCount = control.value.split('').reduce((acc, curr) => acc += curr === '-' ? 1 : 0, 0);
       // проверка на количество дефисов, не может быть больше 1 и не может быть в конце
-      if (hyphenCount > 1 && control.value.lastIndexOf('-') !== control.value.length - 1)  {
+      if (hyphenCount > 1 && control.value.lastIndexOf('-') !== control.value.length - 1) {
         return {wrongActNo: true};
       }
       return null;
-    } else  {
+    } else {
       return {wrongActNo: true};
     }
   }
@@ -315,7 +316,7 @@ export class ValidationService {
     const value = (control.value ? control.value : '').toString();
 
     return value.charAt(0).replace(/[^−–—-]/g, '').length === 1 ||
-     value.slice(-1).replace(/[^−–—-]/g, '').length === 1 ? {patternHyphen: true} : null;
+    value.slice(-1).replace(/[^−–—-]/g, '').length === 1 ? {patternHyphen: true} : null;
   }
 
   public static checkWordLengthExceed(str, maxLen): boolean {
@@ -347,7 +348,7 @@ export class ValidationService {
   public static sameValueValidator(previousValue: string): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       if (previousValue && control.value) {
-        return previousValue.replace(/\D/g, '') === control.value.replace(/\D/g, '') ? { sameValue: true } : null;
+        return previousValue.replace(/\D/g, '') === control.value.replace(/\D/g, '') ? {sameValue: true} : null;
       } else {
         return null;
       }
@@ -356,19 +357,19 @@ export class ValidationService {
 
   public static formArrayValidator(control: AbstractControl): { [key: string]: any } | null {
     const someControlValid = (control as FormArray).controls.some((nestedControl: AbstractControl) => nestedControl.valid);
-    return someControlValid ? null : { formArrayInvalid: true };
+    return someControlValid ? null : {formArrayInvalid: true};
   }
 
   public static secureUrlValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const ulrReg = /^(?:https:\/\/)(([a-zA-Zа-яА-Я\d_][a-zA-Zа-яА-Я\d_-]+)\.{1}([a-zA-Zа-яА-Я\d_-]+[a-zA-Zа-яА-Я\d_]))((\/{1}[a-zA-Zа-яА-Я\d_\-._~:?#[\]@!$&'()*+,;=]*){1})*$/i;
       const result = ulrReg.exec(control.value);
-      return result ? null : { urlInvalid: true };
+      return result ? null : {urlInvalid: true};
     };
   }
 
   public static mnemonicValidator(control: AbstractControl): { [key: string]: any } | null {
     const mnemonicValidationRe = /^\s*[A-Z-_0-9]+\s*$/gm;
-    return mnemonicValidationRe.test(control.value) ? null : { mnemonicInvalid: true };
+    return mnemonicValidationRe.test(control.value) ? null : {mnemonicInvalid: true};
   }
 }

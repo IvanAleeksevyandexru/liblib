@@ -10,7 +10,6 @@ import { DocumentType } from '@epgu/ui/models/document';
   }
 )
 export class ConstantsService {
-
   // время с последнего нажатия клавиши до запуска поиска
   public static readonly DEFAULT_QUERY_DEBOUNCE = 700;
   // селекторы парентовых элементов за скроллом которых надо следить чтобы обновлять программные координаты выпадашек
@@ -103,12 +102,6 @@ export class ConstantsService {
       name: 'TABS.MESSAGES.TITLE',
       url: '/messages',
       metric: {name: this.TABS_METRIC_NAME, action: 'messages'}
-    }, {
-      id: 'permissions',
-      name: 'TABS.PERMISSIONS.TITLE',
-      url: '/permissions',
-      metric: {name: this.TABS_METRIC_NAME, action: 'permissions'},
-      trusted: true
     }
   ]);
   public readonly LK_DEPT_TABS = new Tabs([
@@ -199,81 +192,6 @@ export class ConstantsService {
       hidden: true
     },
   ]);
-  public readonly LK_SETTINGS_SIDE_TABS = new Tabs([
-    {
-      id: 'account',
-      name: 'SETTINGS.TABS.ACCOUNT',
-      url: '/settings/account'
-    },
-    {
-      id: 'biometry',
-      name: 'SETTINGS.TABS.BIOMETRY',
-      url: '/settings/biometry',
-      access: ['AL20']
-    },
-    {
-      id: 'notifications',
-      name: 'SETTINGS.TABS.NOTIFICATIONS',
-      url: '/settings/notifications'
-    },
-    {
-      id: 'social',
-      name: 'SETTINGS.TABS.SOCIAL',
-      url: '/settings/social'
-    },
-    {
-      id: 'login',
-      name: 'SETTINGS.TABS.LOGIN',
-      url: '/settings/login'
-    },
-    {
-      id: 'cards',
-      name: 'SETTINGS.TABS.CARDS',
-      url: '/settings/cards'
-    },
-    {
-      id: 'mail',
-      name: 'SETTINGS.TABS.MAIL',
-      url: '/settings/mail'
-    },
-    {
-      id: 'esignature',
-      name: 'SETTINGS.TABS.SIGNATURE',
-      url: '/settings/signature',
-      access: ['AL15', 'AL20']
-    },
-    {
-      id: 'events',
-      name: 'SETTINGS.TABS.EVENTS',
-      url: '/settings/events'
-    },
-    {
-      id: 'requests',
-      name: 'SETTINGS.TABS.REQUESTS',
-      url: '/settings/requests',
-      access: ['AL20']
-    },
-    {
-      id: 'applications',
-      name: 'SETTINGS.TABS.APPLICATIONS',
-      url: '/settings/applications'
-    },
-    {
-      id: 'blacklist',
-      name: 'SETTINGS.TABS.BLACK_LIST',
-      url: '/settings/blacklist'
-    },
-    {
-      id: 'portals',
-      name: 'SETTINGS.TABS.PORTALS',
-      url: '/settings/portals'
-    },
-    {
-      id: 'system-permissions',
-      name: 'SETTINGS.TABS.PERMISSIONS',
-      url: '/settings/system-permissions'
-    }
-  ]);
 
   public readonly LK_MESSAGES_SIDE_TABS = new Tabs([
     {
@@ -291,11 +209,6 @@ export class ConstantsService {
       name: 'MESSAGES.TABS.ARCHIVED',
       url: '/messages/archive',
       break: 'after'
-    },
-    {
-      id: 'blocked',
-      name: 'MESSAGES.TABS.BLOCKED',
-      url: '/settings/blacklist'
     },
     {
       id: 'settings',
@@ -341,6 +254,12 @@ export class ConstantsService {
       access: ['AL20']
     },
     {
+      id: 'education',
+      name: 'PROFILE.TABS.EDUCATION',
+      url: '/profile/education',
+      access: ['AL20']
+    },
+    {
       id: 'privileges',
       name: 'PROFILE.TABS.PRIVILEGES',
       url: '/profile/privileges',
@@ -362,12 +281,6 @@ export class ConstantsService {
       id: 'statements',
       name: 'PROFILE.TABS.STATEMENTS',
       url: '/profile/statements',
-      access: ['AL20']
-    },
-    {
-      id: 'empowerments',
-      name: 'PROFILE.TABS.EMPOWERMENTS',
-      url: '/profile/empowerments',
       access: ['AL20']
     },
     {
@@ -423,7 +336,7 @@ export class ConstantsService {
   public readonly ORDERS_CATEGORIES = [
     {
       text: 'Все',
-      type: 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER',
+      type: 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER,SIGN',
       id: 1,
       mnemonic: 'allEvents'
     },
@@ -441,7 +354,7 @@ export class ConstantsService {
     },
     {
       text: 'Сообщения',
-      type: 'APPEAL',
+      type: 'APPEAL,SIGN',
       id: 4,
       mnemonic: 'appeal'
     },
@@ -491,7 +404,7 @@ export class ConstantsService {
     },
     {
       text: 'Сообщения',
-      type: 'APPEAL',
+      type: 'APPEAL,SIGN',
       id: 7,
       mnemonic: 'appealEvents'
     },
@@ -885,7 +798,11 @@ export class ConstantsService {
 
   public readonly MAIL_DELIVERY_FIRST_SUBSCRIBE_STATUSES = ['REMIND_LATER', 'NOT_SUBSCRIBED', 'DENY_SUBSCRIPTION'];
   public readonly MAIL_DELIVERY_SUBSCRIBED_STATUS = 'SUBSCRIBED';
+  public readonly MAIL_DELIVERY_UNSUBSCRIBED_STATUS = 'UNSUBSCRIBED';
+  public readonly MAIL_DELIVERY_NOT_SUBSCRIBED_STATUS = 'NOT_SUBSCRIBED';
+  public readonly MAIL_DELIVERY_DENY_SUBSCRIPTION_STATUS = 'DENY_SUBSCRIPTION';
   public readonly MAIL_DELIVERY_RUSSIAN_POST_CODE = 'PR';
+  public readonly MAIL_DELIVERY_COPY_POST_CODE = 'EZP_COPY';
 
   public readonly INTEGRATION_MODULE_QUERY = 50;
   public readonly INTEGRATION_MODULE_APPROVE = 51;
@@ -927,6 +844,7 @@ export class ConstantsService {
     FATHERHOOD_CERT: 'FATHERHOOD_CERT',
     MARRIED_CERT: 'MARRIED_CERT',
     DIVORCE_CERT: 'DIVORCE_CERT',
+    DEATH_CERT: 'DEATH_CERT',
     SELF_EMPLOYED: 'SELF_EMPLOYED',
     DISABLED_PERSON: 'DISABLED_PERSON',
     PARKING_PERMIT: 'REESTR_INVALIDOV',

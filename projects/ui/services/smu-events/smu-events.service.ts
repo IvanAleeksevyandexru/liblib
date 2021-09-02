@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SmuEvent, SmuEventRequest, SmuParamsAsObj } from "../../models/smu";
+import { SmuEvent, SmuEventRequest, SmuParamsAsObj } from '@epgu/ui/models';
 
 @Injectable({
   providedIn: 'root'

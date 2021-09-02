@@ -9,6 +9,7 @@ import { ConstantsService } from '@epgu/ui/services/constants';
 import { MailDeliveryService } from '@epgu/ui/services/mail-delivery';
 import { CookieService } from '@epgu/ui/services/cookie';
 import * as moment_ from 'moment';
+
 const moment = moment_;
 
 @Injectable({
@@ -23,7 +24,8 @@ export class MailDeliveryModalService {
     private constants: ConstantsService,
     private mailDeliveryService: MailDeliveryService,
     private cookieService: CookieService
-  ) { }
+  ) {
+  }
 
   public showSubscriptionPopup(data) {
     const curSession = this.cookieService.get('acc_t');
@@ -35,7 +37,7 @@ export class MailDeliveryModalService {
     });
   }
 
-  public checkNeedShowPopup(): Observable<SubscriptionInfo> {
+  public checkNeedShowPopup(isModal = false): Observable<SubscriptionInfo> {
     const curSession = this.cookieService.get('acc_t');
     const sessionOfLastShow = this.cookieService.get('ezpRemind');
     if (curSession === sessionOfLastShow) {
@@ -49,7 +51,7 @@ export class MailDeliveryModalService {
       return of(null);
     }
 
-    return this.mailDeliveryService.getAvailableSubscription().pipe(
+    return this.mailDeliveryService.getAvailableSubscription(isModal).pipe(
       switchMap((response) => {
         let subscribable = [];
         if (response && response.items) {
@@ -73,7 +75,7 @@ export class MailDeliveryModalService {
             return false;
           });
         }
-        return of({ items: subscribable, hint: response.hint });
+        return of({items: subscribable, hint: response.hint});
       })
     );
   }

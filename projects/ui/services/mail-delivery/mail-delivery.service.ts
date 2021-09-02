@@ -9,7 +9,9 @@ import {
   DeliverySubscribeStatus,
   GepsAddresses,
   GepsSaveAddresses,
-  GepsUpdateAddresses, SubscriptionHint, SubscriptionItem
+  GepsUpdateAddresses,
+  SubscriptionHint,
+  SubscriptionItem
 } from '@epgu/ui/models/mail-delivery';
 import { LoadService } from '@epgu/ui/services/load';
 import { ConstantsService } from '@epgu/ui/services/constants';
@@ -28,7 +30,8 @@ export class MailDeliveryService {
     private http: HttpClient,
     private constants: ConstantsService,
     private cookieService: CookieService,
-  ) { }
+  ) {
+  }
 
   public getGepsStatus(): Observable<DeliveryStatus> {
     return this.http.get<DeliveryStatus>(this.loadService.config.gepsApiUrl + `rp/json/agreement/status?_=${Math.random()}`,
@@ -82,14 +85,15 @@ export class MailDeliveryService {
   }
 
   // Запрос данных о доступных подписках
-  public getAvailableSubscription(): Observable<AllSubscriptionResponse> {
+  public getAvailableSubscription(withHidden = false): Observable<AllSubscriptionResponse> {
     const region = this.loadService.attributes.selectedRegion;
     return this.http.get<AllSubscriptionResponse>(`${this.loadService.config.gepsApiUrl}subscription/v2/`,
       {
         withCredentials: true,
         params: {
           region,
-          _: String(Math.random())
+          _: String(Math.random()),
+          withHidden: withHidden.toString()
         }
       }).pipe(
       tap(response => {
@@ -103,31 +107,50 @@ export class MailDeliveryService {
 
   // Обновление данных о статусе подписки
   public updateSubscriptionState(code: string, curStatus: DeliverySubscribeStatus, newStatus: DeliverySubscribeStatus): Observable<any> {
-    const isFirstSubscribe = this.constants.MAIL_DELIVERY_FIRST_SUBSCRIBE_STATUSES.includes(curStatus);
+    let isFirstSubscribe = this.constants.MAIL_DELIVERY_FIRST_SUBSCRIBE_STATUSES.includes(curStatus);
+    if (code === 'PR_MVD') {
+      isFirstSubscribe = curStatus === 'NOT_SUBSCRIBED';
+    }
     const url = `${this.loadService.config.gepsApiUrl}subscription/v2/${code}`;
     const body = {status: newStatus};
 
+
+    if (code === this.constants.MAIL_DELIVERY_COPY_POST_CODE &&
+      this.constants.MAIL_DELIVERY_FIRST_SUBSCRIBE_STATUSES.includes(curStatus)) {
+      isFirstSubscribe = false;
+    }
+
+    if (code === this.constants.MAIL_DELIVERY_COPY_POST_CODE &&
+      this.constants.MAIL_DELIVERY_NOT_SUBSCRIBED_STATUS.includes(curStatus)) {
+      isFirstSubscribe = true;
+    }
+
+    if (code === this.constants.MAIL_DELIVERY_COPY_POST_CODE &&
+      this.constants.MAIL_DELIVERY_SUBSCRIBED_STATUS.includes(curStatus)) {
+      isFirstSubscribe = false;
+    }
+
     if (isFirstSubscribe) {
-      return this.http.post<any>(url, body, { withCredentials: true });
+      return this.http.post<any>(url, body, {withCredentials: true});
     } else {
-      return this.http.put<any>(url, body, { withCredentials: true });
+      return this.http.put<any>(url, body, {withCredentials: true});
     }
   }
 
   public updateMultiSubscriptionState(codes: string[], newStatus: DeliverySubscribeStatus, addresses?: string[]): Observable<any> {
     const url = `${this.loadService.config.gepsApiUrl}subscription/v2`;
     const items = codes.map(item => {
-      const requestItem: any = { code: item, status: newStatus };
+      const requestItem: any = {code: item, status: newStatus};
       if (newStatus === 'SUBSCRIBED' && this.isRussianPost(item) && addresses && addresses.length) {
         const addressesArr = addresses.map(adr => ({asString: adr}));
-        requestItem.data = { addresses: addressesArr };
+        requestItem.data = {addresses: addressesArr};
       } else if (this.isRussianPost(item)) {
-        requestItem.data = { addresses: [] };
+        requestItem.data = {addresses: []};
       }
       return requestItem;
     });
 
-    return this.http.post<any>(url, { items }, { withCredentials: true });
+    return this.http.post<any>(url, {items}, {withCredentials: true});
   }
 
   public markAsDelivered(): void {
@@ -136,7 +159,7 @@ export class MailDeliveryService {
 
     if (curSession !== sessionOfLastMark) {
       const url = `${this.loadService.config.gepsApiUrl}messages/markAsDelivered`;
-      this.http.put<any>(url, {}, { withCredentials: true }).subscribe(() => {
+      this.http.put<any>(url, {}, {withCredentials: true}).subscribe(() => {
         this.cookieService.set('marked_as_delivered', curSession, 1);
       });
     }

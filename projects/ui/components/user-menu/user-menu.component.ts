@@ -1,13 +1,13 @@
 import {
   AfterViewInit,
   ChangeDetectorRef,
-  Component,
+  Component, EventEmitter,
   HostListener,
   Input,
   isDevMode,
   NgModuleRef,
   OnDestroy,
-  OnInit,
+  OnInit, Output,
   ViewChild
 } from '@angular/core';
 import { Category, MAIN_TABS, MenuLink, Tab, Tabs, UserMenuState } from '@epgu/ui/models';
@@ -25,6 +25,7 @@ import { HelperService } from '@epgu/ui/services/helper';
 import { Observable, Subscription } from 'rxjs';
 import { AccessesService } from '@epgu/ui/services/accesses';
 import { take } from 'rxjs/operators';
+import { Translation } from '@epgu/ui/models/common-enums';
 
 @Component({
   selector: 'lib-user-menu',
@@ -35,29 +36,28 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public categories: Category[] = [];
   public menuOffset: number;
   public user: User;
-  public staticUrls: object;
   // public settingsCounter: CounterData; Это вроде уже не нужно. Но пока пусть будет. Мб передумают
   public userCounter: CounterData;
   public partnersCounter: CounterData;
-  public avatarError = false;
   public mainTabs: Tabs = null;
   public tabsSubscription: Subscription;
   public titleChangeRole: string;
   public userRoles;
   public activeRole;
-  public showRolesList = false;
-  public showAllMenu = true;
-  public staticList = true;
+  public Translation = Translation;
+  public psoContainer = document.getElementById('pso-widget-container');
 
   @Input() public state: UserMenuState;
   @Input() public rolesListEnabled = false;
   @Input() public searchSputnikEnabled = false;
   @Input() public position: 'left' | 'right' = 'right';
   @Input() public links: MenuLink[] = [];
+  @Input() public translation: Translation | string = Translation.APP;
   @Input() public closeStatisticPopup$: Observable<boolean>;
 
+  @Output() public closeMenu: EventEmitter<any> = new EventEmitter();
+
   @ViewChild('menuDesk') public menuDesk;
-  @ViewChild('menuMobile') public menuMobile;
 
   @HostListener('document:keydown', ['$event'])
   public onKeydownComponent(event: KeyboardEvent) {
@@ -80,7 +80,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     private menuService: MenuService,
     private authService: AuthService,
     private countersService: CountersService,
-    public tabsService: TabsService,
+    public  tabsService: TabsService,
     private router: Router,
     private changeDetector: ChangeDetectorRef,
     private yaMetricService: YaMetricService,
@@ -90,16 +90,12 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngOnInit() {
-    if (!this.links.length) {
-      this.links = this.menuService.getUserMenuDefaultLinks();
-    }
     this.user = this.loadService.user as User;
     this.userRoles = this.menuService.getUserRoles(this.user);
     this.activeRole = this.userRoles.find((role) => role.isActive);
-    this.staticUrls = this.menuService.getStaticItemUrls();
     this.countersService.counters$.subscribe(_ => {
       this.partnersCounter = this.countersService.getCounter(CounterTarget.PARTNERS);
-      //this.settingsCounter = this.countersService.getCounter(CounterTarget.SETTINGS);
+      // this.settingsCounter = this.countersService.getCounter(CounterTarget.SETTINGS);
       this.userCounter = this.countersService.getCounter(CounterTarget.USER);
     });
     this.tabsSubscription = this.tabsService.register(MAIN_TABS).subscribe((tabs: Tabs) => {
@@ -129,46 +125,33 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  public getUrl(menuItemName: string): string {
-    return this.staticUrls[menuItemName] || '';
-  }
-
   public onClose() {
     const html = document.getElementsByTagName('html')[0];
     html.classList.remove('disable-scroll');
     html.classList.remove('disable-scroll-sm');
     this.state.active = false;
+    if (this.psoContainer && (window as any).screen.width < 812) {
+      this.psoContainer.style.display = 'unset';
+    }
   }
 
   public showDeskView() {
     return this.state.active && !this.state.isMobileView;
   }
 
-  public showMobileView() {
-    return this.state.active && this.state.isMobileView;
-  }
-
-  public menuItemClick(link: MenuLink): void {
-    this.sendYaMetric(link.mnemonic);
-    this.onClose();
-    if (link.handler) {
-      link.handler(link);
-    } else {
-      this.helperService.navigate(link.url);
-    }
-  }
-
-  public menuStaticItemClick(itemName: string, mnemonic) {
-    const staticUrl = this.getUrl(itemName);
+  public menuStaticItemClick(itemName: string, mnemonic): void {
     if (this.closeStatisticPopup$) {
-      this.closeStatisticPopup$.pipe(take(1)).subscribe(condition => {
+      this.closeStatisticPopup$.pipe(
+        take(1)
+      ).subscribe(condition => {
         if (condition) {
-          this.menuItemClick({url: staticUrl, mnemonic} as MenuLink);
+          this.menuService.menuStaticItemClick(itemName, mnemonic);
         }
       });
     } else {
-      this.menuItemClick({url: staticUrl, mnemonic} as MenuLink);
+      this.menuService.menuStaticItemClick(itemName, mnemonic);
     }
+    this.onClose();
   }
 
   public selectTab(tab: Tab) {

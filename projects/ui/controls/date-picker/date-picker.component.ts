@@ -35,7 +35,8 @@ import {
   MessagePosition,
   RemoveMaskSymbols,
   TipDirection,
-  Translation, ValidationShowOn
+  Translation,
+  ValidationShowOn
 } from '@epgu/ui/models/common-enums';
 import { FocusManager } from '@epgu/ui/services/focus';
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
@@ -172,6 +173,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   @Input() public americanFormat = false; // месяц впереди, разделитель / вместо .
   @Input() public readOnly = false;
   @Input() public handleResetFocus = false; // нужно ли убтрать фокус с поля после выбора (удалять readonly) после выбора даты в календаре, то есть после закрытия календаря
+  @Input() public commitOnInput = false;
 
   // границы допустимого диапазона для ввода/выбора новых дат, могут иметь относительный формат, см HelperService.relativeDateToDate
   @Input() public minDate: Date | RelativeDate | string = new RelativeDate('start of year');
@@ -401,6 +403,18 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     }
     this.updateDateItemProperties(this.weeks);
     this.dateSelected.emit(date);
+  }
+
+  public handleInput(value: string) {
+    if (this.commitOnInput) {
+      this.commit(value);
+    }
+    const parsingResult = this.isRange ? this.createRangeFromString(value) : this.createDateFromString(value);
+    if (parsingResult.result && (this.expanded || this.asSimplePanel)) {
+      this.activeMonthYear = MonthYear.fromDate(parsingResult.result as Date);
+      this.rangeStart = parsingResult.result as Date;
+      this.renderMonthGrid();
+    }
   }
 
   public handleChange(value: string) {
@@ -1075,3 +1089,4 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     }
   }
 }
+

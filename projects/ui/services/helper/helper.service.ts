@@ -11,6 +11,8 @@ import { Address, DadataResult, FileLink } from '@epgu/ui/models';
 })
 export class HelperService {
 
+  private reloadAbsoluteInternalLinks = false;
+
   constructor(private router: Router) {
   }
 
@@ -195,12 +197,13 @@ export class HelperService {
   }
 
   // ставит курсор ввода на конец текста в текстовом элементе, при этом убирает выделение
-  public static resetSelection(inputElement: HTMLInputElement, mask: string = null) {
+  public static resetSelection(inputElement: HTMLInputElement, mask: string = null, startPosition?: number) {
     if (!inputElement || !(inputElement.type === 'text' || inputElement.type === 'password')) {
       return;
     }
     const lastCharacterPosition = HelperService.findMatchEnd(inputElement.value, mask);
-    inputElement.setSelectionRange(lastCharacterPosition, lastCharacterPosition);
+    const indexOfCaret = startPosition && startPosition > lastCharacterPosition ? startPosition : lastCharacterPosition;
+    inputElement.setSelectionRange(indexOfCaret, indexOfCaret);
   }
 
   // выделяет все найденные подстроки в хтмл, предохраняя кейс оригинала: ("foUnd FoUnd", "found") -> <b>foUnd</b> <b>FoUnd</b>
@@ -568,7 +571,8 @@ export class HelperService {
         this.router.navigate([baseUrl], urlIsCompound ? {queryParams: compoundQueryParams} : {});
       }
     } else {
-      if (HelperService.isInternalUrl(baseUrl) && !newTab) {
+      // TODO: need to change logic - internal host link cannot be a part of an application
+      if (HelperService.isInternalUrl(baseUrl) && !newTab && !this.reloadAbsoluteInternalLinks) {
         const relativeUrl = HelperService.internalUrlToRelative(baseUrl);
         this.router.navigateByUrl(
           this.router.createUrlTree(
@@ -583,6 +587,10 @@ export class HelperService {
         }
       }
     }
+  }
+
+  public setReloadAbsoluteInternalLinks(value: boolean): void {
+    this.reloadAbsoluteInternalLinks = value;
   }
 
 }

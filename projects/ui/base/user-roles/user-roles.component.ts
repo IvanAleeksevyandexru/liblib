@@ -3,8 +3,6 @@ import { HelperService } from '@epgu/ui/services/helper';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuService } from '@epgu/ui/services/menu';
 import { LoadService } from '@epgu/ui/services/load';
-import { User } from '@epgu/ui/models/user';
-import { UserRole } from '@epgu/ui/models';
 
 @Component({
   selector: 'lib-user-roles',
@@ -13,8 +11,8 @@ import { UserRole } from '@epgu/ui/models';
 })
 export class UserRolesComponent implements OnInit {
 
-  public user = this.loadService.user as User;
-  public userRoles = this.menuService.getUserRoles(this.user) as UserRole[];
+  public user = this.loadService.user;
+  public userRoles = this.menuService.getUserRoles(this.user);
   public roleChangeAvailable = true;
   public showRolesList: boolean;
   public activeRoleCode: string;
@@ -37,9 +35,10 @@ export class UserRolesComponent implements OnInit {
     public loadService: LoadService,
     public translate: TranslateService,
     private menuService: MenuService
-  ) { }
+  ) {
+  }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.loadService.userTypeNA$.subscribe(type => {
       this.activeRoleCode = type;
     });

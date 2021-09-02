@@ -1,46 +1,47 @@
 <div class="lookup" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside (clickOutside)="cancelSearchAndClose()"
-  [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
+     [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="lookup-field" #dropdownField [ngClass]="{invalid: invalid, expanded: expanded}">
     <lib-search-bar #searchBar
-      contextClass="lookup-input"
-      [tabIndex]="tabIndex"
-      [disabled]="disabled"
-      [maxlength]="maxlength"
-      [clearable]="clearable"
-      [invalid]="invalid"
-      [validationShowOn]="validationShowOn"
-      [showMagnifyingGlass]="showMagnifyingGlass"
-      [showSearching]="showSearching"
-      [queryTimeout]="queryTimeout"
-      [queryMinSymbolsCount]="queryMinSymbolsCount"
-      [parallelSearch]="false"
-      [searchOnProgrammaticChange]="false"
-      [searchOnlyIfFocused]="true"
-      [searchOnFocus]="searchOnFocus"
-      [searchByForcing]="false"
-      [searchByTextInput]="true"
-      [searchLastValue]="searchLastValue"
-      [suggestion]="showSuggestion ? suggestion : null"
-      [(ngModel)]="query"
-      (ngModelChange)="modelChanged = true"
-      [searching]="searching"
-      (newSearch)="lookupItems($event)"
-      (input)="handleInput($event)"
-      (change)="handleChange($event)"
-      (keydown)="handleKeydownNavigation($event)"
-      (click)="lookupItemsOrClose()"
-      (focus)="handleFocus()"
-      (blur)="handleBlur()"
-      (cleared)="cleared.emit($event); modelChanged = false"
-      (suggestionSelected)="selectTextSuggestion($event)"></lib-search-bar>
+                    contextClass="lookup-input"
+                    [bgInputField]="bgInputField"
+                    [tabIndex]="tabIndex"
+                    [disabled]="disabled"
+                    [maxlength]="maxlength"
+                    [clearable]="clearable"
+                    [invalid]="invalid"
+                    [validationShowOn]="validationShowOn"
+                    [showMagnifyingGlass]="showMagnifyingGlass"
+                    [showSearching]="showSearching"
+                    [queryTimeout]="queryTimeout"
+                    [queryMinSymbolsCount]="queryMinSymbolsCount"
+                    [parallelSearch]="false"
+                    [searchOnProgrammaticChange]="false"
+                    [searchOnlyIfFocused]="true"
+                    [searchOnFocus]="searchOnFocus"
+                    [searchByForcing]="false"
+                    [searchByTextInput]="true"
+                    [searchLastValue]="searchLastValue"
+                    [suggestion]="showSuggestion ? suggestion : null"
+                    [(ngModel)]="query"
+                    (ngModelChange)="modelChanged = true"
+                    [searching]="searching"
+                    (newSearch)="lookupItems($event)"
+                    (input)="handleInput($event)"
+                    (change)="handleChange($event)"
+                    (keydown)="handleKeydownNavigation($event)"
+                    (click)="lookupItemsOrClose()"
+                    (focus)="handleFocus()"
+                    (blur)="handleBlur()"
+                    (cleared)="cleared.emit($event); modelChanged = false"
+                    (suggestionSelected)="selectTextSuggestion($event)"></lib-search-bar>
   </div>
   <div class="lookup-list-wrapper">
     <div class="lookup-context-positioning" #dropdownList [class.context-positioned]="contextMenuPosition">
       <div class="lookup-context-shift">{{query}}</div>
       <div class="lookup-list-container" [ngClass]="{hidden: !expanded }" [class.incremental-loading]="partialsLoading" libStopScreenScroll>
         <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll"
-            [config]="{suppressScrollX: true, wheelPropagation: false}"
-            (psYReachEnd)="loadNextPartial()">
+                           [config]="{suppressScrollX: true, wheelPropagation: false}"
+                           (psYReachEnd)="loadNextPartial()">
           <div class="suggests mt-8 mb-8" *ngIf="suggest && suggest.list.length">
             <p class="title pl-16">{{'SUGGEST.TITLE' | libTranslate}}</p>
             <ul class="mt-4">
@@ -60,8 +61,8 @@
           </ng-container>
         </perfect-scrollbar>
         <lib-virtual-scroll #virtualScroll *ngIf="virtualScroll"
-            [scrollStrategy]="virtualScrollController"
-            (scrollBottomReached)="loadNextPartial()">
+                            [scrollStrategy]="virtualScrollController"
+                            (scrollBottomReached)="loadNextPartial()">
           <div class="suggests mt-8 mb-8" *ngIf="suggest && suggest.list && suggest.list.length">
             <p class="title pl-16">{{'SUGGEST.TITLE' | libTranslate}}</p>
             <ul class="mt-4">

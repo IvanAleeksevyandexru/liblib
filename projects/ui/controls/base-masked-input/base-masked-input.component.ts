@@ -52,8 +52,7 @@ export class BaseMaskedInputComponent
     private changeDetection: ChangeDetectorRef,
     @Optional() @Host() @SkipSelf()
     private controlContainer: ControlContainer,
-    public loadService: LoadService) {
-  }
+    public loadService: LoadService) {}
 
   // компонент обертка для for ngx-mask, см детали тут https://www.npmjs.com/package/ngx-mask
 
@@ -121,9 +120,7 @@ export class BaseMaskedInputComponent
   private composing = false;
 
   private onTouchedCallback: () => void;
-
-  private commit(value: string) {
-  }
+  private commit(value: string) {}
 
   public ngOnInit() {
     this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
@@ -217,10 +214,13 @@ export class BaseMaskedInputComponent
         inp.setSelectionRange(0, 0);
       });
     }
+  }
 
-    if (this.positionInInput !== 0) {
-      this.goToFixPosition(this.positionInInput, this.positionInInput);
-    }
+  public handleClick(evt: Event): void {
+    setTimeout(() => {
+      this.loseFocus();
+      this.returnFocus();
+    });
   }
 
   public handleBlur() {
@@ -232,7 +232,7 @@ export class BaseMaskedInputComponent
 
   public handleFocus() {
     this.touched = this.focused = true;
-    HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue);
+    HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue, this.positionInInput);
     this.valueOnFocus = this.inputElement.nativeElement.value;
     this.check();
     if (this.onTouchedCallback) {
@@ -259,7 +259,7 @@ export class BaseMaskedInputComponent
 
     if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement) && !isSuggest) {
       this.inputElement.nativeElement.focus();
-      HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue);
+      HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue, this.positionInInput);
       this.focusManager.notifyFocusMayChanged(this, true);
     }
   }
@@ -281,7 +281,6 @@ export class BaseMaskedInputComponent
     if (!this.disabled) {
       this.writeValue(null);
       this.commit(null);
-      this.goToFixPosition(this.positionInInput, this.positionInInput);
       this.cleared.emit();
       this.returnFocus(e);
     }
@@ -324,7 +323,7 @@ export class BaseMaskedInputComponent
     if (this.inputElement && this.inputElement.nativeElement) {
       const config = this.createMaskConfig();
       this.textMaskInputElement = createTextMaskInputElement(
-        Object.assign({inputElement: this.inputElement.nativeElement}, config));
+        Object.assign({ inputElement: this.inputElement.nativeElement }, config));
       this.emptyMaskedValue = conformToMask('', this.mask, config).conformedValue;
     }
   }
@@ -359,10 +358,6 @@ export class BaseMaskedInputComponent
   public editSuggestList(suggest: Suggest): void {
     suggest.isEdit = true;
     this.selectSuggest.emit(suggest);
-  }
-
-  public goToFixPosition(start: number, end: number): void {
-    this.inputElement.nativeElement.setSelectionRange(start, end);
   }
 
 }

@@ -59,6 +59,19 @@ export interface FileUpload {
   ]
 })
 export class FileUploaderComponent implements OnInit, ControlValueAccessor, Validated, DoCheck {
+  public get files(): FileUpload[] | null {
+    return this.filesValue?.filter(({size}) => size > 0);
+  }
+
+  public set files(files: FileUpload[] | null) {
+    this.filesValue = files?.filter(({size}) => size > 0);
+  }
+
+  constructor(private host: ElementRef<HTMLInputElement>,
+              private fileUploaderService: FileUploaderService,
+              private cd: ChangeDetectorRef,
+              @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {
+  }
 
   public control: AbstractControl;
   @Input() public formControlName?: string;
@@ -82,10 +95,11 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
 
   public invalidDisplayed: boolean;
   public onChange: (FileList) => void;
-  public files: FileUpload[] | null = null;
   public touched = false;
   public fileTypesArray: string[];
   public errorMessage = '';
+
+  private filesValue: FileUpload[] | null = null;
   private commit(value: any) {}
 
 
@@ -113,11 +127,11 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     for (let i = 0; i < event.length; i++) {
       const existingFile = this.findFile(event[i]);
       if (existingFile) {
-        this.errorMessage = 'Файл уже загружен: ' + event[i].name;
+        this.errorMessage = `Файл уже загружен: ${  event[i].name}`;
       }
 
       if (event[i].size === 0) {
-        this.errorMessage = 'Не удалось загрузить файл ' + event[i].name + '. Файл не должен быть пустым';
+        this.errorMessage = `Не удалось загрузить файл ${  event[i].name  }. Файл не должен быть пустым`;
       }
 
       const checkType = this.checkFileTypes(event[i]);
@@ -133,7 +147,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
           file: event[i],
           lastModified: event[i].lastModified
         };
-        this.files.push(file);
+        this.files = [...this.files, file];
 
         if (needUploadToServer) {
           const formData = new FormData();
@@ -155,12 +169,6 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     }
     this.fileInput.nativeElement.value = '';
     this.photoInput.nativeElement.value = '';
-  }
-
-  constructor(private host: ElementRef<HTMLInputElement>,
-              private fileUploaderService: FileUploaderService,
-              private cd: ChangeDetectorRef,
-              @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {
   }
 
   private saveFileToServer(formData: FormData, file: FileUpload): void {
@@ -292,7 +300,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
         dFile.error = 'Во время удаления возникла ошибка';
       }
       dFile.uploadInProcess = false;
-      this.files.splice(i, 1);
+      this.files = this.files.filter((file, fileIndex) => fileIndex !== i);
       this.commit(this.files);
       this.check();
       this.cd.detectChanges();
@@ -306,10 +314,10 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     if (this.storageServiceUrl && this.orderId && !deletedFile.error) {
       deletedFile.uploadInProcess = true;
       this.fileUploaderService.deleteFileFromStorage(this.storageServiceUrl,
-                                                    this.orderId.toString(),
-                                                    objectType,
-                                                    deletedFile.mnemonic).subscribe(() => {
-                                                    deleteProcess(index, deletedFile, false);
+        this.orderId.toString(),
+        objectType,
+        deletedFile.mnemonic).subscribe(() => {
+        deleteProcess(index, deletedFile, false);
       }, () => {
         deleteProcess(index, deletedFile, true);
       });
@@ -340,7 +348,7 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
 
     const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))  } ${  sizes[i]}`;
   }
 
   public getFileMnemonicByPrefix(prefix) {
@@ -349,3 +357,4 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     return prefixStr + uid;
   }
 }
+

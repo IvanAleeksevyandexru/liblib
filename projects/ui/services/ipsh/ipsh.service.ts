@@ -189,7 +189,9 @@ export class IpshService {
   public transformAttrs(attrs: BillAttr[]) {
     const attrsObj = {};
     attrs.forEach(attr => {
-      attrsObj[attr.name] = attr.value;
+      if (attr.value && attr.value !== 'null') {
+        attrsObj[attr.name] = attr.value;
+      }
     });
     return attrsObj;
   }

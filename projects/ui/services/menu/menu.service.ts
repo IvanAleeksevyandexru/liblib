@@ -4,6 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Category, MenuLink, UserRole } from '@epgu/ui/models';
 import { User } from '@epgu/ui/models/user';
+import { AccessesService } from '@epgu/ui/services/accesses';
+import { CookieService } from '@epgu/ui/services/cookie';
+import { YaMetricService } from '@epgu/ui/services/ya-metric';
+import { HelperService } from '@epgu/ui/services/helper';
 
 const HASH = Math.random();
 
@@ -14,11 +18,17 @@ export class MenuService {
 
   public closeBurgerOutside = new BehaviorSubject(false);
   public closeBurgerOutside$ = this.closeBurgerOutside.asObservable();
+  public staticUrls: object;
 
   constructor(
     private loadService: LoadService,
     private http: HttpClient,
+    private accessesService: AccessesService,
+    private cookieService: CookieService,
+    private yaMetricService: YaMetricService,
+    private helperService: HelperService,
   ) {
+    this.staticUrls = this.getStaticItemUrls();
   }
 
   public loadCategories(): Promise<Category[]> {
@@ -46,32 +56,28 @@ export class MenuService {
   public getUserMenuDefaultLinks(): MenuLink[] {
     return [{
       title: 'HEADER.MENU.NOTIFICATIONS',
-      mnemonic: 'notifications',
+      mnemonic: 'overview', // правка изза выборов
       icon: 'bell'
     }, {
       title: 'HEADER.MENU.ORDERS',
       mnemonic: 'orders',
-      icon: 'edit'
-    }, {
-      title: 'HEADER.MENU.PAYMENT',
-      mnemonic: 'payment',
-      icon: 'wallet'
+      icon: 'edit',
+      showSeparatelyOnDesk: true
     }, {
       title: 'HEADER.MENU.DOCS',
       mnemonic: 'docs',
-      icon: 'doc'
+      icon: 'doc',
+      showSeparatelyOnDesk: true
     }, {
-      title: 'HEADER.MENU.PERMISSIONS',
-      mnemonic: 'permissions',
-      icon: 'hand-break',
-      trusted: true
-    }].filter(item => {
-      if (!item.trusted) {
-        return true;
-      }
-      // Оставим пункты меню только для подтвержденной УЗ
-      return this.loadService.user.person.person.trusted;
-    }) as MenuLink[];
+      title: 'HEADER.MENU.PAYMENT',
+      mnemonic: 'payment',
+      icon: 'wallet',
+      showSeparatelyOnDesk: true
+    }, {
+      title: 'HEADER.MENU.PROFILE',
+      mnemonic: 'profile',
+      icon: 'person'
+    }];
   }
 
   public getStaticItemUrls(): object {
@@ -84,10 +90,10 @@ export class MenuService {
       'HEADER.PERSONAL_AREA': `${lkUrl}overview`,
       'HEADER.MENU.PROFILE': `${lkUrl}settings/account`,
       'HEADER.MENU.HELP': `${portalUrl}help`,
-      'HEADER.MENU.NOTIFICATIONS': `${lkUrl}overview`,
-      'HEADER.MENU.ORDERS': `${lkUrl}orders/all`,
+      'HEADER.MENU.NOTIFICATIONS': `${lkUrl}overview`, // правка изза выборов
+      'HEADER.MENU.ORDERS': `${lkUrl}orders`,
       'HEADER.MENU.PAYMENT': `${portalUrl}pay`,
-      'HEADER.MENU.DOCS': `${lkUrl}profile/personal`,
+      'HEADER.MENU.DOCS': `${lkUrl}profile`,
       'HEADER.MENU.PERMISSIONS': `${lkUrl}permissions`,
       'HEADER.MENU.SETTINGS': `${lkUrl}settings/account`,
       'HEADER.MENU.SETTINGS_MENU': `${lkUrl}settings/account`,
@@ -139,4 +145,27 @@ export class MenuService {
     ];
   }
 
+  public getUrl(menuItemName: string): string {
+    return this.staticUrls[menuItemName] || '';
+  }
+
+  public menuItemClick(link: MenuLink): void {
+    this.yaMetricService.callReachGoal('new_lk_dashboard',
+      {
+        type: this.loadService.attributes.deviceType,
+        choice: link.mnemonic
+      });
+    if (link.handler) {
+      link.handler(link);
+    } else {
+      this.helperService.navigate(link.url);
+    }
+  }
+
+  public menuStaticItemClick(itemName: string, mnemonic): void {
+    const staticUrl = this.getUrl(itemName);
+    return this.menuItemClick({url: staticUrl, mnemonic} as MenuLink);
+  }
+
 }
+

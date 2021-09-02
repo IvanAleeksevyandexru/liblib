@@ -47,15 +47,12 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor, Validate
   private destroyed = false;
   private modelInitialization = true;
   private onTouchedCallback: () => void;
-
-  private commit(value: any) {
-  }
+  private commit(value: any) {}
 
   constructor(
     private focusManager: FocusManager,
     private changeDetector: ChangeDetectorRef
-  ) {
-  }
+  ) { }
 
   public ngOnInit() {
     // генеририрует уникальный ID, если не указан checkboxId
@@ -103,6 +100,9 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor, Validate
   public setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
     this.check();
+    if (!this.destroyed) {
+      this.changeDetector.detectChanges();
+    }
   }
 
   public check() {

@@ -10,6 +10,7 @@ import { MenuCatalogModule } from '@epgu/ui/components/menu-catalog';
 import { MenuCatalogSimpleModule } from '@epgu/ui/components/menu-catalog-simple';
 import { BaseModule } from '@epgu/ui/base';
 import { LocationSelectModule } from '@epgu/ui/components/location-select';
+import { TranslatePipeModule } from '@epgu/ui/pipes';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { LocationSelectModule } from '@epgu/ui/components/location-select';
     MenuCatalogModule,
     MenuCatalogSimpleModule,
     LocationSelectModule,
-    BaseModule
+    BaseModule,
+    TranslatePipeModule
   ],
   declarations: [
     HeaderComponent

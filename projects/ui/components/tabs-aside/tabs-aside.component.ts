@@ -28,11 +28,13 @@ export class TabsAsideComponent extends TabsComponent implements OnInit, OnChang
   // событие выбора вкладки
   @Output() public selected = new EventEmitter<Tab>();
 
-  constructor(protected tabsService: TabsService,
-              @Optional() protected yaMetricService: YaMetricService,
-              protected helperService: HelperService,
-              protected router: Router,
-              protected changeDetection: ChangeDetectorRef) {
+  constructor(
+    protected tabsService: TabsService,
+    @Optional() protected yaMetricService: YaMetricService,
+    protected helperService: HelperService,
+    protected router: Router,
+    protected changeDetection: ChangeDetectorRef
+  ) {
     super(tabsService, yaMetricService, helperService, router, changeDetection);
   }
 

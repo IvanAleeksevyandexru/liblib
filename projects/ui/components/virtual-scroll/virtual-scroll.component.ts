@@ -64,7 +64,7 @@ export class VirtualScrollComponent implements AfterViewInit, OnDestroy {
       const renderedOffset = this.scrollViewport.getOffsetToRenderedContentStart();
       const scrollCnt = scrollEvt.target as HTMLElement;
       const scrollArea = scrollCnt.children[0];
-      if (scrollArea.clientHeight && scrollCnt.scrollTop - renderedOffset + scrollCnt.clientHeight >= scrollArea.clientHeight) {
+      if (scrollArea.clientHeight && scrollCnt.scrollTop - renderedOffset + scrollCnt.clientHeight + 1 >= scrollArea.clientHeight) {
         this.scrollBottomReached.emit();
       }
     });

@@ -38,6 +38,7 @@ export * from './scroll-params';
 export * from './search';
 export * from './security';
 export * from './service';
+export * from './smu';
 export * from './social';
 export * from './suggest';
 export * from './throbber';

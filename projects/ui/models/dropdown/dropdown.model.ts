@@ -3,7 +3,7 @@ import { LineBreak } from '@epgu/ui/models/common-enums';
 import { HelperService } from '@epgu/ui/services/helper';
 
 export const NO_ORIGINAL = {};
-export const ITEM_DEFAULT_HEIGHT = 36;
+export const ITEM_DEFAULT_HEIGHT = 52;
 
 // тип для пользовательского объекта-прототипа, "подходящего" для создания по нему списочного элемента
 // т.е. содержащий допустимые пользовательские данные, соответствующие конструкции ListItem

@@ -65,8 +65,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     protected focusManager: FocusManager,
     private sharedService: SharedService,
     @Self() protected listService: ListItemsService,
-    @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {
-  }
+    @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
 
   @Input() public contextClass?: string;  // класс-маркер разметки для deep классов
   @Input() public formControlName?: string;
@@ -144,15 +143,15 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   // источник значений в виде внешнего провайдера с полностью независимой возможно асинхронной логикой работы
   @Input() public itemsProvider: LookupProvider<ListElement | any> | LookupPartialProvider<ListElement | any>;
   // новый вид для ультрановой главной
-  @Input() public mainPageStyle = false;
+  @Input() public mainPageStyle: boolean = false;
   // скрывать результат поиска в независимости от наличия ответа
-  @Input() public hideSearchResult = false;
+  @Input() public hideSearchResult: boolean = false;
   // активация автоматического перевода с английского
   @Input() public enableLangConvert = false;
   // Остановка запросов к спутник апи в случае, если пользователь вошел в чат с Цифровым Ассистентом
   @Input() public stopSearch = false;
   // доп. атрибуты
-  @Input() public addAttrs: { [key: string]: any } = {};
+  @Input() public addAttrs: {[key: string]: any} = {};
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -214,9 +213,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   @ViewChild('lookupList', {static: false}) private listContainer: ElementRef;
 
   private onTouchedCallback: () => void;
-
-  private commit(value: any) {
-  }
+  private commit(value: any) {}
 
   public ngOnInit() {
     this.update();
@@ -298,6 +295,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
   public restoreQuery() {
     this.query = this.item ? this.item.textFormatted : '';
+    this.changeDetector.detectChanges();
   }
 
   public cancelSearch() {
@@ -400,8 +398,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   }
 
   public lookupItems(queryOrMarker: string | {}, lookupAnyway: boolean = false) {
-    if ((this.mainPageStyle && this.stopSearch && !lookupAnyway) || 
-    (queryOrMarker !== SHOW_ALL_MARKER && (queryOrMarker as string).length < this.queryMinSymbolsCount)) {
+    if ((this.mainPageStyle && this.stopSearch && !lookupAnyway) || (queryOrMarker !== SHOW_ALL_MARKER && (queryOrMarker as string).length < this.queryMinSymbolsCount)) {
       this.cancelSearchAndClose();
       return;
     }
@@ -474,10 +471,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
           this.prevQuery = this.query;
           this.searching = this.partialsLoading = false;
           if (this.insureSearchActiveToken === activeToken) {
-            this.processNewItems(rootSearch, items);
-            if (callback) {
-              callback();
-            }
+            this.processNewItems(rootSearch, items, callback);
           }
           this.changeDetector.detectChanges();
         }, e => {
@@ -491,9 +485,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   }
 
   // все что prepareItems + запись в список отображения
-  public processNewItems(rootSearch: boolean, items: Array<any>) {
-    this.prepareItems
-    (items, this.items.length, this.activeQuery, false, !!this.itemsProvider || this.virtualScroll, (newItems: Array<ListItem>) => {
+  public processNewItems(rootSearch: boolean, items: Array<any>, callback?: () => void) {
+    this.prepareItems(items, this.items.length, this.activeQuery, false, !!this.itemsProvider || this.virtualScroll, (newItems: Array<ListItem>) => {
       if (this.incrementalLoading) {
         if (newItems.length) {
           this.items = rootSearch ? newItems : this.items.concat(newItems);
@@ -507,6 +500,9 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
       this.listService.alignGroupsTreeIfNeeded(this.items, this.itemsProvider ? this.items : this.internalFixedItems);
       this.updateScrollHeight();
       this.listed.emit(this.items);
+      if (callback) {
+        callback();
+      }
     });
   }
 
@@ -515,10 +511,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
       this.expanded = true;
       this.highlight(null);
       if (this.containerOverlap) {
-        this.positioningDescriptor = {
-          master: this.fieldContainer, slave: this.listContainer,
-          destroyOnScroll: true, destroyCallback: this.closeDropdown.bind(this)
-        } as PositioningRequest;
+        this.positioningDescriptor = {master: this.fieldContainer, slave: this.listContainer,
+          destroyOnScroll: true, destroyCallback: this.closeDropdown.bind(this)} as PositioningRequest;
         this.positioningManager.attach(this.positioningDescriptor);
       }
       if (this.virtualScroll && this.query === '') {
@@ -751,3 +745,4 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     this.selectSuggest.emit(suggest);
   }
 }
+

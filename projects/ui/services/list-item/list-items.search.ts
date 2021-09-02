@@ -1,4 +1,4 @@
-import { ListItem, LookupProvider, LookupPartialProvider } from '@epgu/ui/models/dropdown';
+import { ListItem, LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
 import { ListItemHierarchyService } from './list-items.hierarchy';
 import { ConstantsService } from '@epgu/ui/services/constants';
 import { Observable, of } from 'rxjs';
@@ -41,13 +41,33 @@ export class FixedItemsProvider implements LookupProvider<ListItem>, LookupParti
     this.cachedResult = this.fixedItems;
   }
 
-  public search(query: string, context?: { [name: string]: any }): Observable<Array<ListItem>> {
+  private filterItems(query: string, context?: { [name: string]: any }, escapeSimilarLetters?: boolean): Array<ListItem> {
+    let fixedItems = this.fixedItems.map(item => new ListItem(item));
+    if (escapeSimilarLetters) {
+      fixedItems.forEach(item => item.text = item.text.replace(/ё/gi, 'е').replace(/й/gi, 'и'));
+    }
+    return (fixedItems || []).filter((item: ListItem) => {
+      return FixedItemsProvider.checkItem(item, query, context);
+    });
+  }
+
+  public search(query: string, context?: { [name: string]: any }, escapeSimilarLetters?: boolean): Observable<Array<ListItem>> {
     if (query === this.lastQuery) {
       return of(this.cachedResult);
     } else if (query) {
-      let filteredItems = (this.fixedItems || []).filter((item: ListItem) => {
-        return FixedItemsProvider.checkItem(item, query, context);
-      });
+      let filteredItems = this.filterItems(query, context, false);
+      if (escapeSimilarLetters) {
+        let escapedQuery = query.replace(/ё/gi, 'е').replace(/й/gi, 'и');
+        let escapedList = this.filterItems(escapedQuery, context, true);
+
+        escapedList.forEach(escaped => {
+          const sameItem = filteredItems.find(filtered => filtered.id === escaped.id);
+          if (!sameItem) {
+            const originalItem = this.fixedItems.find(item => item.id === escaped.id);
+            filteredItems.push(originalItem);
+          }
+        });
+      }
       filteredItems = ListItemHierarchyService.complementMissingGroupContentsIfNeeded(filteredItems, this.fixedItems);
       return this.cacheAndReturn(query, filteredItems);
     } else {
@@ -62,3 +82,4 @@ export class FixedItemsProvider implements LookupProvider<ListItem>, LookupParti
     }));
   }
 }
+
