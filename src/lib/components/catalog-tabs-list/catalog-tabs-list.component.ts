@@ -11,6 +11,7 @@ export class CatalogTabsListComponent implements OnInit, OnDestroy {
 
   @Input() public catalog: CatalogData[];
   @Input() public viewType: 'main-page-view' | 'side-view';
+  @Input() public alwaysShowLocationSelect: boolean;
   @Output() public catalogTabListItemClick = new EventEmitter<CatalogData>();
 
   constructor(
@@ -24,7 +25,7 @@ export class CatalogTabsListComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy() {
   }
-  
+
   public onReachEnd(): void {
     console.log('end!!');
   }

@@ -30,7 +30,7 @@
       <div>
         <lib-user-roles></lib-user-roles>
       </div>
-      <ng-container *ngIf="catalog?.length">
+      <ng-container *ngIf="catalog?.length || alwaysShowLocationSelect">
         <lib-catalog-tabs-list viewType="side-view"
                                [catalog]="catalog"
                                (catalogTabListItemClick)="catalogTabListItemClick($event)"

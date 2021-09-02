@@ -294,6 +294,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
   public restoreQuery() {
     this.query = this.item ? this.item.textFormatted : '';
+    this.changeDetector.detectChanges();
   }
 
   public cancelSearch() {
