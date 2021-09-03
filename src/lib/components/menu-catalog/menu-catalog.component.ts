@@ -1,5 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Catalog } from '../../models/main-page.model';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LoadService } from '../../services/load/load.service';
 import { MenuService } from '../../services/menu/menu.service';
@@ -7,16 +6,17 @@ import { UserRole } from '../../models/menu-link';
 import { CatalogTabsService } from '../../services/catalog-tabs/catalog-tabs.service';
 import { SharedService } from '../../services/shared/shared.service';
 import { CatalogData } from '../../models/catalog';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { HelperService } from '../../services/helper/helper.service';
 
 @Component({
   selector: 'lib-menu-catalog',
   templateUrl: './menu-catalog.component.html',
   styleUrls: ['./menu-catalog.component.scss', '../user-menu/user-menu.component.scss']
 })
-export class MenuCatalogComponent implements OnInit, OnDestroy {
+export class MenuCatalogComponent implements OnInit, OnChanges, OnDestroy {
 
   public user = this.loadService.user;
-  public showRolesList = false;
   public emptyRegionPopular: boolean;
   public showSubCatalog: boolean;
   public catalog = this.catalogTabsService.catalogTabsList;
@@ -25,9 +25,13 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
   public activeRole: UserRole;
   public subscription: Subscription;
   public subscriptionBurger: Subscription;
-  public isOpenLangMenu = false;
+  public roleChangeAvailable = true;
+  private translateSubscription: Subscription;
+  public activeRoleCode: string;
 
   @Input() public languageChangeAvailable?: boolean;
+  @Input() public hideBurgerDesc = false;
+  @Input() public alwaysShowLocationSelect?: boolean;
 
   @Output() public menuCatalogOpened?: EventEmitter<boolean> = new EventEmitter<boolean>();
   public currentCategoryCode: string;
@@ -39,11 +43,14 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
     }
   }
 
+  @ViewChild('catalogMenu') private catalogMenu: ElementRef<HTMLDivElement>;
+
   constructor(
     public loadService: LoadService,
     private menuService: MenuService,
     public catalogTabsService: CatalogTabsService,
-    public sharedService: SharedService
+    public sharedService: SharedService,
+    public translate: TranslateService,
   ) {
   }
 
@@ -58,6 +65,19 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
         this.onMenuClick(false, true);
       }
     });
+    this.translateSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.roleChangeAvailable = HelperService.langIsRus(event.lang);
+    });
+    this.roleChangeAvailable = HelperService.langIsRus(this.translate.currentLang);
+    this.loadService.userTypeNA$.subscribe(type => {
+      this.activeRoleCode = type;
+    });
+  }
+
+  public ngOnChanges() {
+    if (this.translateSubscription) {
+      this.translateSubscription.unsubscribe();
+    }
   }
 
   public onClose() {
@@ -120,7 +140,6 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
 
     this.currentCategoryCode = item.code;
     this.showSubCatalog = item.sideActive;
-
   }
 
   public subCatalogClose(): void {
@@ -135,6 +154,10 @@ export class MenuCatalogComponent implements OnInit, OnDestroy {
   }
 
   public openLanguageMenu(evt: boolean) {
-    this.isOpenLangMenu = evt;
+    if (evt) {
+      const top = this.catalogMenu.nativeElement.scrollTop + 56;
+      setTimeout( () => this.catalogMenu.nativeElement.scrollTop = top, 0);
+    }
   }
+
 }

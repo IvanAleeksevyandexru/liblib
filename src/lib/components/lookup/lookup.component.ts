@@ -296,6 +296,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
   public restoreQuery() {
     this.query = this.item ? this.item.textFormatted : '';
+    this.changeDetector.detectChanges();
   }
 
   public cancelSearch() {
@@ -471,10 +472,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
           this.prevQuery = this.query;
           this.searching = this.partialsLoading = false;
           if (this.insureSearchActiveToken === activeToken) {
-            this.processNewItems(rootSearch, items);
-            if (callback) {
-              callback();
-            }
+            this.processNewItems(rootSearch, items, callback);
           }
           this.changeDetector.detectChanges();
         }, e => {
@@ -488,7 +486,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   }
 
   // все что prepareItems + запись в список отображения
-  public processNewItems(rootSearch: boolean, items: Array<any>) {
+  public processNewItems(rootSearch: boolean, items: Array<any>, callback?: () => void) {
     this.prepareItems(items, this.items.length, this.activeQuery, false, !!this.itemsProvider || this.virtualScroll, (newItems: Array<ListItem>) => {
       if (this.incrementalLoading) {
         if (newItems.length) {
@@ -503,6 +501,9 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
       this.listService.alignGroupsTreeIfNeeded(this.items, this.itemsProvider ? this.items : this.internalFixedItems);
       this.updateScrollHeight();
       this.listed.emit(this.items);
+      if (callback) {
+        callback();
+      }
     });
   }
 

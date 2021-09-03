@@ -7,6 +7,12 @@
     background-color: #E4ECFD;
     padding: 6px 16px;
     border-radius: 8px;
+
+    &.md {
+      font-size: 16px;
+      line-height: 24px;
+      padding: 12px 32px;
+    }
   }
 }
 
@@ -17,7 +23,7 @@ a, button {
   outline: none;
   border: 2px solid transparent;
   border-radius: 8px;
-  padding: 12px 24px;
+  padding: 12px 40px;
   text-align: center;
   font-size: 16px;
   line-height: 24px;
@@ -145,6 +151,13 @@ a, button {
 
   &.loader {
     min-width: 100px;
+  }
+}
+
+.small-paddings {
+  a, button {
+    padding-left: 24px;
+    padding-right: 24px;
   }
 }
 

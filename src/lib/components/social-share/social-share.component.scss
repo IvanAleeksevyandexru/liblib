@@ -62,18 +62,25 @@
 
   .new-social-links {
     margin-top: 16px;
-    width: 182px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     .new-social-link {
+      display: flex;
+      align-items: center;
+      margin-right: 24px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
       &.vk img {
-        width: 33px;
+        width: 32px;
         height: 20px;
       }
       &.ok img, &.fb img {
-        width: 25px;
+        width: 24px;
         height: 24px;
       }
       &.tg img {
@@ -109,8 +116,7 @@
     flex-direction: row;
 
     .new-social-links {
-      flex: 1 0 182px;
-      width: 100%;
+      flex: 1 0 auto;
       margin-top: 0;
       margin-left: 32px;
     }
