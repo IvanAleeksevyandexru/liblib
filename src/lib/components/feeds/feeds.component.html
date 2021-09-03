@@ -157,7 +157,7 @@
           <ng-container *ngIf="snippet?.json?.programName; else customProgramSnippet">
             <div class="mt-12">
               <div class="text-plain small-text">
-                {{snippet?.json?.firstName}} {{snippet?.json?.middleName}} {{snippet?.json?.lastName}}
+                {{snippet?.json?.firstName}} {{snippet?.json?.lastName}}{{snippet?.json?.years ? ', ' + snippet?.json?.years : ''}}
               </div>
               <div *ngIf="snippet?.json?.programName" class="text-plain small-text mt-4">
                 <span class="gray">Программа</span>: {{snippet.json.programName}}

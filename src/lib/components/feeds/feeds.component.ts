@@ -181,8 +181,22 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
           data: {
             ...feed.data,
             snippets: feed?.data?.snippets?.map((item) => {
-              return item.type === 'CUSTOM' && item.json
-                ? { json: JSON.parse(item.json), type: item?.type }
+              let snippet: any = null;
+              if (item.type === 'CHILD') {
+                if (item.birthDate) {
+                  item.years = this.getYears(item.birthDate);
+                }
+              } else if (item.type === 'CUSTOM' && item.json) {
+                snippet = {
+                  json: JSON.parse(item?.json),
+                  type: item?.type,
+                };
+                if (snippet.json.birthDate) {
+                  snippet.json.years = this.getYears(snippet.json.birthDate);
+                }
+              }
+              return snippet
+                ? snippet
                 : item;
           }),
           },
@@ -663,5 +677,22 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   public isKindergartenSnippet(feed: any): boolean {
     return this.checkSnippetsExists(feed) && this.page === 'orders' && feed.data.snippets[0].type === 'CHILD';
+  }
+
+  public getYears(date: string): string {
+    let result = '';
+    if (!date) {
+      return result;
+    }
+    const now = moment();
+    const formatDate = moment(date, 'DD.MM.YYYY');
+    const diff = formatDate.isValid() ? now.diff(formatDate, 'years') : 0;
+    if (diff && diff > 0) {
+      result = String(diff) + HelperService.pluralize(
+        diff,
+        [' год', ' года', ' лет']
+      );
+    }
+    return result;
   }
 }
