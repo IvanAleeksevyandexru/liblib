@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { LoadService } from '../load/load.service';
 import {
   CounterData,
@@ -10,7 +10,7 @@ import {
   CounterTarget,
   CounterType
 } from '../../models/counter';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +45,7 @@ export class CountersService {
   public setCounters(data: CounterResponse) {
     const model: CountersModel = {
       total: data.total || 0,
+      unread: data.unread || 0,
       counters: {}
     };
 
@@ -138,12 +139,41 @@ export class CountersService {
     });
   }
 
-  // TODO: описать интерфейс
-  public updateCounters(): Observable<any> {
-    return this.doMarkAsReadApiRequest('?types=all_v2')
+  public updateCounters(type: string = ''): Observable<any> {
+    const query = type ? `?types=${type}` : '?types=all_v2';
+    return this.doMarkAsReadApiRequest(query)
       .pipe(switchMap(() => {
         return this.doCountersApiRequest();
       }));
   }
 
+  public getUnreadFeedsCount(type: string = ''): Observable<number> {
+    if (this.counters.value) {
+      return of(this.calculateUnreadCount(type));
+    } else {
+      return this.doCountersApiRequest().pipe(
+        tap((data: CounterResponse) => {
+          this.setCounters(data);
+        }),
+        switchMap((data: CounterResponse) => {
+          return of(this.calculateUnreadCount(type));
+        })
+      );
+    }
+  }
+
+  public calculateUnreadCount(type: string = ''): number {
+    const data = this.counters.value;
+    if (!type) {
+      const drafts = data.counters.DRAFT;
+      if (drafts && drafts.unread > 0) {
+        return data.unread - drafts.unread;
+      } else {
+        return data.unread;
+      }
+    } else {
+      const types = type.split(',');
+      return types.reduce((sum: number, curType: string) => sum + (data.counters[curType]?.unread || 0), 0);
+    }
+  }
 }

@@ -9,6 +9,11 @@
   border-top: 1px solid #E1E1E1;
 }
 
+.bottom-container-overview {
+  padding: 24px 0 0 0;
+  border-top: 1px solid #E1E1E1;
+}
+
 .loader-container {
   padding: 24px 0 48px 0;
 }
@@ -18,16 +23,16 @@
   width: 100%;
 }
 
-.feed-header-unread:before {
-  content: '';
-  position: absolute;
-  left: -10px;
-  top: 25px;
-  width: 4px;
-  height: 4px;
-  background: #EE3F58;
-  border-radius: 2px;
-}
+//.feed-header-unread:before {
+//  content: '';
+//  position: absolute;
+//  left: -10px;
+//  top: 25px;
+//  width: 4px;
+//  height: 4px;
+//  background: #EE3F58;
+//  border-radius: 2px;
+//}
 
 .feed-header-unread {
   .feed-title {

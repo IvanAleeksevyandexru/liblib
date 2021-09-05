@@ -35,7 +35,7 @@ export class FeedsService {
     */
     const httpParams = new HttpParams({
       fromObject: {
-        unread: 'false',
+        unread: params.unread?.toString() || 'false',
         isArchive: params.isArchive !== undefined ? params.isArchive.toString() : '',
         isHide: params.isHide !== undefined ? params.isHide.toString() : '',
         types: params.types || null,
@@ -292,6 +292,7 @@ export class FeedsService {
     let type = '';
     switch (feedType) {
       case 'ORDER':
+      case 'COMPLEX_ORDER':
         type = 'Заявление';
         break;
       case 'PAYMENT':
@@ -328,14 +329,19 @@ export class FeedsService {
       case 'PARTNERS':
         type = 'Партнеры';
         break;
+      case 'ACCOUNT':
       case 'ACCOUNT_CHILD':
+      case 'LINKED_ACCOUNT':
+        type = 'Документы';
+        break;
       case 'ORGANIZATION':
       case 'ESIGNATURE':
       case 'BUSINESSMAN':
-      case 'ACCOUNT':
+        type = 'Системные';
+        break;
       case 'PROFILE':
       case 'BIOMETRICS':
-        type = 'Системные';
+        type = 'Профиль';
         break;
       case 'SIGN':
         type = 'Госключ';

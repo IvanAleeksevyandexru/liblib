@@ -377,10 +377,10 @@ export class ConstantsService {
       mnemonic: 'allEvents'
     },
     {
-      text: 'Заявления',
-      type: 'ORDER,COMPLEX_ORDER',
+      text: 'Непрочитанные',
+      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,KND_APPEAL,LINKED_ACCOUNT',
       id: 2,
-      mnemonic: 'order'
+      mnemonic: 'unread'
     },
     {
       text: 'Записи на приём',
@@ -395,42 +395,53 @@ export class ConstantsService {
       mnemonic: 'payment'
     },
     {
-      text: 'Госпочта',
-      type: 'GEPS',
+      text: 'Заявления',
+      type: 'ORDER,COMPLEX_ORDER,CLAIM,APPEAL,SIGN',
       id: 5,
-      mnemonic: 'geps'
+      mnemonic: 'order'
     },
     {
-      text: 'Системные',
-      type: 'BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE,LINKED_ACCOUNT',
+      text: 'Документы',
+      type: 'ACCOUNT,ACCOUNT_CHILD,LINKED_ACCOUNT',
       id: 6,
+      mnemonic: 'docs'
+    },
+    {
+      text: 'Согласия',
+      type: '',
+      id: 7,
+      mnemonic: 'agreements'
+    },
+    {
+      text: 'Профиль',
+      type: 'BIOMETRICS,PROFILE',
+      id: 8,
+      mnemonic: 'profile'
+    },
+    {
+      text: 'Госпочта',
+      type: 'GEPS',
+      id: 9,
+      mnemonic: 'geps'
+    },
+    /*{
+      text: 'Системные',
+      type: 'ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE',
+      id: 10,
       mnemonic: 'systemEvents'
     },
     {
-      text: 'Сообщения',
-      type: 'APPEAL,SIGN',
-      id: 7,
-      mnemonic: 'appealEvents'
-    },
-    {
-      text: 'Обжалования',
-      type: 'CLAIM',
-      id: 8,
-      mnemonic: 'claim'
-    },
-    {
-      text: 'Обращения в техподдержку',
+      text: 'Техподдержка',
       type: 'FEEDBACK',
-      id: 9,
+      id: 11,
       mnemonic: 'feedbackEvents'
     },
     {
-      text: 'Досудебное обжалование КНД',
+      text: 'Обжалование КНД',
       type: 'KND_APPEAL',
-      id: 10,
+      id: 12,
       mnemonic: 'kndAppealEvents'
-
-    }
+    }*/
   ];
   public readonly NOTIFICATION_PERIOD_TIMEZONE: NotificationPeriodItem[] = [
     {

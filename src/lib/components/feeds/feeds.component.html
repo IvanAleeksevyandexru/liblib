@@ -32,7 +32,7 @@
       <lib-loader></lib-loader>
     </div>
 
-    <div *ngIf="(page === 'overview' || isHeader) else additionalFeeds" [ngClass]="[isHeader ? 'mt-16' : 'bottom-container']">
+    <div *ngIf="(page === 'overview' || isHeader) else additionalFeeds" [ngClass]="[isHeader ? 'mt-16' : 'bottom-container-overview']">
       <a class="small-text blue"
          (click)="onShowMoreClick($event)">{{'FEEDS.EVENTS_ALL' | libTranslate}}</a>
     </div>

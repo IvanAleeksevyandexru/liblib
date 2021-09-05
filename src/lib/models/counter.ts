@@ -6,6 +6,7 @@ export interface CounterData {
 
 export interface CountersModel {
   total: number;
+  unread: number;
   counters: {
     GEPS?: CounterData;
     PARTNERS?: CounterData;

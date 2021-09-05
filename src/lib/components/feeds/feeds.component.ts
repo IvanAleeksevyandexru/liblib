@@ -41,6 +41,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public inlineDate = true;
   @Input() public snippets = false;
   @Input() public search = this.route.snapshot.queryParamMap.get('q') || '';
+  @Input() public unread: boolean;
   @Input() public selectedCategory: any;
   @Input() public count = 0;
   @Input() public types: string | null;
@@ -110,7 +111,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public ngOnInit() {
     HelperService.mixinModuleTranslations(this.translate);
     this.getUserData();
-    if (!this.afterFirstSearch ) {
+    if (!this.afterFirstSearch) {
       this.getFeeds();
     }
     this.updateFeeds();
@@ -134,10 +135,11 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     if (changes.selectedCategory &&
       changes.selectedCategory.currentValue &&
       changes.selectedCategory.previousValue &&
-      changes.selectedCategory.previousValue.type !== changes.selectedCategory.currentValue.type) {
+      changes.selectedCategory.previousValue.mnemonic !== changes.selectedCategory.currentValue.mnemonic) {
       this.enableFeedsSearch();
       this.selectedTypes = this.selectedCategory.type;
       this.defaultTypesSelected = this.selectedTypes === this.types;
+      this.unread = this.selectedCategory.mnemonic === 'unread';
       this.getFeeds('', '', this.search);
     }
   }
@@ -174,7 +176,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       types: this.selectedTypes || this.types,
       lastFeedId: lastFeedId.toString(),
       lastFeedDate,
-      q: query
+      q: query,
+      unread: this.unread
     })
       .subscribe((feeds: FeedsModel) => {
         this.searching.emit(false);
@@ -243,7 +246,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       'feed-' + feed.feedType, 'feed-' + this.page,
       feed.removeInProgress ? 'feed-remove-in-progress' : '',
       this.isUpdated(feed) ? 'is-updated' : '',
-      this.setUnreadFeedCls(feed) && this.isHeader ? 'feed-header-unread' : ''
+      this.setUnreadFeedCls(feed) ? 'feed-header-unread' : ''
     ];
   }
 

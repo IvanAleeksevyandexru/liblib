@@ -123,6 +123,7 @@ export interface FeedsCategory {
   text: string;
   type: string;
   id: number;
+  mnemonic: string;
 }
 
 export interface FeedsParams {
