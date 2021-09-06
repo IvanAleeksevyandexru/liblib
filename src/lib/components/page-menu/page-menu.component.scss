@@ -2,6 +2,20 @@
   position: relative;
 
   .list-items {
+    .scroll-wrapper {
+      overflow-y: auto;
+
+      &::-webkit-scrollbar {
+        background-color: transparent;
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #D1D5DF;
+        border-radius: 8px;
+      }
+    }
+
     .item {
       margin-top: 16px;
     }
