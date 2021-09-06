@@ -1,7 +1,7 @@
 import {
   AfterViewInit, AfterViewChecked, Component,
   ElementRef, EventEmitter, HostListener,
-  Input, Output, ViewChild,
+  Input, Output, ViewChild, TemplateRef,
 } from '@angular/core';
 import { IMenuItems } from '../../models/page-menu.model';
 
@@ -17,6 +17,7 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   // т.к. при внешнем редиректе не проходит условие.
 
   @Input() public items: IMenuItems[];
+  @Input() public content: TemplateRef<any>; // если items не подходит
   @Input() public offsetFromHeader: string | number = 56;
   @Input() public offsetFromFooter: string | number = 56;
   @Input() public nameOfHeader = 'lib-header'; // хедеры могут быть любые
@@ -24,6 +25,7 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   @Input() public styleType: '' | 'padLikeMob' = ''; // различные стилевые виды:
   // '' - в мобиле статично в стопку, в паде статично в три колонки, в деске ездит по длине контента страницы; ссылки подчеркнуты
   // 'padLikeMob' - в мобиле статично в стопку, в паде статично в стопку, в деске ездит по длине контента страницы; ссылки не подчеркнуты
+  @Input() public maxHeight: number | string = 384; // максимальная высота менюхи, далее начинается скролл
 
   @Output() public onclick = new EventEmitter<string>();
 
@@ -62,7 +64,7 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   constructor() { }
 
   public ngAfterViewInit(): void {
-    this.availableFloat = this.items.length && window.screen.width > 1140;
+    this.availableFloat = (this.items?.length || this.content) && window.screen.width > 1140;
     if (this.availableFloat) {
       this.menu = this.menuElement.nativeElement as HTMLDivElement;
       this.header = document.getElementsByTagName(this.nameOfHeader)[0] as HTMLElement;
