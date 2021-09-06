@@ -18,6 +18,7 @@ export * from './department/department.component';
 export * from './disclaimer-elk/disclaimer-elk.component';
 export * from './disclaimers/disclaimers.component';
 export * from './document-details/document-details.component';
+export * from './drag-slider/drag-slider.component';
 export * from './dropdown/dropdown.component';
 export * from './dropdown-simple/dropdown-simple.component';
 export * from './equeue/equeue.component';

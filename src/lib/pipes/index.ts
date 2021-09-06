@@ -25,4 +25,5 @@ export * from './time-to-event-geps/time-to-event-geps.pipe';
 export * from './to-money/to-money.pipe';
 export * from './to-roman/to-roman.pipe';
 export * from './translate/translate.pipe';
+export * from './trim-file-types/trim-file-types.pipe';
 
