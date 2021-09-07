@@ -49,7 +49,7 @@
   <lib-throbber-hexagon [size]="'medium'"></lib-throbber-hexagon>
 </div>
 
-<div *ngIf="isFeedsEmpty()" [ngClass]="{'empty-feeds-overview': page === 'overview'}" class="empty-feeds text-plain black">
+<div *ngIf="isFeedsEmpty() && !isMain()" [ngClass]="{'empty-feeds-overview': page === 'overview'}" class="empty-feeds text-plain black">
   <div class="title">
     <ng-container *ngIf="page === 'events'; else otherTitle">
       {{'FEEDS.EMPTY.EVENTS.TITLE' | libTranslate}}
@@ -128,7 +128,7 @@
                         [ngTemplateOutletContext]="{feed: feed}"></ng-container-->
       </div>
 
-      <div class="feed-activities-block mt-12 mt-md-0 text-right-md" *ngIf="!isHeader">
+      <div class="feed-activities-block mt-12 mt-md-0 text-right-md" *ngIf="!isHeader && !isMain()">
         <div *ngIf="showRemoveFeedButton(feed)" class="feed-action remove-feed">
           <lib-icon-action *ngIf="!feed.removeInProgress && !removeInProgress"
                            [icon]="config.staticDomainLibAssetsPath + 'svg/icons/bin-gray.svg'"

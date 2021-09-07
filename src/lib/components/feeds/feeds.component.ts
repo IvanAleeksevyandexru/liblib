@@ -218,6 +218,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         this.yaMetricOnFilter();
         this.changeDetector.detectChanges();
       }, () => {
+        this.feedsIsLoading = false;
         this.serviceError.emit(true);
       });
   }
@@ -289,6 +290,10 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     return ['DRAFT', 'PARTNERS_DRAFT', 'KND_APPEAL_DRAFT'].includes(feed.feedType);
   }
 
+  public isMain(): boolean {
+    return this.page === 'main';
+  }
+
   public getSnippetsDate(feed: FeedModel): string {
     if (feed.data && feed.data.snippets && feed.data.snippets.length) {
       const date = feed.data.snippets[0].localDate || feed.data.snippets[0].date;
@@ -334,7 +339,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public enableShowMoreButton(): boolean {
-    return this.feeds && !this.feedsIsLoading && !this.addFeedsIsLoading && !!this.feeds.length;
+    return this.feeds && !this.feedsIsLoading && !this.addFeedsIsLoading && !!this.feeds.length && !this.isMain();
   }
 
   public isFeedsEmpty(): boolean {
