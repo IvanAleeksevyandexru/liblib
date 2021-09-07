@@ -147,8 +147,8 @@ export class CountersService {
       }));
   }
 
-  public getUnreadFeedsCount(type: string = ''): Observable<number> {
-    if (this.counters.value) {
+  public getUnreadFeedsCount(type: string = '', needUpdate: boolean = false): Observable<number> {
+    if (this.counters.value && !needUpdate) {
       return of(this.calculateUnreadCount(type));
     } else {
       return this.doCountersApiRequest().pipe(
@@ -175,5 +175,9 @@ export class CountersService {
       const types = type.split(',');
       return types.reduce((sum: number, curType: string) => sum + (data.counters[curType]?.unread || 0), 0);
     }
+  }
+
+  public clear() {
+    this.counters.next(null);
   }
 }

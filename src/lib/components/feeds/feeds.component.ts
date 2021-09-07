@@ -50,6 +50,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   @Output() public emptyFeeds: EventEmitter<boolean> = new EventEmitter();
   @Output() public searching = new EventEmitter<boolean>();
   @Output() public serviceError = new EventEmitter<boolean>();
+  @Output() public updateCounters = new EventEmitter();
 
   public user: User;
   public feeds: FeedModel[];
@@ -91,6 +92,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     MIMETYPE_LENGTH_INCORRECT: 'Ошибка запроса'
   };
   public isHeader: boolean;
+  public config = this.loadService.config;
 
   public getFeedTypeName = this.feedsService.getFeedTypeName;
 
@@ -418,8 +420,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         this.removeInProgress = false;
         feed.removeInProgress = false;
         this.changeDetector.detectChanges();
-      })
-    }
+      });
+    };
     if (!this.removeInProgress) {
       this.removeInProgress = true;
       feed.removeInProgress = true;
@@ -439,6 +441,57 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     $event.preventDefault();
     $event.stopPropagation();
 
+  }
+
+  public moveInArchive(feed: FeedModel, index: number) {
+    const successArchiveMoving = () => {
+      this.feeds.splice(index, 1);
+
+      if (feed.unread) {
+        this.updateCounters.emit();
+      }
+
+      const feedsLength = this.feeds.length;
+      if (feedsLength) {
+        const last = this.feeds[feedsLength - 1];
+        const date = last.date;
+        this.getFeeds(last.id, date ? moment(date).toDate() : '', this.search, '1');
+      }
+
+      this.changeDetector.detectChanges();
+    };
+
+    if (this.isArchive) {
+      this.feedsService.getFromArchive([feed.id]).subscribe(res => {
+        successArchiveMoving();
+        this.notifier.success({
+          message: 'Перенесено в ленту уведомлений',
+          actionName: 'Перейти',
+          onAction: () => {
+            this.router.navigate(['/notifications']);
+          }
+        });
+      }, error => {
+        this.notifier.success({
+          message: 'Не удалось перенесено в ленту уведомлений',
+        });
+      });
+    } else {
+      this.feedsService.putToArchive([feed.id]).subscribe(res => {
+        successArchiveMoving();
+        this.notifier.success({
+          message: 'Перенесено в архив',
+          actionName: 'Перейти',
+          onAction: () => {
+            this.router.navigate(['/notifications/archive']);
+          }
+        });
+      }, error => {
+        this.notifier.success({
+          message: 'Не удалось перенести в архив'
+        });
+      });
+    }
   }
 
   public showRemoveFeedButton(feed: FeedModel): boolean {

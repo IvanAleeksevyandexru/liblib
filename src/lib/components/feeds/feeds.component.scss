@@ -133,14 +133,14 @@
     }
   }
 
-  .remove-feed {
+  .feed-action {
     display: none;
   }
   .feed-overview:hover,
   .feed-events:hover,
   .feed-drafts:hover,
   .feed-remove-in-progress {
-    .remove-feed {
+    .feed-action {
       display: inline;
     }
   }
@@ -152,19 +152,6 @@
   }
 
   .feed-link {
-    flex-wrap: wrap;
-  }
-
-  .feed-type-block {
-    width: calc(100% - 48px);
-  }
-
-  .feed-activities-block {
-    width: 48px;
-  }
-
-  .feed-info-block {
-    order: 1;
-    width: 100%;
+    flex-flow: column;
   }
 }

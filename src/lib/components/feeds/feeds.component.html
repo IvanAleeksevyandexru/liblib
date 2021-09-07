@@ -128,14 +128,22 @@
                         [ngTemplateOutletContext]="{feed: feed}"></ng-container-->
       </div>
 
-      <div class="feed-activities-block text-right" *ngIf="!isHeader">
-        <div *ngIf="showRemoveFeedButton(feed)" class="remove-feed">
-          <a *ngIf="!feed.removeInProgress && !removeInProgress" href class="link-plain" (click)="removeFeed($event, feed, i)">Удалить</a>
+      <div class="feed-activities-block mt-12 mt-md-0 text-right-md" *ngIf="!isHeader">
+        <div *ngIf="showRemoveFeedButton(feed)" class="feed-action remove-feed">
+          <lib-icon-action *ngIf="!feed.removeInProgress && !removeInProgress"
+                           [icon]="config.staticDomainLibAssetsPath + 'svg/icons/bin-gray.svg'"
+                           [hoverIcon]="config.staticDomainLibAssetsPath + 'svg/icons/bin-blue.svg'"
+                           [text]="'Удалить'"
+                           (clickAction)="removeFeed($event, feed, i)"
+                           [mobAsHoverState]="true"></lib-icon-action>
           <lib-throbber *ngIf="feed.removeInProgress" [contextClass]="'feed-throbber'" [size]="'throbber-small'"></lib-throbber>
         </div>
-        <div *ngIf="!isDraft(feed)">
-          <!-- Перемещение в архив -->
-          <div>В архив</div>
+        <div *ngIf="!isDraft(feed)" class="feed-action archive-feed">
+          <lib-icon-action [icon]="config.staticDomainLibAssetsPath + (isArchive ? 'svg/icons/return-gray.svg' : 'svg/icons/archive-gray.svg')"
+                           [hoverIcon]="config.staticDomainLibAssetsPath + (isArchive ? 'svg/icons/return-blue.svg' : 'svg/icons/archive-blue.svg')"
+                           [text]="isArchive ? 'Вернуть' : 'В архив'"
+                           (clickAction)="moveInArchive(feed, i)"
+                           [mobAsHoverState]="true"></lib-icon-action>
         </div>
       </div>
     </div>
