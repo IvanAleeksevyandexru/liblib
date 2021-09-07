@@ -3,7 +3,7 @@
        left: 'left',
        above: 'above'
      }[imagesPosition]">
-  <div class="popup" [style.max-width.px]="maxWidth">
+  <div class="popup" [style.max-width.px]="maxWidth" [ngClass]="popupClassModifier">
     <a class="close" *ngIf="closeButton" (click)="onCancel()"></a>
     <h4 class="title {{imagesPosition === 'above' ? 'title-h4 mt-20 mt-md-0' : 'title-h2'}} mb-24"
         [innerHTML]="title | appTranslate"></h4>
