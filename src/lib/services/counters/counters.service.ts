@@ -11,6 +11,7 @@ import {
   CounterType
 } from '../../models/counter';
 import { switchMap, tap } from 'rxjs/operators';
+import { ConstantsService } from '../constants.service';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +40,8 @@ export class CountersService {
 
   constructor(
     private http: HttpClient,
-    private loadService: LoadService
+    private loadService: LoadService,
+    private constantsService: ConstantsService,
   ) { }
 
   public setCounters(data: CounterResponse) {
@@ -105,7 +107,7 @@ export class CountersService {
 
   public doCountersApiRequest(isHide?: boolean): Observable<CounterResponse> {
     let params = {
-      types: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,CLAIM,PROFILE,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,ESIGNATURE,PARTNERS,BUSINESSMAN,KND_APPEAL,LINKED_ACCOUNT',
+      types: this.constantsService.DEFAULT_LK_NOTIFICATION_CATEGORIES + ',PARTNERS',
       isArchive: 'false',
       _: Math.random().toString()
     };
