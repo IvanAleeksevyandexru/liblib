@@ -1,7 +1,10 @@
 .feed-item {
   display: block;
   padding: 24px;
-  border-top: 1px solid #E1E1E1;
+
+  + .feed-item {
+    border-top: 1px solid #E1E1E1;
+  }
 }
 
 .bottom-container {
