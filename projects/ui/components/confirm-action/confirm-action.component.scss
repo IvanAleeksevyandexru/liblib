@@ -52,14 +52,20 @@
   }
 }
 
+@media all and (max-width: 767px){
+  .popup {
+    display: flex;
+    flex-direction: column;
+  }
+  .popup-content {
+    flex: 1;
+  }
+}
+
 @media all and (min-width: 768px) {
   .buttons-between {
     flex-direction: row;
     justify-content: space-between;
-  }
-  .buttons-center {
-    display: flex;
-    justify-content: center;
   }
   .icon {
     margin-right: 24px;
