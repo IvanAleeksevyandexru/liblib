@@ -29,6 +29,7 @@ export class LoadService {
     private http: HttpClient,
     private smuEventsService: SmuEventsService,
     private authService: AuthService,
+    private helperService: HelperService,
     private constants: ConstantsService,
   ) {
   }
@@ -39,6 +40,8 @@ export class LoadService {
 
     params.attrs.platform = 'EPGUV3_' +
       (params.attrs.deviceType === 'desk' ? 'DESK' : (params.attrs.deviceType === 'mob' ? 'MOB' : 'TAB'));
+
+    this.helperService.deviceTypeParam = params.attrs.deviceType;
 
     if (data.user && data.user.person) {
       const personData = user.person as PersonData;

@@ -52,6 +52,16 @@
   }
 }
 
+@media all and (max-width: 767px){
+  .popup {
+    display: flex;
+    flex-direction: column;
+  }
+  .popup-content {
+    flex: 1;
+  }
+}
+
 @media all and (min-width: 768px) {
   .buttons-between {
     flex-direction: row;

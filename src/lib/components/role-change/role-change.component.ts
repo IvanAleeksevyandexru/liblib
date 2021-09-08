@@ -43,6 +43,7 @@ export class RoleChangeComponent implements OnInit {
     private http: HttpClient,
     private esiaApi: EsiaApiService,
     private loadService: LoadService,
+    private helperService: HelperService,
     private redirectsService: RedirectsService,
     private modalService: ModalService,
     public libTranslate: LibTranslateService
@@ -234,7 +235,7 @@ export class RoleChangeComponent implements OnInit {
   }
 
   public createBusinessAndAgency(business: boolean = true) {
-    if (HelperService.isMobile()) {
+    if (this.helperService.deviceTypeParam === 'mob') {
       this.libTranslate.get('ROLE_CHANGE.MODAL')
         .subscribe((data) => {
           this.modalService.popupInject(ConfirmActionComponent, null, {

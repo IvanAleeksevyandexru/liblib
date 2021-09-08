@@ -14,6 +14,7 @@ import { ConstantsService } from '../constants.service';
 export class HelperService {
 
   private reloadAbsoluteInternalLinks = false;
+  private deviceType: 'mob' | 'desk' | 'tab' = null;
 
   constructor(private router: Router) {
   }
@@ -592,6 +593,14 @@ export class HelperService {
 
   public setReloadAbsoluteInternalLinks(value: boolean): void {
     this.reloadAbsoluteInternalLinks = value;
+  }
+
+  public set deviceTypeParam(type: 'mob' | 'desk' | 'tab') {
+    this.deviceType = type
+  }
+
+  public get deviceTypeParam(): 'mob' | 'desk' | 'tab' {
+    return this.deviceType;
   }
 
 }
