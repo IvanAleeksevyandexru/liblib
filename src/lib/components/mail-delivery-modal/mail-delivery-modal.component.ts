@@ -116,6 +116,7 @@ export class MailDeliveryModalComponent implements OnInit {
   }
 
   public onClose(): void {
+    this.mailDeliveryService.setMailDeliveryModalFinished(true);
     this.destroy();
   }
 
