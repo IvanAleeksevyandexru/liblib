@@ -20,6 +20,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HelperService } from '../../services/helper/helper.service';
 import { take } from 'rxjs/operators';
+import { YaMetricService } from '../../services/ya-metric/ya-metric.service';
 
 const HIDE_TIMOUT = 300;
 
@@ -101,7 +102,8 @@ export class HeaderComponent implements OnInit {
     public translate: TranslateService,
     private modalService: ModalService,
     private moduleRef: NgModuleRef<any>,
-    private router: Router
+    private router: Router,
+    private yaMetricService: YaMetricService,
   ) {
     this.onRouteChange();
   }
@@ -239,5 +241,11 @@ export class HeaderComponent implements OnInit {
     this.hideTimout = setTimeout(() => {
       this.showCategories = false;
     }, HIDE_TIMOUT);
+  }
+
+  public sendMetric(name: string) {
+    this.yaMetricService.callReachGoal(name, {
+      screen: this.loadService.attributes.deviceType
+    });
   }
 }

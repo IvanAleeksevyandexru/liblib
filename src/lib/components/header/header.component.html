@@ -113,7 +113,7 @@
               </li>
             </div>
             <li class="item flex-container align-items-center mr-24">
-              <a href="{{loadService.config.betaUrl}}help" target="_self">{{'HEADER.HELP' | libTranslate}}</a>
+              <a href="{{loadService.config.betaUrl}}help" target="_self" (click)="sendMetric('clickButtonHelp')">{{'HEADER.HELP' | libTranslate}}</a>
             </li>
             <li class="item flex-container align-items-center mr-24">
               <a [href]="loadService.config.betaUrl + 'newsearch'">

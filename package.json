@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-lib",
-  "version": "0.1.207",
+  "version": "0.1.208",
   "publishConfig": {
     "registry": "http://nexus.gosuslugi.local/content/repositories/npm-internal/",
     "access": "public"
