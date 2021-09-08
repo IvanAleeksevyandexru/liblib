@@ -101,7 +101,7 @@ export class FeedsService {
   }
 
   public getFeedDetails(messageApiUrlChunk: number | string) {
-    return this.http.get(`${this.loadService.config.lkApiUrl}feeds/${messageApiUrlChunk}`, {
+    return this.http.get(`${this.loadService.config.lkApiUrl}feeds/${messageApiUrlChunk}?_=${Math.random()}`, {
       withCredentials: true
     });
   }
