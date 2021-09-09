@@ -142,3 +142,31 @@
     flex-flow: column;
   }
 }
+
+// Отображение фидов на странице заявлений
+.feed-orders {
+  .feed-type-block {
+    width: 32px;
+  }
+}
+
+@media all and (max-width: 767px) {
+  .feed-orders {
+    .feed-link {
+      flex-flow: row;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    .feed-info-block {
+      width: calc(100% - 32px);
+      margin-left: 16px;
+      margin-top: 0;
+    }
+
+    .feed-activities-block {
+      width: 100%;
+      margin-left: 48px;
+    }
+  }
+}
