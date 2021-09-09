@@ -4,6 +4,7 @@ import { CookieService } from '@epgu/ui/services/cookie';
 import { LoadService } from '@epgu/ui/services/load';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Disclaimer, DisclaimerInterface } from '@epgu/ui/models';
+import { User } from '@epgu/ui/models/user';
 
 @Component({
   selector: 'lib-disclaimers',
@@ -16,7 +17,7 @@ export class DisclaimerComponent implements OnInit {
   @Input() public isMainPage = false;
 
   public disclaimerPack: [Disclaimer[], Disclaimer[], Disclaimer[]] = [[], [], []];
-  private user = this.loadService.user;
+  private user = this.loadService.user as User;
   private config = this.loadService.config;
   public emailsFormGroup: FormGroup[] = [];
   private region = this.loadService.attributes.selectedRegion;

@@ -152,6 +152,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   @Input() public stopSearch = false;
   // доп. атрибуты
   @Input() public addAttrs: {[key: string]: any} = {};
+  // принудительное включение иконки поиска
+  @Input() public searchIconForcedShowing = false;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -225,6 +227,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         }
       });
     }
+    this.searching = this.searchIconForcedShowing;
   }
 
   public ngOnDestroy() {
@@ -248,6 +251,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
       if (this.itemsProvider) {
         this.setItems([], true);
       }
+    } else if (changes.searchIconForcedShowing) {
+      this.searching = changes.searchIconForcedShowing.currentValue;
     }
     this.check();
   }
@@ -305,7 +310,9 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   }
 
   public cancelSearchAndClose(blurEvent = false) {
-    this.cancelSearch();
+    if (!this.searchIconForcedShowing) {
+      this.cancelSearch();
+    }
     if (!this.mainPageStyle || !blurEvent) {
       this.closeDropdown();
     }

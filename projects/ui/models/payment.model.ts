@@ -112,6 +112,8 @@ export interface PaymentItems {
   attrs?: any; // Кастомный атрибут. Преобразованный addAttrs к объекту
   hasAppealDepartment?: boolean;
   hasAppealPower?: boolean;
+  addRegionAppeal?: boolean;
+  isOwner?: boolean;
   refundAvailable?: boolean;
   routeNumber?: string;
 }

@@ -8,7 +8,7 @@ import {
   TypeIcons,
   DebtYaMetricInterface,
   TypeDataOfInformers,
-  TypeStatus, HintInterface
+  TypeStatus, HintInterface, RestrictionsState
 } from '@epgu/ui/models';
 import { DeclinePipe } from '@epgu/ui/pipes';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
@@ -35,6 +35,10 @@ export class InformerComponent implements OnInit {
 
   private debtForYaMetric: DebtYaMetricInterface = {};
 
+  public otherInformerLoading = false;
+  public restrictionsState: RestrictionsState;
+  public showRestrictionsInformer: boolean;
+
   constructor(
     private informersService: InformersService,
     private declinePipe: DeclinePipe,
@@ -47,6 +51,9 @@ export class InformerComponent implements OnInit {
 
   public ngOnInit() {
     this.getInformerShortData();
+    if (this.showAllInformers) {
+      this.getRestrictions();
+    }
   }
 
   private setData(type: TypeDataOfInformers) {
@@ -171,5 +178,19 @@ export class InformerComponent implements OnInit {
     }
   }
 
+  public redirectToRestrictions() {
+    location.href = `${this.loadService.config.lkUrl}restrictions`;
+  }
+
+  private getRestrictions() {
+    this.otherInformerLoading = true;
+    this.informersService.getRestrictionsInfo().subscribe(state => {
+      this.restrictionsState = state;
+      this.showRestrictionsInformer = state !== 'NOT_EMBEDDED';
+      this.otherInformerLoading = false;
+      this.cd.detectChanges();
+    });
+  }
 }
+
 

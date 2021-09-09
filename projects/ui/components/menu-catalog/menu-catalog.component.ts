@@ -40,7 +40,7 @@ export class MenuCatalogComponent implements OnInit, OnChanges, OnDestroy {
   public activeRoleCode: string;
 
   @Input() public languageChangeAvailable?: boolean;
-
+  @Input() public hideBurgerDesc = false;
   @Input() public alwaysShowLocationSelect?: boolean;
 
   @Output() public menuCatalogOpened?: EventEmitter<boolean> = new EventEmitter<boolean>();

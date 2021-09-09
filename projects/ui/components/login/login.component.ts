@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   @Input() public onlyText: boolean;
   @Input() public menuOpened: boolean;
   @Input() public useButton: boolean;
+  @Input() public loginWithNode = true;
 
   public user: User;
   public avatarError = false;
@@ -26,8 +27,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     public loadService: LoadService
-  ) {
-  }
+  ) { }
 
   public ngOnInit(): void {
     this.user = this.loadService.user;
@@ -42,13 +42,17 @@ export class LoginComponent implements OnInit {
 
   public login(event?: Event): void {
     this.stopEvent(event);
-    if (isDevMode()) {
-      this.authService.login().subscribe((resp) => {
-        window.location = resp;
-      });
+    if (this.loginWithNode) {
+      if (isDevMode()) {
+        this.authService.login().subscribe((resp) => {
+          window.location = resp;
+        });
+      } else {
+        window.location.href = '/node-api/login/?redirectPage=' +
+          encodeURIComponent(window.location.pathname + window.location.search + window.location.hash);
+      }
     } else {
-      window.location.href = '/node-api/login/?redirectPage=' +
-        encodeURIComponent(window.location.pathname + window.location.search + window.location.hash);
+      window.location.href = this.loadService.config.authProviderLoginUrl + btoa(window.location.href);
     }
   }
 

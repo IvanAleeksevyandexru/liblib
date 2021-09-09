@@ -24,8 +24,8 @@ const HIDE_TIMOUT = 300;
 })
 export class HeaderComponent implements OnInit {
 
-  public user = this.loadService.user as User;
-  public userRoles = this.menuService.getUserRoles(this.user) as UserRole[];
+  public user = this.loadService.user;
+  public userRoles = this.menuService.getUserRoles(this.user);
   public userMenuState: UserMenuState;
   public showNotifications: boolean;
   public isUnread: boolean;
@@ -58,6 +58,7 @@ export class HeaderComponent implements OnInit {
   @Input() public languageChangeAvailable: boolean;
   @Input() public translation: Translation | string = Translation.APP;
   @Input() public closeStatisticPopup$: Observable<boolean>;
+  @Input() public loginWithNode = true;
 
   @Input() public alwaysShowLocationSelect = false;
   @Input() public hideBurgerDesc = false;
@@ -188,9 +189,7 @@ export class HeaderComponent implements OnInit {
     } else {
       if (this.closeStatisticPopup$) {
         this.closeStatisticPopup$.pipe(take(1)).subscribe(condition => {
-          if (condition) {
-            this.menuService.menuStaticItemClick(link.title, link.mnemonic);
-          }
+          if (condition) { this.menuService.menuStaticItemClick(link.title, link.mnemonic); }
         });
       } else {
         this.menuService.menuStaticItemClick(link.title, link.mnemonic);

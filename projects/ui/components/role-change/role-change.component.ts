@@ -3,9 +3,12 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { LoadService } from '@epgu/ui/services/load';
 import { Role, User } from '@epgu/ui/models/user';
-import { TranslateService } from '@ngx-translate/core';
 import { RedirectsService } from '@epgu/ui/services/redirects';
 import { EsiaApiService } from '@epgu/ui/services/esia-api';
+import { HelperService } from '@epgu/ui/services/helper';
+import { ConfirmActionComponent } from '@epgu/ui/components/confirm-action';
+import { ModalService } from '@epgu/ui/services/modal';
+import { LibTranslateService } from '@epgu/ui/services/translate';
 
 const COUNT_ROLES_PER_ADD_BUTTON = 3;
 const PAGE_SIZE = 5;
@@ -41,7 +44,8 @@ export class RoleChangeComponent implements OnInit {
     private esiaApi: EsiaApiService,
     private loadService: LoadService,
     private redirectsService: RedirectsService,
-    public translate: TranslateService
+    private modalService: ModalService,
+    public libTranslate: LibTranslateService
   ) {
     this.activatedRoute.queryParams.subscribe(params => {
       const page = 'page';
@@ -213,7 +217,7 @@ export class RoleChangeComponent implements OnInit {
           return true;
         } else {
           // agency и legal не разделяем, а person должен быть private
-          type = type === 'person' ? 'private': type;
+          type = type === 'person' ? 'private' : type;
           let personType = item.type.toLowerCase();
           personType = personType === 'agency' ? 'legal' : personType;
           type = type === 'agency' ? 'legal' : type;
@@ -228,4 +232,27 @@ export class RoleChangeComponent implements OnInit {
 
     this.pageChanged(activePage);
   }
+
+  public createBusinessAndAgency(business: boolean = true) {
+    if (HelperService.isMobile()) {
+      this.libTranslate.get('ROLE_CHANGE.MODAL')
+        .subscribe((data) => {
+            this.modalService.popupInject(ConfirmActionComponent, null, {
+              title: data.TITLE,
+              description: business ? data.DESCRIPTION_BUSINESS : data.DESCRIPTION_AGENCY,
+              buttons: [{
+                title: data.BUTTON_TITLE,
+                color: '',
+                handler: () => {
+                  window.location.href = data.BUTTON_HANDLER_URL;
+                }
+              }]
+            });
+          }
+        );
+    } else {
+      window.location.href = this.createUrl;
+    }
+  }
 }
+
