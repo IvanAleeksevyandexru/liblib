@@ -49,27 +49,12 @@
   <lib-throbber-hexagon [size]="'medium'"></lib-throbber-hexagon>
 </div>
 
-<div *ngIf="isFeedsEmpty() && !isMain()" [ngClass]="{'empty-feeds-overview': page === 'overview'}" class="empty-feeds text-plain black">
-  <div class="title">
-    <ng-container *ngIf="page === 'events'; else otherTitle">
-      {{'FEEDS.EMPTY.EVENTS.TITLE' | libTranslate}}
-    </ng-container>
-    <ng-template #otherTitle>
-      {{'FEEDS.EMPTY.' + (getIsArchive() ? 'ARCHIVE' : (defaultTypesSelected ? 'DEFAULT' : selectedTypes)) + '.TITLE' | libTranslate}}
-    </ng-template>
-  </div>
-  <div class="subtitle">
-    <ng-container *ngIf="page === 'events'; else otherSubtitle">
-      {{'FEEDS.EMPTY.EVENTS.SUBTITLE' | libTranslate}}
-    </ng-container>
-    <ng-template #otherSubtitle>
-      {{'FEEDS.EMPTY.' + (getIsArchive() ? 'ARCHIVE' : (defaultTypesSelected ? 'DEFAULT' : selectedTypes)) + '.SUBTITLE' | libTranslate}}
-    </ng-template>
-      <p class="mt-32" *ngIf="!defaultTypesSelected && page !== 'events'">
-        <lib-button size="lg" (click)="clickButton()">
-          {{'FEEDS.EMPTY.' + (getIsArchive() ? 'ARCHIVE' : (defaultTypesSelected ? 'DEFAULT' : selectedTypes)) + '.BUTTON' | libTranslate}}
-        </lib-button>
-      </p>
+<div *ngIf="isFeedsEmpty() && !isMain()" class="empty-feeds">
+  <div class="flex-container-md align-items-center-md text-center text-left-md">
+    <div class="mr-md-40 mb-sm-20">
+      <img [src]="config.staticDomainLibAssetsPath + 'svg/messages/rabbit.svg'" class="message-image" alt="">
+    </div>
+    <h3 class="title-h3">{{emptyMessageTitle | libTranslate}}</h3>
   </div>
 </div>
 

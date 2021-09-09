@@ -427,17 +427,17 @@ export class ConstantsService {
       id: 9,
       mnemonic: 'geps'
     },
+    {
+      text: 'Служба поддержки',
+      type: 'FEEDBACK',
+      id: 10,
+      mnemonic: 'feedback'
+    },
     /*{
       text: 'Системные',
       type: 'ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE',
       id: 10,
       mnemonic: 'systemEvents'
-    },
-    {
-      text: 'Техподдержка',
-      type: 'FEEDBACK',
-      id: 11,
-      mnemonic: 'feedbackEvents'
     },
     {
       text: 'Обжалование КНД',

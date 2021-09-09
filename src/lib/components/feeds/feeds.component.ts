@@ -96,6 +96,19 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   public getFeedTypeName = this.feedsService.getFeedTypeName;
 
+  public get emptyMessageTitle(): string {
+    if (this.types === 'PARTNERS_DRAFT') {
+      return 'FEEDS.EMPTY.PARTNERS_DRAFT';
+    } else if (this.types === 'PARTNERS') {
+      return 'FEEDS.EMPTY.PARTNERS';
+    } else if (this.page === 'drafts') {
+      return 'FEEDS.EMPTY.DRAFT';
+    } else if (this.selectedCategory?.mnemonic) {
+      return `FEEDS.EMPTY.${this.selectedCategory.mnemonic.toUpperCase()}`;
+    }
+    return 'FEEDS.EMPTY.DEFAULT';
+  }
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,

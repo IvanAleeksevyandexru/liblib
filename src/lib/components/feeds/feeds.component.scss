@@ -44,32 +44,11 @@
 }
 
 .empty-feeds {
-  text-align: center;
-  padding: 40px 0;
-  border-top: 1px solid #B6C6E8;
-  font: 20px/24px Lato-Bold, Arial, 'sans-serif';
+  padding: 24px;
 
-  .title {
-    text-align: center;
-    padding-bottom: 180px;
-    background: url(../../../assets/svg/empty-folder.svg) no-repeat center 48px;
-    font-weight: bold;
-    background-size: 340px;
-  }
-
-  .subtitle {
-    text-align: center;
-    color: #515A63;
-    font: 16px/24px Lato, 'sans-serif';
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  &.empty-feeds-overview {
-    border-bottom: 0;
-    text-align: left;
-    padding: 24px 0 50px;
+  .message-image {
+    width: 140px;
+    height: 140px;
   }
 }
 
@@ -102,9 +81,9 @@
 
 @media all and (min-width: 768px) {
   .empty-feeds {
-    .title {
-      padding-bottom: 255px;
-      background-size: inherit;
+    .message-image {
+      width: 160px;
+      height: 160px;
     }
   }
 
@@ -126,6 +105,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
+  }
+
+  .feed-info-block {
+    align-self: flex-start;
   }
 }
 

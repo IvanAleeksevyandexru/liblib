@@ -233,12 +233,23 @@
 }
 
 .feed-EQUEUE {
+  .status-in_progress {
+    background-image: url('../../../assets/svg/statuses/equeue-yellow.svg');
+  }
+
   .status-done {
     background-image: url('../../../assets/svg/statuses/equeue-green.svg');
   }
 
   .status-reject {
     background-image: url('../../../assets/svg/statuses/equeue-red.svg');
+  }
+}
+
+.feed-SIGN {
+  .status {
+    background-image: url('../../../assets/svg/statuses/goskey.svg');
+    background-size: contain;
   }
 }
 

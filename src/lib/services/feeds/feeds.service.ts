@@ -304,7 +304,7 @@ export class FeedsService {
         type = 'Запись на прием';
         break;
       case 'FEEDBACK':
-        type = 'Техподдержка';
+        type = 'Служба поддержки';
         break;
       case 'DRAFT':
         type = 'Черновик';
