@@ -123,7 +123,7 @@
                            [mobAsHoverState]="true"></lib-icon-action>
           <lib-throbber *ngIf="feed.removeInProgress" [contextClass]="'feed-throbber'" [size]="'throbber-small'"></lib-throbber>
         </div>
-        <div *ngIf="!isDraft(feed)" class="feed-action archive-feed">
+        <div *ngIf="showArchiveFeedButton(feed)" class="feed-action archive-feed">
           <lib-icon-action [icon]="config.staticDomainLibAssetsPath + (isArchive ? 'svg/icons/return-gray.svg' : 'svg/icons/archive-gray.svg')"
                            [hoverIcon]="config.staticDomainLibAssetsPath + (isArchive ? 'svg/icons/return-blue.svg' : 'svg/icons/archive-blue.svg')"
                            [text]="isArchive ? 'Вернуть' : 'В архив'"

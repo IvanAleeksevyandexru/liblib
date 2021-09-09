@@ -303,6 +303,10 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     return ['DRAFT', 'PARTNERS_DRAFT', 'KND_APPEAL_DRAFT'].includes(feed.feedType);
   }
 
+  public isOrder(feed: FeedModel): boolean {
+    return ['ORDER', 'EQUEUE', 'APPEAL', 'CLAIM', 'COMPLEX_ORDER', 'SIGN'].includes(feed.feedType);
+  }
+
   public isMain(): boolean {
     return this.page === 'main';
   }
@@ -514,6 +518,19 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   public showRemoveFeedButton(feed: FeedModel): boolean {
     return ['drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder && !this.isPaymentDraft(feed);
+  }
+
+  public showArchiveFeedButton(feed: FeedModel): boolean {
+    if (this.isArchive) {
+      return true;
+    }
+    if (this.isOrder(feed)) {
+      return ['reject', 'executed'].includes(feed.status) && !feed.unread;
+    }
+    if (this.isDraft(feed)) {
+      return false;
+    }
+    return !feed.unread;
   }
 
   public isPaymentDraft(feed: FeedModel): boolean {
