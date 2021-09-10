@@ -226,8 +226,8 @@ export class ListItemsVirtualScrollController implements VirtualScrollStrategy {
     const dataLength = viewport.getDataLength();
     const newRange = {start, end};
     const firstVisibleIndex = this.getIndexForOffset(offset);
-    newRange.start = Math.max(0, this.getIndexForOffset(offset - 200)); // 200 - буффер ленты в px вверх и вниз
-    newRange.end = Math.min(dataLength, this.getIndexForOffset(offset + viewportSize + 200));
+    newRange.start = Math.max(0, this.getIndexForOffset(offset - 266)); // 200 - буффер ленты в px вверх и вниз
+    newRange.end = Math.min(dataLength, this.getIndexForOffset(offset + viewportSize + 266));
     viewport.setRenderedRange(newRange);
     viewport.setRenderedContentOffset(this.getOffsetForIndex(newRange.start));
     this.index$.next(firstVisibleIndex);
