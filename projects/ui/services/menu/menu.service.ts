@@ -19,6 +19,7 @@ export class MenuService {
   public closeBurgerOutside = new BehaviorSubject(false);
   public closeBurgerOutside$ = this.closeBurgerOutside.asObservable();
   public staticUrls: object;
+  private viewType = this.loadService.attributes.appContext || this.loadService.config.viewType;
 
   constructor(
     private loadService: LoadService,
@@ -150,6 +151,13 @@ export class MenuService {
   }
 
   public menuItemClick(link: MenuLink): void {
+    if (link.mnemonic === 'docs') {
+      const goal = this.viewType === 'LK' ? 'todocuments_from_lk_' : 'todocuments_from_main_new_';
+      this.yaMetricService.callReachGoal(goal,
+        {
+          type: this.loadService.attributes.deviceType,
+        });
+    }
     this.yaMetricService.callReachGoal('new_lk_dashboard',
       {
         type: this.loadService.attributes.deviceType,

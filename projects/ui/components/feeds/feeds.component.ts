@@ -184,7 +184,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
               return item.type === 'CUSTOM' && item.json
                 ? { json: JSON.parse(item.json), type: item?.type }
                 : item;
-          }),
+            }),
           },
         }));
         this.feeds =
@@ -344,10 +344,10 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   public setHeader(feed: FeedModel): string {
     if (feed.feedType === 'GEPS' ||
-        feed.feedType === 'ORDER' ||
-        feed.feedType === 'CLAIM' ||
-        feed.feedType === 'PARTNERS' ||
-        feed.feedType === 'COMPLEX_ORDER'
+      feed.feedType === 'ORDER' ||
+      feed.feedType === 'CLAIM' ||
+      feed.feedType === 'PARTNERS' ||
+      feed.feedType === 'COMPLEX_ORDER'
     ) {
       return feed.subTitle;
     }
@@ -356,10 +356,10 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   public setSubHeader(feed: FeedModel): string {
     if (feed.feedType === 'GEPS' ||
-        feed.feedType === 'ORDER' ||
-        feed.feedType === 'CLAIM' ||
-        feed.feedType === 'PARTNERS' ||
-        feed.feedType === 'COMPLEX_ORDER'
+      feed.feedType === 'ORDER' ||
+      feed.feedType === 'CLAIM' ||
+      feed.feedType === 'PARTNERS' ||
+      feed.feedType === 'COMPLEX_ORDER'
     ) {
       return feed.title;
     }
@@ -630,24 +630,26 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     let status = '';
     switch (feed.status) {
       case 'new':
-        status = 'Новый';
+        status = 'Новое';
         break;
       case 'assigned':
-        status = 'Назначен';
+        status = 'Назначен ответственный';
         break;
       case 'in_progress':
         status = 'Выполняется';
         break;
       case 'waiting':
-        status = '';
+        status = 'В ожидании';
         break;
       case 'solved':
         status = 'Решено';
         break;
-      case 'done': {
+      case 'done':
         status = 'Решено';
         break;
-      }
+      case 'warn':
+        status = 'Срочный запрос  информации';
+        break;
       case 'closed':
         status = 'Закрыто';
         break;

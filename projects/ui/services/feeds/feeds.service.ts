@@ -4,7 +4,6 @@ import { LoadService } from '@epgu/ui/services/load';
 import { FeedModel, FeedsParams } from '@epgu/ui/models';
 import * as moment_ from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
 
 
 const moment = moment_;
@@ -101,7 +100,7 @@ export class FeedsService {
   }
 
   public getFeedDetails(messageApiUrlChunk: number | string) {
-    return this.http.get(`${this.loadService.config.lkApiUrl}feeds/${messageApiUrlChunk}`, {
+    return this.http.get(`${this.loadService.config.lkApiUrl}feeds/${messageApiUrlChunk}?_=${Math.random()}`, {
       withCredentials: true
     });
   }

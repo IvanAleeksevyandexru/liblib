@@ -25,7 +25,7 @@ export class ListItemsAccessoryService {
                                          highlightedElement: ListItem | AutocompleteSuggestion,
                                          highlightableCheck: (ListItem) => boolean,
                                          scrollArea: ElementRef | PerfectScrollbarComponent | VirtualScrollComponent)
-                                         : ListItem | AutocompleteSuggestion | boolean {
+    : ListItem | AutocompleteSuggestion | boolean {
     if (e.key === 'ArrowUp') {  // вверх
       e.preventDefault();
       e.stopPropagation();
@@ -92,7 +92,7 @@ export class ListItemsAccessoryService {
         scrollContainer = this.findScrollContainer(scrollArea);
       }
       if (scrollArea && scrollContainer && elementIndex >= 0
-          && elementIndex < scrollArea.childElementCount) {
+        && elementIndex < scrollArea.childElementCount) {
         let itemElement = scrollArea.children[elementIndex];
         if (itemElement) {
           let height = 0;
@@ -108,7 +108,7 @@ export class ListItemsAccessoryService {
 
   public static runBackgroundSizeEstimating(items: Array<ListItem | AutocompleteSuggestion>, containerWidth: number, ngZone: NgZone,
                                             params: { [key: string]: any }, startIndex?: number, measureElement?: HTMLElement)
-                                            : Observable<number> {
+    : Observable<number> {
     const result = new Subject<number>();
     const index = startIndex || 0;
     const nextIndexStop = Math.min(index + EVAL_HEIGHT_INDEX_INCREMENT, items.length);
@@ -226,8 +226,8 @@ export class ListItemsVirtualScrollController implements VirtualScrollStrategy {
     const dataLength = viewport.getDataLength();
     const newRange = {start, end};
     const firstVisibleIndex = this.getIndexForOffset(offset);
-    newRange.start = Math.max(0, this.getIndexForOffset(offset - 200)); // 200 - буффер ленты в px вверх и вниз
-    newRange.end = Math.min(dataLength, this.getIndexForOffset(offset + viewportSize + 200));
+    newRange.start = Math.max(0, this.getIndexForOffset(offset - 266)); // 200 - буффер ленты в px вверх и вниз
+    newRange.end = Math.min(dataLength, this.getIndexForOffset(offset + viewportSize + 266));
     viewport.setRenderedRange(newRange);
     viewport.setRenderedContentOffset(this.getOffsetForIndex(newRange.start));
     this.index$.next(firstVisibleIndex);
