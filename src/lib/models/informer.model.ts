@@ -76,7 +76,7 @@ export class DataInformer {
     this.price = 0;
     this.priceDiscount = 0;
     this.docs = '';
-    this.type = ''
+    this.type = '';
   }
 }
 
@@ -91,3 +91,8 @@ export interface DebtYaMetricInterface {
   };
 }
 
+export type RestrictionsState = 'YES' | 'NO' | 'NOT_EMBEDDED' | 'ERROR';
+
+export interface RestrictionsModel {
+  hasRestrictions: boolean;
+}
