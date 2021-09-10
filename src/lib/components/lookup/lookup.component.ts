@@ -251,6 +251,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         this.setItems([], true);
       } else {
         this.setItems(this.fixedItems, true);
+        this.runSearchOrIncrementalSearch(false, this.activeQuery);
       }
     } else if (changes.searchIconForcedShowing) {
       this.searching = changes.searchIconForcedShowing.currentValue;
@@ -352,7 +353,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
   public setItems(value: Array<any>, consistencyCheck = true) {
     this.prepareItems(value, 0, null, false, true, (newItems: Array<ListItem>) => {
-      this.internalFixedItems = this.items = newItems;
+      this.internalFixedItems = newItems;
+      this.items = [];
       if (consistencyCheck && this.item) {
         this.item = this.item.findSame(this.internalFixedItems, true);
         this.restoreQuery();
