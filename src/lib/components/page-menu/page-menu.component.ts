@@ -31,6 +31,7 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   @Output() public onclick = new EventEmitter<string>();
 
   @ViewChild('menu') private menuElement: ElementRef;
+  @ViewChild('forWidth') private forWidthElement: ElementRef;
 
   private menu: HTMLDivElement;
   private availableFloat = false;
@@ -111,7 +112,7 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
     this.getHeaderAndTopHeight();
     this.getFooterAndBottomData();
     this.getWidthWindow();
-    // this.getWidthMenu();
+    this.getWidthMenu();
 
     this.needStartFloat = this.menu.getBoundingClientRect().top - this.needOffsetTop;
 
@@ -133,18 +134,17 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   private getWidthWindow(): void {
     const width = window.innerWidth;
 
-    if (width > 1216) {
-      this.needOffsetRight = (width / 2) - (1216 / 2) - 9;
+    if (width >= 1140) {
+      const a = (width / 2) - (1216 / 2) - 9;
+      this.needOffsetRight = a < 75 ? 75 : a;
     }
   }
 
   private getWidthMenu(): void {
-    if (!this.menu.classList.contains('fixed')) {
-      this.widthMenuWithoutScroll = this.menu.offsetWidth;
+    this.widthMenuWithoutScroll = (this.forWidthElement.nativeElement as HTMLDivElement).offsetWidth;
 
-      if (this.menu.style.width !== `${this.menu.offsetWidth}px`) {
-        this.menu.style.width = `${this.menu.offsetWidth}px`;
-      }
+    if (this.menu.style.width !== `${this.widthMenuWithoutScroll}px`) {
+      this.menu.style.width = `${this.widthMenuWithoutScroll}px`;
     }
   }
 

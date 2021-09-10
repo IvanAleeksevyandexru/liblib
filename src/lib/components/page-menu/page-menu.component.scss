@@ -37,6 +37,10 @@
     }
   }
 
+  &.fixed, &.fixed-bottom {
+    position: static;
+  }
+
   @media all and (min-width: 1140px) {
     .title-wrapper {
       max-width: 280px;
