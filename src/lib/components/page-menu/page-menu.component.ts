@@ -2,6 +2,7 @@ import {
   AfterViewInit, AfterViewChecked, Component,
   ElementRef, EventEmitter, HostListener,
   Input, Output, ViewChild, TemplateRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { IMenuItems } from '../../models/page-menu.model';
 
@@ -49,6 +50,8 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
 
   private needOffsetRight = 0; // расстояния от правого края во время плавания
 
+  private widthMenuWithoutScroll = 0;
+
   @HostListener('document:scroll') public scroll() {
     if (this.availableFloat) {
       this.onScroll();
@@ -58,10 +61,13 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   @HostListener('window:resize') public resize() {
     if (this.availableFloat) {
       this.getSizes();
+      this.onScroll();
     }
   }
 
-  constructor() { }
+  constructor(
+    private cd: ChangeDetectorRef,
+  ) { }
 
   public ngAfterViewInit(): void {
     this.availableFloat = (this.items?.length || this.content) && window.screen.width > 1140;
@@ -105,10 +111,13 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
     this.getHeaderAndTopHeight();
     this.getFooterAndBottomData();
     this.getWidthWindow();
+    // this.getWidthMenu();
 
     this.needStartFloat = this.menu.getBoundingClientRect().top - this.needOffsetTop;
 
     this.needStopFloat = document.documentElement.scrollHeight - this.needOffsetBottom;
+
+    this.cd.detectChanges();
   }
 
   private getHeaderAndTopHeight(): void {
@@ -122,11 +131,20 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   }
 
   private getWidthWindow(): void {
-    const width = window.screen.width;
-    this.needOffsetRight = width / 2 + 75 - 9; // - 9 - ну нада. правда) width и availWidth одинаковы, а скролл то мешает.
+    const width = window.innerWidth;
 
     if (width > 1216) {
-      this.needOffsetRight -= 683;
+      this.needOffsetRight = (width / 2) - (1216 / 2) - 9;
+    }
+  }
+
+  private getWidthMenu(): void {
+    if (!this.menu.classList.contains('fixed')) {
+      this.widthMenuWithoutScroll = this.menu.offsetWidth;
+
+      if (this.menu.style.width !== `${this.menu.offsetWidth}px`) {
+        this.menu.style.width = `${this.menu.offsetWidth}px`;
+      }
     }
   }
 
@@ -138,20 +156,20 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
       this.isFixedNow = false;
       this.toggleClass(classList, 'fixed', 'remove');
       this.toggleClass(classList, 'fixed-bottom', 'remove');
-      this.setTopOffset(this.needOffsetTop, 'top', 'delete');
-      this.setTopOffset(this.needOffsetRight, 'right', 'delete');
+      this.setOffset(this.needOffsetTop, 'top', 'delete');
+      this.setOffset(this.needOffsetRight, 'right', 'delete');
     } else if (scrollTop >= this.needStartFloat && scrollTop + this.needOffsetTop <= this.needStopFloat) {
       this.isFixedNow = true;
       this.toggleClass(classList, 'fixed', 'add');
       this.toggleClass(classList, 'fixed-bottom', 'remove');
-      this.setTopOffset(this.needOffsetTop, 'top');
-      this.setTopOffset(this.needOffsetRight, 'right');
+      this.setOffset(this.needOffsetTop, 'top');
+      this.setOffset(this.needOffsetRight, 'right');
     } else {
       this.isFixedNow = true;
       this.toggleClass(classList, 'fixed-bottom', 'add');
       this.toggleClass(classList, 'fixed', 'remove');
-      this.setTopOffset(this.needStopFloat, 'top');
-      this.setTopOffset(this.needOffsetRight, 'right');
+      this.setOffset(this.needStopFloat, 'top');
+      this.setOffset(this.needOffsetRight, 'right');
     }
   }
 
@@ -167,7 +185,7 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
     }
   }
 
-  private setTopOffset(offset: number, direction: 'top' | 'right', type?: 'delete'): void {
+  private setOffset(offset: number, direction: 'top' | 'right', type?: 'delete'): void {
     if (type === 'delete') {
       this.menu.style[direction] = '';
       return;
