@@ -242,13 +242,15 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
   public ngOnChanges(changes: SimpleChanges) {
     const updateKeys = ['formatter', 'listFormatter', 'converter', 'translation', 'virtualScroll'];
-    const setItemsKeys = ['itemsProvider', 'fixedItems'];
     const keys = Object.keys(changes);
+    const setItemsKey = ['itemsProvider', 'fixedItems'].find((setItemsKey) => keys.includes(setItemsKey));
     if (updateKeys.some((updateKey) => keys.includes(updateKey))) {
       this.update();
-    } else if (setItemsKeys.some((setItemsKey) => keys.includes(setItemsKey))) {
-      if (this.itemsProvider) {
+    } else if (setItemsKey) {
+      if (setItemsKey === 'itemsProvider') {
         this.setItems([], true);
+      } else {
+        this.setItems(this.fixedItems, true);
       }
     } else if (changes.searchIconForcedShowing) {
       this.searching = changes.searchIconForcedShowing.currentValue;
@@ -350,8 +352,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
   public setItems(value: Array<any>, consistencyCheck = true) {
     this.prepareItems(value, 0, null, false, true, (newItems: Array<ListItem>) => {
-      this.internalFixedItems = newItems;
-      this.items = [];
+      this.internalFixedItems = this.items = newItems;
       if (consistencyCheck && this.item) {
         this.item = this.item.findSame(this.internalFixedItems, true);
         this.restoreQuery();
