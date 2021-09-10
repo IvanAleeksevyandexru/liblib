@@ -1,4 +1,4 @@
 /*
  * Public API Surface of ui
  */
-export * from '@epgu/ui/models';
+export const t = true;
