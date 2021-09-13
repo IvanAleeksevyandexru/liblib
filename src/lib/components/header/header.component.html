@@ -44,7 +44,7 @@
         </div>
         <div class="login-wrapper" (click)="showUserMenu(false)">
           <div class="login flex-container justify-end overflow-container">
-            <lib-login></lib-login>
+            <lib-login [loginWithNode]="loginWithNode"></lib-login>
           </div>
         </div>
         <lib-user-menu [state]="userMenuState" [links]="links"></lib-user-menu>
@@ -57,10 +57,11 @@
   <div class="header merge-header">
     <div class="inner container flex-container justify-between align-items-center">
       <div class="logo-n-type-page-container flex-container align-items-center">
-        <div class="catalog-menu-wrap" *ngIf="showBurger">
+        <div class="catalog-menu-wrap" [class.hide-burger-desk]="hideBurgerDesc" *ngIf="showBurger">
           <ng-container *ngIf="burgerDemoMode; else burgerCatalogMode">
             <ng-container *ngIf="burgerWithCatalog; else burgerWithoutCatalog">
               <lib-menu-catalog [languageChangeAvailable]="languageChangeAvailable"
+                                [hideBurgerDesc]="hideBurgerDesc"
                                 (menuCatalogOpened)="onMenuCatalogClick($event)">
               </lib-menu-catalog>
             </ng-container>
@@ -72,7 +73,9 @@
           </ng-container>
           <ng-template #burgerCatalogMode>
             <lib-menu-catalog [languageChangeAvailable]="languageChangeAvailable"
-                              (menuCatalogOpened)="onMenuCatalogClick($event)">
+                              (menuCatalogOpened)="onMenuCatalogClick($event)"
+                              [hideBurgerDesc]="hideBurgerDesc"
+                              [alwaysShowLocationSelect]="alwaysShowLocationSelect">
             </lib-menu-catalog>
           </ng-template>
         </div>
@@ -123,13 +126,14 @@
           <div class="login-wrapper">
             <div class="login flex-container justify-end overflow-container">
               <lib-login [useButton]="true" class="hide"
+                         [loginWithNode]="loginWithNode"
                          [ngClass]="{'show': user.authorized, 'show-lg': !user.authorized}"
                          [menuOpened]="userMenuState.active"
                          (closeMenu)="hideUserMenu()"
                          (userClick)="showUserMenu(false)"
                          [userCounter]="userCounter">
               </lib-login>
-              <lib-login *ngIf="!user.authorized" [onlyText]="true" class="login-mobile-icon"></lib-login>
+              <lib-login *ngIf="!user.authorized" [loginWithNode]="loginWithNode" [onlyText]="true" class="login-mobile-icon"></lib-login>
             </div>
           </div>
           <div class="user-menu-wrapper" *ngIf="user.authorized">

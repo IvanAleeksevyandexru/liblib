@@ -1,55 +1,93 @@
-<div [class.loading]="statusInformer === 'load'"
-     [ngClass]="(statusInformer !== 'debt' ? 'justify-center': 'justify-between with-debt')"
-     class="informer-main flex-container  mini" (click)="redirectAndSendYaMetric()">
-  <div *ngIf="statusInformer === 'load'; else loaded" class="loader">
-    <lib-throbber-hexagon [size]="'large'"></lib-throbber-hexagon>
-  </div>
-
-  <ng-template #loaded>
-    <div *ngIf="['error', 'no_debt', 'al10', 'no_rights'].includes(statusInformer)"
-         class="without-debt flex-container flex-column flex-row-md align-items-center flex-column-lg">
-      <div class="informer-top-wrap {{statusInformer}}">
-        <div class="icon-no-debt flex-0 mr-24 {{dataInformer.icon}}"></div>
-        <div class="title-h5">
-          {{dataInformer.title | libTranslate}}
-        </div>
-      </div>
-      <div class="informer-bottom-wrap">
-        <div class="link blue text-plain">{{dataInformer.button | libTranslate}}</div>
-      </div>
+<div class="informers-container" [ngClass]="{'full-height': isMainPage}">
+  <div [class.loading]="statusInformer === 'load'"
+       [ngClass]="[
+          statusInformer !== 'debt' ? 'justify-center': 'justify-between with-debt',
+          isMainPage ? 'main-page-view' : ''
+       ]"
+       class="informer-main flex-container shadow-block hovered-block" (click)="redirectAndSendYaMetric()">
+    <div *ngIf="statusInformer === 'load'; else loaded" class="loader">
+      <lib-throbber-hexagon [size]="'large'"></lib-throbber-hexagon>
     </div>
 
-    <ng-container *ngIf="statusInformer === 'debt' && hintText; else withoutHint">
-      <div class="informer-top-wrap-debt with-hint">
-        <div class="block-informer-hint flex-container align-items-center">
-          <div class="informer-hint-icon"></div>
-          <div class="informer-hint-text" [innerHTML]="hintText"></div>
-        </div>
-      </div>
-    </ng-container>
-
-    <ng-template  #withoutHint>
-      <div *ngIf="statusInformer === 'debt'" class="informer-top-wrap-debt {{dataInformer.type}}"></div>
-    </ng-template>
-
-    <div *ngIf="statusInformer === 'debt'" class="debt">
-      <div class="title-h5 text-center debt-title">
-        {{'INFORMER.DEBT.TO_PAY' | libTranslate }} {{dataInformer.docs}}
-      </div>
-      <div class="mt-8 mt-md-4 mt-lg-8 text-center debt-text">
-        <div class="text-right-md inline-md text-center-lg">
-          <div class="price-discount bold text-nowrap">
-            {{dataInformer.priceDiscount | toMoney}} <span class="normal">₽</span>
+    <ng-template #loaded>
+      <div *ngIf="['error', 'no_debt', 'al10', 'no_rights'].includes(statusInformer)"
+           class="without-debt flex-container flex-column flex-row-md align-items-center flex-column-lg">
+        <div class="informer-top-wrap {{statusInformer}}">
+          <div class="icon-no-debt flex-0 mr-24 mr-lg-0 mb-lg-20 {{dataInformer.icon}}"></div>
+          <div class="title-h5 title-no-debt">
+            {{dataInformer.title | libTranslate}}
           </div>
         </div>
+        <div *ngIf="!isMainPage" class="informer-bottom-wrap">
+          <div class="link blue text-plain">{{dataInformer.button | libTranslate}}</div>
+        </div>
+      </div>
+
+      <ng-container *ngIf="!isMainPage">
+        <ng-container *ngIf="statusInformer === 'debt' && hintText; else withoutHint">
+          <div class="informer-top-wrap-debt with-hint">
+            <div class="block-informer-hint flex-container">
+              <div class="informer-hint-icon mb-md-8 mb-lg-0"></div>
+              <div class="informer-hint-text" [innerHTML]="hintText"></div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template #withoutHint>
+          <div *ngIf="statusInformer === 'debt'" class="informer-top-wrap-debt {{dataInformer.type}}"></div>
+        </ng-template>
+      </ng-container>
+
+      <div *ngIf="statusInformer === 'debt'" class="informer-content">
+        <div class="debt">
+          <div class="title-h5 text-center debt-title">
+            {{'INFORMER.DEBT.TO_PAY' | libTranslate }} {{dataInformer.docs}}
+          </div>
+          <div class="text-center debt-text mt-16">
+            <div class="text-right-md inline-md text-center-lg">
+              <div class="price-discount bold text-nowrap">
+                {{dataInformer.priceDiscount | toMoney}} <span class="normal">₽</span>
+              </div>
+            </div>
+
+            <div *ngIf="isMainPage && hintText" [innerHTML]="hintText"
+                 class="text-plain gray mt-4"></div>
+          </div>
+        </div>
+
+        <div *ngIf="!isMainPage" class="button-container mt-24 mt-md-0 mt-lg-16">
+          <lib-button [size]="'md'" [width]="'wide'" (click)="redirectAndSendYaMetric()">
+            {{dataInformer.button | libTranslate}}
+          </lib-button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+
+  <div *ngIf="showAllInformers" class="addition-informer mt-20 mt-md-0 mt-lg-24 ml-md-32 ml-lg-0">
+    <div *ngIf="otherInformerLoading; else otherInformers"
+         class="addition-informer-loader shadow-block flex-container align-items-center justify-center">
+      <div class="mt-16 mb-16">
+        <lib-round-loader [color]="'blue'"></lib-round-loader>
       </div>
     </div>
 
-    <div *ngIf="statusInformer === 'debt'" class="button-container">
-      <lib-button [size]="'md'" [width]="'wide'" (click)="redirectAndSendYaMetric()">
-        {{dataInformer.button | libTranslate}}
-      </lib-button>
-    </div>
-  </ng-template>
+    <ng-template #otherInformers>
+      <div class="quittance-informer addition-informer__block shadow-block hovered-block flex-container align-items-center"
+           *ngIf="!showRestrictionsInformer" (click)="redirectToQuittance()">
+        <img src="{{config.staticDomainLibAssetsPath}}svg/informer/barcode.svg"
+             class="mr-16 mr-md-0 mr-lg-12 mb-md-8 mb-lg-0">
+        <p class="text-plain" [innerHTML]="'INFORMER.PAYMENTS_BY_QUITTANCE' | libTranslate"></p>
+      </div>
+
+      <div class="restrictions-informer addition-informer__block shadow-block hovered-block flex-container align-items-center"
+           *ngIf="showRestrictionsInformer" (click)="redirectToRestrictions()">
+        <img src="{{config.staticDomainLibAssetsPath}}svg/informer/restriction_{{restrictionsState}}.svg"
+             class="mr-16 mr-md-0 mr-lg-12 mb-md-8 mb-lg-0">
+        <p class="text-plain" [innerHTML]="('INFORMER.RESTRICTIONS.' + restrictionsState) | libTranslate"></p>
+      </div>
+    </ng-template>
+  </div>
 
 </div>
+

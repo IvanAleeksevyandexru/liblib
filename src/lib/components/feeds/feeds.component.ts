@@ -630,24 +630,26 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     let status = '';
     switch (feed.status) {
       case 'new':
-        status = 'Новый';
+        status = 'Новое';
         break;
       case 'assigned':
-        status = 'Назначен';
+        status = 'Назначен ответственный';
         break;
       case 'in_progress':
         status = 'Выполняется';
         break;
       case 'waiting':
-        status = '';
+        status = 'В ожидании';
         break;
       case 'solved':
         status = 'Решено';
         break;
-      case 'done': {
+      case 'done':
         status = 'Решено';
         break;
-      }
+      case 'warn':
+        status = 'Срочный запрос  информации';
+        break;
       case 'closed':
         status = 'Закрыто';
         break;

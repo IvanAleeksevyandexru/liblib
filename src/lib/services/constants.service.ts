@@ -215,11 +215,6 @@ export class ConstantsService {
       break: 'after'
     },
     {
-      id: 'blocked',
-      name: 'MESSAGES.TABS.BLOCKED',
-      url: '/settings/blacklist'
-    },
-    {
       id: 'settings',
       name: 'MESSAGES.TABS.SETTINGS',
       url: '/settings/mail'
@@ -853,6 +848,7 @@ export class ConstantsService {
     FATHERHOOD_CERT: 'FATHERHOOD_CERT',
     MARRIED_CERT: 'MARRIED_CERT',
     DIVORCE_CERT: 'DIVORCE_CERT',
+    DEATH_CERT: 'DEATH_CERT',
     SELF_EMPLOYED: 'SELF_EMPLOYED',
     DISABLED_PERSON: 'DISABLED_PERSON',
     PARKING_PERMIT: 'REESTR_INVALIDOV',
