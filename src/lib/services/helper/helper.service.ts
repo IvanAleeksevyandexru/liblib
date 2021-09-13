@@ -351,7 +351,7 @@ export class HelperService {
   public static formatMailDelivery(address: any): string {
     let resultStr = '';
     const orderedModel = ['region', 'area', 'city', 'cityArea', 'place', 'street',
-      'additionalArea', 'additionalStreet', 'house', 'building1', 'building2', 'apartment', 'flat', 'post_index'
+      'additionalArea', 'additionalStreet', 'house', 'building1', 'building2', 'frame', 'apartment', 'flat', 'post_index'
     ];
     const mapping = {
       region: 'region',
@@ -363,6 +363,7 @@ export class HelperService {
       house: 'house',
       building1: 'housing',
       building2: 'building',
+      frame: 'frame',
       apartment: 'apartment',
       flat: 'flat'
     };
@@ -370,7 +371,11 @@ export class HelperService {
     orderedModel.forEach(addr => {
       if (address[mapping[addr]] && (addr !== 'post_index')) {
         if (!(addr === 'region' && address.region === address.city)) {
-          resultStr += addr === 'house' ? ', д. ' : addr === 'flat' ? ', кв. ' : ', ';
+          resultStr += addr === 'house' ? ', д. ' : addr === 'flat' ? ', кв. ' : '';
+          resultStr += addr === 'frame' ? ', корп. ' : addr === 'building2' ? ', cтр. ' : '';
+          if (addr !== 'house' && addr !== 'flat' && addr !== 'frame' && addr !== 'building2') {
+            resultStr += ', ';
+          }
           resultStr += address[mapping[addr]].trim();
         }
       }
