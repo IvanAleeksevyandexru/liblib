@@ -112,6 +112,7 @@ export interface FeedModel {
   removeInProgress?: boolean;
   needAccept?: boolean;
   servicePassportId?: string;
+  isHidden: boolean;
 }
 
 export interface FeedsModel {

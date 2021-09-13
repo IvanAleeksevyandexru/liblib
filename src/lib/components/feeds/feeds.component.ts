@@ -50,7 +50,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   @Output() public emptyFeeds: EventEmitter<boolean> = new EventEmitter();
   @Output() public searching = new EventEmitter<boolean>();
   @Output() public serviceError = new EventEmitter<boolean>();
-  @Output() public updateCounters = new EventEmitter();
+  @Output() public archiveMoving = new EventEmitter<'fromArchive' | 'inArchive'>();
 
   public user: User;
   public feeds: FeedModel[];
@@ -360,7 +360,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public isFeedsEmpty(): boolean {
-    return this.feeds && !this.feeds.length && !this.feedsIsLoading;
+    return !this.feedsIsLoading && this.feeds && (!this.feeds.length || this.feeds.every(item => item.isHidden));
   }
 
   public ngOnDestroy(): void {
@@ -426,7 +426,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         message: res
       });
       const feedsLength = this.feeds.length;
-      if (feedsLength) {
+      if (feedsLength && this.hasMore) {
         const last = this.feeds[feedsLength - 1];
         const date = last.date;
         this.getFeeds(last.id, date ? moment(date).toDate() : '', this.search, '1');
@@ -466,15 +466,18 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public moveInArchive(feed: FeedModel, index: number) {
+    let timeout;
     const successArchiveMoving = () => {
-      this.feeds.splice(index, 1);
-
-      if (feed.unread) {
-        this.updateCounters.emit();
-      }
+      // Так как возможна отмена действия (отмена в бабле), сначала фид просто скрываем.
+      feed.isHidden = true;
+      // По истечении времени, которое показывается бабл, удаляем фид из списка.
+      timeout = setTimeout(() => {
+        this.feeds.splice(index, 1);
+      }, 5000);
+      this.archiveMoving.emit(this.isArchive ? 'fromArchive' : 'inArchive');
 
       const feedsLength = this.feeds.length;
-      if (feedsLength) {
+      if (feedsLength && this.hasMore) {
         const last = this.feeds[feedsLength - 1];
         const date = last.date;
         this.getFeeds(last.id, date ? moment(date).toDate() : '', this.search, '1');
@@ -487,25 +490,35 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       this.feedsService.getFromArchive([feed.id]).subscribe(res => {
         successArchiveMoving();
         this.notifier.success({
-          message: 'Перенесено в ленту уведомлений',
-          actionName: 'Перейти',
-          onAction: () => {
-            this.router.navigate(['/notifications']);
+          message: this.page === 'orders' ? 'Заявление извлечено из архива' : 'Уведомление извлечено из архива',
+          onCancel: () => {
+            // Отменяем удаление фида из списка и делаем его снова видимым
+            clearTimeout(timeout);
+            this.feedsService.putToArchive([feed.id]).subscribe(() => {
+              feed.isHidden = false;
+              this.archiveMoving.emit('inArchive');
+              this.changeDetector.detectChanges();
+            });
           }
         });
       }, error => {
         this.notifier.success({
-          message: 'Не удалось перенесено в ленту уведомлений',
+          message: 'Не удалось извлечь из архива',
         });
       });
     } else {
       this.feedsService.putToArchive([feed.id]).subscribe(res => {
         successArchiveMoving();
         this.notifier.success({
-          message: 'Перенесено в архив',
-          actionName: 'Перейти',
-          onAction: () => {
-            this.router.navigate(['/notifications/archive']);
+          message: this.page === 'orders' ? 'Заявление перемещено в архив' : 'Уведомление перемещено в архив',
+          onCancel: () => {
+            // Отменяем удаление фида из списка и делаем его снова видимым
+            clearTimeout(timeout);
+            this.feedsService.getFromArchive([feed.id]).subscribe(() => {
+              feed.isHidden = false;
+              this.archiveMoving.emit('fromArchive');
+              this.changeDetector.detectChanges();
+            });
           }
         });
       }, error => {

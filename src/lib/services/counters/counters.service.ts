@@ -105,10 +105,10 @@ export class CountersService {
     }
   }
 
-  public doCountersApiRequest(isHide?: boolean): Observable<CounterResponse> {
+  public doCountersApiRequest(isHide?: boolean, isArchive: boolean = false, types?: string): Observable<CounterResponse> {
     let params = {
-      types: this.constantsService.DEFAULT_LK_NOTIFICATION_CATEGORIES + ',PARTNERS',
-      isArchive: 'false',
+      types: types || (this.constantsService.DEFAULT_LK_NOTIFICATION_CATEGORIES + ',PARTNERS'),
+      isArchive: isArchive.toString(),
       _: Math.random().toString()
     };
     if (isHide !== undefined) {
