@@ -79,6 +79,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   // флаг для отображения другой ошибки для поля квартира
   @Input() public isOrg = false;
 
+  // bg цвет input
+  @Input() public bgInputField: string;
+
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
 

@@ -35,7 +35,7 @@ export class MailDeliveryModalService {
     });
   }
 
-  public checkNeedShowPopup(): Observable<SubscriptionInfo> {
+  public checkNeedShowPopup(isModal = false): Observable<SubscriptionInfo> {
     const curSession = this.cookieService.get('acc_t');
     const sessionOfLastShow = this.cookieService.get('ezpRemind');
     if (curSession === sessionOfLastShow) {
@@ -49,7 +49,7 @@ export class MailDeliveryModalService {
       return of(null);
     }
 
-    return this.mailDeliveryService.getAvailableSubscription().pipe(
+    return this.mailDeliveryService.getAvailableSubscription(isModal).pipe(
       switchMap((response) => {
         let subscribable = [];
         if (response && response.items) {

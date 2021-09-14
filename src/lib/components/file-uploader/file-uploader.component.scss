@@ -116,6 +116,10 @@
 
     .select-photo {
       background: url(../../../assets/svg/photo-camera.svg) no-repeat 0 center;
+
+      &-wrapper {
+        margin-bottom: 10px;
+      }
     }
 
     p {
