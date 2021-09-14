@@ -217,7 +217,9 @@ export class BaseMaskedInputComponent
 
   public handleFocus() {
     this.touched = this.focused = true;
-    HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue, this.positionInInput);
+    if (this.keepCharPositions) {
+      HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue, this.positionInInput);
+    }
     this.valueOnFocus = this.inputElement.nativeElement.value;
     this.check();
     if (this.onTouchedCallback) {
@@ -244,7 +246,9 @@ export class BaseMaskedInputComponent
 
     if (this.inputElement && this.inputElement.nativeElement && (!e || e.target !== this.inputElement.nativeElement) && !isSuggest) {
       this.inputElement.nativeElement.focus();
-      HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue, this.positionInInput);
+      if (this.keepCharPositions) {
+        HelperService.resetSelection(this.inputElement.nativeElement, this.emptyMaskedValue, this.positionInInput);
+      }
       this.focusManager.notifyFocusMayChanged(this, true);
     }
   }
