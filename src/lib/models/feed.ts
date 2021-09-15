@@ -31,6 +31,7 @@ export interface SnippetModel {
   parentOrderId?: number;
   id?: number;
   json?: string;
+  years?: string;
 }
 
 export interface OrderCreator {

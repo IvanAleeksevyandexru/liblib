@@ -88,7 +88,7 @@
   }
 
   .custom-snippet-wrap {
-    margin-left: 50px;
+    margin-left: 48px;
   }
 
   .feed-type-block {
@@ -116,6 +116,7 @@
   .feed-item {
     &:hover {
       background-color: #F5F7FA;
+      color: #0B1F33;
     }
   }
 
@@ -135,7 +136,7 @@
 
 @media all and (max-width: 767px){
   .custom-snippet-wrap {
-    margin-left: 40px;
+    margin-left: 48px;
   }
 
   .feed-link {

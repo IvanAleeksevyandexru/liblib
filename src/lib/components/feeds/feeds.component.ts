@@ -196,17 +196,47 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     })
       .subscribe((feeds: FeedsModel) => {
         this.searching.emit(false);
-        const feedsItems = feeds.items.map<FeedModel>((feed) => ({
-          ...feed,
-          data: {
-            ...feed.data,
-            snippets: feed?.data?.snippets?.map((item) => {
-              return item.type === 'CUSTOM' && item.json
-                ? { json: JSON.parse(item.json), type: item?.type }
-                : item;
-          }),
-          },
-        }));
+        const feedsItems = feeds.items.map<FeedModel>((feed) => {
+          if (feed.status === 'invite_to_equeue') {
+            if (!feed.data.snippets) {
+              feed.data.snippets = [];
+            }
+            feed.data.snippets.push({type: 'INVITE', comment: 'Выберите время для визита в ведомство'});
+          }
+          if (feed.data.snippets) {
+            feed.data.snippets = feed.data.snippets.filter(item => {
+              const isDraft = item.type === 'DRAFT';
+              const paid = item.type === 'PAYMENT' && feed.data.reminder;
+              const rejectedPayment = item.type === 'PAYMENT' && feed.status === 'reject_no_pay';
+              return !(isDraft || paid || rejectedPayment);
+            });
+          }
+          return {
+            ...feed,
+            data: {
+              ...feed.data,
+              snippets: feed?.data?.snippets?.map((item) => {
+                let snippet: any = null;
+                if (item.type === 'CHILD') {
+                  if (item.birthDate) {
+                    item.years = this.getYears(item.birthDate);
+                  }
+                } else if (item.type === 'CUSTOM' && item.json) {
+                  snippet = {
+                    json: JSON.parse(item?.json),
+                    type: item?.type,
+                  };
+                  if (snippet.json.birthDate) {
+                    snippet.json.years = this.getYears(snippet.json.birthDate);
+                  }
+                }
+                return snippet
+                  ? snippet
+                  : item;
+              }),
+            }
+          };
+        });
         this.feeds =
           this.feeds && this.feeds.length
             ? this.feeds.concat(feedsItems)
@@ -770,5 +800,22 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   public isKindergartenSnippet(feed: any): boolean {
     return this.checkSnippetsExists(feed) && this.page === 'orders' && feed.data.snippets[0].type === 'CHILD';
+  }
+
+  private getYears(date: string): string {
+    let result = '';
+    if (!date) {
+      return result;
+    }
+    const now = moment();
+    const formatDate = moment(date, 'DD.MM.YYYY');
+    const diff = formatDate.isValid() ? now.diff(formatDate, 'years') : 0;
+    if (diff && diff > 0) {
+      result = String(diff) + HelperService.pluralize(
+        diff,
+        [' год', ' года', ' лет']
+      );
+    }
+    return result;
   }
 }
