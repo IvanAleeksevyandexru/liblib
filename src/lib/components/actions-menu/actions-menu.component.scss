@@ -5,8 +5,8 @@
   top: -1px;
   right: -1px;
   padding: 16px 48px 0 16px;
-  border-radius: 4px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, .1);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(11, 31, 51, 0.18);
   background: #ffffff;
 
   a {
@@ -19,6 +19,24 @@
 
   &.disabled a {
     color: #a8acb1;
+  }
+}
+
+.actions-menu.closable {
+  padding: 24px 68px 8px 24px;
+  // надо позиционировать крестик по кнопке открытия
+  top: -24px;
+  right: -24px;
+
+  .close-menu {
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    width: 24px;
+    height: 24px;
+    background: url(../../../assets/svg/close-large-24.svg) center no-repeat;
+    background-size: 24px;
+    cursor: pointer;
   }
 }
 

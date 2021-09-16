@@ -12,6 +12,7 @@ export class ActionsMenuComponent implements OnInit {
   @Input() public countOutside = 2; // Количество элементов вне меню на десктопе
   @Input() public showMenu = false; // Состояние меню
   @Input() public disabled = false; // Активность меню
+  @Input() public closable = false; // Возможность закрыть на крестик + отступы под формат с закрытием
 
   @HostListener('document:click', ['$event']) public onClick(event) {
     const target = event.target;

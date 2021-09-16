@@ -1,5 +1,3 @@
-import { exitOnError } from 'winston';
-
 export interface Suggest {
   mnemonic: string;
   list: SuggestItem[];
