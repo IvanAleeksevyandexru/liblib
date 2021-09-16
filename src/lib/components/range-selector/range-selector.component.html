@@ -4,7 +4,7 @@
   <div class="dropdown-field" [ngClass]="{disabled: disabled, invalid: invalidDisplayed, expanded: expanded, clearable: clearable}" (click)="toggle()">
     <div class="dropdown-item" *ngIf="currentItem">
       <div class="dropdown-item-container">
-        <span *ngIf="currentItem.customRange" class="item-text">{{this.formatRange(currentItem.range)}}</span>
+        <span *ngIf="currentItem.customRange" class="item-text">{{formatRange(currentItem.range)}}</span>
         <span *ngIf="!currentItem.customRange && translation === Translation.NONE" class="item-text">{{currentItem.text}}</span>
         <span *ngIf="!currentItem.customRange && translation === Translation.APP" class="item-text">{{currentItem.text | appTranslate}}</span>
         <span *ngIf="!currentItem.customRange && translation === Translation.LIB" class="item-text">{{currentItem.text | libTranslate}}</span>
@@ -26,7 +26,7 @@
       <perfect-scrollbar #scrollComponent [config]="{suppressScrollX: true}" [hidden]="customRangeSelectingMode">
         <div class="dropdown-list-area" #scrollableArea>
           <div *ngFor="let item of internalItems" class="dropdown-item" [attr.itemId]="item.id"
-               (click)="selectRange(item)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
+               (click)="selectItem(item)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
                [class.selected]="item === currentItem"
                [class.highlighted]="item === highlighted"
                [class.hidden]="item.hidden"
@@ -52,7 +52,7 @@
         [textModelValue]="textModelValue"
         [minDate]="minDate"
         [maxDate]="maxDate"
-        align="adjust"
+        [align]="datePickerAlign"
       ></lib-date-picker>
     </div>
   </div>
