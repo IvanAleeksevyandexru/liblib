@@ -26,7 +26,7 @@ export class TimeLeftPipe implements PipeTransform {
     const dayDiff = +end.diff(start, 'days');
 
     if (start > end || minDiff <= minInDay) {
-      return 'Будет удалён в ближайшее время';
+      return 'Скоро будет удалён';
     }
 
     if (minDiff <= minInDay * 7) {

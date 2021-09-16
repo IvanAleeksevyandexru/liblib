@@ -13,7 +13,8 @@ export class TimeToEventPipe implements PipeTransform {
     snippetType: string = '',
     feedType: string = '',
     inlineDate: boolean = false,
-    fullDate: boolean = false
+    fullDate: boolean = false,
+    customFormat: string = ''
   ): string {
     if (!date) {
       return '';
@@ -50,6 +51,10 @@ export class TimeToEventPipe implements PipeTransform {
 
     if (Math.abs(daysDiff) <= 1) {
       dateText = days[daysDiff];
+    }
+
+    if (customFormat) {
+      return dateText ? dateText + startInitial.format(customFormat) : startInitial.format(customFormat);
     }
 
     if (fullDate) {

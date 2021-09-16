@@ -21,6 +21,10 @@ export class SnippetsComponent implements OnInit {
   @Input() public snippet: SnippetModel;
   @Input() public feed: FeedModel;
 
+  public get needContainerAndIcon(): boolean {
+    return ['PAYMENT', 'EQUEUE', 'ORDER', 'IM', 'INVITE'].includes(this.snippet.type);
+  }
+
   constructor(
     private loadService: LoadService,
     private router: Router,
@@ -52,11 +56,10 @@ export class SnippetsComponent implements OnInit {
   public setSnippetIcon(snippet: SnippetModel, feed: FeedModel): { [key: string]: boolean } {
     return {
       'snippet-equeue': snippet.type === 'EQUEUE' || snippet.type === 'ORDER',
-      'snippet-kindergarten': snippet.type === 'CHILD',
       'snippet-pay': snippet.type === 'PAYMENT' && !feed.data.reminder,
-      'snippet-pay-reminder': snippet.type === 'PAYMENT' && !!feed.data.reminder,
       'snippet-im': snippet.type === 'IM',
-      'snippet-draft': snippet.type === 'DRAFT',
+      'snippet-invite': snippet.type === 'INVITE',
+      'status-rejected': snippet.status === 'REJECT',
     };
   }
 
@@ -66,6 +69,10 @@ export class SnippetsComponent implements OnInit {
 
   public isSnippetDate(snippet: SnippetModel): string {
     return snippet.localDate || snippet.date;
+  }
+
+  public equeueIsRejected(snippet: SnippetModel) {
+    return snippet.status === 'REJECT';
   }
 
   public isSnippetAddress(snippet: SnippetModel, feed: FeedModel): boolean {
@@ -83,7 +90,15 @@ export class SnippetsComponent implements OnInit {
   }
 
   public isPaymentSnippet(snippet: SnippetModel, feed: FeedModel): boolean {
-    return snippet.type === 'PAYMENT' && feed.status !== 'reject_no_pay' && !!snippet.sum;
+    return snippet.type === 'PAYMENT' && feed.status !== 'reject_no_pay' && !!snippet.sum && !feed.data.reminder;
+  }
+
+  public getEqueueInfo(snippet: SnippetModel, feed: FeedModel): string {
+    if (snippet.status === 'REJECT') {
+      return snippet.comment;
+    }
+    const hasAddress = this.isSnippetAddress(snippet, feed);
+    return hasAddress ? snippet.address : snippet.orgName;
   }
 
   public isSnippetWithSumm(snippet: SnippetModel, feed: FeedModel): boolean {
@@ -109,12 +124,12 @@ export class SnippetsComponent implements OnInit {
   public getSnippetLinkText(snippet: SnippetModel, feed: FeedModel): string {
     if (snippet.type === 'PAYMENT') {
       if (feed.data.reminder) {
-        return 'Перейти';
+        return '';
       }
       return 'Оплатить';
-    } else if (snippet.type === 'DRAFT') {
-      return 'Использовать';
+    } else if (snippet.type === 'IM') {
+      return 'Подробнее';
     }
-    return 'Подробнее';
+    return '';
   }
 }

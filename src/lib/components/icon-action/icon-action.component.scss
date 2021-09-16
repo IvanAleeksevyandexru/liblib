@@ -1,0 +1,33 @@
+.hover-icon, .text {
+   display: none;
+}
+
+@media all and (max-width: 767px) {
+  .hover-state-on-mob {
+    .hover-icon, .text {
+      display: inline-block;
+    }
+    .icon {
+      display: none;
+    }
+  }
+}
+
+@media all and (min-width: 768px) {
+  .action {
+    width: fit-content;
+    margin-right: 0;
+    margin-left: auto;
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .action:hover {
+    .hover-icon, .text {
+      display: inline-block;
+    }
+    .icon {
+      display: none;
+    }
+  }
+}

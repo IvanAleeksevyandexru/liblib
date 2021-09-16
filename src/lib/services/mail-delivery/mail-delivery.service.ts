@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 import {
   AllSubscriptionResponse,
   DeliveryInfo,
@@ -20,6 +20,9 @@ import {SubscriptionItem} from '../../models/mail-delivery';
   providedIn: 'root'
 })
 export class MailDeliveryService {
+
+  private mailDeliveryModalFinished = new BehaviorSubject<boolean>(null);
+  public mailDeliveryModalFinished$ = this.mailDeliveryModalFinished.asObservable();
 
   public loading = new BehaviorSubject(false);
   public textAndLinks: SubscriptionHint;
@@ -176,5 +179,24 @@ export class MailDeliveryService {
 
   public isRussianPost(code: string): boolean {
     return this.constants.MAIL_DELIVERY_RUSSIAN_POST_CODE === code;
+  }
+
+  public hasNoSubscriptions(): Observable<boolean> {
+    return this.getAvailableSubscription().pipe(
+      switchMap((response) => {
+        let result = false;
+        if (response?.items) {
+          result = response.items.every(item => {
+            return ['DENY_SUBSCRIPTION', 'UNSUBSCRIBED'].includes(item.status) ||
+                   this.isRussianPost(item.code) && item.status === 'NOT_SUBSCRIBED';
+          });
+        }
+        return of(result);
+      })
+    );
+  }
+
+  public setMailDeliveryModalFinished(state: boolean) {
+    this.mailDeliveryModalFinished.next(state);
   }
 }

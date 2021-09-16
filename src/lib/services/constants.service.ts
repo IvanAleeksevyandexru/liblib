@@ -369,18 +369,23 @@ export class ConstantsService {
       mnemonic: 'claim'
     }
   ];
+
+  public readonly DEFAULT_LK_NOTIFICATION_CATEGORIES = 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,ESIGNATURE,KND_APPEAL,LINKED_ACCOUNT,SIGN';
+
+  public readonly DEFAULT_LK_ORDERS_CATEGORIES = 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER,SIGN';
+
   public readonly FEEDS_CATEGORIES = [
     {
       text: 'Все',
-      type: 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,PROFILE,ESIGNATURE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,KND_APPEAL,LINKED_ACCOUNT',
+      type: this.DEFAULT_LK_NOTIFICATION_CATEGORIES,
       id: 1,
       mnemonic: 'allEvents'
     },
     {
-      text: 'Заявления',
-      type: 'ORDER,COMPLEX_ORDER',
+      text: 'Непрочитанные',
+      type: this.DEFAULT_LK_NOTIFICATION_CATEGORIES,
       id: 2,
-      mnemonic: 'order'
+      mnemonic: 'unread'
     },
     {
       text: 'Записи на приём',
@@ -395,42 +400,53 @@ export class ConstantsService {
       mnemonic: 'payment'
     },
     {
+      text: 'Заявления',
+      type: 'ORDER,COMPLEX_ORDER,CLAIM,APPEAL,SIGN',
+      id: 5,
+      mnemonic: 'order'
+    },
+    {
+      text: 'Документы',
+      type: 'ACCOUNT,ACCOUNT_CHILD,LINKED_ACCOUNT',
+      id: 6,
+      mnemonic: 'docs'
+    },
+    {
+      text: 'Согласия',
+      type: '',
+      id: 7,
+      mnemonic: 'agreements'
+    },
+    {
+      text: 'Профиль',
+      type: 'BIOMETRICS,PROFILE',
+      id: 8,
+      mnemonic: 'profile'
+    },
+    {
       text: 'Госпочта',
       type: 'GEPS',
-      id: 5,
+      id: 9,
       mnemonic: 'geps'
     },
     {
+      text: 'Служба поддержки',
+      type: 'FEEDBACK',
+      id: 10,
+      mnemonic: 'feedback'
+    },
+    /*{
       text: 'Системные',
-      type: 'BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE,LINKED_ACCOUNT',
-      id: 6,
+      type: 'ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE',
+      id: 10,
       mnemonic: 'systemEvents'
     },
     {
-      text: 'Сообщения',
-      type: 'APPEAL,SIGN',
-      id: 7,
-      mnemonic: 'appealEvents'
-    },
-    {
-      text: 'Обжалования',
-      type: 'CLAIM',
-      id: 8,
-      mnemonic: 'claim'
-    },
-    {
-      text: 'Обращения в техподдержку',
-      type: 'FEEDBACK',
-      id: 9,
-      mnemonic: 'feedbackEvents'
-    },
-    {
-      text: 'Досудебное обжалование КНД',
+      text: 'Обжалование КНД',
       type: 'KND_APPEAL',
-      id: 10,
+      id: 12,
       mnemonic: 'kndAppealEvents'
-
-    }
+    }*/
   ];
   public readonly NOTIFICATION_PERIOD_TIMEZONE: NotificationPeriodItem[] = [
     {

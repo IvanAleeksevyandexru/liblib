@@ -1,84 +1,70 @@
-<div class="snippets">
-  <div class="flex-container align-items-center">
-    <div class="snippet-icon" [style.backgroundImage]="'url('+snippet.orgIcon+')'" *ngIf="snippet.type === 'IM'; else notIMSnippets"></div>
+<div class="flex-container-md justify-between align-items-center"
+     [ngClass]="{'snippets-container': needContainerAndIcon}">
+  <div class="flex-container align-items-center-md">
+    <div class="snippet-icon im-icon"
+         [style.backgroundImage]="'url('+snippet.orgIcon+')'"
+         *ngIf="snippet.type === 'IM'; else notIMSnippets"></div>
     <ng-template #notIMSnippets>
       <div class="snippet-icon" [ngClass]="setSnippetIcon(snippet, feed)"></div>
     </ng-template>
+
     <!--Сниппет записи на прием или заявления-->
     <div class="snippets-data" *ngIf="isOrderOrEqueueSnippet(snippet)">
-      <div class="small-text bold night mb-4" *ngIf="isSnippetDate(snippet)">
-        <span>Запись на </span>
-        <span [innerHTML]="(snippet.localDate || snippet.date) | timeToEvent:snippet.type:feed.feedType:true:true"></span>
+      <div class="text-plain mb-4" *ngIf="isSnippetDate(snippet)">
+        <ng-container *ngIf="equeueIsRejected(snippet); else activeEqueue">
+          <span>Запись на </span>
+          <span [innerHTML]="(snippet.localDate || snippet.date) | timeToEvent:snippet.type:feed.feedType:true:true"></span>
+        </ng-container>
+        <ng-template #activeEqueue>
+          <span>Вы записаны на </span>
+          <span [innerHTML]="(snippet.localDate || snippet.date) | timeToEvent:snippet.type:feed.feedType:false:false: 'D MMMM в HH:mm'"></span>
+        </ng-template>
       </div>
       <div class="small-text gray">
-        <span *ngIf="snippet.orgName" [innerHTML]="snippet.orgName" class="text-plain"></span>
-      </div>
-      <div class="small-text gray" *ngIf="isSnippetAddress(snippet, feed)">
-        <span>{{snippet.address}}</span>
-      </div>
-      <div class="small-text gray">
-      <span *ngIf="snippet.comment"
-            [innerHTML]="snippet.comment | removeTags | limitString: 150"></span>
+        {{getEqueueInfo(snippet, feed)}}
       </div>
       <div *ngIf="snippet.preliminaryReservationDate" class="small-text gray">
-        Будет отменена {{cancelReservationDate(snippet.preliminaryReservationDate)}}, если вы не подадите
-        заявление
+        Будет отменена {{cancelReservationDate(snippet.preliminaryReservationDate)}}, если вы не подадите заявление
       </div>
     </div>
 
+    <!-- Сниппет с приглашением на прием (в фидах не приходит, добавляется на фронте для статуса заявления invite_to_equeue -->
+    <div *ngIf="snippet.type === 'INVITE'" class="text-plain">
+      {{snippet.comment}}
+    </div>
+
     <!--Сниппет записи kindergarten-->
-    <div *ngIf="snippet.type === 'CHILD'">
-       <div class="small-text text-plain">
-          {{snippet.firstName}} {{snippet.lastName}}{{snippet.years ? ', ' + snippet.years : ''}}
-       </div>
+    <div *ngIf="snippet.type === 'CHILD'" class="small-text mt-8 ml-48">
+      {{snippet.firstName}} {{snippet.lastName}}{{snippet.years ? ', ' + snippet.years : ''}}
     </div>
 
     <!--Сниппет оплаты-->
     <div *ngIf="isPaymentSnippet(snippet, feed)">
-      <div *ngIf="feed.data.reminder; else paySnippet">
-        <div class="small-text bold night mb-4">{{feed.data.reminder}}</div>
-        <div class="small-text gray">Вы оплатили госпошлину</div>
-      </div>
-      <ng-template #paySnippet>
-        <div *ngIf="feed.feedType !== 'GEPS'; else isGEPS">
-          <div class="small-text bold night mb-4">
-            К оплате {{snippet.sum}} pуб&nbsp;<span *ngIf="snippet.payDate">(до {{snippet.payDate | date: 'dd.MM.yyyy'}})</span>
-          </div>
-          <span class="text-plain">
-              <span *ngIf="feed.feedType == 'PAYMENT'">Сумма платежа с комиссией</span>
-          </span>
-          <span *ngIf="snippet.description" class="small-text gray" [innerHTML]="snippet.description | removeTags | limitString: 150"></span>
-          <span *ngIf="snippet.comment" class="small-text gray" [innerHTML]="snippet.comment | removeTags | limitString: 150"></span>
-        </div>
-        <ng-template #isGEPS>
-          <div *ngIf="isSnippetWithSumm(snippet, feed)">
-            <div class="small-text bold night mb-4">
-              {{snippet.sum}}<span class="rouble">p</span>
-            </div>
-            <span class="small-text gray">Сумма платежа при оплате до {{getGepsDiscountDate(snippet, feed)}}</span>
-          </div>
-          <div *ngIf="isSnippetWithOriginalSumm(snippet, feed)">
-            <div class="small-text night bold mb-4">
-              {{snippet.originalAmount || snippet.sum}}<span class="rouble">p</span>
-            </div>
-            <span class="small-text gray">Сумма платежа</span>
-          </div>
-        </ng-template>
-      </ng-template>
+      <p class="text-plain mb-4">
+        {{snippet.payDate ? ('Оплатите до' + snippet.payDate | date: 'dd MMMM') : 'Оплатите в ближайшее время'}}
+      </p>
+      <p *ngIf="snippet.description" class="small-text gray" [innerHTML]="snippet.description | removeTags | limitString: 150"></p>
     </div>
+
     <!--Сниппет Использовать заявление как черновик -->
-    <div class="small-text gray" *ngIf="snippet.type === 'DRAFT'">
+    <!--div class="small-text gray" *ngIf="snippet.type === 'DRAFT'">
       Вы можете использовать заполненное заявление в качестве черновика
-    </div>
+    </div-->
+
     <!--Сниппет интеграционного модуля -->
     <div *ngIf="snippet.type === 'IM'">
-      <div *ngIf="isSnippetWithExpireDate(snippet, feed)" class="text-plain bold notification-snippet__offset">Рассмотреть до {{feed.data.imExpireDate | timeToEvent:snippet.type:'IMExpireDate':true:false}}</div>
+      <div *ngIf="isSnippetWithExpireDate(snippet, feed)" class="text-plain">
+        Рассмотреть до {{feed.data.imExpireDate | timeToEvent:snippet.type:'IMExpireDate':true:false}}
+      </div>
       <div class="text-plain">По запросу {{snippet.orgName}}</div>
     </div>
   </div>
-  <div class="snippet-button-container">
-    <lib-button color="white" (click)="goToDetails(snippet, feed, $event)">
-      {{getSnippetLinkText(snippet, feed)}}
-    </lib-button>
+
+  <div *ngIf="getSnippetLinkText(snippet, feed) as linkText" class="snippet-button-container text-right-md mt-24 mt-md-0 ml-md-16">
+    <div *ngIf="isPaymentSnippet(snippet, feed)" class="title-h6 flex-container justify-end-md mb-4">
+      <span class="flex-order-last-md text-nowrap mr-8 mr-md-0 ml-md-8">{{snippet.sum | toMoney}} ₽</span>
+      <span *ngIf="snippet.originalAmount" class="new-light-gray text-line-through text-nowrap">{{snippet.originalAmount | toMoney}} ₽</span>
+    </div>
+    <a class="link-plain" (click)="goToDetails(snippet, feed, $event)">{{linkText}}</a>
   </div>
 </div>

@@ -163,6 +163,7 @@ import { FileExtensionIconComponent } from './components/file-extension-icon/fil
 import { DragSliderComponent } from './components/drag-slider/drag-slider.component';
 import { TrimFileTypesPipe } from './pipes/trim-file-types/trim-file-types.pipe';
 import { FileComponent } from './components/file/file.component';
+import { IconActionComponent } from './components/icon-action/icon-action.component';
 
 
 registerLocaleData(localeRu, 'ru');
@@ -316,6 +317,7 @@ registerLocaleData(localeRu, 'ru');
     FileExtensionIconComponent,
     TrimFileTypesPipe,
     FileComponent,
+    IconActionComponent,
   ],
   imports: [
     CommonModule,
@@ -468,6 +470,7 @@ registerLocaleData(localeRu, 'ru');
     ReversePipe,
     FileExtensionIconComponent,
     FileComponent,
+    IconActionComponent,
   ],
   providers: [
     GosbarService,

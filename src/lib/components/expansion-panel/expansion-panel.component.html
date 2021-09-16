@@ -2,7 +2,10 @@
   <a class="panel-header" (click)="onClick($event)" href="#" role="tab">
     <div class="panel-title">
       <span *ngIf="title"
-            [ngClass]="{'title-h4 base-gray': ['accordion', 'light'].includes(type), 'title-h6': type === 'for-footer'}">
+            [ngClass]="{
+              'title-h4 base-gray': ['accordion', 'light'].includes(type),
+              'title-h6': ['for-footer', 'light-v2'].includes(type)
+            }">
         {{title}}
       </span>
       <ng-content select="lib-expansion-panel-header"></ng-content>

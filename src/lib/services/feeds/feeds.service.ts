@@ -35,7 +35,7 @@ export class FeedsService {
     */
     const httpParams = new HttpParams({
       fromObject: {
-        unread: 'false',
+        unread: params.unread?.toString() || 'false',
         isArchive: params.isArchive !== undefined ? params.isArchive.toString() : '',
         isHide: params.isHide !== undefined ? params.isHide.toString() : '',
         types: params.types || null,
@@ -286,5 +286,69 @@ export class FeedsService {
         break;
     }
     return params;
+  }
+
+  public getFeedTypeName(feedType: string): string {
+    let type = '';
+    switch (feedType) {
+      case 'ORDER':
+      case 'COMPLEX_ORDER':
+        type = 'Заявление';
+        break;
+      case 'PAYMENT':
+        type = 'Платеж';
+        break;
+      case 'CALENDAR':
+      case 'EPGU':
+      case 'EQUEUE':
+        type = 'Запись на прием';
+        break;
+      case 'FEEDBACK':
+        type = 'Служба поддержки';
+        break;
+      case 'DRAFT':
+        type = 'Черновик';
+        break;
+      case 'GEPS':
+        type = 'Госпочта';
+        break;
+      case 'KND_APPEAL':
+      case 'KND_APPEAL_DRAFT':
+        type = 'Обжалование КНД';
+        break;
+      case 'APPEAL':
+        type = 'Сообщения';
+        break;
+      case 'CLAIM':
+        type = 'Обжалования';
+        break;
+      case 'ELECTION':
+        type = 'Выборы';
+        break;
+      case 'PARTNERS_DRAFT':
+      case 'PARTNERS':
+        type = 'Партнеры';
+        break;
+      case 'ACCOUNT':
+      case 'ACCOUNT_CHILD':
+      case 'LINKED_ACCOUNT':
+        type = 'Документы';
+        break;
+      case 'ORGANIZATION':
+      case 'ESIGNATURE':
+      case 'BUSINESSMAN':
+        type = 'Системные';
+        break;
+      case 'PROFILE':
+      case 'BIOMETRICS':
+        type = 'Профиль';
+        break;
+      case 'SIGN':
+        type = 'Госключ';
+        break;
+      default:
+        type = 'Заявление';
+    }
+    return type;
   }
 }

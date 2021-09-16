@@ -165,13 +165,13 @@
     }
   }
 
-  &.light {
+  &.light-v2 {
     .panel-header {
-      padding: 16px 36px 16px 0;
-      border-bottom: none;
+      min-height: 56px;
+      border-bottom: 1px solid #E4ECFD;
 
       .panel-arrow {
-        right: 0;
+        background-color: transparent;
       }
     }
 
