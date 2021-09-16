@@ -219,7 +219,7 @@
   },
   "QUIZ": {
     "SUBMIT_QUIZ": "Отправить",
-    "CANCEL_QUIZ": "Закрыть"
+    "CANCEL_QUIZ": "Отменить"
   },
   "FEEDS": {
     "EVENTS_ALL" : "Все события",
