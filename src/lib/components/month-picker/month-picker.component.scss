@@ -115,7 +115,7 @@
       flex-wrap: nowrap;
       border-bottom: 1px solid #99B1E6;
       align-items: center;
-      padding: 0px 11px;
+      padding: 0 11px;
     }
     .years-container {
       flex-grow: 1;
@@ -165,7 +165,7 @@
         cursor: pointer;
       }
       &.disabled .item-content {
-        color: #66727F;
+        color: #D1D5DF;
         cursor: default;
       }
       &.selected .item-content {
