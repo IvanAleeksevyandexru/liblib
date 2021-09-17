@@ -1,4 +1,4 @@
-<label class="check" [for]="checkboxId" [class.invalid]="invalidDisplayed">
+<label class="{{customClass}} {{type === 'toggler' ? 'switch toggler' : 'check'}}" [for]="checkboxId" [class.invalid]="invalidDisplayed">
   <input class="check-input"
     type="checkbox"
     (focus)="notifyFocusEvent($event)"
@@ -13,7 +13,7 @@
     [attr.errorMessage]="errorMessage"
     [required]="required"
     [attr.tabIndex]="disabled ? -1 : 0">
-  <span class="checkbox" [class.focused]="focused"></span>
+  <span class="{{type === 'toggler' ? 'slider round' : 'checkbox'}}" [class.focused]="focused"></span>
 <!--  {{labelText}}-->
   <div class="text-plain">{{labelText}}</div>
   <ng-content></ng-content>
