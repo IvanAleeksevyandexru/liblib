@@ -559,6 +559,10 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  public actionsEnabled(): boolean {
+    return !this.isHeader && !this.isMain() && !['overview', 'orders'].includes(this.page);
+  }
+
   public showRemoveFeedButton(feed: FeedModel): boolean {
     return ['drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder && !this.isPaymentDraft(feed);
   }
