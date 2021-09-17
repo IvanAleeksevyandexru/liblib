@@ -44,7 +44,7 @@
         </div>
         <div class="login-wrapper" (click)="showUserMenu(false)">
           <div class="login flex-container justify-end overflow-container">
-            <lib-login [loginWithNode]="loginWithNode"></lib-login>
+            <lib-login [loginWithNode]="loginWithNode" (toggleMenu)="onToggleMenu()"></lib-login>
           </div>
         </div>
         <lib-user-menu [state]="userMenuState" [links]="links"></lib-user-menu>
@@ -128,9 +128,7 @@
               <lib-login [useButton]="true" class="hide"
                          [loginWithNode]="loginWithNode"
                          [ngClass]="{'show': user.authorized, 'show-lg': !user.authorized}"
-                         [menuOpened]="userMenuState.active"
-                         (closeMenu)="hideUserMenu()"
-                         (userClick)="showUserMenu(false)"
+                         (toggleMenu)="onToggleMenu()"
                          [userCounter]="userCounter">
               </lib-login>
               <lib-login *ngIf="!user.authorized" [loginWithNode]="loginWithNode" [onlyText]="true" class="login-mobile-icon"></lib-login>

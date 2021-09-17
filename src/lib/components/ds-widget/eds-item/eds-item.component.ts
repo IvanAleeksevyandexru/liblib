@@ -8,6 +8,8 @@ import { EdsItem } from '../../../models/ds.plugin.model';
 })
 export class EdsItemComponent implements OnInit {
   @Input() public item: EdsItem;
+  @Input() public showBorder = false;
+  @Input() public isPinItem = false;
 
   constructor() { }
 

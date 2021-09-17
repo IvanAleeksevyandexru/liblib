@@ -1,33 +1,48 @@
-import { Component, EventEmitter, Input, isDevMode, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  isDevMode,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
 import { LoadService } from '../../services/load/load.service';
+import { MenuService } from '../../services/menu/menu.service';
 import { CounterData } from '../../models/counter';
 import { User } from '../../models/user';
+import { CommonController } from '../../common/common-controller';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'lib-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends CommonController implements OnInit {
 
   @Input() public userCounter: CounterData;
   @Input() public onlyIcon: boolean;
   @Input() public onlyText: boolean;
-  @Input() public menuOpened: boolean;
   @Input() public useButton: boolean;
   @Input() public loginWithNode = true;
+  @Output()
+  public toggleMenu = new EventEmitter<void>();
 
   public user: User;
+
+  public avatar$ = this.loadService.avatar.asObservable();
   public avatarError = false;
 
-  @Output() public userClick: EventEmitter<any> = new EventEmitter();
-  @Output() public closeMenu: EventEmitter<any> = new EventEmitter();
+  public menuOpened$ = this.menuService.menuIsOpen$;
 
   constructor(
     private authService: AuthService,
-    public loadService: LoadService
-  ) { }
+    public loadService: LoadService,
+    private menuService: MenuService,
+  ) {
+    super();
+  }
 
   public ngOnInit(): void {
     this.user = this.loadService.user;
@@ -64,14 +79,4 @@ export class LoginComponent implements OnInit {
   public logout(): void {
     this.loadService.logout();
   }
-
-  public userClicked(): void {
-    this.userClick.emit();
-  }
-
-  public onCloseMenu(event: Event): void {
-    this.stopEvent(event);
-    this.closeMenu.emit();
-  }
-
 }

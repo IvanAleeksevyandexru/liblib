@@ -11,20 +11,20 @@ import { HelperService } from '../helper/helper.service';
 const HASH = Math.random();
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MenuService {
-
   public closeBurgerOutside = new BehaviorSubject(false);
   public closeBurgerOutside$ = this.closeBurgerOutside.asObservable();
   public staticUrls: object;
   private viewType = this.loadService.attributes.appContext || this.loadService.config.viewType;
 
+  private menuIsOpen = new BehaviorSubject(false);
+  public menuIsOpen$ = this.menuIsOpen.asObservable();
+
   constructor(
     private loadService: LoadService,
     private http: HttpClient,
-    private accessesService: AccessesService,
-    private cookieService: CookieService,
     private yaMetricService: YaMetricService,
     private helperService: HelperService,
   ) {
@@ -44,47 +44,57 @@ export class MenuService {
       this.http
         .get(`${this.loadService.config.catalogApiUrl}categories/?${params}`)
         .toPromise()
-        .then((data: Category[]) => {
-          resolve(data);
-        }, (err: any) => {
-          reject();
-        });
+        .then(
+          (data: Category[]) => {
+            resolve(data);
+          },
+          (err: any) => {
+            reject();
+          },
+        );
     });
-
   }
 
   public getUserMenuDefaultLinks(): MenuLink[] {
-    return [{
-      title: 'HEADER.MENU.NOTIFICATIONS',
-      mnemonic: 'overview', // правка изза выборов
-      icon: 'bell'
-    }, {
-      title: 'HEADER.MENU.ORDERS',
-      mnemonic: 'orders',
-      icon: 'edit',
-      showSeparatelyOnDesk: true
-    }, {
-      title: 'HEADER.MENU.DOCS',
-      mnemonic: 'docs',
-      icon: 'doc',
-      showSeparatelyOnDesk: true
-    }, {
-      title: 'HEADER.MENU.PAYMENT',
-      mnemonic: 'payment',
-      icon: 'wallet',
-      showSeparatelyOnDesk: true
-    }, {
-      title: 'HEADER.MENU.PROFILE',
-      mnemonic: 'profile',
-      icon: 'person'
-    }];
+    return [
+      {
+        title: 'HEADER.MENU.NOTIFICATIONS',
+        mnemonic: 'overview', // правка изза выборов
+        icon: 'bell',
+      },
+      {
+        title: 'HEADER.MENU.ORDERS',
+        mnemonic: 'orders',
+        icon: 'edit',
+        showSeparatelyOnDesk: true,
+      },
+      {
+        title: 'HEADER.MENU.DOCS',
+        mnemonic: 'docs',
+        icon: 'doc',
+        showSeparatelyOnDesk: true,
+      },
+      {
+        title: 'HEADER.MENU.PAYMENT',
+        mnemonic: 'payment',
+        icon: 'wallet',
+        showSeparatelyOnDesk: true,
+      },
+      {
+        title: 'HEADER.MENU.PROFILE',
+        mnemonic: 'profile',
+        icon: 'person',
+      },
+    ];
   }
 
   public getStaticItemUrls(): object {
     const appContext = this.loadService.attributes.appContext;
     const lkUrl = appContext === 'LK' ? '/' : this.loadService.config.lkUrl;
-    const portalUrl = appContext === 'PORTAL' ? '/' : this.loadService.config.betaUrl;
-    const partnersHost = appContext === 'PARTNERS' ? '/' : this.loadService.config.partnersUrl;
+    const portalUrl =
+      appContext === 'PORTAL' ? '/' : this.loadService.config.betaUrl;
+    const partnersHost =
+      appContext === 'PARTNERS' ? '/' : this.loadService.config.partnersUrl;
 
     return {
       'HEADER.PERSONAL_AREA': `${lkUrl}overview`,
@@ -97,7 +107,9 @@ export class MenuService {
       'HEADER.MENU.PERMISSIONS': `${lkUrl}permissions`,
       'HEADER.MENU.SETTINGS': `${lkUrl}settings/account`,
       'HEADER.MENU.SETTINGS_MENU': `${lkUrl}settings/account`,
-      'HEADER.MENU.LOGIN_ORG': `${appContext === 'PARTNERS' ? '/' : lkUrl}roles`,
+      'HEADER.MENU.LOGIN_ORG': `${
+        appContext === 'PARTNERS' ? '/' : lkUrl
+      }roles`,
       'HEADER.MENU.SERVICE_CENTERS': `${partnersHost}service-centers`,
       'HEADER.MENU.POWERS': `${partnersHost}powers`,
       'HEADER.MENU.ACCESS_GROUPS': `${partnersHost}access-groups`,
@@ -109,39 +121,42 @@ export class MenuService {
   }
 
   public getUserRoles(user: User): UserRole[] {
-    const betaUrl = this.loadService.attributes.appContext === 'PORTAL' ? '/' : this.loadService.config.betaUrl;
+    const betaUrl =
+      this.loadService.attributes.appContext === 'PORTAL'
+        ? '/'
+        : this.loadService.config.betaUrl;
     const partnersUrl = this.loadService.config.partnersUrl;
     return [
       {
         name: 'Гражданам',
         secondName: 'Граждан',
         url: `${betaUrl}`,
-        code: 'P'
+        code: 'P',
       },
       {
         name: 'Юридическим лицам',
         secondName: 'Юридическиx лиц',
         url: `${betaUrl}legal-entity`,
-        code: 'L'
+        code: 'L',
       },
       {
         name: 'Предпринимателям',
         secondName: 'Предпринимателей',
         url: `${betaUrl}entrepreneur`,
-        code: 'B'
+        code: 'B',
       },
       {
         name: 'Иностранным гражданам',
         secondName: 'Иностранных граждан',
         url: `${betaUrl}foreign-citizen`,
-        code: 'F'
+        code: 'F',
       },
       {
         name: 'Партнёрам',
         secondName: 'Партнёров',
         url: `${partnersUrl}`,
-        code: 'I'
-      }
+        code: 'I',
+      },
     ];
   }
 
@@ -171,7 +186,13 @@ export class MenuService {
 
   public menuStaticItemClick(itemName: string, mnemonic): void {
     const staticUrl = this.getUrl(itemName);
-    return this.menuItemClick({url: staticUrl, mnemonic} as MenuLink);
+    return this.menuItemClick({ url: staticUrl, mnemonic } as MenuLink);
   }
 
+  /**
+   * Переключает состояние меню.
+   */
+  public toggleMenu(open: boolean): void {
+    this.menuIsOpen.next(open);
+  }
 }

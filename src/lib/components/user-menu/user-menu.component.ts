@@ -121,9 +121,9 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onClose() {
+    this.menuService.toggleMenu(false);
     const html = document.getElementsByTagName('html')[0];
-    html.classList.remove('disable-scroll');
-    html.classList.remove('disable-scroll-sm');
+    html.classList.remove('disable-scroll', 'disable-scroll-sm');
     this.state.active = false;
     if (this.psoContainer && (window as any).screen.width < 812) {
       this.psoContainer.style.display = 'unset';

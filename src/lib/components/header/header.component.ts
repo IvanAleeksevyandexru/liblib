@@ -75,6 +75,8 @@ export class HeaderComponent implements OnInit {
 
   @ViewChild('menu') private menu;
 
+  public isMenuOpened$ = this.menuService.menuIsOpen$;
+
   @HostListener('document:keydown', ['$event'])
   public onKeydownComponent(event: KeyboardEvent) {
     if (event.key === 'Escape') {
@@ -144,17 +146,22 @@ export class HeaderComponent implements OnInit {
 
   public showUserMenu(isMobileView: boolean) {
     this.menuService.closeBurgerOutside.next(true);
-
+    this.menuService.toggleMenu(true);
     this.userMenuState = {
       active: true,
       isMobileView
-    } as UserMenuState;
+    };
 
     const html = document.getElementsByTagName('html')[0];
     html.classList.add('disable-scroll-sm');
     if (this.psoContainer && (window as any).screen.width < 812) {
       this.psoContainer.style.display = 'none';
     }
+    this.menuService.toggleMenu(true);
+    this.userMenuState = {
+      active: true,
+      isMobileView,
+    };
   }
 
   public hideUserMenu() {
@@ -239,5 +246,12 @@ export class HeaderComponent implements OnInit {
     this.hideTimout = setTimeout(() => {
       this.showCategories = false;
     }, HIDE_TIMOUT);
+  }
+  public onToggleMenu() {
+    if (this.menu.state.active) {
+      this.hideUserMenu();
+    } else {
+      this.showUserMenu(false);
+    }
   }
 }
