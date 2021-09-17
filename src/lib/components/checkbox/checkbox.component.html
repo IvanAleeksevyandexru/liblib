@@ -15,7 +15,7 @@
     [attr.tabIndex]="disabled ? -1 : 0">
   <span class="{{type === 'toggler' ? 'slider round' : 'checkbox'}}" [class.focused]="focused"></span>
 <!--  {{labelText}}-->
-  <div class="text-plain">{{labelText}}</div>
+  <div *ngIf="type === 'checkbox'" class="text-plain">{{labelText}}</div>
   <ng-content></ng-content>
   <div *ngIf="description || errorMessage" class="checkbox-description">
     <div *ngIf="!errorMessage" class="description">{{description}}</div>
