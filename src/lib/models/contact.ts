@@ -17,8 +17,10 @@ export interface Contact {
   errMsg?: any;
   repeatTime?: any;
   repeatCount?: any;
+  error?: ContactError;
 }
 
+export type ContactError = { code: string; message: string };
 export interface CorpContact {
   id: number;
   oph: string;
