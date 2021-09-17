@@ -1,4 +1,5 @@
-<label class="{{customClass}} {{type === 'toggler' ? 'switch toggler' : 'check'}}" [for]="checkboxId" [class.invalid]="invalidDisplayed">
+<label class="{{customClass}}" [for]="checkboxId"
+       [ngClass]="{'switch toggler': type === 'toggler', check: type !== 'toggler', invalid: invalidDisplayed}">
   <input class="check-input"
     type="checkbox"
     (focus)="notifyFocusEvent($event)"
