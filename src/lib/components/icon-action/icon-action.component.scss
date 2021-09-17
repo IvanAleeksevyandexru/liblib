@@ -1,14 +1,11 @@
-.hover-icon, .text {
+.icon, .text {
    display: none;
 }
 
 @media all and (max-width: 767px) {
   .hover-state-on-mob {
-    .hover-icon, .text {
+    .text {
       display: inline-block;
-    }
-    .icon {
-      display: none;
     }
   }
 }
@@ -22,6 +19,14 @@
 }
 
 @media all and (min-width: 1140px) {
+  .hover-icon {
+    display: none;
+  }
+
+  .icon {
+    display: inline-block;
+  }
+
   .action:hover {
     .hover-icon, .text {
       display: inline-block;

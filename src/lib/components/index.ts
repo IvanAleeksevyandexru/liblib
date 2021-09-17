@@ -38,6 +38,7 @@ export * from './gibdd-details/gibdd-details.component';
 export * from './gosbar/gosbar.component';
 export * from './header/header.component';
 export * from './hidden-tooltip/hidden-tooltip.component';
+export * from './icon-action/icon-action.component';
 export * from './image-slider/image-slider.component';
 export * from './informer/informer.component';
 export * from './integration-base/integration-base.component';

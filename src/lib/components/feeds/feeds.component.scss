@@ -96,7 +96,7 @@
   }
 
   .feed-activities-block {
-    width: 108px;
+    margin-left: 16px;
   }
 
   .truncate {
@@ -140,7 +140,17 @@
   }
 
   .feed-link {
-    flex-flow: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .feed-type-block {
+    width: calc(100% - 32px);
+  }
+
+  .feed-info-block {
+    order: 1;
+    width: 100%;
   }
 }
 
@@ -163,11 +173,6 @@
       width: calc(100% - 32px);
       margin-left: 16px;
       margin-top: 0;
-    }
-
-    .feed-activities-block {
-      width: 100%;
-      margin-left: 48px;
     }
   }
 }
