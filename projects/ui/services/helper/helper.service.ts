@@ -29,6 +29,10 @@ export class HelperService {
     return HelperService.isTouchDevice() && !HelperService.isPad();
   }
 
+  public static isIos() {
+    return new RegExp('iPhone|iPad|iPod').test(navigator.userAgent);
+  }
+
   public static getPlatform(returnType = 1) {
     const isDesktop = !HelperService.isTouchDevice();
     const isPad = HelperService.isPad();
