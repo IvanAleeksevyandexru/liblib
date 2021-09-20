@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-lib",
-  "version": "3.0.383-2-core-front",
+  "version": "0.1.124",
   "publishConfig": {
     "registry": "http://nexus.gosuslugi.local/content/repositories/npm-internal/",
     "access": "public"
@@ -32,6 +32,7 @@
     "@angular/router": "11.0.0",
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",
+    "@epgu/zipkin": "0.0.3",
     "acorn": "7.1.0",
     "angular2-text-mask": "9.0.0",
     "angularx-qrcode": "^10.0.10",
@@ -64,6 +65,7 @@
     "web-animations-js": "^2.3.2",
     "winston": "3.2.1",
     "winston-daily-rotate-file": "4.1.0",
+    "zipkin-transport-http": "^0.22.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
