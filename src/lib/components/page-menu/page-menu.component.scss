@@ -21,7 +21,7 @@
     }
 
     > .item:first-child {
-      margin-top: 0px;
+      margin-top: 0;
     }
 
     @media all and (min-width: 768px) and (max-width: 1139px) {
@@ -32,7 +32,7 @@
       }
 
       > .item:nth-child(2), .item:nth-child(3) {
-        margin-top: 0px;
+        margin-top: 0;
       }
     }
   }
@@ -47,9 +47,9 @@
     }
 
     .list-items {
-      position: absolute;
+      //position: absolute;
       max-width: 280px;
-      right: 0;
+      //right: 0;
     }
 
     &.fixed {
