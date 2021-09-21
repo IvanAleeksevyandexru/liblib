@@ -52,7 +52,7 @@ export class InformerComponent implements OnInit {
 
   public ngOnInit() {
     this.getInformerShortData();
-    if (this.showAllInformers) {
+    if (this.showAllInformers && this.loadService.config.restrictionShow) {
       this.getRestrictions();
     }
   }
