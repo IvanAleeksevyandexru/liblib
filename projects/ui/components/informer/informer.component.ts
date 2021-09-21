@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { InformersService } from '@epgu/ui/services/informers';
 import {
   DataInformer,
@@ -19,7 +19,8 @@ import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'lib-informer',
   templateUrl: './informer.component.html',
-  styleUrls: ['./informer.component.scss']
+  styleUrls: ['./informer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InformerComponent implements OnInit {
 
@@ -51,7 +52,7 @@ export class InformerComponent implements OnInit {
 
   public ngOnInit() {
     this.getInformerShortData();
-    if (this.showAllInformers) {
+    if (this.showAllInformers && this.loadService.config.restrictionShow) {
       this.getRestrictions();
     }
   }
@@ -192,5 +193,3 @@ export class InformerComponent implements OnInit {
     });
   }
 }
-
-
