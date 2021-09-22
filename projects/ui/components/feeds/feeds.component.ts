@@ -23,7 +23,7 @@ import { SharedService } from '@epgu/ui/services/shared';
 import { HelperService } from '@epgu/ui/services/helper';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
 import { CountersService } from '@epgu/ui/services/counters';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const moment = moment_;
 moment.locale('ru');
@@ -41,6 +41,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public inlineDate = true;
   @Input() public snippets = false;
   @Input() public search = this.route.snapshot.queryParamMap.get('q') || '';
+  @Input() public unread: boolean;
   @Input() public selectedCategory: any;
   @Input() public count = 0;
   @Input() public types: string | null;
@@ -49,6 +50,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   @Output() public emptyFeeds: EventEmitter<boolean> = new EventEmitter();
   @Output() public searching = new EventEmitter<boolean>();
   @Output() public serviceError = new EventEmitter<boolean>();
+  @Output() public archiveMoving = new EventEmitter<'fromArchive' | 'inArchive'>();
 
   public user: User;
   public feeds: FeedModel[];
@@ -90,6 +92,22 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     MIMETYPE_LENGTH_INCORRECT: 'Ошибка запроса'
   };
   public isHeader: boolean;
+  public config = this.loadService.config;
+
+  public getFeedTypeName = this.feedsService.getFeedTypeName;
+
+  public get emptyMessageTitle(): string {
+    if (this.types === 'PARTNERS_DRAFT') {
+      return 'FEEDS.EMPTY.PARTNERS_DRAFT';
+    } else if (this.types === 'PARTNERS') {
+      return 'FEEDS.EMPTY.PARTNERS';
+    } else if (this.page === 'drafts') {
+      return 'FEEDS.EMPTY.DRAFT';
+    } else if (this.selectedCategory?.mnemonic) {
+      return `FEEDS.EMPTY.${this.selectedCategory.mnemonic.toUpperCase()}`;
+    }
+    return 'FEEDS.EMPTY.DEFAULT';
+  }
 
   constructor(
     private router: Router,
@@ -108,7 +126,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public ngOnInit() {
     HelperService.mixinModuleTranslations(this.translate);
     this.getUserData();
-    if (!this.afterFirstSearch ) {
+    if (!this.afterFirstSearch) {
       this.getFeeds();
     }
     this.updateFeeds();
@@ -132,10 +150,11 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     if (changes.selectedCategory &&
       changes.selectedCategory.currentValue &&
       changes.selectedCategory.previousValue &&
-      changes.selectedCategory.previousValue.type !== changes.selectedCategory.currentValue.type) {
+      changes.selectedCategory.previousValue.mnemonic !== changes.selectedCategory.currentValue.mnemonic) {
       this.enableFeedsSearch();
       this.selectedTypes = this.selectedCategory.type;
       this.defaultTypesSelected = this.selectedTypes === this.types;
+      this.unread = this.selectedCategory.mnemonic === 'unread';
       this.getFeeds('', '', this.search);
     }
   }
@@ -172,21 +191,52 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       types: this.selectedTypes || this.types,
       lastFeedId: lastFeedId.toString(),
       lastFeedDate,
-      q: query
+      q: query,
+      unread: this.unread
     })
       .subscribe((feeds: FeedsModel) => {
         this.searching.emit(false);
-        const feedsItems = feeds.items.map<FeedModel>((feed) => ({
-          ...feed,
-          data: {
-            ...feed.data,
-            snippets: feed?.data?.snippets?.map((item) => {
-              return item.type === 'CUSTOM' && item.json
-                ? { json: JSON.parse(item.json), type: item?.type }
-                : item;
-            }),
-          },
-        }));
+        const feedsItems = feeds.items.map<FeedModel>((feed) => {
+          if (feed.status === 'invite_to_equeue') {
+            if (!feed.data.snippets) {
+              feed.data.snippets = [];
+            }
+            feed.data.snippets.push({type: 'INVITE', comment: 'Выберите время для визита в ведомство'});
+          }
+          if (feed.data.snippets) {
+            feed.data.snippets = feed.data.snippets.filter(item => {
+              const isDraft = item.type === 'DRAFT';
+              const paid = item.type === 'PAYMENT' && feed.data.reminder;
+              const rejectedPayment = item.type === 'PAYMENT' && feed.status === 'reject_no_pay';
+              return !(isDraft || paid || rejectedPayment);
+            });
+          }
+          return {
+            ...feed,
+            data: {
+              ...feed.data,
+              snippets: feed?.data?.snippets?.map((item) => {
+                let snippet: any = null;
+                if (item.type === 'CHILD') {
+                  if (item.birthDate) {
+                    item.years = this.getYears(item.birthDate);
+                  }
+                } else if (item.type === 'CUSTOM' && item.json) {
+                  snippet = {
+                    json: JSON.parse(item?.json),
+                    type: item?.type,
+                  };
+                  if (snippet.json.birthDate) {
+                    snippet.json.years = this.getYears(snippet.json.birthDate);
+                  }
+                }
+                return snippet
+                  ? snippet
+                  : item;
+              }),
+            }
+          };
+        });
         this.feeds =
           this.feeds && this.feeds.length
             ? this.feeds.concat(feedsItems)
@@ -211,6 +261,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         this.yaMetricOnFilter();
         this.changeDetector.detectChanges();
       }, () => {
+        this.feedsIsLoading = false;
         this.serviceError.emit(true);
       });
   }
@@ -228,7 +279,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public withReload(feed): boolean {
-    return !(this.isLk && !['KND_APPEAL', 'KND_APPEAL_DRAFT', 'PAYMENT'].includes(feed.feedType) || this.isPartners) || !!(feed.data && feed.data.p16url);
+    const otherDomainFeeds = ['KND_APPEAL', 'KND_APPEAL_DRAFT', 'PAYMENT'];
+    return !(this.isLk && !otherDomainFeeds.includes(feed.feedType) || this.isPartners) || !!(feed.data && feed.data.p16url);
   }
 
   public getUserData(): User {
@@ -240,17 +292,13 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       'feed-' + feed.feedType, 'feed-' + this.page,
       feed.removeInProgress ? 'feed-remove-in-progress' : '',
       this.isUpdated(feed) ? 'is-updated' : '',
-      this.setUnreadFeedCls(feed) && this.isHeader ? 'feed-header-unread' : ''
+      this.setUnreadFeedCls(feed) ? 'feed-header-unread' : ''
     ];
   }
 
   public setUnreadFeedCls(feed: FeedModel): boolean {
     const escapedFeedTypes = ['DRAFT', 'PARTNERS_DRAFT', 'KND_APPEAL_DRAFT'];
     return feed.unread && !escapedFeedTypes.includes(feed.feedType);
-  }
-
-  public markAsFlag(feed: FeedModel): boolean {
-    return feed.hasLegal || feed.isLegal || feed.data.hasRegLetter;
   }
 
   public isFormattedLoginName(feed: FeedModel): boolean {
@@ -281,6 +329,18 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     return true;
   }
 
+  public isDraft(feed: FeedModel): boolean {
+    return ['DRAFT', 'PARTNERS_DRAFT', 'KND_APPEAL_DRAFT'].includes(feed.feedType);
+  }
+
+  public isOrder(feed: FeedModel): boolean {
+    return ['ORDER', 'EQUEUE', 'APPEAL', 'CLAIM', 'COMPLEX_ORDER', 'SIGN'].includes(feed.feedType);
+  }
+
+  public isMain(): boolean {
+    return this.page === 'main';
+  }
+
   public getSnippetsDate(feed: FeedModel): string {
     if (feed.data && feed.data.snippets && feed.data.snippets.length) {
       const date = feed.data.snippets[0].localDate || feed.data.snippets[0].date;
@@ -290,7 +350,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getSnippetsOrgName(feed: FeedModel): string {
-    if (this.checkSnippetsExists(feed)) {
+    if (feed.data.snippets?.length) {
       return feed.data.snippets[0].orgName || '';
     }
     return '';
@@ -326,11 +386,11 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public enableShowMoreButton(): boolean {
-    return this.feeds && !this.feedsIsLoading && !this.addFeedsIsLoading && !!this.feeds.length;
+    return this.feeds && !this.feedsIsLoading && !this.addFeedsIsLoading && !!this.feeds.length && !this.isMain();
   }
 
   public isFeedsEmpty(): boolean {
-    return this.feeds && !this.feeds.length && !this.feedsIsLoading;
+    return !this.feedsIsLoading && this.feeds && (!this.feeds.length || this.feeds.every(item => item.isHidden));
   }
 
   public ngOnDestroy(): void {
@@ -396,7 +456,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         message: res
       });
       const feedsLength = this.feeds.length;
-      if (feedsLength) {
+      if (feedsLength && this.hasMore) {
         const last = this.feeds[feedsLength - 1];
         const date = last.date;
         this.getFeeds(last.id, date ? moment(date).toDate() : '', this.search, '1');
@@ -412,8 +472,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         this.removeInProgress = false;
         feed.removeInProgress = false;
         this.changeDetector.detectChanges();
-      })
-    }
+      });
+    };
     if (!this.removeInProgress) {
       this.removeInProgress = true;
       feed.removeInProgress = true;
@@ -435,12 +495,93 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
+  public moveInArchive(feed: FeedModel, index: number) {
+    let timeout;
+    const successArchiveMoving = () => {
+      // Так как возможна отмена действия (отмена в бабле), сначала фид просто скрываем.
+      feed.isHidden = true;
+      // По истечении времени, которое показывается бабл, удаляем фид из списка.
+      timeout = setTimeout(() => {
+        this.feeds.splice(index, 1);
+      }, 5000);
+      this.archiveMoving.emit(this.isArchive ? 'fromArchive' : 'inArchive');
+
+      const feedsLength = this.feeds.length;
+      if (feedsLength && this.hasMore) {
+        const last = this.feeds[feedsLength - 1];
+        const date = last.date;
+        this.getFeeds(last.id, date ? moment(date).toDate() : '', this.search, '1');
+      }
+
+      this.changeDetector.detectChanges();
+    };
+
+    if (this.isArchive) {
+      this.feedsService.getFromArchive([feed.id]).subscribe(res => {
+        successArchiveMoving();
+        this.notifier.success({
+          message: this.page === 'orders' ? 'Заявление извлечено из архива' : 'Уведомление извлечено из архива',
+          onCancel: () => {
+            // Отменяем удаление фида из списка и делаем его снова видимым
+            clearTimeout(timeout);
+            this.feedsService.putToArchive([feed.id]).subscribe(() => {
+              feed.isHidden = false;
+              this.archiveMoving.emit('inArchive');
+              this.changeDetector.detectChanges();
+            });
+          }
+        });
+      }, error => {
+        this.notifier.success({
+          message: 'Не удалось извлечь из архива',
+        });
+      });
+    } else {
+      this.feedsService.putToArchive([feed.id]).subscribe(res => {
+        successArchiveMoving();
+        this.notifier.success({
+          message: this.page === 'orders' ? 'Заявление перемещено в архив' : 'Уведомление перемещено в архив',
+          onCancel: () => {
+            // Отменяем удаление фида из списка и делаем его снова видимым
+            clearTimeout(timeout);
+            this.feedsService.getFromArchive([feed.id]).subscribe(() => {
+              feed.isHidden = false;
+              this.archiveMoving.emit('fromArchive');
+              this.changeDetector.detectChanges();
+            });
+          }
+        });
+      }, error => {
+        this.notifier.success({
+          message: 'Не удалось перенести в архив'
+        });
+      });
+    }
+  }
+
+  public actionsEnabled(): boolean {
+    return !this.isHeader && !this.isMain() && !['overview', 'orders'].includes(this.page);
+  }
+
   public showRemoveFeedButton(feed: FeedModel): boolean {
-    return ['overview', 'events', 'drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder && !this.isPaymentDraft(feed);
+    return ['drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder && !this.isPaymentDraft(feed);
+  }
+
+  public showArchiveFeedButton(feed: FeedModel): boolean {
+    if (this.isArchive) {
+      return true;
+    }
+    if (this.isOrder(feed)) {
+      return ['reject', 'executed'].includes(feed.status) && !feed.unread;
+    }
+    if (this.isDraft(feed)) {
+      return false;
+    }
+    return !feed.unread;
   }
 
   public isPaymentDraft(feed: FeedModel): boolean {
-    return feed.feedType === 'DRAFT' && feed.data.snippets?.length &&  feed.data.snippets.some((item: SnippetModel) => {
+    return feed.feedType === 'DRAFT' && feed.data.snippets?.length && feed.data.snippets.some((item: SnippetModel) => {
       return item.type === 'PAYMENT' && feed.status !== 'reject_no_pay' && !!item.sum;
     });
   }
@@ -665,5 +806,22 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   public isKindergartenSnippet(feed: any): boolean {
     return this.checkSnippetsExists(feed) && this.page === 'orders' && feed.data.snippets[0].type === 'CHILD';
+  }
+
+  public getYears(date: string): string {
+    let result = '';
+    if (!date) {
+      return result;
+    }
+    const now = moment();
+    const formatDate = moment(date, 'DD.MM.YYYY');
+    const diff = formatDate.isValid() ? now.diff(formatDate, 'years') : 0;
+    if (diff && diff > 0) {
+      result = String(diff) + HelperService.pluralize(
+        diff,
+        [' год', ' года', ' лет']
+      );
+    }
+    return result;
   }
 }

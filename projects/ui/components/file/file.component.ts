@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { File } from '../../models/file-link';
+import { File } from '@epgu/ui/models';
 
 @Component({
   selector: 'lib-file',

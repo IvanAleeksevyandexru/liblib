@@ -17,7 +17,7 @@ import { Focusable } from '@epgu/ui/services/focus';
 import { Validated } from '@epgu/ui/models/validation-show';
 import { Range, RangeListItem, RelativeDate } from '@epgu/ui/models/date-time';
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
-import { Translation, ValidationShowOn } from '@epgu/ui/models/common-enums';
+import { Align, Translation, ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { Width } from '@epgu/ui/models';
 import * as moment_ from 'moment';
 
@@ -61,6 +61,7 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
   // свойства для календаря
   @Input() public minDate: Date | RelativeDate | string;
   @Input() public maxDate: Date | RelativeDate | string;
+  @Input() public datePickerAlign: Align | string = Align.ADJUST;
 
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
@@ -89,7 +90,7 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
     this.changeDetector.detectChanges();
   }
 
-  public selectRange(item: RangeListItem) {
+  public selectItem(item: RangeListItem) {
     this.returnFocus();
     if (item.customRange) {
       this.customRangeSelectingMode = true;
@@ -97,7 +98,7 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
       this.changeDetector.detectChanges();
     } else {
       if (item.selected) {
-        return;
+        return false;
       } else {
         // !!! ВНИМАНИЕ изменяем рейндж внутри оригинального (не-кастомного) listItem
         this.customRange = null;
@@ -180,9 +181,9 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
       return '';
     }
     if (this.textModelValue) {
-      return range.start + '-' + range.end;
+      return range.start + ' — ' + range.end;
     } else {
-      return moment(range.start).format(STD_DATE_FORMAT) + '-' + moment(range.end).format(STD_DATE_FORMAT);
+      return moment(range.start).format(STD_DATE_FORMAT) + ' — ' + moment(range.end).format(STD_DATE_FORMAT);
     }
   }
 
