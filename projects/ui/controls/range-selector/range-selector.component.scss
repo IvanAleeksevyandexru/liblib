@@ -1,0 +1,17 @@
+@import '../dropdown-simple/dropdown-simple.component';
+
+.dropdown-list-container {
+  overflow: hidden;
+}
+
+.standard-skin {
+  .dropdown-list-container.no-border {
+    border: none;
+  }
+}
+
+.dropdown-date-picker-container {
+  position: absolute;
+  z-index: 4;
+  width: 100%;
+}
