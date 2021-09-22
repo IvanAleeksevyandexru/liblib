@@ -20,6 +20,12 @@ html {
   }
 }
 
+@media all and (max-width: 1139px) {
+  html.disable-scroll-sm-md {
+    overflow: hidden;
+  }
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -47,8 +53,12 @@ a {
   }
 
   &.external:after {
-    content: url("data:image/svg+xml,%3Csvg%20width%3D'16'%20height%3D'16'%20viewBox%3D'0%200%2016%2016'%20fill%3D'none'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%3E%3Cpath%20d%3D'M16%200H0V16H16V0Z'%20fill%3D'none'%2F%3E%3Cpath%20d%3D'M13%203L6%2010'%20stroke%3D'%230B40B3'%2F%3E%3Cpath%20d%3D'M9%203H13V7'%20stroke%3D'%230B40B3'%2F%3E%3Cpath%20d%3D'M6.80662%204H3V13H12L11.9975%209.19231'%20stroke%3D'%230B40B3'%2F%3E%3C%2Fsvg%3E");
-    display: inline;
+    content: '';
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    background-image: url('../svg/exernal.svg');
+    background-size: cover;
     margin-left: 4px;
     vertical-align: middle;
   }
@@ -232,6 +242,26 @@ ul.list-blue-dotted {
       margin-left: -20px;
       margin-right: 12px;
     }
+
+    ul {
+      list-style: none;
+
+      & > li {
+        margin-top: 12px;
+        margin-left: 20px;
+
+        &:before {
+          content: '';
+          display: inline-block;
+          width: 8px;
+          height: 2px;
+          background-color: #4D83FA;
+          margin-left: -20px;
+          margin-right: 12px;
+          vertical-align: middle;
+        }
+      }
+    }
   }
 }
 
@@ -239,10 +269,50 @@ ul.list-decimal {
   list-style: decimal;
   margin-left: 18px;
 
+  & > li {
+    margin-top: 12px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  &.blue-digital {
+    & > li {
+      &::marker {
+        color: #4D83FA;
+      }
+    }
+  }
+
   // если больше 9 будет, надо будет добавить нечто следующее
   /*& > li:nth-child(10n) {
     margin-left: 6px;
   }*/
+}
+
+ul.list-dashed {
+  list-style: none;
+
+  & > li {
+    margin-top: 12px;
+    margin-left: 20px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 2px;
+      background-color: #4D83FA;
+      margin-left: -20px;
+      margin-right: 12px;
+      vertical-align: middle;
+    }
+  }
 }
 
 .shadow-block {

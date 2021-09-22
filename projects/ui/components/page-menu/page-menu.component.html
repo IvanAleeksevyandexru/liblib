@@ -1,10 +1,25 @@
-<div #menu *ngIf="items" class="page-menu-wrapper">
-  <ng-content #title></ng-content>
-  <div class="list-items flex-container-md flex-wrap-md block-lg">
-    <ng-container *ngFor="let item of items">
-      <div class="item">
-        <a class="link-plain link-underline" (click)="onClick(item.id)">{{item.text}}</a>
+<div #forWidth class="hidden"></div>
+
+<div #menu *ngIf="items?.length || content" class="page-menu-wrapper" [ngClass]="styleType">
+  <div class="title-wrapper">
+    <ng-content #title></ng-content>
+  </div>
+  <div class="list-items" [ngClass]="{'flex-container-md flex-wrap-md block-lg': !styleType}">
+    <div class="scroll-wrapper" [style.maxHeight]="maxHeight + 'px'">
+      <div class="mr-8">
+        <ng-container *ngTemplateOutlet="content ? content : default"></ng-container>
       </div>
-    </ng-container>
+    </div>
   </div>
 </div>
+
+<ng-template #default>
+  <ng-container *ngFor="let item of items">
+    <div class="item">
+      <a class="link-plain"
+         [ngClass]="{'link-underline': !styleType}"
+         (click)="onClick(item.id)"
+      >{{item.text}}</a>
+    </div>
+  </ng-container>
+</ng-template>
