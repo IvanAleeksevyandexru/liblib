@@ -15,7 +15,6 @@ import * as zipkin from '@epgu/zipkin';
 import ZipkinHttpClient = zipkin.Instrumentation.HttpClient;
 import { Injectable } from '@angular/core';
 import { LoadService } from '@epgu/ui/services/load';
-import { updateLocale } from 'moment';
 
 @Injectable()
   export class TracingHttpInterceptor implements HttpInterceptor {
@@ -25,11 +24,14 @@ import { updateLocale } from 'moment';
       const remoteService = 'form-backend';
       const { tracer }: { tracer: Tracer } = this.tracingService;
       const { url }: { url: string } = req;
+      const zipkinEnableRoutes = this.loadService.config.zipkinEnableRoutes;
+      const zipkinSpanSendEnabled = this.loadService.config.zipkinSpanSendEnabled;
+
       if (!tracer) {
         return next.handle(req);
       }
 
-      if (this.loadService.config.zipkinSpanSendEnabled && url.indexOf('/esia-rs') === -1) {
+      if (zipkinSpanSendEnabled && zipkinEnableRoutes && !!zipkinEnableRoutes.find(item => url.indexOf(item) !== -1)) {
         return this.doIntercept(tracer, url, remoteService, req, next);
       } else {
         return next.handle(req);
