@@ -24,8 +24,8 @@ const HIDE_TIMOUT = 300;
 })
 export class HeaderComponent implements OnInit {
 
-  public user = this.loadService.user;
-  public userRoles = this.menuService.getUserRoles(this.user);
+  public user = this.loadService.user as User;
+  public userRoles = this.menuService.getUserRoles(this.user) as UserRole[];
   public userMenuState: UserMenuState;
   public showNotifications: boolean;
   public isUnread: boolean;

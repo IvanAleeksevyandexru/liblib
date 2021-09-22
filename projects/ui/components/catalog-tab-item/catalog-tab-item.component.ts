@@ -87,10 +87,12 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
 
   public setTargetAttrToFaqLinks() {
     setTimeout(() => {
-      Array.from(this.faqAnswerWrap.nativeElement.getElementsByTagName('A'))
-        .forEach((link: Element) => {
-          link.setAttribute('target', '_blank');
-        });
+      if (this.faqAnswerWrap) {
+        Array.from(this.faqAnswerWrap.nativeElement.getElementsByTagName('A'))
+          .forEach((link: Element) => {
+            link.setAttribute('target', '_blank');
+          });
+      }
     });
   }
 

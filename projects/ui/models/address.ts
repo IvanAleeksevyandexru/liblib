@@ -20,6 +20,10 @@ export interface Address {
   zipCode?: string;
   additionArea?: string;
   additionAreaStreet?: string;
+  frameType?: string;
+  frameTypeFull?: string;
+  houseType?: string;
+  houseTypeFull?: string;
 }
 
 export interface ConfirmAddress {
