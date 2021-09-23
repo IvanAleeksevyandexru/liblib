@@ -35,7 +35,7 @@ import {
   templateUrl: './catalog-tab-item.component.html',
   styleUrls: ['./catalog-tab-item.component.scss']
 })
-export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
+export class CatalogTabItemComponent implements OnInit, OnChanges {
 
   @Input() public code: string;
   @Input() public viewType: 'main-page-view' | 'side-view';
@@ -232,10 +232,6 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   public goToPopular(item: any): void {
     this.catalogClose.emit();
     location.href = item.type === 'LINK' ? item.url : `${this.loadService.config.betaUrl}${item.url}`;
-  }
-
-  public ngOnDestroy() {
-    this.catalogClose.emit();
   }
 
   public checkOldPortalBanner(): boolean {
