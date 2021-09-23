@@ -14,6 +14,7 @@ import { Translation } from '@epgu/ui/models/common-enums';
 import { FeedsComponent } from '@epgu/ui/components/feeds';
 import { take } from 'rxjs/operators';
 import { User } from '@epgu/ui/models/user';
+import { YaMetricService } from '@epgu/ui/services/ya-metric';
 
 const HIDE_TIMOUT = 300;
 
@@ -95,7 +96,8 @@ export class HeaderComponent implements OnInit {
     public translate: TranslateService,
     private modalService: ModalService,
     private moduleRef: NgModuleRef<any>,
-    private router: Router
+    private router: Router,
+    private yaMetricService: YaMetricService,
   ) {
     this.onRouteChange();
   }
@@ -233,6 +235,12 @@ export class HeaderComponent implements OnInit {
     this.hideTimout = setTimeout(() => {
       this.showCategories = false;
     }, HIDE_TIMOUT);
+  }
+
+  public sendMetric(name: string) {
+    this.yaMetricService.callReachGoal(name, {
+      screen: this.loadService.attributes.deviceType
+    });
   }
 }
 
