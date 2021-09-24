@@ -1,5 +1,4 @@
 <div class="actions-menu-button hide-lg" [class.disabled]="disabled" (click)="showMenu = true"></div>
-<div class="actions-menu-button hide-lg close" *ngIf="showMenu" (click)="showMenu = false"></div>
 <div
   class="actions-menu"
   [ngClass]="{
@@ -18,7 +17,6 @@
   </ng-container>
   <div class="close-menu" (click)="showMenu = false"></div>
 </div>
-
 <div class="actions hide show-lg" [class.disabled]="disabled">
   <ng-container *ngFor="let link of actions | slice:0:countOutside">
     <a *ngIf="link.href" class="link-plain text-plain" [href]="link.href" [target]="link.target || '_blank'">
@@ -31,5 +29,4 @@
     [ngClass]="{'hide-lg': actions.length <= countOutside, 'disabled': disabled}"
     (click)="showMenu = true"
   ></a>
-  <div class="actions-menu-button close" *ngIf="showMenu" (click)="showMenu = false"></div>
 </div>

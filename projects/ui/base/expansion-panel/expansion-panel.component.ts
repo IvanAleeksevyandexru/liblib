@@ -12,6 +12,7 @@ export class ExpansionPanelComponent implements OnInit {
   @Input() public type: 'accordion' | 'gray-accordion' | 'for-footer' | 'light' | 'light-v2' = 'accordion';
   @Input() public customClass: string;
   @Output() public toggle = new EventEmitter<any>();
+
   constructor() { }
 
   public ngOnInit() {

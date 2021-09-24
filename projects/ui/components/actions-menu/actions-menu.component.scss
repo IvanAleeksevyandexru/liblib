@@ -41,23 +41,30 @@
 }
 
 .actions-menu-button {
-  background: url(../../../assets/svg/menu-point.svg) no-repeat;
+  box-sizing: content-box;
   position: absolute;
   z-index: 1;
   top: 16px;
   right: 16px;
   width: 4px;
   padding: 6px;
-  height: 100%;
+  height: 4px;
+  border-radius: 50%;
+  background: #0b40b3;
+  background-clip: content-box;
   cursor: pointer;
 
-  &.close {
-    background: url(../../../assets/svg/close.svg) no-repeat;
-    z-index: 3;
-    zoom: .7;
-    width: 20px;
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 6px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #0b40b3;
   }
-
 
   &:after {
     top: 12px;
@@ -94,17 +101,5 @@
     position: relative;
     top: 0;
     right: 0;
-  }
-}
-
-@media screen and (max-width: 1140px) {
-  .actions-menu-button {
-    position: absolute;
-    top: 0;
-    right: -5px;
-    height: 20px;
-  }
-  .show-lg {
-    display: none !important;
   }
 }

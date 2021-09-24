@@ -24,11 +24,14 @@ import { LoadService } from '@epgu/ui/services/load';
       const remoteService = 'form-backend';
       const { tracer }: { tracer: Tracer } = this.tracingService;
       const { url }: { url: string } = req;
+      const zipkinEnableRoutes = this.loadService.config.zipkinEnableRoutes;
+      const zipkinSpanSendEnabled = this.loadService.config.zipkinSpanSendEnabled;
+
       if (!tracer) {
         return next.handle(req);
       }
 
-      if (this.loadService.config.zipkinSpanSendEnabled) {
+      if (zipkinSpanSendEnabled && zipkinEnableRoutes && !!zipkinEnableRoutes.find(item => url.indexOf(item) !== -1)) {
         return this.doIntercept(tracer, url, remoteService, req, next);
       } else {
         return next.handle(req);

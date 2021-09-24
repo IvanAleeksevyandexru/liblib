@@ -6,15 +6,16 @@ import { ActionsMenuModule } from '@epgu/ui/components/actions-menu';
 
 
 @NgModule({
+  declarations: [
+    FileComponent
+  ],
   imports: [
     CommonModule,
     BaseModule,
     ActionsMenuModule,
   ],
-  declarations: [
+  exports: [
     FileComponent
-  ],
-  exports: [FileComponent],
+  ]
 })
-export class FileModule {
-}
+export class FileModule { }
