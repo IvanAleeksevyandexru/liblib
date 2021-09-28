@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-lib",
-  "version": "1.1.0-EPGUCORE-63051",
+  "version": "2.0.6-EPGUCORE-63051",
   "publishConfig": {
     "registry": "http://nexus.gosuslugi.local/content/repositories/npm-internal/",
     "access": "public"
@@ -13,25 +13,26 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "future-lib-release": "CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD | sed s/branch-prod-fed-//) && A=$(echo $CURRENT_BRANCH | cut -d'.' -f1) && B=$(echo $CURRENT_BRANCH | cut -d'.' -f2) && C=$(echo $CURRENT_BRANCH | cut -d'.' -f3) && D=$(echo $CURRENT_BRANCH | cut -d'.' -f4) && LIB_VERSION=${A}.${B}.${C}-${D} && CURRENT_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g') && echo $CURRENT_VERSION && echo $LIB_VERSION && if [ $CURRENT_VERSION != $LIB_VERSION ]                     \nthen\n        npm version $LIB_VERSION\nfi\n",
-    "postlib-release": "cd ./dist/epgu-lib && npm publish",
-    "lib-watch": "ng build epgu-lib --watch",
-    "lib-build:prod": "cross-env ng build epgu-lib && npm run cp-lib-assets",
+    "postlib-release": "cd ./dist/ui && npm publish",
+    "lib-watch": "cross-env NODE_OPTIONS=--max_old_space_size=5110 ng build ui --watch",
+    "lib-build:prod": "cross-env NODE_OPTIONS=--max_old_space_size=5110 ng build ui && npm run cp-lib-assets",
     "lib-release": "npm run lib-build:prod",
-    "cp-lib-assets": "cross-env cpx \"./src/assets/**/*\" \"./dist/epgu-lib/assets\"",
-    "publish": "cd dist/epgu-lib/ && npm publish"
+    "cp-lib-assets": "cross-env cpx \"./projects/assets/**/*\" \"./dist/ui/assets\"",
+    "publish": "cd dist/ui/ && npm publish"
   },
   "dependencies": {
     "@angular/animations": "11.0.0",
-    "@angular/cdk": "11.0.0",
     "@angular/common": "11.0.0",
     "@angular/compiler": "11.0.0",
     "@angular/core": "11.0.0",
     "@angular/forms": "11.0.0",
+    "@angular/cdk": "11.0.0",
     "@angular/platform-browser": "11.0.0",
     "@angular/platform-browser-dynamic": "11.0.0",
     "@angular/router": "11.0.0",
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",
+    "@epgu/zipkin": "0.0.3",
     "acorn": "7.1.0",
     "angular2-text-mask": "9.0.0",
     "angularx-qrcode": "^10.0.10",
@@ -64,6 +65,7 @@
     "web-animations-js": "^2.3.2",
     "winston": "3.2.1",
     "winston-daily-rotate-file": "4.1.0",
+    "zipkin-transport-http": "^0.22.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
@@ -101,9 +103,9 @@
     "webpack-shell-plugin": "0.5.0"
   },
   "peerDependencies": {
-    "@angular/cdk": "11.0.0",
     "@angular/common": "11.0.0",
     "@angular/core": "11.0.0",
+    "@angular/cdk": "11.0.0",
     "angular2-text-mask": "9.0.0",
     "moment": "2.24.0",
     "ngx-perfect-scrollbar": "8.0.0"
