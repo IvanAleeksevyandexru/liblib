@@ -118,12 +118,15 @@ export class HeaderComponent implements OnInit {
   }
 
   public burgerWithCatalogShow(currentPath): void {
-    const urls = ['/new', '/newsearch', '/departments', '/pay'];
+    const urls = ['/new', '/newsearch', '/departments', '/pay', '/help'];
     if (this.isPortal) {
       urls.push('/');
     }
     if (currentPath === '/pay' || currentPath.startsWith('/pay/')) {
       currentPath = '/pay';
+    }
+    if (currentPath === '/help' || currentPath.startsWith('/help/')) {
+      currentPath = '/help';
     }
     this.burgerWithCatalog = urls.indexOf(currentPath) > -1;
   }
