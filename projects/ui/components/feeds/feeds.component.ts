@@ -103,6 +103,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       return 'FEEDS.EMPTY.PARTNERS';
     } else if (this.page === 'drafts') {
       return 'FEEDS.EMPTY.DRAFT';
+    } else if (this.page === 'orders') {
+      return 'FEEDS.EMPTY.ORDERS';
     } else if (this.selectedCategory?.mnemonic) {
       return `FEEDS.EMPTY.${this.selectedCategory.mnemonic.toUpperCase()}`;
     }
@@ -705,7 +707,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
 
-    if (['ORGANIZATION', 'BUSINESSMAN', 'ACCOUNT_CHILD', 'PAYMENT'].includes(feed.feedType)) {
+    if (['ORGANIZATION', 'BUSINESSMAN', 'ACCOUNT', 'ACCOUNT_CHILD', 'PAYMENT'].includes(feed.feedType)) {
       this.feedsService.markFeedAsRead(feed.id).subscribe();
     }
   }
