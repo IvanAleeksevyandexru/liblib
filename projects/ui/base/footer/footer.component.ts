@@ -20,13 +20,12 @@ export class FooterComponent implements OnInit {
 
   public hideCmsFooter: boolean;
   public hideFooter: boolean;
-  public visibleFooter = true;
 
   constructor(
     private cfr: ComponentFactoryResolver,
     public translate: TranslateService,
-    private router: Router,
-    private footerService: FooterService
+    public footerService: FooterService,
+    private router: Router
   ) {
     router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -39,9 +38,6 @@ export class FooterComponent implements OnInit {
   public ngOnInit() {
     const cf = this.cfr.resolveComponentFactory(FooterCmsComponent);
     this.viewContainerRef.createComponent(cf, 0);
-    this.footerService.visible.subscribe((val: boolean) => {
-      this.visibleFooter = val;
-    });
   }
 
 }

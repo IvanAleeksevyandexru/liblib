@@ -12,7 +12,6 @@ export class SmallFooterComponent implements OnInit {
 
   @Input() public footer: MainFooter;
 
-  public visibleFooter = true;
   public config = this.loadService.config;
   public staticDomainLibAssetsPath = this.loadService.config.staticDomainLibAssetsPath;
   public applications = {
@@ -36,13 +35,10 @@ export class SmallFooterComponent implements OnInit {
 
   constructor(
     public loadService: LoadService,
-    private footerService: FooterService
+    public footerService: FooterService
   ) {
   }
 
   public ngOnInit(): void {
-    this.footerService.visible.subscribe((val: boolean) => {
-      this.visibleFooter = val;
-    });
   }
 }
