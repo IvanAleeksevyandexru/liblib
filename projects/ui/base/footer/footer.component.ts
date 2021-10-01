@@ -1,6 +1,5 @@
 import { Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { takeUntil } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { CommonController } from '@epgu/ui/directives';
@@ -13,7 +12,7 @@ import { FooterCmsComponent } from './footer-cms/footer-cms.component';
   styleUrls: ['./footer.component.scss'],
 })
 
-export class FooterComponent extends CommonController implements OnInit {
+export class FooterComponent implements OnInit {
 
   @Input() public onlyCopyright = false;
 
@@ -29,7 +28,6 @@ export class FooterComponent extends CommonController implements OnInit {
     private router: Router,
     private footerService: FooterService
   ) {
-    super();
     router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     )
@@ -41,9 +39,7 @@ export class FooterComponent extends CommonController implements OnInit {
   public ngOnInit() {
     const cf = this.cfr.resolveComponentFactory(FooterCmsComponent);
     this.viewContainerRef.createComponent(cf, 0);
-    this.footerService.visible
-    .pipe(takeUntil(this.destroyed$))
-    .subscribe((val: boolean) => {
+    this.footerService.visible.subscribe((val: boolean) => {
       this.visibleFooter = val;
     });
   }

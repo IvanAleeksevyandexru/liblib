@@ -1,6 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
-import { CommonController } from '@epgu/ui/directives';
 import { LoadService } from '@epgu/ui/services/load';
 import { FooterService } from '@epgu/ui/services/footer';
 import { MainFooter } from '@epgu/ui/models';
@@ -10,7 +8,7 @@ import { MainFooter } from '@epgu/ui/models';
   templateUrl: './small-footer.component.html',
   styleUrls: ['./small-footer.component.scss']
 })
-export class SmallFooterComponent extends CommonController implements OnInit {
+export class SmallFooterComponent implements OnInit {
 
   @Input() public footer: MainFooter;
 
@@ -40,13 +38,10 @@ export class SmallFooterComponent extends CommonController implements OnInit {
     public loadService: LoadService,
     private footerService: FooterService
   ) {
-    super();
   }
 
   public ngOnInit(): void {
-    this.footerService.visible
-    .pipe(takeUntil(this.destroyed$))
-    .subscribe((val: boolean) => {
+    this.footerService.visible.subscribe((val: boolean) => {
       this.visibleFooter = val;
     });
   }

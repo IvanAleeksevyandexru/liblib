@@ -1,4 +1,4 @@
-<div class="footer-wrapper" id="footer-wrapper" [class.mobile-hide]="hideFooter" *ngIf="visibleFooter">
+<div class="footer-wrapper" id="footer-wrapper" [class.mobile-hide]="hideFooter" *ngIf="visibleFooter | async">
   <div [hidden]="translate.currentLang !== 'ru' || hideCmsFooter || onlyCopyright">
     <ng-template #footerCms></ng-template>
   </div>
