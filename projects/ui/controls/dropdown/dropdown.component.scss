@@ -72,7 +72,7 @@
     .dropdown-arrow {
       display: block;
       position: absolute;
-      top: 10px;
+      top: 14px;
       right: 12px;
       background: url(../../../assets/svg/dropdown-expand.svg) no-repeat;
       width: 24px;
@@ -162,6 +162,7 @@
         display: table;
         width: 100%;
         padding-bottom: 14px;
+        padding-right: 16px;
         border-bottom: 1px solid #E1E1E1;
       }
 

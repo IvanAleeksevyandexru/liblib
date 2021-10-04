@@ -1,4 +1,4 @@
-<div class="actions-menu-button hide-lg" [class.disabled]="disabled" (click)="showMenu = true"></div>
+<div class="actions-menu-button hide-lg" [class.disabled]="disabled" (click)="open()"></div>
 <div
   class="actions-menu"
   [ngClass]="{
@@ -27,6 +27,6 @@
   <a
     class="actions-menu-button"
     [ngClass]="{'hide-lg': actions.length <= countOutside, 'disabled': disabled}"
-    (click)="showMenu = true"
+    (click)="open()"
   ></a>
 </div>

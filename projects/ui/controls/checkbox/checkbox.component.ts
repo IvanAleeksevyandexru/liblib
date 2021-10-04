@@ -38,6 +38,8 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor, Validate
   @Input() public required = false;
   @Input() public disabled: boolean;
   @Input() public checked: boolean;
+  @Input() public customClass: string;
+  @Input() public type?: 'checkbox' | 'toggler' = 'checkbox';
 
   @Input() public invalid = false;
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;

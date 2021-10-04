@@ -5,7 +5,6 @@ import { BaseModule } from '@epgu/ui/base';
 import { ActionsMenuModule } from '@epgu/ui/components/actions-menu';
 
 
-
 @NgModule({
   declarations: [
     FileComponent
