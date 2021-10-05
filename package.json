@@ -106,9 +106,11 @@
     "@angular/common": "11.0.0",
     "@angular/core": "11.0.0",
     "@angular/cdk": "11.0.0",
+    "@epgu/zipkin": "0.0.3",
     "angular2-text-mask": "9.0.0",
     "moment": "2.24.0",
-    "ngx-perfect-scrollbar": "8.0.0"
+    "ngx-perfect-scrollbar": "8.0.0",
+    "zipkin-transport-http": "0.22.0"
   },
   "optionalDependencies": {
     "fsevents": "^2.0.7"

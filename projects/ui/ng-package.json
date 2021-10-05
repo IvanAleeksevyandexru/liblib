@@ -3,5 +3,6 @@
   "dest": "../../dist/ui",
   "lib": {
     "entryFile": "public_api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": ["."]
 }
