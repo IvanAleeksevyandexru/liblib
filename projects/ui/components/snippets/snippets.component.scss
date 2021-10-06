@@ -1,0 +1,46 @@
+.snippet-icon {
+  width: 24px;
+  height: 24px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  margin-right: 24px;
+  flex: 0 0 auto;
+  display: none;
+
+  &.im-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.snippet-equeue {
+  background-image: url(../../../assets/svg/snippets/calendar-green.svg);
+
+  &.status-rejected {
+    background-image: url(../../../assets/svg/snippets/calendar-red.svg);
+  }
+}
+
+.snippet-invite {
+  background-image: url(../../../assets/svg/snippets/calendar.svg);
+}
+
+.snippet-pay {
+  background-image: url(../../../assets/svg/snippets/pay.svg);
+}
+
+.snippets-container {
+  padding: 24px;
+  margin-top: 16px;
+  border: 1px dashed #E5EAF5;
+  border-radius: 9px;
+
+  .snippet-icon {
+    display: block;
+  }
+}
+
+.snippets-data {
+  flex: 1 1 auto;
+}
