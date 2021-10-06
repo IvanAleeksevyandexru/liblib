@@ -22,30 +22,30 @@ export class PsoComponent implements OnInit {
   ) {
     this.psoService.isPlaced$.pipe(
       takeUntil(this.destroy$),
-      filter(isPlaced => isPlaced),
-    ).subscribe(() => this.onScroll());
+      filter(isPlaced => isPlaced)
+    );
   }
 
   public ngOnInit() {
   }
 
-  @HostListener('document:scroll') public onScroll() {
-    if (this.loadService.attributes.deviceType === 'mob') {
-      return;
-    }
-    this.footer = this.footer || document.getElementById('footer-wrapper');
-    this.widgetPSO = this.widgetPSO || document.getElementById('pso-widget');
-    if (this.footer && this.widgetPSO) {
-      const widgetBottom = this.widgetPSO.getBoundingClientRect().bottom;
-      const footerTop = this.footer.getBoundingClientRect().top;
-      const shouldBeAbsolute = widgetBottom + 1 >= footerTop && footerTop < window.innerHeight;
-      const isAbsolute = (this.widgetPSO as any).style.position === 'absolute';
-      if (shouldBeAbsolute && !isAbsolute) {
-        (this.widgetPSO as any).style.position = 'absolute';
-      } else if (!shouldBeAbsolute && isAbsolute) {
-        (this.widgetPSO as any).style.position = '';
-      }
-    }
-  }
+  // @HostListener('document:scroll') public onScroll() {
+  //   if (this.loadService.attributes.deviceType === 'mob') {
+  //     return;
+  //   }
+  //   this.footer = this.footer || document.getElementById('footer-wrapper');
+  //   this.widgetPSO = this.widgetPSO || document.getElementById('pso-widget');
+  //   if (this.footer && this.widgetPSO) {
+  //     const widgetBottom = this.widgetPSO.getBoundingClientRect().bottom;
+  //     const footerTop = this.footer.getBoundingClientRect().top;
+  //     const shouldBeAbsolute = widgetBottom + 1 >= footerTop && footerTop < window.innerHeight;
+  //     const isAbsolute = (this.widgetPSO as any).style.position === 'absolute';
+  //     if (shouldBeAbsolute && !isAbsolute) {
+  //       (this.widgetPSO as any).style.position = 'absolute';
+  //     } else if (!shouldBeAbsolute && isAbsolute) {
+  //       (this.widgetPSO as any).style.position = '';
+  //     }
+  //   }
+  // }
 
 }
