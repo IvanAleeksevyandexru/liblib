@@ -97,7 +97,7 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public goToCategory(category: string | number, faq: string | number): void {
-    window.open(`${this.loadService.config.betaUrl}help/faq/${category.toString()}/${faq.toString()}`, '_blank');
+    window.open(`${this.loadService.config.betaUrl}help/faq/${category}/${faq}`, '_blank');
   }
 
   public getDepartmentsData(): void {
