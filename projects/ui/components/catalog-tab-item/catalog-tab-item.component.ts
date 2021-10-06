@@ -96,8 +96,8 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  public goToCategory(faq: FaqCategoriesCMSFaq): void {
-    window.open(`${this.loadService.config.betaUrl}help/faq/${faq.categoryCode}/${faq.id}`, '_blank');
+  public goToCategory(category: string | number, faq: string | number): void {
+    window.open(`${this.loadService.config.betaUrl}help/faq/${category.toString()}/${faq.toString()}`, '_blank');
   }
 
   public getDepartmentsData(): void {
@@ -196,11 +196,12 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
     faqsData.forEach((item) => {
-      if (item.faqs && item.faqs.length)
+      if (item.faqs && item.faqs.length) {
         faqs = faqs.concat({
           title: item.title,
           faqs: item.faqs,
         });
+      }
     });
     this.faqs = children.concat(faqs);
   }
