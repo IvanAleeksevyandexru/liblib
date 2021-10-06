@@ -5,8 +5,8 @@
   top: -1px;
   right: -1px;
   padding: 16px 48px 0 16px;
-  border-radius: 4px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, .1);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(11, 31, 51, 0.18);
   background: #ffffff;
 
   a {
@@ -22,24 +22,49 @@
   }
 }
 
+.actions-menu.closable {
+  padding: 24px 68px 8px 24px;
+  // надо позиционировать крестик по кнопке открытия
+  top: -24px;
+  right: -24px;
+
+  .close-menu {
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    width: 24px;
+    height: 24px;
+    background: url(../../../assets/svg/close-large-24.svg) center no-repeat;
+    background-size: 24px;
+    cursor: pointer;
+  }
+}
+
 .actions-menu-button {
-  background: url(../../../assets/svg/menu-point.svg) no-repeat;
+  box-sizing: content-box;
   position: absolute;
   z-index: 1;
   top: 16px;
   right: 16px;
   width: 4px;
   padding: 6px;
-  height: 100%;
+  height: 4px;
+  border-radius: 50%;
+  background: #0b40b3;
+  background-clip: content-box;
   cursor: pointer;
 
-  &.close {
-    background: url(../../../assets/svg/close.svg) no-repeat;
-    z-index: 3;
-    zoom: .7;
-    width: 20px;
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 6px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #0b40b3;
   }
-
 
   &:after {
     top: 12px;
@@ -76,17 +101,5 @@
     position: relative;
     top: 0;
     right: 0;
-  }
-}
-
-@media screen and (max-width: 1140px) {
-  .actions-menu-button {
-    position: absolute;
-    top: 0;
-    right: -5px;
-    height: 20px;
-  }
-  .show-lg {
-    display: none !important;
   }
 }

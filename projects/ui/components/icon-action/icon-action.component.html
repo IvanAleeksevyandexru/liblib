@@ -1,0 +1,7 @@
+<a class="action flex-container align-items-center"
+   [ngClass]="{'hover-state-on-mob': mobAsHoverState}"
+   (click)="onActionClick($event)">
+  <img [src]="icon" class="icon">
+  <img [src]="hoverIcon" class="hover-icon">
+  <span class="text ml-8">{{text}}</span>
+</a>

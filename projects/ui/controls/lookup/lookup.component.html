@@ -96,9 +96,14 @@
         <div *ngIf="showNotFound && !items.length" class="lookup-list-area">
           <div class="lookup-item nothing-found" (click)="closeDropdown(); returnFocus(); ">
             <div class="item-container">
-              <span class="lookup-item-text" [innerHTML]="'LOOKUP.NOTHING_FOUND' | libTranslate | subst:query"></span>
+              <span class="lookup-item-text"
+                    [innerHTML]="customNotFoundMessage || ('LOOKUP.NOTHING_FOUND' | libTranslate | subst:query)"></span>
             </div>
           </div>
+        </div>
+
+        <div class="addition-block">
+          <ng-content></ng-content>
         </div>
       </div>
     </div>
