@@ -45,7 +45,9 @@ export class MapComponent implements OnInit, OnChanges {
     const controlsConfig = {
       controls: this.controls || [],
       center: this.center || [37.64, 55.76],
-      zoom: this.zoom || 9
+      zoom: this.zoom || 9,
+      enterpriseYandexMapsEnabled: this.enterpriseYandexMapsEnabled,
+      yandexMapsApiKey: this.yandexMapsApiKey
     };
     const layoutConfig = {
       iconLayout: this.iconLayout || 'default#image',
