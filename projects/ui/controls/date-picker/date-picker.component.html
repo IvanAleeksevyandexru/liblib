@@ -1,12 +1,12 @@
 <div class="width-container" [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="above-info" *ngIf="validationPosition === MessagePosition.ABOVE || questionTipPosition === MessagePosition.ABOVE">
     <div class="information text-help"
-      *ngIf="questionTip && questionTipPosition === MessagePosition.ABOVE && (!validationOverride || !(invalidDisplayed && validationMessages))"
-      [innerHTML]="questionTip">
+         *ngIf="questionTip && questionTipPosition === MessagePosition.ABOVE && (!validationOverride || !(invalidDisplayed && validationMessages))"
+         [innerHTML]="questionTip">
     </div>
     <div class="validation" *ngIf="validationPosition === MessagePosition.ABOVE && invalidDisplayed && validationMessages">
       <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages"
-        [translation]="validationTranslation" [escapeHtml]="validationEscapeHtml"></lib-validation-message>
+                              [translation]="validationTranslation" [escapeHtml]="validationEscapeHtml"></lib-validation-message>
     </div>
   </div>
   <div class="date-picker" [ngClass]="contextClass ? [contextClass] : []" (click)="returnFocus($event)" libClickOutside (clickOutside)="closeCalendar();">
@@ -47,12 +47,12 @@
           [questionTip]="questionTip"
           [questionTipPosition]="questionTipPosition === MessagePosition.INSIDE ? questionTipPosition : MessagePosition.NOWHERE"
         ></lib-standard-masked-input>
-        <div class="calendar-icon" [class.disabled]="disabled" (click)="toggle(false)"></div>
+        <div class="calendar-icon" *ngIf="!(text && focused) || !focused || (focused && text === emptyText())" [class.disabled]="disabled" (click)="toggle(false)"></div>
       </div>
     </div>
     <div class="calendar-wrapper" [ngClass]="{'simple-panel': asSimplePanel}">
       <div class="calendar-container" *ngIf="expanded || asSimplePanel" #calendarContainer (scroll)="stopPropagation($event)"
-          [ngClass]="{'align-left': align === Align.LEFT, 'align-right': align === Align.RIGHT, 'adjust': align === Align.ADJUST}">
+           [ngClass]="{'align-left': align === Align.LEFT, 'align-right': align === Align.RIGHT, 'adjust': align === Align.ADJUST}">
         <div class="calendar-panel">
           <lib-month-year-select
             [activeMonthYear]="activeMonthYear"
@@ -161,12 +161,12 @@
   </div>
   <div class="below-info" *ngIf="validationPosition === MessagePosition.BELOW || questionTipPosition === MessagePosition.BELOW">
     <div class="information text-help"
-      *ngIf="questionTip && questionTipPosition === MessagePosition.BELOW && (!validationOverride || !(invalidDisplayed && validationMessages))"
-      [innerHTML]="questionTip">
+         *ngIf="questionTip && questionTipPosition === MessagePosition.BELOW && (!validationOverride || !(invalidDisplayed && validationMessages))"
+         [innerHTML]="questionTip">
     </div>
     <div class="validation" *ngIf="validationPosition === MessagePosition.BELOW && invalidDisplayed && validationMessages">
       <lib-validation-message [invalid]="invalid" [validation]="validation" [validationMessages]="validationMessages"
-        [translation]="validationTranslation" [escapeHtml]="validationEscapeHtml"></lib-validation-message>
+                              [translation]="validationTranslation" [escapeHtml]="validationEscapeHtml"></lib-validation-message>
     </div>
   </div>
 </div>

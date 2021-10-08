@@ -121,7 +121,7 @@ export class StandardMaskedInputComponent extends BaseMaskedInputComponent
   private updateIconsCount() {
     this.iconsCount = this.questionTip || this.invalidDisplayed ? 1 : 0;
     if (this.iconsCountChanged) {
-      this.iconsCountChanged.emit({count: this.iconsCount});
+      this.iconsCountChanged.emit({ count: this.iconsCount });
     }
   }
 
