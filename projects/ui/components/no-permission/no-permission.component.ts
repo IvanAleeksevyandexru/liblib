@@ -12,9 +12,11 @@ export class NoPermissionComponent implements OnInit {
   @Input() public text: string;
   @Input() public button: string;
 
+  public staticDomainLibAssetsPath: string = this.loadService.config.staticDomainLibAssetsPath;
+
   constructor(
-    private loadService: LoadService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    public loadService: LoadService,
   ) { }
 
   public ngOnInit() {
