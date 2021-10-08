@@ -1,0 +1,105 @@
+.actions-menu {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  top: -1px;
+  right: -1px;
+  padding: 16px 48px 0 16px;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(11, 31, 51, 0.18);
+  background: #ffffff;
+
+  a {
+    display: block;
+  }
+
+  &.active {
+    display: block;
+  }
+
+  &.disabled a {
+    color: #a8acb1;
+  }
+}
+
+.actions-menu.closable {
+  padding: 24px 68px 8px 24px;
+  // надо позиционировать крестик по кнопке открытия
+  top: -24px;
+  right: -24px;
+
+  .close-menu {
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    width: 24px;
+    height: 24px;
+    background: url(../../../assets/svg/close-large-24.svg) center no-repeat;
+    background-size: 24px;
+    cursor: pointer;
+  }
+}
+
+.actions-menu-button {
+  box-sizing: content-box;
+  position: absolute;
+  z-index: 1;
+  top: 16px;
+  right: 16px;
+  width: 4px;
+  padding: 6px;
+  height: 4px;
+  border-radius: 50%;
+  background: #0b40b3;
+  background-clip: content-box;
+  cursor: pointer;
+
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 6px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #0b40b3;
+  }
+
+  &:after {
+    top: 12px;
+  }
+
+  &.disabled,
+  &.disabled:before,
+  &.disabled:after {
+    background-color: #a8acb1;
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .actions {
+    position: absolute;
+    display: flex;
+    top: 16px;
+    right: 16px;
+
+    a + a {
+      margin-left: 16px;
+    }
+
+    &.disabled a {
+      color: #a8acb1;
+    }
+  }
+
+  .actions-menu.hide-lg {
+    display: none !important;
+  }
+
+  .actions-menu-button {
+    position: relative;
+    top: 0;
+    right: 0;
+  }
+}

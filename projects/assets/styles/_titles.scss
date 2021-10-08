@@ -1,0 +1,405 @@
+.title-h1, .title-h2, .title-h3, .title-h4, .title-h5, .title-h6, .title-h0, .page-title {
+  font-family: Lato-Bold, Arial, sans-serif;
+  font-weight: 600;
+  color: #0b1f33;
+
+  &.normal {
+    font-weight: 400;
+  }
+}
+
+.title-h5, .title-h6 {
+  font-family: Lato, Arial, sans-serif, -apple-system;
+
+  &.blue {
+    color: #0B40B3;
+  }
+
+  &.gray {
+    color: #515a63;
+  }
+
+  &.light {
+    font-weight: 100;
+  }
+}
+
+.title-h0 {
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.title-h1 {
+  font-size: 28px;
+  line-height: 32px;
+}
+
+.title-h2, .page-title {
+  font-size: 32px;
+  line-height: 40px;
+}
+
+.title-h3 {
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.title-h4 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.title-h5 {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.title-h6 {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.small-text {
+  font-size: 14px;
+  line-height: 20px;
+
+  &.grey {
+    color: #515A63;
+  }
+}
+
+.blue {
+  color: #0B40B3;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.green {
+  color: #317D34;
+}
+
+.white {
+  color: #FFFFFF;
+}
+
+@media all and (min-width: 768px) {
+  .title-h1 {
+    font-size: 36px;
+    line-height: 40px;
+  }
+
+  .title-h2 {
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .title-h3, .page-title {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .title-h4 {
+    font-size: 20px;
+  }
+
+  .title-h5 {
+    font-size: 18px;
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .page-title {
+    font-size: 32px;
+    line-height: 36px;
+  }
+}
+
+.text-plain,
+.text-help,
+.link-plain,
+.text-sub,
+.label-plain {
+  font-family: Lato, Arial, sans-serif, -apple-system;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.small-text {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.text-plain {
+  color: #0b1f33;
+
+  &.gray {
+    color: #747b82;
+  }
+}
+
+.text-help {
+  color: #66727f;
+
+  &.gray {
+    color: #747b82;
+  }
+
+  &.blue {
+    color: #0b40b3;
+  }
+}
+
+.text-sub {
+  font-size: 12px;
+  line-height: 16px;
+  color: #393f45;
+
+  &.gray {
+    color: #626a73;
+  }
+
+  &.red {
+    color: #df0024;
+  }
+}
+
+.link-plain {
+  color: #0B40B3;
+
+  &:hover {
+    color: #013e83;
+    cursor: pointer;
+  }
+}
+
+.link-underline {
+  border-bottom: 1px #0D4CD3 dashed;
+
+  &:hover {
+    border-bottom-color: #1D5DEB;
+  }
+}
+
+.label-plain {
+  color: #000000;
+
+  &.disabled {
+    color: #a8acb1;
+  }
+
+  &.error {
+    color: #df0024;
+  }
+}
+
+.black {
+  color: #000000;
+}
+
+.gray {
+  color: #626a73;
+}
+
+.dark-gray {
+  color: #515a63;
+}
+
+.black-70 {
+  color: #858B92;
+}
+
+.light-gray {
+  color: #a8acb1;
+}
+
+.new-light-gray {
+  color: #D1D5DF;
+}
+
+.green {
+  color: #317d34;
+}
+
+.red {
+  color: #DF0024;
+}
+
+.yellow {
+  color: #e5af00;
+}
+
+.blue-digital {
+  color: #4D83FA;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.normal {
+  font-weight: 400;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+@media all and (min-width: 768px) {
+  .title-h0 {
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .text-sub {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+.app-portal {
+  .title-h2,
+  .title-h3,
+  .title-h5,
+  .title-h6,
+  .text-plain,
+  .text-help,
+  .text-sub,
+  .link-plain,
+  .label-plain {
+    font-family: Lato, Arial, sans-serif, -apple-system;
+    color: #0B1F33;
+
+    &.red {
+      color: #E11432;
+    }
+
+    &.white {
+      color: #FFFFFF;
+    }
+
+    &.indigo {
+      color: #1D5DEB;
+    }
+  }
+
+  .title-h5,
+  .title-h6 {
+    &.blue {
+      color: #0d4cd3;
+    }
+  }
+
+  .blue {
+    color: #0D4CD3;
+  }
+
+  .base-gray {
+    color: #0B1F33;
+  }
+
+  .gray {
+    color: #66727F;
+  }
+
+  .red {
+    color: #E11432;
+  }
+
+  .link-plain {
+    color: #0D4CD3;
+
+    &:hover {
+      color: #1D5DEB;
+    }
+  }
+
+  .title-h1, .title-h2, .title-h3, .title-h4, .title-h5, .title-h6, .title-h0, .page-title {
+    font-weight: 600;
+
+    &.normal {
+      font-weight: 400;
+    }
+  }
+
+  .title-h1 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .title-h2 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .title-h3 {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .title-h4, .title-h5 {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .title-h6 {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .text-plain,
+  .text-help,
+  .text-sub,
+  .link-plain,
+  .label-plain {
+    font-size: 16px;
+    line-height: 24px;
+
+    //&.big {
+    //  font-size: 16px;
+    //  line-height: 24px;
+    //}
+  }
+
+  .small-text {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .text-sub {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  @media all and (min-width: 768px) {
+    .title-h0 {
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    .title-h1 {
+      font-size: 36px;
+      line-height: 40px;
+    }
+
+    .title-h2, .page-title {
+      font-size: 32px;
+      line-height: 40px;
+    }
+
+    .title-h3 {
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    .title-h4 {
+      font-size: 20px;
+      line-height: 24px;
+    }
+  }
+}
