@@ -7,9 +7,13 @@
   },
   "peerDependencies": {
     "@angular/common": "^11.0.0",
-    "@angular/core": "^11.0.0"
+    "@angular/core": "^11.0.0",
+    "@epgu/zipkin": "0.0.3",
+    "zipkin-transport-http": "0.22.0"
   },
   "dependencies": {
-    "tslib": "^2.0.0"
+    "@epgu/zipkin": "0.0.3",
+    "tslib": "^2.0.0",
+    "zipkin-transport-http": "0.22.0"
   }
 }

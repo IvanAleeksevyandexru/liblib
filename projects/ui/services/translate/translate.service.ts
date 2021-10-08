@@ -21,13 +21,15 @@ export class LibTranslateService extends TranslateService {
     const missingHandler = new FakeMissingTranslationHandler();
     let libAssetsLocation = '/' + ConstantsService.ASSETS_DEFAULT_PATH;
     const config = loadService && loadService.config;
+    const packageVersion = config.packageVersion;
     if (config && config.staticDomainLibAssetsPath) {
       libAssetsLocation = config.staticDomainLibAssetsPath;
     } else if (config && config.staticDomain) {
       libAssetsLocation = config.staticDomain + ConstantsService.ASSETS_DEFAULT_PATH;
     }
     const assetsLocationAndPath = libAssetsLocation + ConstantsService.TRANSLATIONS_PATH;
-    const loader: TranslateLoader = new TranslateHttpLoader(httpClient, assetsLocationAndPath, '.json');
+    const extFile = packageVersion ? `.${packageVersion}.json` : '.json';
+    const loader: TranslateLoader = new TranslateHttpLoader(httpClient, assetsLocationAndPath, extFile);
     super(store, loader, compiler, parser, missingHandler, true, true, true, 'ru');
     this.addLangs(['ru']);
     this.setDefaultLang('ru');
