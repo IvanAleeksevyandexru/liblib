@@ -4,6 +4,11 @@ import { ConstantsService } from '@epgu/ui/services/constants';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+interface SearchContext {
+  searchByTextFormatted?: boolean;
+  partialPageSize?: number;
+  [name: string]: any;
+}
 // класс-фильтр по статичной коллекции, обеспечивает простой и постраничный поиск
 export class FixedItemsProvider implements LookupProvider<ListItem>, LookupPartialProvider<ListItem> {
 
@@ -11,8 +16,8 @@ export class FixedItemsProvider implements LookupProvider<ListItem>, LookupParti
   public cachedResult: Array<ListItem>;
   public lastQuery: string;
 
-  public static checkItem(item: ListItem, query: string, context?: { [name: string]: any }): boolean {
-    const text = item.translated || item.textFormatted || item.text || '';
+  public static checkItem(item: ListItem, query: string, context?: SearchContext): boolean {
+    const text = (context?.searchByTextFormatted ? item.textFormatted : item.translated || item.text) || '';
     if (context && context.searchCaseSensitive) {
       return context.searchFromStartOnly ? text.startsWith(query) : text.includes(query);
     } else {
@@ -41,7 +46,7 @@ export class FixedItemsProvider implements LookupProvider<ListItem>, LookupParti
     this.cachedResult = this.fixedItems;
   }
 
-  private filterItems(query: string, context?: { [name: string]: any }, escapeSimilarLetters?: boolean): Array<ListItem> {
+  private filterItems(query: string, context?: SearchContext, escapeSimilarLetters?: boolean): Array<ListItem> {
     const fixedItems = this.fixedItems.map(item => new ListItem(item));
     if (escapeSimilarLetters) {
       fixedItems.forEach(item => {
@@ -54,7 +59,7 @@ export class FixedItemsProvider implements LookupProvider<ListItem>, LookupParti
     });
   }
 
-  public search(query: string, context?: { [name: string]: any }, escapeSimilarLetters?: boolean): Observable<Array<ListItem>> {
+  public search(query: string, context?: SearchContext, escapeSimilarLetters?: boolean): Observable<Array<ListItem>> {
     if (query === this.lastQuery) {
       return of(this.cachedResult);
     } else if (query) {
@@ -78,7 +83,7 @@ export class FixedItemsProvider implements LookupProvider<ListItem>, LookupParti
     }
   }
 
-  public searchPartial(query: string, page: number, context?: { [name: string]: any }): Observable<Array<ListItem>> {
+  public searchPartial(query: string, page: number, context?: SearchContext): Observable<Array<ListItem>> {
     return this.search(query, context).pipe(map((items: Array<ListItem>) => {
       const pageSize = context && context.partialPageSize || ConstantsService.DEFAULT_ITEMS_INCREMENTAL_PAGE_SIZE;
       return (items || []).slice(page * pageSize, page * pageSize + pageSize);

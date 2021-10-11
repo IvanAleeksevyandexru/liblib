@@ -76,6 +76,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
 
   // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
   @Input() public formatter?: (item: ListItem, context?: { [name: string]: any }) => string;
+  // флаг для локального поиска, если true то поиск осуществляется по свойству textFormatted
+  @Input() public searchByTextFormatted = false;
   // функция форматирования специальная, применяется только в списке для случая когда отображение в списке должно отличаться
   @Input() public listFormatter?: (item: ListItem, context?: { [name: string]: any }) => string;
   // конвертер объединяет входной и выходной конвертер для объектов не подходящих под интерфейс {id, text}
@@ -376,7 +378,13 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
 
   public setPartialIndex(partialNumber: number) {
     if (this.localSearch || this.incrementalLoading) {
-      this.fixedItemsProvider.search(this.filteringQuery, null, this.escapeSimilarLetters).subscribe((filteredAll: Array<ListItem>) => {
+      this.fixedItemsProvider.search(
+        this.filteringQuery,
+        {
+          searchByTextFormatted: this.searchByTextFormatted
+        },
+        this.escapeSimilarLetters
+      ).subscribe((filteredAll: Array<ListItem>) => {
         const highlightIfNeeded = (filteredItems: Array<ListItem>) => {
           if (this.filteringQuery && this.highlightSubstring) {
             this.listService.highlightSubstring(filteredItems, this.filteringQuery);
@@ -385,7 +393,14 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
         if (this.incrementalLoading) {
           this.partialPageNumber = partialNumber;
           const pageSize = this.incrementalPageSize || ConstantsService.DEFAULT_ITEMS_INCREMENTAL_PAGE_SIZE;
-          this.fixedItemsProvider.searchPartial(this.filteringQuery, this.partialPageNumber, {partialPageSize: pageSize})
+          this.fixedItemsProvider.searchPartial(
+            this.filteringQuery,
+            this.partialPageNumber,
+            {
+              partialPageSize: pageSize,
+              searchByTextFormatted: this.searchByTextFormatted
+            },
+            )
             .subscribe((filteredPaged: Array<ListItem>) => {
               highlightIfNeeded(filteredPaged);
               const partialedItems = partialNumber === 0 ? filteredPaged : this.internalDisplayed.concat(filteredPaged);
