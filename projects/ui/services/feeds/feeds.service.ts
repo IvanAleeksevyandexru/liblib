@@ -59,9 +59,8 @@ export class FeedsService {
       return moment(date).format('YYYY-MM-DDTHH:mm:ss' + (dropMs ? '' : '.SSS') + 'ZZ');
     }
     if (typeof date === 'string') {
-      date = moment(date, 'YYYY-MM-DDTHH:mm:ss.SSSZZ');
-      if (date.isValid()) {
-        return date.toDate();
+      if (moment(date, 'YYYY-MM-DDTHH:mm:ss.SSSZZ').isValid()) {
+        return date;
       }
     }
     return def ? moment(def).format('YYYY-MM-DDTHH:mm:ss' + (dropMs ? '' : '.SSS') + 'ZZ') : '';
