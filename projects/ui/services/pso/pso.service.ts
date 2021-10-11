@@ -131,7 +131,7 @@ export class PsoService {
     if (path === '/' && (config.excludePsoFromMain || !this.loadService.user.authorized || this.loadService.user.isKid)) {
       isRequired = false;
     }
-    if (hidePages.includes(path)) {
+    if (hidePages?.includes(path)) {
       isRequired = false;
     }
     if (config.showPsoOnlyForAuthorized && !this.loadService.user.authorized) {
