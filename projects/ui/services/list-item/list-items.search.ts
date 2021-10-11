@@ -12,7 +12,7 @@ export class FixedItemsProvider implements LookupProvider<ListItem>, LookupParti
   public lastQuery: string;
 
   public static checkItem(item: ListItem, query: string, context?: { [name: string]: any }): boolean {
-    const text = item.translated || item.text || '';
+    const text = item.translated || item.textFormatted || item.text || '';
     if (context && context.searchCaseSensitive) {
       return context.searchFromStartOnly ? text.startsWith(query) : text.includes(query);
     } else {
@@ -42,9 +42,12 @@ export class FixedItemsProvider implements LookupProvider<ListItem>, LookupParti
   }
 
   private filterItems(query: string, context?: { [name: string]: any }, escapeSimilarLetters?: boolean): Array<ListItem> {
-    let fixedItems = this.fixedItems.map(item => new ListItem(item));
+    const fixedItems = this.fixedItems.map(item => new ListItem(item));
     if (escapeSimilarLetters) {
-      fixedItems.forEach(item => item.text = item.text.replace(/ё/gi, 'е').replace(/й/gi, 'и'));
+      fixedItems.forEach(item => {
+        item.text = item.text.replace(/ё/gi, 'е').replace(/й/gi, 'и');
+        item.textFormatted = item.textFormatted?.replace(/ё/gi, 'е').replace(/й/gi, 'и');
+      });
     }
     return (fixedItems || []).filter((item: ListItem) => {
       return FixedItemsProvider.checkItem(item, query, context);
@@ -57,8 +60,8 @@ export class FixedItemsProvider implements LookupProvider<ListItem>, LookupParti
     } else if (query) {
       let filteredItems = this.filterItems(query, context, false);
       if (escapeSimilarLetters) {
-        let escapedQuery = query.replace(/ё/gi, 'е').replace(/й/gi, 'и');
-        let escapedList = this.filterItems(escapedQuery, context, true);
+        const escapedQuery = query.replace(/ё/gi, 'е').replace(/й/gi, 'и');
+        const escapedList = this.filterItems(escapedQuery, context, true);
 
         escapedList.forEach(escaped => {
           const sameItem = filteredItems.find(filtered => filtered.id === escaped.id);
