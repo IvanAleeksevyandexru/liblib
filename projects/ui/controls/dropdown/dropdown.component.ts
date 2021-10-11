@@ -38,6 +38,7 @@ import { ConstantsService } from '@epgu/ui/services/constants';
 import { LineBreak, MultipleItemsLayout, Translation, ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { forkJoin, Observable } from 'rxjs';
 import { PositioningRequest, Suggest, SuggestItem, Width } from '@epgu/ui/models';
+import { HelperService } from '@epgu/ui/services/helper';
 
 /*
  * документация по ссылке https://confluence.egovdev.ru/pages/viewpage.action?pageId=170673869
@@ -110,6 +111,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   @Input() public virtualScroll = false;
   // включает поле поиска в выпадающую область, позволяет фильтровать отображаемые значения
   @Input() public localSearch = false;
+  // позволяет отменить срабатывание поиска по текстовому вводу, только по ентеру и иконке
+  @Input() public searchByTextInput = !HelperService.isTouchDevice();
   // заменять ё -> e й -> и
   @Input() public escapeSimilarLetters = false;
   @Input() public highlightSubstring = true;
