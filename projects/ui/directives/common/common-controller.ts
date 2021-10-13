@@ -1,5 +1,6 @@
-import { EventEmitter, OnDestroy } from '@angular/core';
+import { EventEmitter, Injectable, OnDestroy } from '@angular/core';
 
+@Injectable()
 export class CommonController implements OnDestroy {
   protected destroyed$ = new EventEmitter<void>();
 
