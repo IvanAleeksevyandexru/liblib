@@ -33,7 +33,7 @@ export class LoadService {
   ) {
   }
 
-  private prepareData(params: any): void {
+  private prepareData(params: any, packageVersion: string): void {
     const data = params.data;
     const user = data.user as User;
 
@@ -87,13 +87,14 @@ export class LoadService {
     }
 
     this.params = params;
+    this.params.config.packageVersion = packageVersion;
     this.setUserTypeNA();
     if (this.params.config.isEmbedded) {
       this.setIsEmbedded(true);
     }
   }
 
-  public load(context: string, ignoreConfigMissing = false, ignoreDevMode = false): Promise<any> {
+  public load(context: string, ignoreConfigMissing = false, ignoreDevMode = false, packageVersion = ''): Promise<any> {
     this.setInitializationStarted();
     if (isDevMode() && !ignoreDevMode) {
       return new Promise((resolve, reject) => {
@@ -101,12 +102,12 @@ export class LoadService {
           .get(`/node-api/${context}`, {withCredentials: true})
           .toPromise()
           .then((params: any) => {
-            this.prepareData(params);
+            this.prepareData(params, packageVersion);
             this.loaded.next(true);
             resolve(true);
           }, () => {
             if (ignoreConfigMissing) {
-              this.prepareData(EMPTY_CONFIG_STUB);
+              this.prepareData(EMPTY_CONFIG_STUB, packageVersion);
               this.loaded.next(true);
               resolve(true);
             } else {
@@ -117,12 +118,12 @@ export class LoadService {
     } else {
       return new Promise((resolve, reject) => {
         try {
-          this.prepareData((window as any).serverData);
+          this.prepareData((window as any).serverData, packageVersion);
           this.loaded.next(true);
           resolve(true);
         } catch (e) {
           if (ignoreConfigMissing) {
-            this.prepareData(EMPTY_CONFIG_STUB);
+            this.prepareData(EMPTY_CONFIG_STUB, packageVersion);
             this.loaded.next(true);
             resolve(true);
           } else {

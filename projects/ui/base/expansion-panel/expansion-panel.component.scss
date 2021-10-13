@@ -22,7 +22,7 @@
     display: block;
     width: 24px;
     height: 24px;
-    background: #e6f1f9 url(../../src/assets/svg/arrow-closed-blue.svg) 50% no-repeat;
+    background: #e6f1f9 url(../../../assets/svg/arrow-closed-blue.svg) 50% no-repeat;
     border-radius: 50%;
     position: absolute;
     right: 16px;
@@ -71,7 +71,7 @@
     }
 
     .panel-arrow {
-      background: url(../../src/assets/svg/arrow-down-circle.svg) 50% no-repeat;
+      background: url(../../../assets/svg/arrow-down-circle.svg) 50% no-repeat;
       right: 0;
     }
 
@@ -137,7 +137,7 @@
       }
 
       .panel-arrow {
-        background: url(../../src/assets/svg/arrows/arrow_black.svg) 0 0 no-repeat;
+        background: url(../../../assets/svg/arrows/arrow_black.svg) 0 0 no-repeat;
         height: 6px;
         width: 10px;
         position: static;
@@ -165,13 +165,13 @@
     }
   }
 
-  &.light {
+  &.light-v2 {
     .panel-header {
-      padding: 16px 36px 16px 0;
-      border-bottom: none;
+      min-height: 56px;
+      border-bottom: 1px solid #E4ECFD;
 
       .panel-arrow {
-        right: 0;
+        background-color: transparent;
       }
     }
 

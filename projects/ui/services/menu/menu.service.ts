@@ -95,7 +95,7 @@ export class MenuService {
       'HEADER.MENU.ORDERS': `${lkUrl}orders`,
       'HEADER.MENU.PAYMENT': `${portalUrl}pay`,
       'HEADER.MENU.DOCS': `${lkUrl}profile`,
-      'HEADER.MENU.PERMISSIONS': `${lkUrl}permissions`,
+      'HEADER.MENU.AGREEMENTS': `${lkUrl}settings/third-party/agreements`,
       'HEADER.MENU.SETTINGS': `${lkUrl}settings/account`,
       'HEADER.MENU.SETTINGS_MENU': `${lkUrl}settings/account`,
       'HEADER.MENU.LOGIN_ORG': `${appContext === 'PARTNERS' ? '/' : lkUrl}roles`,

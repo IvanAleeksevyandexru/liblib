@@ -1,9 +1,15 @@
-<div class="permission-banner mb-40">
-  <div class="image mb-16 mb-md-0"></div>
-  <div class="inner">
-    <div class="text text-plain mb-24" [innerHTML]="text"></div>
-    <div class="buttons-wrapper">
-      <lib-button size="md" (click)="goToOffer()">{{button}}</lib-button>
-    </div>
+<div class="mo-permission-banner">
+  <div class="mo-permission-banner__information">
+    <p class="text-plain mb-32"
+       [innerHTML]="text"
+    ></p>
+    <lib-button
+      size="md"
+      (click)="goToOffer()"
+    >{{button}}</lib-button>
   </div>
+
+  <img class="mo-permission-banner__image"
+       src="{{staticDomainLibAssetsPath}}/svg/errors/no-digital-scopes.svg" alt="">
 </div>
+

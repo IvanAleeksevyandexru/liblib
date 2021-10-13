@@ -7,7 +7,7 @@
     </a>
   </div>
   <div class="mt-24 text-center" *ngIf="hasMore">
-    <a (click)="onEqueueClick(false)" class="small-text blue" [routerLink]="['/orders/all']" [queryParams]="{type: 'EQUEUE'}">Посмотреть все записи</a>
+    <a (click)="onEqueueClick(false)" class="small-text blue" [routerLink]="['/notifications']" [queryParams]="{type: 'EQUEUE'}">Посмотреть все записи</a>
   </div>
 </section>
 

@@ -35,7 +35,7 @@ import {
   templateUrl: './catalog-tab-item.component.html',
   styleUrls: ['./catalog-tab-item.component.scss']
 })
-export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
+export class CatalogTabItemComponent implements OnInit, OnChanges {
 
   @Input() public code: string;
   @Input() public viewType: 'main-page-view' | 'side-view';
@@ -96,8 +96,8 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  public goToCategory(faq: FaqCategoriesCMSFaq): void {
-    window.open(`${this.loadService.config.betaUrl}help/faq/${faq.categoryCode}/${faq.id}`, '_blank');
+  public goToCategory(category: string | number, faq: string | number): void {
+    window.open(`${this.loadService.config.betaUrl}help/faq/${category}/${faq}`, '_blank');
   }
 
   public getDepartmentsData(): void {
@@ -196,11 +196,12 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
     faqsData.forEach((item) => {
-      if (item.faqs && item.faqs.length)
+      if (item.faqs && item.faqs.length) {
         faqs = faqs.concat({
           title: item.title,
           faqs: item.faqs,
         });
+      }
     });
     this.faqs = children.concat(faqs);
   }
@@ -232,10 +233,6 @@ export class CatalogTabItemComponent implements OnInit, OnDestroy, OnChanges {
   public goToPopular(item: any): void {
     this.catalogClose.emit();
     location.href = item.type === 'LINK' ? item.url : `${this.loadService.config.betaUrl}${item.url}`;
-  }
-
-  public ngOnDestroy() {
-    this.catalogClose.emit();
   }
 
   public checkOldPortalBanner(): boolean {

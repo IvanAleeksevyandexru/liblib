@@ -23,7 +23,7 @@ a, button {
   outline: none;
   border: 2px solid transparent;
   border-radius: 8px;
-  padding: 12px 40px;
+  padding: 12px 38px;
   text-align: center;
   font-size: 16px;
   line-height: 24px;
@@ -72,6 +72,10 @@ a, button {
       border: 2px solid #EB5757;
       background: #fff;
     }
+  }
+
+  &.blue {
+    color: #FFFFFF;
   }
 
   &.white {
@@ -156,8 +160,8 @@ a, button {
 
 .small-paddings {
   a, button {
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: 22px;
+    padding-right: 22px;
   }
 }
 

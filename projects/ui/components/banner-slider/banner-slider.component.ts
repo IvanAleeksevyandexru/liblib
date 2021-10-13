@@ -245,7 +245,9 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
     this.bannersFeedList = newBannersFeedList;
     this.offset = -BANNERS_OUT_THE_AREA * this.stdBannerWidth();
     this.activeBannerFeedIndex = BANNERS_OUT_THE_AREA;
-    this.changeDetection.detectChanges();
+    if (!this.changeDetection['destroyed']) {
+      this.changeDetection.detectChanges();
+    }
   }
 
   public rerunSlideShow() {

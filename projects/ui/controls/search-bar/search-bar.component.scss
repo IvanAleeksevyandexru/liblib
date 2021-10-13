@@ -267,35 +267,28 @@
   }
   .search-go {
     position: absolute;
-    width: 52px;
-    height: 52px;
-    top: 0;
-    right: 7px;
-    background: url(../../../assets/svg/lookup-search-grey.svg) 16px 16px no-repeat;
+    width: 21px;
+    height: 21px;
+    top: 16px;
+    right: 24px;
+    background: url(../../../assets/svg/lookup-search-bar.svg) 0 0 no-repeat;
     outline: none;
-    cursor: pointer;
-    &:hover {
-      background: url(../../../assets/svg/lookup-search-hover.svg) 16px 16px no-repeat;
-    }
     &.disabled {
-      background: url(../../../assets/svg/lookup-search-disabled.svg) 16px 16px no-repeat;
+      background: url(../../../assets/svg/lookup-search-disabled.svg) 0 0 no-repeat;
       &:hover {
-        background: url(../../../assets/svg/lookup-search-disabled.svg) 16px 16px no-repeat;
+        background: url(../../../assets/svg/lookup-search-disabled.svg) 0 0 no-repeat;
       }
     }
   }
   .search-clear {
     position: absolute;
-    width: 36px;
-    height: 48px;
-    top: 0px;
-    right: 48px;
-    background: url(../../../assets/svg/input-clean.svg) 5px 14px no-repeat;
+    width: 24px;
+    height: 24px;
+    top: 14px;
+    right: 24px;
+    background: url(../../../assets/svg/input-clean.svg) 0 0 no-repeat;
     outline: none;
     cursor: pointer;
-    &.align-right {
-      right: 5px;
-    }
   }
   .search-in-progress {
     position: absolute;

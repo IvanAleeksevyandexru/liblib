@@ -14,6 +14,8 @@ import {
 } from '@epgu/ui/pipes';
 import { FeedIconModule } from '@epgu/ui/components/feed-icon';
 import { SnippetsModule } from '@epgu/ui/components/snippets';
+import { IconActionModule } from '@epgu/ui/components/icon-action';
+import { ThrobberHexagonModule } from '@epgu/ui/components/throbber-hexagon';
 
 
 @NgModule({
@@ -30,6 +32,8 @@ import { SnippetsModule } from '@epgu/ui/components/snippets';
     RemoveTagsModule,
     TimeLeftModule,
     SnippetsModule,
+    IconActionModule,
+    ThrobberHexagonModule,
   ],
   declarations: [
     FeedsComponent

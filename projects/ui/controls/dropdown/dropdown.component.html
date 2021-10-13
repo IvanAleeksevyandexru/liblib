@@ -8,7 +8,7 @@
      [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="dropdown-field"
        #dropdownField
-       [ngClass]="{disabled: disabled, invalid: invalidDisplayed, expanded: expanded, multi: multi, clearable: clearable}"
+       [ngClass]="{disabled: disabled, invalid: invalidDisplayed, expanded: expanded, multi: multi}"
        (click)="toggle()">
     <div class="dropdown-values" #dropdownValues [ngClass]="[multipleItemsLayout]" (click)="multipleSummaryOpenDetails($event)">
       <div class="dropdown-values-custom"
@@ -20,7 +20,6 @@
       <div class="dropdown-values-container" *ngIf="internalSelected"
            [ngClass]="{'panel-expanded': multipleItemsDetailsShown}">
         <div *ngFor="let item of internalSelected" class="dropdown-value" [attr.tooltipContent]="item.textFormatted">
-          <div *ngIf="clearable" class="remove-item-wrapper"><a class="remove-item" (click)="unselect(item, $event)"></a></div>
           <span *ngIf="escapeHtml" class="selected-value-text">{{item.formatted}}</span>
           <span *ngIf="!escapeHtml" class="selected-value-text" [innerHTML]="item.formatted | safeHtml"></span>
         </div>
@@ -54,6 +53,7 @@
                         [queryMinSymbolsCount]="0"
                         [clearable]="true"
                         (newSearch)="filterItems($event)"
+                        [searchByTextInput]="searchByTextInput"
                         (cleared)="resetFilter()">
         </lib-search-bar>
       </div>

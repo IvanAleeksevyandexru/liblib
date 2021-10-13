@@ -31,6 +31,7 @@ export interface SnippetModel {
   parentOrderId?: number;
   id?: number;
   json?: string;
+  years?: string;
 }
 
 export interface OrderCreator {
@@ -112,6 +113,7 @@ export interface FeedModel {
   removeInProgress?: boolean;
   needAccept?: boolean;
   servicePassportId?: string;
+  isHidden: boolean;
 }
 
 export interface FeedsModel {
@@ -123,6 +125,7 @@ export interface FeedsCategory {
   text: string;
   type: string;
   id: number;
+  mnemonic: string;
 }
 
 export interface FeedsParams {
