@@ -11,6 +11,7 @@ export interface CountersModel {
     GEPS?: CounterData;
     PARTNERS?: CounterData;
     ORDER?: CounterData;
+    SIGN?: CounterData;
     CLAIM?: CounterData;
     PAYMENT?: CounterData;
     DRAFT?: CounterData;
@@ -30,6 +31,7 @@ export enum CounterType {
   CLAIM = 'CLAIM',
   COMPLEX_ORDER = 'COMPLEX_ORDER',
   APPEAL = 'APPEAL',
+  SIGN = 'SIGN',
   PAYMENT = 'PAYMENT',
   DRAFT = 'DRAFT',
   EQUEUE = 'EQUEUE',
