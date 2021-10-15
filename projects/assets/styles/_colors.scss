@@ -88,4 +88,57 @@
   color: $color-ciottoli;
 }
 
+//old-colors
+.gray,
+.grey,
+.dark-gray,
+.black-70 {
+  color: $color-text-helper;
+}
+.blue {
+  color: $color-gosblue;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.green {
+  color: $color-nephritis;
+}
+.white {
+  color: $color-white;
+}
+.red {
+  color: $color-tela-rossa;
+}
+.error {
+  color: $color-tela-rossa;
+}
+.black {
+  color: #000000;
+}
+.light-gray {
+  color: $color-bg-disabled;
+}
+.new-light-gray {
+  color: $color-bg-disabled;
+}
+.green {
+  color: $color-pino-verde;
+}
+.red {
+  color: $color-tela-rossa;
+}
+.yellow {
+  color: $color-giallo-selezionato;
+}
+.blue-digital {
+  color: $color-blu-digitale;
+}
+.indigo {
+  color: $color-active-item;
+}
+.base-gray {
+  color: $color-summer-night;
+}
+
 
