@@ -1,20 +1,29 @@
 <div class="popup-wrapper">
   <div class="popup">
     <a class="close" (click)="onCancel()"></a>
-    <h3 class="title title-h3 popup-title">{{'DS_WIDGET.MODAL_ITEMS.TITLE' | libTranslate}}</h3>
+    <h3 class="title title-h3 popup-title">
+      {{ 'DS_WIDGET.MODAL_ITEMS.TITLE' | libTranslate }}
+    </h3>
     <ng-container *ngIf="items.length > 0; else empty">
       <div class="scroll-container">
         <perfect-scrollbar
-          [config]="{suppressScrollX: true, wheelPropagation: false }">
+          [config]="{ suppressScrollX: true, wheelPropagation: false }"
+        >
           <div class="item" *ngFor="let item of items; let last = last">
-            <lib-eds-item [showBorder]="!last" [item]="item" (click)="onSelect(item.index)"></lib-eds-item>
+            <lib-eds-item
+              [showBorder]="!last"
+              [item]="item"
+              (click)="onSelect(item.index)"
+            ></lib-eds-item>
           </div>
         </perfect-scrollbar>
       </div>
-
     </ng-container>
+
     <ng-template #empty>
-      <div class="empty-items">{{'DS_WIDGET.MODAL_ITEMS.EMPTY' | libTranslate}}</div>
+      <div class="empty-items mb-24">
+        {{ 'DS_WIDGET.MODAL_ITEMS.EMPTY' | libTranslate }}
+      </div>
     </ng-template>
   </div>
 </div>

@@ -1,7 +1,7 @@
 <div class="popup-wrapper">
   <div class="popup eds-error">
     <a class="close" (click)="onCancel()"></a>
-    <ng-container *ngIf="type === 'old_version'">
+    <ng-container *ngIf="type === 'not_found'">
       <h3 class="title title-h3 mb-24 popup-title">{{'DS_WIDGET.MODAL_ERROR.NOT_FOUND.TITLE' | libTranslate}}</h3>
       <h5 class="title-h5 black bold mb-16">{{'DS_WIDGET.MODAL_ERROR.NOT_FOUND.LIST_TITLE' | libTranslate}}</h5>
       <ol class="text-plain black">
@@ -26,7 +26,7 @@
         </li>
       </ol>
     </ng-container>
-    <ng-container *ngIf="type === 'not_found'">
+    <ng-container *ngIf="type === 'old_version'">
       <h3 class="title title-h3 mb-24 popup-title">{{'DS_WIDGET.MODAL_ERROR.OLD_VERSION.TITLE' | libTranslate}}</h3>
       <div class="text-plain black mb-12">
         {{'DS_WIDGET.MODAL_ERROR.OLD_VERSION.STEP_1' | libTranslate}}
