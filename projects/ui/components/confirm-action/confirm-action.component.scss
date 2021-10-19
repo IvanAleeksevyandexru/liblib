@@ -57,6 +57,10 @@
     flex-direction: row;
     justify-content: space-between;
   }
+  .buttons-center {
+    display: flex;
+    justify-content: center;
+  }
   .icon {
     margin-right: 24px;
     width: auto;

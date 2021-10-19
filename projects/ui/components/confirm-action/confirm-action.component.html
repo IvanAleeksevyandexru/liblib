@@ -23,7 +23,7 @@
         labelText="Подтверждаю, что не подавал согласия на зачисление или оригинал аттестата в другие конкурсные группы"
       ></lib-checkbox>
     </div>
-    <div [class.buttons-between]="spaceButtonsBetween" class="controls">
+    <div [class.buttons-between]="spaceButtonsBetween" [class.buttons-center]="buttonsCenter" class="controls">
       <div *ngFor="let button of buttons" class="button-wrapper">
         <a
           *ngIf="button.type === 'anchor'"
