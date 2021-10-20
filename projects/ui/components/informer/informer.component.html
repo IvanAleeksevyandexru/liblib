@@ -41,7 +41,7 @@
       <div *ngIf="statusInformer === 'debt'" class="informer-content">
         <div class="debt">
           <div class="title-h5 text-center debt-title">
-            {{'INFORMER.DEBT.TO_PAY' | libTranslate }} {{dataInformer.docs}}
+            {{'INFORMER.DEBT.TO_PAY' | libTranslate }} <span [innerHTML]="dataInformer.docs"></span>
           </div>
           <div class="text-center debt-text mt-16">
             <div class="text-right-md inline-md text-center-lg">
