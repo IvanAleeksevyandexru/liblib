@@ -167,7 +167,7 @@ export class YaMetricService {
         } else {
           console.log('ya metric disabled, environment.name === "local"');
         }
-        resolve();
+        resolve(true);
       });
     });
   }

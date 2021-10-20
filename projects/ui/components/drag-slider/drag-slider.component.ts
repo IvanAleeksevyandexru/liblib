@@ -250,7 +250,7 @@ export class DragSliderComponent implements OnInit, AfterViewInit, OnChanges, On
     this.animationPlayer.play();
     return new Promise((resolve, reject) => {
       this.animationPlayer.onDone(() => {
-        resolve();
+        resolve(true);
         this.stopAndFreezeOffsetAnimation();
       });
       this.animationPlayer.onDestroy(reject);
