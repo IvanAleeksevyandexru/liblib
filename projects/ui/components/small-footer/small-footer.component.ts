@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { LoadService } from '@epgu/ui/services/load';
+import { FooterService } from '@epgu/ui/services/footer';
 import { MainFooter } from '@epgu/ui/models';
 
 @Component({
@@ -33,11 +34,11 @@ export class SmallFooterComponent implements OnInit {
   };
 
   constructor(
-    public loadService: LoadService
+    public loadService: LoadService,
+    public footerService: FooterService
   ) {
   }
 
   public ngOnInit(): void {
   }
-
 }
