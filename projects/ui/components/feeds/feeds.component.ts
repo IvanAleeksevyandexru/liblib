@@ -166,7 +166,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       this.addFeedsIsLoading = true;
       const last = this.feeds[this.feeds.length - 1];
       const date = last.date;
-      this.getFeeds(last.id, date ? moment(date).toDate() : '', this.search);
+      this.getFeeds(last.id, date ? date : '', this.search);
 
       if ($evt) {
         this.onShowMoreClick($evt);
@@ -461,7 +461,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       if (feedsLength && this.hasMore) {
         const last = this.feeds[feedsLength - 1];
         const date = last.date;
-        this.getFeeds(last.id, date ? moment(date).toDate() : '', this.search, '1');
+        this.getFeeds(last.id, date ? date : '', this.search, '1');
       }
       this.removeInProgress = false;
       this.changeDetector.detectChanges();
@@ -512,7 +512,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       if (feedsLength && this.hasMore) {
         const last = this.feeds[feedsLength - 1];
         const date = last.date;
-        this.getFeeds(last.id, date ? moment(date).toDate() : '', this.search, '1');
+        this.getFeeds(last.id, date ? date : '', this.search, '1');
       }
 
       this.changeDetector.detectChanges();
