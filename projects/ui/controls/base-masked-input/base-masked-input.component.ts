@@ -77,7 +77,7 @@ export class BaseMaskedInputComponent
 
   // маска - это массив символов и/или регэкспов, каждый ответственен за свой символ в поле
   // пример: ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
-  @Input() public mask: ((value: string) => Array<string | RegExp> | Array<string | RegExp>) | (string | RegExp)[];
+  @Input() public mask: ((value: string) => (string | RegExp)[]) | (string | RegExp)[];
   // позиция курсора при получении фокуса
   @Input() public positionInInput = 0;
   // если true показывает и плейсхолдер-символы и константные символы

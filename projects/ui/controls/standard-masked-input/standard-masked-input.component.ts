@@ -59,7 +59,7 @@ export class StandardMaskedInputComponent extends BaseMaskedInputComponent
   @Input() public suggestSeparator = ' ';
 
   @Input() public removeMaskSymbols: RemoveMaskSymbols | string = RemoveMaskSymbols.PLACEHOLDERS;
-  @Input() public mask: (value: string) => Array<string> | Array<string | RegExp>;
+  @Input() public mask: ((value: string) => (string | RegExp)[]) | (string | RegExp)[];
   @Input() public showConstantMaskSymbols = true;
   @Input() public placeholderSymbol = '_';
   @Input() public keepCharPositions = false;
