@@ -65,6 +65,10 @@ export interface Payment {
     name: string;
   };
   currencyCode: string;
+  extClient?: {
+    name: string;
+    url: string;
+  };
   statusUpdated: string;
   quittanceStatusFK: string;
   serviceType: {
