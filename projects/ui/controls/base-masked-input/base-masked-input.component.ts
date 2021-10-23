@@ -166,7 +166,7 @@ export class BaseMaskedInputComponent
     this.check();
   }
 
-  public handleInput(value: string, e?: Event) {
+  public handleInput(value: string, e?: Event) {    
     if (!this.composing) {
       if (this.showMaskAsPlaceholder && value.indexOf(this.emptyMaskedValue) > 0) {
         value = value.replace(this.emptyMaskedValue, '');
@@ -314,7 +314,14 @@ export class BaseMaskedInputComponent
 
   private removeMaskSymbolsIfNeeded(value: string) {
     if (value && this.removeMaskSymbols === RemoveMaskSymbols.PLACEHOLDERS) {
-      return value.replace(new RegExp(this.placeholderSymbol, 'g'), '');
+      const valChar = value.replace(new RegExp(this.placeholderSymbol, 'g'), '');
+      const valEmptyMasked = this.emptyMaskedValue.replace(new RegExp(this.placeholderSymbol, 'g'), '');
+      const val = valChar.replace(valEmptyMasked, '');
+      if (this.showMaskAsPlaceholder && valChar.length === valEmptyMasked.length) {
+        return val;
+      } else {
+        return valChar;
+      }
     } else if (value && this.removeMaskSymbols === RemoveMaskSymbols.TRIM_END) {
       const matchEnd = HelperService.findMatchEnd(value, this.emptyMaskedValue);
       return (value || '').substring(matchEnd);

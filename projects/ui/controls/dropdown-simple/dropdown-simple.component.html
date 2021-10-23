@@ -1,10 +1,9 @@
-<div class="dropdown" [ngClass]="[contextClass || '', texture + '-skin']" (click)="returnFocus($event)" 
+<div class="dropdown" [ngClass]="[contextClass || '', texture + '-skin']" (click)="returnFocus($event)"
   libClickOutside (clickOutside)="closeDropdown();" (keydown)="handleKeydownNavigation($event)"
   [ngStyle]="{width: $any(width)?.base || width, 'min-width': $any(width)?.min, 'max-width': $any(width)?.max}">
   <div class="dropdown-field" [ngClass]="{disabled: disabled, invalid: invalidDisplayed, clearable: clearable, expanded: expanded}" (click)="toggle()">
     <div class="dropdown-item" *ngIf="currentItem" [ngClass]="{clearable: clearable}">
       <ng-container [ngTemplateOutlet]="itemTpl" [ngTemplateOutletContext]="{item: currentItem}"></ng-container>
-      <div *ngIf="clearable" class="remove-item" (click)="clear($event)"></div>
     </div>
     <div *ngIf="!currentItem" class="dropdown-item empty">
       <span class="item-text" [innerHTML]="placeholder | safeHtml"></span>

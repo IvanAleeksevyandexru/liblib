@@ -121,8 +121,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
 
   constructor(private changeDetection: ChangeDetectorRef, private focusManager: FocusManager,
               private positioningManager: PositioningManager, private dragDropManager: DragDropManager,
-              @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {
-  }
+              @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
 
   @Input() public name?: string;
   @Input() public formControlName?: string;
@@ -145,7 +144,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   // когда показывать некорректность поля (как правило начальное пустое поле не считается корректным, но отображать это не нужно)
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   // сообщения валидации вместе с параметрами вывода, работает только совместно с validation
-  @Input() public validationMessages: string | PipedMessage | ValidationMessages | { [key: string]: string | PipedMessage } = null;
+  @Input() public validationMessages: string | PipedMessage | ValidationMessages | { [key: string]: string | PipedMessage} = null;
   // определяет должна ли валидация скрывать информационный тип (показываться вместо) или показываться в дополнение
   @Input() public validationOverride = true;
   // транслитерация и эскейп для валидации
@@ -220,6 +219,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   public activeMonthYear: MonthYear = null;
   public minimumDate = this.getMinimumDate();
   public maximumDate = this.getMaximumDate();
+  public focused = false;
 
   private destroyed = false;
 
@@ -229,9 +229,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   @ViewChild('monthsFeed') public monthsFeed: ElementRef;
 
   private onTouchedCallback: () => void;
-
-  private commit(value: string | Date | Range<string> | Range<Date>) {
-  }
+  private commit(value: string | Date | Range<string> | Range<Date>) {}
 
   public ngOnInit() {
     this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
@@ -517,10 +515,12 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
 
   public handleBlur() {
     this.closeCalendar();
+    this.focused = false;
     this.blur.emit();
   }
 
   public handleFocus() {
+    this.focused = true;
     if (!this.expanded && !HelperService.isTouchDevice()) {
       this.openCalendar();
     }
@@ -983,7 +983,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       this.shortDateFormat : this.dateFormat) : this.emptyText();
   }
 
-  private emptyText() {
+  public emptyText() {
     return this.dateMask.map((symbol) => symbol instanceof RegExp ? '_' : symbol).join('');
   }
 

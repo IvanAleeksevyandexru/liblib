@@ -242,7 +242,7 @@ export class SearchBarComponent
 
   // вызывается только внутри компонента
   public runOrPostponeSearch(query: string, forcedWithKey = false, forcedWithMagnifyingGlass = false, skipCancel = false) {
-    if (forcedWithMagnifyingGlass) {
+    if (forcedWithMagnifyingGlass && !this.disabled) {
       this.returnFocus();
     }
     if (!skipCancel && (this.disabled || this.isBlocked() || this.searchOnlyIfFocused && !this.focused && !this.searchLastValue)) {
@@ -367,6 +367,9 @@ export class SearchBarComponent
   }
 
   public handleFocus() {
+    if (this.disabled) {
+      return;
+    }
     this.focused = this.touched = true;
     if (this.onTouchedCallback) {
       this.onTouchedCallback();

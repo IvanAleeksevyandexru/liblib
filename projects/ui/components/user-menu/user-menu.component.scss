@@ -27,7 +27,6 @@
 
   .item {
     display: flex;
-    margin-bottom: 32px;
     &:last-child {
       margin-bottom: 0;
     }
@@ -36,28 +35,20 @@
       color: #0B1F33;
     }
 
-    a,
-    .active-role,
-    ::ng-deep .location-select .text {
-      //font-size: 14px;
-      //line-height: 20px;
-      //color: #0D4CD3;
-      //text-decoration: none;
+  }
 
-      //&:active, &.active {
-      //  color: #0B1F33;
-      //}
+  .user-menu-links-wrap {
+    padding: 0;
 
+    .item {
+      margin-bottom: 0;
+      display: flex;
+      padding: 16px;
+      cursor: pointer;
+      &:hover{
+        background-color: #EDF2FE;
+      }
     }
-
-    //&:hover {
-    //  a {
-    //    color: #0B40B3;
-    //    &:active, &.active {
-    //      color: #0B1F33;
-    //    }
-    //  }
-    //}
   }
 
   .select-role {
@@ -155,6 +146,11 @@
     }
     .user-menu-links {
       padding: 16px;
+
+      &.user-menu-links-wrap {
+        padding: 0;
+      }
+
       &.burger {
         padding: 0;
         .item {
@@ -400,10 +396,6 @@ $PAD: 768px;
           display: flex;
           padding: 16px;
           align-items: center;
-          cursor: pointer;
-          &:hover{
-            background-color: #EDF2FE;
-          }
         }
       }
 

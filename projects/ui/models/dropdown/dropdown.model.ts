@@ -29,6 +29,7 @@ export class ListItem implements ListElement {
     if (itemLike) {
       this.id = itemLike.id;
       this.text = itemLike.text;
+      this.textFormatted = itemLike.textFormatted;
       this.unselectable = itemLike.unselectable;
       this.hidden = itemLike.hidden;
       this.lineBreak = itemLike.lineBreak;

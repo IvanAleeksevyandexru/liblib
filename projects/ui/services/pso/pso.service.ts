@@ -125,19 +125,13 @@ export class PsoService {
   public isPsoRequired(): boolean {
     let isRequired = true;
     const path = window.location.pathname;
-    const legalPages = ['/search', '/foreign-citizen', '/entrepreneur', '/legal-entity'];
     const config = this.loadService.config;
     const device = this.loadService.attributes.deviceType;
+    const hidePages = config.psoHidePages;
     if (path === '/' && (config.excludePsoFromMain || !this.loadService.user.authorized || this.loadService.user.isKid)) {
       isRequired = false;
     }
-    if (legalPages.includes(path)) {
-      isRequired = false;
-    }
-    if (path.indexOf('/pay/quittance') !== -1) {
-      isRequired = false;
-    }
-    if (path.indexOf('/superservices') !== -1) {
+    if (hidePages?.includes(path)) {
       isRequired = false;
     }
     if (config.showPsoOnlyForAuthorized && !this.loadService.user.authorized) {

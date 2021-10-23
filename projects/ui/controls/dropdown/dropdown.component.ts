@@ -38,6 +38,7 @@ import { ConstantsService } from '@epgu/ui/services/constants';
 import { LineBreak, MultipleItemsLayout, Translation, ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { forkJoin, Observable } from 'rxjs';
 import { PositioningRequest, Suggest, SuggestItem, Width } from '@epgu/ui/models';
+import { HelperService } from '@epgu/ui/services/helper';
 
 /*
  * документация по ссылке https://confluence.egovdev.ru/pages/viewpage.action?pageId=170673869
@@ -75,6 +76,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
 
   // фукнция форматирования для итема (общая, действует на итем и в поле и в списке)
   @Input() public formatter?: (item: ListItem, context?: { [name: string]: any }) => string;
+  // флаг для локального поиска, если true то поиск осуществляется по свойству textFormatted
+  @Input() public searchByTextFormatted = false;
   // функция форматирования специальная, применяется только в списке для случая когда отображение в списке должно отличаться
   @Input() public listFormatter?: (item: ListItem, context?: { [name: string]: any }) => string;
   // конвертер объединяет входной и выходной конвертер для объектов не подходящих под интерфейс {id, text}
@@ -110,6 +113,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   @Input() public virtualScroll = false;
   // включает поле поиска в выпадающую область, позволяет фильтровать отображаемые значения
   @Input() public localSearch = false;
+  // позволяет отменить срабатывание поиска по текстовому вводу, только по ентеру и иконке
+  @Input() public searchByTextInput = !HelperService.isTouchDevice();
   // заменять ё -> e й -> и
   @Input() public escapeSimilarLetters = false;
   @Input() public highlightSubstring = true;
@@ -220,6 +225,9 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   }
 
   public setItems(value: Array<any>) {
+    if (value[0].id !== 'empty-item') {
+      value.unshift(new ListItem({id: 'empty-item', text: this.placeholder, unselectable: this.multi}));
+    }
     this.internalItems = this.listService.createListItems(value);
     this.updateFormatting();
     this.fixedItemsProvider.setSource(this.internalItems);
@@ -373,7 +381,13 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
 
   public setPartialIndex(partialNumber: number) {
     if (this.localSearch || this.incrementalLoading) {
-      this.fixedItemsProvider.search(this.filteringQuery, null, this.escapeSimilarLetters).subscribe((filteredAll: Array<ListItem>) => {
+      this.fixedItemsProvider.search(
+        this.filteringQuery,
+        {
+          searchByTextFormatted: this.searchByTextFormatted
+        },
+        this.escapeSimilarLetters
+      ).subscribe((filteredAll: Array<ListItem>) => {
         const highlightIfNeeded = (filteredItems: Array<ListItem>) => {
           if (this.filteringQuery && this.highlightSubstring) {
             this.listService.highlightSubstring(filteredItems, this.filteringQuery);
@@ -382,7 +396,14 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
         if (this.incrementalLoading) {
           this.partialPageNumber = partialNumber;
           const pageSize = this.incrementalPageSize || ConstantsService.DEFAULT_ITEMS_INCREMENTAL_PAGE_SIZE;
-          this.fixedItemsProvider.searchPartial(this.filteringQuery, this.partialPageNumber, {partialPageSize: pageSize})
+          this.fixedItemsProvider.searchPartial(
+            this.filteringQuery,
+            this.partialPageNumber,
+            {
+              partialPageSize: pageSize,
+              searchByTextFormatted: this.searchByTextFormatted
+            },
+            )
             .subscribe((filteredPaged: Array<ListItem>) => {
               highlightIfNeeded(filteredPaged);
               const partialedItems = partialNumber === 0 ? filteredPaged : this.internalDisplayed.concat(filteredPaged);
@@ -435,11 +456,18 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
       if (this.onTouchedCallback) {
         this.onTouchedCallback();
       }
-      e.stopPropagation();
+      e?.stopPropagation();
     }
   }
 
   public invertSelection(item: ListItem) {
+    if (item.id === 'empty-item') {
+      this.internalSelected.forEach(item => this.unselect(item, null));
+      if (!this.multi) {
+        this.closeDropdown();
+      }
+      return;
+    }
     this.returnFocus();
     if (item.selected) {
       if (this.multi) {

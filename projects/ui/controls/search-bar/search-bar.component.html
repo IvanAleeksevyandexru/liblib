@@ -41,11 +41,11 @@
     </div>
   </div>
   <div class="search-clear"
-       [hidden]="searching || disabled || !clearable || !query"
+       [hidden]="!focused || searching || disabled || !clearable || !query"
        [ngClass]="{'align-right': !showMagnifyingGlass && !searching}"
        (click)="clearSearch($event)">
   </div>
-  <div class="search-go" *ngIf="!mainPageStyle" [hidden]="!showMagnifyingGlass || searching"
+  <div class="search-go" *ngIf="!mainPageStyle" [hidden]="!showMagnifyingGlass || searching || (focused && query)"
        (click)="runOrPostponeSearch(query, false, true)"
        [ngClass]="{disabled: disabled}"></div>
   <div class="search-button" *ngIf="mainPageStyle">
