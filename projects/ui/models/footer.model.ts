@@ -11,7 +11,7 @@ export interface IBlock {
   links: {
     title: string;
     url: string;
-    newTab?: boolean;
+    target?: '_blank' | '_self';
   }[];
   apps?: string[];
 }

@@ -1,3 +1,7 @@
+// ToDo: Идет задвоение моделей: main-page и main-data
+// В задетом месте стала использовать боее полную модель main-page
+// Обнаружила при правке футера
+
 import { IFooter } from '@epgu/ui/models';
 
 export interface IMainData {

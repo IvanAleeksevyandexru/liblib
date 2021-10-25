@@ -57,7 +57,7 @@
     <a class="link-hover custom-sizes text-plain gray"
        [href]="link.url"
        [attr.target]="link.target ? link.target : null"
-       [attr.rel]="link.newTab ? 'noopener noreferrer' : null">
+       [attr.rel]="link.target === '_blank' ? 'noopener noreferrer' : null">
       {{link.title}}
     </a>
   </div>
