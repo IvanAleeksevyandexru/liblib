@@ -97,13 +97,13 @@ export interface MainFooterBlock {
   hideTablet?: boolean;
   hideMobile?: boolean;
   links?: MainFooterBlockLink[];
-  apps?: string[];
 }
 
 export interface MainFooterBlockLink {
   title: string;
   url: string;
   newTab?: boolean;
+  needReload?: boolean;
 }
 
 export interface LifeSituationInterface {
