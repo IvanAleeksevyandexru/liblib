@@ -29,10 +29,6 @@ export class LocationSelectComponent implements OnInit {
     this.sharedService.on('regionData').subscribe(regionData => {
       if (regionData && regionData.code !== '00000000000') {
         this.regionName = regionData.name;
-      } else {
-        this.translateService.get('LOCATION.FAIL').subscribe((res: string) => {
-          this.regionName = res;
-        });
       }
     });
   }
