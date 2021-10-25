@@ -48,12 +48,6 @@ a, button {
     background-color: #0B40B3;
   }
 
-  &.disabled {
-    color: #66727F;
-    background-color: #E5EAF5;
-    cursor: default;
-  }
-
   &.transparent {
     background-color: transparent;
   }
@@ -106,6 +100,12 @@ a, button {
       color: #66727F;
       background-color: #E5EAF5;
     }
+  }
+
+  &.disabled {
+    color: #66727F;
+    background-color: #E5EAF5;
+    cursor: default;
   }
 
   &.new-search {

@@ -1,0 +1,31 @@
+<div
+  [style.width]="height + 'px'"
+  [style.height]="height + 'px'"
+  [style.fontSize]="height + 'px'"
+  *ngIf="avatar"
+  class="avatar-wrapper"
+  (click)="!hideEdit && edit.emit()"
+>
+  <div *ngIf="!hideEdit" class="edit-avatar"></div>
+  <img
+    *ngIf="isPrivateOrBusinessChief && avatar.url && !avatarError; else noAvatar"
+    class="avatar"
+    [src]="avatar.url"
+    (error)="avatarError = true"
+    alt="Фото пользователя"
+  />
+  <div *ngIf="!hideEdit" class="avatar-wrapper_hover"></div>
+</div>
+
+<ng-template #noAvatar>
+  <div
+    class="no-avatar"
+    [class.legal]="isLegalRole"
+    [class.female]="avatar.gender === 'F'"
+    [class.employees]="isEmployee"
+    [style.lineHeight]="(2 + height) + 'px'"
+    [style.backgroundColor]="noAvatarColor"
+  >
+    {{ isPrivateOrBusinessChief ? userFirstLetters : '' }}
+  </div>
+</ng-template>
