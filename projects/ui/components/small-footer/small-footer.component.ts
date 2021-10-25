@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { LoadService } from '@epgu/ui/services/load';
-import { MainFooter, MainFooterBlockLink } from '@epgu/ui/models';
+import { MainFooter } from '@epgu/ui/models';
 
 @Component({
   selector: 'lib-small-footer',
@@ -20,10 +20,6 @@ export class SmallFooterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-  }
-
-  public getTarget(link: MainFooterBlockLink): string {
-    return link.needReload ? '_self' : link.newTab ? '_blank' : null;
   }
 
 }

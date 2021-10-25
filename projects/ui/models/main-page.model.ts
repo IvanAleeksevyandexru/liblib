@@ -102,8 +102,7 @@ export interface MainFooterBlock {
 export interface MainFooterBlockLink {
   title: string;
   url: string;
-  newTab?: boolean;
-  needReload?: boolean;
+  target?: '_blank' | '_self';
 }
 
 export interface LifeSituationInterface {
