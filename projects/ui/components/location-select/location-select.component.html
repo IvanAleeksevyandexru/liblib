@@ -1,4 +1,4 @@
 <div class="location-select {{skinTheme}}" (click)="handleClick()">
   <div *ngIf="skinTheme" class="pin"></div>
-  <div class="text">{{regionName}}</div>
+  <div class="text">{{regionName || ('LOCATION.FAIL' | libTranslate)}}</div>
 </div>
