@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ConstantsService } from '@epgu/ui/services/constants';
-import { Address, DadataResult, FileLink } from '@epgu/ui/models';
+import { Address, DadataResult, FileLink, IHttpOptions } from '@epgu/ui/models';
 
 @Injectable({
   providedIn: 'root'
@@ -444,7 +444,7 @@ export class HelperService {
       headers?: { name: string, value: string | string[] }[],
       options?: any
     }
-  ): any {
+  ): IHttpOptions {
     let headers: HttpHeaders = new HttpHeaders();
 
     headers = headers.append('Content-Type', 'application/json');
