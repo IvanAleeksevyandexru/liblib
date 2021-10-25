@@ -26,13 +26,13 @@
     <perfect-scrollbar #scrollComponent *ngIf="!virtualScroll"
         [config]="{suppressScrollX: true, wheelPropagation: false}">
       <ng-container *ngFor="let item of filteredItems">
-        <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
+        <ng-container *ngIf="item.id !== 'empty-item'" [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
       </ng-container>
     </perfect-scrollbar>
     <lib-virtual-scroll #virtualScroll *ngIf="virtualScroll"
         [scrollStrategy]="virtualScrollController">
       <ng-container *libVirtualFor="let item of filteredItems">
-        <ng-container [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
+        <ng-container *ngIf="item.id !== 'empty-item'" [ngTemplateOutlet]="singleItem" [ngTemplateOutletContext]="{item: item}"></ng-container>
       </ng-container>
     </lib-virtual-scroll>
     <div *ngIf="showNotFound && internalItems.length && !filteredItems.length" class="items-list empty-list">

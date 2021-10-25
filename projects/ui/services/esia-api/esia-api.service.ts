@@ -173,7 +173,7 @@ export class EsiaApiService {
           this.initParams();
 
           if (isDevMode()) {
-            resolve();
+            resolve(true);
           } else {
             this.getRequest(`prns/prn_oid/permissions/settings`, 1)
               .toPromise()
@@ -182,9 +182,9 @@ export class EsiaApiService {
                   this.goToOffer(false);
                   reject();
                 }
-                resolve();
+                resolve(true);
               }, () => {
-                resolve();
+                resolve(true);
               });
           }
         }

@@ -5,6 +5,7 @@ import { Coords, Region, RegionSuggestion } from '@epgu/ui/models';
 import { LookupProvider } from '@epgu/ui/models/dropdown';
 import { PlatformLocation } from '@angular/common';
 import { CountersService } from '@epgu/ui/services/counters';
+import { CookieService } from '@epgu/ui/services/cookie';
 import { of, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -36,7 +37,8 @@ export class LocationService {
     private http: HttpClient,
     private loadService: LoadService,
     private locationPlatform: PlatformLocation,
-    private countersService: CountersService
+    private countersService: CountersService,
+    private cookieService: CookieService
   ) {
   }
 
@@ -65,6 +67,9 @@ export class LocationService {
       tap((response) => {
         this.savedDetectRegion = response;
         this.savedDetectRegion$.next(response);
+        if (!this.cookieService.get('userSelectedRegion') && this.savedDetectRegion.code) {
+          this.cookieService.set('userSelectedRegion', this.savedDetectRegion.code)
+        }
       })
     );
   }

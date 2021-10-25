@@ -104,12 +104,12 @@ export class LoadService {
           .then((params: any) => {
             this.prepareData(params, packageVersion);
             this.loaded.next(true);
-            resolve();
+            resolve(true);
           }, () => {
             if (ignoreConfigMissing) {
               this.prepareData(EMPTY_CONFIG_STUB, packageVersion);
               this.loaded.next(true);
-              resolve();
+              resolve(true);
             } else {
               reject();
             }
@@ -120,12 +120,12 @@ export class LoadService {
         try {
           this.prepareData((window as any).serverData, packageVersion);
           this.loaded.next(true);
-          resolve();
+          resolve(true);
         } catch (e) {
           if (ignoreConfigMissing) {
             this.prepareData(EMPTY_CONFIG_STUB, packageVersion);
             this.loaded.next(true);
-            resolve();
+            resolve(true);
           } else {
             reject();
           }
