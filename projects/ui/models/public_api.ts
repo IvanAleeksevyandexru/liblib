@@ -18,6 +18,7 @@ export * from './feed';
 export * from './file-link';
 export * from './footer.model';
 export * from './frame-type';
+export * from './http-options';
 export * from './informer.model';
 export * from './knd.model';
 export * from './link';

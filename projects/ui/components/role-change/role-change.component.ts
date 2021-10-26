@@ -60,7 +60,7 @@ export class RoleChangeComponent implements OnInit {
   }
 
   public getRoles(): void {
-    this.esiaApi.getRequest('prns/prn_oid/roles', 1).subscribe(response => {
+    this.esiaApi.getRequest<{elements: Role[]}>('prns/prn_oid/roles', 1).subscribe(response => {
       this.roles = response.elements;
 
       // Добавляем к имеющимся ролям еще роль физика, чтобы в списке была, как один из пунктов
