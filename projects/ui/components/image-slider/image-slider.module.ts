@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ImageSliderComponent } from './image-slider.component';
 import { SliderImagesModalComponent } from './slider-images-modal/slider-images-modal.component';
-import { SliderComponent } from './slider/slider.component';
+import { ImageSlidesComponent } from './image-slides/image-slides.component';
 
 
 @NgModule({
@@ -12,11 +12,11 @@ import { SliderComponent } from './slider/slider.component';
   declarations: [
     ImageSliderComponent,
     SliderImagesModalComponent,
-    SliderComponent
+    ImageSlidesComponent
   ],
   exports: [
     ImageSliderComponent,
-    SliderComponent,
+    ImageSlidesComponent,
     SliderImagesModalComponent
   ],
   entryComponents: [
