@@ -55,7 +55,7 @@
     ]
   },
   "angularCompilerOptions": {
-    "enableIvy": false,
+    "compilationMode": "partial",
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
     "strictInjectionParameters": true,

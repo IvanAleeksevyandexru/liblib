@@ -30,7 +30,7 @@ import { ValidationDetailed, ValidationMessages } from '@epgu/ui/models/validati
 @Component({
   selector: 'lib-standard-masked-input',
   templateUrl: 'standard-masked-input.component.html',
-  styleUrls: ['./standard-masked-input.component.scss', '../plain-input/plain-input.component.scss'],
+  styleUrls: ['./standard-masked-input.component.scss', '../plain-input/plain-input.component.scss', '../standard-input/standard-input.component.scss'],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => StandardMaskedInputComponent),
@@ -121,7 +121,7 @@ export class StandardMaskedInputComponent extends BaseMaskedInputComponent
   private updateIconsCount() {
     this.iconsCount = this.questionTip || this.invalidDisplayed ? 1 : 0;
     if (this.iconsCountChanged) {
-      this.iconsCountChanged.emit({count: this.iconsCount});
+      this.iconsCountChanged.emit({ count: this.iconsCount });
     }
   }
 
