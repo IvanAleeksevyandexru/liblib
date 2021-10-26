@@ -24,11 +24,11 @@ export const SLIDES_HEIGHT_CARD = 226;
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'lib-slider',
-  templateUrl: './slider.component.html',
-  styleUrls: ['./slider.component.scss'],
+  selector: 'lib-image-slides',
+  templateUrl: './image-slides.component.html',
+  styleUrls: ['./image-slides.component.scss'],
 })
-export class SliderComponent implements AfterViewInit, OnChanges, OnDestroy {
+export class ImageSlidesComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() public slidesOffset = SLIDES_OFFSET;
   @Input() public slidesWidth = SLIDES_WIDTH;
   @Input() public slidesHeight = SLIDES_HEIGHT;
