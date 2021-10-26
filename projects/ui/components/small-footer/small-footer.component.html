@@ -56,8 +56,8 @@
   <div *ngFor="let link of block.links; let first = first" class="mt-12" [ngClass]="first ? 'mt-md-32': 'mt-md-16'">
     <a class="link-hover custom-sizes text-plain gray"
        [href]="link.url"
-       [attr.target]="link.newTab ? '_blank' : null"
-       [attr.rel]="link.newTab ? 'noopener noreferrer' : null">
+       [attr.target]="link.target ? link.target : null"
+       [attr.rel]="link.target === '_blank' ? 'noopener noreferrer' : null">
       {{link.title}}
     </a>
   </div>
