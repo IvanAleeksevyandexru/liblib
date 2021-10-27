@@ -14,10 +14,12 @@ import {
   OnInit,
   Optional,
   Output,
+  QueryList,
   Self,
   SimpleChanges,
   SkipSelf,
-  ViewChild
+  ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListElement, ListItem, ListItemConverter } from '@epgu/ui/models/dropdown';
@@ -137,6 +139,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   @Output() public listed = new EventEmitter<Array<ListItem>>();
 
   @Output() public selectSuggest = new EventEmitter<Suggest | SuggestItem>();
+  @ViewChildren('dropdownItem') public dropdownItems: QueryList<ElementRef>;
 
   public expanded: boolean;
   public destroyed = false;
@@ -299,12 +302,16 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
     }
   }
 
-  public notifyFocusEvent(e: Event) {
-    this.focusManager.notifyFocusMayChanged(this, e.type === 'focus');
+  public notifyFocusEvent(event: FocusEvent) {
+    this.focusManager.notifyFocusMayChanged(this, event.type === 'focus', event);
   }
 
-  public handleBlur() {
-    if (this.focusManager.isJustFocused(this.localSearchElement)) {
+  public handleBlur(focusEvent: FocusEvent) {
+    if (
+      this.focusManager.isJustFocused(this.localSearchElement) ||
+      focusEvent?.relatedTarget &&
+      this.dropdownItems?.some(element => element?.nativeElement === focusEvent?.relatedTarget)
+    ) {
       return;
     }
     this.focused = false;
