@@ -6,10 +6,11 @@
   </div>
   <div class="list-items" [ngClass]="{'flex-container-md flex-wrap-md block-lg': !styleType}">
     <div class="scroll-wrapper" [style.maxHeight]="maxHeight + 'px'">
-      <div class="mr-8">
+      <div class="content-wrapper mr-8">
         <ng-container *ngTemplateOutlet="content ? content : default"></ng-container>
       </div>
     </div>
+    <div class="shadow"></div>
   </div>
 </div>
 
