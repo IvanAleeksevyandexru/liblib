@@ -1,4 +1,4 @@
-<div class="footer-wrapper" id="footer-wrapper">
+<div class="footer-wrapper" id="footer-wrapper" *ngIf="footerService.visible | async">
   <div class="container" *ngIf="footer">
      <div class="hide-md">
        <lib-accordion [closeOthers]="true">

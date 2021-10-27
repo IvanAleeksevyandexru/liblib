@@ -15,38 +15,6 @@
     width: 100%;
   }
 
-  .role-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 32px;
-    background-color: #F3F5FB;
-    margin-right: 24px;
-    background-repeat: no-repeat;
-    background-position: center center;
-
-    img {
-      margin-top: -1px;
-      margin-left: -1px;
-      width: 64px;
-    }
-    &.LEGAL,
-    &.AGENCY {
-      background-image: url(../../../assets/svg/roles-icons/briefcase.svg);
-    }
-    &.employees {
-      background-image: url(../../../assets/svg/roles-icons/employee.svg);
-    }
-    &.no-avatar {
-      border: 1px solid #5479ca;
-      background: #5479ca url(../../../assets/svg/roles-icons/no-avatar.svg) no-repeat center;
-      background-size: 64px;
-
-      &.F {
-        background-image: url(../../../assets/svg/roles-icons/no-avatar-f.svg);
-      }
-    }
-  }
-
   h4 {
     font-size: 18px;
     line-height: 24px;
@@ -157,5 +125,13 @@
 @media (min-width: 1140px) {
   .pagination {
     margin-top: 24px;
+  }
+}
+
+lib-user-avatar {
+  margin-right: 16px;
+
+  @media (min-width: 767px) {
+    margin-right: 24px;
   }
 }

@@ -86,6 +86,10 @@ export class LoadService {
       user.typeParams = new UserTypeParams('');
     }
 
+    if (this.params.config.packageVersion && !packageVersion) {
+      packageVersion = this.params.config.packageVersion;
+    }
+
     this.params = params;
     this.params.config.packageVersion = packageVersion;
     this.setUserTypeNA();

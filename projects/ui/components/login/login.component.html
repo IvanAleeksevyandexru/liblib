@@ -2,21 +2,12 @@
      class="authorized-user flex-container-md justify-end-md align-items-center"
      (click)="userClicked()"
      [class.hide-arrow]="menuOpened">
-  <div *ngIf="(loadService.avatar | async) as avatar" class="avatar-wrapper">
-    <img *ngIf="avatar.url && !avatarError; else noAvatar"
-         class="avatar" [src]="avatar.url"
-         (error)="avatarError = true"
-         alt="" />
-    <ng-template #noAvatar>
-      <div
-        class="no-avatar"
-        [class.female]="avatar.gender === 'F'"
-        [class.male]="avatar.gender === 'M'"
-        [class.business]="user.type === 'B'"
-        [class.legal]="user.type === 'L'"
-      ></div>
-    </ng-template>
-  </div>
+     <lib-user-avatar
+    [avatar]="loadService.avatar | async"
+    [user]="user"
+    [height]="36"
+    [hideEdit]="true"
+  ></lib-user-avatar>
   <lib-counter class="counter-circle" [counter]="userCounter"></lib-counter>
   <a class="close-menu" *ngIf="menuOpened" (click)="onCloseMenu($event)"></a>
   <div class="user-data hide show-lg">

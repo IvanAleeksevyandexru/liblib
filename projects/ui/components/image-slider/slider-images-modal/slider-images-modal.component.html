@@ -3,7 +3,7 @@
     <a class="close" (click)="onCancel($event)"></a>
     <h3 *ngIf="popupTitle" class="title-h3 popup-title mt-20 mt-md-24 mb-md-24">{{popupTitle}}</h3>
     <div class="popup-images" *ngIf="images">
-      <lib-slider
+      <lib-image-slides
         [images]="images"
         [limit]="1"
         [slidesWidth]="imageWidth"
@@ -11,7 +11,7 @@
         [showByIndex]="imageIndex"
         [showTitle]="!popupTitle && showTitle"
         [showBullet]="showBullet"
-        [view]="skin"></lib-slider>
+        [view]="skin"></lib-image-slides>
     </div>
   </div>
 </div>
