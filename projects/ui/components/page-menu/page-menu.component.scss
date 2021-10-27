@@ -4,6 +4,9 @@
   .list-items {
     .scroll-wrapper {
       overflow-y: auto;
+      // for FF
+      scrollbar-width: thin;
+      scrollbar-color: #D1D5DF transparent;
 
       &::-webkit-scrollbar {
         background-color: transparent;
