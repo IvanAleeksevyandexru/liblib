@@ -149,7 +149,8 @@ export class PageMenuComponent implements AfterViewInit, AfterViewChecked {
   }
 
   private onScroll() {
-    const scrollTop = document.documentElement.scrollTop;
+    const el = document.scrollingElement || document.documentElement;
+    const scrollTop = el.scrollTop;
     const classList = this.menu.classList;
 
     if (scrollTop < this.needStartFloat) {
