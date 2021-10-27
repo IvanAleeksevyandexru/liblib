@@ -18,13 +18,12 @@
            title="{{role.fullName}}">
         <div class="flex-container-md flex-container-lg">
           <div class="role-item flex-container">
-            <div class="role-icon"
-                 [class.no-avatar]="privateOrBusiness(role)"
-                 [class.employees]="empRole(role)"
-                 [ngClass]="[role.type, user.gender || '']">
-              <img src="{{user.person.person.avatarLink}}"
-                   alt="" *ngIf="isShowAvatar(role)"/>
-            </div>
+            <lib-user-avatar
+              [role]="role"
+              [user]="user"
+              [avatar]="avatar$ | async"
+              [hideEdit]="true"
+            ></lib-user-avatar>
             <div class="flex-1 flex-container-lg flex-container-md feed-content">
               <div>
                 <div class="flex-container">

@@ -37,7 +37,9 @@ export class FooterComponent implements OnInit {
 
   public ngOnInit() {
     const cf = this.cfr.resolveComponentFactory(FooterCmsComponent);
-    this.viewContainerRef.createComponent(cf, 0);
+    if (this.viewContainerRef) {
+      this.viewContainerRef.createComponent(cf, 0);
+    }
   }
 
 }
