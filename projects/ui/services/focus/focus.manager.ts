@@ -3,18 +3,20 @@ import { Observable, Observer, BehaviorSubject, Subscription } from 'rxjs';
 
 export class FocusState {
 
-  constructor(current: any, prev: any) {
+  constructor(current: any, prev: any, focusEvent?: FocusEvent) {
     this.current = current;
     this.prev = prev;
+    this.focusEvent = focusEvent;
   }
 
   public prev: any;
   public current: any;
+  public focusEvent?: FocusEvent;
 }
 
 export interface Focusable {
   handleFocus(): void;
-  handleBlur(): void;
+  handleBlur(focusEvent?: FocusEvent): void;
 }
 
 // таймаут от срабатывания блюра до неприобретения его никаким элементом чтоб считаться утратой фокуса "в никуда"
@@ -41,7 +43,7 @@ export class FocusManager {
   private focusedComponentNotifier: Observable<FocusState> = this.focusedComponent.asObservable();
   private subscriptions = new Map<Focusable, Subscription>();
 
-  public notifyFocusMayChanged(targetedComponent: any, isFocusEvent: boolean) {
+  public notifyFocusMayChanged(targetedComponent: any, isFocusEvent: boolean, event?: FocusEvent) {
     if (isFocusEvent) {
       if (this.documentSuspended) {
         this.documentSuspended = false;
@@ -58,16 +60,16 @@ export class FocusManager {
       this.awaitingFocusReceiving = true;
       setTimeout(() => {
         if (this.awaitingFocusReceiving) {
-          this.publishFocusLost();
+          this.publishFocusLost(event);
         }
       }, BLUR_TO_FOCUS_COMMON_DELAY);
     }
   }
 
-  public publishFocusLost() {
+  public publishFocusLost(event: FocusEvent) {
     this.awaitingFocusReceiving = false;
     if (this.lastKnownFocusedComponent !== null) {
-      this.focusedComponent.next(new FocusState(null, this.lastKnownFocusedComponent));
+      this.focusedComponent.next(new FocusState(null, this.lastKnownFocusedComponent, event));
       this.lastKnownFocusedComponent = null;
     }
     this.documentSuspended = !document.hasFocus();
@@ -91,7 +93,7 @@ export class FocusManager {
       if (state.current === component) {
         component.handleFocus();
       } else if (state.prev === component) {
-        component.handleBlur();
+        component.handleBlur(state.focusEvent);
       }
     }} as Observer<any>);
     this.subscriptions.set(component, subscription);
