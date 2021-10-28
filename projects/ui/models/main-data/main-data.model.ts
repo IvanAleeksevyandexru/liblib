@@ -8,8 +8,9 @@ export interface IMainData {
   catalog: ICatalog[];
   search: ISearch;
   payments: IPayment[];
-  ls: ILs[];
+  ls: ILs[]; // артефакт
   footer: IFooter;
+  life: ILife[];
 }
 
 export interface ICatalog{
@@ -47,4 +48,14 @@ export interface ILs {
 export interface INewsOverride {
   ico: string;
   code: string;
+}
+
+export interface ILife {
+  code: string;
+  created: string; // format 2021-09-21
+  icon: string;
+  pubDate: string; // format 2021-07-28
+  type: 'news' | 'life';
+  updated: string; // format 2021-09-21
+  title: string;
 }
