@@ -35,7 +35,9 @@
       <div class="hide show-md">
         <ul class="links flex-container-md">
           <div *ngIf="user.authorized" class="hide show-lg">
-            <li *ngFor="let link of links" class="item flex-container align-items-center mr-24">
+            <li *ngFor="let link of links"
+                class="item align-items-center mr-24"
+                [ngClass]="{'mr-24 flex-container': link.showSeparatelyOnDesk, 'hide': !link.showSeparatelyOnDesk}">
               <ng-container *ngIf="link.showSeparatelyOnDesk">
                 <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
                    (click)="redirect($event, link)">
@@ -66,7 +68,11 @@
           </li>
         </ul>
       </div>
-      <div class="ml-lg-20" [ngClass]="{'ml-md-64': user.authorized}">
+      <div [ngClass]="{
+            'ml-md-64': user.authorized,
+            'ml-lg-20': !(user.type === 'B' || user.type === 'L'),
+            'ml-lg-0': (user.type === 'B' || user.type === 'L')
+           }">
         <div class="login-wrapper">
           <div class="login flex-container justify-end overflow-container">
             <lib-login [useButton]="true" class="hide"

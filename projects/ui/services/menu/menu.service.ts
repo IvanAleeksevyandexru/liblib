@@ -55,30 +55,48 @@ export class MenuService {
   }
 
   public getUserMenuDefaultLinks(): MenuLink[] {
-    return [{
-      title: 'HEADER.MENU.NOTIFICATIONS',
-      mnemonic: 'overview', // правка изза выборов
-      icon: 'bell'
-    }, {
-      title: 'HEADER.MENU.ORDERS',
-      mnemonic: 'orders',
-      icon: 'edit',
-      showSeparatelyOnDesk: true
-    }, {
-      title: 'HEADER.MENU.DOCS',
-      mnemonic: 'docs',
-      icon: 'doc',
-      showSeparatelyOnDesk: true
-    }, {
-      title: 'HEADER.MENU.PAYMENT',
-      mnemonic: 'payment',
-      icon: 'wallet',
-      showSeparatelyOnDesk: true
-    }, {
-      title: 'HEADER.MENU.PROFILE',
-      mnemonic: 'profile',
-      icon: 'person'
-    }];
+    const userType = this.loadService.user.type;
+    const links: MenuLink[] = [
+      {
+        title: 'HEADER.MENU.NOTIFICATIONS',
+        mnemonic: 'overview', // правка изза выборов
+        icon: 'bell'
+      },
+      {
+        title: `HEADER.MENU.${userType === 'B' ? 'BUSINESS' : 'ORG'}_PROFILE`,
+        mnemonic: 'profile',
+        icon: 'enter',
+        showSeparatelyOnDesk: true,
+        availableUserTypes: ['B', 'L']
+      },
+      {
+        title: 'HEADER.MENU.ORDERS',
+        mnemonic: 'orders',
+        icon: 'edit',
+        showSeparatelyOnDesk: true
+      },
+      {
+        title: 'HEADER.MENU.DOCS',
+        mnemonic: 'docs',
+        icon: 'doc',
+        showSeparatelyOnDesk: true,
+        availableUserTypes: ['P']
+      },
+      {
+        title: 'HEADER.MENU.PAYMENT',
+        mnemonic: 'payment',
+        icon: 'wallet',
+        showSeparatelyOnDesk: true
+      },
+      {
+        title: 'HEADER.MENU.PROFILE',
+        mnemonic: 'profile',
+        icon: 'person',
+        availableUserTypes: ['P']
+      }
+    ];
+    return links.filter(l => !l.availableUserTypes || l.availableUserTypes.includes(userType));
+
   }
 
   public getStaticItemUrls(): object {
@@ -106,6 +124,8 @@ export class MenuService {
       'HEADER.MENU.PARTNERS_ORDERS': `${partnersHost}lk/orders/all`,
       'HEADER.MENU.SUBSCRIPTIONS': `${partnersHost}lk/subscriptions`,
       'HEADER.MENU.HISTORY': `${partnersHost}lk/history`,
+      'HEADER.MENU.ORG_PROFILE': `${lkUrl}org-profile`,
+      'HEADER.MENU.BUSINESS_PROFILE': `${lkUrl}org-profile`,
     };
   }
 

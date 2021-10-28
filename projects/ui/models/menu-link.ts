@@ -9,6 +9,7 @@ export interface MenuLink {
   handler?: (MenuLink) => void;
   icon?: IconType;
   showSeparatelyOnDesk?: boolean;
+  availableUserTypes?: string[];
 }
 
 export interface UserRole {

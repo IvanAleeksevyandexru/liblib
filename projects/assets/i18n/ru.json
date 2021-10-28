@@ -34,7 +34,9 @@
       "DIGITAL_ASSISTANT": "Найти информацию",
       "PARTNERS_ORDERS": "Уведомления",
       "SUBSCRIPTIONS": "Подписки",
-      "HISTORY": "История операций"
+      "HISTORY": "История операций",
+      "ORG_PROFILE": "Профиль организации",
+      "BUSINESS_PROFILE": "Профиль предпринимателя"
     },
     "CATALOG": {
       "ALL": "Весь каталог",
