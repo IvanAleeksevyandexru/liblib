@@ -157,6 +157,8 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   // принудительное включение иконки поиска
   @Input() public searchIconForcedShowing = false;
 
+  @Input() public disableFocusAfterSelectItem = false;
+
   @Output() public blur = new EventEmitter<any>();
   @Output() public focus = new EventEmitter<any>();
   // новое значение выбрано
@@ -367,7 +369,9 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
   public selectItem(item: ListItem, passive = false) {
     let isNew = true;
     if (!this.mainPageStyle) {
-      this.returnFocus();
+      if (!this.disableFocusAfterSelectItem) {
+        this.returnFocus();
+      }
       if (item && !this.listService.isSelectable(item)) {
         return;
       }
