@@ -289,10 +289,64 @@
   }
 }
 
+.informers-container {
+  &.informer-feeds-disabled {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
+  .informers-container {
+    &.informer-feeds-disabled {
+      display: grid;
+      .addition-informer {
+        width: auto;
+        margin: 0;
+      }
+    }
+  }
+}
+
 @media all and (min-width: 1140px) {
   .main-page-view {
     .informer-content {
       justify-content: center;
+    }
+  }
+
+  .informer-feeds-disabled {
+    .quittance-informer {
+      height: 100%;
+      justify-content: center;
+    }
+    .without-debt {
+      .icon-no-debt {
+        width: 52px;
+        height: 39px;
+      }
+      .informer-top-wrap {
+        justify-content: flex-start;
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        .icon-no-debt {
+          margin: 0 24px 0 0;
+        }
+      }
+    }
+    .informer-content {
+      display: flex;
+      flex-flow: row;
+      .debt {
+        display: flex;
+        align-items: center;
+      }
+      .debt-text {
+        margin: 0 0 0 24px;
+      }
+      .button-container{
+        margin-top: 0;
+      }
     }
   }
 
