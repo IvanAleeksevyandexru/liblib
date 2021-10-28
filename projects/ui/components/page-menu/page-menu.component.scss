@@ -23,14 +23,14 @@
       .content-wrapper {
         padding-bottom: 24px;
       }
+    }
 
-      .shadow {
-        height: 24px;
-        background: linear-gradient(180deg, transparent 0%, #FAFCFF 100%);
-        position: absolute;
-        width: 100%;
-        bottom: -2px;
-      }
+    .shadow {
+      height: 24px;
+      background: linear-gradient(180deg, transparent 0%, #FAFCFF 100%);
+      position: absolute;
+      width: 100%;
+      bottom: -2px;
     }
 
     .item {
