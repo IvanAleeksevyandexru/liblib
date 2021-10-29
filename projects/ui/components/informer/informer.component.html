@@ -40,9 +40,12 @@
       </ng-container>
 
       <div *ngIf="statusInformer === 'debt'" class="informer-content">
-        <div class="debt">
-          <div class="title-h5 text-center debt-title">
-            {{'INFORMER.DEBT.TO_PAY' | libTranslate }} {{dataInformer.docs}}
+        <div class="debt" [ngClass]="{'debt-with-hint': hintText}">
+          <div>
+            <div class="title-h5 text-center debt-title">{{'INFORMER.DEBT.TO_PAY' | libTranslate }} {{dataInformer.docs}}</div>
+            <div *ngIf="isMainPage && hintText && feedsDisabled" [innerHTML]="hintText"
+                 class="text-plain gray mt-4 hide show-lg">
+            </div>
           </div>
           <div class="text-center debt-text mt-16">
             <div class="text-right-md inline-md text-center-lg">
@@ -52,11 +55,13 @@
             </div>
 
             <div *ngIf="isMainPage && hintText" [innerHTML]="hintText"
-                 class="text-plain gray mt-4"></div>
+                 [ngClass]="{'hide-lg': feedsDisabled}"
+                 class="text-plain gray mt-4">
+            </div>
           </div>
         </div>
 
-        <div class="button-container mt-24 mt-md-0 mt-lg-16">
+        <div *ngIf="!isMainPage || (isMainPage && feedsDisabled)" class="button-container mt-24 mt-md-0 mt-lg-16">
           <lib-button [size]="'md'" [width]="'wide'" (click)="redirectAndSendYaMetric()">
             {{dataInformer.button | libTranslate}}
           </lib-button>
