@@ -118,7 +118,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public burgerWithCatalogShow(currentPath): void {
-    const urls = ['/new', '/newsearch', '/departments', '/pay', '/help'];
+    const urls = ['/new', '/newsearch', '/departments', '/pay', '/help', '/life'];
     if (this.isPortal) {
       urls.push('/');
     }
@@ -127,6 +127,9 @@ export class HeaderComponent implements OnInit {
     }
     if (currentPath === '/help' || currentPath.startsWith('/help/')) {
       currentPath = '/help';
+    }
+    if (currentPath === '/life' || currentPath.startsWith('/life/')) {
+      currentPath = '/life';
     }
     this.burgerWithCatalog = urls.indexOf(currentPath) > -1;
   }
