@@ -300,6 +300,13 @@
   .informers-container {
     &.informer-feeds-disabled {
       display: grid;
+      .debt-title {
+        text-align: left;
+      }
+      .price-discount {
+        font-size: 24px;
+        line-height: 32px;
+      }
       .addition-informer {
         width: auto;
         margin: 0;
@@ -316,6 +323,9 @@
   }
 
   .informer-feeds-disabled {
+    .button-container {
+      align-self: center;
+    }
     .quittance-informer {
       height: 100%;
       justify-content: center;
@@ -341,6 +351,12 @@
       .debt {
         display: flex;
         align-items: center;
+        &.debt-with-hint {
+          align-items: baseline;
+          .debt-text {
+            margin-left: 0;
+          }
+        }
       }
       .debt-text {
         margin: 0 0 0 24px;
