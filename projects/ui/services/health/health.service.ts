@@ -87,18 +87,18 @@ export class HealthService {
     }
   }
 
-  public measureDomEvents(id, eventInfo = {}) {
+  public measureDomEvents(eventInfo = {}) {
     // tslint:disable-next-line:deprecation
     if (window.performance && window.performance.timing) {
       // tslint:disable-next-line:deprecation
       const timingApiObj = window.performance.timing;
       const dcl = timingApiObj.domContentLoadedEventEnd - timingApiObj.navigationStart;
       const complete = timingApiObj.loadEventEnd - timingApiObj.navigationStart;
-      this.send(id, dcl, 0, eventInfo);
-      this.send(id, complete, 0, eventInfo);
+      this.send('DOMContentLoaded', dcl, 0, eventInfo);
+      this.send('load', complete, 0, eventInfo);
     } else {
       // если браузер не подерживает performance
-      this.send(id, 'NotSupportedPerfomanceBrowser', 1, eventInfo);
+      this.send("NotSupportedPerfomanceBrowser", 0, 1, eventInfo);
     }
   }
 
