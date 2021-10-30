@@ -1,11 +1,16 @@
+// ToDo: Идет задвоение моделей: main-page и main-data
+// В задетом месте стала использовать боее полную модель main-page
+// Обнаружила при правке футера
+
 import { IFooter } from '@epgu/ui/models';
 
 export interface IMainData {
   catalog: ICatalog[];
   search: ISearch;
   payments: IPayment[];
-  ls: ILs[];
+  ls: ILs[]; // артефакт
   footer: IFooter;
+  life: ILife[];
 }
 
 export interface ICatalog{
@@ -43,4 +48,14 @@ export interface ILs {
 export interface INewsOverride {
   ico: string;
   code: string;
+}
+
+export interface ILife {
+  code: string;
+  created: string; // format 2021-09-21
+  icon: string;
+  pubDate: string; // format 2021-07-28
+  type: 'news' | 'life';
+  updated: string; // format 2021-09-21
+  title: string;
 }

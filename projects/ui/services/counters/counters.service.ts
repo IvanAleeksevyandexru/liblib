@@ -106,6 +106,13 @@ export class CountersService {
   }
 
   public doCountersApiRequest(isHide?: boolean, isArchive: boolean = false, types?: string): Observable<CounterResponse> {
+    if (this.loadService.attributes.XFeedCntDisabled) {
+      return of({
+        counter: [],
+        total: 0,
+        unread: 0
+      });
+    }
     let params = {
       types: types || (this.constantsService.DEFAULT_LK_NOTIFICATION_CATEGORIES + ',PARTNERS'),
       isArchive: isArchive.toString(),

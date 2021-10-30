@@ -2,8 +2,13 @@
   position: relative;
 
   .list-items {
+    position: relative;
+
     .scroll-wrapper {
       overflow-y: auto;
+      // for FF
+      scrollbar-width: thin;
+      scrollbar-color: #D1D5DF transparent;
 
       &::-webkit-scrollbar {
         background-color: transparent;
@@ -14,6 +19,18 @@
         background-color: #D1D5DF;
         border-radius: 8px;
       }
+
+      .content-wrapper {
+        padding-bottom: 24px;
+      }
+    }
+
+    .shadow {
+      height: 24px;
+      background: linear-gradient(180deg, transparent 0%, #FAFCFF 100%);
+      position: absolute;
+      width: 100%;
+      bottom: -2px;
     }
 
     .item {
