@@ -30,7 +30,6 @@ html.modal-opened {
   min-height: 100%;
   padding: 24px;
   background: #ffffff;
-  border-radius: 12px;
 
   .close {
     position: absolute;
@@ -39,24 +38,12 @@ html.modal-opened {
     width: 24px;
     height: 24px;
 
-    &:before,
     &:after {
       content: '';
+      background: url(../svg/close_popup.svg) 0 0 no-repeat;
+      width: 24px;
+      height: 24px;
       position: absolute;
-      top: 2px;
-      left: 11px;
-      width: 2px;
-      height: 20px;
-      background: #0D4CD3;
-      transform: rotate(45deg);
-    }
-
-    &:before {
-      transform: rotate(45deg);
-    }
-
-    &:after {
-      transform: rotate(-45deg);
     }
   }
 
@@ -88,6 +75,7 @@ html.modal-opened {
     max-height: 100%;
     padding: 32px;
     transform: translate3d(-50%, -50%, 0);
+    border-radius: 12px;
 
     &.popup-scroll {
       margin: 48px 0;
