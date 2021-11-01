@@ -33,6 +33,7 @@ export class InformerComponent implements OnInit {
   public hintText: string;
   public linkHint: string;
   public config = this.loadService.config;
+  public feedsDisabled = this.loadService.attributes.XFeedDisabled;
 
   private debtForYaMetric: DebtYaMetricInterface = {};
 

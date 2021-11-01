@@ -70,12 +70,6 @@
 
     .links {
       .item {
-        margin-right: 32px;
-
-        &.mr-24 {
-          margin-right: 24px;
-        }
-
         a {
           font-size: 14px;
           line-height: 20px;
@@ -84,10 +78,6 @@
           &:hover {
             color: #1D5DEB;
           }
-        }
-
-        &:last-child {
-          margin-right: 0;
         }
       }
     }

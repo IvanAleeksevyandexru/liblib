@@ -128,7 +128,7 @@ export class PsoService {
     const config = this.loadService.config;
     const device = this.loadService.attributes.deviceType;
     const hidePages = config.psoHidePages;
-    if (path === '/' && (config.excludePsoFromMain || !this.loadService.user.authorized || this.loadService.user.isKid)) {
+    if (path === '/' && (config.excludePsoFromMain || this.loadService.user.isKid)) {
       isRequired = false;
     }
     if (hidePages?.includes(path)) {

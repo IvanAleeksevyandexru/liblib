@@ -35,31 +35,29 @@
       <div class="hide show-md">
         <ul class="links flex-container-md">
           <div *ngIf="user.authorized" class="hide show-lg">
-            <li *ngFor="let link of links" class="item flex-container align-items-center mr-24">
-              <ng-container *ngIf="link.showSeparatelyOnDesk">
-                <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
-                   (click)="redirect($event, link)">
+            <li *ngFor="let link of links" [ngClass]="{'hide': !link.showSeparatelyOnDesk, 'flex-container': link.showSeparatelyOnDesk}" class="item align-items-center mr-24">
+              <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
+                 (click)="redirect($event, link)">
+                <span *ngIf="translation === Translation.NONE">{{link.title}}</span>
+                <span *ngIf="translation === Translation.APP">{{link.title | appTranslate}}</span>
+                <span *ngIf="translation === Translation.LIB">{{link.title | libTranslate}}</span>
+              </a>
+              <ng-template #categoryLink>
+                <a class="category-link"
+                   [href]="link.url"
+                   (mouseenter)="openCategories()"
+                   (mouseleave)="closeCategories()">
                   <span *ngIf="translation === Translation.NONE">{{link.title}}</span>
                   <span *ngIf="translation === Translation.APP">{{link.title | appTranslate}}</span>
                   <span *ngIf="translation === Translation.LIB">{{link.title | libTranslate}}</span>
                 </a>
-                <ng-template #categoryLink>
-                  <a class="category-link"
-                     [href]="link.url"
-                     (mouseenter)="openCategories()"
-                     (mouseleave)="closeCategories()">
-                    <span *ngIf="translation === Translation.NONE">{{link.title}}</span>
-                    <span *ngIf="translation === Translation.APP">{{link.title | appTranslate}}</span>
-                    <span *ngIf="translation === Translation.LIB">{{link.title | libTranslate}}</span>
-                  </a>
-                </ng-template>
-              </ng-container>
+              </ng-template>
             </li>
           </div>
           <li class="item flex-container align-items-center mr-24">
             <a href="{{loadService.config.betaUrl}}help" target="_self" (click)="sendMetric('clickButtonHelp')">{{'HEADER.HELP' | libTranslate}}</a>
           </li>
-          <li class="item flex-container align-items-center mr-24">
+          <li class="item flex-container align-items-center">
             <a [href]="loadService.config.betaUrl + 'newsearch'">
               <img class="search-icon" [src]="loadService.config.staticDomainLibAssetsPath + 'svg/search-icons/search-blue.svg'">
             </a>

@@ -290,10 +290,80 @@
 
 }
 
+.informers-container {
+  &.informer-feeds-disabled {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
+  .informers-container {
+    &.informer-feeds-disabled {
+      display: grid;
+      .debt-title {
+        text-align: left;
+      }
+      .price-discount {
+        font-size: 24px;
+        line-height: 32px;
+      }
+      .addition-informer {
+        width: auto;
+        margin: 0;
+      }
+    }
+  }
+}
+
 @media all and (min-width: 1140px) {
   .main-page-view {
     .informer-content {
       justify-content: center;
+    }
+  }
+
+  .informer-feeds-disabled {
+    .button-container {
+      align-self: center;
+    }
+    .quittance-informer {
+      height: 100%;
+      justify-content: center;
+    }
+    .without-debt {
+      .icon-no-debt {
+        width: 52px;
+        height: 39px;
+      }
+      .informer-top-wrap {
+        justify-content: flex-start;
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        .icon-no-debt {
+          margin: 0 24px 0 0;
+        }
+      }
+    }
+    .informer-content {
+      display: flex;
+      flex-flow: row;
+      .debt {
+        display: flex;
+        align-items: center;
+        &.debt-with-hint {
+          align-items: baseline;
+          .debt-text {
+            margin-left: 0;
+          }
+        }
+      }
+      .debt-text {
+        margin: 0 0 0 24px;
+      }
+      .button-container{
+        margin-top: 0;
+      }
     }
   }
 
