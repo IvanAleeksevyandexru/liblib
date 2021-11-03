@@ -27,11 +27,12 @@ export class HealthService {
   }
 
   private send(event, time, result, eventInfo?): void {
-    if (isDevMode()) {
+    const api = this.loadService.config.timingApiUrl; 
+    if (isDevMode() || !api) {
       return;
     }
+    
     let utmSource;
-    const api = this.loadService.config.timingApiUrl;
     if (typeof result === 'undefined') {
       result = 0;
     }
