@@ -22,7 +22,7 @@ export class CountersService {
   public counters$ = this.counters.asObservable();
 
   private counterFilters: { [index: string]: CounterFilter } = {
-    USER: key => this.counterFilters.STATEMENTS(key) || this.counterFilters.MESSAGES(key) || this.counterFilters.SETTINGS(key) || this.counterFilters.BIOMETRY(key)  || this.counterFilters.PARTNERS(key) || this.counterFilters.PAYMENTS_EGISSO(key) || this.counterFilters.FEEDBACK(key) || this.counterFilters.ELECTION_INFO(key) || this.counterFilters.ORG(key) || this.counterFilters.KND_APPEAL(key),
+    USER: key => this.counterFilters.STATEMENTS(key) || this.counterFilters.MESSAGES(key) || this.counterFilters.SETTINGS(key) || this.counterFilters.BIOMETRY(key)  || this.counterFilters.PARTNERS(key) || this.counterFilters.PAYMENTS_EGISSO(key) || this.counterFilters.FEEDBACK(key) || this.counterFilters.ELECTION_INFO(key) || this.counterFilters.ORG(key) || this.counterFilters.KND_APPEAL(key) || this.counterFilters.ACCOUNT_CHILD(key) || this.counterFilters.PAYMENTS(key),
     ACCOUNT: key => key === CounterType.ACCOUNT || key === CounterType.PROFILE,
     ORG: key => key === CounterType.ORGANIZATION || key === CounterType.BUSINESSMAN,
     ACCOUNT_CHILD: key => key === CounterType.ACCOUNT_CHILD,
@@ -35,7 +35,7 @@ export class CountersService {
     MESSAGES: key => key === CounterType.GEPS,
     PARTNERS: key => key === CounterType.PARTNERS,
     FEEDBACK: key => key === CounterType.FEEDBACK,
-    PAYMENTS: key => false,
+    PAYMENTS: key => key === CounterType.PAYMENT,
     PAYMENTS_EGISSO: key => key === CounterType.PAYMENTS_EGISSO,
     ESIGNATURE: key => key === CounterType.ESIGNATURE,
     EMPTY: key => false
