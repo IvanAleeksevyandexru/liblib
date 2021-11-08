@@ -8,10 +8,11 @@ import { EdsItem } from '@epgu/ui/models';
 })
 export class EdsItemComponent implements OnInit {
   @Input() public item: EdsItem;
+  @Input() public showBorder = false;
+  @Input() public isPinItem = false;
 
   constructor() { }
 
   public ngOnInit() {
   }
-
 }

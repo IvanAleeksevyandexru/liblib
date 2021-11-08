@@ -1,8 +1,9 @@
-<div class="informers-container" [ngClass]="{'full-height': isMainPage}">
+<div class="informers-container" [ngClass]="{'full-height': isMainPage, 'grid-row informer-feeds-disabled': isMainPage && feedsDisabled}">
   <div [class.loading]="statusInformer === 'load'"
        [ngClass]="[
           statusInformer !== 'debt' ? 'justify-center': 'justify-between with-debt',
-          isMainPage ? 'main-page-view' : ''
+          isMainPage ? 'main-page-view' : '',
+          isMainPage && feedsDisabled ? 'col-3 col-md-4 col-lg-8' : ''
        ]"
        class="informer-main flex-container shadow-block hovered-block" (click)="redirectAndSendYaMetric()">
     <div *ngIf="statusInformer === 'load'; else loaded" class="loader">
@@ -39,9 +40,12 @@
       </ng-container>
 
       <div *ngIf="statusInformer === 'debt'" class="informer-content">
-        <div class="debt">
-          <div class="title-h5 text-center debt-title">
-            {{'INFORMER.DEBT.TO_PAY' | libTranslate }} {{dataInformer.docs}}
+        <div class="debt" [ngClass]="{'debt-with-hint': hintText}">
+          <div>
+            <div class="title-h5 text-center debt-title">{{'INFORMER.DEBT.TO_PAY' | libTranslate }} {{dataInformer.docs}}</div>
+            <div *ngIf="isMainPage && hintText && feedsDisabled" [innerHTML]="hintText"
+                 class="text-plain gray mt-4 hide show-lg">
+            </div>
           </div>
           <div class="text-center debt-text mt-16">
             <div class="text-right-md inline-md text-center-lg">
@@ -51,11 +55,13 @@
             </div>
 
             <div *ngIf="isMainPage && hintText" [innerHTML]="hintText"
-                 class="text-plain gray mt-4"></div>
+                 [ngClass]="{'hide-lg': feedsDisabled}"
+                 class="text-plain gray mt-4">
+            </div>
           </div>
         </div>
 
-        <div *ngIf="!isMainPage" class="button-container mt-24 mt-md-0 mt-lg-16">
+        <div *ngIf="!isMainPage || (isMainPage && feedsDisabled)" class="button-container mt-24 mt-md-0 mt-lg-16">
           <lib-button [size]="'md'" [width]="'wide'" (click)="redirectAndSendYaMetric()">
             {{dataInformer.button | libTranslate}}
           </lib-button>
@@ -64,7 +70,10 @@
     </ng-template>
   </div>
 
-  <div *ngIf="showAllInformers" class="addition-informer mt-20 mt-md-0 mt-lg-24 ml-md-32 ml-lg-0">
+  <div *ngIf="showAllInformers"
+       class="addition-informer mt-20 mt-md-0 mt-lg-24 ml-md-32 ml-lg-0"
+       [ngClass]="{'col-3 col-md-2 col-lg-4' : isMainPage && feedsDisabled}"
+  >
     <div *ngIf="otherInformerLoading; else otherInformers"
          class="addition-informer-loader shadow-block flex-container align-items-center justify-center">
       <div class="mt-16 mb-16">

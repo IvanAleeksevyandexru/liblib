@@ -252,6 +252,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     } else if (setItemsKeys.some((setItemsKey) => keys.includes(setItemsKey))) {
       if (this.itemsProvider) {
         this.setItems([], true);
+        this.runSearchOrIncrementalSearch(false, this.activeQuery);
       }
     } else if (changes.searchIconForcedShowing) {
       this.searching = changes.searchIconForcedShowing.currentValue;
@@ -754,4 +755,3 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     this.selectSuggest.emit(suggest);
   }
 }
-

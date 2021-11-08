@@ -54,31 +54,47 @@ export class MenuService {
 
   }
 
-  public getUserMenuDefaultLinks(): MenuLink[] {
-    return [{
-      title: 'HEADER.MENU.NOTIFICATIONS',
-      mnemonic: 'overview', // правка изза выборов
-      icon: 'bell'
-    }, {
-      title: 'HEADER.MENU.ORDERS',
-      mnemonic: 'orders',
-      icon: 'edit',
-      showSeparatelyOnDesk: true
-    }, {
-      title: 'HEADER.MENU.DOCS',
-      mnemonic: 'docs',
-      icon: 'doc',
-      showSeparatelyOnDesk: true
-    }, {
-      title: 'HEADER.MENU.PAYMENT',
-      mnemonic: 'payment',
-      icon: 'wallet',
-      showSeparatelyOnDesk: true
-    }, {
-      title: 'HEADER.MENU.PROFILE',
-      mnemonic: 'profile',
-      icon: 'person'
-    }];
+  public getUserMenuDefaultLinks(userType: string): MenuLink[] {
+    const isPerson = userType !== 'B' && userType !== 'L';
+    if (isPerson) {
+      return [{
+        title: 'HEADER.MENU.NOTIFICATIONS',
+        mnemonic: 'overview', // правка изза выборов
+        icon: 'bell'
+      }, {
+        title: 'HEADER.MENU.ORDERS',
+        mnemonic: 'orders',
+        icon: 'edit',
+        showSeparatelyOnDesk: true
+      }, {
+        title: 'HEADER.MENU.DOCS',
+        mnemonic: 'docs',
+        icon: 'doc',
+        showSeparatelyOnDesk: true
+      }, {
+        title: 'HEADER.MENU.PAYMENT',
+        mnemonic: 'payment',
+        icon: 'wallet',
+        showSeparatelyOnDesk: true
+      }, {
+        title: 'HEADER.MENU.PROFILE',
+        mnemonic: 'profile',
+        icon: 'person'
+      }];
+    } else {
+      return [{
+        title: 'HEADER.MENU.B-L-ORDERS',
+        mnemonic: 'orders',
+        icon: 'edit',
+        showSeparatelyOnDesk: true
+      }, {
+        title: 'HEADER.MENU.PAYMENT',
+        mnemonic: 'payment',
+        icon: 'wallet',
+        showSeparatelyOnDesk: true
+      }
+      ]
+    }
   }
 
   public getStaticItemUrls(): object {
@@ -93,6 +109,7 @@ export class MenuService {
       'HEADER.MENU.HELP': `${portalUrl}help`,
       'HEADER.MENU.NOTIFICATIONS': `${lkUrl}overview`, // правка изза выборов
       'HEADER.MENU.ORDERS': `${lkUrl}orders`,
+      'HEADER.MENU.B-L-ORDERS': `${lkUrl}notifications`,
       'HEADER.MENU.PAYMENT': `${portalUrl}pay`,
       'HEADER.MENU.DOCS': `${lkUrl}profile`,
       'HEADER.MENU.AGREEMENTS': `${lkUrl}settings/third-party/agreements`,

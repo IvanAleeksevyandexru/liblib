@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Modal } from '@epgu/ui/models';
 import { LoadService } from '@epgu/ui/services/load';
 
+
 @Component({
   templateUrl: './eds-error.component.html',
-  styleUrls: ['./eds-error.component.scss']
+  styleUrls: ['./eds-error.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 @Modal()
 export class EdsErrorComponent implements OnInit {
