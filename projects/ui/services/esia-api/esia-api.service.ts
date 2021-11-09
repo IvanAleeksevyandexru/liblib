@@ -55,23 +55,23 @@ export class EsiaApiService {
     return this.host + this.versions[version] + input.replace(/prn_oid/, this.userOid);
   }
 
-  public getRequest(
+  public getRequest<T>(
     method: string,
     version: VersionsApi  = 0,
     extra?: {
       headers?: { name: string, value: string | string[] }[],
       options?: any
     }
-  ): Observable<any> {
+  ): Observable<T> {
     this.initParams();
     const url = this.setUrl(method, version);
     const token = this.cookieService.get('acc_t');
     const options = HelperService.setRequestOptions(token, extra);
 
-    return this.http.get(url, options);
+    return this.http.get<T>(url, options);
   }
 
-  public postRequest(
+  public postRequest<T>(
     method: string,
     version: VersionsApi  = 0,
     body?: any,
@@ -79,16 +79,16 @@ export class EsiaApiService {
       headers?: { name: string, value: string | string[] }[],
       options?: any
     }
-  ): Observable<any> {
+  ): Observable<T> {
     this.initParams();
     const url = this.setUrl(method, version);
     const token = this.cookieService.get('acc_t');
     const options = HelperService.setRequestOptions(token, extra);
 
-    return this.http.post(url, body, options);
+    return this.http.post<T>(url, body, options);
   }
 
-  public putRequest(
+  public putRequest<T>(
     method: string,
     version: VersionsApi  = 0,
     body?: any,
@@ -96,16 +96,16 @@ export class EsiaApiService {
       headers?: { name: string, value: string | string[] }[],
       options?: any
     }
-  ): Observable<any> {
+  ): Observable<T> {
     this.initParams();
     const url = this.setUrl(method, version);
     const token = this.cookieService.get('acc_t');
     const options = HelperService.setRequestOptions(token, extra);
 
-    return this.http.put(url, body, options);
+    return this.http.put<T>(url, body, options);
   }
 
-  public deleteRequest(
+  public deleteRequest<T>(
     method: string,
     version: VersionsApi  = 0,
     body?: any,
@@ -113,7 +113,7 @@ export class EsiaApiService {
       headers?: { name: string, value: string | string[] }[],
       options?: any
     }
-  ): Observable<any> {
+  ): Observable<T> {
     this.initParams();
     const url = this.setUrl(method, version);
     const token = this.cookieService.get('acc_t');
@@ -121,9 +121,9 @@ export class EsiaApiService {
 
     if (body) {
       options.body = body;
-      return this.http.request('delete', url, options);
+      return this.http.request<T>('delete', url, options);
     } else {
-      return this.http.delete(url, options);
+      return this.http.delete<T>(url, options);
     }
   }
 
@@ -137,7 +137,7 @@ export class EsiaApiService {
     if (this.citizenship) {
       return of(this.citizenship);
     } else {
-      return this.getRequest('citizenship', 1).pipe(
+      return this.getRequest<{values: Citizenship[]}>('citizenship', 1).pipe(
         map(res => res.values),
         tap(citizenship => this.citizenship = citizenship)
       );
