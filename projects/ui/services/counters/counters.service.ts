@@ -82,7 +82,6 @@ export class CountersService {
   }
 
   private getCounters(predicate: CounterFilter): CounterData {
-    console.log('predicate', predicate);
     const model = this.counters.getValue();
     if (!model) {
       return null;
