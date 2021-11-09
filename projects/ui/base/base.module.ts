@@ -24,6 +24,7 @@ import { UserRolesComponent } from './user-roles/user-roles.component';
 import { LimitNumberModule, PipedMessageModule, TranslatePipeModule } from '@epgu/ui/pipes';
 import { ClickOutsideModule, StopClickPropagationModule } from '@epgu/ui/directives';
 import { RouterModule } from '@angular/router';
+import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { RouterModule } from '@angular/router';
     QuestionHelpTipComponent,
     RoundLoaderComponent,
     ThrobberComponent,
-    UserRolesComponent
+    UserRolesComponent,
+    UserAvatarComponent
   ],
   imports: [
     CommonModule,
@@ -79,7 +81,8 @@ import { RouterModule } from '@angular/router';
     QuestionHelpTipComponent,
     RoundLoaderComponent,
     ThrobberComponent,
-    UserRolesComponent
+    UserRolesComponent,
+    UserAvatarComponent
   ],
   entryComponents: [
     FooterCmsComponent

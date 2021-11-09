@@ -4,6 +4,7 @@ import { LoadService } from '@epgu/ui/services/load';
 import { FeedModel, FeedsParams } from '@epgu/ui/models';
 import * as moment_ from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
+import { throwError } from 'rxjs';
 
 
 const moment = moment_;
@@ -27,6 +28,9 @@ export class FeedsService {
   }
 
   public getFeeds(params: FeedsParams) {
+    if (this.loadService.attributes.XFeedDisabled) {
+      return throwError('XFeedDisabled');
+    }
     /*
       меняем "+" на "%2B", иначе api нам ответит 400 bad request
       замену делаем путем формирования целого урла! ( в теле get через params такая замена не будет работать по причине постобработки самим

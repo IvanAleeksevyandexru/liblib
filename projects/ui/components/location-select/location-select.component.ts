@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { GosbarService } from '@epgu/ui/services/gosbar';
 import { SharedService } from '@epgu/ui/services/shared';
 import { LocationService } from '@epgu/ui/services/location';
@@ -18,7 +17,6 @@ export class LocationSelectComponent implements OnInit {
   constructor(
     private gosbarService: GosbarService,
     private sharedService: SharedService,
-    private translateService: TranslateService,
     private locationService: LocationService,
   ) { }
 
@@ -29,10 +27,6 @@ export class LocationSelectComponent implements OnInit {
     this.sharedService.on('regionData').subscribe(regionData => {
       if (regionData && regionData.code !== '00000000000') {
         this.regionName = regionData.name;
-      } else {
-        this.translateService.get('LOCATION.FAIL').subscribe((res: string) => {
-          this.regionName = res;
-        });
       }
     });
   }

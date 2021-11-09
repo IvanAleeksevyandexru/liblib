@@ -1,4 +1,4 @@
-<div class="footer-wrapper" id="footer-wrapper">
+<div class="footer-wrapper" id="footer-wrapper" *ngIf="footerService.visible | async">
   <div class="container" *ngIf="footer">
      <div class="hide-md">
        <lib-accordion [closeOthers]="true">
@@ -18,13 +18,16 @@
          </div>
        </lib-accordion>
        <div *ngIf="footer.socialLinks" class="mt-20">
+         <div class="title-h6 mb-32">
+          {{'FOOTER.IN_SOCIAL_NETWORKS' | libTranslate}}
+         </div>
          <lib-social-links></lib-social-links>
        </div>
      </div>
-    <div class="hide show-md">
+    <div class="pad-desk-wrapper hide show-md">
       <div class="grid-row">
          <div *ngFor="let block of footer.blocks; let last = last"
-              class="col-3 col-md-3 col-lg-3 mt-md-52 block-wrapper flex-column-md justify-between-md"
+              class="col-md-3 col-lg-3 mt-md-32 block-wrapper flex-column-md justify-between-md"
               [ngClass]="{
               'hide-sm': block.hideMobile,
               'hide-md': block.hideTablet,
@@ -38,29 +41,11 @@
                            [ngTemplateOutlet]="links"
                            [ngTemplateOutletContext]="{block: block}">
              </ng-container>
-             <div *ngIf="block.apps?.length" class="flex-container align-items-center">
-               <div *ngFor="let app of block.apps; let last = last" [ngClass]="{'mr-16': !last}">
-                 <a [href]="applications[app].url" target="_blank" rel="noopener noreferrer" class="app-btn">
-                   <img *ngIf="applications[app].icon"
-                        [src]="applications[app].icon"
-                        [alt]="applications[app].name"
-                        width="132px" height="56px"
-                        class="unhover">
-                   <img *ngIf="applications[app].iconHover || applications[app].icon"
-                        [src]="applications[app].iconHover || applications[app].icon"
-                        [alt]="applications[app].name"
-                        width="132px" height="56px"
-                        class="hover">
-                 </a>
-               </div>
-             </div>
            </div>
-          <div *ngIf="last && footer.socialLinks" class="social-wrapper flex-container flex-column justify-between">
-            <div class="mt-md-32">
-              <div class="mb-16 text-plain gray">Мы в соцсетях</div>
-              <lib-social-links></lib-social-links>
-            </div>
-          </div>
+        </div>
+        <div *ngIf="footer.socialLinks" class="col-md-3 col-lg-3 mt-md-32 social-wrapper">
+          <div class="mb-32 title-h5">{{'FOOTER.IN_SOCIAL_NETWORKS' | libTranslate}}</div>
+          <lib-social-links></lib-social-links>
         </div>
       </div>
     </div>
@@ -68,11 +53,11 @@
 </div>
 
 <ng-template #links let-block="block">
-  <div *ngFor="let link of block.links; let first = first" [ngClass]="{'mt-12 mt-md-16': !first, 'mt-md-32': first}">
+  <div *ngFor="let link of block.links; let first = first" class="mt-12" [ngClass]="first ? 'mt-md-32': 'mt-md-16'">
     <a class="link-hover custom-sizes text-plain gray"
        [href]="link.url"
-       [attr.target]="link.newTab ? '_blank' : null"
-       [attr.rel]="link.newTab ? 'noopener noreferrer' : null">
+       [attr.target]="link.target ? link.target : null"
+       [attr.rel]="link.target === '_blank' ? 'noopener noreferrer' : null">
       {{link.title}}
     </a>
   </div>

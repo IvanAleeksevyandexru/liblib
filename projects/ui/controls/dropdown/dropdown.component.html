@@ -90,17 +90,20 @@
   </div>
 </div>
 <ng-template #singleItem let-item="item">
-  <div class="dropdown-item " [attr.itemId]="item.id"
-      (click)="invertSelection(item)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
-      [ngClass]="[item.groupLevel ? 'group-level-' + item.groupLevel : '']"
-      [class.selected]="item.selected"
-      [class.highlighted]="item === highlighted"
-      [class.hidden]="item.hidden"
-      [class.unselectable]="item.unselectable"
-      [class.collapsable]="collapsableGroups && item.collapsable"
-      [class.line-before]="item.lineBreak === LineBreak.BEFORE || item.lineBreak === LineBreak.BOTH"
-      [class.line-after]="item.lineBreak === LineBreak.AFTER || item.lineBreak === LineBreak.BOTH"
-      [class.separator]="item.lineBreak === LineBreak.SELF">
+  <div class="dropdown-item "
+       [attr.itemId]="item.id"
+       #dropdownItem
+       tabindex="-1"
+       (click)="invertSelection(item)" (mouseenter)="highlight(item)" (mouseleave)="highlight(null)"
+       [ngClass]="[item.groupLevel ? 'group-level-' + item.groupLevel : '']"
+       [class.selected]="item.selected"
+       [class.highlighted]="item === highlighted"
+       [class.hidden]="item.hidden"
+       [class.unselectable]="item.unselectable"
+       [class.collapsable]="collapsableGroups && item.collapsable"
+       [class.line-before]="item.lineBreak === LineBreak.BEFORE || item.lineBreak === LineBreak.BOTH"
+       [class.line-after]="item.lineBreak === LineBreak.AFTER || item.lineBreak === LineBreak.BOTH"
+       [class.separator]="item.lineBreak === LineBreak.SELF">
     <div class="structure-container" *ngIf="!item.hidden">
       <div *ngIf="multi && !item.unselectable" class="dropdown-item-checkbox-wrapper">
         <div class="dropdown-item-checkbox"></div>

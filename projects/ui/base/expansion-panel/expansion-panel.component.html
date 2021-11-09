@@ -4,7 +4,8 @@
       <span *ngIf="title"
             [ngClass]="{
               'title-h4 base-gray': ['accordion', 'light'].includes(type),
-              'title-h6': ['for-footer', 'light-v2'].includes(type)
+              'title-h6': ['for-footer', 'light-v2'].includes(type),
+              'link-plain': ['light-blue'].includes(type)
             }">
         {{title}}
       </span>

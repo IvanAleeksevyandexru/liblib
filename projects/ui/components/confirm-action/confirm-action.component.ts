@@ -22,6 +22,7 @@ export class ConfirmActionComponent implements OnInit, IConfirmActionModal {
   public popupClassModifier: string;
   public buttons: ModalButtonType[];
   public spaceButtonsBetween: boolean;
+  public buttonsCenter: boolean;
 
   public destroy: () => {};
 

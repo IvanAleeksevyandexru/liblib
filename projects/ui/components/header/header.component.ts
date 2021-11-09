@@ -108,7 +108,7 @@ export class HeaderComponent implements OnInit {
       this.burgerWithCatalogShow(location.pathname);
     }
     if (!this.links.length && this.user.authorized) {
-      this.links = this.menuService.getUserMenuDefaultLinks();
+      this.links = this.menuService.getUserMenuDefaultLinks(this.user.type);
     }
     this.countersService.counters$.subscribe(() => {
       const counter = this.countersService.getCounter(CounterTarget.USER);
@@ -118,7 +118,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public burgerWithCatalogShow(currentPath): void {
-    const urls = ['/new', '/newsearch', '/departments', '/pay', '/help'];
+    const urls = ['/new', '/newsearch', '/departments', '/pay', '/help', '/life'];
     if (this.isPortal) {
       urls.push('/');
     }
@@ -127,6 +127,9 @@ export class HeaderComponent implements OnInit {
     }
     if (currentPath === '/help' || currentPath.startsWith('/help/')) {
       currentPath = '/help';
+    }
+    if (currentPath === '/life' || currentPath.startsWith('/life/')) {
+      currentPath = '/life';
     }
     this.burgerWithCatalog = urls.indexOf(currentPath) > -1;
   }
