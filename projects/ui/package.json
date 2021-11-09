@@ -10,7 +10,7 @@
     "@angular/core": "12.2.6",
     "@angular/cdk": "12.2.6",
     "angular2-text-mask": "9.0.0",
-    "moment": "2.24.0",
+    "date-fns": "2.24.0",
     "ngx-perfect-scrollbar": "8.0.0",
     "@epgu/zipkin": "0.0.3",
     "zipkin-transport-http": "0.22.0"

@@ -8,9 +8,7 @@ import { LoadService } from '@epgu/ui/services/load';
 import { ConstantsService } from '@epgu/ui/services/constants';
 import { MailDeliveryService } from '@epgu/ui/services/mail-delivery';
 import { CookieService } from '@epgu/ui/services/cookie';
-import * as moment_ from 'moment';
-
-const moment = moment_;
+import { isAfter } from 'date-fns';
 
 @Injectable({
   providedIn: 'root'
@@ -57,8 +55,8 @@ export class MailDeliveryModalService {
         if (response && response.items) {
           let remindAvailable = true;
           if (response.remind) {
-            const remindDate = moment(response.remind);
-            remindAvailable = moment().isAfter(remindDate);
+            const remindDate = new Date(response.remind);
+            remindAvailable = isAfter(new Date(), remindDate);
           }
 
           subscribable = response.items.filter(item => {

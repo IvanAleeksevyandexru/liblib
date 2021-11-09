@@ -14,12 +14,10 @@ import { FeedBannerModel, FeedItemModel, FeedModel, FeedsModel } from '@epgu/ui/
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { FeedsService } from '@epgu/ui/services/feeds';
 import { LoadService } from '@epgu/ui/services/load';
-import * as moment_ from 'moment';
 import { Banner, BannerGroup } from '@epgu/ui/models';
 import { BannersService } from '@epgu/ui/services/banners';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
-
-const moment = moment_;
+import { isAfter, isSameDay } from 'date-fns';
 
 @Component({
   selector: 'lib-feeds-geps',
@@ -93,7 +91,7 @@ export class FeedsGepsComponent implements OnInit, OnChanges, OnDestroy {
       this.addFeedsIsLoading = true;
       const last = this.feeds[this.feeds.length - 1];
       const date = last.date;
-      this.getFeeds(last.id, date ? moment(date).toDate() : '', this.search);
+      this.getFeeds(last.id, date ? new Date(date) : '', this.search);
     }
   }
 
@@ -210,7 +208,7 @@ export class FeedsGepsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public discountIsActual(feed: FeedModel): boolean {
-    return feed.data.snippets[0].discountDate && moment(feed.data.snippets[0].discountDate) >= moment();
+    return feed.data.snippets[0].discountDate && (isSameDay(new Date(feed.data.snippets[0].discountDate), new Date()) || isAfter(new Date(feed.data.snippets[0].discountDate), new Date()));
   }
 
   public getAmount(feed: FeedModel) {
