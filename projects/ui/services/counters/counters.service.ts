@@ -22,15 +22,21 @@ export class CountersService {
   public counters$ = this.counters.asObservable();
 
   private counterFilters: { [index: string]: CounterFilter } = {
-    USER: key => this.counterFilters.STATEMENTS(key) || this.counterFilters.MESSAGES(key) || this.counterFilters.SETTINGS(key),
+    USER: key => this.counterFilters.STATEMENTS(key) || this.counterFilters.MESSAGES(key) || this.counterFilters.SETTINGS(key) || this.counterFilters.BIOMETRY(key)  || this.counterFilters.PARTNERS(key) || this.counterFilters.PAYMENTS_EGISSO(key) || this.counterFilters.FEEDBACK(key) || this.counterFilters.ELECTION_INFO(key) || this.counterFilters.ORG(key) || this.counterFilters.KND_APPEAL(key) || this.counterFilters.ACCOUNT_CHILD(key) || this.counterFilters.PAYMENTS(key),
     ACCOUNT: key => key === CounterType.ACCOUNT || key === CounterType.PROFILE,
+    ORG: key => key === CounterType.ORGANIZATION || key === CounterType.BUSINESSMAN,
+    ACCOUNT_CHILD: key => key === CounterType.ACCOUNT_CHILD,
+    KND_APPEAL: key => key === CounterType.KND_APPEAL,
+    ELECTION_INFO: key => key === CounterType.ELECTION_INFO,
     LINKED_ACCOUNT: key => key === CounterType.LINKED_ACCOUNT,
     BIOMETRY: key => key === CounterType.BIOMETRICS,
     SETTINGS: key => this.counterFilters.ACCOUNT(key) || this.counterFilters.BIOMETRY(key) || this.counterFilters.ESIGNATURE(key) || this.counterFilters.LINKED_ACCOUNT(key),
-    STATEMENTS: key => key === CounterType.ORDER || key === CounterType.EQUEUE || key === CounterType.CLAIM || key === CounterType.COMPLEX_ORDER || key === CounterType.APPEAL,
+    STATEMENTS: key => key === CounterType.ORDER || key === CounterType.EQUEUE || key === CounterType.CLAIM || key === CounterType.COMPLEX_ORDER || key === CounterType.APPEAL || key === CounterType.SIGN,
     MESSAGES: key => key === CounterType.GEPS,
     PARTNERS: key => key === CounterType.PARTNERS,
-    PAYMENTS: key => false,
+    FEEDBACK: key => key === CounterType.FEEDBACK,
+    PAYMENTS: key => key === CounterType.PAYMENT,
+    PAYMENTS_EGISSO: key => key === CounterType.PAYMENTS_EGISSO,
     ESIGNATURE: key => key === CounterType.ESIGNATURE,
     EMPTY: key => false
   };
@@ -76,6 +82,7 @@ export class CountersService {
   }
 
   private getCounters(predicate: CounterFilter): CounterData {
+    console.log('predicate', predicate);
     const model = this.counters.getValue();
     if (!model) {
       return null;

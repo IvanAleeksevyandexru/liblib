@@ -30,6 +30,7 @@ export class ConfirmActionComponent implements OnInit {
     handler: (d?) => {}
   }[];
   public spaceButtonsBetween: boolean;
+  public buttonsCenter: boolean;
 
   public destroy: () => {};
 
