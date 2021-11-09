@@ -12,12 +12,12 @@ html.modal-opened {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transition: background .25s;
-  z-index: 2147473648; // значение, перекрывающее z-index госбара на 1
+  z-index: 1999999998;
 }
 
 .popup-wrapper {
   position: fixed;
-  z-index: 2147473649;
+  z-index: 1999999999; // значение на 1 меньше, чем выбор картинок гуглкапчи
   top: 0;
   left: 0;
   width: 100%;

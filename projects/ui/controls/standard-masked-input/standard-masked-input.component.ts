@@ -30,7 +30,7 @@ import { ValidationDetailed, ValidationMessages } from '@epgu/ui/models/validati
 @Component({
   selector: 'lib-standard-masked-input',
   templateUrl: 'standard-masked-input.component.html',
-  styleUrls: ['./standard-masked-input.component.scss', '../plain-input/plain-input.component.scss'],
+  styleUrls: ['./standard-masked-input.component.scss', '../plain-input/plain-input.component.scss', '../standard-input/standard-input.component.scss'],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => StandardMaskedInputComponent),
