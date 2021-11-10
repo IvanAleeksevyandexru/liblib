@@ -1,9 +1,7 @@
 <div [ngClass]="viewType" class="catalog-tab-list-wrap">
   <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
     <div class="scroll-container">
-      <perfect-scrollbar [config]="{wheelPropagation: false}">
-        <ng-container [ngTemplateOutlet]="contentOfComponent"></ng-container>
-      </perfect-scrollbar>
+      <ng-container [ngTemplateOutlet]="contentOfComponent"></ng-container>
     </div>
   </div>
   <div class="hide-lg">

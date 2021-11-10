@@ -228,7 +228,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
   }
 
   public setItems(value: Array<any>) {
-    if (this.clearable && value[0].id !== 'empty-item') {
+    if (this.clearable && value?.length && value[0].id !== 'empty-item') {
       value.unshift(new ListItem({id: 'empty-item', text: this.placeholder, unselectable: this.multi}));
     }
     this.internalItems = this.listService.createListItems(value);
