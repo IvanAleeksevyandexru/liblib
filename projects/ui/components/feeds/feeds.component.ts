@@ -438,8 +438,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     return snippet.type === 'PAYMENT' && feed.feedType === 'ORDER' && feed.status === 'reject';
   }
 
+  private isOrderExecuted(snippet: SnippetModel, feed: FeedModel): boolean {
+    return snippet.type === 'PAYMENT' && feed.feedType === 'ORDER' && feed.status === 'executed';
+  }
+
   public showSnippets(snippet: SnippetModel, feed: FeedModel): boolean {
-    if (this.isIpshAborted(feed) || this.isOrderReject(snippet, feed)) {
+    if (this.isIpshAborted(feed) || this.isOrderReject(snippet, feed) || this.isOrderExecuted(snippet, feed)) {
       return false;
     }
     if (this.checkSnippetStatus(snippet, feed)) {
