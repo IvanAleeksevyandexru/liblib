@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { forkJoin, of } from 'rxjs';
 import { GosbarService } from '@epgu/ui/services/gosbar';
-import { SharedService } from '@epgu/ui/services/shared';
+import { YaMetricService } from '@epgu/ui/services/ya-metric';
 import { CatalogTabsService } from '@epgu/ui/services/catalog-tabs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { LocationService } from '@epgu/ui/services/location';
@@ -60,7 +60,7 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
 
   constructor(
     private catalogTabsService: CatalogTabsService,
-    private sharedService: SharedService,
+    private yaMetricService: YaMetricService,
     private gosbarService: GosbarService,
     private locationService: LocationService,
     public loadService: LoadService
@@ -232,7 +232,13 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
 
   public goToPopular(item: any): void {
     this.catalogClose.emit();
-    location.href = item.type === 'LINK' ? item.url : `${this.loadService.config.betaUrl}${item.url}`;
+    this.yaMetricService.callReachGoal('main-header', {
+      tab: this.code,
+      code: item.code
+    }).then(() => {
+      location.href = item.type === 'LINK' ? item.url : `${this.loadService.config.betaUrl}${item.url}`;
+    });
+    console.log(item, this.code);
   }
 
   public checkOldPortalBanner(): boolean {
@@ -242,6 +248,11 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
   }
 
   public goToDepartment(departmentPassport: CatalogServiceDepartment): void {
-    location.href = `${this.loadService.config.betaUrl}${departmentPassport.url}`;
+    this.yaMetricService.callReachGoal('main-header', {
+      tab: this.code,
+      code: departmentPassport.code
+    }).then(() => {
+      location.href = `${this.loadService.config.betaUrl}${departmentPassport.url}`;
+    });    
   }
 }

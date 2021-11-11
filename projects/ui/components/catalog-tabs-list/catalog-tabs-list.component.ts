@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { LoadService } from '@epgu/ui/services/load';
+import { YaMetricService } from '@epgu/ui/services/ya-metric';
 import { CatalogData } from '@epgu/ui/models';
 
 @Component({
@@ -15,6 +16,7 @@ export class CatalogTabsListComponent implements OnInit, OnDestroy {
   @Output() public catalogTabListItemClick = new EventEmitter<CatalogData>();
 
   constructor(
+    private yaMetricService: YaMetricService,
     public loadService: LoadService
   ) {
   }
@@ -35,5 +37,8 @@ export class CatalogTabsListComponent implements OnInit, OnDestroy {
     $event.stopPropagation();
     item.viewType = this.viewType;
     this.catalogTabListItemClick.emit(item);
+    this.yaMetricService.callReachGoal('main-header', {
+      tab: item.code
+    });
   }
 }
