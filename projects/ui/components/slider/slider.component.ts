@@ -36,7 +36,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
   // На сколько нужно уменьшить ширину слайда, если он занимает всю ширину экрана.
   // Нужно в первую очередь для мобильных устройств, чтобы был виден следующий слайд
   @Input() public widthDecreases: number[] = [0, 0, 0];
-  @Input() public arrowStyle: string;
+  @Input() public arrowStyle = '';
   // Возможность листать в обе стороны. Работает только для деска
   @Input() public reverseAvailable = false;
 
