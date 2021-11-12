@@ -1,7 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as moment_ from 'moment';
-
-const moment = moment_;
+import { differenceInDays, differenceInMinutes, format } from 'date-fns';
 
 @Pipe({
   name: 'timeLeft'
@@ -18,12 +16,12 @@ export class TimeLeftPipe implements PipeTransform {
       return titles[(diffDays % 100 > 4 && diffDays % 100 < 20) ? 2 : cases[(diffDays % 10 < 5) ? diffDays % 10 : 5]];
     };
 
-    const start = moment();
-    const end = moment(date);
+    const start = new Date();
+    const end = new Date(date);
     const minInDay = 1440;
     const daysWords = ['день', 'дня', 'дней'];
-    const minDiff = +end.diff(start, 'minutes');
-    const dayDiff = +end.diff(start, 'days');
+    const minDiff = +differenceInMinutes(end, start);
+    const dayDiff = +differenceInDays(end, start);
 
     if (start > end || minDiff <= minInDay) {
       return 'Скоро будет удалён';
@@ -32,7 +30,7 @@ export class TimeLeftPipe implements PipeTransform {
     if (minDiff <= minInDay * 7) {
       return 'Будет удалён через ' + dayDiff + ' ' + declOfNum(dayDiff, daysWords);
     } else {
-      return 'Будет удалён ' + end.format('DD.MM.YYYY');
+      return 'Будет удалён ' + format(end, 'dd.MM.yyyy');
     }
 
   }

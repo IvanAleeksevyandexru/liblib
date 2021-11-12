@@ -4,11 +4,9 @@ import { LoadService } from '@epgu/ui/services/load';
 import { Router } from '@angular/router';
 import { FeedsService } from '@epgu/ui/services/feeds';
 import { SnippetsService } from '@epgu/ui/services/snippets';
-import * as moment_ from 'moment';
 import { DeclinePipe } from '@epgu/ui/pipes';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
-
-const moment = moment_;
+import { differenceInHours, format, isAfter, isBefore, isEqual, isSameDay } from 'date-fns';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -80,9 +78,9 @@ export class SnippetsComponent implements OnInit {
   }
 
   public cancelReservationDate(date: string): string {
-    const currentDate = moment();
-    const reservationDate = moment(date);
-    const val = reservationDate.diff(currentDate, 'hours');
+    const currentDate = new Date();
+    const reservationDate = new Date(date);
+    const val = differenceInHours(reservationDate, currentDate);
     if (val < 1 || !val) {
       return ' в ближайшее время';
     }
@@ -103,17 +101,18 @@ export class SnippetsComponent implements OnInit {
 
   public isSnippetWithSumm(snippet: SnippetModel, feed: FeedModel): boolean {
     const snippetDiscountDate = snippet.discountDate || feed.data.DiscountDate;
-    return snippetDiscountDate && moment(snippetDiscountDate) >= moment();
+    return snippetDiscountDate && (isSameDay(new Date(snippetDiscountDate), new Date()) || isAfter(new Date(snippetDiscountDate), new Date()));
   }
 
   public isSnippetWithOriginalSumm(snippet: SnippetModel, feed: FeedModel): boolean {
     const snippetDiscountDate = snippet.discountDate || feed.data.DiscountDate;
-    return (snippetDiscountDate && moment(snippetDiscountDate) < moment()) || !snippetDiscountDate;
+    return (snippetDiscountDate && isBefore(new Date(snippetDiscountDate), new Date())) || !snippetDiscountDate;
 
   }
 
   public getGepsDiscountDate(snippet: SnippetModel, feed: FeedModel): string {
-    return moment(snippet.discountDate || feed.data.DiscountDate).format('dd.MM.YYYY');
+    const date = snippet.discountDate || feed.data.DiscountDate;
+    return format(new Date(date), 'dd.MM.yyyy');
   }
 
   public isSnippetWithExpireDate(snippet: SnippetModel, feed: FeedModel): boolean {

@@ -19,11 +19,9 @@ import { Range, RangeListItem, RelativeDate } from '@epgu/ui/models/date-time';
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 import { Align, Translation, ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { Width } from '@epgu/ui/models';
-import * as moment_ from 'moment';
+import { format } from 'date-fns';
 
-const moment = moment_;
-
-const STD_DATE_FORMAT = 'DD.MM.YYYY';
+const STD_DATE_FORMAT = 'dd.MM.yyyy';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -183,7 +181,7 @@ export class RangeSelectorComponent extends DropdownSimpleComponent
     if (this.textModelValue) {
       return range.start + ' — ' + range.end;
     } else {
-      return moment(range.start).format(STD_DATE_FORMAT) + ' — ' + moment(range.end).format(STD_DATE_FORMAT);
+      return format(range.start as Date, STD_DATE_FORMAT) + ' — ' + format(range.end as Date, STD_DATE_FORMAT);
     }
   }
 
