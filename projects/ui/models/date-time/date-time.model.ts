@@ -1,10 +1,9 @@
-import * as moment_ from 'moment';
 import { ListItem } from '@epgu/ui/models/dropdown';
+import { endOfMonth, format, getMonth, getYear, isAfter, isSameDay, parse, setYear } from 'date-fns';
 
-const moment = moment_;
 const MIN_MONTH = 0;
 const MAX_MONTH = 11;
-export const MODEL_DATE_FORMAT = 'DD.MM.YYYY';
+export const MODEL_DATE_FORMAT = 'dd.MM.yyyy';
 const DATE_PATTERN = /(\d{1, 2})\.(\d{1, 2})\.(\d{1, 4})/;
 export const MONTHS_CODES =
     ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY',
@@ -26,22 +25,22 @@ export class Range<T extends Date | string> {
     let minimalValue = value1;
     let maximumValue = value2;
     if (value1Comparable && value2Comparable) {
-      const value1AsDate = value1 instanceof Date ? moment(value1) : moment(value1 as string, MODEL_DATE_FORMAT);
-      const value2AsDate = value2 instanceof Date ? moment(value2) : moment(value2 as string, MODEL_DATE_FORMAT);
-      if (value1AsDate.isAfter(value2AsDate, 'day')) {
+      const value1AsDate = value1 instanceof Date ? value1 : parse(value1 as string, MODEL_DATE_FORMAT, new Date());
+      const value2AsDate = value2 instanceof Date ? value2 : parse(value2 as string, MODEL_DATE_FORMAT, new Date());
+      if (isAfter(value1AsDate, value2AsDate)) {
         maximumValue = value1;
         minimalValue = value2;
       }
     }
     if (isText) {
-      const minStr = minimalValue ? (minimalValue instanceof Date ? moment(minimalValue).format(MODEL_DATE_FORMAT) : minimalValue) : null;
-      const maxStr = maximumValue ? (maximumValue instanceof Date ? moment(maximumValue).format(MODEL_DATE_FORMAT) : maximumValue) : null;
+      const minStr = minimalValue ? (minimalValue instanceof Date ? format(minimalValue as Date, MODEL_DATE_FORMAT) : minimalValue) : null;
+      const maxStr = maximumValue ? (maximumValue instanceof Date ? format(maximumValue as Date, MODEL_DATE_FORMAT) : maximumValue) : null;
       return new Range<string>(minStr, maxStr);
     } else {
       const minDate = minimalValue ?
-        (minimalValue instanceof Date ? minimalValue : moment(minimalValue, MODEL_DATE_FORMAT).toDate()) : null;
+        (minimalValue instanceof Date ? minimalValue : parse(minimalValue, MODEL_DATE_FORMAT, new Date())) : null;
       const maxDate = maximumValue ?
-        (maximumValue instanceof Date ? maximumValue : moment(maximumValue, MODEL_DATE_FORMAT).toDate()) : null;
+        (maximumValue instanceof Date ? maximumValue : parse(maximumValue, MODEL_DATE_FORMAT, new Date())) : null;
       return new Range<Date>(minDate, maxDate);
     }
   }
@@ -61,12 +60,12 @@ export class Range<T extends Date | string> {
     let startDatesEqual = false;
     let endDatesEqual = false;
     if (this.start && this.start instanceof Date) {
-      startDatesEqual = range.start && moment(range.start).isSame(this.start, 'day');
+      startDatesEqual = range.start && isSameDay(range.start as Date, this.start);
     } else {
       startDatesEqual = range.start === this.start;
     }
     if (this.end && this.end instanceof Date) {
-      endDatesEqual = range.end && moment(range.end).isSame(this.end, 'day');
+      endDatesEqual = range.end && isSameDay(range.end as Date, this.end);
     } else {
       endDatesEqual = range.end === this.end;
     }
@@ -125,8 +124,7 @@ export class MonthYear {
     }
   }
   public static fromDate(date: Date) {
-    const momentDate = moment(date);
-    return new MonthYear(momentDate.month(), momentDate.year());
+    return new MonthYear(getMonth(date), getYear(date));
   }
   public prev(): MonthYear {
     if (this.month === MIN_MONTH) {
@@ -143,10 +141,10 @@ export class MonthYear {
     }
   }
   public firstDay(): Date {
-    return moment({year: this.year, month: this.month, day: 1}).toDate();
+    return new Date(this.year, this.month, 1);
   }
   public lastDay(): Date {
-    return moment(this.firstDay()).endOf('month').toDate();
+    return endOfMonth(this.firstDay());
   }
 }
 

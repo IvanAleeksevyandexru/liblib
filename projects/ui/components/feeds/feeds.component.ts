@@ -14,7 +14,6 @@ import { FeedsService } from '@epgu/ui/services/feeds';
 import { FeedModel, FeedsModel, SnippetModel } from '@epgu/ui/models';
 import { LoadService } from '@epgu/ui/services/load';
 import { User } from '@epgu/ui/models/user';
-import * as moment_ from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { NotifierService } from '@epgu/ui/services/notifier';
@@ -24,9 +23,8 @@ import { HelperService } from '@epgu/ui/services/helper';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
 import { CountersService } from '@epgu/ui/services/counters';
 import { ActivatedRoute, Router } from '@angular/router';
-
-const moment = moment_;
-moment.locale('ru');
+import { differenceInDays, differenceInYears, format, isAfter, isValid, parse } from 'date-fns';
+import { ru } from 'date-fns/locale';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -346,7 +344,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public getSnippetsDate(feed: FeedModel): string {
     if (feed.data && feed.data.snippets && feed.data.snippets.length) {
       const date = feed.data.snippets[0].localDate || feed.data.snippets[0].date;
-      return date ? moment(date).format('DD.MM.YYYY, ddd, HH:mm ') : '';
+      return date ? format(new Date(date), 'dd.MM.yyyy, EEEEEE, HH:mm ', {locale: ru}) : '';
     }
     return '';
   }
@@ -376,9 +374,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     if (!feed.data.expiryDate) {
       return false;
     }
-    const end = moment(feed.data.expiryDate);
-    const start = moment();
-    const dayDiff = +end.diff(start, 'days');
+    const end = new Date(feed.data.expiryDate);
+    const start = new Date();
+    const dayDiff = +differenceInDays(end, start);
 
     return Math.abs(dayDiff) <= days && !feed.data.imOrgName;
   }
@@ -440,12 +438,16 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     return snippet.type === 'PAYMENT' && feed.feedType === 'ORDER' && feed.status === 'reject';
   }
 
+  private isOrderExecuted(snippet: SnippetModel, feed: FeedModel): boolean {
+    return snippet.type === 'PAYMENT' && feed.feedType === 'ORDER' && feed.status === 'executed';
+  }
+
   public showSnippets(snippet: SnippetModel, feed: FeedModel): boolean {
-    if (this.isIpshAborted(feed) || this.isOrderReject(snippet, feed)) {
+    if (this.isIpshAborted(feed) || this.isOrderReject(snippet, feed) || this.isOrderExecuted(snippet, feed)) {
       return false;
     }
     if (this.checkSnippetStatus(snippet, feed)) {
-      return !snippet.payDate || moment(snippet.payDate) >= moment();
+      return !snippet.payDate || isAfter(new Date(snippet.payDate), new Date());
     }
     return true;
   }
@@ -815,9 +817,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     if (!date) {
       return result;
     }
-    const now = moment();
-    const formatDate = moment(date, 'DD.MM.YYYY');
-    const diff = formatDate.isValid() ? now.diff(formatDate, 'years') : 0;
+    const now = new Date();
+    const formatDate = parse(date, 'dd.MM.yyyy', new Date());
+    const diff = isValid(formatDate) ? differenceInYears(now, formatDate) : 0;
     if (diff && diff > 0) {
       result = String(diff) + HelperService.pluralize(
         diff,

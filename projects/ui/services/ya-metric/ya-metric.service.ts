@@ -5,7 +5,6 @@ import { LoadService } from '@epgu/ui/services/load';
 import { BannerGroup } from '@epgu/ui/models';
 import { Document } from '@epgu/ui/models/document';
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
-import { DurationInputArg1, DurationInputArg2 } from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +32,7 @@ export class YaMetricService {
     }
   }
 
-  public static getDocumentTimeStatus(date: string, amount: DurationInputArg1 = 3, units: DurationInputArg2 = 'month'): 'soonExpire' | 'expired' | 'relevant' {
+  public static getDocumentTimeStatus(date: string, amount: number = 3, units: string = 'month'): 'soonExpire' | 'expired' | 'relevant' {
     if (date) {
       if (DatesHelperService.isExpiredDate(date)) {
         return 'expired';
