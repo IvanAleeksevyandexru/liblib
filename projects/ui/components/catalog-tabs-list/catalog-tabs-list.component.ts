@@ -37,8 +37,8 @@ export class CatalogTabsListComponent implements OnInit, OnDestroy {
     $event.stopPropagation();
     item.viewType = this.viewType;
     this.catalogTabListItemClick.emit(item);
-    this.yaMetricService.callReachGoal('main-header', {
-      tab: item.code
+    this.yaMetricService.callReachGoal('main-page', {
+      'main-header': item.code
     });
   }
 }

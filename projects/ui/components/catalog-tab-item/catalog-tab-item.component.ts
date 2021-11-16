@@ -232,13 +232,12 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
 
   public goToPopular(item: any): void {
     this.catalogClose.emit();
-    this.yaMetricService.callReachGoal('main-header', {
-      tab: this.code,
+    this.yaMetricService.callReachGoal('main-page', {
+      'main-header': this.code,
       code: item.code
     }).then(() => {
       location.href = item.type === 'LINK' ? item.url : `${this.loadService.config.betaUrl}${item.url}`;
     });
-    console.log(item, this.code);
   }
 
   public checkOldPortalBanner(): boolean {
@@ -248,8 +247,8 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
   }
 
   public goToDepartment(departmentPassport: CatalogServiceDepartment): void {
-    this.yaMetricService.callReachGoal('main-header', {
-      tab: this.code,
+    this.yaMetricService.callReachGoal('main-page', {
+      'main-header': this.code,
       code: departmentPassport.code
     }).then(() => {
       location.href = `${this.loadService.config.betaUrl}${departmentPassport.url}`;
