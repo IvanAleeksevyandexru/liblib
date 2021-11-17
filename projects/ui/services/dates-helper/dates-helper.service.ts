@@ -94,8 +94,8 @@ export class DatesHelperService {
     if (!FULL_SHIFT_PATTERN.test(shiftText)) {
       throw new Error('Invalid Relative Date Format');
     }
-    const result = initialDate;
     const STARTED_FROM_SHIFT_PATTERN = new RegExp('^' + RELATIVE_DATE_SHIFT_PATTERN);
+    let result = initialDate;
     let shiftRest = shiftText;
     while (shiftRest) {
       const shiftPart = STARTED_FROM_SHIFT_PATTERN.exec(shiftRest)[0];
@@ -107,15 +107,15 @@ export class DatesHelperService {
           const value = parseInt(shiftGroup.substring(0, shiftGroup.length - 1), 10) * (sign ? 1 : -1);
           switch (shiftGroup[shiftGroup.length - 1].toUpperCase()) {
             case 'Y': {
-              add(result, { years: value });
+              result = add(result, { years: value });
               break;
             }
             case 'M': {
-              add(result, { months: value });
+              result = add(result, { months: value });
               break;
             }
             case 'D': {
-              add(result, { days: value });
+              result = add(result, { days: value });
               break;
             }
           }

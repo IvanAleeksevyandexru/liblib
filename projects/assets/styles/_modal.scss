@@ -30,7 +30,6 @@ html.modal-opened {
   min-height: 100%;
   padding: 24px;
   background: #ffffff;
-  border-radius: 12px;
 
   .close {
     position: absolute;
@@ -88,6 +87,7 @@ html.modal-opened {
     max-height: 100%;
     padding: 32px;
     transform: translate3d(-50%, -50%, 0);
+    border-radius: 12px;
 
     &.popup-scroll {
       margin: 48px 0;
