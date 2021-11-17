@@ -222,7 +222,7 @@ export class ValidationService {
         const value = new Date(control.value);
         const bound = date instanceof RelativeDate ? DatesHelperService.relativeDateToDate(date) : date as Date;
         const check = including ? DatesHelperService.isSameOrBefore : isBefore;
-        return ValidationService.validDateOptional(control) || (check.call(value, bound) ? null : {dateBefore: true});
+        return ValidationService.validDateOptional(control) || (check.call(this, value, bound) ? null : {dateBefore: true});
       }
       return null;
     };
@@ -243,7 +243,7 @@ export class ValidationService {
         const value = new Date(control.value);
         const bound = date instanceof RelativeDate ? DatesHelperService.relativeDateToDate(date) : date as Date;
         const check = including ? DatesHelperService.isSameOrAfter : isAfter;
-        return ValidationService.validDateOptional(control) || (check.call(value, bound) ? null : {dateAfter: true});
+        return ValidationService.validDateOptional(control) || (check.call(this, value, bound) ? null : {dateAfter: true});
       }
       return null;
     };

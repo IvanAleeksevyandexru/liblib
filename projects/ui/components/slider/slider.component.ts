@@ -33,6 +33,12 @@ export class SliderComponent implements OnInit, AfterViewInit {
   @Input() public countLimits: number[] = [1, 2, 3]; // Массив значений для разных устройств [mob, pad, desk]
   // Фиксированная ширина элемента. Если задана, то countLimits учитываться не будет
   @Input() public fixedWidth: number;
+  // На сколько нужно уменьшить ширину слайда, если он занимает всю ширину экрана.
+  // Нужно в первую очередь для мобильных устройств, чтобы был виден следующий слайд
+  @Input() public widthDecreases: number[] = [0, 0, 0];
+  @Input() public arrowStyle = '';
+  // Возможность листать в обе стороны. Работает только для деска
+  @Input() public reverseAvailable = false;
 
   @Output() public selectItem = new EventEmitter();
 
@@ -41,7 +47,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
   @ViewChild('sliderList', {static: true}) private sliderList: ElementRef;
 
   private device: 'mob' | 'pad' | 'desk' = 'desk';
-  private slideWidth: number;
+  public slideWidth: number;
   private listWidth: number;
   private wrapperWidth: number;
   public betweenOffset = this.betweenOffsets[0];
@@ -49,7 +55,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
   public offset = 0;
   public sidePadding: number;
 
-  public disableLeftArrow = true;
+  public disableLeftArrow: boolean;
   public disableRightArrow: boolean;
   public hideArrows: boolean;
 
@@ -59,6 +65,10 @@ export class SliderComponent implements OnInit, AfterViewInit {
   ) { }
 
   public ngOnInit(): void {
+    this.disableLeftArrow = !this.reverseAvailable;
+    if (this.items.length === 1) {
+      this.widthDecreases = [0, 0, 0];
+    }
     this.detectDevice();
   }
 
@@ -81,8 +91,9 @@ export class SliderComponent implements OnInit, AfterViewInit {
       this.slideWidth = this.fixedWidth;
     } else {
       const offsetsCount = this.countLimits[deviceIndex] - 1;
+      const widthDecrease = this.widthDecreases[deviceIndex];
       this.slideWidth = (this.wrapperWidth - this.betweenOffset * offsetsCount - this.sidePadding * 2) / this.countLimits[deviceIndex];
-      this.slideWidth = Math.floor(this.slideWidth);
+      this.slideWidth = Math.floor(this.slideWidth - widthDecrease);
     }
 
     const additionOffset = this.sidePadding * 2 - this.betweenOffset;
@@ -110,20 +121,34 @@ export class SliderComponent implements OnInit, AfterViewInit {
     if (this.disableRightArrow) {
       return;
     }
-    this.offset -= this.slideWidth + this.betweenOffset;
+    const isEnd = -this.offset + this.wrapperWidth >= this.listWidth;
+    if (this.reverseAvailable && isEnd) {
+      this.offset = 0;
+    } else {
+      this.offset -= this.slideWidth + this.betweenOffset;
+    }
     this.changeOffset();
-    this.disableRightArrow = -this.offset + this.wrapperWidth >= this.listWidth;
-    this.disableLeftArrow = false;
+    if (!this.reverseAvailable) {
+      this.disableRightArrow = -this.offset + this.wrapperWidth >= this.listWidth;
+      this.disableLeftArrow = false;
+    }
   }
 
   public showPrevious(): void {
     if (this.disableLeftArrow) {
       return;
     }
-    this.offset += this.slideWidth + this.betweenOffset;
+    const isStart = this.offset >= 0;
+    if (this.reverseAvailable && isStart) {
+      this.offset = -(this.listWidth - this.wrapperWidth);
+    } else {
+      this.offset += this.slideWidth + this.betweenOffset;
+    }
     this.changeOffset();
-    this.disableLeftArrow = this.offset >= 0;
-    this.disableRightArrow = false;
+    if (!this.reverseAvailable) {
+      this.disableLeftArrow = this.offset >= 0;
+      this.disableRightArrow = false;
+    }
   }
 
   public onSelect(item: any): void {
