@@ -1,7 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as moment_ from 'moment';
-
-const moment = moment_;
+import { differenceInDays, format, parse, startOfDay, Locale } from 'date-fns';
+import { ru } from 'date-fns/locale'
 
 @Pipe({
   name: 'timeToEvent'
@@ -20,8 +19,10 @@ export class TimeToEventPipe implements PipeTransform {
       return '';
     }
 
-    if ((snippetType === 'EQUEUE' || snippetType === 'IM') &&
-      (feedType === 'ORDER' || feedType === 'EQUEUE' || feedType === 'DRAFT' || feedType === 'IMExpireDate')) {
+    const rebuildDate = (snippetType === 'EQUEUE' || snippetType === 'IM') &&
+      (feedType === 'ORDER' || feedType === 'EQUEUE' || feedType === 'DRAFT' || feedType === 'IMExpireDate');
+
+    if (rebuildDate) {
       const reT = new RegExp('T');
       const re = new RegExp('-');
       const dayPart = date.split(reT)[0].split(re);
@@ -31,18 +32,17 @@ export class TimeToEventPipe implements PipeTransform {
     }
 
     if (snippetType !== 'EQUEUE' && feedType !== 'IM' && feedType === 'IMExpireDate') {
-      return moment(date).format('HH:mm DD.MM.YYYY');
+      return format(new Date(date), 'HH:mm dd.MM.yyyy');
     }
 
-    moment.locale('ru');
-    const end = moment();
-    const start = moment(date);
-    const startInitial = moment(date);
+    const end = new Date();
+    const start = new Date(date);
+    const startInitial = rebuildDate ? parse(date, 'yyyy-MM-dd HH:mm', new Date()): new Date(date);
     let dateText;
 
-    const startOfToday = end.startOf('day');
-    const startOfDate = start.startOf('day');
-    const daysDiff = startOfToday.diff(startOfDate, 'days');
+    const startOfToday = startOfDay(end);
+    const startOfDate = startOfDay(start);
+    const daysDiff = differenceInDays(startOfToday, startOfDate);
     const days = {
       0: 'Сегодня ',
       '-1': 'Завтра ',
@@ -54,18 +54,18 @@ export class TimeToEventPipe implements PipeTransform {
     }
 
     if (customFormat) {
-      return dateText ? dateText + startInitial.format(customFormat) : startInitial.format(customFormat);
+      return dateText ? dateText + format(startInitial, customFormat, {locale: ru}) : format(startInitial, customFormat, {locale: ru});
     }
 
     if (fullDate) {
-      return dateText ? dateText + startInitial.format('DD.MM.YYYY, ddd, HH:mm') : startInitial.format('DD.MM.YYYY, ddd, HH:mm');
+      return dateText ? dateText + format(startInitial, 'dd.MM.yyyy, EEEEEE, HH:mm', {locale: ru}) : format(startInitial, 'dd.MM.yyyy, EEEEEE, HH:mm', {locale: ru});
     }
 
     if (inlineDate) {
-      return dateText ? dateText + startInitial.format('HH:mm') : startInitial.format('DD.MM.YYYY, HH:mm');
+      return dateText ? dateText + format(startInitial,'HH:mm', {locale: ru}) : format(startInitial, 'dd.MM.yyyy, HH:mm', {locale: ru});
     }
-    return dateText ? dateText + '<div class="feed-event-date"></div>' + startInitial.format('HH:mm') :
-      startInitial.format('DD.MM.YYYY HH:mm')
+    return dateText ? dateText + '<div class="feed-event-date"></div>' + format(startInitial,'HH:mm', {locale: ru}) :
+      format(startInitial, 'dd.MM.yyyy, HH:mm', {locale: ru})
         .split(' ').join('<div class="feed-event-date">');
   }
 

@@ -2,15 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { AddressToCoords, MessageDetails, Modal } from '@epgu/ui/models';
 import { IpshService } from '@epgu/ui/services/ipsh';
 import { GibddDetails } from '@epgu/ui/models/gibdd-fine';
-import * as moment_ from 'moment';
 import { LocationService } from '@epgu/ui/services/location';
 import { SliderImage } from '@epgu/ui/models/slider-image';
 import { Bill } from '@epgu/ui/models/bill';
 import { LoadService } from '@epgu/ui/services/load';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-
-const moment = moment_;
+import { format, parse } from 'date-fns';
 
 @Component({
   selector: 'lib-gibdd-details',
@@ -72,8 +70,7 @@ export class GibddDetailsComponent implements OnInit {
 
   public formatDate(): string {
     const date = this.details.violationDate + ' ' + this.details.violationTime;
-    return moment(date, 'DD.MM.YYYY HH:mm')
-      .format('DD.MM.YYYY, dd. HH:mm')
+    return format(parse(date, 'dd.MM.yyyy HH:mm', new Date()), 'dd.MM.yyyy, EEEEEE. HH:mm')
       .replace(/.{12}(.{1})/, (match) => match.toUpperCase());
   }
 

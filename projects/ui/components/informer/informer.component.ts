@@ -15,6 +15,7 @@ import { YaMetricService } from '@epgu/ui/services/ya-metric';
 import { LoadService } from '@epgu/ui/services/load';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import { HealthService } from '@epgu/ui/services/health';
 
 @Component({
   selector: 'lib-informer',
@@ -33,6 +34,7 @@ export class InformerComponent implements OnInit {
   public hintText: string;
   public linkHint: string;
   public config = this.loadService.config;
+  public feedsDisabled = this.loadService.attributes.XFeedDisabled;
 
   private debtForYaMetric: DebtYaMetricInterface = {};
 
@@ -47,6 +49,7 @@ export class InformerComponent implements OnInit {
     private loadService: LoadService,
     private router: Router,
     private cd: ChangeDetectorRef,
+    private healthService: HealthService,
   ) {
   }
 
@@ -90,6 +93,7 @@ export class InformerComponent implements OnInit {
   }
 
   private getInformerShortData() {
+    this.healthService.measureStart('edinformerShort');
     this.informersService.getDataInformer().pipe(
       finalize(() => {
         this.cd.detectChanges();
@@ -103,7 +107,8 @@ export class InformerComponent implements OnInit {
           this.getTextToHint(hint);
         }
 
-        if (response?.error?.code === 50) {
+        const errorCode = response?.error?.code;
+        if (errorCode === 50) {
           this.setData('NO_RIGHTS');
         } else if (response?.result) {
           // есть начисления
@@ -137,10 +142,18 @@ export class InformerComponent implements OnInit {
           this.setData('ERROR');
           this.yaMetricService.yaMetricInformerMain('show');
         }
+
+        if (errorCode === 0) {
+          this.healthService.measureEnd('edinformerShort', 0, { utm_source: 'edinformerShort_ok' });
+        } else {
+          const errorMessage = response?.error?.message;
+          this.healthService.measureEnd('edinformerShort', 1, { BrowserError: errorCode, ErrorMessage: errorMessage, utm_source: 'edinformerShort_no' });
+        }
       },
       (error) => {
         this.setData('ERROR');
         this.yaMetricService.yaMetricInformerMain('show');
+        this.healthService.measureEnd('edinformerShort', 1, { BrowserError: error.status, ErrorMessage: error.statusText, utm_source: 'edinformerShort_no' });
       });
   }
 

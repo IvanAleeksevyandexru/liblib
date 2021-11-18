@@ -17,7 +17,7 @@
         </ng-container>
         <ng-template #activeEqueue>
           <span>Вы записаны на </span>
-          <span [innerHTML]="(snippet.localDate || snippet.date) | timeToEvent:snippet.type:feed.feedType:false:false: 'D MMMM в HH:mm'"></span>
+          <span [innerHTML]="(snippet.localDate || snippet.date) | timeToEvent:snippet.type:feed.feedType:false:false: 'd MMMM в HH:mm'"></span>
         </ng-template>
       </div>
       <div class="small-text gray">

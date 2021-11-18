@@ -1,5 +1,7 @@
 .list-wrapper {
   overflow: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
   &::-webkit-scrollbar {
     display: none;
   }
@@ -62,4 +64,23 @@
     }
   }
 
+  .simple-arrow {
+    .slider-arrow {
+      width: 24px;
+      height: 24px;
+      top: calc(50% - 12px);
+      background: transparent url(../../../assets/svg/arrows/arrow-gray-right_24x24.svg) 50% no-repeat;
+
+      &:hover {
+        background: transparent url(../../../assets/svg/arrows/arrow-blue-right_24x24.svg) 50% no-repeat;
+      }
+
+      &.slider-arrow__prev {
+        left: 24px;
+      }
+      &.slider-arrow_next {
+        right: 24px;
+      }
+    }
+  }
 }

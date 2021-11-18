@@ -27,11 +27,12 @@ export class HealthService {
   }
 
   private send(event, time, result, eventInfo?): void {
-    if (isDevMode()) {
+    const api = this.loadService.config.timingApiUrl; 
+    if (isDevMode() || !api) {
       return;
     }
+    
     let utmSource;
-    const api = this.loadService.config.timingApiUrl;
     if (typeof result === 'undefined') {
       result = 0;
     }
@@ -87,18 +88,18 @@ export class HealthService {
     }
   }
 
-  public measureDomEvents(id, eventInfo = {}) {
+  public measureDomEvents(eventInfo = {}) {
     // tslint:disable-next-line:deprecation
     if (window.performance && window.performance.timing) {
       // tslint:disable-next-line:deprecation
       const timingApiObj = window.performance.timing;
       const dcl = timingApiObj.domContentLoadedEventEnd - timingApiObj.navigationStart;
       const complete = timingApiObj.loadEventEnd - timingApiObj.navigationStart;
-      this.send(id, dcl, 0, eventInfo);
-      this.send(id, complete, 0, eventInfo);
+      this.send('DOMContentLoaded', dcl, 0, eventInfo);
+      this.send('load', complete, 0, eventInfo);
     } else {
       // если браузер не подерживает performance
-      this.send(id, 'NotSupportedPerfomanceBrowser', 1, eventInfo);
+      this.send("NotSupportedPerfomanceBrowser", 0, 1, eventInfo);
     }
   }
 

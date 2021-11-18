@@ -64,7 +64,7 @@ export class ConstantsService {
   public static readonly DEFAULT_HIGHLIGHT_TEMPLATE =
     '<span class="highlighted">${query}</span>';
   // формат текстовой модели календарей для textModelValue === true
-  public static readonly CALENDAR_TEXT_MODEL_FORMAT = 'DD.MM.YYYY';
+  public static readonly CALENDAR_TEXT_MODEL_FORMAT = 'dd.MM.yyyy';
   // процент блока, достаточный чтобы совершить анимацию вперед при перелистывании драгдропом
   public static readonly DEFAULT_DRAGDROP_CENTERING_THRESHOLD = 0.5;
   // продолжительность анимации выравнивания блока

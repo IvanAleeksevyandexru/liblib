@@ -14,8 +14,7 @@ import { Subscription, Observer } from 'rxjs';
 import { HelperService } from '@epgu/ui/services/helper';
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 import { ConstantsService } from '@epgu/ui/services/constants';
-import * as moment_ from 'moment';
-const moment = moment_;
+import { add, endOfDay, endOfYear, isAfter, isBefore, parse, startOfDay, startOfYear, sub } from 'date-fns';
 
 const MODEL_FORMAT = ConstantsService.CALENDAR_TEXT_MODEL_FORMAT;
 
@@ -105,8 +104,8 @@ export class RangeFieldComponent implements AfterViewInit, OnChanges, OnDestroy,
     }} as Observer<any>);
     this.datePropertiesPublisher = {
       publish: (dateProperties: DateProperties): void => {
-        dateProperties.locked = moment(dateProperties.date).isBefore(this.minFromDate, 'day')
-          || moment(dateProperties.date).isAfter(this.maxToDate, 'day');
+        dateProperties.locked = isBefore(dateProperties.date, this.minFromDate)
+          || isAfter(dateProperties.date, this.maxToDate);
       }
     } as DatePropertiesPublisher;
     this.updateText();
@@ -241,7 +240,7 @@ export class RangeFieldComponent implements AfterViewInit, OnChanges, OnDestroy,
       if (!this.range || this.range.isEmpty()) {
         this.startDate.rangeStart = this.endDate.rangeStart = null;
       } else if (this.range && this.range.isHalfed()) {
-        const singleDate = this.textModelValue ? moment(this.range.start || this.range.end).toDate() : this.range.start || this.range.end;
+        const singleDate = this.textModelValue ? new Date(this.range.start || this.range.end) : this.range.start || this.range.end;
         this.startDate.rangeStart = this.endDate.rangeStart = singleDate as Date;
       }
       this.startDate.refresh();
@@ -300,8 +299,8 @@ export class RangeFieldComponent implements AfterViewInit, OnChanges, OnDestroy,
   }
 
   public updateRangeLimitsByValue() {
-    const minDateDefault = moment().startOf('year').startOf('day').toDate();
-    const maxDateDefault = moment().endOf('year').startOf('day').toDate();
+    const minDateDefault = startOfDay(startOfYear(new Date()));
+    const maxDateDefault = startOfDay(endOfYear(new Date()));
     let minDate = DatesHelperService.relativeOrFixedToFixed(this.minDate) || minDateDefault;
     let maxDate = DatesHelperService.relativeOrFixedToFixed(this.maxDate) || maxDateDefault;
     if (minDate > maxDate || MonthYear.equals(MonthYear.fromDate(minDate), MonthYear.fromDate(maxDate))) {
@@ -335,8 +334,8 @@ export class RangeFieldComponent implements AfterViewInit, OnChanges, OnDestroy,
           rangeStartMonth = rangeStartMonth.prev();
         }
       }
-      this.minToDate = moment(rangeStartMonth.lastDay()).add(1, 'day').toDate();
-      this.maxFromDate = moment(rangeEndMonth.firstDay()).add(-1, 'day').toDate();
+      this.minToDate = add(rangeStartMonth.lastDay(), { days: 1 });
+      this.maxFromDate = sub(rangeEndMonth.firstDay(), {days: 1});
       this.initialFromMonth = rangeStartMonth;
       this.initialToMonth = rangeEndMonth;
     } else {
@@ -348,14 +347,14 @@ export class RangeFieldComponent implements AfterViewInit, OnChanges, OnDestroy,
 
   public updateRangeLimitsByNavigation(sourceIsFromField: boolean, monthYear: MonthYear) {
     if (sourceIsFromField) {
-      this.minToDate = moment(monthYear.lastDay()).add(1, 'day').toDate();
+      this.minToDate = add(monthYear.lastDay(), { days: 1 });
     } else {
-      this.maxFromDate = moment(monthYear.firstDay()).add(-1, 'day').toDate();
+      this.maxFromDate = sub(monthYear.firstDay(), { days: 1 });
     }
   }
 
   private convertToDate(date: Date | string): Date {
-    return this.textModelValue ? moment(date, MODEL_FORMAT).toDate() : date as Date;
+    return this.textModelValue ? parse(date.toString(), MODEL_FORMAT, new Date()) : date as Date;
   }
 
 }

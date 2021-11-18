@@ -1,7 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as moment_ from 'moment';
-
-const moment = moment_;
+import { parse, startOfDay, differenceInDays, getYear, format } from 'date-fns';
+import { ru } from 'date-fns/locale';
 
 @Pipe({
   name: 'timeToEventGeps'
@@ -14,13 +13,12 @@ export class TimeToEventGepsPipe implements PipeTransform {
     }
 
     const whiteSpace = hyphenation ? ' ' : '<br>';
-    moment.locale('ru');
-    const end = moment().startOf('day');
-    const start = feed ? moment(date) : moment(date, 'DD.MM.YYYY HH:mm');
+    const end = startOfDay(new Date());
+    const start = feed ? new Date(date) : parse(date, 'dd.MM.yyyy HH:mm', new Date());
     let dateText;
 
-    const daysDiff = end.diff(start.clone().startOf('day'), 'days');
-    const yearsDiff = moment().format('YYYY') === start.format('YYYY');
+    const daysDiff = differenceInDays(end, startOfDay(start));
+    const yearsDiff = getYear(new Date()) === getYear(start);
     const days = {
       0: 'Сегодня ',
       '-1': 'Завтра ',
@@ -32,11 +30,11 @@ export class TimeToEventGepsPipe implements PipeTransform {
     }
 
     if (yearsDiff) {
-      return dateText ? dateText + whiteSpace + start.format('HH:mm') :
-        start.format('DD MMMM') + whiteSpace + start.format('HH:mm');
+      return dateText ? dateText + whiteSpace + format(start, 'HH:mm', { locale: ru }) :
+        format(start, 'dd MMMM', { locale: ru }) + whiteSpace + format(start, 'HH:mm', { locale: ru });
     }
 
-    return start.format('DD.MM.YYYY') + whiteSpace + start.format('HH:mm');
+    return format(start, 'dd.MM.yyyy', { locale: ru }) + whiteSpace + format(start, 'HH:mm', { locale: ru });
   }
 
 }

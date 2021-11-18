@@ -195,13 +195,14 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public needCounter(type: string): boolean {
-    const types = ['notifications', 'partnersOrders'];
+    const types = ['notifications', 'overview', 'partnersOrders'];
     return types.includes(type);
   }
 
   public getKindOfCounter(type: string): CounterData {
     switch (type) {
       case 'notifications':
+      case 'overview':
         return this.userCounter;
       case 'partnersOrders':
         return this.partnersCounter;

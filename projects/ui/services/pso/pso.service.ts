@@ -128,13 +128,14 @@ export class PsoService {
     const config = this.loadService.config;
     const device = this.loadService.attributes.deviceType;
     const hidePages = config.psoHidePages;
-    if (path === '/' && (config.excludePsoFromMain || !this.loadService.user.authorized || this.loadService.user.isKid)) {
+    const hideFromNewPortalMainNA = config.psoHideFromNewPortalMainNotAuth && path === '/' && config.viewType === 'PORTAL';
+    if (path === '/' && (config.excludePsoFromMain || this.loadService.user.isKid)) {
       isRequired = false;
     }
     if (hidePages?.includes(path)) {
       isRequired = false;
     }
-    if (config.showPsoOnlyForAuthorized && !this.loadService.user.authorized) {
+    if ((config.showPsoOnlyForAuthorized || hideFromNewPortalMainNA) && !this.loadService.user.authorized) {
       isRequired = false;
     }
     if (!config.psoDomain) {

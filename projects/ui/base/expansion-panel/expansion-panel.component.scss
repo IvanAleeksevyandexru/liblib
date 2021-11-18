@@ -179,6 +179,37 @@
       padding: 0;
     }
   }
+
+  &.light-blue {
+    .panel-header {
+      padding: 0 0 0 28px;
+      min-height: 24px;
+      align-items: flex-start;
+
+      .panel-arrow {
+        background: url(../../../assets/svg/arrows/arrow-blue-right.svg) 0 0 no-repeat;
+        left: 0;
+        width: 7px;
+        height: 12px;
+        top: 7px;
+      }
+    }
+
+    &.opened {
+      .panel-header {
+        border-bottom: none;
+
+        .panel-arrow {
+          transform: rotate(90deg);
+          left: 2px;
+        }
+      }
+    }
+
+    .panel-body {
+      padding: 8px 0 0 30px;
+    }
+  }
 }
 
 @media all and (min-width: 768px) {

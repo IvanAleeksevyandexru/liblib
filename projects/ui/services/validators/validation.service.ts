@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup, ValidatorFn } from '@angular/forms';
-import * as moment_ from 'moment';
-import { MomentInput } from 'moment';
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 import { RelativeDate, RelativeRange } from '@epgu/ui/models/date-time';
 import { HelperService } from '@epgu/ui/services/helper';
+import { isAfter, isBefore, parse } from 'date-fns';
 
-const moment = moment_;
 const GENERAL_LETTERS = 'ABCEHKMOPXYTabcehkmopxytАВСЕНКМОРХУТавсенкморхут';
 const CYRILLIC_LETTERS = 'а-яА-ЯёЁ';
 
@@ -146,16 +144,16 @@ export class ValidationService {
   }
 
   // XXX deprecated to be removed
-  public static dateNotLateThan(date: MomentInput) {
+  public static dateNotLateThan(date: Date) {
     return (control: AbstractControl) => {
-      return control.value && moment(control.value, 'DD.MM.YYYY').isAfter(date, 'days') ? {dateAfter: true} : null;
+      return control.value && isAfter(parse(control.value, 'dd.MM.yyyy', new Date()), date) ? {dateAfter: true} : null;
     };
   }
 
   // XXX deprecated to be removed
-  public static dateLateThan(date: MomentInput) {
+  public static dateLateThan(date: Date) {
     return (control: AbstractControl) => {
-      return control.value && moment(control.value, 'DD.MM.YYYY').isBefore(date, 'days') ? {dateBefore: true} : null;
+      return control.value && isBefore(parse(control.value, 'dd.MM.yyyy', new Date()), date) ? {dateBefore: true} : null;
     };
   }
 
@@ -221,10 +219,10 @@ export class ValidationService {
   public static dateBefore(date: RelativeDate | Date, including = true) {
     return (control: AbstractControl) => {
       if (hasValue(control)) {
-        const value = moment(control.value);
+        const value = new Date(control.value);
         const bound = date instanceof RelativeDate ? DatesHelperService.relativeDateToDate(date) : date as Date;
-        const check = including ? value.isSameOrBefore : value.isBefore;
-        return ValidationService.validDateOptional(control) || (check.call(value, bound, 'day') ? null : {dateBefore: true});
+        const check = including ? DatesHelperService.isSameOrBefore : isBefore;
+        return ValidationService.validDateOptional(control) || (check.call(this, value, bound) ? null : {dateBefore: true});
       }
       return null;
     };
@@ -242,10 +240,10 @@ export class ValidationService {
   public static dateAfter(date: RelativeDate | Date, including = true) {
     return (control: AbstractControl) => {
       if (hasValue(control)) {
-        const value = moment(control.value);
+        const value = new Date(control.value);
         const bound = date instanceof RelativeDate ? DatesHelperService.relativeDateToDate(date) : date as Date;
-        const check = including ? value.isSameOrAfter : value.isAfter;
-        return ValidationService.validDateOptional(control) || (check.call(value, bound, 'day') ? null : {dateAfter: true});
+        const check = including ? DatesHelperService.isSameOrAfter : isAfter;
+        return ValidationService.validDateOptional(control) || (check.call(this, value, bound) ? null : {dateAfter: true});
       }
       return null;
     };
@@ -342,7 +340,7 @@ export class ValidationService {
   }
 
   public static checkDateIsTodayOrAfter(date: string): boolean {
-    return moment(date, 'DD.MM.YYYY').isBefore(moment(), 'days');
+    return isBefore(parse(date, 'dd.MM.yyyy', new Date()), new Date());
   }
 
   public static sameValueValidator(previousValue: string): ValidatorFn {

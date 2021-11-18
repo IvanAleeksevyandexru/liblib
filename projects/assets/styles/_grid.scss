@@ -109,9 +109,10 @@ $col-lg-count: 12;
 }
 
 @media all and (min-width: 1140px) {
-  .container {
+  .container, .container-lg {
     max-width: 1366px;
     padding: 0 75px;
+    margin: 0 auto;
   }
 
   .grid-row,
