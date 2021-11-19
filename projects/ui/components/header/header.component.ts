@@ -108,7 +108,7 @@ export class HeaderComponent implements OnInit {
       this.burgerWithCatalogShow(location.pathname);
     }
     if (!this.links.length && this.user.authorized) {
-      this.links = this.menuService.getUserMenuDefaultLinks(this.user.type);
+      this.links = this.menuService.getUserMenuDefaultLinks();
     }
     this.countersService.counters$.subscribe(() => {
       const counter = this.countersService.getCounter(CounterTarget.USER);

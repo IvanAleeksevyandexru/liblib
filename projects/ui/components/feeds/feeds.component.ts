@@ -11,7 +11,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { FeedsService } from '@epgu/ui/services/feeds';
-import { FeedModel, FeedsModel, SnippetModel } from '@epgu/ui/models';
+import { FeedDataModel, FeedModel, FeedsModel, SnippetModel } from '@epgu/ui/models';
 import { LoadService } from '@epgu/ui/services/load';
 import { User } from '@epgu/ui/models/user';
 import { TranslateService } from '@ngx-translate/core';
@@ -25,6 +25,8 @@ import { CountersService } from '@epgu/ui/services/counters';
 import { ActivatedRoute, Router } from '@angular/router';
 import { differenceInDays, differenceInYears, format, isAfter, isValid, parse } from 'date-fns';
 import { ru } from 'date-fns/locale';
+import { LibTranslateService } from '@epgu/ui/services/translate';
+import { UserHelperService } from '@epgu/ui/services/user-helper';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -119,7 +121,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private sharedService: SharedService,
     public yaMetricService: YaMetricService,
-    private countersService: CountersService
+    private countersService: CountersService,
+    private libTranslate: LibTranslateService,
+    private userHelper: UserHelperService,
   ) {
   }
 
@@ -211,6 +215,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
               return !(isDraft || paid || rejectedPayment);
             });
           }
+          if (feed.data.orderCreator) {
+            feed.data.orderCreator = this.parseDataParam(feed.data, 'orderCreator');
+          }
+          if (feed.data.branch) {
+            feed.data.branch = this.parseDataParam(feed.data, 'branch');
+          }
           return {
             ...feed,
             data: {
@@ -266,6 +276,16 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
+  private parseDataParam(data: FeedDataModel, paramName: string): any {
+    let paramAsObj;
+    try {
+      paramAsObj = JSON.parse(data[paramName]);
+    } catch {
+      paramAsObj = null;
+    }
+    return paramAsObj;
+  }
+
   public emitEmptyFeedsEvent(): void {
     this.emptyFeeds.emit(this.feeds && this.feeds.length === 0);
   }
@@ -306,7 +326,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public isOrderCreator(feed: FeedModel): boolean {
-    return (this.user.userType === 'B' || this.user.userType === 'L') &&
+    return (this.userHelper.isIP || this.userHelper.isEntity) &&
       !!(this.isFormattedLoginName(feed) || (feed.data.orderDescription));
   }
 
@@ -469,7 +489,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       this.changeDetector.detectChanges();
     };
     const onRemoveError = () => {
-      this.translate.get('FEEDS.ERROR').subscribe((errorText: string) => {
+      this.libTranslate.get('FEEDS.DELETE.DRAFT_DELETED_ERROR').subscribe((errorText: string) => {
         this.notifier.error({
           message: errorText
         });
@@ -484,12 +504,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       if (this.page === 'drafts') {
         this.feedsService.removeDraft(feed.extId)
           .pipe(
-            switchMap(() => this.translate.get('FEEDS.DELETED'))
+            switchMap(() => this.libTranslate.get('FEEDS.DELETE.DRAFT_DELETED'))
           ).subscribe(onSubscribe, onRemoveError);
       } else {
         this.feedsService.removeFeed(feed.id)
           .pipe(
-            switchMap(() => this.translate.get('FEEDS.DELETED'))
+            switchMap(() => this.libTranslate.get('FEEDS.DELETE.DRAFT_DELETED'))
           ).subscribe(onSubscribe, onRemoveError);
       }
     }
@@ -568,7 +588,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public showRemoveFeedButton(feed: FeedModel): boolean {
-    return ['drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder && !this.isPaymentDraft(feed);
+    const rightPage = ['drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) ||
+      this.page === 'events' && this.isDraft(feed);
+    return rightPage && !feed.data.reminder && !this.isPaymentDraft(feed);
   }
 
   public showArchiveFeedButton(feed: FeedModel): boolean {

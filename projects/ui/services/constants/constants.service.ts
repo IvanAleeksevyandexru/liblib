@@ -554,6 +554,69 @@ export class ConstantsService {
       mnemonic: 'kndAppealEvents'
     }*/
   ];
+  public readonly FEEDS_CATEGORIES_IP_UL = [
+    {
+      text: 'Все',
+      type: 'all_v2',
+      id: 1,
+      mnemonic: 'allEvents',
+    },
+    {
+      text: 'Непрочитанные',
+      type: 'all_v2',
+      id: 2,
+      mnemonic: 'unread'
+    },
+    {
+      text: 'Записи на приём',
+      type: 'EQUEUE',
+      id: 3,
+      mnemonic: 'equeue',
+    },
+    {
+      text: 'Платежи',
+      type: 'PAYMENT',
+      id: 4,
+      mnemonic: 'payment',
+    },
+    {
+      text: 'Заявления',
+      type: 'ORDER,COMPLEX_ORDER,CLAIM,APPEAL,SIGN',
+      id: 5,
+      mnemonic: 'order'
+    },
+    {
+      text: 'Черновики',
+      type: 'DRAFT,KND_APPEAL_DRAFT',
+      id: 6,
+      mnemonic: 'draft',
+    },
+    {
+      text: 'Госпочта',
+      type: 'GEPS',
+      id: 7,
+      mnemonic: 'geps'
+    },
+    {
+      text: 'Жалобы по КНД',
+      type: 'KND_APPEAL,KND_APPEAL_DRAFT',
+      id: 8,
+      mnemonic: 'kndAppealEvents'
+    },
+    {
+      text: 'Служба поддержки',
+      type: 'FEEDBACK',
+      id: 9,
+      mnemonic: 'feedback'
+    },
+    {
+      text: 'Системные события',
+      type: 'ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE',
+      id: 10,
+      mnemonic: 'systemEvents'
+    },
+  ];
+
   public readonly NOTIFICATION_PERIOD_TIMEZONE: NotificationPeriodItem[] = [
     {
       id: -15,
