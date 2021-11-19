@@ -12,14 +12,8 @@
   <a class="close-menu" *ngIf="menuOpened" (click)="onCloseMenu($event)"></a>
   <div class="user-data hide show-lg">
     <div class="text-plain blue name text-overflow">
-<!--   удалю когда будут полноценные макеты   -->
-<!--      <ng-container *ngIf="user.type === 'L'">{{(user.orgShortName || user.orgName)}}</ng-container>-->
-<!--      <ng-container *ngIf="user.type === 'B'">{{(user.orgShortName || 'ИП ' + user.shortName)}}</ng-container>-->
       <ng-container *ngIf="user.type !== 'B' && user.type !== 'L'">{{user.firstName + ' ' + user.lastName[0] + '.'}}</ng-container>
     </div>
-<!--    <div class="position text-overflow">-->
-<!--      {{user.orgPosition}}-->
-<!--    </div>-->
   </div>
 </div>
 <ng-template #loginLink>
