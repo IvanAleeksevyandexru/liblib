@@ -12,6 +12,7 @@ import {
 } from '@epgu/ui/models/counter';
 import { switchMap, tap } from 'rxjs/operators';
 import { ConstantsService } from '@epgu/ui/services/constants';
+import { UserHelperService } from '@epgu/ui/services/user-helper';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,7 @@ export class CountersService {
     private http: HttpClient,
     private loadService: LoadService,
     private constantsService: ConstantsService,
+    private userHelper: UserHelperService,
   ) { }
 
   public setCounters(data: CounterResponse) {
@@ -119,8 +121,9 @@ export class CountersService {
         unread: 0
       });
     }
+    const defaultTypes = this.userHelper.isPerson ? this.constantsService.DEFAULT_LK_NOTIFICATION_CATEGORIES + ',PARTNERS' : 'all_v2';
     let params = {
-      types: types || (this.constantsService.DEFAULT_LK_NOTIFICATION_CATEGORIES + ',PARTNERS'),
+      types: types || defaultTypes,
       isArchive: isArchive.toString(),
       _: Math.random().toString()
     };
