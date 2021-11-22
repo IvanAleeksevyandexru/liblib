@@ -8,23 +8,25 @@
     <h3 [ngClass]="{'title-h4 mt-20 mt-md-0': imagesPosition === 'above', 'title-h3': imagesPosition !== 'above'}"
         class="title mb-24"
         [innerHTML]="title | appTranslate"></h3>
-    <div class="flex-container-md align-items-center-md"
-         [ngClass]="{'flex-column-md': imagesPosition === 'above'}">
-      <div *ngIf="image" class="icon mb-24" [ngClass]="{'mb-md-0': imagesPosition !== 'above'}">
-        <img [src]="image" alt="">
+    <div class="popup-content">
+      <div class="flex-container-md align-items-center-md"
+           [ngClass]="{'flex-column-md': imagesPosition === 'above'}">
+        <div *ngIf="image" class="icon mb-24" [ngClass]="{'mb-md-0': imagesPosition !== 'above'}">
+          <img [src]="image" alt="">
+        </div>
+        <div class="description" [class.reduce-width]="image">
+          <p *ngIf="subtitle" class="text-plain black" [class.mb-16]="description"
+             [innerHTML]="subtitle | appTranslate"></p>
+          <p *ngIf="description" class="text-plain" [innerHTML]="description | appTranslate: {value: value}"></p>
+        </div>
       </div>
-      <div class="description" [class.reduce-width]="image">
-        <p *ngIf="subtitle" class="text-plain black" [class.mb-16]="description"
-           [innerHTML]="subtitle | appTranslate"></p>
-        <p *ngIf="description" class="text-plain" [innerHTML]="description | appTranslate: {value: value}"></p>
+      <div class="mt-20 mt-24" *ngIf="checkboxConfirm">
+        <lib-checkbox
+          [checked]="isChecked"
+          (change)="onConfirmChange()"
+          labelText="Подтверждаю, что не подавал согласия на зачисление или оригинал аттестата в другие конкурсные группы"
+        ></lib-checkbox>
       </div>
-    </div>
-    <div class="mt-20 mt-24" *ngIf="checkboxConfirm">
-      <lib-checkbox
-        [checked]="isChecked"
-        (change)="onConfirmChange()"
-        labelText="Подтверждаю, что не подавал согласия на зачисление или оригинал аттестата в другие конкурсные группы"
-      ></lib-checkbox>
     </div>
     <div [class.buttons-between]="spaceButtonsBetween" [ngClass]="{
     'mt-24': !checkboxConfirm && buttons?.length,

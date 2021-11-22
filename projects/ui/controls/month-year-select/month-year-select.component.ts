@@ -2,9 +2,8 @@ import {
   Component, Input, Output, OnInit, OnChanges, SimpleChanges, ViewChild,
   ElementRef, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy
 } from '@angular/core';
-import * as moment_ from 'moment';
 import { MonthYear } from '@epgu/ui/models/date-time';
-const moment = moment_;
+import { endOfYear, startOfYear } from 'date-fns';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,8 +35,8 @@ export class MonthYearSelectComponent implements OnInit, OnChanges {
   public monthsList: Array<MonthYear> = [];
   public selectedYear: number;
   public supposed: MonthYear;
-  public minimum: MonthYear = MonthYear.fromDate(moment().startOf('year').toDate());
-  public maximum: MonthYear = MonthYear.fromDate(moment().endOf('year').toDate());
+  public minimum: MonthYear = MonthYear.fromDate(startOfYear(new Date()));
+  public maximum: MonthYear = MonthYear.fromDate(endOfYear(new Date()));
   public nextMonthAvailable = true;
   public prevMonthAvailable = true;
 
@@ -68,8 +67,8 @@ export class MonthYearSelectComponent implements OnInit, OnChanges {
 
   public update() {
     this.close();
-    this.minimum = MonthYear.fromDate(this.minDate || moment().startOf('year').toDate());
-    this.maximum = MonthYear.fromDate(this.maxDate || moment().endOf('year').toDate());
+    this.minimum = MonthYear.fromDate(this.minDate || startOfYear(new Date()));
+    this.maximum = MonthYear.fromDate(this.maxDate || endOfYear(new Date()));
     if (this.maximum.firstDay() < this.minimum.firstDay()) {
       this.maximum = this.minimum.next();
     }

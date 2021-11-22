@@ -24,9 +24,7 @@ import { HealthService } from '@epgu/ui/services/health';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
 import { Vehicle } from '@epgu/ui/models/vehicle';
 import { SliderImage } from '@epgu/ui/models/slider-image';
-import * as moment_ from 'moment';
-
-const moment = moment_;
+import { differenceInHours } from 'date-fns';
 
 @Injectable({
   providedIn: 'root'
@@ -317,8 +315,8 @@ export class IpshService {
     } = params;
     let comment = '';
     let param = '';
-    const timeInProcessFromCreate = createTime ? moment().diff(createTime, 'hours') : 0;
-    const timeInProcessFromUpdate = statusUpdated ? moment().diff(statusUpdated, 'hours') : 0;
+    const timeInProcessFromCreate = createTime ? differenceInHours(new Date(), createTime) : 0;
+    const timeInProcessFromUpdate = statusUpdated ? differenceInHours(new Date(), statusUpdated) : 0;
     const progressStatuses = ['NEW', 'PAY_SERVICE_CONFIRMATION', 'PAY_SERVICE_CONFIRMED', 'BANK_PAY_ORDER_CONFIRMATION', 'BANK_PAY_ORDER_CONFIRMED', 'SERVICE_PROVIDER_CONFIRMATION'];
     const doneStatuses = ['BANK_PAY_CONFIRMED', 'BANK_PAY_CONFIRMATION', 'SERVICE_PROVIDER_CONFIRMED', 'GISGMP_QUITTANCE_STATUS'];
 

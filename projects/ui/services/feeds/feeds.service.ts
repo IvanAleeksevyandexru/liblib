@@ -2,12 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { LoadService } from '@epgu/ui/services/load';
 import { FeedModel, FeedsParams } from '@epgu/ui/models';
-import * as moment_ from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { throwError } from 'rxjs';
-
-
-const moment = moment_;
+import { format, formatISO, isValid, parse, parseISO } from 'date-fns';
 
 @Injectable({
   providedIn: 'root'
@@ -60,14 +57,28 @@ export class FeedsService {
 
   public getLastFeedDate(date, def: Date | null = null, dropMs = null) {
     if (date instanceof Date) {
-      return moment(date).format('YYYY-MM-DDTHH:mm:ss' + (dropMs ? '' : '.SSS') + 'ZZ');
+      const result = formatISO(date);
+      if (dropMs) {
+        return result.split('.')[0];
+      } else {
+        return result;
+      }
     }
     if (typeof date === 'string') {
-      if (moment(date, 'YYYY-MM-DDTHH:mm:ss.SSSZZ').isValid()) {
+      if (isValid(parseISO(date))) {
         return date;
       }
     }
-    return def ? moment(def).format('YYYY-MM-DDTHH:mm:ss' + (dropMs ? '' : '.SSS') + 'ZZ') : '';
+    if (def) {
+      const result = formatISO(def);
+      if (dropMs) {
+        return result.split('.')[0];
+      } else {
+        return result
+      }
+    } else {
+      return '';
+    }
   }
 
   public markFeedAsRead(feedId: number) {

@@ -1,5 +1,5 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { Modal } from '@epgu/ui/models';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { IConfirmActionModal, Modal, ModalButtonType } from '@epgu/ui/models';
 
 @Component({
   selector: 'lib-confirm-action',
@@ -8,8 +8,7 @@ import { Modal } from '@epgu/ui/models';
 })
 
 @Modal()
-
-export class ConfirmActionComponent implements OnInit {
+export class ConfirmActionComponent implements OnInit, IConfirmActionModal {
   public title: string;
   public subtitle: string;
   public description: string;
@@ -21,15 +20,9 @@ export class ConfirmActionComponent implements OnInit {
   public imagesPosition: 'left' | 'above' = 'left';
   public maxWidth: number;
   public popupClassModifier: string;
-  public buttons: {
-    title: string,
-    type: 'anchor' | undefined,
-    color: string,
-    loader?: boolean,
-    disabled?: boolean,
-    handler: (d?) => {}
-  }[];
+  public buttons: ModalButtonType[];
   public spaceButtonsBetween: boolean;
+  public buttonsCenter: boolean;
 
   public destroy: () => {};
 

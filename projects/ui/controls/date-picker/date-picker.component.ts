@@ -53,15 +53,34 @@ import {
   DragState
 } from '@epgu/ui/models/drag-drop';
 import { DateProperties, DatePropertiesPublisher, MonthYear, Range, RelativeDate } from '@epgu/ui/models/date-time';
-import * as moment_ from 'moment';
 import { ValidationDetailed, ValidationMessages } from '@epgu/ui/models/validation-show';
+import {
+  add,
+  endOfYear,
+  format,
+  getDate,
+  getDaysInMonth,
+  getISODay,
+  getMonth,
+  isAfter,
+  isBefore,
+  isEqual,
+  isSameDay,
+  isToday,
+  isValid,
+  parse,
+  setYear,
+  startOfDay,
+  startOfMonth,
+  startOfYear,
+  sub
+} from 'date-fns';
+import { ru } from 'date-fns/locale';
 
-const moment = moment_;
-
-const STD_DATE_FORMAT = 'DD.MM.YYYY';
-const STD_SHORT_FORMAT = 'DD.MM.YY';
-const AM_DATE_FORMAT = 'MM/DD/YYYY';
-const AM_SHORT_FORMAT = 'MM/DD/YY';
+const STD_DATE_FORMAT = 'dd.MM.yyyy';
+const STD_SHORT_FORMAT = 'dd.MM.yy';
+const AM_DATE_FORMAT = 'MM/dd/yyyy';
+const AM_SHORT_FORMAT = 'MM/dd/yy';
 const MODEL_FORMAT = ConstantsService.CALENDAR_TEXT_MODEL_FORMAT;
 const DATE_PATTERN = /^\d\d?[\.\/]\d\d?[\.\/]\d\d?\d?\d?$/;
 const WEAK_DATE_PATTERN = /^([\d_][\d_]?)[\.\/]([\d_][\d_]?)[\.\/]([\d_][\d_][\d_]?[\d_]?)$/;
@@ -121,7 +140,8 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
 
   constructor(private changeDetection: ChangeDetectorRef, private focusManager: FocusManager,
               private positioningManager: PositioningManager, private dragDropManager: DragDropManager,
-              @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
+              @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {
+  }
 
   @Input() public name?: string;
   @Input() public formControlName?: string;
@@ -144,7 +164,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   // когда показывать некорректность поля (как правило начальное пустое поле не считается корректным, но отображать это не нужно)
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
   // сообщения валидации вместе с параметрами вывода, работает только совместно с validation
-  @Input() public validationMessages: string | PipedMessage | ValidationMessages | { [key: string]: string | PipedMessage} = null;
+  @Input() public validationMessages: string | PipedMessage | ValidationMessages | { [key: string]: string | PipedMessage } = null;
   // определяет должна ли валидация скрывать информационный тип (показываться вместо) или показываться в дополнение
   @Input() public validationOverride = true;
   // транслитерация и эскейп для валидации
@@ -229,7 +249,9 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   @ViewChild('monthsFeed') public monthsFeed: ElementRef;
 
   private onTouchedCallback: () => void;
-  private commit(value: string | Date | Range<string> | Range<Date>) {}
+
+  private commit(value: string | Date | Range<string> | Range<Date>) {
+  }
 
   public ngOnInit() {
     this.control = this.controlContainer && this.formControlName ? this.controlContainer.control.get(this.formControlName) : null;
@@ -396,7 +418,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         this.rangeStart = date;
       }
     } else {
-      this.commitSave(this.textModelValue ? moment(date).format(MODEL_FORMAT) : date, true);
+      this.commitSave(this.textModelValue ? format(new Date(date), MODEL_FORMAT) : date, true);
       this.closeCalendar();
     }
     this.updateDateItemProperties(this.weeks);
@@ -571,45 +593,45 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   }
 
   public isToday(date: Date) {
-    return date && moment().isSame(moment(date), 'day');
+    return date && isToday(date);
   }
 
   public isHoliday(date: Date) {
-    return date && [6, 7].includes(moment(date).isoWeekday());
+    return date && [6, 7].includes(getISODay(date));
   }
 
   public isSelected(date: Date, rangeStart?: Date) {
-    return date && (moment(date).isSame(this.date, 'day') || moment(date).isSame(rangeStart));
+    return date && (isSameDay(date, this.date) || isEqual(date, rangeStart));
   }
 
   // текущий рейндж не должен подсвечиваться если уже новый rangeStart выбран
   public isInRange(date: Date, rangeStart?: Date) {
-    return date && !rangeStart && (moment(date).isBetween(this.range.start, this.range.end));
+    return date && !rangeStart && DatesHelperService.isBetween(date, this.range.start, this.range.end);
   }
 
   public isRangeStart(date: Date, rangeStart?: Date) {
-    return date && !rangeStart && moment(date).isSame(this.range.start, 'day');
+    return date && !rangeStart && isSameDay(date, this.range.start);
   }
 
   public isRangeEnd(date: Date, rangeStart?: Date) {
-    return date && !rangeStart && moment(date).isSame(this.range.end, 'day');
+    return date && !rangeStart && isSameDay(date, this.range.end);
   }
 
   public isDateLocked(date: Date) {
-    return date && (this.minimumDate && moment(date).isBefore(this.minimumDate, 'day'))
-      || (this.maximumDate && moment(date).isAfter(this.maximumDate, 'day'));
+    return date && (this.minimumDate && isBefore(date, this.minimumDate)
+      || (this.maximumDate && isAfter(date, this.maximumDate)));
   }
 
   public isDateOutOfMonth(date: Date, monthShift: number) {
-    return date && moment(date).month() !== this.activeMonthYear.month + monthShift;
+    return date && getMonth(date) !== this.activeMonthYear.month + monthShift;
   }
 
   public isInPreviewRange(day: DateProperties, rangeStart: Date, rangeEnd: Date) {
-    return moment(day.date).isBetween(rangeStart, rangeEnd) || moment(day.date).isBetween(rangeEnd, rangeStart);
+    return DatesHelperService.isBetween(day.date, rangeStart, rangeEnd) || DatesHelperService.isBetween(day.date, rangeEnd, rangeStart);
   }
 
   public isPreviewRangeStart(date: Date) {
-    return !!this.rangeStart && moment(date).isBefore(this.rangeStart, 'day');
+    return !!this.rangeStart && isBefore(date, this.rangeStart);
   }
 
   public clearPreviewRange() {
@@ -689,11 +711,11 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   }
 
   private getMinimumDate() {
-    return DatesHelperService.relativeOrFixedToFixed(this.minDate) || moment().startOf('year').startOf('day').toDate();
+    return DatesHelperService.relativeOrFixedToFixed(this.minDate) || startOfDay(startOfYear(new Date()));
   }
 
   private getMaximumDate() {
-    return DatesHelperService.relativeOrFixedToFixed(this.maxDate) || moment().endOf('year').startOf('day').toDate();
+    return DatesHelperService.relativeOrFixedToFixed(this.maxDate) || startOfDay(endOfYear(new Date()));
   }
 
   private updateCalendarLimits() {
@@ -802,7 +824,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         case BrokenDateFixStrategy.RESTORE: {
           if (validDateOutOfRanges) {
             const limitedDate = this.toDate(value, this.dateFormat, true);
-            return result.value(this.textModelValue ? moment(limitedDate).format(MODEL_FORMAT) : limitedDate);
+            return result.value(this.textModelValue ? format(limitedDate, MODEL_FORMAT, {locale: ru}) : limitedDate);
           } else {
             return result.revert();
           }
@@ -855,10 +877,9 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
 
   private renderSingleMonthGrid(output: Array<Array<DateProperties>>, monthShift: number): void {
     output.splice(0, output.length); // in-place clear
-    const firstDayOfMonth = moment().year(this.activeMonthYear.year).month(this.activeMonthYear.month)
-      .add(monthShift, 'month').startOf('month').startOf('day');
-    const firstDayOfWeekInMonth = firstDayOfMonth.isoWeekday();
-    const daysInMonth = firstDayOfMonth.daysInMonth();
+    const firstDayOfMonth = startOfDay(startOfMonth(setYear(new Date(), this.activeMonthYear.year).setMonth(this.activeMonthYear.month + (monthShift || 0))));
+    const firstDayOfWeekInMonth = getISODay(firstDayOfMonth);
+    const daysInMonth = getDaysInMonth(firstDayOfMonth);
     let week = 0;
     output.push([]);
     if (firstDayOfWeekInMonth > 1) {
@@ -866,7 +887,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         // Заполняем пустые клетки в начале и в конце месяца днями, у которых пустой day (текст который выводится),
         // но есть date, которая отличается от крайних дней месяца на один час,
         // чтобы при проверке вхождения дня в диапазон пустые клетки отмечались свойством inRange и подсвечилась
-        const firstDayOfMonthForEmpty = moment(firstDayOfMonth).subtract(1, 'hour').toDate();
+        const firstDayOfMonthForEmpty = sub(firstDayOfMonth, {hours: 1});
         output[0].push({day: null, date: firstDayOfMonthForEmpty});
       }
     }
@@ -875,11 +896,11 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         week++;
         output.push([]);
       }
-      const date = moment(firstDayOfMonth).add(i, 'day');
-      output[week].push({day: date.date(), date: date.toDate()});
+      const date = add(firstDayOfMonth, {days: i});
+      output[week].push({day: getDate(date), date: date});
     }
     const lastMonthDate = output[week][output[week].length - 1].date;
-    const lastMonthDateForEmpty = moment(lastMonthDate).add(1, 'hour').toDate();
+    const lastMonthDateForEmpty = add(lastMonthDate, {hours: 1});
     while (output[week].length < 7) {
       output[week].push({day: null, date: lastMonthDateForEmpty});
     }
@@ -932,7 +953,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       if (value === '') {
         result = null;
       } else {
-        result = moment(value, format).startOf('day').toDate();
+        result = startOfDay(parse(value, format, new Date()));
       }
     }
     if (result && alignToLimits) {
@@ -946,7 +967,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   }
 
   private isValidDate(value: Date, checkLimits = true) {
-    return moment(value).isValid() && (checkLimits ? value >= this.minimumDate && value <= this.maximumDate : true);
+    return isValid(value) && (checkLimits ? value >= this.minimumDate && value <= this.maximumDate : true);
   }
 
   // 10.05.19 -> 10.05.2019, 10.05.60 -> 10.05.1960
@@ -974,13 +995,13 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     if (strictnessLevel === undefined) {
       return true;
     } else {
-      return this.isValidDate(moment(value.replace(/_/g, ''), this.dateFormat).toDate(), strictnessLevel);
+      return this.isValidDate(parse(value.replace(/_/g, ''), this.dateFormat, new Date()), strictnessLevel);
     }
   }
 
   private format(value: Date, forceFullFormat?: boolean) {
-    return value && !isNaN(value.getTime()) ? moment(value).format(this.shortYearFormat && !forceFullFormat ?
-      this.shortDateFormat : this.dateFormat) : this.emptyText();
+    return value && !isNaN(value.getTime()) ? format(value, this.shortYearFormat && !forceFullFormat ?
+      this.shortDateFormat : this.dateFormat, {locale: ru}) : this.emptyText();
   }
 
   public emptyText() {
@@ -1033,8 +1054,8 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       } else {
         if (value) {
           // нет необходимости проверять на двузначный год, коммитится всегда полный 4значный год
-          return moment((value as Range<any>).start, this.dateFormat).isSame(this.range.start, 'day')
-            && moment((value as Range<any>).end, this.dateFormat).isSame(this.range.end, 'day');
+          return isSameDay(parse((value as Range<any>).start, this.dateFormat, new Date()), this.range.start)
+            && isSameDay(parse((value as Range<any>).end, this.dateFormat, new Date()), this.range.end);
         } else {
           return value === this.range;
         }
@@ -1044,7 +1065,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         return false;
       } else {
         if (value) {
-          return moment(value as string | Date, this.dateFormat).isSame(this.date, 'day');
+          return isSameDay(parse(value.toString(), this.dateFormat, new Date()), this.date);
         } else {
           return value === this.date;
         }

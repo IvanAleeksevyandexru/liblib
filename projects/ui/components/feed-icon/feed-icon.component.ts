@@ -8,9 +8,9 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class FeedIconComponent implements OnInit {
 
-  @Input() public readonly status: string;
-  @Input() public readonly title: string;
-  @Input() public readonly ipshStatus = '';
+  @Input() public status: string;
+  @Input() public title: string;
+  @Input() public ipshStatus: string = '';
 
   constructor() { }
 
