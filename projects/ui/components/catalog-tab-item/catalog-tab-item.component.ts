@@ -235,7 +235,7 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
     this.yaMetricService.callReachGoal('main-page', {
       'main-header': this.code,
       code: item.code
-    }).then(() => {
+    }, () => {
       location.href = item.type === 'LINK' ? item.url : `${this.loadService.config.betaUrl}${item.url}`;
     });
   }
@@ -250,7 +250,7 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
     this.yaMetricService.callReachGoal('main-page', {
       'main-header': this.code,
       code: departmentPassport.code
-    }).then(() => {
+    }, () => {
       location.href = `${this.loadService.config.betaUrl}${departmentPassport.url}`;
     });    
   }
