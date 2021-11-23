@@ -28,6 +28,8 @@ export class MailDeliveryService {
   public loading = new BehaviorSubject(false);
   public textAndLinks: SubscriptionHint;
 
+  private noSubscriptions = new BehaviorSubject(null);
+
   constructor(
     private loadService: LoadService,
     private http: HttpClient,
@@ -133,6 +135,8 @@ export class MailDeliveryService {
       isFirstSubscribe = false;
     }
 
+    this.noSubscriptions.next(null);
+
     if (isFirstSubscribe) {
       return this.http.post<any>(url, body, {withCredentials: true});
     } else {
@@ -152,6 +156,8 @@ export class MailDeliveryService {
       }
       return requestItem;
     });
+
+    this.noSubscriptions.next(null);
 
     return this.http.post<any>(url, {items}, {withCredentials: true});
   }
@@ -183,18 +189,23 @@ export class MailDeliveryService {
   }
 
   public hasNoSubscriptions(): Observable<boolean> {
-    return this.getAvailableSubscription().pipe(
-      switchMap((response) => {
-        let result = false;
-        if (response?.items) {
-          result = response.items.every(item => {
-            return ['DENY_SUBSCRIPTION', 'UNSUBSCRIBED'].includes(item.status) ||
-              this.isRussianPost(item.code) && item.status === 'NOT_SUBSCRIBED';
-          });
-        }
-        return of(result);
-      })
-    );
+    if (this.noSubscriptions.value === null) {
+      this.getAvailableSubscription().pipe(
+        switchMap((response) => {
+          let result = false;
+          if (response?.items) {
+            result = response.items.every(item => {
+              return ['DENY_SUBSCRIPTION', 'UNSUBSCRIBED'].includes(item.status) ||
+                this.isRussianPost(item.code) && item.status === 'NOT_SUBSCRIBED';
+            });
+          }
+          return of(result);
+        })
+      ).subscribe(result => {
+        this.noSubscriptions.next(result);
+      });
+    }
+    return this.noSubscriptions.asObservable();
   }
 
   public setMailDeliveryModalFinished(state: boolean) {
