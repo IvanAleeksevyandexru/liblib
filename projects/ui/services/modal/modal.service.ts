@@ -7,7 +7,7 @@ export class ModalService {
   private vcRef: ViewContainerRef;
   private injector: Injector;
   private cRefObj = {};
-  private activeInstances = 0;
+  public activeInstances = 0;
   private isManyModals = false;
 
   constructor(private cfr: ComponentFactoryResolver) {
