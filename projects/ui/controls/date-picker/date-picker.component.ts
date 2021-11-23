@@ -430,7 +430,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       this.commit(value);
     }
     const parsingResult = this.isRange ? this.createRangeFromString(value) : this.createDateFromString(value);
-    if (parsingResult.result && (this.expanded || this.asSimplePanel)) {
+    if (parsingResult.result && parsingResult.result.toString() !== 'Invalid Date' && (this.expanded || this.asSimplePanel)) {
       this.activeMonthYear = MonthYear.fromDate(parsingResult.result as Date);
       this.rangeStart = parsingResult.result as Date;
       this.renderMonthGrid();
@@ -899,10 +899,12 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       const date = add(firstDayOfMonth, {days: i});
       output[week].push({day: getDate(date), date: date});
     }
-    const lastMonthDate = output[week][output[week].length - 1].date;
-    const lastMonthDateForEmpty = add(lastMonthDate, {hours: 1});
-    while (output[week].length < 7) {
-      output[week].push({day: null, date: lastMonthDateForEmpty});
+    if (output[week] && output[week][output[week].length - 1]) {
+      const lastMonthDate = output[week][output[week].length - 1].date;
+      const lastMonthDateForEmpty = add(lastMonthDate, {hours: 1});
+      while (output[week].length < 7) {
+        output[week].push({day: null, date: lastMonthDateForEmpty});
+      }
     }
     this.updateDateItemProperties(output, monthShift);
   }
