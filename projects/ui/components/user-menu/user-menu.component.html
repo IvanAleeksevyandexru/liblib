@@ -32,15 +32,15 @@
               </li>
             </ng-container>
           </ng-container>
-          <li  class="item justify-between align-items-center"
+          <li class="item justify-between align-items-center"
                (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">
             <div class="flex-container">
-              <div class="icon suitecase"></div>
+              <div class="icon person"></div>
               <span class="text-plain">{{titleChangeRole | libTranslate}}</span>
             </div>
           </li>
-          <li  class="item justify-between align-items-center"
-               (click)="logout()">
+          <li class="item justify-between align-items-center"
+              (click)="logout()">
             <div class="flex-container">
               <div class="icon exit"></div>
               <span class="text-plain">{{'HEADER.EXIT' | libTranslate}}</span>

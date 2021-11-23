@@ -2,7 +2,7 @@
      class="authorized-user flex-container-md justify-end-md align-items-center"
      (click)="userClicked()"
      [class.hide-arrow]="menuOpened">
-     <lib-user-avatar
+  <lib-user-avatar
     [avatar]="loadService.avatar | async"
     [user]="user"
     [height]="36"
@@ -12,24 +12,7 @@
   <a class="close-menu" *ngIf="menuOpened" (click)="onCloseMenu($event)"></a>
   <div class="user-data hide show-lg">
     <div class="text-plain blue name text-overflow">
-<!--   удалю когда будут полноценные макеты   -->
-<!--      <ng-container *ngIf="user.type === 'L'">{{(user.orgShortName || user.orgName)}}</ng-container>-->
-<!--      <ng-container *ngIf="user.type === 'B'">{{(user.orgShortName || 'ИП ' + user.shortName)}}</ng-container>-->
       <ng-container *ngIf="user.type !== 'B' && user.type !== 'L'">{{user.firstName + ' ' + user.lastName[0] + '.'}}</ng-container>
-    </div>
-<!--    <div class="position text-overflow">-->
-<!--      {{user.orgPosition}}-->
-<!--    </div>-->
-  </div>
-  <div class="actions hide mt-16 mb-32">
-    <div class="mb-32">
-      <a href="/roles" class="roles bold">{{'HEADER.ALL_ROLES' | libTranslate}}</a>
-    </div>
-    <div class="mt-20">
-      <a href="https://lk-dev.test.gosuslugi.ru/start" class="link">{{'HEADER.PERSONAL_AREA' | libTranslate}}</a>
-    </div>
-    <div class="mt-20">
-      <a class="link logout" (click)="logout()">{{'HEADER.EXIT' | libTranslate}}</a>
     </div>
   </div>
 </div>

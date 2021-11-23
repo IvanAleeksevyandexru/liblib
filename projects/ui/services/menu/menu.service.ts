@@ -8,6 +8,7 @@ import { AccessesService } from '@epgu/ui/services/accesses';
 import { CookieService } from '@epgu/ui/services/cookie';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
 import { HelperService } from '@epgu/ui/services/helper';
+import { UserHelperService } from '@epgu/ui/services/user-helper';
 
 const HASH = Math.random();
 
@@ -28,6 +29,7 @@ export class MenuService {
     private cookieService: CookieService,
     private yaMetricService: YaMetricService,
     private helperService: HelperService,
+    private userHelper: UserHelperService
   ) {
     this.staticUrls = this.getStaticItemUrls();
   }
@@ -55,7 +57,6 @@ export class MenuService {
   }
 
   public getUserMenuDefaultLinks(): MenuLink[] {
-    const userType = this.loadService.user.type;
     const links: MenuLink[] = [
       {
         title: 'HEADER.MENU.NOTIFICATIONS',
@@ -63,14 +64,14 @@ export class MenuService {
         icon: 'bell'
       },
       {
-        title: `HEADER.MENU.${userType === 'B' ? 'BUSINESS' : 'ORG'}_PROFILE`,
+        title: `HEADER.MENU.${this.userHelper.isIP ? 'BUSINESS' : 'ORG'}_PROFILE`,
         mnemonic: 'profile',
-        icon: 'enter',
+        icon: 'suitecase',
         showSeparatelyOnDesk: true,
-        availableUserTypes: ['B', 'L']
+        showCases: [this.userHelper.isUlIpOgv]
       },
       {
-        title: 'HEADER.MENU.ORDERS',
+        title: `HEADER.MENU.${this.userHelper.isUlIpOgv ? 'B-L-ORDERS' : 'ORDERS'}`,
         mnemonic: 'orders',
         icon: 'edit',
         showSeparatelyOnDesk: true
@@ -80,7 +81,7 @@ export class MenuService {
         mnemonic: 'docs',
         icon: 'doc',
         showSeparatelyOnDesk: true,
-        availableUserTypes: ['P']
+        showCases: [this.userHelper.isPerson]
       },
       {
         title: 'HEADER.MENU.PAYMENT',
@@ -92,10 +93,10 @@ export class MenuService {
         title: 'HEADER.MENU.PROFILE',
         mnemonic: 'profile',
         icon: 'person',
-        availableUserTypes: ['P']
+        showCases: [this.userHelper.isPerson]
       }
     ];
-    return links.filter(l => !l.availableUserTypes || l.availableUserTypes.includes(userType));
+    return links.filter(l => !l.showCases || l.showCases.some(boo => boo));
 
   }
 
@@ -111,6 +112,7 @@ export class MenuService {
       'HEADER.MENU.HELP': `${portalUrl}help`,
       'HEADER.MENU.NOTIFICATIONS': `${lkUrl}overview`, // правка изза выборов
       'HEADER.MENU.ORDERS': `${lkUrl}orders`,
+      'HEADER.MENU.B-L-ORDERS': `${lkUrl}notifications`, // убрать использование при выводе лк юл
       'HEADER.MENU.PAYMENT': `${portalUrl}pay`,
       'HEADER.MENU.DOCS': `${lkUrl}profile`,
       'HEADER.MENU.AGREEMENTS': `${lkUrl}settings/third-party/agreements`,
@@ -124,8 +126,10 @@ export class MenuService {
       'HEADER.MENU.PARTNERS_ORDERS': `${partnersHost}lk/orders/all`,
       'HEADER.MENU.SUBSCRIPTIONS': `${partnersHost}lk/subscriptions`,
       'HEADER.MENU.HISTORY': `${partnersHost}lk/history`,
-      'HEADER.MENU.ORG_PROFILE': `${lkUrl}org-profile`,
-      'HEADER.MENU.BUSINESS_PROFILE': `${lkUrl}org-profile`,
+      // 'HEADER.MENU.ORG_PROFILE': `${lkUrl}org-profile`, новый урл
+      // 'HEADER.MENU.BUSINESS_PROFILE': `${lkUrl}org-profile`, новый урл
+      'HEADER.MENU.ORG_PROFILE': `${lkUrl}info`,
+      'HEADER.MENU.BUSINESS_PROFILE': `${lkUrl}info`,
     };
   }
 

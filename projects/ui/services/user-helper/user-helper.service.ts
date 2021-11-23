@@ -40,6 +40,10 @@ export class UserHelperService {
     return this.user.userType === 'O' && this.user.orgType === 'L';
   }
 
+  public get isUlIpOgv(): boolean { // ЮЛ или ОГВ или ИП
+    return this.isEntity || this.isIP;
+  }
+
   /**
    * Руководитель
    */
