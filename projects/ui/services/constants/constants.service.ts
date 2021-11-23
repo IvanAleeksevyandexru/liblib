@@ -64,7 +64,7 @@ export class ConstantsService {
   public static readonly DEFAULT_HIGHLIGHT_TEMPLATE =
     '<span class="highlighted">${query}</span>';
   // формат текстовой модели календарей для textModelValue === true
-  public static readonly CALENDAR_TEXT_MODEL_FORMAT = 'DD.MM.YYYY';
+  public static readonly CALENDAR_TEXT_MODEL_FORMAT = 'dd.MM.yyyy';
   // процент блока, достаточный чтобы совершить анимацию вперед при перелистывании драгдропом
   public static readonly DEFAULT_DRAGDROP_CENTERING_THRESHOLD = 0.5;
   // продолжительность анимации выравнивания блока
@@ -476,9 +476,9 @@ export class ConstantsService {
     },
   ];
 
-  public readonly DEFAULT_LK_NOTIFICATION_CATEGORIES = 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,ESIGNATURE,KND_APPEAL,LINKED_ACCOUNT,SIGN';
+  public readonly DEFAULT_LK_NOTIFICATION_CATEGORIES = 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,ESIGNATURE,KND_APPEAL,LINKED_ACCOUNT,SIGN,PAYMENTS_EGISSO';
 
-  public readonly DEFAULT_LK_ORDERS_CATEGORIES = 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER,SIGN';
+  public readonly DEFAULT_LK_ORDERS_CATEGORIES = 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER,SIGN,PAYMENTS_EGISSO';
 
   public readonly FEEDS_CATEGORIES = [
     {
@@ -621,7 +621,7 @@ export class ConstantsService {
     },
     {
       id: 1,
-      text: '(UTC+4) Волгоград, Самара, Ижевск, страны Закавказья',
+      text: '(UTC+4) Самара, Ижевск, страны Закавказья',
     },
     {
       id: 2,

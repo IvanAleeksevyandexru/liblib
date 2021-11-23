@@ -9,6 +9,8 @@ import { HelperService } from '@epgu/ui/services/helper';
 import { ConfirmActionComponent } from '@epgu/ui/components/confirm-action';
 import { ModalService } from '@epgu/ui/services/modal';
 import { LibTranslateService } from '@epgu/ui/services/translate';
+import { Observable } from 'rxjs';
+import { Avatar } from '@epgu/ui/models';
 
 const COUNT_ROLES_PER_ADD_BUTTON = 3;
 const PAGE_SIZE = 5;
@@ -36,7 +38,7 @@ export class RoleChangeComponent implements OnInit {
   public urlPage: string;
 
   private appContext = this.loadService.attributes.appContext;
-
+  public avatar$: Observable<Avatar> = this.loadService.avatar.asObservable();
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -45,7 +47,7 @@ export class RoleChangeComponent implements OnInit {
     private loadService: LoadService,
     private redirectsService: RedirectsService,
     private modalService: ModalService,
-    public libTranslate: LibTranslateService
+    private libTranslate: LibTranslateService
   ) {
     this.activatedRoute.queryParams.subscribe(params => {
       const page = 'page';
@@ -60,7 +62,7 @@ export class RoleChangeComponent implements OnInit {
   }
 
   public getRoles(): void {
-    this.esiaApi.getRequest('prns/prn_oid/roles', 1).subscribe(response => {
+    this.esiaApi.getRequest<{elements: Role[]}>('prns/prn_oid/roles', 1).subscribe(response => {
       this.roles = response.elements;
 
       // Добавляем к имеющимся ролям еще роль физика, чтобы в списке была, как один из пунктов
@@ -136,34 +138,6 @@ export class RoleChangeComponent implements OnInit {
     if (event) {
       event.preventDefault();
     }
-  }
-
-  /**
-   * Показываем аватар при наличии ссылки на него и, если пользватель физическое лицо,
-   * либо руководитель предприятия
-   *
-   * @param role Роль пользователя
-   */
-  public isShowAvatar(role: Role): boolean {
-    return !!this.user.person.person.avatarLink && this.privateOrBusiness(role);
-  }
-
-  /**
-   * Определяем роль физического лица или руководитель Предприятия
-   *
-   * @param role Роль пользователя
-   */
-  public privateOrBusiness(role: Role): boolean {
-    return role.type === 'PRIVATE' || (role.type === 'BUSINESS' && role.chief === true);
-  }
-
-  /**
-   * Определяем роль физического лица d ИП, если он сотрудник
-   *
-   * @param role Роль пользователя
-   */
-  public empRole(role: Role): boolean {
-    return role.type === 'BUSINESS' && role.chief !== true;
   }
 
   /**

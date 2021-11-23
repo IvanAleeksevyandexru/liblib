@@ -51,7 +51,7 @@
   top: 64px;
   transition: left .5s ease;
   width: 0;
-  z-index: 2147473649;
+  z-index: 1999999999;
   &.show{
     background: #fff;
     border-top: 1px solid #eee;
@@ -65,7 +65,7 @@
     top: 0;
     transform: translateY(64px);
     transition: left .5s ease;
-    z-index: 2147473649;
+    z-index: 1999999999;
   }
 }
 .catalog-menu-header{

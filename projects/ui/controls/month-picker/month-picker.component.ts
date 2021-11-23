@@ -39,10 +39,8 @@ import { animate, AnimationBuilder, style } from '@angular/animations';
 import { Width } from '@epgu/ui/models';
 import { Align, ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { MONTHS_CODES, MonthYear } from '@epgu/ui/models/date-time';
-import * as moment_ from 'moment';
 import { Validated } from '@epgu/ui/models/validation-show';
-
-const moment = moment_;
+import { endOfYear, getYear, startOfYear } from 'date-fns';
 
 class Common {
   public number: number;
@@ -96,8 +94,8 @@ export class MonthPickerComponent
   @Input() public hideTillNowAvailable?: boolean;
 
   @Input() public align: Align | string = Align.RIGHT; // выравнивание панели если панель не равна по ширине инпуту
-  @Input() public minMonth: MonthYear = MonthYear.fromDate(moment().startOf('year').toDate());
-  @Input() public maxMonth: MonthYear = MonthYear.fromDate(moment().endOf('year').toDate());
+  @Input() public minMonth: MonthYear = MonthYear.fromDate(startOfYear(new Date()));
+  @Input() public maxMonth: MonthYear = MonthYear.fromDate(endOfYear(new Date()));
 
   @Output() public cleared = new EventEmitter<void>();
   @Output() public focus = new EventEmitter<any>();
@@ -352,7 +350,7 @@ export class MonthPickerComponent
       this.years.push({number: year, disabled, selected: false} as Year);
     }
     let selected = this.years.find((year) =>
-      this.activeMonthYear ? this.activeMonthYear.year === year.number : year.number === moment().year()
+      this.activeMonthYear ? this.activeMonthYear.year === year.number : year.number === getYear(new Date())
     );
     if (!selected) {
       const available = this.years.filter((year) => !year.disabled);

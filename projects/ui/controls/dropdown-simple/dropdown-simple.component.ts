@@ -114,7 +114,7 @@ export class DropdownSimpleComponent implements OnInit, AfterViewInit, OnChanges
   }
 
   public setItems(value: Array<ListElement>) {
-    if (value[0].id !== 'empty-item') {
+    if (this.clearable && value?.length && value[0].id !== 'empty-item') {
       value.unshift(new ListItem({id: 'empty-item', text: this.placeholder}));
     }
     this.internalItems = value && Array.isArray(value) ? value.map((item: ListElement) => new ListItem(item, item)) : [];

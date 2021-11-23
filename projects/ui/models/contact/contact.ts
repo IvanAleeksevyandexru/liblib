@@ -17,7 +17,9 @@ export interface Contact {
   errMsg?: any;
   repeatTime?: any;
   repeatCount?: any;
+  error?: ContactError;
 }
+export type ContactError = { code: string; message: string };
 
 export interface CorpContact {
   id: number;
@@ -25,4 +27,5 @@ export interface CorpContact {
   simActiv: 'Y' | 'NO_ANSWER' | 'REFUSE' | 'DEACTIV';
   orgName: string;
   hidden: boolean;
+  viewOph?: string;
 }

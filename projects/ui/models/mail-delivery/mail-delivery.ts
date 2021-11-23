@@ -104,4 +104,5 @@ export interface SubscriptionItem {
   name: string;
   status: DeliverySubscribeStatus;
   stateTs?: string;
+  subscribeWithMvd?: boolean;
 }

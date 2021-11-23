@@ -1,55 +1,16 @@
-<div class="image-slider-container" #sliderContainer [ngClass]="view">
-  <div class="image-slider-wrapper" #sliderWrapper>
-    <div *ngIf="view === 'logos' && controlsVisible" class="image-slider-controls">
-      <a class="prev-slider" (click)="slidePrev()"></a>
-    </div>
-    <div class="image-feed-wrapper" #sliderFeedWrapper>
-      <div class="image-feed-container"
-           #sliderFeedContainer
-           [ngStyle]="containerTransform ? {transform: containerTransform} : {}"
-           [ngClass]="{'no-transition' : showByIndex}">
-        <ng-container *ngTemplateOutlet="links?.length ? imageFeedA : imageFeedDiv"></ng-container>
-      </div>
-    </div>
-    <div *ngIf="view !== 'logos' && controlsVisible" class="image-slider-controls">
-      <a class="prev-slider" (click)="slidePrev()" [ngClass]="{disabled: currentIndex === 0}"></a>
-      <div *ngIf="showBullet" class="image-slider-dots">
-        <a class="image-slider-dot" [class.active]="i === currentIndex" *ngFor="let dot of dots; index as i" (click)="slideTo(i)"></a>
-      </div>
-      <a class="next-slider" (click)="slideNext()" [ngClass]="{disabled: currentIndex >= dots.length - 1}"></a>
-    </div>
-    <div *ngIf="view === 'logos' && controlsVisible" class="image-slider-controls">
-      <a class="next-slider" (click)="slideNext()"></a>
-    </div>
-  </div>
-</div>
-
-<ng-template #imageFeedDiv>
-  <div [ngStyle]="{ 'left': ((slidesWidthToSet + slidesOffset) * i) + 'px', width: slidesWidthToSet + 'px'}"
-       *ngFor="let image of images; index as i"
-       class="image-feed">
-    <ng-container *ngTemplateOutlet="core; context: {image: image, i: i};"></ng-container>
-  </div>
-</ng-template>
-
-<ng-template #imageFeedA>
-  <a [ngStyle]="{ 'left': ((slidesWidthToSet + slidesOffset) * i) + 'px', width: slidesWidthToSet + 'px'}"
-     *ngFor="let image of images; index as i"
-     class="image-feed block"
-     [href]="links[i]"
-     [target]="target ? '_blank' : ''"
-  >
-    <ng-container *ngTemplateOutlet="core; context: {image: image, i: i};"></ng-container>
-  </a>
-</ng-template>
-
-<ng-template #core let-image="image" let-i="i">
-  <div *ngIf="showTitle" class="image-feed-title__top">{{ image.title }}</div>
-  <div class="image-feed-image"
-       (click)="showImageSliderModal(i)"
-       [ngStyle]="{height: slidesHeight + 'px'}"
-       [ngClass]="{'cursor-pointer': showModal}">
-    <img #images alt="{{ i + 1 }}" [src]="image.data" (error)="onImageError($event)">
-  </div>
-  <div class="image-feed-title__bottom">{{ image.title }}</div>
-</ng-template>
+<lib-image-slides
+  [slidesOffset]="slidesOffset"
+  [slidesWidth]="slidesWidth"
+  [slidesHeight]="slidesHeight"
+  [images]="images"
+  [links]="links"
+  [limit]="limit"
+  [showByIndex]="showByIndex"
+  [showModal]="showModal"
+  [enterImages]="enterImages"
+  [view]="view"
+  [showTitle]="showTitle"
+  [showBullet]="showBullet"
+  [target]="target"
+  (openModal)="showImageSliderModal($event)"
+></lib-image-slides>
