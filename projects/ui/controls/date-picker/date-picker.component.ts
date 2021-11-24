@@ -59,6 +59,7 @@ import {
   endOfYear,
   format,
   getDate,
+  getYear,
   getDaysInMonth,
   getISODay,
   getMonth,
@@ -613,6 +614,10 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     return date && !rangeStart && isSameDay(date, this.range.start);
   }
 
+  public isRangeInPrevMonth(date: Date) {
+    return date && getMonth(date) - getMonth(this.range.start) > 0 || getYear(date) - getYear(this.range.start) > 0;
+  }
+
   public isRangeEnd(date: Date, rangeStart?: Date) {
     return date && !rangeStart && isSameDay(date, this.range.end);
   }
@@ -915,6 +920,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         day.selected = this.isSelected(day.date, this.rangeStart);
         day.inRange = this.isInRange(day.date, this.rangeStart);
         day.rangeStart = this.isRangeStart(day.date, this.rangeStart);
+        day.selectionInSiblingMonth = this.isRangeInPrevMonth(day.date);
         day.rangeEnd = this.isRangeEnd(day.date, this.rangeStart);
         day.locked = this.isDateLocked(day.date);
         day.outer = this.isDateOutOfMonth(day.date, monthShift);

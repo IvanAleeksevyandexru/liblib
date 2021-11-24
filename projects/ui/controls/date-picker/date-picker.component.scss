@@ -283,27 +283,35 @@ $border-color: #99B1E6;
           .calendar-day:first-of-type {
             &.in-preview-range, &.preview-range-end, &.in-range, &.range-end {
               .calendar-day-content {
-                border-top-left-radius: 0;
-                border-bottom-left-radius: 0;
                 position: relative;
                 &:before {
                   position: absolute;
-                  width: 18px;
+                  width: 19px;
                   height: 28px;
                   left: -18px;
                   top: 0;
                   content: '';
                 }
               }
+              &.selection-in-sibling-month {
+                .calendar-day-content {
+                  border-top-left-radius: 0;
+                  border-bottom-left-radius: 0;
+                }
+              }
             }
             &.in-preview-range, &.preview-range-end {
-              .calendar-day-content:before {
-                background: $hover-preview-background;
+              &.selection-in-sibling-month {
+                .calendar-day-content:before {
+                  background: $hover-preview-background;
+                }
               }
             }
             &.in-range, &.range-end {
-              .calendar-day-content:before {
-                background: $selected-background;
+              &.selection-in-sibling-month {
+                .calendar-day-content:before {
+                  background: $selected-background;
+                }
               }
             }
           }
@@ -318,7 +326,7 @@ $border-color: #99B1E6;
                 position: relative;
                 &:after {
                   position: absolute;
-                  width: 18px;
+                  width: 19px;
                   height: 28px;
                   right: -18px;
                   top: 0;
