@@ -208,9 +208,6 @@
                   {{faq.shortQuestion || faq.question}}
                 </h6>
                 <div [class.active]="faq.active" class="faq-answer" [innerHTML]="faq.answer || faq.shortAnswer"></div>
-                <div *ngIf="faq.active && faq.id && faq.categoryCode"
-                     (click)="goToCategory(item.code || item.id, faq.code || faq.id)"
-                     class="link-plain pointer mt-12">Подробнее</div>
               </div>
             </div>
           </div>
