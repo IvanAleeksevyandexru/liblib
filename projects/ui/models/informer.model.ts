@@ -7,7 +7,8 @@ export enum TypeDebt {
   FSSP = 'fssp',
   FNS = 'fns',
   STATE_DUTY = 'stateDuty',
-  ACCOUNT = 'account'
+  ACCOUNT = 'account',
+  EGRN = 'egrn'
 }
 
 export enum WordsOfDebt {
@@ -16,6 +17,7 @@ export enum WordsOfDebt {
   FNS = 'налоговая задолженность|налоговых задолженности|налоговых задолженностей',
   STATE_DUTY = 'госпошлина|госпошлины|госпошлин',
   ACCOUNT = 'счёт|счёта|счетов',
+  EGRN = 'счёт|счёта|счетов',
   ALL = 'начисление|начисления|начислений'
 }
 
@@ -42,6 +44,7 @@ export interface ResultInterface {
   fns?: DebtInterface; // налоговые задолженности
   stateDuty?: DebtInterface; // госпошлины
   account?: DebtInterface; // счета
+  egrn?: DebtInterface; // выписки из ЕГРН
 }
 
 export interface DebtInterface {
@@ -88,6 +91,7 @@ export interface DebtYaMetricInterface {
     fns?: number;
     stateDuty?: number;
     account?: number;
+    egrn?: number;
   };
 }
 
