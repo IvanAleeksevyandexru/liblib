@@ -20,9 +20,10 @@
 <ng-template #noAvatar>
   <div
     class="no-avatar"
-    [class.legal]="isLegalRole"
+    [class.legal]="userHelper.isEntity"
+    [class.ip]="userHelper.isIP"
     [class.female]="avatar.gender === 'F'"
-    [class.employees]="isEmployee"
+    [class.employees]="userHelper.isEmployee"
     [style.lineHeight]="(2 + height) + 'px'"
     [style.backgroundColor]="noAvatarColor"
   >
