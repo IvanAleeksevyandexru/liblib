@@ -208,6 +208,28 @@ b, strong, .bold {
   color: #DF0024;
 }
 
+@mixin inside-dashed-list() {
+  ul {
+    list-style: none;
+
+    & > li {
+      margin-top: 12px;
+      margin-left: 20px;
+
+      &:before {
+        content: '';
+        display: inline-block;
+        width: 8px;
+        height: 2px;
+        background-color: #4D83FA;
+        margin-left: -20px;
+        margin-right: 12px;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
 ul.list-dotted {
   list-style: disc;
   margin-left: 16px;
@@ -243,25 +265,7 @@ ul.list-blue-dotted {
       margin-right: 12px;
     }
 
-    ul {
-      list-style: none;
-
-      & > li {
-        margin-top: 12px;
-        margin-left: 20px;
-
-        &:before {
-          content: '';
-          display: inline-block;
-          width: 8px;
-          height: 2px;
-          background-color: #4D83FA;
-          margin-left: -20px;
-          margin-right: 12px;
-          vertical-align: middle;
-        }
-      }
-    }
+    @include inside-dashed-list();
   }
 }
 
@@ -275,12 +279,15 @@ ul.list-decimal {
     &:first-child {
       margin-top: 0;
     }
+
+    @include inside-dashed-list();
   }
 
   &.blue-digital {
     & > li {
       &::marker {
         color: #4D83FA;
+        font-weight: bold;
       }
     }
   }
