@@ -1,6 +1,6 @@
 {
   "name": "@epgu/ui",
-  "version": "3.0.392-1-frontv3",
+  "version": "3.0.392-2-frontv4",
   "publishConfig": {
     "registry": "http://nexus.gosuslugi.local/content/repositories/npm-internal/",
     "access": "public"
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@epgu/zipkin": "0.0.3",
+    "date-fns": "2.24.0",
     "tslib": "^2.0.0",
     "zipkin-transport-http": "0.22.0"
   }
