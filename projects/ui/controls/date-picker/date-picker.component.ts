@@ -417,6 +417,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         this.closeCalendar();
       } else {
         this.rangeStart = date;
+        this.range = this.createState(Range.create(this.rangeStart, date, this.textModelValue))
       }
     } else {
       this.commitSave(this.textModelValue ? format(new Date(date), MODEL_FORMAT) : date, true);
@@ -574,6 +575,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     if (MonthYear.equals(this.activeMonthYear, MonthYear.fromDate(this.minimumDate))) {
       return;
     }
+    this.updateDateItemProperties(this.prevWeeks, 0);
     this.monthShift = 'prev'; // триггерит анимацию
   }
 
@@ -581,6 +583,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     if (MonthYear.equals(this.activeMonthYear, MonthYear.fromDate(this.maximumDate))) {
       return;
     }
+    this.updateDateItemProperties(this.nextWeeks, 0);
     this.monthShift = 'next'; // триггерит анимацию
   }
 
@@ -615,7 +618,11 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   }
 
   public isRangeInPrevMonth(date: Date) {
-    return date && getMonth(date) - getMonth(this.range.start) > 0 || getYear(date) - getYear(this.range.start) > 0;
+    return date && isAfter(date, this.range.start);
+  }
+
+  public isRangeInNextMonth(date: Date, rangeStart?: Date) {
+    return date && (rangeStart ? isBefore(date, rangeStart) : isBefore(date, this.range.end));
   }
 
   public isRangeEnd(date: Date, rangeStart?: Date) {
@@ -920,7 +927,8 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         day.selected = this.isSelected(day.date, this.rangeStart);
         day.inRange = this.isInRange(day.date, this.rangeStart);
         day.rangeStart = this.isRangeStart(day.date, this.rangeStart);
-        day.selectionInSiblingMonth = this.isRangeInPrevMonth(day.date);
+        day.selectionInPrevMonth = this.isRangeInPrevMonth(day.date);
+        day.selectionInNextMonth = this.isRangeInNextMonth(day.date, this.rangeStart);
         day.rangeEnd = this.isRangeEnd(day.date, this.rangeStart);
         day.locked = this.isDateLocked(day.date);
         day.outer = this.isDateOutOfMonth(day.date, monthShift);

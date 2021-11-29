@@ -293,7 +293,7 @@ $border-color: #99B1E6;
                   content: '';
                 }
               }
-              &.selection-in-sibling-month {
+              &.selection-in-prev-month {
                 .calendar-day-content {
                   border-top-left-radius: 0;
                   border-bottom-left-radius: 0;
@@ -301,14 +301,14 @@ $border-color: #99B1E6;
               }
             }
             &.in-preview-range, &.preview-range-end {
-              &.selection-in-sibling-month {
+              &.selection-in-prev-month {
                 .calendar-day-content:before {
                   background: $hover-preview-background;
                 }
               }
             }
             &.in-range, &.range-end {
-              &.selection-in-sibling-month {
+              &.selection-in-prev-month {
                 .calendar-day-content:before {
                   background: $selected-background;
                 }
@@ -321,8 +321,6 @@ $border-color: #99B1E6;
           .calendar-day:last-of-type {
             &.in-preview-range, &.preview-range-start, &.in-range, &.range-start {
               .calendar-day-content {
-                border-top-right-radius: 0;
-                border-bottom-right-radius: 0;
                 position: relative;
                 &:after {
                   position: absolute;
@@ -333,15 +331,25 @@ $border-color: #99B1E6;
                   content: '';
                 }
               }
+              &.selection-in-next-month {
+                .calendar-day-content {
+                  border-top-right-radius: 0;
+                  border-bottom-right-radius: 0;
+                }
+              }
             }
             &.in-preview-range, &.preview-range-start {
-              .calendar-day-content:after {
-                background: $hover-preview-background;
+              &.selection-in-next-month {
+                .calendar-day-content:after {
+                  background: $hover-preview-background;
+                }
               }
             }
             &.in-range, &.range-start {
-              .calendar-day-content:after {
-                background: $selected-background;
+              &.selection-in-next-month {
+                .calendar-day-content:after {
+                  background: $selected-background;
+                }
               }
             }
           }
