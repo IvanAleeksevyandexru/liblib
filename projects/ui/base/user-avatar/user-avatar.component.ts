@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { User, Role } from '@epgu/ui/models/user';
 import { Avatar } from '@epgu/ui/models';
+import { UserHelperService } from '@epgu/ui/services/user-helper';
 
 @Component({
   selector: 'lib-user-avatar',
@@ -16,20 +17,13 @@ import { Avatar } from '@epgu/ui/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserAvatarComponent implements OnInit {
-  @Input()
-  public avatar: Avatar;
-  @Input()
-  public height = 64;
-  @Input()
-  public hideEdit = false;
-  @Input()
-  public user: User;
-  @Input()
-  public role?: Role;
-  @Input()
-  public noAvatarColorLikeGoogle = false;
-  @Output()
-  public edit = new EventEmitter<void>();
+  @Input() public avatar: Avatar;
+  @Input() public height = 64;
+  @Input() public hideEdit = false;
+  @Input() public user: User;
+  @Input() public role?: Role;
+  @Input() public noAvatarColorLikeGoogle = false;
+  @Output() public edit = new EventEmitter<void>();
 
   public noAvatarColor = '';
   private noAvatarColors = {
@@ -85,6 +79,11 @@ export class UserAvatarComponent implements OnInit {
         .toUpperCase();
     }
     return lastNameLetter + firstNameLetter;
+  }
+
+  constructor(
+    public userHelper: UserHelperService
+  ) {
   }
 
   public ngOnInit(): void {
