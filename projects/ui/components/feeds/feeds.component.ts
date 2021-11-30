@@ -182,9 +182,6 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getFeeds(lastFeedId: number | string = '', lastFeedDate: Date | string = '', query = '', pageSize = ''): void {
-    if (query === '') {
-      query = this.route.snapshot.queryParamMap.get('q') || '';
-    }
     this.afterFirstSearch = true;
     this.allFeedsLoaded = false;
     this.searching.emit(true);

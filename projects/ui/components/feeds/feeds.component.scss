@@ -155,14 +155,14 @@
 }
 
 // Отображение фидов на странице заявлений
-.feed-orders {
+.feed-orders, .feed-drafts {
   .feed-type-block {
     width: 32px;
   }
 }
 
 @media all and (max-width: 767px) {
-  .feed-orders {
+  .feed-orders, .feed-drafts {
     .feed-link {
       flex-flow: row;
       flex-wrap: wrap;
