@@ -42,7 +42,7 @@
       <div *ngIf="statusInformer === 'debt'" class="informer-content">
         <div class="debt" [ngClass]="{'debt-with-hint': hintText}">
           <div>
-            <div class="title-h5 text-center debt-title">{{'INFORMER.DEBT.TO_PAY' | libTranslate }} {{dataInformer.docs}}</div>
+            <div class="title-h5 text-center debt-title">{{'INFORMER.DEBT.TO_PAY' | libTranslate }} <span [innerHTML]="dataInformer.docs"></span></div>
             <div *ngIf="isMainPage && hintText && feedsDisabled" [innerHTML]="hintText"
                  class="text-plain gray mt-4 hide show-lg">
             </div>
