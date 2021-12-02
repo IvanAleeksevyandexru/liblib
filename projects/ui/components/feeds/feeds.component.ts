@@ -4,6 +4,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  NgModuleRef,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -17,7 +18,6 @@ import { User } from '@epgu/ui/models/user';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { NotifierService } from '@epgu/ui/services/notifier';
-import { switchMap } from 'rxjs/operators';
 import { SharedService } from '@epgu/ui/services/shared';
 import { HelperService } from '@epgu/ui/services/helper';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
@@ -27,6 +27,8 @@ import { differenceInDays, differenceInYears, format, isAfter, isValid, parse } 
 import { ru } from 'date-fns/locale';
 import { LibTranslateService } from '@epgu/ui/services/translate';
 import { UserHelperService } from '@epgu/ui/services/user-helper';
+import { ConfirmActionComponent } from '@epgu/ui/components/confirm-action';
+import { ModalService } from '@epgu/ui/services/modal';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,7 +42,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public isHide: boolean | null;
   @Input() public inlineDate = true;
   @Input() public snippets = false;
-  @Input() public search = this.route.snapshot.queryParamMap.get('q') || '';
+  @Input() public search = '';
   @Input() public unread: boolean;
   @Input() public selectedCategory: any;
   @Input() public count = 0;
@@ -124,6 +126,8 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     private countersService: CountersService,
     private libTranslate: LibTranslateService,
     private userHelper: UserHelperService,
+    private modalService: ModalService,
+    private moduleRef: NgModuleRef<any>,
   ) {
   }
 
@@ -469,13 +473,43 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     return true;
   }
 
-  public removeFeed($event: MouseEvent, feed: FeedModel, index: number): void {
-    this.yaMetricRemoveFeed();
-    const onSubscribe = (res: string) => {
-      this.feeds.splice(index, 1);
-      this.notifier.success({
-        message: res
+  public checkRemoveFeed($event: MouseEvent, feed: FeedModel, index: number): void {
+    $event.preventDefault();
+    $event.stopPropagation();
+
+    const popupTexts = [
+      'FEEDS.DELETE.TITLE',
+      'FEEDS.DELETE.TEXT',
+      'FEEDS.DELETE.ACCEPT',
+      'FEEDS.DELETE.CANCEL'
+    ];
+
+    this.libTranslate.get(popupTexts).subscribe(texts => {
+      this.modalService.popupInject(ConfirmActionComponent, this.moduleRef, {
+        title: texts['FEEDS.DELETE.TITLE'],
+        subtitle: texts['FEEDS.DELETE.TEXT'],
+        popupClassModifier: 'text-left',
+        buttons: [{
+          title: texts['FEEDS.DELETE.ACCEPT'],
+          handler: () => {
+            this.modalService.destroyForm();
+            this.removeFeed(feed, index);
+          }
+        }, {
+          title: texts['FEEDS.DELETE.CANCEL'],
+          color: 'white',
+          handler: () => {
+            this.modalService.destroyForm();
+          }
+        }]
       });
+    });
+  }
+
+  public removeFeed(feed: FeedModel, index: number): void {
+    this.yaMetricRemoveFeed();
+    const onSubscribe = () => {
+      this.feeds.splice(index, 1);
       const feedsLength = this.feeds.length;
       if (feedsLength && this.hasMore) {
         const last = this.feeds[feedsLength - 1];
@@ -498,22 +532,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.removeInProgress) {
       this.removeInProgress = true;
       feed.removeInProgress = true;
-      if (this.page === 'drafts') {
-        this.feedsService.removeDraft(feed.extId)
-          .pipe(
-            switchMap(() => this.libTranslate.get('FEEDS.DELETE.DRAFT_DELETED'))
-          ).subscribe(onSubscribe, onRemoveError);
+      if (['DRAFT', 'KND_APPEAL_DRAFT'].includes(feed.feedType)) {
+        this.feedsService.removeDraft(feed.extId).subscribe(onSubscribe, onRemoveError);
       } else {
-        this.feedsService.removeFeed(feed.id)
-          .pipe(
-            switchMap(() => this.libTranslate.get('FEEDS.DELETE.DRAFT_DELETED'))
-          ).subscribe(onSubscribe, onRemoveError);
+        this.feedsService.removeFeed(feed.id).subscribe(onSubscribe, onRemoveError);
       }
     }
-
-    $event.preventDefault();
-    $event.stopPropagation();
-
   }
 
   public moveInArchive(feed: FeedModel, index: number) {

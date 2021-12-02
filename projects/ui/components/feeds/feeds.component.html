@@ -128,7 +128,7 @@
                            [icon]="config.staticDomainLibAssetsPath + 'svg/icons/bin-gray.svg'"
                            [hoverIcon]="config.staticDomainLibAssetsPath + 'svg/icons/bin-blue.svg'"
                            [text]="'Удалить'"
-                           (clickAction)="removeFeed($event, feed, i)"></lib-icon-action>
+                           (clickAction)="checkRemoveFeed($event, feed, i)"></lib-icon-action>
           <lib-throbber *ngIf="feed.removeInProgress" [contextClass]="'feed-throbber'" [size]="'throbber-small'"></lib-throbber>
         </div>
       </div>
