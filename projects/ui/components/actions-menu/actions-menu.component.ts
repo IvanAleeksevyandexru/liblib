@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Action } from '@epgu/ui/models';
 import { SharedService } from '@epgu/ui/services/shared';
 import { Subscription } from 'rxjs';
@@ -15,18 +15,15 @@ export class ActionsMenuComponent implements OnInit, OnDestroy {
   @Input() public showMenu = false; // Состояние меню
   @Input() public disabled = false; // Активность меню
   @Input() public closable = false; // Возможность закрыть на крестик + отступы под формат с закрытием
+  // с absolute располагается в правом верхнем углу
+  @Input() public position: 'relative' | 'absolute' | 'absolute-16' | 'absolute-24' = 'absolute';
+  @Input() public menuWidth = '240px';
   private uniqueId = Math.random();
   private sub: Subscription;
 
-  @HostListener('document:click', ['$event']) public onClick(event) {
-    const target = event.target;
-
-    if (!target.classList.contains('actions-menu') && !target.classList.contains('actions-menu-button')) {
-      this.showMenu = false;
-    }
-  }
-
-  constructor(private sharedService: SharedService) { }
+  constructor(
+    private sharedService: SharedService,
+  ) { }
 
   public ngOnInit(): void {
     this.sub = this.sharedService.on('action-menu-opened').subscribe((id: number) => {
@@ -41,8 +38,13 @@ export class ActionsMenuComponent implements OnInit, OnDestroy {
   }
 
   public open(): void {
-    this.showMenu = true;
-    this.sharedService.send('action-menu-opened', this.uniqueId);
+    if (!this.disabled) {
+      this.showMenu = true;
+      this.sharedService.send('action-menu-opened', this.uniqueId);
+    }
   }
 
+  public close(): void {
+    this.showMenu = false;
+  }
 }
