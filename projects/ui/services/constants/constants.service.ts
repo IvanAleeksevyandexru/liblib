@@ -223,7 +223,7 @@ export class ConstantsService {
     {
       id: 'biometry',
       name: 'SETTINGS.TABS.BIOMETRY',
-      url: '/settings/biometry',
+      url: '/settings/biometrics',
       access: ['AL20'],
     },
     {
