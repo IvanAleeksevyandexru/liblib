@@ -80,11 +80,15 @@ export class YaMetricService {
     });
   }
 
-  public callReachGoal(name, params = null): Promise<void> {
+  public callReachGoal(name, params = null, callback?): Promise<void> {
     return this.onInit().then(() => {
       if (this.ym) {
         if (params) {
-          return this.ym(this.counter, 'reachGoal', name, params);
+          if (callback && typeof callback === 'function') {
+            return this.ym(this.counter, 'reachGoal', name, params, callback);
+          } else {
+            return this.ym(this.counter, 'reachGoal', name, params);
+          }
         } else {
           return this.ym(this.counter, 'reachGoal', name);
         }
@@ -164,7 +168,7 @@ export class YaMetricService {
           // @ts-ignore
           this.ym = ym;
         } else {
-          console.log('ya metric disabled, environment.name === "local"');
+          console.log('ya metric disabled - environment.name === "local"');
         }
         resolve(true);
       });

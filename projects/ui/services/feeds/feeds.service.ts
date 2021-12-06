@@ -228,7 +228,7 @@ export class FeedsService {
         url += `lk/order/${feed.id}`;
         break;
       case 'BIOMETRICS':
-        url += 'settings/biometry';
+        url += 'settings/biometrics';
         break;
       case 'LINKED_ACCOUNT':
         url += 'settings/social';

@@ -6,6 +6,7 @@ export enum ServiceCategoryCode {
   Fssp = 'FSSP',
   Account = 'ACCOUNT',
   StateDuty = 'STATE_DUTY',
+  Egrn = 'EGRN',
   Payment = 'PAYMENT',
 }
 

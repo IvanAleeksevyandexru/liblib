@@ -86,7 +86,8 @@ export class InformerComponent implements OnInit {
 
   private getTextToHint(code: string): void {
     if (this.informersService.hints[code] && code === '03') {
-      this.hintText = 'Скидка истекает через' + ' ' + this.declinePipe.transform(this.hintResponse.days, ['день', 'дня', 'дней']) + ' ';
+      const days = this.declinePipe.transform(this.hintResponse.days, ['день', 'дня', 'дней'], false);
+      this.hintText = `Скидка истекает через ${this.hintResponse.days}&nbsp;${days}`;
     } else if (this.informersService.hints[code] && code === '05') {
       this.hintText = this.informersService.hints[code].text;
     }
@@ -125,7 +126,7 @@ export class InformerComponent implements OnInit {
               }
             }
             this.dataInformer.type = debtCount.length === 1 ? TypeDebt[debtCount[0]] : 'all';
-            this.dataInformer.docs = this.declinePipe.transform(res.total, this.getWord(debtCount));
+            this.dataInformer.docs = `${res.total}&nbsp;${this.declinePipe.transform(res.total, this.getWord(debtCount), false)}`;
             this.setExtraDebtData(res);
             // инфа для метрики
             this.debtForYaMetric.counter = res.total;
