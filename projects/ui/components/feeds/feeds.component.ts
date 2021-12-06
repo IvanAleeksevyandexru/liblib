@@ -99,6 +99,15 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public getFeedTypeName = this.feedsService.getFeedTypeName;
 
   public get emptyMessageTitle(): string {
+    if (this.search) {
+      if (this.types === 'PARTNERS_DRAFT' || this.page === 'drafts') {
+        return 'FEEDS.NOT_FOUND.DRAFTS';
+      } else if (this.page === 'orders') {
+        return 'FEEDS.NOT_FOUND.ORDERS';
+      }
+      return 'FEEDS.NOT_FOUND.DEFAULT';
+    }
+
     if (this.types === 'PARTNERS_DRAFT') {
       return 'FEEDS.EMPTY.PARTNERS_DRAFT';
     } else if (this.types === 'PARTNERS') {
@@ -522,7 +531,10 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     const onRemoveError = () => {
       this.libTranslate.get('FEEDS.DELETE.DRAFT_DELETED_ERROR').subscribe((errorText: string) => {
         this.notifier.error({
-          message: errorText
+          message: errorText,
+          onAction: () => {
+            this.removeFeed(feed, index);
+          }
         });
         this.removeInProgress = false;
         feed.removeInProgress = false;
