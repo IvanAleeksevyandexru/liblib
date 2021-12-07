@@ -236,8 +236,6 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
       'main-header': {}
     }
     yaParams['main-header'][this.code] = [item.code];
-
-    const code = this.code;
     this.yaMetricService.callReachGoal('main-page', yaParams, () => {
       location.href = item.type === 'LINK' ? item.url : `${this.loadService.config.betaUrl}${item.url}`;
     });
