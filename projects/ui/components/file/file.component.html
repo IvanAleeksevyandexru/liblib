@@ -1,7 +1,7 @@
 <div class="file-wrapper">
   <div class="flex-container align-items-center overflow">
     <div class="flex-1 texts">
-      <div class="flex-container align-items-center">
+      <div class="flex-container align-items-center" [ngClass]="{'all-block-click': allBlockClick}" (click)="onClick(file.actions)">
         <div class="flex-0">
           <lib-file-extension-icon [extension]="file.typeOfFile"></lib-file-extension-icon>
         </div>
