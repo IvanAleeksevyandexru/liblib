@@ -1,0 +1,15 @@
+<div class="mo-permission-banner">
+  <div class="mo-permission-banner__information">
+    <p class="text-plain mb-32"
+       [innerHTML]="text"
+    ></p>
+    <lib-button
+      size="md"
+      (click)="goToOffer()"
+    >{{button}}</lib-button>
+  </div>
+
+  <img class="mo-permission-banner__image"
+       src="{{staticDomainLibAssetsPath}}/svg/errors/no-digital-scopes.svg" alt="">
+</div>
+

@@ -1,0 +1,127 @@
+.hide-burger-desk {
+  display: block;
+}
+.header {
+  .catalog-menu-wrap {
+    margin-right: 18px;
+  }
+
+  .logo-wrapper {
+    display: flex;
+    align-items: baseline;
+  }
+
+  .login-mobile-icon {
+    display: block;
+  }
+
+  .link-plain,
+  .text-plain {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .search-icon {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+  }
+
+  .back-to-portal {
+    background: url(../../../assets/svg/arrows/arrow_back.svg) no-repeat 0 center;
+    padding-left: 40px;
+    font-size: 14px;
+    line-height: 20px;
+    margin-right: 90px;
+  }
+
+  .inner {
+    height: 64px;
+  }
+
+  .ml-40 {
+    margin-left: 40px;
+  }
+
+  .user-menu-wrapper {
+    position: relative;
+    margin-left: auto;
+  }
+
+  .login-wrapper, .user-menu-wrapper {
+    display: inline-block;
+  }
+
+
+  ::ng-deep lib-login .link:before {
+    top: -16px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &.merge-header {
+    .flex-end {
+      justify-content: flex-end;
+    }
+
+    lib-button {
+      margin-left: 8px;
+    }
+
+    .links {
+      .item {
+        a {
+          font-size: 14px;
+          line-height: 20px;
+          color: #0D4CD3;
+
+          &:hover {
+            color: #1D5DEB;
+          }
+        }
+      }
+    }
+
+    .open-mobile-menu {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      background: url(../../../assets/svg/menu-new.svg) right center no-repeat;
+      background-size: 20px 16px;
+      padding-right: 32px;
+    }
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .header {
+    .login-mobile-icon {
+      display: none;
+    }
+
+    .show-lg {
+      display: flex;
+    }
+  }
+  //.notifications {
+  //  right: auto;
+  //  left: -40px;
+  //}
+}
+
+@media all and (max-width: 767px) {
+  ::ng-deep .menu-catalog-opened {
+    .login-wrapper {
+      display: none !important;
+    }
+  }
+}
+
+@media all and (min-width: 768px) {
+  .hide-burger-desk {
+    display: none;
+  }
+  .header {
+
+  }
+}

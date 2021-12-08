@@ -1,0 +1,28 @@
+.mo-permission-banner {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px #e3ebfc, 0 24px 48px rgba(230, 235, 245, 0.4);
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media all and (max-width: 767px) {
+    padding: 24px 16px;
+    flex-direction: column-reverse;
+  }
+}
+.mo-permission-banner__image {
+  margin: -14px 0;
+
+  @media all and (max-width: 767px) {
+    margin: 0 0 24px 0;
+  }
+}
+.mo-permission-banner__information {
+  width: 50%;
+  @media all and (max-width: 767px) {
+    width: 100%;
+    text-align: center;
+  }
+}

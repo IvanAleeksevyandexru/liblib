@@ -1,0 +1,23 @@
+.eds-item {
+  padding: 32px 32px 32px 0;
+
+  &.show-border {
+    border-bottom: 1px solid #99b1e6;
+  }
+
+  &.is-pin-item {
+    padding: 24px 24px 24px 0;
+  }
+}
+
+
+.eds-item-row {
+  display: flex;
+  flex-direction: column;
+}
+
+@media all and (min-width: 768px){
+  .eds-item-row {
+    flex-direction: row;
+  }
+}

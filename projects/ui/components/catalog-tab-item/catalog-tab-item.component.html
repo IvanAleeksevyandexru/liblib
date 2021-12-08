@@ -1,0 +1,228 @@
+<div [ngClass]="
+     {'main-page-view': viewType === 'main-page-view', 'side-view': viewType === 'side-view'}"
+     class="catalog-tab-item-wrap">
+  <div class="container container-catalog-wrap">
+    <div *ngIf="loaded else loading" class="catalog-tab-item">
+      <a href class="close-catalog" (click)="closeCatalog($event)"></a>
+      <div *ngIf="code !== 'ministries'; else departments" class="details-block-wrap">
+        <div class="back-title text-plain bold" *ngIf="viewType === 'side-view'"
+             (click)="closeSubCatalog()">{{backTitle}}</div>
+        <div class="grid-row details-block">
+          <div [ngClass]="(viewType !== 'main-page-view' && !regionPopular?.length) ? 'col-lg-12' : 'col-lg-6'"
+               class="col-lg-6 col-3 col-md-6 mob-container-wrap">
+            <section class="mob-container-wrap scroll-auto">
+              <h3 *ngIf="code !== 'other'"
+                  class="title-h6 catalog-item-title hide show-lg">
+                Популярные услуги
+              </h3>
+              <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
+                <div [ngClass]="{'with-link-old-portal': checkOldPortalBanner() && code !== 'other'}" class="scroll-container">
+                  <perfect-scrollbar [config]="{wheelPropagation: false}">
+                    <ng-container [ngTemplateOutlet]="populars"></ng-container>
+                  </perfect-scrollbar>
+                </div>
+              </div>
+              <div class="hide-lg mob-container-inner">
+                <ng-container [ngTemplateOutlet]="populars"></ng-container>
+              </div>
+            </section>
+          </div>
+          <div  class="col-lg-6 col-3 col-md-6">
+            <section class="popular-region-wrap" *ngIf="viewType !== 'main-page-view' && regionName && regionPopular?.length">
+              <h5 class="title-h6 catalog-item-title mt-40 catalog-item-title-small">
+                Услуги для <span (click)="showRegionModal()" class="catalog-item-title-link pointer blue">
+              <lib-region-cases caseItem="1" ></lib-region-cases>
+            </span>
+              </h5>
+              <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
+                <div class="scroll-container">
+                  <perfect-scrollbar [config]="{wheelPropagation: false}">
+                    <ng-container [ngTemplateOutlet]="regionPopularTmpl"></ng-container>
+                  </perfect-scrollbar>
+                </div>
+              </div>
+              <div class="hide-lg">
+                <ng-container [ngTemplateOutlet]="regionPopularTmpl"></ng-container>
+              </div>
+            </section>
+            <section #faqAnswerWrap *ngIf="viewType === 'main-page-view' && faqs?.length">
+              <h3 class="title-h6 catalog-item-title">Часто задаваемые вопросы</h3>
+              <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
+                <div [ngClass]="{'with-link-old-portal': checkOldPortalBanner()}" class="scroll-container">
+                  <perfect-scrollbar [config]="{wheelPropagation: false}">
+                    <ng-container [ngTemplateOutlet]="popularFaq"></ng-container>
+                  </perfect-scrollbar>
+                </div>
+              </div>
+              <div class="hide-lg">
+                <ng-container [ngTemplateOutlet]="popularFaq"></ng-container>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+      <ng-template #departments>
+        <div class="departments-wrap" *ngIf="departmentsData?.length">
+          <div class="back-title text-plain bold" *ngIf="viewType === 'side-view'"
+               (click)="closeSubCatalog()">Ведомства</div>
+
+
+          <div *ngIf="loadService.attributes.deviceType === 'desk'" class="hide show-lg">
+            <div class="scroll-container">
+              <perfect-scrollbar [config]="{wheelPropagation: false}">
+                <div class="grid-row">
+                  <ng-container [ngTemplateOutlet]="departmentsWrap">
+                  </ng-container>
+                </div>
+              </perfect-scrollbar>
+            </div>
+          </div>
+
+          <div class="hide-lg mob-container-inner">
+            <div>
+              <ng-container [ngTemplateOutlet]="departmentsWrap">
+              </ng-container>
+            </div>
+          </div>
+
+          <ng-template #departmentsWrap>
+            <ng-container *ngFor="let department of departmentsData; let i = index">
+              <div class="col-lg-6 col-3 col-md-6 department-column" *ngIf="i % 3 === 0">
+                <section class="department-column-start">
+                  <ng-template
+                    [ngTemplateOutletContext]="{department: departmentsData[i], isFirst: true}"
+                    [ngTemplateOutlet]="departmentsTmpl">
+                  </ng-template>
+                </section>
+                <section *ngIf="i + 1 < departmentsData.length">
+                  <ng-template
+                    [ngTemplateOutletContext]="{department: departmentsData[i + 1], isFirst: false}"
+                    [ngTemplateOutlet]="departmentsTmpl">
+                  </ng-template>
+                </section>
+                <section *ngIf="i + 2 < departmentsData.length">
+                  <ng-template
+                    [ngTemplateOutletContext]="{department: departmentsData[i + 2], isFirst: false}"
+                    [ngTemplateOutlet]="departmentsTmpl">
+                  </ng-template>
+                </section>
+              </div>
+            </ng-container>
+            <div class="mt-lg-48 hide-lg all-departments">
+              <a class="blue uppercase" href="{{loadService.config.betaUrl}}departments">Все ведомства</a>
+            </div>
+          </ng-template>
+
+          <div class="mt-lg-48 hide show-lg all-departments">
+            <a class="blue uppercase" href="{{loadService.config.betaUrl}}departments">Все ведомства</a>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template
+          #departmentsTmpl
+          let-isFirst="isFirst"
+          let-department="department">
+            <h4 [class.department-column-start-header]="isFirst"
+                class="flex-container title-h6 mt-sm-40 mt-lg-48 mt-md-40 catalog-title-popular catalog-other-popular">
+                  <span *ngIf="department.icons && department.icons[0]?.url" class="catalog-other-popular-icon mr-12">
+                      <img [src]="department.icons[0]?.url" alt="">
+                  </span>
+                  <span>{{department.name}}</span>
+            </h4>
+            <div *ngFor="let departmentPassport of department.objects | slice:0:(department.more ? undefined : 3)">
+              <h5 (click)="goToDepartment(departmentPassport)" class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 pointer">
+                {{departmentPassport.name}}
+              </h5>
+            </div>
+            <ng-container *ngIf="department.objects && department.objects.length > 3 && !department.more">
+              <div class="mt-28 link-plain" (click)="department.more = !department.more">
+                Показать все
+              </div>
+            </ng-container>
+      </ng-template>
+      <ng-template #regionPopularTmpl>
+        <h5 *ngIf="viewType === 'main-page-view'" class="title-h6 catalog-item-title mt-40 catalog-item-title-small">
+          Услуги для <span (click)="showRegionModal()" class="catalog-item-title-link pointer blue">
+          <lib-region-cases caseItem="1" ></lib-region-cases>
+        </span>
+        </h5>
+        <h6 (click)="goToPopular(item)"
+            *ngFor="let item of regionPopular | slice:0:(regionPopularMore ? undefined : itemsCounter)"
+            class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular pointer">
+          {{item.name}}
+        </h6>
+        <ng-container *ngIf="regionPopular && regionPopular.length > itemsCounter && !regionPopularMore">
+          <div class="mt-28 link-plain" (click)="regionPopularMore = !regionPopularMore">
+            Показать все
+          </div>
+        </ng-container>
+      </ng-template>
+      <ng-template #populars>
+        <ng-container *ngIf="code !== 'other' && popular && popular.length">
+          <section class="catalog-title-popular-wrap" *ngFor="let item of popular | slice:0:(popularMore ? popularMore : undefined)">
+            <h4 (click)="goToPopular(item)" class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 catalog-title-popular pointer">
+              {{item.name}}
+            </h4>
+          </section>
+          <ng-container *ngIf="popular.length > popularMore">
+            <div *ngIf="viewType === 'side-view'" class="mt-24 link-plain" (click)="popularMore = undefined">
+              Показать все
+            </div>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="code === 'other' && otherPopular && otherPopular.length">
+          <section class="catalog-title-popular-wrap" *ngFor="let item of otherPopular">
+            <h4
+              class="flex-container title-h6 mt-lg-48 mt-sm-40 mt-md-40 catalog-title-popular catalog-other-popular"
+            >
+                      <span *ngIf="item.icons && item.icons[0]?.url" class="catalog-other-popular-icon mr-12">
+                        <img [src]="item.icons[0]?.url" alt="">
+                      </span>
+              <span>{{item.name}}</span>
+            </h4>
+            <div *ngFor="let passport of item.elements | slice:0:(item.otherPopularMore ? undefined : itemsCounter)">
+              <h5 (click)="goToPopular(passport)" class="title-h6 mt-lg-20 mt-sm-32 mt-md-32 pointer">
+                {{passport.name}}
+              </h5>
+            </div>
+            <ng-container
+              *ngIf="item.elements && item.elements.length > itemsCounter && !item.otherPopularMore">
+              <div class="mt-32 link-plain" (click)="item.otherPopularMore = !item.otherPopularMore">
+                Показать все
+              </div>
+            </ng-container>
+          </section>
+        </ng-container>
+        <section *ngIf="viewType === 'main-page-view' && regionName && regionPopular?.length">
+          <ng-template [ngTemplateOutlet]="regionPopularTmpl"></ng-template>
+        </section>
+      </ng-template>
+      <ng-template #popularFaq>
+        <div *ngFor="let item of faqs; let index = index;" class="catalog-title-popular">
+          <h4 *ngIf="item.faqs?.length" [class.mt-lg-24]="index>0" class="title-h6">{{item.title}}</h4>
+          <div class="mt-lg-24" *ngFor="let faq of item.faqs | slice:0:(item.faqsMore ? undefined : itemsCounter)">
+            <div class="flex-container">
+              <div [class.active]="faq.active" (click)="toggleFaqsQuestions(faq)" class="arrow"></div>
+              <div>
+                <h6 (click)="toggleFaqsQuestions(faq)" class="title-h6 title-h6-light pointer">
+                  {{faq.shortQuestion || faq.question}}
+                </h6>
+                <div [class.active]="faq.active" class="faq-answer" [innerHTML]="faq.answer || faq.shortAnswer"></div>
+              </div>
+            </div>
+          </div>
+          <ng-container *ngIf="item.faqs && item.faqs.length > itemsCounter && !item.faqsMore">
+            <div class="mt-32 link-plain" (click)="item.faqsMore = !item.faqsMore">
+              Показать все
+            </div>
+          </ng-container>
+        </div>
+      </ng-template>
+    </div>
+    <ng-template #loading>
+      <div class="catalog-throbber">
+        <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
+      </div>
+    </ng-template>
+  </div>
+</div>

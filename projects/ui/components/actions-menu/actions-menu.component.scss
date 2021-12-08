@@ -1,0 +1,111 @@
+$dotsColor: #0D4CD3;
+$disabledColor: #A8ACB1;
+
+.position-absolute {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.position-absolute-16 {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+.position-absolute-24 {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.actions-menu {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  top: -1px;
+  right: -1px;
+  padding: 16px 48px 0 16px;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(11, 31, 51, 0.18);
+  background: #ffffff;
+
+  &.active {
+    display: block;
+  }
+}
+
+.actions-menu-button {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  position: relative;
+}
+
+.actions-menu-button-dots {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: $dotsColor;
+
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: $dotsColor;
+  }
+
+  &:after {
+    top: 6px;
+  }
+}
+
+.actions {
+  &.disabled {
+    .actions-menu-button-dots {
+      background: $disabledColor;
+
+      &:before, &:after {
+        background: $disabledColor;
+      }
+    }
+  }
+}
+
+.actions-menu.closable {
+  padding: 24px 68px 8px 24px;
+  top: -24px;
+  right: -24px;
+
+  .close-menu {
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    width: 24px;
+    height: 24px;
+    background: url(../../../assets/svg/close-large-24.svg) center no-repeat;
+    background-size: 24px;
+    cursor: pointer;
+  }
+}
+
+.outside-menu-item + .outside-menu-item {
+  margin-left: 16px;
+}
+
+@media all and (min-width: 1140px) {
+  .actions {
+    &.disabled a {
+      color: $disabledColor;
+    }
+  }
+}

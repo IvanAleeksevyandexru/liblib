@@ -1,0 +1,178 @@
+.feed-item {
+  display: block;
+  padding: 24px;
+
+  + .feed-item {
+    border-top: 1px solid #E1E1E1;
+  }
+}
+
+.bottom-container {
+  padding: 24px;
+  border-top: 1px solid #E1E1E1;
+}
+
+.bottom-container-overview {
+  padding: 24px 0 0 0;
+  border-top: 1px solid #E1E1E1;
+}
+
+.loader-container {
+  padding: 48px 0 48px 0;
+}
+
+.feed-link {
+  color: inherit;
+  width: 100%;
+}
+
+//.feed-header-unread:before {
+//  content: '';
+//  position: absolute;
+//  left: -10px;
+//  top: 25px;
+//  width: 4px;
+//  height: 4px;
+//  background: #EE3F58;
+//  border-radius: 2px;
+//}
+
+.feed-header-unread {
+  .feed-title {
+    font-weight: bold;
+  }
+}
+
+.empty-feeds {
+  padding: 24px;
+
+  .message-image {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+.over-three-specialty {
+  &:after {
+    content: "...";
+    font-size: 35px;
+    font-weight: 700;
+    line-height: 10px;
+    color: #0B1F33;
+  }
+}
+.feed-suz-list-item {
+  position: relative;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #0B1F33;
+  &::before{
+    position: absolute;
+    content: ".";
+    left: 0;
+    top: -4px;
+    font-size: 35px;
+    font-weight: 700;
+    line-height: 10px;
+    color: #0B1F33;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .empty-feeds {
+    .message-image {
+      width: 160px;
+      height: 160px;
+    }
+  }
+
+  .custom-snippet-wrap {
+    margin-left: 48px;
+  }
+
+  .feed-type-block {
+    width: 208px;
+  }
+
+  .feed-activities-block {
+    margin-left: 16px;
+  }
+
+  .truncate {
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+  }
+
+  .feed-info-block {
+    align-self: flex-start;
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .feed-item {
+    &:hover {
+      background-color: #F5F7FA;
+      color: #0B1F33;
+    }
+  }
+
+  .feed-action {
+    display: none;
+  }
+  .feed-overview:hover,
+  .feed-events:hover,
+  .feed-drafts:hover,
+  .feed-orders:hover,
+  .feed-remove-in-progress {
+    .feed-action {
+      display: inline;
+    }
+  }
+}
+
+@media all and (max-width: 767px){
+  .custom-snippet-wrap {
+    margin-left: 48px;
+  }
+
+  .feed-link {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .feed-type-block {
+    width: calc(100% - 32px);
+  }
+
+  .feed-info-block {
+    order: 1;
+    width: 100%;
+  }
+}
+
+// Отображение фидов на странице заявлений
+.feed-orders {
+  .feed-type-block {
+    width: 32px;
+  }
+}
+
+@media all and (max-width: 767px) {
+  .feed-orders {
+    .feed-link {
+      flex-flow: row;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    .feed-info-block {
+      width: calc(100% - 32px);
+      margin-left: 16px;
+      margin-top: 0;
+    }
+  }
+}

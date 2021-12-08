@@ -1,4 +1,4 @@
-FROM registry.gosuslugi.local/build_images/node:12.11.1 as build
+FROM registry.gosuslugi.local/build_images/node:14.17.5 as build
 
 WORKDIR /opt
 COPY *.json .npmrc ./

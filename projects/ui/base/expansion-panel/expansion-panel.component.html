@@ -1,0 +1,19 @@
+<div class="panel-container" [ngClass]="[type, opened ? 'opened' : '', customClass || '']">
+  <a class="panel-header" (click)="onClick($event)" href="#" role="tab">
+    <div class="panel-title">
+      <span *ngIf="title"
+            [ngClass]="{
+              'title-h4 base-gray': ['accordion', 'light'].includes(type),
+              'title-h6': ['for-footer', 'light-v2'].includes(type),
+              'link-plain': ['light-blue'].includes(type)
+            }">
+        {{title}}
+      </span>
+      <ng-content select="lib-expansion-panel-header"></ng-content>
+    </div>
+    <div class="panel-arrow"></div>
+  </a>
+  <div *ngIf="opened" class="panel-body" role="tabpanel">
+    <ng-content></ng-content>
+  </div>
+</div>

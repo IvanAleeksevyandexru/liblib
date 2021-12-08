@@ -1,0 +1,98 @@
+.page-menu-wrapper {
+  position: relative;
+
+  .list-items {
+    position: relative;
+
+    .scroll-wrapper {
+      overflow-y: auto;
+      // for FF
+      scrollbar-width: thin;
+      scrollbar-color: #D1D5DF transparent;
+
+      &::-webkit-scrollbar {
+        background-color: transparent;
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #D1D5DF;
+        border-radius: 8px;
+      }
+
+      .content-wrapper {
+        padding-bottom: 24px;
+      }
+    }
+
+    .shadow {
+      height: 24px;
+      background: linear-gradient(180deg, transparent 0%, #FAFCFF 100%);
+      position: absolute;
+      width: 100%;
+      bottom: -2px;
+    }
+
+    .item {
+      margin-top: 16px;
+    }
+
+    > .item:first-child {
+      margin-top: 0;
+    }
+
+    @media all and (min-width: 768px) and (max-width: 1139px) {
+      .item {
+        margin-top: 24px;
+        width: 208px;
+        right: 16px;
+      }
+
+      > .item:nth-child(2), .item:nth-child(3) {
+        margin-top: 0;
+      }
+    }
+  }
+
+  &.fixed, &.fixed-bottom {
+    position: static;
+  }
+
+  @media all and (min-width: 1140px) {
+    .title-wrapper {
+      max-width: 280px;
+    }
+
+    .list-items {
+      //position: absolute;
+      max-width: 280px;
+      //right: 0;
+    }
+
+    &.fixed {
+      position: fixed;
+      height: auto;
+    }
+
+    &.fixed-bottom {
+      position: absolute;
+      height: auto;
+    }
+  }
+
+  &.padLikeMob {
+    @media all and (min-width: 768px) and (max-width: 1139px) {
+      .list-items {
+        .item {
+          margin-top: 16px;
+          width: 100%;
+          right: 0;
+        }
+
+        > .item:nth-child(2), .item:nth-child(3) {
+          margin-top: 16px;
+        }
+      }
+    }
+  }
+}
