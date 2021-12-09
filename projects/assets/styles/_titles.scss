@@ -41,15 +41,15 @@
   line-height: 24px;
 }
 
-.small-text {
-  font-size: 14px;
-  line-height: 20px;
-}
-
 @media all and (min-width: 768px) {
   .page-title {
     font-size: 24px;
     line-height: 32px;
+  }
+
+  .title-h0 {
+    font-size: 32px;
+    line-height: 36px;
   }
 }
 
@@ -63,7 +63,6 @@
 .text-plain,
 .text-help,
 .link-plain,
-.text-sub,
 .label-plain {
   font-family: Lato, Arial, sans-serif, -apple-system;
   font-size: 16px;
@@ -71,8 +70,23 @@
 }
 
 .small-text {
+  font-family: Lato, Arial, sans-serif, -apple-system;
   font-size: 14px;
   line-height: 20px;
+}
+
+.text-sub {
+  font-family: Lato, Arial, sans-serif, -apple-system;
+  font-size: 12px;
+  line-height: 16px;
+  color: $color-summer-night;
+}
+
+@media all and (min-width: 768px) {
+  .text-sub {
+    font-size: 14px;
+    line-height: 20px;
+  }
 }
 
 .text-plain {
@@ -81,12 +95,6 @@
 
 .text-help {
   color: $color-text-helper;
-}
-
-.text-sub {
-  font-size: 12px;
-  line-height: 16px;
-  color: $color-summer-night;
 }
 
 .link-plain {
@@ -129,16 +137,4 @@
 .bold {
   font-family: Lato-Bold, Arial, sans-serif;
   font-weight: 600;
-}
-
-@media all and (min-width: 768px) {
-  .title-h0 {
-    font-size: 32px;
-    line-height: 36px;
-  }
-
-  .text-sub {
-    font-size: 14px;
-    line-height: 20px;
-  }
 }
