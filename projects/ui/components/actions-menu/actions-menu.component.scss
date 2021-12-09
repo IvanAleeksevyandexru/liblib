@@ -1,3 +1,26 @@
+$dotsColor: #0D4CD3;
+$disabledColor: #A8ACB1;
+
+.position-absolute {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.position-absolute-16 {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+.position-absolute-24 {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+.position-relative {
+  position: relative;
+}
+
 .actions-menu {
   display: none;
   position: absolute;
@@ -9,22 +32,57 @@
   box-shadow: 0 12px 32px rgba(11, 31, 51, 0.18);
   background: #ffffff;
 
-  a {
-    display: block;
-  }
-
   &.active {
     display: block;
   }
+}
 
-  &.disabled a {
-    color: #a8acb1;
+.actions-menu-button {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  position: relative;
+}
+
+.actions-menu-button-dots {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: $dotsColor;
+
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: $dotsColor;
+  }
+
+  &:after {
+    top: 6px;
+  }
+}
+
+.actions {
+  &.disabled {
+    .actions-menu-button-dots {
+      background: $disabledColor;
+
+      &:before, &:after {
+        background: $disabledColor;
+      }
+    }
   }
 }
 
 .actions-menu.closable {
   padding: 24px 68px 8px 24px;
-  // надо позиционировать крестик по кнопке открытия
   top: -24px;
   right: -24px;
 
@@ -40,66 +98,14 @@
   }
 }
 
-.actions-menu-button {
-  box-sizing: content-box;
-  position: absolute;
-  z-index: 1;
-  top: 16px;
-  right: 16px;
-  width: 4px;
-  padding: 6px;
-  height: 4px;
-  border-radius: 50%;
-  background: #0b40b3;
-  background-clip: content-box;
-  cursor: pointer;
-
-  &:before,
-  &:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 6px;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: #0b40b3;
-  }
-
-  &:after {
-    top: 12px;
-  }
-
-  &.disabled,
-  &.disabled:before,
-  &.disabled:after {
-    background-color: #a8acb1;
-  }
+.outside-menu-item + .outside-menu-item {
+  margin-left: 16px;
 }
 
 @media all and (min-width: 1140px) {
   .actions {
-    position: absolute;
-    display: flex;
-    top: 16px;
-    right: 16px;
-
-    a + a {
-      margin-left: 16px;
-    }
-
     &.disabled a {
-      color: #a8acb1;
+      color: $disabledColor;
     }
-  }
-
-  .actions-menu.hide-lg {
-    display: none !important;
-  }
-
-  .actions-menu-button {
-    position: relative;
-    top: 0;
-    right: 0;
   }
 }
