@@ -35,10 +35,14 @@ export class CatalogTabsListComponent implements OnInit, OnDestroy {
   public tabClick($event: any, item: CatalogData) {
     $event.preventDefault();
     $event.stopPropagation();
+    const yaParams = {
+      'main-header': {}
+    };
+    
     item.viewType = this.viewType;
     this.catalogTabListItemClick.emit(item);
-    this.yaMetricService.callReachGoal('main-page', {
-      'main-header': item.code
-    });
+    
+    yaParams['main-header'][item.code] = [''];
+    this.yaMetricService.callReachGoal('main-page', yaParams);
   }
 }

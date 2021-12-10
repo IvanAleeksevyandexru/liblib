@@ -15,7 +15,12 @@
     </div>
     <div *ngIf="file.actions?.length" class="actions">
       <div class="ml-20">
-        <lib-actions-menu [countOutside]="countOutside" [closable]="true" [actions]="file.actions"></lib-actions-menu>
+        <lib-actions-menu
+          [position]="'relative'"
+          [countOutside]="countOutside"
+          [closable]="true"
+          [actions]="file.actions">
+        </lib-actions-menu>
       </div>
     </div>
   </div>
