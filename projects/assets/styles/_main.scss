@@ -209,36 +209,21 @@ b, strong, .bold {
 }
 
 @mixin inside-dashed-list() {
-  ul {
-    list-style: none;
-
-    & > li {
-      margin-top: 12px;
-      margin-left: 20px;
-
-      &:before {
-        content: '';
-        display: inline-block;
-        width: 8px;
-        height: 2px;
-        background-color: #4D83FA;
-        margin-left: -20px;
-        margin-right: 12px;
-        vertical-align: middle;
-      }
-    }
-  }
-}
-
-ul.list-dotted {
-  list-style: disc;
-  margin-left: 16px;
+  list-style: none;
 
   & > li {
-    margin-top: 4px;
+    margin-top: 12px;
+    margin-left: 20px;
 
-    &:first-child {
-      margin-top: 0;
+    &:before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 2px;
+      background-color: #4D83FA;
+      margin-left: -20px;
+      margin-right: 12px;
+      vertical-align: middle;
     }
   }
 }
@@ -265,7 +250,10 @@ ul.list-blue-dotted {
       margin-right: 12px;
     }
 
-    @include inside-dashed-list();
+    ul {
+      @include inside-dashed-list();
+    }
+
   }
 }
 
@@ -280,10 +268,12 @@ ul.list-decimal {
       margin-top: 0;
     }
 
-    @include inside-dashed-list();
+    ul {
+      @include inside-dashed-list();
+    }
   }
 
-  &.blue-digital {
+  &.blue-digital-marker {
     & > li {
       &::marker {
         color: #4D83FA;
@@ -299,27 +289,7 @@ ul.list-decimal {
 }
 
 ul.list-dashed {
-  list-style: none;
-
-  & > li {
-    margin-top: 12px;
-    margin-left: 20px;
-
-    &:first-child {
-      margin-top: 0;
-    }
-
-    &:before {
-      content: '';
-      display: inline-block;
-      width: 8px;
-      height: 2px;
-      background-color: #4D83FA;
-      margin-left: -20px;
-      margin-right: 12px;
-      vertical-align: middle;
-    }
-  }
+  @include inside-dashed-list();
 }
 
 .shadow-block {
