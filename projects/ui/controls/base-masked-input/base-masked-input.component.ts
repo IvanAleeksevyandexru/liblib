@@ -243,15 +243,6 @@ export class BaseMaskedInputComponent
     this.focus.emit();
   }
 
-  public compositionStart() {
-    this.composing = true;
-  }
-
-  public compositionEnd(value: string) {
-    this.composing = false;
-    this.handleInput(value);
-  }
-
   public returnFocus(e?: Event) {
     let isSuggest;
     if (e) {
