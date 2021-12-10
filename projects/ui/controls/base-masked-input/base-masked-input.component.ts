@@ -117,8 +117,6 @@ export class BaseMaskedInputComponent
   private emptyMaskedValue = '';
   private textMaskInputElement: any = null;
 
-  private composing = false;
-
   private onTouchedCallback: () => void;
   private commit(value: string) {}
 
@@ -167,17 +165,15 @@ export class BaseMaskedInputComponent
   }
 
   public handleInput(value: string, e?: Event) {
-    if (!this.composing) {
-      if (this.showMaskAsPlaceholder && value.indexOf(this.emptyMaskedValue) > 0) {
-        value = value.replace(this.emptyMaskedValue, '');
-      }
-      this.attemptToApplyValue(value);
-      if (this.commitOnInput) {
-        setTimeout(() => {
-          const possiblyChangedValue = this.removeMaskSymbolsIfNeeded(this.inputElement.nativeElement.value);
-          this.commit(possiblyChangedValue);
-        });
-      }
+    if (this.showMaskAsPlaceholder && value.indexOf(this.emptyMaskedValue) > 0) {
+      value = value.replace(this.emptyMaskedValue, '');
+    }
+    this.attemptToApplyValue(value);
+    if (this.commitOnInput) {
+      setTimeout(() => {
+        const possiblyChangedValue = this.removeMaskSymbolsIfNeeded(this.inputElement.nativeElement.value);
+        this.commit(possiblyChangedValue);
+      });
     }
     this.check();
   }
