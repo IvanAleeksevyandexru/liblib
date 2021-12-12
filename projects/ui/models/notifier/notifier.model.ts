@@ -1,4 +1,14 @@
-export class Notifier {
+export interface INotifier {
+  type: NotifierType;
+  message: string;
+  notifierId: string;
+  keepAfterRouteChange: boolean;
+  showIcon: boolean;
+  onCancel: () => void;
+  onAction: () => void;
+  actionName: string;
+}
+export class Notifier implements INotifier {
   public type: NotifierType;
   public message: string;
   public notifierId: string;
@@ -26,7 +36,8 @@ export class NotifierSetting {
 export enum NotifierType {
   Success,
   Error,
-  Process
+  Process,
+  Warning,
 }
 
 export const NOTIFIER_DEFAULT_SETTING = {
@@ -36,5 +47,5 @@ export const NOTIFIER_DEFAULT_SETTING = {
   showCloseAllCount: 0, // 0 - никогда, 1 - всегда, более 1 - при определенном количестве и более
   theme: 'dark',
   align: 'left',
-  animated: true
+  animated: true,
 };
