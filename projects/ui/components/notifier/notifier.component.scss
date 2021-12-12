@@ -22,6 +22,9 @@
     &.notifier-error {
       background-color: #E11432;
     }
+    &.notifier-error {
+      background-color: #FEF0CC;
+    }
     &.icon {
       padding-left: 48px;
       background-repeat: no-repeat;
@@ -34,7 +37,8 @@
       &.notifier-process {
         background-image: url(../../../assets/svg/notifier-process.svg);
       }
-      &.notifier-error {
+      &.notifier-error,
+      &.notifier-warning {
         background-image: url(../../../assets/svg/norifier-error.svg);
       }
     }
