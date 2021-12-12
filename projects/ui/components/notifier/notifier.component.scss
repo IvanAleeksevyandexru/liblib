@@ -10,7 +10,7 @@
 
   .notifier {
     position: relative;
-    background: #4D83FA;
+    background: #4d83fa;
     box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
     border-radius: 8px;
     color: #fff;
@@ -20,11 +20,19 @@
     margin-bottom: 8px;
     width: 500px;
     &.notifier-error {
-      background-color: #E11432;
+      background-color: #e11432;
     }
     &.notifier-warning {
-      background-color: #FEF0CC;
-      color: #0B1F33;
+      background-color: #fef0cc;
+      color: #0b1f33;
+
+      .close {
+        background-image: url(../../../assets/svg/close.svg) !important;
+      }
+
+      .cancel {
+
+      }
     }
     &.icon {
       padding-left: 48px;
@@ -38,9 +46,11 @@
       &.notifier-process {
         background-image: url(../../../assets/svg/notifier-process.svg);
       }
-      &.notifier-error,
-      &.notifier-warning {
+      &.notifier-error {
         background-image: url(../../../assets/svg/norifier-error.svg);
+      }
+      &.notifier-warning {
+        background-image: url(../../../assets/svg/notifier-warning.svg);
       }
     }
 
@@ -50,10 +60,15 @@
       text-align: center;
     }
 
-    .cancel, .close-all {
+    .cancel,
+    .close-all {
       font-size: 14px;
       line-height: 20px;
-      color: #fff;
+
+      &.white {
+        color: #fff;
+
+      }
     }
     .cancel {
       margin-left: 12px;
@@ -73,7 +88,7 @@
     .notifier {
       box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
       background-color: #fff;
-      color: #515A63;
+      color: #515a63;
 
       .close {
         background-image: url(../../../assets/svg/close-dark.svg);
@@ -113,4 +128,3 @@
     }
   }
 }
-
