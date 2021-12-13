@@ -1,5 +1,5 @@
 export type IconType = 'bell' | 'doc' | 'edit' | 'wallet' | 'hand-break' | 'digital-assistant' | 'aim' | 'clerk' | 'power'
-  | 'enter' | 'folders' | 'letter' | 'clock' | 'person';
+  | 'enter' | 'folders' | 'letter' | 'clock' | 'person' | 'suitecase';
 
 export interface MenuLink {
   url?: string;
@@ -9,6 +9,7 @@ export interface MenuLink {
   handler?: (MenuLink) => void;
   icon?: IconType;
   showSeparatelyOnDesk?: boolean;
+  showCases?: boolean[];
 }
 
 export interface UserRole {

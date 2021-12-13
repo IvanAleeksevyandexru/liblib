@@ -36,7 +36,6 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public categories: Category[] = [];
   public menuOffset: number;
   public user: User;
-  // public settingsCounter: CounterData; Это вроде уже не нужно. Но пока пусть будет. Мб передумают
   public userCounter: CounterData;
   public partnersCounter: CounterData;
   public mainTabs: Tabs = null;
@@ -94,9 +93,8 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userRoles = this.menuService.getUserRoles(this.user);
     this.activeRole = this.userRoles.find((role) => role.isActive);
     this.countersService.counters$.subscribe(_ => {
-      this.partnersCounter = this.countersService.getCounter(CounterTarget.PARTNERS);
-      // this.settingsCounter = this.countersService.getCounter(CounterTarget.SETTINGS);
       this.userCounter = this.countersService.getCounter(CounterTarget.USER);
+      this.partnersCounter = this.countersService.getCounter(CounterTarget.PARTNERS);
     });
     this.tabsSubscription = this.tabsService.register(MAIN_TABS).subscribe((tabs: Tabs) => {
       this.mainTabs = tabs;
@@ -195,7 +193,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public needCounter(type: string): boolean {
-    const types = ['notifications', 'overview', 'partnersOrders'];
+    const types = ['notifications', 'overview', 'partnersOrders', 'orders'];
     return types.includes(type);
   }
 

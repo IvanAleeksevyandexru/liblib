@@ -19,9 +19,7 @@
     padding: 16px 48px 16px 16px;
     margin-bottom: 8px;
     width: 500px;
-    &.notifier-error {
-      background-color: #E11432;
-    }
+
     &.icon {
       padding-left: 48px;
       background-repeat: no-repeat;
@@ -62,6 +60,20 @@
       height: 16px;
       background: url(../../../assets/svg/close-white.svg) no-repeat center;
       background-size: 12px;
+    }
+
+    &.notifier-error {
+      background-color: #FEF0CC;
+      color: #0B1F33;
+
+      .cancel, .close-all {
+        color: #0D4CD3;
+      }
+
+      .close {
+        background: url(../../../assets/svg/close-dark-gray.svg) no-repeat center;
+        background-size: 16px;
+      }
     }
   }
   &.light {
