@@ -288,7 +288,7 @@
 
 @media (min-width: 1140px) {
   .catalog-menu-content {
-    height: 100%;
+    height: calc(100% + 4px);
   }
   .catalog-menu-icon:hover {
     filter: invert(35%) sepia(99%) saturate(4975%) hue-rotate(218deg) brightness(96%) contrast(92%);
