@@ -490,7 +490,7 @@ export class ConstantsService {
       mnemonic: 'allEvents',
     },
     {
-      text: 'Заявления',
+      text: 'Получение услуг',
       type: 'ORDER,COMPLEX_ORDER',
       id: 2,
       mnemonic: 'order',
@@ -522,7 +522,7 @@ export class ConstantsService {
       mnemonic: 'allDrafts',
     },
     {
-      text: 'Заявления',
+      text: 'Получение услуг',
       type: 'DRAFT',
       id: 2,
       mnemonic: 'draft',
