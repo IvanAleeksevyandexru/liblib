@@ -68,6 +68,15 @@
   }
 }
 
+@media all and (max-width: 767px) {
+  .feed-drafts {
+    .feed-activities-block {
+      order: 1;
+      justify-self: flex-end;
+    }
+  }
+}
+
 @media all and (min-width: 768px) {
   .empty-feeds {
     .message-image {
