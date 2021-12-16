@@ -125,10 +125,8 @@ export class MenuService {
       'HEADER.MENU.PARTNERS_ORDERS': `${partnersHost}lk/orders/all`,
       'HEADER.MENU.SUBSCRIPTIONS': `${partnersHost}lk/subscriptions`,
       'HEADER.MENU.HISTORY': `${partnersHost}lk/history`,
-      // 'HEADER.MENU.ORG_PROFILE': `${lkUrl}org-profile`, новый урл
-      // 'HEADER.MENU.BUSINESS_PROFILE': `${lkUrl}org-profile`, новый урл
-      'HEADER.MENU.ORG_PROFILE': `${lkUrl}info`,
-      'HEADER.MENU.BUSINESS_PROFILE': `${lkUrl}info`,
+      'HEADER.MENU.ORG_PROFILE': `${lkUrl}org-profile`,
+      'HEADER.MENU.BUSINESS_PROFILE': `${lkUrl}org-profile`,
     };
   }
 
