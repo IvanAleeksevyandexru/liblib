@@ -18,6 +18,7 @@ export * from './remove-tags/index';
 export * from './replace/index';
 export * from './reverse/index';
 export * from './safe-html/index';
+export * from './safe-url/index';
 export * from './subst/index';
 export * from './time-left/index';
 export * from './time-to-event/index';
