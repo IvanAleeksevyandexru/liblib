@@ -13,7 +13,7 @@ export interface Citizenship {
   msgKey: string;
 }
 
-export type VersionsApi = 0 | 1 | 2 | 3 | 'digital'  | 'digitalV2' | 'smevint' | 'registration' | 'mobid';
+export type VersionsApi = 0 | 1 | 2 | 3 | 4 | 'digital'  | 'digitalV2' | 'smevint' | 'registration' | 'mobid';
 
 @Injectable({
   providedIn: 'root'
