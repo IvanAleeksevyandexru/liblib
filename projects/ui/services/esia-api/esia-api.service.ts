@@ -28,6 +28,7 @@ export class EsiaApiService {
     1: '/esia-rs/api/public/v1/',
     2: '/esia-rs/api/public/v2/',
     3: '/esia-rs/api/public/v3/',
+    4: '/esia-rs/api/public/v4/',
     digital: '/digital/api/public/v1/',
     digitalV2: '/digital/api/public/v2/',
     smevint: '/smevint/api/public/v1/',
