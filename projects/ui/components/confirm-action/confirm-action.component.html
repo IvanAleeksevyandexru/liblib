@@ -5,10 +5,11 @@
      }[imagesPosition]">
   <div class="popup" [style.max-width.px]="maxWidth" [ngClass]="popupClassModifier">
     <a class="close" *ngIf="closeButton" (click)="onCancel()"></a>
-    <h3 class="title {{imagesPosition === 'above' ? 'title-h3 mt-20 mt-md-0' : 'title-h3'}} mb-24"
+    <h3 [ngClass]="{'title-h4 mt-20 mt-md-0': imagesPosition === 'above', 'title-h3': imagesPosition !== 'above'}"
+        class="title mb-24"
         [innerHTML]="title | appTranslate"></h3>
     <div class="popup-content">
-      <div class="flex-container-md align-items-center-md mb-24"
+      <div class="flex-container-md align-items-center-md"
            [ngClass]="{'flex-column-md': imagesPosition === 'above'}">
         <div *ngIf="image" class="icon mb-24" [ngClass]="{'mb-md-0': imagesPosition !== 'above'}">
           <img [src]="image" alt="">
@@ -19,7 +20,7 @@
           <p *ngIf="description" class="text-plain" [innerHTML]="description | appTranslate: {value: value}"></p>
         </div>
       </div>
-      <div class="mb-32 mb-lg-40 mt-20" *ngIf="checkboxConfirm">
+      <div class="mt-20 mt-24" *ngIf="checkboxConfirm">
         <lib-checkbox
           [checked]="isChecked"
           (change)="onConfirmChange()"
@@ -27,7 +28,10 @@
         ></lib-checkbox>
       </div>
     </div>
-    <div [class.buttons-between]="spaceButtonsBetween" class="controls">
+    <div [class.buttons-between]="spaceButtonsBetween" [ngClass]="{
+    'mt-24': !checkboxConfirm && buttons?.length,
+    'mt-32 mt-lg-40': checkboxConfirm && buttons?.length
+    }" [class.mt-24]="buttons?.length" class="controls">
       <div *ngFor="let button of buttons" class="button-wrapper">
         <a
           *ngIf="button.type === 'anchor'"
