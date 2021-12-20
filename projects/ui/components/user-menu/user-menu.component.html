@@ -7,7 +7,7 @@
           <li class="item justify-between">
             <span class="title-h6 bold">
               <ng-container *ngIf="user.type === 'L'">{{(user.orgShortName || user.orgName)}}</ng-container>
-              <ng-container *ngIf="user.type === 'B'">ИП {{ user.fullName }}</ng-container>
+              <ng-container *ngIf="user.type === 'B'">{{(user.orgShortName || 'ИП ' + user.shortName)}}</ng-container>
               <ng-container *ngIf="user.type !== 'B' && user.type !== 'L'">
                 {{user.firstName + ' ' + user.lastName[0] + '.'}}
               </ng-container>
