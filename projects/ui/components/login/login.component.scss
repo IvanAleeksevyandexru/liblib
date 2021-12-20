@@ -106,6 +106,17 @@ lib-button {
 }
 
 @media all and (max-width: 1139px) {
+  .authorized-user {
+    &:not(.hide-arrow):before {
+      content: '';
+      position: absolute;
+      top: 16px;
+      right: 0;
+      width: 10px;
+      height: 6px;
+      background: url(../../../assets/svg/arrows/arrow_gosblue.svg) no-repeat 0 0;
+    }
+  }
   .link {
     &.partners_link {
       &:before {
@@ -161,13 +172,7 @@ lib-button {
 @media all and (max-width: 767px) {
   .authorized-user {
     &:not(.hide-arrow):before {
-      content: '';
-      position: absolute;
-      top: 16px;
       right: 7px;
-      width: 10px;
-      height: 6px;
-      background: url(../../../assets/svg/arrows/arrow_gosblue.svg) no-repeat 0 0;
     }
 
     .close-menu {
