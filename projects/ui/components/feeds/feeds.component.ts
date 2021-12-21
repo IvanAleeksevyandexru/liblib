@@ -331,6 +331,10 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     return feed.unread && !escapedFeedTypes.includes(feed.feedType);
   }
 
+  public isMyOrderOrDraft(feed: FeedModel): boolean {
+    return this.loadService.user.userId === feed.userId;
+  }
+
   public isFormattedLoginName(feed: FeedModel): boolean {
     return !!(feed.data.orderCreator && feed.data.orderCreator.formattedLoginName);
   }

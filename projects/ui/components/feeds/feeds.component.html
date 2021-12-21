@@ -110,7 +110,7 @@
           <div class="small-text gray truncate mt-4" *ngIf="showExpiryForLk(feed)">{{feed.data.expiryDate | timeLeft}}</div>
         </ng-template>
 
-        <div *ngIf="isOrderCreator(feed)" class="mt-8">
+        <div *ngIf="isOrderCreator(feed) && !isMyOrderOrDraft(feed)" class="mt-8">
           <ng-container [ngTemplateOutlet]="author"
                         [ngTemplateOutletContext]="{feed: feed}"></ng-container>
         </div>
