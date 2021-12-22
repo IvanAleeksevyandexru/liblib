@@ -26,17 +26,6 @@
   width: 100%;
 }
 
-//.feed-header-unread:before {
-//  content: '';
-//  position: absolute;
-//  left: -10px;
-//  top: 25px;
-//  width: 4px;
-//  height: 4px;
-//  background: #EE3F58;
-//  border-radius: 2px;
-//}
-
 .feed-header-unread {
   .feed-title {
     font-weight: bold;
@@ -76,6 +65,15 @@
     font-weight: 700;
     line-height: 10px;
     color: #0B1F33;
+  }
+}
+
+@media all and (max-width: 767px) {
+  .feed-drafts {
+    .feed-activities-block {
+      order: 1;
+      justify-self: flex-end;
+    }
   }
 }
 
@@ -155,14 +153,14 @@
 }
 
 // Отображение фидов на странице заявлений
-.feed-orders {
+.feed-orders, .feed-drafts {
   .feed-type-block {
     width: 32px;
   }
 }
 
 @media all and (max-width: 767px) {
-  .feed-orders {
+  .feed-orders, .feed-drafts {
     .feed-link {
       flex-flow: row;
       flex-wrap: wrap;
@@ -173,6 +171,42 @@
       width: calc(100% - 32px);
       margin-left: 16px;
       margin-top: 0;
+    }
+  }
+}
+
+// Попап подтверждения удаления черновика
+::ng-deep {
+  .popup-wrapper {
+    .popup {
+      .description {
+        text-align: left;
+      }
+
+      .title {
+        padding-right: 28px;
+      }
+    }
+  }
+}
+
+@media all and (max-width: 767px) {
+  ::ng-deep {
+    .popup {
+      border-radius: 0;
+      .controls {
+        position: fixed;
+        bottom: 60px;
+        width: calc(100% - 48px);
+      }
+    }
+  }
+}
+
+@media all and (min-width: 768px) {
+  ::ng-deep {
+    .popup {
+      max-width: 634px;
     }
   }
 }

@@ -4,6 +4,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  NgModuleRef,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -11,13 +12,12 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { FeedsService } from '@epgu/ui/services/feeds';
-import { FeedModel, FeedsModel, SnippetModel } from '@epgu/ui/models';
+import { FeedDataModel, FeedModel, FeedsModel, SnippetModel } from '@epgu/ui/models';
 import { LoadService } from '@epgu/ui/services/load';
 import { User } from '@epgu/ui/models/user';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { NotifierService } from '@epgu/ui/services/notifier';
-import { switchMap } from 'rxjs/operators';
 import { SharedService } from '@epgu/ui/services/shared';
 import { HelperService } from '@epgu/ui/services/helper';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
@@ -25,6 +25,10 @@ import { CountersService } from '@epgu/ui/services/counters';
 import { ActivatedRoute, Router } from '@angular/router';
 import { differenceInDays, differenceInYears, format, isAfter, isValid, parse } from 'date-fns';
 import { ru } from 'date-fns/locale';
+import { LibTranslateService } from '@epgu/ui/services/translate';
+import { UserHelperService } from '@epgu/ui/services/user-helper';
+import { ConfirmActionComponent } from '@epgu/ui/components/confirm-action';
+import { ModalService } from '@epgu/ui/services/modal';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,7 +42,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public isHide: boolean | null;
   @Input() public inlineDate = true;
   @Input() public snippets = false;
-  @Input() public search = this.route.snapshot.queryParamMap.get('q') || '';
+  @Input() public search = '';
   @Input() public unread: boolean;
   @Input() public selectedCategory: any;
   @Input() public count = 0;
@@ -95,6 +99,15 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   public getFeedTypeName = this.feedsService.getFeedTypeName;
 
   public get emptyMessageTitle(): string {
+    if (this.search) {
+      if (this.types === 'PARTNERS_DRAFT' || this.page === 'drafts') {
+        return 'FEEDS.NOT_FOUND.DRAFTS';
+      } else if (this.page === 'orders') {
+        return 'FEEDS.NOT_FOUND.ORDERS';
+      }
+      return 'FEEDS.NOT_FOUND.DEFAULT';
+    }
+
     if (this.types === 'PARTNERS_DRAFT') {
       return 'FEEDS.EMPTY.PARTNERS_DRAFT';
     } else if (this.types === 'PARTNERS') {
@@ -119,7 +132,11 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private sharedService: SharedService,
     public yaMetricService: YaMetricService,
-    private countersService: CountersService
+    private countersService: CountersService,
+    private libTranslate: LibTranslateService,
+    private userHelper: UserHelperService,
+    private modalService: ModalService,
+    private moduleRef: NgModuleRef<any>,
   ) {
   }
 
@@ -178,9 +195,6 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getFeeds(lastFeedId: number | string = '', lastFeedDate: Date | string = '', query = '', pageSize = ''): void {
-    if (query === '') {
-      query = this.route.snapshot.queryParamMap.get('q') || '';
-    }
     this.afterFirstSearch = true;
     this.allFeedsLoaded = false;
     this.searching.emit(true);
@@ -210,6 +224,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
               const rejectedPayment = item.type === 'PAYMENT' && feed.status === 'reject_no_pay';
               return !(isDraft || paid || rejectedPayment);
             });
+          }
+          if (feed.data.orderCreator) {
+            feed.data.orderCreator = this.parseDataParam(feed.data, 'orderCreator');
+          }
+          if (feed.data.branch) {
+            feed.data.branch = this.parseDataParam(feed.data, 'branch');
           }
           return {
             ...feed,
@@ -266,6 +286,16 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
+  private parseDataParam(data: FeedDataModel, paramName: string): any {
+    let paramAsObj;
+    try {
+      paramAsObj = JSON.parse(data[paramName]);
+    } catch {
+      paramAsObj = null;
+    }
+    return paramAsObj;
+  }
+
   public emitEmptyFeedsEvent(): void {
     this.emptyFeeds.emit(this.feeds && this.feeds.length === 0);
   }
@@ -301,12 +331,16 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     return feed.unread && !escapedFeedTypes.includes(feed.feedType);
   }
 
+  public isMyOrderOrDraft(feed: FeedModel): boolean {
+    return this.loadService.user.userId === feed.userId;
+  }
+
   public isFormattedLoginName(feed: FeedModel): boolean {
     return !!(feed.data.orderCreator && feed.data.orderCreator.formattedLoginName);
   }
 
   public isOrderCreator(feed: FeedModel): boolean {
-    return (this.user.userType === 'B' || this.user.userType === 'L') &&
+    return (this.userHelper.isIP || this.userHelper.isEntity) &&
       !!(this.isFormattedLoginName(feed) || (feed.data.orderDescription));
   }
 
@@ -452,13 +486,43 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     return true;
   }
 
-  public removeFeed($event: MouseEvent, feed: FeedModel, index: number): void {
-    this.yaMetricRemoveFeed();
-    const onSubscribe = (res: string) => {
-      this.feeds.splice(index, 1);
-      this.notifier.success({
-        message: res
+  public checkRemoveFeed($event: MouseEvent, feed: FeedModel, index: number): void {
+    $event.preventDefault();
+    $event.stopPropagation();
+
+    const popupTexts = [
+      'FEEDS.DELETE.TITLE',
+      'FEEDS.DELETE.TEXT',
+      'FEEDS.DELETE.ACCEPT',
+      'FEEDS.DELETE.CANCEL'
+    ];
+
+    this.libTranslate.get(popupTexts).subscribe(texts => {
+      this.modalService.popupInject(ConfirmActionComponent, this.moduleRef, {
+        title: texts['FEEDS.DELETE.TITLE'],
+        subtitle: texts['FEEDS.DELETE.TEXT'],
+        popupClassModifier: 'text-left',
+        buttons: [{
+          title: texts['FEEDS.DELETE.ACCEPT'],
+          handler: () => {
+            this.modalService.destroyForm();
+            this.removeFeed(feed, index);
+          }
+        }, {
+          title: texts['FEEDS.DELETE.CANCEL'],
+          color: 'white',
+          handler: () => {
+            this.modalService.destroyForm();
+          }
+        }]
       });
+    });
+  }
+
+  public removeFeed(feed: FeedModel, index: number): void {
+    this.yaMetricRemoveFeed();
+    const onSubscribe = () => {
+      this.feeds.splice(index, 1);
       const feedsLength = this.feeds.length;
       if (feedsLength && this.hasMore) {
         const last = this.feeds[feedsLength - 1];
@@ -469,9 +533,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
       this.changeDetector.detectChanges();
     };
     const onRemoveError = () => {
-      this.translate.get('FEEDS.ERROR').subscribe((errorText: string) => {
+      this.libTranslate.get('FEEDS.DELETE.DRAFT_DELETED_ERROR').subscribe((errorText: string) => {
         this.notifier.error({
-          message: errorText
+          message: errorText,
+          onAction: () => {
+            this.removeFeed(feed, index);
+          }
         });
         this.removeInProgress = false;
         feed.removeInProgress = false;
@@ -481,22 +548,12 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.removeInProgress) {
       this.removeInProgress = true;
       feed.removeInProgress = true;
-      if (this.page === 'drafts') {
-        this.feedsService.removeDraft(feed.extId)
-          .pipe(
-            switchMap(() => this.translate.get('FEEDS.DELETED'))
-          ).subscribe(onSubscribe, onRemoveError);
+      if (['DRAFT', 'KND_APPEAL_DRAFT'].includes(feed.feedType)) {
+        this.feedsService.removeDraft(feed.extId).subscribe(onSubscribe, onRemoveError);
       } else {
-        this.feedsService.removeFeed(feed.id)
-          .pipe(
-            switchMap(() => this.translate.get('FEEDS.DELETED'))
-          ).subscribe(onSubscribe, onRemoveError);
+        this.feedsService.removeFeed(feed.id).subscribe(onSubscribe, onRemoveError);
       }
     }
-
-    $event.preventDefault();
-    $event.stopPropagation();
-
   }
 
   public moveInArchive(feed: FeedModel, index: number) {
@@ -568,7 +625,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public showRemoveFeedButton(feed: FeedModel): boolean {
-    return ['drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) && !feed.data.reminder && !this.isPaymentDraft(feed);
+    const rightPage = ['drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) ||
+      this.page === 'events' && this.isDraft(feed);
+    return rightPage && !feed.data.reminder && !this.isPaymentDraft(feed);
   }
 
   public showArchiveFeedButton(feed: FeedModel): boolean {

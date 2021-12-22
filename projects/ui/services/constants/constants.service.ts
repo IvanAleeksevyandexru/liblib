@@ -443,10 +443,17 @@ export class ConstantsService {
     }
   ]);
 
+
+  public readonly DEFAULT_LK_NOTIFICATION_CATEGORIES = 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,ESIGNATURE,KND_APPEAL,LINKED_ACCOUNT,SIGN,PAYMENTS_EGISSO';
+
+  public readonly DEFAULT_LK_ORDERS_CATEGORIES = 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER,SIGN,PAYMENTS_EGISSO';
+  public readonly DEFAULT_LK_ORDERS_CATEGORIES_IP_UL = 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER,SIGN,KND_APPEAL';
+  public readonly DEFAULT_LK_DRAFTS_CATEGORIES_IP_UL = 'DRAFT,KND_APPEAL_DRAFT';
+
   public readonly ORDERS_CATEGORIES = [
     {
       text: 'Все',
-      type: 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER,SIGN',
+      type: this.DEFAULT_LK_ORDERS_CATEGORIES,
       id: 1,
       mnemonic: 'allEvents',
     },
@@ -475,10 +482,58 @@ export class ConstantsService {
       mnemonic: 'claim',
     },
   ];
-
-  public readonly DEFAULT_LK_NOTIFICATION_CATEGORIES = 'ORDER,EQUEUE,PAYMENT,GEPS,BIOMETRICS,ACCOUNT,ACCOUNT_CHILD,PROFILE,APPEAL,CLAIM,ELECTION_INFO,COMPLEX_ORDER,FEEDBACK,ORGANIZATION,BUSINESSMAN,ESIGNATURE,KND_APPEAL,LINKED_ACCOUNT,SIGN,PAYMENTS_EGISSO';
-
-  public readonly DEFAULT_LK_ORDERS_CATEGORIES = 'ORDER,EQUEUE,APPEAL,CLAIM,COMPLEX_ORDER,SIGN,PAYMENTS_EGISSO';
+  public readonly ORDERS_CATEGORIES_IP_UL = [
+    {
+      text: 'Все',
+      type: this.DEFAULT_LK_ORDERS_CATEGORIES_IP_UL,
+      id: 1,
+      mnemonic: 'allEvents',
+    },
+    {
+      text: 'Получение услуг',
+      type: 'ORDER,COMPLEX_ORDER',
+      id: 2,
+      mnemonic: 'order',
+    },
+    {
+      text: 'Записи на приём',
+      type: 'EQUEUE',
+      id: 3,
+      mnemonic: 'equeue',
+    },
+    {
+      text: 'Жалобы по КНД',
+      type: 'KND_APPEAL',
+      id: 4,
+      mnemonic: 'kndAppeal',
+    },
+    {
+      text: 'Обжалования',
+      type: 'CLAIM',
+      id: 5,
+      mnemonic: 'claim',
+    },
+  ];
+  public readonly DRAFTS_CATEGORIES_IP_UL = [
+    {
+      text: 'Все',
+      type: this.DEFAULT_LK_DRAFTS_CATEGORIES_IP_UL,
+      id: 1,
+      mnemonic: 'allDrafts',
+    },
+    {
+      text: 'Получение услуг',
+      type: 'DRAFT',
+      id: 2,
+      mnemonic: 'draft',
+    },
+    {
+      text: 'Жалобы по КНД',
+      type: 'KND_APPEAL_DRAFT',
+      id: 3,
+      mnemonic: 'kndDraft',
+    },
+  ];
 
   public readonly FEEDS_CATEGORIES = [
     {
@@ -554,6 +609,69 @@ export class ConstantsService {
       mnemonic: 'kndAppealEvents'
     }*/
   ];
+  public readonly FEEDS_CATEGORIES_IP_UL = [
+    {
+      text: 'Все',
+      type: 'all_v2',
+      id: 1,
+      mnemonic: 'allEvents',
+    },
+    {
+      text: 'Непрочитанные',
+      type: 'all_v2',
+      id: 2,
+      mnemonic: 'unread'
+    },
+    {
+      text: 'Записи на приём',
+      type: 'EQUEUE',
+      id: 3,
+      mnemonic: 'equeue',
+    },
+    {
+      text: 'Платежи',
+      type: 'PAYMENT',
+      id: 4,
+      mnemonic: 'payment',
+    },
+    {
+      text: 'Заявления',
+      type: 'ORDER,COMPLEX_ORDER,CLAIM,APPEAL,SIGN',
+      id: 5,
+      mnemonic: 'order'
+    },
+    {
+      text: 'Черновики',
+      type: 'DRAFT,KND_APPEAL_DRAFT',
+      id: 6,
+      mnemonic: 'draft',
+    },
+    {
+      text: 'Госпочта',
+      type: 'GEPS',
+      id: 7,
+      mnemonic: 'geps'
+    },
+    {
+      text: 'Жалобы по КНД',
+      type: 'KND_APPEAL,KND_APPEAL_DRAFT',
+      id: 8,
+      mnemonic: 'kndAppealEvents'
+    },
+    {
+      text: 'Служба поддержки',
+      type: 'FEEDBACK',
+      id: 9,
+      mnemonic: 'feedback'
+    },
+    {
+      text: 'Системные события',
+      type: 'ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE',
+      id: 10,
+      mnemonic: 'systemEvents'
+    },
+  ];
+
   public readonly NOTIFICATION_PERIOD_TIMEZONE: NotificationPeriodItem[] = [
     {
       id: -15,

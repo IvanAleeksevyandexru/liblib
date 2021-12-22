@@ -1,56 +1,57 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Notifier, NotifierType } from '@epgu/ui/models/notifier';
+import { INotifier, Notifier, NotifierType } from '@epgu/ui/models/notifier';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotifierService {
-
   private subject = new Subject<Notifier>();
   private keepAfterRouteChange = false;
 
   constructor() {}
 
   public onNotifier(notifierId?: string): Observable<Notifier> {
-    return this.subject.asObservable().pipe(filter(x => x && x.notifierId === notifierId));
+    return this.subject
+      .asObservable()
+      .pipe(filter(x => x && x.notifierId === notifierId));
   }
 
-  public success(config) {
-    this.notifier(new Notifier({
-      message: config.message,
-      type: NotifierType.Success,
-      notifierId : config.notifierId,
-      onCancel: config.onCancel,
-      onAction: config.onAction,
-      actionName: config.actionName,
-      showIcon: config.showIcon
-    }));
+  public success(config: Partial<INotifier>) {
+    this.notifier(
+      new Notifier({
+        ...config,
+        type: NotifierType.Success,
+      }),
+    );
   }
 
-  public process(config) {
-    this.notifier(new Notifier({
-      message: config.message,
-      type: NotifierType.Process,
-      notifierId : config.notifierId,
-      onCancel: config.onCancel,
-      onAction: config.onAction,
-      actionName: config.actionName,
-      showIcon: config.showIcon
-    }));
+  public process(config: Partial<INotifier>) {
+    this.notifier(
+      new Notifier({
+        ...config,
+        type: NotifierType.Process,
+      }),
+    );
   }
 
-  public error(config) {
-    this.notifier(new Notifier({
-      message: config.message,
-      type: NotifierType.Error,
-      notifierId : config.notifierId,
-      onCancel: config.onCancel,
-      onAction: config.onAction,
-      actionName: config.actionName,
-      showIcon: config.showIcon
-    }));
+  public error(config: Partial<INotifier>) {
+    this.notifier(
+      new Notifier({
+        ...config,
+        type: NotifierType.Error,
+      }),
+    );
+  }
+
+  public warning(config: Partial<INotifier>) {
+    this.notifier(
+      new Notifier({
+        ...config,
+        type: NotifierType.Warning,
+      }),
+    );
   }
 
   public notifier(notifier: Notifier) {
@@ -58,8 +59,7 @@ export class NotifierService {
     this.subject.next(notifier);
   }
 
-  public clear(notifierId ?: string) {
-    this.subject.next(new Notifier({notifierId}));
+  public clear(notifierId?: string) {
+    this.subject.next(new Notifier({ notifierId }));
   }
 }
-
