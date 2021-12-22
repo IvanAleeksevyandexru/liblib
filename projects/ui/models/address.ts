@@ -24,6 +24,8 @@ export interface Address {
   frameTypeFull?: string;
   houseType?: string;
   houseTypeFull?: string;
+  startDateOfTemporaryRegistration?: number[];
+  temporaryRegistrationEndDate?: number[];
 }
 
 export interface ConfirmAddress {

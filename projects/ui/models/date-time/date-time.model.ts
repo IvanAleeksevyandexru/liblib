@@ -95,6 +95,8 @@ export interface DateProperties {
   inRange?: boolean;
   inPreviewRange?: boolean;
   rangeStart?: boolean;
+  selectionInPrevMonth?: boolean;
+  selectionInNextMonth?: boolean;
   rangeEnd?: boolean;
   previewRangeStart?: boolean;
   previewRangeEnd?: boolean;
