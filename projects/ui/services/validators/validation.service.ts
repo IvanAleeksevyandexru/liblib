@@ -58,7 +58,7 @@ export class ValidationService {
     birthCertificateSeriesSecond: '^[а-яА-ЯёЁ]{2}',
     birthCertificateOldSeries: '[IVXLCivxlcа-яА-ЯёЁ−–—-]{1,9}$',
     birthCertificateNumber: '^[\\d]{6,7}$',
-    birthCertificateFidNumber: '[\/а-яА-ЯёЁa-zA-Z0-9−–—-]{1,20}$',
+    birthCertificateFidNumber: '[\/а-яА-ЯёЁa-zA-Z0-9.−–—-\\s]{1,25}$',
     birthActNumber: '[0-9вВ−–—-]+',
     year: this.masks.year.join('').replace(/\//g, ''),
     driverLicenseSeriesNumber: this.masks.driverLicenseSeriesNumber.join('').replace(/\//g, ''),
@@ -93,6 +93,10 @@ export class ValidationService {
 
   public static twoCyrillicSymbolsInDocSeries(control: AbstractControl) {
     return new RegExp('^[А-ЯЁа-яё]{2}').test(control.value) ? null : {wrongCyrillicSeries: true};
+  }
+
+  public static onlySpaces(control: AbstractControl) {
+    return control?.value?.trim() === '' ? {onlySpaces: true} : null;
   }
 
   public static latinSymbolsInDocSeries(minLength: number, maxLength: number) {
