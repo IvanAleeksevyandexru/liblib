@@ -32,6 +32,7 @@ export type VersionsApi =
 export class EsiaApiService {
   private host: string;
   private userOid: string;
+  private orgOid: string;
 
   private versions: Record<VersionsApi, string> = {
     0: '/rs/',
@@ -72,10 +73,11 @@ export class EsiaApiService {
   private initParams(): void {
     this.host = this.loadService.config.esiaUrl;
     this.userOid = this.loadService.user.userId ? this.loadService.user.userId.toString() : null;
+    this.orgOid = this.loadService.user?.orgOid?.toString() ?? '';
   }
 
   private setUrl(input: string, version: VersionsApi = 0): string {
-    return this.host + this.versions[version] + input.replace(/prn_oid/, this.userOid);
+    return this.host + this.versions[version] + input.replace(/prn_oid/, this.userOid).replace(/org_oid/, this.orgOid);
   }
 
   public getRequest<T>(

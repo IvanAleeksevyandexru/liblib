@@ -15,6 +15,7 @@ import { FeedsComponent } from '@epgu/ui/components/feeds';
 import { take } from 'rxjs/operators';
 import { User } from '@epgu/ui/models/user';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
+import { UserHelperService } from '@epgu/ui/services/user-helper';
 
 const HIDE_TIMOUT = 300;
 
@@ -98,6 +99,7 @@ export class HeaderComponent implements OnInit {
     private moduleRef: NgModuleRef<any>,
     private router: Router,
     private yaMetricService: YaMetricService,
+    public userHelper: UserHelperService
   ) {
     this.onRouteChange();
   }
@@ -108,7 +110,7 @@ export class HeaderComponent implements OnInit {
       this.burgerWithCatalogShow(location.pathname);
     }
     if (!this.links.length && this.user.authorized) {
-      this.links = this.menuService.getUserMenuDefaultLinks(this.user.type);
+      this.links = this.menuService.getUserMenuDefaultLinks();
     }
     this.countersService.counters$.subscribe(() => {
       const counter = this.countersService.getCounter(CounterTarget.USER);
