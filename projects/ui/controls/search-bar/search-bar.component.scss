@@ -201,7 +201,7 @@
       background-color: #D1D5DF;
       color: #66727F;
     }
-    &.invalid {
+    &.invalid:not(.focused) {
       background: rgba(238, 63, 88, 0.16);
       border-color: rgba(238, 63, 88, 0.16);
     }
