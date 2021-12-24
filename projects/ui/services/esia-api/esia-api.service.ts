@@ -13,7 +13,7 @@ export interface Citizenship {
   msgKey: string;
 }
 
-export type VersionsApi = 0 | 1 | 2 | 3 | 'digital'  | 'digitalV2' | 'smevint' | 'registration' | 'mobid';
+export type VersionsApi = 0 | 1 | 2 | 3 | 'digital'  | 'digitalV2' | 'orgGrant' | 'smevint' | 'registration' | 'mobid';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +31,7 @@ export class EsiaApiService {
     3: '/esia-rs/api/public/v3/',
     digital: '/digital/api/public/v1/',
     digitalV2: '/digital/api/public/v2/',
+    orgGrant: '/org-grant/api/public/v1/',
     smevint: '/smevint/api/public/v1/',
     registration: '/registration/api/public/v1/',
     mobid: '/mob-id-back/api/public/v1/'
