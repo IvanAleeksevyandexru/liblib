@@ -3,6 +3,7 @@
   width: 24px;
   height: 24px;
   background-repeat: no-repeat;
+  background-size: contain;
 }
 
 // галочка
@@ -178,6 +179,7 @@
 
   .status-reject {
     background-image: url('../../../assets/svg/statuses/account-reject.svg');
+    background-size: contain;
   }
 }
 

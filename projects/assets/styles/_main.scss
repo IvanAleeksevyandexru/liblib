@@ -445,6 +445,10 @@ ul.list-dashed {
     align-self: center;
   }
 
+  .align-self-start#{$prefix} {
+    align-self: start;
+  }
+
   .align-self-end#{$prefix} {
     align-self: end;
   }
