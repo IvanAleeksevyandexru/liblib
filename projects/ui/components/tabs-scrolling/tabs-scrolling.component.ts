@@ -24,6 +24,7 @@ export class TabsScrollingComponent implements OnInit, OnChanges {
   @Input() public backgroundColor: 'fff' | 'transparent' = 'fff';
   @Input() public translation: Translation | string = Translation.APP;
   @Input() public userAssuranceLevel?: UserAssuranceLevel;
+  @Input() public tabsBoxWidth: '100%' | 'max-content' = 'max-content';
 
   @Output() public changeTab = new EventEmitter<LightTab>();
 
