@@ -1,7 +1,7 @@
 @import "palette";
 .title-h1, .title-h2, .title-h3, .title-h4, .title-h5, .title-h6, .title-h0, .page-title {
   font-family: Lato-Bold, Arial, sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   font-style: normal;
   color: $color-summer-night;
 }
@@ -126,15 +126,11 @@
   text-decoration: line-through;
 }
 
-.light {
-  font-weight: 100;
-}
-
 .normal {
   font-weight: 400;
 }
 
 .bold {
   font-family: Lato-Bold, Arial, sans-serif;
-  font-weight: 600;
+  font-weight: 700;
 }
