@@ -9,19 +9,18 @@ import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    TranslatePipeModule,
-    EdsItemModule,
-    ControlsModule,
-    BaseModule,
-    FormsModule,
-  ],
-  declarations: [
-    EdsPinComponent
-  ],
-  exports: [EdsPinComponent],
-  entryComponents: [EdsPinComponent],
+    imports: [
+        CommonModule,
+        TranslatePipeModule,
+        EdsItemModule,
+        ControlsModule,
+        BaseModule,
+        FormsModule,
+    ],
+    declarations: [
+        EdsPinComponent
+    ],
+    exports: [EdsPinComponent]
 })
 export class EdsPinModule {
 }

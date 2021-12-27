@@ -6,22 +6,19 @@ import { ImageSlidesComponent } from './image-slides/image-slides.component';
 
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [
-    ImageSliderComponent,
-    SliderImagesModalComponent,
-    ImageSlidesComponent
-  ],
-  exports: [
-    ImageSliderComponent,
-    ImageSlidesComponent,
-    SliderImagesModalComponent
-  ],
-  entryComponents: [
-    SliderImagesModalComponent
-  ],
+    imports: [
+        CommonModule
+    ],
+    declarations: [
+        ImageSliderComponent,
+        SliderImagesModalComponent,
+        ImageSlidesComponent
+    ],
+    exports: [
+        ImageSliderComponent,
+        ImageSlidesComponent,
+        SliderImagesModalComponent
+    ]
 })
 export class ImageSliderModule {
 }

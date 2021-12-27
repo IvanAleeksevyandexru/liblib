@@ -8,22 +8,19 @@ import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    TranslatePipeModule,
-    ControlsModule,
-    BaseModule,
-    FormsModule,
-  ],
-  declarations: [
-    LocationComponent
-  ],
-  exports: [
-    LocationComponent
-  ],
-  entryComponents: [
-    LocationComponent
-  ]
+    imports: [
+        CommonModule,
+        TranslatePipeModule,
+        ControlsModule,
+        BaseModule,
+        FormsModule,
+    ],
+    declarations: [
+        LocationComponent
+    ],
+    exports: [
+        LocationComponent
+    ]
 })
 export class LocationModule {
 }

@@ -6,16 +6,15 @@ import { ThrobberHexagonModule } from '@epgu/ui/components/throbber-hexagon';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    TranslatePipeModule,
-    ThrobberHexagonModule
-  ],
-  declarations: [
-    EdsLoaderComponent
-  ],
-  exports: [EdsLoaderComponent],
-  entryComponents: [EdsLoaderComponent],
+    imports: [
+        CommonModule,
+        TranslatePipeModule,
+        ThrobberHexagonModule
+    ],
+    declarations: [
+        EdsLoaderComponent
+    ],
+    exports: [EdsLoaderComponent]
 })
 export class EdsLoaderModule {
 }
