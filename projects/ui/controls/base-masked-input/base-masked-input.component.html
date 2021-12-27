@@ -20,9 +20,7 @@
          (focus)="notifyFocusEvent($event)"
          (input)="handleInput($event.target.value, $event)"
          (change)="handleChange($event.target.value, $event)"
-         (keyup.enter)="forceChange()"
-         (compositionstart)="compositionStart()"
-         (compositionend)="compositionEnd($event.target.value)"/>
+         (keyup.enter)="forceChange()"/>
   <div *ngIf="clearable && !disabled && !empty && focused" (click)="clearValue($event)" class="clear-button"></div>
   <div class="suggests" *ngIf="focused && suggest && suggest.list.length">
     <p class="title pl-16">{{'SUGGEST.TITLE' | libTranslate}}</p>
