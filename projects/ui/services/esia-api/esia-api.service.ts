@@ -23,6 +23,7 @@ export type VersionsApi =
   | 'digitalV2'
   | 'digitalOrg'
   | 'digitalOrgV2'
+  | 'orgGrant'
   | 'smevint'
   | 'registration'
   | 'mobid';
@@ -45,9 +46,10 @@ export class EsiaApiService {
     digitalV2: '/digital/api/public/v2/',
     digitalOrg: '/digital-org/api/public/v1/',
     digitalOrgV2: '/digital-org/api/public/v2/',
+    orgGrant: '/org-grant/api/public/v1/',
     smevint: '/smevint/api/public/v1/',
     registration: '/registration/api/public/v1/',
-    mobid: '/mob-id-back/api/public/v1/', 
+    mobid: '/mob-id-back/api/public/v1/',
   };
 
   private citizenship: Citizenship[];
