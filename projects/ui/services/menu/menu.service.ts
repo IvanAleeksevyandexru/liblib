@@ -71,7 +71,7 @@ export class MenuService {
         showCases: [this.userHelper.isUlIpOgv]
       },
       {
-        title: `HEADER.MENU.${this.userHelper.isUlIpOgv ? 'B-L-ORDERS' : 'ORDERS'}`,
+        title: `HEADER.MENU.ORDERS`,
         mnemonic: 'orders',
         icon: 'edit',
         showSeparatelyOnDesk: true
@@ -112,7 +112,6 @@ export class MenuService {
       'HEADER.MENU.HELP': `${portalUrl}help`,
       'HEADER.MENU.NOTIFICATIONS': `${lkUrl}overview`, // правка изза выборов
       'HEADER.MENU.ORDERS': `${lkUrl}orders`,
-      'HEADER.MENU.B-L-ORDERS': `${lkUrl}notifications`, // убрать использование при выводе лк юл
       'HEADER.MENU.PAYMENT': `${portalUrl}pay`,
       'HEADER.MENU.DOCS': `${lkUrl}profile`,
       'HEADER.MENU.AGREEMENTS': `${lkUrl}settings/third-party/agreements`,
