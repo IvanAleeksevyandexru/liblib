@@ -33,6 +33,7 @@
       <a
         class="cancel"
         *ngIf="notifier.onCancel"
+        [class.white]="notifier.type !== NotifierType.Warning"
         (click)="cancelNotifier(notifier)"
         >{{ 'NOTIFICATIONS.CANCEL' | libTranslate }}</a
       >
