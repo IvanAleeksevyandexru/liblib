@@ -16,6 +16,7 @@ import { take } from 'rxjs/operators';
 import { User } from '@epgu/ui/models/user';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
 import { UserHelperService } from '@epgu/ui/services/user-helper';
+import { HeaderService } from '@epgu/ui/services/header';
 
 const HIDE_TIMOUT = 300;
 
@@ -99,7 +100,8 @@ export class HeaderComponent implements OnInit {
     private moduleRef: NgModuleRef<any>,
     private router: Router,
     private yaMetricService: YaMetricService,
-    public userHelper: UserHelperService
+    public userHelper: UserHelperService,
+    public headerService: HeaderService
   ) {
     this.onRouteChange();
   }
