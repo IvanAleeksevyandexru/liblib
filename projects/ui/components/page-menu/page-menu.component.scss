@@ -27,7 +27,7 @@
 
     .shadow {
       height: 24px;
-      background: linear-gradient(180deg, transparent 0%, #FAFCFF 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #FAFCFF 100%);
       position: absolute;
       width: 100%;
       bottom: -2px;
