@@ -6,6 +6,7 @@ export interface INotifier {
   showIcon: boolean;
   onCancel: () => void;
   onAction: () => void;
+  onClose: () => void;
   actionName: string;
 }
 export class Notifier implements INotifier {
@@ -16,6 +17,7 @@ export class Notifier implements INotifier {
   public showIcon: boolean;
   public onCancel: () => void;
   public onAction: () => void;
+  public onClose: () => void;
   public actionName: string;
 
   constructor(init?: Partial<Notifier>) {
