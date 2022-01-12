@@ -253,6 +253,13 @@ export class DadataService implements AutocompleteSuggestionProvider {
         }
       }
 
+      if (level === 3 && elem.type === 'город') {
+        const cityElem = arr.find(item => item.level === 4);
+        if (!cityElem) {
+          level = 4;
+        }
+      }
+
       if (level === 6 && !this.sixthLevelData) {
         this.sixthLevelData = ` (${(elem.shortType ? elem.shortType + '. ' : '') + strData})`;
       }
