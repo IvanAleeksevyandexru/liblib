@@ -11,8 +11,8 @@ import {
 } from '@angular/core';
 import { animate, AnimationBuilder, AnimationPlayer, style } from '@angular/animations';
 import { DragDropManager } from '@epgu/ui/services/drag-drop';
-
-import { interval, Subscription } from 'rxjs';
+import { fromEvent, interval, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { HelperService } from '@epgu/ui/services/helper';
 import {
   DragDropBinding,
@@ -24,6 +24,8 @@ import {
 
 const DEFAULT_SLIDE_SHOW_INTERVAL = 6000;
 const DEFAULT_SLIDE_TIME = 300;
+const BREAKPOINT_PAD = 768;
+const BREAKPOINT_DESK = 1140;
 
 @Component({
   selector: 'lib-drag-slider',
@@ -35,7 +37,7 @@ export class DragSliderComponent implements OnInit, AfterViewInit, OnChanges, On
   constructor(
     private animationBuilder: AnimationBuilder,
     private dragDropManager: DragDropManager,
-    private changeDetection: ChangeDetectorRef,
+    private cd: ChangeDetectorRef,
   ) { }
 
   @Input() public items: Array<any> = [];
@@ -45,8 +47,26 @@ export class DragSliderComponent implements OnInit, AfterViewInit, OnChanges, On
   @Input() public slideShowInterval = DEFAULT_SLIDE_SHOW_INTERVAL;
   @Input() public slideShowReverse = false;
 
+  @Input() public breakpointPad = BREAKPOINT_PAD;
+  @Input() public breakpointDesk = BREAKPOINT_DESK;
+  // Фиксированная ширина слайда. Если задана, то countLimits учитываться не будет
+  @Input() public fixedWidth: number;
+  // Количество элементов, которое нужно отобразить на устройстве
+  @Input() public countLimits: number[] = [1, 1, 1]; // Массив значений для разных устройств [mob, pad, desk]
+  // Отступы между слайдами
+  @Input() public betweenOffsets: number[] = [0, 0, 0]; // Массив значений для разных устройств [mob, pad, desk]
+
   @Input() public showBullets = true;
   @Input() public bulletSettings: string; // классы для настройки отображения
+
+  @Input() public showArrows: boolean[] = [false, false, false];
+  @Input() public arrowsSetting: string; // классы для настройки отображения
+
+  public get arrowsEnabled(): boolean {
+    return this.showArrows[this.deviceIndex];
+  }
+  // Флаг скрытия стрелок, если все слайды помещаются на экран
+  public hideArrows: boolean;
 
   public activeSlide: any = null; // центральный баннер
   public get activeSlideTraceable() {
@@ -71,23 +91,45 @@ export class DragSliderComponent implements OnInit, AfterViewInit, OnChanges, On
   public dragDropBinding: DragDropBinding = null;
   private animationSubscription: Subscription = undefined;
 
+  private device: 'mob' | 'pad' | 'desk' = 'desk';
+  private deviceIndex = 2;
+
+  // Ширина слайда. Определяется по значениям fixedWidth или countLimits
+  public slideWidth: number;
+  // Ширина вьюпорта
+  // если показываем один слайд, то равна ширине слайда
+  // если несколько, то сумме их ширин + отступы между
+  public wrapperWidth: number;
+  // Размер отступа между слайдами для текущего девайса
+  public betweenOffset: number;
+  // Сколько слайдов можем показать на экране
+  // Если есть fixedWidth, будет вычисляться по ширине контейнера деленного на fixedWidth
+  // Если есть countLimits, возьмется значение для текущего девайса
+  public visibleSlidesCount: number;
   public offset = 0;
 
   @ViewChild('slidesContainer') private slidesContainer: ElementRef;
   @ViewChild('slideBlock') private slideBlock: ElementRef;
 
   private animationPlayer: AnimationPlayer = null;
-
-  @HostListener('window:resize')
-  public onResize() {
-    this.rebuildListAccordingToActiveSlide();
-  }
+  private resizeSubscription: Subscription;
 
   public ngOnInit(): void {
-    this.update();
+    this.detectDevice();
+    this.init();
+
+    this.resizeSubscription = fromEvent(window, 'resize').pipe(
+      debounceTime(1000)
+    ).subscribe((event) => {
+      this.wrapperWidth = null;
+      this.dragDropManager.detach(this.dragDropBinding);
+      this.dragDropBinding = null;
+      this.cd.detectChanges();
+      this.initView();
+    });
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy(): void {
     this.cancelSlideShow();
     if (this.animationPlayer) {
       this.animationPlayer.destroy();
@@ -96,20 +138,28 @@ export class DragSliderComponent implements OnInit, AfterViewInit, OnChanges, On
     if (this.dragDropBinding) {
       this.dragDropManager.detach(this.dragDropBinding);
     }
+    if (this.resizeSubscription) {
+      this.resizeSubscription.unsubscribe();
+    }
   }
 
-  public ngAfterViewInit() {
-    this.rebuildListAccordingToActiveSlide();
+  public ngAfterViewInit(): void {
+    this.initView();
+  }
+
+  private setDragAndDrop(): void {
     this.dragDropBinding = {
       feedElement: this.slideBlock,
       type: DragDropType.TOUCH, direction: DragDropDirection.HORIZONTAL, offsetType: DragDropOffsetType.POSITION,
       centeringNeeded: true, cleanUp: false, limit: false, centeringDuration: DEFAULT_SLIDE_TIME,
+      containerDimension: this.slideWidth, itemsDistance: this.betweenOffset,
       dragStart: () => {
         this.stopAndFreezeOffsetAnimation();
         this.cancelSlideShow();
       }, dragRelease: (dragState: DragState) => {
         this.offset = dragState.offset;
         this.activeSlideTraceable = this.cycleList[dragState.selected];
+        this.cd.detectChanges();
       }, dragEnd: (dragState: DragState) => {
         this.offset = dragState.offset;
         this.rebuildListAccordingToActiveSlide();
@@ -118,7 +168,7 @@ export class DragSliderComponent implements OnInit, AfterViewInit, OnChanges, On
     this.dragDropManager.attach(this.dragDropBinding);
   }
 
-  public ngOnChanges(changes: SimpleChanges) {
+  public ngOnChanges(changes: SimpleChanges): void {
     for (const propName of Object.keys(changes)) {
       switch (propName) {
         case 'items': {
@@ -136,18 +186,39 @@ export class DragSliderComponent implements OnInit, AfterViewInit, OnChanges, On
     }
   }
 
-  public update() {
+  private init(): void {
     this.rebuildList();
     this.rerunSlideShow();
   }
 
-  public rebuildList() {
-    this.list = HelperService.deepCopy(this.items);
-    this.activeSlideTraceable = this.list?.length ? this.list[0] : null;
-    this.rebuildListAccordingToActiveSlide();
+  private initView(): void {
+    this.betweenOffset = this.betweenOffsets[this.deviceIndex];
+    this.setSlideWidth();
+    this.setWrapperWidth();
+    this.hideArrows = !(this.arrowsEnabled && this.visibleSlidesCount < this.list.length);
+
+    if (this.visibleSlidesCount < this.list.length) {
+      this.rebuildListAccordingToActiveSlide();
+      if (!this.dragDropBinding) {
+        this.setDragAndDrop();
+      }
+    } else {
+      this.cycleList = this.list;
+      if (this.dragDropBinding) {
+        this.offset = 0;
+        this.dragDropManager.detach(this.dragDropBinding);
+        this.dragDropBinding = null;
+      }
+      this.cd.detectChanges();
+    }
   }
 
-  public rebuildListAccordingToActiveSlide() {
+  public rebuildList(): void {
+    this.list = HelperService.deepCopy(this.items);
+    this.activeSlideTraceable = this.list?.length ? this.list[0] : null;
+  }
+
+  public rebuildListAccordingToActiveSlide(): void {
     if (!this.listAndViewReady(false)) {
       return;
     }
@@ -170,9 +241,9 @@ export class DragSliderComponent implements OnInit, AfterViewInit, OnChanges, On
       newCycleList.push(getCyclicSlide(slideIndex, i));
     }
     this.cycleList = newCycleList;
-    this.offset = -SLIDES_OUT_THE_AREA * this.stdSlideWidth();
+    this.offset = -SLIDES_OUT_THE_AREA * (this.slideWidth + this.betweenOffset);
     this.activeSlideIndex = SLIDES_OUT_THE_AREA;
-    this.changeDetection.detectChanges();
+    this.cd.detectChanges();
     this.changeActiveSlide.emit(this.originActiveSlide);
   }
 
@@ -180,7 +251,7 @@ export class DragSliderComponent implements OnInit, AfterViewInit, OnChanges, On
     this.cancelSlideShow();
     if (this.slideShow) {
       this.animationSubscription = interval(this.slideShowInterval).subscribe(() => {
-        if (this.list && this.list.length > 1) {
+        if (this.list?.length > 1 && this.visibleSlidesCount < this.list.length) {
           this.slideShowReverse ? this.prevSlide(false) : this.nextSlide(false);
         }
       });
@@ -206,7 +277,7 @@ export class DragSliderComponent implements OnInit, AfterViewInit, OnChanges, On
     } else {
       newSlideIndex = this.cycleList.lastIndexOf(slide);  // любой итем гарантированно присутствует в ленте
     }
-    const offsetDiff = (newSlideIndex - this.activeSlideIndex) * this.stdSlideWidth();
+    const offsetDiff = (newSlideIndex - this.activeSlideIndex) * this.slideWidth;
     this.activeSlideTraceable = slide;
     const animationTime = Math.max(DEFAULT_SLIDE_TIME, Math.abs(newSlideIndex - this.activeSlideIndex) * 100);
     this.animateOffset(this.offset - offsetDiff, animationTime).then(() => {
@@ -224,7 +295,7 @@ export class DragSliderComponent implements OnInit, AfterViewInit, OnChanges, On
       this.cancelSlideShow();
     }
     this.activeSlideTraceable = this.cycleList[--this.activeSlideIndex];
-    this.animateOffset(this.offset + this.stdSlideWidth()).then(() => {
+    this.animateOffset(this.offset + this.slideWidth).then(() => {
       this.rebuildListAccordingToActiveSlide();
     });
   }
@@ -238,7 +309,7 @@ export class DragSliderComponent implements OnInit, AfterViewInit, OnChanges, On
       this.cancelSlideShow();
     }
     this.activeSlideTraceable = this.cycleList[++this.activeSlideIndex];
-    this.animateOffset(this.offset - this.stdSlideWidth()).then(() => {
+    this.animateOffset(this.offset - this.slideWidth).then(() => {
       this.rebuildListAccordingToActiveSlide();
     });
   }
@@ -268,11 +339,35 @@ export class DragSliderComponent implements OnInit, AfterViewInit, OnChanges, On
   }
 
   private listAndViewReady(requireListSize: boolean): boolean {
-    return this.slidesContainer && this.slidesContainer.nativeElement && this.slideBlock
-      && this.slideBlock.nativeElement && this.list && this.list.length && (!requireListSize || this.list.length > 1);
+    return this.slidesContainer?.nativeElement && this.slideBlock?.nativeElement &&
+      this.list?.length && (!requireListSize || this.list.length > 1);
   }
 
-  private stdSlideWidth(): number {
-    return this.slidesContainer.nativeElement.clientWidth;
+  private setSlideWidth(): void {
+    if (this.fixedWidth) {
+      this.slideWidth = this.fixedWidth;
+    } else if (this.countLimits) {
+      const wrapperWidth = this.slidesContainer.nativeElement.clientWidth;
+      const count = this.countLimits[this.deviceIndex];
+      this.slideWidth = Math.floor((wrapperWidth - this.betweenOffset * (count - 1)) / count) || null;
+    } else {
+      this.slideWidth = this.slidesContainer.nativeElement.clientWidth || null;
+    }
+  }
+
+  private setWrapperWidth(): void {
+    if (this.fixedWidth) {
+      const curWrapperWidth = this.slidesContainer.nativeElement.clientWidth;
+      const visibleSlideCount = Math.floor(curWrapperWidth / (this.slideWidth + this.betweenOffset));
+      this.wrapperWidth = visibleSlideCount * this.slideWidth + (visibleSlideCount - 1) * this.betweenOffset || null;
+      this.visibleSlidesCount = visibleSlideCount;
+    } else if (this.countLimits) {
+      this.visibleSlidesCount = this.countLimits[this.deviceIndex];
+    }
+  }
+
+  private detectDevice(): void {
+    this.device = window.innerWidth < this.breakpointPad ? 'mob' : window.innerWidth < this.breakpointDesk ? 'pad' : 'desk';
+    this.deviceIndex = this.device === 'desk' ? 2 : this.device === 'pad' ? 1 : 0;
   }
 }

@@ -49,7 +49,7 @@ export class EsiaApiService {
     orgGrant: '/org-grant/api/public/v1/',
     smevint: '/smevint/api/public/v1/',
     registration: '/registration/api/public/v1/',
-    mobid: '/mob-id-back/api/public/v1/', 
+    mobid: '/mob-id-back/api/public/v1/',
   };
 
   private citizenship: Citizenship[];
