@@ -342,3 +342,17 @@ export interface ICommissionResult {
     payOptions: PayOption[];
   };
 }
+
+export interface PaymentStatusInfo {
+  factAmount: number;
+  name: string;
+  payDate: string; // 2021-12-02T15:06:27.000+0300
+}
+
+export interface PaymentStatusResponse {
+  response?: PaymentStatusInfo[];
+  error: {
+    code: number;
+    message: string;
+  };
+}
