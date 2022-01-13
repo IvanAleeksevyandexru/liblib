@@ -337,6 +337,8 @@ export class DadataService implements AutocompleteSuggestionProvider {
     });
     if (data.address.postIndex) {
       this.setValueByLevel(100, data.address.postIndex);
+    } else {
+      this.setErrorsByLevel(100, needSkipStreet);
     }
     if (data.geo_lat && data.geo_lon) {
       this.form.patchValue({geoLat: data.geo_lat, geoLon: data.geo_lon});

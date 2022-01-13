@@ -65,7 +65,7 @@
     <div class="feed-link flex-container align-items-center-md">
       <div class="feed-type-block flex-container align-items-center">
         <lib-feed-icon [ipshStatus]="getIpshStatus(feed)" [title]="feed.title" [status]="feed.status"></lib-feed-icon>
-        <div *ngIf="page !== 'orders'" class="ml-24">
+        <div *ngIf="page !== 'orders' && page !== 'drafts'" class="ml-24">
           <div class="text-plain">{{getFeedTypeName(feed.feedType)}}</div>
           <div class="small-text gray mt-4">
             <div *ngIf="isSnippetTypeIM(feed)" [innerHTML]="feed.date | timeToEvent:getSnippetType(feed):'':inlineDate"></div>
@@ -110,9 +110,10 @@
           <div class="small-text gray truncate mt-4" *ngIf="showExpiryForLk(feed)">{{feed.data.expiryDate | timeLeft}}</div>
         </ng-template>
 
-        <!--div *ngIf="isOrderCreator(feed)">
+        <div *ngIf="isOrderCreator(feed) && !isMyOrderOrDraft(feed)" class="mt-8">
           <ng-container [ngTemplateOutlet]="author"
-                        [ngTemplateOutletContext]="{feed: feed}"></ng-container-->
+                        [ngTemplateOutletContext]="{feed: feed}"></ng-container>
+        </div>
       </div>
 
       <div *ngIf="actionsEnabled()" class="feed-activities-block text-right-md">
@@ -127,7 +128,7 @@
                            [icon]="config.staticDomainLibAssetsPath + 'svg/icons/bin-gray.svg'"
                            [hoverIcon]="config.staticDomainLibAssetsPath + 'svg/icons/bin-blue.svg'"
                            [text]="'Удалить'"
-                           (clickAction)="removeFeed($event, feed, i)"></lib-icon-action>
+                           (clickAction)="checkRemoveFeed($event, feed, i)"></lib-icon-action>
           <lib-throbber *ngIf="feed.removeInProgress" [contextClass]="'feed-throbber'" [size]="'throbber-small'"></lib-throbber>
         </div>
       </div>
@@ -171,16 +172,11 @@
 </ng-template>
 
 <ng-template #author let-feed="feed">
-  <div *ngIf="isFormattedLoginName(feed)">
+  <div *ngIf="isFormattedLoginName(feed)" class="small-text" [ngClass]="{gray: page === 'drafts'}">
     {{'FEEDS.AUTHOR' | libTranslate}}: {{feed.data.orderCreator.formattedLoginName}}
     <span *ngIf="isBranchNameExists(feed)">({{feed.data.branch.name}})</span>
   </div>
-  <div *ngIf="feed.data.orderDescription">
-      <div class="flex-container">
-        <div>
-          <img src="{{loadService.config.staticDomain}}htdocs/img/event/lk/lk_comment.svg" alt="">
-        </div>
-        <div [innerHTML]="feed.data.orderDescription | removeTags:150 | highlight: search" class="text-plain bold"></div>
-      </div>
+  <div *ngIf="feed.data.orderDescription" class="mt-4">
+    <div [innerHTML]="feed.data.orderDescription | removeTags:150 | highlight: search" class="small-text"></div>
   </div>
 </ng-template>

@@ -59,6 +59,7 @@ import {
   endOfYear,
   format,
   getDate,
+  getYear,
   getDaysInMonth,
   getISODay,
   getMonth,
@@ -85,7 +86,7 @@ const MODEL_FORMAT = ConstantsService.CALENDAR_TEXT_MODEL_FORMAT;
 const DATE_PATTERN = /^\d\d?[\.\/]\d\d?[\.\/]\d\d?\d?\d?$/;
 const WEAK_DATE_PATTERN = /^([\d_][\d_]?)[\.\/]([\d_][\d_]?)[\.\/]([\d_][\d_][\d_]?[\d_]?)$/;
 const RANGE_BASE_MASK = [/\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/,
-  '-', /\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
+  '—', /\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
 const DATE_BASE_MASK = [/\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
 const DRAGDROP_CENTERING_THRESHOLD = 0.3;
 
@@ -416,6 +417,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         this.closeCalendar();
       } else {
         this.rangeStart = date;
+        this.range = this.createState(Range.create(this.rangeStart, date, this.textModelValue))
       }
     } else {
       this.commitSave(this.textModelValue ? format(new Date(date), MODEL_FORMAT) : date, true);
@@ -430,7 +432,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       this.commit(value);
     }
     const parsingResult = this.isRange ? this.createRangeFromString(value) : this.createDateFromString(value);
-    if (parsingResult.result && (this.expanded || this.asSimplePanel)) {
+    if (parsingResult.result && parsingResult.result.toString() !== 'Invalid Date' && (this.expanded || this.asSimplePanel)) {
       this.activeMonthYear = MonthYear.fromDate(parsingResult.result as Date);
       this.rangeStart = parsingResult.result as Date;
       this.renderMonthGrid();
@@ -479,7 +481,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     if (value) {
       if (this.textModelValue) {
         if (this.isRange) {
-          this.text = this.formatTextDate((value as Range<string>).start) + '-' + this.formatTextDate((value as Range<string>).end);
+          this.text = this.formatTextDate((value as Range<string>).start) + '—' + this.formatTextDate((value as Range<string>).end);
         } else {
           this.text = this.formatTextDate(value as string);
         }
@@ -573,6 +575,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     if (MonthYear.equals(this.activeMonthYear, MonthYear.fromDate(this.minimumDate))) {
       return;
     }
+    this.updateDateItemProperties(this.prevWeeks, 0);
     this.monthShift = 'prev'; // триггерит анимацию
   }
 
@@ -580,6 +583,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     if (MonthYear.equals(this.activeMonthYear, MonthYear.fromDate(this.maximumDate))) {
       return;
     }
+    this.updateDateItemProperties(this.nextWeeks, 0);
     this.monthShift = 'next'; // триггерит анимацию
   }
 
@@ -611,6 +615,14 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
 
   public isRangeStart(date: Date, rangeStart?: Date) {
     return date && !rangeStart && isSameDay(date, this.range.start);
+  }
+
+  public isRangeInPrevMonth(date: Date) {
+    return date && isAfter(date, this.range.start);
+  }
+
+  public isRangeInNextMonth(date: Date, rangeStart?: Date) {
+    return date && (rangeStart ? isBefore(date, rangeStart) : isBefore(date, this.range.end));
   }
 
   public isRangeEnd(date: Date, rangeStart?: Date) {
@@ -731,7 +743,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   private updateMaskAndFormats() {
     const replaceDotWithSlash = (symbol) => symbol === '.' ? '/' : symbol;
     const truncateDateFullYear = (arr) => arr.slice(0, arr.length - 2);
-    const truncateRangeFullYear = (arr) => arr.slice(0, arr.indexOf('-') - 2).concat(arr.slice(arr.indexOf('-'), arr.length - 2));
+    const truncateRangeFullYear = (arr) => arr.slice(0, arr.indexOf('—') - 2).concat(arr.slice(arr.indexOf('—'), arr.length - 2));
     this.rangeMask = this.americanFormat ?
       (this.shortYearFormat ? truncateRangeFullYear(RANGE_BASE_MASK.map(replaceDotWithSlash)) : RANGE_BASE_MASK.map(replaceDotWithSlash))
       : (this.shortYearFormat ? truncateRangeFullYear(RANGE_BASE_MASK) : RANGE_BASE_MASK);
@@ -753,9 +765,9 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       try {
         const separator = this.americanFormat ? '/' : '.';
         const probableDates = this.isRange ?
-          value.replace(/_/g, '').split('-') : [value.replace(/_/g, '')];
+          value.replace(/_/g, '').split('—') : [value.replace(/_/g, '')];
         const unsafeDates = this.isRange ?
-          additionals.rawValue.split('-') : [additionals.rawValue];
+          additionals.rawValue.split('—') : [additionals.rawValue];
         let anyChanged = false;
         if (probableDates.length === unsafeDates.length) {
           for (let i = 0; i < probableDates.length; i++) {
@@ -786,7 +798,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
                 : pad(dayPartial) + separator + pad(monthPartial) + separator + pad(yearPartial, this.shortYearFormat ? 2 : 4);
             }
           }
-          return anyChanged ? (this.isRange ? probableDates.join('-') : probableDates[0]) : value;
+          return anyChanged ? (this.isRange ? probableDates.join('—') : probableDates[0]) : value;
         } else {
           return value;
         }
@@ -838,7 +850,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       return this.createEmptyParsingResult<Range<Date> | Range<string>>();
     }
     const result = new ParsingResult<Range<Date> | Range<string>>();
-    const dates = valueOriginal.split('-');
+    const dates = valueOriginal.split('—');
     if (dates.length > 2) {
       return result.empty();
     }
@@ -899,10 +911,12 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
       const date = add(firstDayOfMonth, {days: i});
       output[week].push({day: getDate(date), date: date});
     }
-    const lastMonthDate = output[week][output[week].length - 1].date;
-    const lastMonthDateForEmpty = add(lastMonthDate, {hours: 1});
-    while (output[week].length < 7) {
-      output[week].push({day: null, date: lastMonthDateForEmpty});
+    if (output[week] && output[week][output[week].length - 1]) {
+      const lastMonthDate = output[week][output[week].length - 1].date;
+      const lastMonthDateForEmpty = add(lastMonthDate, {hours: 1});
+      while (output[week].length < 7) {
+        output[week].push({day: null, date: lastMonthDateForEmpty});
+      }
     }
     this.updateDateItemProperties(output, monthShift);
   }
@@ -915,6 +929,8 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
         day.selected = this.isSelected(day.date, this.rangeStart);
         day.inRange = this.isInRange(day.date, this.rangeStart);
         day.rangeStart = this.isRangeStart(day.date, this.rangeStart);
+        day.selectionInPrevMonth = this.isRangeInPrevMonth(day.date);
+        day.selectionInNextMonth = this.isRangeInNextMonth(day.date, this.rangeStart);
         day.rangeEnd = this.isRangeEnd(day.date, this.rangeStart);
         day.locked = this.isDateLocked(day.date);
         day.outer = this.isDateOutOfMonth(day.date, monthShift);
@@ -963,7 +979,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   }
 
   private isEmptyText(value: string, rangeSeparatorCheck = false) {
-    return !value || value.replace(/[\._\-\/]/g, '') === '' || rangeSeparatorCheck && !value.includes('-');
+    return !value || value.replace(/[\._\-\/]/g, '') === '' || rangeSeparatorCheck && !value.includes('—');
   }
 
   private isValidDate(value: Date, checkLimits = true) {
@@ -1036,7 +1052,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   private recover() {
     this.inconsistent = false;
     if (this.isRange) {
-      this.text = this.format(this.range.start) + '-' + this.format(this.range.end);
+      this.text = this.format(this.range.start) + '—' + this.format(this.range.end);
     } else {
       this.text = this.format(this.date);
     }

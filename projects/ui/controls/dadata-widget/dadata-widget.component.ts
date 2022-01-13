@@ -383,7 +383,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           };
           this.dadataService.parseAddress(res, onInitCall, houseAndApartmentManipulations, this.firstDadataObject);
           // onChange triggering guaranteed
-          if (selectAddress || this.isOpenedFields.getValue()) {
+          if (selectAddress || this.isOpenedFields.getValue() || this.validationShowOn === ValidationShowOn.IMMEDIATE) {
             this.validationSkip = false;
           } else {
             this.validationSkip = !this.needReplaceQuery || suppressValidation;

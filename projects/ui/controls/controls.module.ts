@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+    CapitalLetterModule,
     DeclineModule, FileSizeModule,
     LimitNumberModule,
     PipedMessageModule,
@@ -95,6 +96,7 @@ import { InvalidResultsTipModule } from '@epgu/ui/components/invalid-results-tip
         TextMaskModule,
         InvalidResultsTipModule,
         TrimFileTypesModule,
+        CapitalLetterModule,
     ],
   exports: [
     AutocompleteComponent,

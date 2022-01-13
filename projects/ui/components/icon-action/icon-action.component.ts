@@ -21,6 +21,6 @@ export class IconActionComponent implements OnInit {
   public onActionClick(event: Event) {
     event.stopPropagation();
     event.preventDefault();
-    this.clickAction.emit();
+    this.clickAction.emit(event);
   }
 }

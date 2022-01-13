@@ -5,6 +5,8 @@ import { LoadService } from '@epgu/ui/services/load';
 import { BannerGroup } from '@epgu/ui/models';
 import { Document } from '@epgu/ui/models/document';
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,9 @@ import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 export class YaMetricService {
 
   private isLoaded: boolean;
+  private isErrorLoadYaMetricScript = new BehaviorSubject<boolean>(null);
+  private isErrorLoadYaMetricScript$ = this.isErrorLoadYaMetricScript.asObservable();
+  private subs: { error?: Subscription, success?: () => void} = {};
 
   public counter = 'unknown';
   public deviceType = 'desk';
@@ -66,6 +71,9 @@ export class YaMetricService {
       m[i] = m[i] || addScript;
       m[i].l = +new Date();
       k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a);
+      k.onerror = () => {
+        this.isErrorLoadYaMetricScript.next(true);
+      };
     })
     (window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
     // @ts-ignore
@@ -80,15 +88,28 @@ export class YaMetricService {
     });
   }
 
-  public callReachGoal(name, params = null): Promise<void> {
+  public callReachGoal(name, params = null, callback?): Promise<void> {
+    const doCallback = () => {
+      if (typeof callback === 'function') {
+        callback();
+      }
+    };
     return this.onInit().then(() => {
       if (this.ym) {
         if (params) {
-          return this.ym(this.counter, 'reachGoal', name, params);
+          if (callback && typeof callback === 'function') {
+            return this.ym(this.counter, 'reachGoal', name, params, callback);
+          } else {
+            return this.ym(this.counter, 'reachGoal', name, params);
+          }
         } else {
+          doCallback();
           return this.ym(this.counter, 'reachGoal', name);
         }
       }
+      doCallback();
+    }, () => {
+      doCallback();
     });
   }
 
@@ -156,19 +177,35 @@ export class YaMetricService {
   public onInit(): Promise<any> {
     if (this.isLoaded) {
       return Promise.resolve();
+    } else if (this.isErrorLoadYaMetricScript.getValue()) {
+      return Promise.reject();
     }
     return new Promise((resolve, reject) => {
-      this.renderer.listen('document', `yacounter${this.counter}inited`, (event: any) => {
+      this.subs.error = this.isErrorLoadYaMetricScript$.pipe(
+        filter((res) => !!res)
+      ).subscribe(() => {
+        reject();
+        this.unsub();
+      })
+      this.subs.success = this.renderer.listen('document', `yacounter${this.counter}inited`, (event: any) => {
         this.isLoaded = true;
+        this.unsub();
         if (!isDevMode()) {
           // @ts-ignore
           this.ym = ym;
         } else {
-          console.log('ya metric disabled, environment.name === "local"');
+          console.log('ya metric disabled - environment.name === "local"');
         }
         resolve(true);
       });
     });
+  }
+
+  private unsub(): void {
+    if (typeof this.subs?.success === 'function') {
+      this.subs?.success();
+    }
+    this.subs?.error?.unsubscribe();
   }
 
   public yaMetricCallToAction(staType: string): void {
