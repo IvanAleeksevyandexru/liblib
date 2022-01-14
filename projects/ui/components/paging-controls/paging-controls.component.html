@@ -1,7 +1,4 @@
 <div class="page-controls {{classList}}">
-  <div class="first-page nav-button" *ngIf="tailButtons" [ngClass]="{disabled: currentPage === 1}" >
-    <a class="page-ref" (click)="setPageIf(1, currentPage !== 1)"></a>
-  </div>
   <div class="prev-page nav-button" *ngIf="prevNextButtons" [ngClass]="{disabled: currentPage === 1}" >
     <a class="page-ref" (click)="setPageIf(currentPage - 1, currentPage !== 1)"></a>
   </div>
@@ -16,8 +13,5 @@
   </ng-container>
   <div class="next-page nav-button" *ngIf="prevNextButtons" [ngClass]="{disabled: currentPage === lastPage}">
     <a class="page-ref" (click)="setPageIf(currentPage + 1, currentPage !== lastPage)"></a>
-  </div>
-  <div class="last-page nav-button" *ngIf="tailButtons" [ngClass]="{disabled: currentPage === lastPage}" >
-    <a class="page-ref" (click)="setPageIf(lastPage, currentPage !== lastPage)"></a>
   </div>
 </div>

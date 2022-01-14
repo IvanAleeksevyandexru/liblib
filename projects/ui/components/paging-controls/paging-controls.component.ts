@@ -10,8 +10,6 @@ export class PagingControlsComponent implements OnInit, OnChanges {
   // показываем пред/след кнопки (может быть использовано вместе с numericButtons или само по себе)
   // если true показываем, дизейблим когда достигнут конец
   @Input() public prevNextButtons = true;
-  // кнопки в конец / в начало. если true показываем, дизейблим при достижении границы
-  @Input() public tailButtons = true;
   @Input() public numericButtons = true;  // блок ссылок на страницы по номерам. показывать или нет
   @Input() public classList: string;
   @Input() public numericButtonsNeighboursThreshold = 1;  // количество страниц-соседей (вправо и влево от текущей) которые показывать
