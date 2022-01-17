@@ -45,7 +45,7 @@
         </div>
         <div *ngIf="footer.socialLinks" class="col-md-3 col-lg-3 mt-md-32 social-wrapper">
           <div class="mb-32 title-h5">{{'FOOTER.IN_SOCIAL_NETWORKS' | libTranslate}}</div>
-          <lib-social-links></lib-social-links>
+          <lib-social-links [footerSocial]="true" (footerClickEmitter)="sendMetric($event)"></lib-social-links>
         </div>
       </div>
     </div>
@@ -55,6 +55,7 @@
 <ng-template #links let-block="block">
   <div *ngFor="let link of block.links; let first = first" class="mt-12" [ngClass]="first ? 'mt-md-32': 'mt-md-16'">
     <a class="link-hover custom-sizes text-plain gray"
+       (click)="openLink($event, link)"
        [href]="link.url"
        [attr.target]="link.target ? link.target : null"
        [attr.rel]="link.target === '_blank' ? 'noopener noreferrer' : null">
