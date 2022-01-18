@@ -32,7 +32,10 @@ export class SmallFooterComponent implements OnInit {
   }
 
   public sendMetric(link: MainFooterBlockLink): void {
-    this.yaMetric.callReachGoal('footer', ['footer', link.title], () => {
+    const yaParams = {
+      footer: [link.title]
+    }
+    this.yaMetric.callReachGoal('footer', yaParams, () => {
       if (link.target === '_blank') {
         window.open(link.url, '_blank', 'noopener noreferrer');
       } else {
