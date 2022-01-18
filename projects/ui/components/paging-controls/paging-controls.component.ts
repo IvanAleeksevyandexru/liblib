@@ -18,13 +18,21 @@ export class PagingControlsComponent implements OnInit, OnChanges {
   // привязка к размеру/общей длине массива итемов, дсотупных для отображения
   @Input() public count = 0;
   @Input() public pageSize = 20;
+  @Input() public pageSizeList = [20];
   // внешняя привязка к activePage, внутренняя страница пассивна и следует за изменениями страницы из вне
   @Input() public activePage = 1;
 
+  @Input() public showPageSizeControl = true;
+  @Input() public showPageInfo = true;
+
   @Output() private pageChanged = new EventEmitter<any>(true);
+  @Output() private pageSizeChanged = new EventEmitter<any>();
 
   // внутренняя activePage
   public currentPage = this.activePage;
+  public innerPageSize = this.pageSize;
+  public innerPageSizeList = this.pageSizeList;
+  public isOpenedList = false;
   public lastPage = 1;
   public numericControlStructure: Array<number> = [];
 
@@ -45,11 +53,17 @@ export class PagingControlsComponent implements OnInit, OnChanges {
           break;
         }
         case 'pageSize': {
+          this.innerPageSize = this.pageSize;
           this.updatePageSize();
           break;
         }
         case 'activePage': {
           this.currentPage = this.activePage;
+          this.updateControls();
+          break;
+        }
+        case 'pageSizeList': {
+          this.innerPageSizeList = this.pageSizeList.filter(item => item < this.count);
           this.updateControls();
         }
       }
@@ -133,5 +147,14 @@ export class PagingControlsComponent implements OnInit, OnChanges {
     }
 
     this.numericControlStructure = controlStructure;
+  }
+
+  public togglePageSizeList(): void {
+    this.isOpenedList = !this.isOpenedList;
+  }
+
+  public setPageSize(pageSize: number): void {
+    this.pageSizeChanged.emit(pageSize);
+    this.togglePageSizeList();
   }
 }
