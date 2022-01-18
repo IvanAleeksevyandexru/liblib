@@ -188,7 +188,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     if (['B', 'L'].includes(this.user.type)) {
       this.titleChangeRole = 'HEADER.MENU.CHANGE_ROLE';
     } else {
-      this.titleChangeRole = 'HEADER.MENU.LOGIN_ORG';
+      this.titleChangeRole = 'HEADER.MENU.LOGIN_ORG_FROM_PERSON';
     }
   }
 
