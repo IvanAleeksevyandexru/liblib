@@ -636,7 +636,7 @@ export class ConstantsService {
     },
     {
       text: 'Заявления',
-      type: 'ORDER,COMPLEX_ORDER,CLAIM,APPEAL,SIGN',
+      type: 'ORDER,CLAIM,APPEAL,SIGN',
       id: 5,
       mnemonic: 'order'
     },
