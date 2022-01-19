@@ -172,6 +172,26 @@ export class MenuService {
   }
 
   public menuItemClick(link: MenuLink): void {
+    switch (link.mnemonic) {
+      case 'orders':
+        this.yaMetricService.callReachGoal('header', { 'header': { 'Заявления': '' } });
+        break;
+      case 'docs':
+        this.yaMetricService.callReachGoal('header', { 'header': { 'Документы': '' } });
+        break;
+      case 'payment':
+        this.yaMetricService.callReachGoal('header', { 'header': { 'Платежи': '' } });
+      case 'overview':
+        this.yaMetricService.callReachGoal('header', { 'header': { 'Уведомления': '' } });
+      case 'profile':
+        this.yaMetricService.callReachGoal('header', { 'header': { 'Профиль': '' } });
+      case 'loginAsOrganization':
+        this.yaMetricService.callReachGoal('header', { 'header': { 'Войти в другой профиль': '' } });
+        break;
+    }
+
+
+
     if (link.mnemonic === 'docs') {
       const goal = this.viewType === 'LK' ? 'todocuments_from_lk_' : 'todocuments_from_main_new_';
       this.yaMetricService.callReachGoal(goal,
@@ -193,7 +213,7 @@ export class MenuService {
 
   public menuStaticItemClick(itemName: string, mnemonic): void {
     const staticUrl = this.getUrl(itemName);
-    return this.menuItemClick({url: staticUrl, mnemonic} as MenuLink);
+    return this.menuItemClick({ url: staticUrl, mnemonic } as MenuLink);
   }
 
 }
