@@ -666,7 +666,7 @@ export class ConstantsService {
     },
     {
       text: 'Системные события',
-      type: 'ELECTION_INFO,ORGANIZATION,BUSINESSMAN,ESIGNATURE',
+      type: 'ESIGNATURE',
       id: 10,
       mnemonic: 'systemEvents'
     },
