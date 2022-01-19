@@ -1,17 +1,16 @@
-<div class="flex-container align-items-center flex-wrap justify-between">
-  <div *ngIf="showPageSizeControl || showPageInfo" class="flex-container align-items-center justify-between page-size-wrap">
-    <div class="page-size-control text-plain flex-container align-items-center">
-      Показать: <span (click)="togglePageSizeList()" class="small-text color-gosblue pointer">{{pageSize}}</span>
-      <div *ngIf="isOpenedList" class="page-size-list" libClickOutside (clickOutside)="isOpenedList = false">
+<div class="flex-container align-items-center flex-wrap flex-column flex-row-md" [ngClass]="{'only-info-mode': showTotalInfo && !showPageSizeControl, 'page-control-mode': showPageSizeControl}">
+  <div *ngIf="showPageSizeControl || showTotalInfo" class="flex-container align-items-center justify-between page-size-wrap">
+    <div class="page-size-control text-plain flex-container align-items-center" *ngIf="showPageSizeControl">
+      Показать: <span (click)="togglePageSizeList($event)" libClickOutside (clickOutside)="isOpenedList = false" class="small-text color-gosblue pointer current-page" [class.opened]="isOpenedList">{{pageSize}}</span>
+      <div *ngIf="isOpenedList" class="page-size-list">
         <div class="page-size-item small-text pointer" (click)="setPageSize(item)" [class.selected]="item === innerPageSize" *ngFor="let item of innerPageSizeList">
           {{item}}
         </div>
       </div>
     </div>
-    <div class="page-info text-plain small-text">
-      {{pageSize * currentPage > count ? count : pageSize * currentPage}} из {{count}}
+    <div class="page-info text-plain small-text mr-md-24" *ngIf="showTotalInfo">
+     Всего {{count}}
     </div>
-
   </div>
   <div class="page-controls {{classList}}">
     <div class="prev-page nav-button" *ngIf="prevNextButtons" [ngClass]="{disabled: currentPage === 1}">

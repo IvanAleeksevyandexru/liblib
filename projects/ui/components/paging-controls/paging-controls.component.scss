@@ -1,13 +1,30 @@
 @import "../../../assets/styles/palette";
 
+.only-info-mode {
+  justify-content: flex-start;
+  .page-size-wrap {
+    flex: 0 0 auto;
+  }
+}
+.page-control-mode {
+  justify-content: space-between;
+}
+
 .page-size-wrap {
   flex: 1 0 auto;
+  margin-bottom: 28px;
+  width: 100%;
+
+  @media all and (min-width: 768px) {
+    width: auto;
+    margin-bottom: 0;
+  }
 }
 
 .page-size-control {
   position: relative;
 
-  span {
+  .current-page {
     display: flex;
     align-items: center;
     margin-left: 22px;
@@ -18,18 +35,24 @@
       width: 10px;
       height: 6px;
       background: url(../../../assets/svg/arrows/arrow_gosblue.svg) 0 0 no-repeat;
-      margin-left: 8px;
+      margin-left: 12px;
+      transition-duration: 300ms;
+    }
+
+    &.opened:after {
+      transform: rotate(180deg);
     }
   }
 
   .page-size-list {
     position: absolute;
     top: -4px;
-    right: 10.5px;
+    right: 14.5px;
     filter: drop-shadow(0px 1px 4px #E3EBFC) drop-shadow(0px 24px 48px rgba(230, 235, 245, 0.4));
 
     .page-size-item {
       padding: 6px 7.5px;
+      text-align: right;
       background: $color-white;
 
       &:first-child {
@@ -55,7 +78,15 @@
   align-items: center;
 
   .nav-button {
-    margin: 0 8px;
+    margin: 0 4px;
+
+    &.prev-page, &.next-page {
+      display: none;
+
+      @media all and (min-width: 768px) {
+        display: block;
+      }
+    }
 
     .separator, .page-ref {
       display: block;
@@ -77,6 +108,7 @@
       background: $color-active-item;
       border-radius: 8px;
       cursor: default;
+
       .page-ref {
         color: white;
       }
