@@ -181,10 +181,13 @@ export class MenuService {
         break;
       case 'payment':
         this.yaMetricService.callReachGoal('header', { 'header': { 'Платежи': '' } });
+        break;
       case 'overview':
         this.yaMetricService.callReachGoal('header', { 'header': { 'Уведомления': '' } });
+        break;
       case 'profile':
         this.yaMetricService.callReachGoal('header', { 'header': { 'Профиль': '' } });
+        break;
       case 'loginAsOrganization':
         this.yaMetricService.callReachGoal('header', { 'header': { 'Войти в другой профиль': '' } });
         break;
