@@ -125,6 +125,7 @@ export class PagingControlsComponent implements OnInit, OnChanges {
         pages[i] = i + 1;
       }
     } else {
+      // текущая страница слева от центральной позиции (показывается одно '...' у правого конца)
       if (this.currentPage < BASIS + this.numericButtonsNeighboursThreshold + this.numericButtonsTailsThreshold) {
         const fillIndex = visibleItemsLength - (this.numericButtonsTailsThreshold + 1);
         for (let i = 0; i < fillIndex; i++) {
@@ -140,6 +141,7 @@ export class PagingControlsComponent implements OnInit, OnChanges {
             }
           }
         }
+      // текущая страница справа от центральной позиции (показывается одно '...' у левого конца)
       } else if (this.currentPage > lastPage - (BASIS + this.numericButtonsTailsThreshold) - (this.numericButtonsNeighboursThreshold - 1)) {
         if (this.numericButtonsTailsThreshold >= 1) {
           for (let i = 0; i < this.numericButtonsTailsThreshold; i++) {
@@ -159,6 +161,7 @@ export class PagingControlsComponent implements OnInit, OnChanges {
             pages[i] = pages[i + 1] - 1;
           }
         }
+      // текущая страница справа в центре (показывается два '...' вокруг центральной позиции с расчетом соседей)
       } else {
         for (let i = 0; i < this.numericButtonsTailsThreshold; i++) {
           pages.push(i + 1);
