@@ -162,7 +162,7 @@ export class HeaderComponent implements OnInit {
       this.psoContainer.style.display = 'none';
     }
 
-    this.yaMetricService.callReachGoal('header', { 'header': { 'Правое меню': '' } });
+    this.yaMetricService.callReachGoal('header', { 'header': ['Правое меню'] });
   }
 
   public hideUserMenu() {
@@ -252,7 +252,7 @@ export class HeaderComponent implements OnInit {
   public sendMetric(evt, url: string, name: string) {
     evt.stopPropagation();
     evt.preventDefault();
-    this.yaMetricService.callReachGoal('header', { 'header': { name: '' } }, () => {
+    this.yaMetricService.callReachGoal('header', { 'header': [name] }, () => {
       window.location.href = url;
     });
   }

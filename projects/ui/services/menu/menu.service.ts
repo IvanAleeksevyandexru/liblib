@@ -174,22 +174,22 @@ export class MenuService {
   public menuItemClick(link: MenuLink): void {
     switch (link.mnemonic) {
       case 'orders':
-        this.yaMetricService.callReachGoal('header', { 'header': { 'Заявления': '' } });
+        this.yaMetricService.callReachGoal('header', { 'header': ['Заявления'] });
         break;
       case 'docs':
-        this.yaMetricService.callReachGoal('header', { 'header': { 'Документы': '' } });
+        this.yaMetricService.callReachGoal('header', { 'header': ['Документы'] });
         break;
       case 'payment':
-        this.yaMetricService.callReachGoal('header', { 'header': { 'Платежи': '' } });
+        this.yaMetricService.callReachGoal('header', { 'header': ['Платежи'] });
         break;
       case 'overview':
-        this.yaMetricService.callReachGoal('header', { 'header': { 'Уведомления': '' } });
+        this.yaMetricService.callReachGoal('header', { 'header': ['Уведомления'] });
         break;
       case 'profile':
-        this.yaMetricService.callReachGoal('header', { 'header': { 'Профиль': '' } });
+        this.yaMetricService.callReachGoal('header', { 'header': ['Профиль'] });
         break;
       case 'loginAsOrganization':
-        this.yaMetricService.callReachGoal('header', { 'header': { 'Войти в другой профиль': '' } });
+        this.yaMetricService.callReachGoal('header', { 'header': ['Войти в другой профиль'] });
         break;
     }
 

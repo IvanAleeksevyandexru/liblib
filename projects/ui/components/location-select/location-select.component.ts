@@ -35,6 +35,6 @@ export class LocationSelectComponent implements OnInit {
 
   public handleClick() {
     this.gosbarService.popupLocation();
-    this.yaMetricService.callReachGoal('header', { 'header' : {'Город': ''} } );    
+    this.yaMetricService.callReachGoal('header', { 'header' : ['Город'] } );    
   }
 }

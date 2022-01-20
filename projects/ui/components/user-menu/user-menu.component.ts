@@ -119,7 +119,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     } else {
       this.sendYaMetric('logout');
-      this.yaMetricService.callReachGoal('header', { 'header': { 'Выйти': '' } }, () => {
+      this.yaMetricService.callReachGoal('header', { 'header': ['Выйти'] }, () => {
         window.location.href = this.loadService.config.betaUrl + 'auth/logout?_=' + Math.random();
       });
     }
