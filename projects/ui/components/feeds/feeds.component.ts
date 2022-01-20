@@ -71,6 +71,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   private loadedFeedsCount = 0;
   private showMoreCount = 0;
   private afterFirstSearch = false;
+  public currentFeedsPage = 1;
   private statusesMap = {
     NEW: 'in_progress',
     REQUEST: 'in_progress',
@@ -180,6 +181,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   public showMore($evt?): void {
     if (this.feeds && this.feeds.length && this.hasMore) {
+      this.currentFeedsPage += 1;
       this.addFeedsIsLoading = true;
       const last = this.feeds[this.feeds.length - 1];
       const date = last.date;
@@ -198,31 +200,21 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   private startHealthMetric(): void {
     if (this.page === 'events' || this.page === 'orders') {
-      this.healthService.measureStart('feeds');
+      this.healthService.measureStart(this.getEventName(this.currentFeedsPage));
     }
   }
 
-  private getFeedsPageNumber(size: string): number {
-    const feedsPageSize = Number(size);
-    if (this.feeds?.length && feedsPageSize) {
-      return Math.ceil(this.feeds.length / feedsPageSize);
+  private getEventName(pageNumber: number): string {
+    if (this.search) {
+      return 'search';
     }
-    return 1;
+    return pageNumber > 1 ? `next_${pageNumber}` : 'first';
   }
 
-  private endHealthMetric(pageSize: string, errorStatus = 0): void {
-    const getEventName = (pageNumber: number): string => {
-      if (this.search) {
-        return 'search';
-      }
-      return pageNumber > 1 ? `next_${pageNumber}` : 'first';
-    };
-
+  private endHealthMetric(errorStatus = 0): void {
     if (this.page === 'events' || this.page === 'orders') {
-      const pageNumber = this.getFeedsPageNumber(pageSize);
-
       this.healthService.measureEnd(
-        getEventName(pageNumber),
+        this.getEventName(this.currentFeedsPage),
         errorStatus !== 0 ? 1 : 0,
         {
           BrowserError: errorStatus !== 0 ? errorStatus : 'OK'
@@ -237,11 +229,10 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     this.allFeedsLoaded = false;
     this.searching.emit(true);
     this.startHealthMetric();
-    const pageSizeValue = pageSize ? pageSize : this.count.toString();
     this.feedsSubscription = this.feedsService.getFeeds({
       isArchive: this.getIsArchive(),
       isHide: this.isHide,
-      pageSize: pageSizeValue,
+      pageSize: pageSize ? pageSize : this.count.toString(),
       types: this.selectedTypes || this.types,
       lastFeedId: lastFeedId.toString(),
       lastFeedDate,
@@ -317,13 +308,13 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         });
         this.emitEmptyFeedsEvent();
         this.loadedFeedsCount += this.feeds.length;
-        this.endHealthMetric(pageSizeValue);
+        this.endHealthMetric();
         this.yaMetricOnSearch(query);
         this.yaMetricOnFilter();
         this.changeDetector.detectChanges();
       }, (error) => {
         this.feedsIsLoading = false;
-        this.endHealthMetric(pageSizeValue, error?.status);
+        this.endHealthMetric(error?.status);
         this.serviceError.emit(true);
       });
   }
