@@ -1,0 +1,18 @@
+<div class="eds-item" [class.show-border]="showBorder" [class.is-pin-item]="isPinItem">
+  <div class="common-name title-h6 mb-8">{{item.commonName}}</div>
+  <div class="text-plain mb-8 mb-md-4 eds-item-row">
+    <span class="gray">{{'DS_WIDGET.ITEM.ISSUER' | libTranslate}}:&nbsp;</span>
+    <span class="black">{{item.issuer}}</span>
+  </div>
+  <div class="text-plain mb-8 mb-md-4 eds-item-row">
+    <span class="gray">{{'DS_WIDGET.ITEM.SUBJECT' | libTranslate}}:&nbsp;</span>
+    <span class="black">{{item.subjectSurname}} {{item.subjectName}}</span>
+  </div>
+  <div class="text-plain mb-8 mb-md-4 eds-item-row">
+    <span class="gray">{{'DS_WIDGET.ITEM.VALIDITY' | libTranslate}}:&nbsp;</span>
+    <span class="black">
+    {{'DS_WIDGET.ITEM.VALIDITY_FROM' | libTranslate}} {{item.validFrom}}
+      {{'DS_WIDGET.ITEM.VALIDITY_TO' | libTranslate}} {{item.validTo}}
+  </span>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<div *ngIf="actions?.length"
+     class="actions-menu-wrapper"
+     [ngClass]="'position-'+ position"
+     libClickOutside (clickOutside)="close()">
+  <div class="actions-menu"
+       [ngClass]="{
+          'hide-lg': actions.length <= countOutside,
+          'active': showMenu,
+          'disabled': disabled,
+          'closable': closable
+       }"
+       [ngStyle]="{width: menuWidth}"
+  >
+    <ng-container *ngFor="let link of actions; let i = index">
+      <div class="mb-16" [class.hide-lg]="i < countOutside">
+        <ng-template [ngTemplateOutletContext]="{link: link}"
+                     [ngTemplateOutlet]="menuLink">
+        </ng-template>
+      </div>
+    </ng-container>
+    <div class="close-menu" (click)="close()"></div>
+  </div>
+  <div class="actions flex-container-lg" [class.disabled]="disabled">
+    <div class="hide show-lg">
+      <div class="flex-container">
+        <div *ngFor="let link of actions | slice:0:countOutside" class="outside-menu-item">
+          <ng-template [ngTemplateOutletContext]="{ link: link }"
+                       [ngTemplateOutlet]="menuLink">
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="actions-menu-button"
+         [ngClass]="{
+            'hide-lg': actions.length <= countOutside,
+            'ml-lg-16': actions.length > countOutside,
+            'disabled': disabled
+         }"
+         (click)="open()">
+      <div class="actions-menu-button-dots"></div>
+    </div>
+  </div>
+</div>
+<ng-template #menuLink let-link="link">
+  <a *ngIf="link.href" class="link-plain text-plain block" [href]="link.href" [target]="link.target || '_blank'">
+    {{link.title | appTranslate}}
+  </a>
+  <a *ngIf="link.innerLink" class="link-plain text-plain block" [routerLink]="link.innerLink">
+    {{link.title | appTranslate}}
+  </a>
+  <a *ngIf="link.handler" class="link-plain text-plain block" (click)="link.handler()">
+    {{link.title | appTranslate}}
+  </a>
+  <span *ngIf="!link.href && !link.innerLink && !link.handler" class="text-plain block">
+    {{link.title | appTranslate}}
+  </span>
+</ng-template>

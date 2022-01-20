@@ -1,0 +1,19 @@
+<div class="popup-wrapper">
+  <div class="popup">
+    <a class="close" (click)="onCancel()"></a>
+    <h3 class="title title-h3 mb-24 popup-title">{{'DS_WIDGET.MODAL_PIN.TITLE' | libTranslate}}</h3>
+    <div class="text-plain black">{{'DS_WIDGET.MODAL_PIN.CAPTION' | libTranslate}}</div>
+    <lib-eds-item [isPinItem]="true" [item]="item"></lib-eds-item>
+    <div class="control-wrapper mb-20">
+      <label class="input-label">{{'DS_WIDGET.MODAL_PIN.LABEL' | libTranslate}}</label>
+      <sub *ngIf="error" class="error-label">{{'DS_WIDGET.MODAL_PIN.ERROR' | libTranslate}}: {{error}}</sub>
+      <lib-standard-input type="password" [(ngModel)]="pin" [invalid]="error"></lib-standard-input>
+    </div>
+    <div class="button-wrapper">
+      <lib-button color="blue" size="md" (click)="onSubmit()" [disabled]="pin.length === 0">{{'DS_WIDGET.MODAL_PIN.CONTINUE' | libTranslate}}</lib-button>
+    </div>
+    <div class="button-wrapper">
+      <lib-button color="white" size="md" (click)="onCancel()">{{'DS_WIDGET.MODAL_PIN.CANCEL' | libTranslate}}</lib-button>
+    </div>
+  </div>
+</div>

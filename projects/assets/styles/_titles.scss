@@ -1,0 +1,136 @@
+@import "palette";
+.title-h1, .title-h2, .title-h3, .title-h4, .title-h5, .title-h6, .title-h0, .page-title {
+  font-family: Lato-Bold, Arial, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  color: $color-summer-night;
+}
+
+.title-h0 {
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.title-h1 {
+  font-size: 36px;
+  line-height: 40px;
+}
+
+.title-h2, .page-title {
+  font-size: 32px;
+  line-height: 40px;
+}
+
+.title-h3 {
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.title-h4 {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.title-h5 {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.title-h6 {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@media all and (min-width: 768px) {
+  .page-title {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .title-h0 {
+    font-size: 32px;
+    line-height: 36px;
+  }
+}
+
+@media all and (min-width: 1140px) {
+  .page-title {
+    font-size: 32px;
+    line-height: 36px;
+  }
+}
+
+.text-plain,
+.text-help,
+.link-plain,
+.label-plain {
+  font-family: Lato, Arial, sans-serif, -apple-system;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.small-text {
+  font-family: Lato, Arial, sans-serif, -apple-system;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.text-sub {
+  font-family: Lato, Arial, sans-serif, -apple-system;
+  font-size: 12px;
+  line-height: 16px;
+  color: $color-summer-night;
+}
+
+@media all and (min-width: 768px) {
+  .text-sub {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+.text-plain {
+  color: $color-summer-night;
+}
+
+.text-help {
+  color: $color-text-helper;
+}
+
+.link-plain {
+  color: $color-gosblue;
+
+  &:hover {
+    color: $color-active-item;
+    cursor: pointer;
+  }
+}
+
+.link-underline {
+  border-bottom: 1px $color-gosblue dashed;
+
+  &:hover {
+    border-bottom-color: $color-active-item;
+  }
+}
+
+.label-plain {
+  color: $color-summer-night;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.normal {
+  font-weight: 400;
+}
+
+.bold {
+  font-family: Lato-Bold, Arial, sans-serif;
+  font-weight: 700;
+}

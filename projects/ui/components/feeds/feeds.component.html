@@ -1,0 +1,182 @@
+<div *ngIf="feedsIsLoading" [ngClass]="[isHeader ? '' : 'loader-container']">
+  <lib-throbber-hexagon [size]="isHeader ? 'small' : 'big'"></lib-throbber-hexagon>
+</div>
+
+<ng-container *ngFor="let feed of feeds ; trackBy: trackById; let i = index;">
+  <ng-container *ngIf="!withReload(feed); else withReloadFeed">
+    <a [routerLink]="openDetails(feed)"
+       (click)="onFeedClick($event, feed)"
+       class="feed-item text-plain"
+       *ngIf="!feed.isHidden"
+       [ngClass]="setFeedItemCls(feed)">
+
+      <ng-container [ngTemplateOutlet]="feedTemplate"
+                    [ngTemplateOutletContext]="{feed: feed, i: i}"></ng-container>
+    </a>
+  </ng-container>
+
+  <ng-template #withReloadFeed>
+    <a [href]="openDetails(feed)"
+       (click)="onFeedClick($event, feed)"
+       class="feed-item text-plain"
+       *ngIf="!feed.isHidden"
+       [ngClass]="setFeedItemCls(feed)">
+
+      <ng-container [ngTemplateOutlet]="feedTemplate"
+                    [ngTemplateOutletContext]="{feed: feed, i: i}"></ng-container>
+    </a>
+  </ng-template>
+</ng-container>
+
+<div *ngIf="enableShowMoreButton()" [ngClass]="{ 'text-center': isHeader }">
+
+    <div class="mb-16 mt-16" *ngIf="autoload && hasMore">
+      <lib-loader></lib-loader>
+    </div>
+
+    <div *ngIf="(page === 'overview' || isHeader) else additionalFeeds" [ngClass]="[isHeader ? 'mt-16' : 'bottom-container-overview']">
+      <a class="small-text blue"
+         (click)="onShowMoreClick($event)">{{'FEEDS.EVENTS_ALL' | libTranslate}}</a>
+    </div>
+
+    <ng-template #additionalFeeds>
+      <div *ngIf="hasMore && !isHeader" class="bottom-container">
+        <span class="link-plain"
+              (click)="showMore($event)">{{'FEEDS.SHOW_MORE' | libTranslate}}</span>
+      </div>
+    </ng-template>
+</div>
+
+<div *ngIf="addFeedsIsLoading" class="bottom-container">
+  <lib-throbber-hexagon [size]="'medium'"></lib-throbber-hexagon>
+</div>
+
+<div *ngIf="isFeedsEmpty() && !isMain()" class="empty-feeds">
+  <div class="flex-container-md align-items-center-md text-center text-left-md">
+    <div class="mr-md-40 mb-sm-20">
+      <img [src]="config.staticDomainLibAssetsPath + 'svg/messages/rabbit.svg'" class="message-image" alt="">
+    </div>
+    <h3 class="title-h3">{{emptyMessageTitle | libTranslate}}</h3>
+  </div>
+</div>
+
+<ng-template #feedTemplate let-feed="feed" let-i="i">
+  <div class="flex-container-md flex-container-lg align-items-center-lg feed-item-content">
+    <div class="feed-link flex-container align-items-center-md">
+      <div class="feed-type-block flex-container align-items-center">
+        <lib-feed-icon [ipshStatus]="getIpshStatus(feed)" [title]="feed.title" [status]="feed.status"></lib-feed-icon>
+        <div *ngIf="page !== 'orders' && page !== 'drafts'" class="ml-24">
+          <div class="text-plain">{{getFeedTypeName(feed.feedType)}}</div>
+          <div class="small-text gray mt-4">
+            <div *ngIf="isSnippetTypeIM(feed)" [innerHTML]="feed.date | timeToEvent:getSnippetType(feed):'':inlineDate"></div>
+            <div *ngIf="isSnippetTypeNotIM(feed)" [innerHTML]="feed.date | timeToEvent:getSnippetType(feed):feed.feedType:inlineDate"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feed-info-block flex-1 mt-sm-16 ml-md-16">
+        <div *ngIf="isEqueueEvent(feed) else showAnotherFeeds">
+          <h4 class="feed-title text-plain truncate">
+            <span [innerHTML]="feed.title | highlight: search"></span>
+            <ng-container *ngIf="getSnippetsDate(feed)">
+              на <span class="capitalize">{{getSnippetsDate(feed)}}</span>
+            </ng-container>
+          </h4>
+          <ng-container *ngIf="getSnippetsOrgName(feed) as orgName">
+            <p class="small-text gray truncate mt-4" [innerHTML]="orgName | removeQuotes | highlight: search"></p>
+          </ng-container>
+        </div>
+        <ng-template #showAnotherFeeds>
+          <ng-container *ngIf="!isDraft(feed) else draftFeed">
+            <ng-container *ngIf="feed.feedType !== 'FEEDBACK' else feedbackFeed">
+              <div class="flex-container">
+                <h4 class="feed-title text-plain truncate" [innerHTML]="setHeader(feed) | removeQuotes | highlight: search"></h4>
+              </div>
+              <p class="small-text gray truncate mt-4" [innerHTML]="setSubHeader(feed) | removeQuotes | highlight: search"></p>
+            </ng-container>
+            <ng-template #feedbackFeed>
+              <h4 class="feed-title text-plain truncate">{{getFeedbackStatus(feed)}}</h4>
+              <p class="small-text gray truncate mt-4">
+                Обращение №<span [innerHTML]="feed.subTitle | removeColon | removeQuotes | highlight: search"></span>
+                &nbsp;"<span class="feed-theme" [innerHTML]="feed.title | removeQuotes | highlight: search"></span>"
+                <span *ngIf="feed.data.channel === 'PSO'"> через чат</span>
+                <span *ngIf="feed.data.channel === 'CHAT'"> через мессенджер</span>
+              </p>
+            </ng-template>
+          </ng-container>
+          <ng-template #draftFeed>
+            <h4 class="feed-title text-plain truncate" [innerHTML]="(feed.title + ' ' + feed.subTitle) | removeQuotes | highlight: search"></h4>
+          </ng-template>
+          <div class="small-text gray truncate mt-4" *ngIf="showExpiryForLk(feed)">{{feed.data.expiryDate | timeLeft}}</div>
+        </ng-template>
+
+        <div *ngIf="isOrderCreator(feed) && !isMyOrderOrDraft(feed)" class="mt-8">
+          <ng-container [ngTemplateOutlet]="author"
+                        [ngTemplateOutletContext]="{feed: feed}"></ng-container>
+        </div>
+      </div>
+
+      <div *ngIf="actionsEnabled()" class="feed-activities-block text-right-md">
+        <div *ngIf="showArchiveFeedButton(feed)" class="feed-action archive-feed">
+          <lib-icon-action [icon]="config.staticDomainLibAssetsPath + (isArchive ? 'svg/icons/return-gray.svg' : 'svg/icons/archive-gray.svg')"
+                           [hoverIcon]="config.staticDomainLibAssetsPath + (isArchive ? 'svg/icons/return-blue.svg' : 'svg/icons/archive-blue.svg')"
+                           [text]="isArchive ? 'Вернуть' : 'В архив'"
+                           (clickAction)="moveInArchive(feed, i)"></lib-icon-action>
+        </div>
+        <div *ngIf="showRemoveFeedButton(feed)" class="feed-action remove-feed">
+          <lib-icon-action *ngIf="!feed.removeInProgress && !removeInProgress"
+                           [icon]="config.staticDomainLibAssetsPath + 'svg/icons/bin-gray.svg'"
+                           [hoverIcon]="config.staticDomainLibAssetsPath + 'svg/icons/bin-blue.svg'"
+                           [text]="'Удалить'"
+                           (clickAction)="checkRemoveFeed($event, feed, i)"></lib-icon-action>
+          <lib-throbber *ngIf="feed.removeInProgress" [contextClass]="'feed-throbber'" [size]="'throbber-small'"></lib-throbber>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="checkSnippetsExists(feed) && notEqueueType(feed, page)">
+    <div *ngFor="let snippet of feed.data.snippets">
+      <ng-container *ngIf="snippet.type === 'CUSTOM' else defaultSnippets">
+        <div class="custom-snippet-wrap text-plain">
+          <ng-container *ngIf="snippet?.json?.programName; else customProgramSnippet">
+            <div class="mt-8">
+              <div class="text-plain small-text">
+                {{snippet?.json?.firstName}} {{snippet?.json?.lastName}}{{snippet?.json?.years ? ', ' + snippet?.json?.years : ''}}
+              </div>
+              <div *ngIf="snippet?.json?.programName" class="text-plain small-text mt-4">
+                <span>Программа</span>: {{snippet.json.programName}}
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #customProgramSnippet>
+            <div *ngIf="snippet?.json?.suzName" class="small-text bold mb-8 mt-8">{{snippet.json.suzName}}</div>
+            <ul class="feed-suz-list" *ngIf="snippet?.json?.specialties?.length" [class.over-three-specialty]="snippet?.json?.specialties?.length > 3">
+              <ng-container *ngFor="let specialty of snippet?.json?.specialties | slice: 0: 3">
+                <ng-container *ngFor="let item of specialty | keyvalue">
+                  <li class="feed-suz-list-item">{{item.key}}</li>
+                </ng-container>
+              </ng-container>
+            </ul>
+          </ng-template>
+        </div>
+      </ng-container>
+      <ng-template #defaultSnippets>
+        <lib-snippets
+          *ngIf="showSnippets(snippet, feed)"
+          [snippet]="snippet"
+          [feed]="feed">
+        </lib-snippets>
+      </ng-template>
+    </div>
+  </ng-container>
+</ng-template>
+
+<ng-template #author let-feed="feed">
+  <div *ngIf="isFormattedLoginName(feed)" class="small-text" [ngClass]="{gray: page === 'drafts'}">
+    {{'FEEDS.AUTHOR' | libTranslate}}: {{feed.data.orderCreator.formattedLoginName}}
+    <span *ngIf="isBranchNameExists(feed)">({{feed.data.branch.name}})</span>
+  </div>
+  <div *ngIf="feed.data.orderDescription" class="mt-4">
+    <div [innerHTML]="feed.data.orderDescription | removeTags:150 | highlight: search" class="small-text"></div>
+  </div>
+</ng-template>

@@ -1,0 +1,127 @@
+.width-container {
+  display: inline-block;
+  width: 100%;
+  position: static;
+}
+@import '../plain-input/plain-input.component';
+.text-control {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  .input-container {
+    display: inline-block;
+    width: 100%;
+  }
+  .text-input {
+    padding-right: 16px;
+  }
+  .buttons-container {
+    position: absolute;
+    width: auto;
+    height: 52px;
+    top: 0;
+    right: 16px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    &.multiline {
+      top: 3px;
+    }
+  }
+  .clear-button {
+    width: 24px;
+    height: 24px;
+    margin-top: 14px;
+    cursor: pointer;
+    background: url(../../../assets/svg/input-clean.svg) 0 no-repeat;
+  }
+  .validation-container, .tip-container, .clickable-question-tip {
+    width: 32px;
+    height: 24px;
+    margin-top: 14px;
+    padding-left: 4px;
+  }
+  .clickable-question-tip {
+    cursor: pointer;
+  }
+  .password-eye {
+    width: 32px;
+    height: 24px;
+    margin-top: 11px;
+    padding-left: 4px;
+    cursor: pointer;
+    background: url(../../../assets/svg/password-eye-closed.svg) 4px 0 no-repeat;
+    &.password-visible {
+      background: url(../../../assets/svg/password-eye-open.svg) 4px 0 no-repeat;
+    }
+  }
+}
+.text-control.withClearButton .text-input {                                     // крестик
+  padding-right: 36px; //8+24+4
+}
+.text-control.withValidationError .text-input,                                  // ошибка
+.text-control.withTip .text-input,                                              // ?
+.text-control.passwordField .text-input {                                       // глаз
+  padding-right: 44px; //8+32+4
+}
+.text-control.withValidationError.withClearButton .text-input,                 // крестик + ошибка
+.text-control.withTip.withClearButton .text-input,                             // крестик + ?
+.text-control.passwordField.withClearButton .text-input {                      // крестик + глаз
+  padding-right: 68px; //8+24+32+4
+}
+.text-control.passwordField.withValidationError .text-input,                   // глаз + ошибка
+.text-control.passwordField.withTip .text-input,                               // глаз + ?
+.text-control.withValidationError.withTip .text-input {                        // ошибка + ?
+  padding-right: 76px; //8+32+32+4
+}
+.text-control.passwordField.withValidationError.withClearButton .text-input,  // крестик + глаз + ошибка
+.text-control.passwordField.withTip.withClearButton .text-input,              // крестик + глаз + ?
+.text-control.withValidationError.withTip.withClearButton .text-input {       // крестик + ошибка + ?
+  padding-right: 100px; //8+24+32+32+4
+}
+.text-control.passwordField.withValidationError.withTip .text-input {         // глаз + ошибка + ?
+  padding-right: 108px; //8+32+32+32+4
+}
+.text-control.passwordField.withValidationError.withTip.withClearButton .text-input {// крестик + глаз + ошибка + ?
+  padding-right: 132px; //8+24+32+32+32+4
+}
+
+.bg-white {
+  .text-input {
+    background: #FFFFFF;
+    &.invalid {
+      background: rgba(238, 63, 88, 0.16);
+    }
+    &.focused {
+      background: #FFFFFF;
+    }
+  }
+}
+.shadow {
+  .text-input {
+    box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
+  }
+}
+.with-active-icon {
+  .text-input {
+    padding-right: 52px;
+    &.clearable {
+      padding-right: 92px;
+    }
+  }
+  .clear-button {
+    border-right: 2px solid #9DACCE;
+    right: 38px;
+    padding-right: 14px;
+    width: 38px;
+    position: absolute;
+  }
+
+  &.big-icon {
+    .clear-button {
+      height: 32px;
+      margin-top: 16px;
+      right: 56px;
+    }
+  }
+}

@@ -1,0 +1,20 @@
+<div class="catalog-tab">
+  <div [class.catalog-mob]="mobile" class="catalog-tab-wrap">
+    <div class="catalog-link-wrap">
+        <lib-catalog-tabs-list
+          viewType="main-page-view"
+          [catalog]="catalog"
+          (catalogTabListItemClick)="catalogTabListItemClick($event)"
+        >
+        </lib-catalog-tabs-list>
+    </div>
+    <ng-container *ngIf="showCatalogTabItem">
+      <lib-catalog-tab-item
+        viewType="main-page-view"
+        (catalogClose)="closeCatalog()"
+        [code]="currentCategoryCode"
+      >
+      </lib-catalog-tab-item>
+    </ng-container>
+  </div>
+</div>

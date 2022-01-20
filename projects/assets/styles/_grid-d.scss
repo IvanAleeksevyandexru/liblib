@@ -1,0 +1,91 @@
+$col-count: 2;
+$col-lg-count: 12;
+
+@mixin grid($prefix, $col-count) {
+  @for $i from 1 through $col-count {
+    .col-d#{$prefix}-#{$i} {
+      /* autoprefixer grid: ignore next */
+      grid-column-end: span $i;
+    }
+  }
+
+  @for $i from 1 through $col-count - 1 {
+    .push-d#{$prefix}-#{$i} {
+      /* autoprefixer grid: ignore next */
+      grid-column-start: $i + 1;
+    }
+  }
+}
+.container-d {
+  box-sizing: border-box;
+  padding: 0 16px;
+  margin: 0 auto;
+}
+
+.grid-row-d {
+  display: grid;
+  grid-template-columns: repeat($col-count, 1fr);
+  grid-template-rows: auto;
+  grid-gap: 32px;
+
+  @include grid('', $col-count);
+}
+
+.grid-d-none {
+  display: block;
+}
+
+@media all and (min-width: 1216px) {
+  .container-d, .container-d-lg {
+    max-width: 1216px;
+    padding: 0;
+    margin: 0 auto;
+  }
+
+  .grid-row-d,
+  .grid-row-d-lg {
+    display: grid;
+    grid-template-columns: repeat($col-lg-count, 1fr);
+    grid-template-rows: auto;
+    grid-gap: 32px;
+
+    @include grid('-lg', $col-lg-count);
+  }
+
+  .grid-d-none-lg {
+    display: block;
+  }
+}
+
+@media print {
+  @mixin grid($prefix, $col-count) {
+    @for $i from 1 through $col-count {
+      .col-d#{$prefix}-#{$i} {
+        /* autoprefixer grid: ignore next */
+        grid-column-end: span $i;
+      }
+    }
+
+    @for $i from 1 through $col-count - 1 {
+      .push-d#{$prefix}-#{$i} {
+        /* autoprefixer grid: ignore next */
+        grid-column-start: $i + 1;
+      }
+    }
+  }
+
+  .container-d {
+    box-sizing: border-box;
+    padding: 0 16px;
+    margin: 0;
+  }
+
+  .grid-row-d {
+    display: grid;
+    grid-template-columns: repeat($col-count, 1fr);
+    grid-template-rows: auto;
+    grid-gap: 32px;
+
+    @include grid('', $col-count);
+  }
+}

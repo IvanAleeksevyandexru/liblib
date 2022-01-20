@@ -1,0 +1,39 @@
+.tabs-container {
+  position: relative;
+}
+
+.tabs-box {
+  border-bottom: 1px solid #E5EAF5;
+}
+
+.tab-wrapper {
+  cursor: pointer;
+  padding-bottom: 8px;
+
+  &.active {
+    border-bottom: 3px solid #0D4CD3;
+
+    & .tab-item {
+      color: #0B1F33;
+    }
+  }
+
+  & .tab-item {
+    color: #0D4CD3;
+    margin: 0 10px;
+  }
+}
+
+::ng-deep {
+  .ps__rail-x {
+    display: none!important;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .tab-wrapper {
+    & .tab-item {
+      margin: 0 24px;
+    }
+  }
+}
