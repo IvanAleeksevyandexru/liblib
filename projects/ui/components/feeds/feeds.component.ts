@@ -265,14 +265,16 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         this.feedsIsLoading = false;
         this.addFeedsIsLoading = false;
         this.hasMore = feeds.hasMore;
+        this.feeds = this.feeds.filter((item) => {
+          if (item.feedType === 'SIGN') {
+            return !['AL10', 'AL15'].includes(this.loadService.user.assuranceLevel);
+          }
+          return true;
+        });
         this.feeds.forEach((item, index) => {
           if (item.feedType === 'SIGN') {
-            if (!!['AL10', 'AL15'].includes(this.loadService.user.assuranceLevel)) {
-              this.feeds.splice(index, 1);
-            } else {
-              item.title = item.title || this.titlesMap[item.status];
-              item.status = this.statusesMap[item.status] || item.status;
-            }
+            item.title = item.title || this.titlesMap[item.status];
+            item.status = this.statusesMap[item.status] || item.status;
           }
         });
         this.emitEmptyFeedsEvent();
