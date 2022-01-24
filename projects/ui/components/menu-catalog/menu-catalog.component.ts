@@ -135,7 +135,9 @@ export class MenuCatalogComponent implements OnInit, OnChanges, OnDestroy {
     this.showMenu = manualClose ? !manualClose : !this.showMenu;
     this.disableScroll(this.showMenu, allResolutions);
     this.menuCatalogOpened.emit(this.showMenu);
-    this.yaMetricService.callReachGoal('header', { 'header': ['Левое меню'] });
+    if (this.showMenu) {
+      this.yaMetricService.callReachGoal('header', { 'header': ['Левое меню'] });
+    } 
   }
 
   public catalogTabListItemClick(item: CatalogData) {
