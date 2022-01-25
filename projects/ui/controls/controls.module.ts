@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     CapitalLetterModule,
-    DeclineModule, FileSizeModule,
+    DeclineModule, FileExtModule, FileSizeModule,
     LimitNumberModule,
     PipedMessageModule,
     SafeHtmlModule,
@@ -30,6 +30,7 @@ import { VirtualScrollModule } from '@epgu/ui/components/virtual-scroll';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { DropdownSimpleComponent } from './dropdown-simple/dropdown-simple.component';
 import { FileUploaderComponent } from './file-uploader/file-uploader.component';
+import { FileDropControlComponent } from './file-drop-control/file-drop-control.component';
 import { FilteredListComponent } from './filtered-list/filtered-list.component';
 import { LookupComponent } from './lookup/lookup.component';
 import { MonthPickerComponent } from './month-picker/month-picker.component';
@@ -45,6 +46,8 @@ import { StandardInputComponent } from './standard-input/standard-input.componen
 import { StandardMaskedInputComponent } from './standard-masked-input/standard-masked-input.component';
 import { TextMaskModule } from 'angular2-text-mask';
 import { InvalidResultsTipModule } from '@epgu/ui/components/invalid-results-tip';
+import { ThrobberHexagonModule } from '@epgu/ui/components/throbber-hexagon';
+import { FileModule } from '@epgu/ui/components/file';
 
 
 @NgModule({
@@ -58,6 +61,7 @@ import { InvalidResultsTipModule } from '@epgu/ui/components/invalid-results-tip
     DropdownComponent,
     DropdownSimpleComponent,
     FileUploaderComponent,
+    FileDropControlComponent,
     FilteredListComponent,
     LookupComponent,
     MonthPickerComponent,
@@ -97,6 +101,9 @@ import { InvalidResultsTipModule } from '@epgu/ui/components/invalid-results-tip
         InvalidResultsTipModule,
         TrimFileTypesModule,
         CapitalLetterModule,
+        ThrobberHexagonModule,
+        FileModule,
+        FileExtModule
     ],
   exports: [
     AutocompleteComponent,
@@ -108,6 +115,7 @@ import { InvalidResultsTipModule } from '@epgu/ui/components/invalid-results-tip
     DropdownComponent,
     DropdownSimpleComponent,
     FileUploaderComponent,
+    FileDropControlComponent,
     FilteredListComponent,
     LookupComponent,
     MonthPickerComponent,

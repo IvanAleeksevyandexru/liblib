@@ -7,6 +7,7 @@ export * from './date-picker/index';
 export * from './dropdown/index';
 export * from './dropdown-simple/index';
 export * from './file-uploader/index';
+export * from './file-drop-control/index';
 export * from './filtered-list/index';
 export * from './lookup/index';
 export * from './month-picker/index';
