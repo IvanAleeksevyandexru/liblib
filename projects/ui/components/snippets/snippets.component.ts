@@ -57,7 +57,7 @@ export class SnippetsComponent implements OnInit {
       'snippet-pay': snippet.type === 'PAYMENT' && !feed.data.reminder,
       'snippet-im': snippet.type === 'IM',
       'snippet-invite': snippet.type === 'INVITE',
-      'status-rejected': snippet.status === 'REJECT',
+      'status-rejected': snippet.status === 'REJECT' || snippet.status === 'CANCELLED',
     };
   }
 
@@ -70,7 +70,7 @@ export class SnippetsComponent implements OnInit {
   }
 
   public equeueIsRejected(snippet: SnippetModel) {
-    return snippet.status === 'REJECT';
+    return snippet.status === 'REJECT' || snippet.status === 'CANCELLED';
   }
 
   public isSnippetAddress(snippet: SnippetModel, feed: FeedModel): boolean {
@@ -92,7 +92,7 @@ export class SnippetsComponent implements OnInit {
   }
 
   public getEqueueInfo(snippet: SnippetModel, feed: FeedModel): string {
-    if (snippet.status === 'REJECT') {
+    if (snippet.status === 'REJECT' || snippet.status === 'CANCELLED') {
       return snippet.comment;
     }
     const hasAddress = this.isSnippetAddress(snippet, feed);
