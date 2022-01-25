@@ -118,6 +118,7 @@ export class MenuService {
       'HEADER.MENU.SETTINGS': `${lkUrl}settings/account`,
       'HEADER.MENU.SETTINGS_MENU': `${lkUrl}settings/account`,
       'HEADER.MENU.LOGIN_ORG': `${appContext === 'PARTNERS' ? '/' : lkUrl}roles`,
+      'HEADER.MENU.LOGIN_ORG_FROM_PERSON': `${appContext === 'PARTNERS' ? '/' : lkUrl}roles`,
       'HEADER.MENU.SERVICE_CENTERS': `${partnersHost}service-centers`,
       'HEADER.MENU.POWERS': `${partnersHost}powers`,
       'HEADER.MENU.ACCESS_GROUPS': `${partnersHost}access-groups`,
