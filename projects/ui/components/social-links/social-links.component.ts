@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LoadService } from '@epgu/ui/services/load';
 
 @Component({
@@ -8,6 +8,10 @@ import { LoadService } from '@epgu/ui/services/load';
 })
 export class SocialLinksComponent implements OnInit {
 
+  @Input() public footerSocial = false;
+
+  @Output() public footerClickEmitter = new EventEmitter();
+
   public config = this.loadService.config;
 
   constructor(
@@ -15,6 +19,17 @@ export class SocialLinksComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
+  }
+
+  public openSocial(event: Event, socialType: 'vk' | 'ok' | 'facebook' | 'youtube' | 'tg'): void {
+    if (this.footerSocial) {
+      event.preventDefault();
+      this.footerClickEmitter.emit({
+        title: socialType,
+        url: this.config.socialNetworks[socialType === 'facebook' ? 'fb' : socialType],
+        target: '_blank'
+      });
+    }
   }
 
 }

@@ -32,13 +32,24 @@
               </li>
             </ng-container>
           </ng-container>
-          <li class="item justify-between align-items-center"
-               (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">
-            <div class="flex-container">
-              <div class="icon person"></div>
-              <span class="text-plain">{{titleChangeRole | libTranslate}}</span>
-            </div>
-          </li>
+          <ng-container *ngIf="user.type === 'L' || user.type === 'B'; else orgItemList">
+            <li class="item justify-between align-items-center"
+                (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG', 'loginAsOrganization')">
+              <div class="flex-container">
+                <div class="icon person"></div>
+                <span class="text-plain">{{titleChangeRole | libTranslate}}</span>
+              </div>
+            </li>
+          </ng-container>
+          <ng-template #orgItemList>
+            <li class="item justify-between align-items-center"
+                (click)="menuStaticItemClick('HEADER.MENU.LOGIN_ORG_FROM_PERSON', 'loginAsOrganization')">
+              <div class="flex-container">
+                <div class="icon suitecase"></div>
+                <span class="text-plain">{{titleChangeRole | libTranslate}}</span>
+              </div>
+            </li>
+          </ng-template>
           <li class="item justify-between align-items-center"
               (click)="logout()">
             <div class="flex-container">
