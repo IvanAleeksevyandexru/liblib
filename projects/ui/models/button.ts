@@ -2,7 +2,7 @@ export interface IButton {
   /** Тип: кнопка, ссылка, с иконкой поиска.
    *  По умолчанию - кнопка(button)
    */
-  type?: 'button' | 'anchor' | 'search' | 'new-search';
+  type?: 'button' | 'anchor' | 'search' | 'new-search' | 'inline';
   /** Размер. По умолчанию - маленький('') */
   size?: 'md' | 'lg' | '';
   /** Цвет заливки:по умолчанию - синий */

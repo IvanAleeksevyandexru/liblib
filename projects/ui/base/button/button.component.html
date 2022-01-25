@@ -34,4 +34,7 @@
     [ngClass]="{disabled: disabled, active: active}">
     <span class="icon"></span>
   </button>
+  <button *ngIf="type === 'inline'" type="button" class="link-plain {{type}}">
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </button>
 </div>
