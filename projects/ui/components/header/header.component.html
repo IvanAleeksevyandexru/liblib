@@ -1,4 +1,4 @@
-<div class="header merge-header">
+<div class="header merge-header"  *ngIf="headerService.visible | async">
   <div class="inner container flex-container justify-between align-items-center">
     <div class="logo-n-type-page-container flex-container align-items-center">
       <div class="catalog-menu-wrap" [class.hide-burger-desk]="hideBurgerDesc" *ngIf="showBurger">
