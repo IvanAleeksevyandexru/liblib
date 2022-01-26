@@ -29,6 +29,7 @@ import { LibTranslateService } from '@epgu/ui/services/translate';
 import { UserHelperService } from '@epgu/ui/services/user-helper';
 import { ConfirmActionComponent } from '@epgu/ui/components/confirm-action';
 import { ModalService } from '@epgu/ui/services/modal';
+import { HealthService } from '@epgu/ui/services/health';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -70,6 +71,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   private loadedFeedsCount = 0;
   private showMoreCount = 0;
   private afterFirstSearch = false;
+  public currentFeedsPage = 1;
   private statusesMap = {
     NEW: 'in_progress',
     REQUEST: 'in_progress',
@@ -137,6 +139,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     private userHelper: UserHelperService,
     private modalService: ModalService,
     private moduleRef: NgModuleRef<any>,
+    private healthService: HealthService
   ) {
   }
 
@@ -178,6 +181,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
 
   public showMore($evt?): void {
     if (this.feeds && this.feeds.length && this.hasMore) {
+      this.currentFeedsPage += 1;
       this.addFeedsIsLoading = true;
       const last = this.feeds[this.feeds.length - 1];
       const date = last.date;
@@ -194,10 +198,37 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     this.feeds = [];
   }
 
+  private startHealthMetric(): void {
+    if (this.page === 'events' || this.page === 'orders') {
+      this.healthService.measureStart(this.getEventName(this.currentFeedsPage));
+    }
+  }
+
+  private getEventName(pageNumber: number): string {
+    if (this.search) {
+      return 'search';
+    }
+    return pageNumber > 1 ? `next_${pageNumber}` : 'first';
+  }
+
+  private endHealthMetric(errorStatus = 0): void {
+    if (this.page === 'events' || this.page === 'orders') {
+      this.healthService.measureEnd(
+        this.getEventName(this.currentFeedsPage),
+        errorStatus !== 0 ? 1 : 0,
+        {
+          BrowserError: errorStatus !== 0 ? errorStatus : 'OK'
+        },
+        'feeds'
+      );
+    }
+  }
+
   public getFeeds(lastFeedId: number | string = '', lastFeedDate: Date | string = '', query = '', pageSize = ''): void {
     this.afterFirstSearch = true;
     this.allFeedsLoaded = false;
     this.searching.emit(true);
+    this.startHealthMetric();
     this.feedsSubscription = this.feedsService.getFeeds({
       isArchive: this.getIsArchive(),
       isHide: this.isHide,
@@ -279,11 +310,13 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
         });
         this.emitEmptyFeedsEvent();
         this.loadedFeedsCount += this.feeds.length;
+        this.endHealthMetric();
         this.yaMetricOnSearch(query);
         this.yaMetricOnFilter();
         this.changeDetector.detectChanges();
-      }, () => {
+      }, (error) => {
         this.feedsIsLoading = false;
+        this.endHealthMetric(error?.status);
         this.serviceError.emit(true);
       });
   }
