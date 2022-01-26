@@ -156,6 +156,21 @@ a, button {
   &.loader {
     min-width: 100px;
   }
+
+  &.inline {
+    padding: 0;
+    background-color: transparent;
+    color: #0D4CD3;
+
+    &:active,
+    &.active {
+      color: #1D5DEB;
+    }
+
+    &:focus {
+      color: #1D5DEB;
+    }
+  }
 }
 
 .small-paddings {
