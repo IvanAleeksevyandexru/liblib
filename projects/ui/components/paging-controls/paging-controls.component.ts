@@ -1,9 +1,19 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 
 @Component({
   selector: 'lib-paging-controls',
   templateUrl: 'paging-controls.component.html',
-  styleUrls: ['./paging-controls.component.scss']
+  styleUrls: ['./paging-controls.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PagingControlsComponent implements OnInit, OnChanges {
 
@@ -17,8 +27,8 @@ export class PagingControlsComponent implements OnInit, OnChanges {
 
   // привязка к размеру/общей длине массива итемов, дсотупных для отображения
   @Input() public count = 0;
-  @Input() public pageSize = 20;
-  @Input() public pageSizeList = [20];
+  @Input() public pageSize = 5;
+  @Input() public pageSizeList = [5, 10, 15, 20, 25, 50, 100, 150, 200, 500, 1000];
   // внешняя привязка к activePage, внутренняя страница пассивна и следует за изменениями страницы из вне
   @Input() public activePage = 1;
 
@@ -49,6 +59,7 @@ export class PagingControlsComponent implements OnInit, OnChanges {
           break;
         }
         case 'count': {
+          this.updatePageSizeList();
           this.updateCount();
           break;
         }
@@ -63,8 +74,7 @@ export class PagingControlsComponent implements OnInit, OnChanges {
           break;
         }
         case 'pageSizeList': {
-          this.innerPageSizeList = this.pageSizeList.filter(item => item <= this.count);
-          this.updateControls();
+          this.updatePageSizeList();
         }
       }
     }
@@ -106,6 +116,19 @@ export class PagingControlsComponent implements OnInit, OnChanges {
     if (conditionMet) {
       this.setPage(value);
     }
+  }
+
+  private updatePageSizeList(): void {
+    let lastFilterIndex = 0;
+    this.innerPageSizeList = this.pageSizeList.filter((item, index) => {
+      if (item < this.count){
+        lastFilterIndex = index;
+        return true;
+      } else if (lastFilterIndex > 0 && lastFilterIndex === index - 1) {
+        return true;
+      }
+    });
+    this.updateControls();
   }
 
   private updateControls() {
