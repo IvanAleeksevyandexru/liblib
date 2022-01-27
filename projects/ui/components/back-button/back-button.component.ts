@@ -1,9 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import { Location } from '@angular/common';
+import {Location} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
-import { CountersService } from '@epgu/ui/services/counters';
-import { map, takeUntil } from 'rxjs/operators';
-import { Observable, ReplaySubject } from 'rxjs';
+import {CountersService} from '@epgu/ui/services/counters';
 
 
 @Component({
@@ -11,7 +9,7 @@ import { Observable, ReplaySubject } from 'rxjs';
   templateUrl: './back-button.component.html',
   styleUrls: ['./back-button.component.scss']
 })
-export class BackButtonComponent implements OnInit, OnDestroy {
+export class BackButtonComponent implements OnInit {
 
   @Input() public view?: 'link' | 'button' | 'custom' | 'custom-button' = 'link';
   @Input() public handle?: string;
@@ -19,13 +17,6 @@ export class BackButtonComponent implements OnInit, OnDestroy {
   @Input() public title?: string; // вместо дефолтного с переводом через appTranslate
 
   @Output() public customClick = new EventEmitter<void>();
-
-  private destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
-  private backUrl?: string;
-  private backUrl$: Observable<string> = this.route.params.pipe(
-    takeUntil(this.destroy),
-    map(result => result.back_url || '')
-  );
 
   constructor(
     private location: Location,
@@ -36,17 +27,8 @@ export class BackButtonComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.backUrl$.subscribe(
-      url => {
-        this.backUrl = url;
-      }
-    );
   }
 
-  public ngOnDestroy(): void {
-    this.destroy.next(null);
-    this.destroy.complete();
-  }
 
   public goBack(event: Event): void {
     if (event) {
@@ -55,8 +37,9 @@ export class BackButtonComponent implements OnInit, OnDestroy {
     if (this.updateCounters) {
       this.update();
     }
-    if (this.backUrl) {
-      window.location.href = this.backUrl;
+    const backUrl = this.route.snapshot.queryParamMap.get('back_url') || '';
+    if (backUrl) {
+      window.location.href = backUrl;
     } else {
       if (this.handle) {
         this.router.navigateByUrl(this.handle);
