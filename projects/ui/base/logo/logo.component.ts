@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { LoadService } from '@epgu/ui/services/load';
+import { YaMetricService } from '@epgu/ui/services/ya-metric';
 
 @Component({
   selector: 'lib-logo',
@@ -15,10 +16,19 @@ export class LogoComponent implements OnInit {
   public url: string;
   public viewType = this.loadService.config.viewType;
 
-  constructor(private loadService: LoadService) { }
+  constructor(private loadService: LoadService, private yaMetricService: YaMetricService) { }
 
   public ngOnInit() {
     this.url = this.otherMainPage || this.loadService.config.baseUrl;
+  }
+
+  public clickHandler(e, url: string): void {
+    e.stopPropagation();
+    e.preventDefault();
+    this.yaMetricService.callReachGoal('header', { 'header': ['Главная'] }, () => {
+      window.location.href = url;
+    });
+
   }
 
 }

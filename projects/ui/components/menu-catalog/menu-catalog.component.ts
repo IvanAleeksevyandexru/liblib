@@ -18,6 +18,7 @@ import { SharedService } from '@epgu/ui/services/shared';
 import { User } from '@epgu/ui/models/user';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { HelperService } from '@epgu/ui/services/helper';
+import { YaMetricService } from '@epgu/ui/services/ya-metric';
 
 @Component({
   selector: 'lib-menu-catalog',
@@ -61,6 +62,7 @@ export class MenuCatalogComponent implements OnInit, OnChanges, OnDestroy {
     public catalogTabsService: CatalogTabsService,
     public sharedService: SharedService,
     public translate: TranslateService,
+    private yaMetricService: YaMetricService,
   ) {
   }
 
@@ -133,6 +135,9 @@ export class MenuCatalogComponent implements OnInit, OnChanges, OnDestroy {
     this.showMenu = manualClose ? !manualClose : !this.showMenu;
     this.disableScroll(this.showMenu, allResolutions);
     this.menuCatalogOpened.emit(this.showMenu);
+    if (this.showMenu) {
+      this.yaMetricService.callReachGoal('header', { 'header': ['Левое меню'] });
+    } 
   }
 
   public catalogTabListItemClick(item: CatalogData) {
@@ -166,7 +171,7 @@ export class MenuCatalogComponent implements OnInit, OnChanges, OnDestroy {
   public openLanguageMenu(evt: boolean) {
     if (evt) {
       const top = this.catalogMenu.nativeElement.scrollTop + 56;
-      setTimeout( () => this.catalogMenu.nativeElement.scrollTop = top, 0);
+      setTimeout(() => this.catalogMenu.nativeElement.scrollTop = top, 0);
     }
   }
 

@@ -161,6 +161,8 @@ export class HeaderComponent implements OnInit {
     if (this.psoContainer && (window as any).screen.width < 812) {
       this.psoContainer.style.display = 'none';
     }
+
+    this.yaMetricService.callReachGoal('header', { 'header': ['Правое меню'] });
   }
 
   public hideUserMenu() {
@@ -247,9 +249,11 @@ export class HeaderComponent implements OnInit {
     }, HIDE_TIMOUT);
   }
 
-  public sendMetric(name: string) {
-    this.yaMetricService.callReachGoal(name, {
-      screen: this.loadService.attributes.deviceType
+  public sendMetric(evt, url: string, name: string) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    this.yaMetricService.callReachGoal('header', { 'header': [name] }, () => {
+      window.location.href = url;
     });
   }
 }

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { GosbarService } from '@epgu/ui/services/gosbar';
 import { SharedService } from '@epgu/ui/services/shared';
 import { LocationService } from '@epgu/ui/services/location';
+import { YaMetricService } from '@epgu/ui/services/ya-metric';
 
 @Component({
   selector: 'lib-location-select',
@@ -18,6 +19,7 @@ export class LocationSelectComponent implements OnInit {
     private gosbarService: GosbarService,
     private sharedService: SharedService,
     private locationService: LocationService,
+    private yaMetricService: YaMetricService
   ) { }
 
   public ngOnInit(): void {
@@ -33,5 +35,6 @@ export class LocationSelectComponent implements OnInit {
 
   public handleClick() {
     this.gosbarService.popupLocation();
+    this.yaMetricService.callReachGoal('header', { 'header' : ['Город'] } );    
   }
 }
