@@ -20,8 +20,8 @@ $red: 'rgb(223, 0, 36)'; // #DF0024
     color: transparent!important;
     &:after {
       display: inline-block;
-      width: .55em;
-      margin-left: -.55em;
+      width: .58em;
+      margin-left: -.58em;
       @include regular-ruble($base);
     }
 
@@ -52,8 +52,8 @@ $red: 'rgb(223, 0, 36)'; // #DF0024
     color: transparent!important;
     &:after {
       display: inline-block;
-      width: .55em;
-      margin-left: -.55em;
+      width: .58em;
+      margin-left: -.58em;
       @include bold-ruble($base);
     }
 
