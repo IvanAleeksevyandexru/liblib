@@ -260,8 +260,10 @@ export class FileDropControlComponent
 
   public validate(control: AbstractControl): ValidationErrors | null {
     if (this.errorMessage || this.files?.some(file => file.error)) {
+      this.cdr.markForCheck();
       return { fileUploadInvalid: true };
     }
+    this.cdr.markForCheck();
     return null;
   }
   // CVA End <
