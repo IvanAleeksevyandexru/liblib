@@ -678,6 +678,7 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
       const items = this.items || [];
       const totalContentSize = items.reduce((acc, item) => acc + item.getItemHeight(), 0);
       this.virtualScrollComponent.setTotalContentSize(totalContentSize);
+      this.changeDetector.detectChanges();
     }
   }
 

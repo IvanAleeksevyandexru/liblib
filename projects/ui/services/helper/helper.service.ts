@@ -218,7 +218,8 @@ export class HelperService {
       return html;
     }
     let line = html;
-    const pattern = new RegExp('(' + (fromStartOnly ? '^' : '') + highlighQuery + ')', caseSensitive ? 'g' : 'gi');
+    const query = highlighQuery.replace(/\(/g, '\\(', ).replace(/\)/g, '\\)');
+    const pattern = new RegExp('(' + (fromStartOnly ? '^' : '') + query + ')', caseSensitive ? 'g' : 'gi');
     const matches = [];
     let match;
     do {

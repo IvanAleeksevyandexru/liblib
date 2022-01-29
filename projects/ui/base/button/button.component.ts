@@ -7,7 +7,7 @@ import { IButton } from '@epgu/ui/models';
   styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent implements OnInit, AfterViewChecked, IButton {
-  @Input() public type: 'button' | 'anchor' | 'search' | 'new-search' = 'button';
+  @Input() public type: 'button' | 'anchor' | 'search' | 'new-search' | 'inline' = 'button'; // тип: кнопка, ссылка, с иконкой поиска
   @Input() public size: 'md' | 'lg' | '' = '';
   @Input() public fontSize: number | null;
   @Input() public color: 'white' | 'transparent' | '' = '';
