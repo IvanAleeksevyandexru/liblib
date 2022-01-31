@@ -86,7 +86,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
   @Input() public validationShowOn: ValidationShowOn | string | boolean | any = ValidationShowOn.TOUCHED;
 
   @Input() public skipStreetFias: string[] = ['ec44c0ee-bf24-41c8-9e1c-76136ab05cbf'];
-  // выпадающий список список со странами
+  // выпадающий список со странами
   @Input() public countries: Array<ListItem | any> = [];
   // предзаполненное значение
   @Input() public defaultCountry: { id: string, [key: string]: any };
@@ -236,6 +236,9 @@ export class DadataWidgetComponent extends CommonController implements AfterView
           this.needReplaceQuery = false;
           this.query = '';
           this.canOpenFields.next(true);
+          this.dadataService.updateValidationPattern(true)
+        } else {
+          this.dadataService.updateValidationPattern(false)
         }
         this.form.get('index').setValidators(validators);
       });
@@ -461,7 +464,7 @@ export class DadataWidgetComponent extends CommonController implements AfterView
       !!this.normalizedData.address.elements.find(item => item.level === 4 && this.skipStreetFias.includes(item.fiasCode)) : false;
     this.dadataService.setErrorsByLevel(1, needSkipStreet);
     this.errorCodes = this.getErrorMessageCodes();
-    this.hasPatternError = !!Object.keys(this.formConfig).find(key => this.formConfig[key].regExpInvalid);
+    this.hasPatternError = !!Object.keys(this.formConfig).find(key => this.formConfig[key].regExpInvalid) || this.form.get('region').getError('pattern');
   }
 
   private getErrorMessageCodes(): Array<string> {
