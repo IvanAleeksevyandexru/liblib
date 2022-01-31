@@ -119,16 +119,18 @@ export class PagingControlsComponent implements OnInit, OnChanges {
   }
 
   private updatePageSizeList(): void {
-    let lastFilterIndex = 0;
-    this.innerPageSizeList = this.pageSizeList.filter((item, index) => {
-      if (item < this.count){
-        lastFilterIndex = index;
-        return true;
-      } else if (lastFilterIndex > 0 && lastFilterIndex === index - 1) {
-        return true;
-      }
-    });
-    this.updateControls();
+    if (this.pageSizeList?.length) {
+      let lastFilterIndex = 0;
+      this.innerPageSizeList = this.pageSizeList.filter((item, index) => {
+        if (item < this.count) {
+          lastFilterIndex = index;
+          return true;
+        } else if (lastFilterIndex > 0 && lastFilterIndex === index - 1) {
+          return true;
+        }
+      });
+      this.updateControls();
+    }
   }
 
   private updateControls() {
