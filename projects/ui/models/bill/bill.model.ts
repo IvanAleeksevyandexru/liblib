@@ -84,6 +84,8 @@ export enum BillsErrors {
 
 export type BillDiscounts = 'ACTUAL_FOR_STATE_DUTY' | 'ACTUAL_FOR_GIBDD' | 'EXPIRED_FOR_GIBDD';
 
+export type BillStorage = 'ORDER_BILL' | 'BILL';
+
 export interface BillsRequestParams {
   billIds?: number[];
   billNumber?: string;
@@ -123,6 +125,7 @@ export interface Bill {
     code: string;
     name: string;
   };
+  billStorage?: BillStorage;
   billSumm: BillSumm[];
   comment?: string;
   createDate?: string;
