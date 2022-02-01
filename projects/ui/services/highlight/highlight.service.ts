@@ -24,7 +24,7 @@ export class HighlightService {
         if (!win.find(text)) {
           count++;
           if (count < 5) {
-            setTimeout(check, 3000);
+            setTimeout(check, 400);
           }
         } else {
           document.designMode = 'on';
