@@ -24,7 +24,7 @@ export class HighlightService {
         if (!win.find(text)) {
           count++;
           if (count < 5) {
-            setTimeout(check, 400);
+            setTimeout(check, 3000);
           }
         } else {
           document.designMode = 'on';
@@ -32,7 +32,7 @@ export class HighlightService {
           sel.collapse(document.body, 0);
           while (win.find(text)) {
             document.execCommand('hiliteColor', false, color);
-            sel.collapseToEnd();
+            sel.collapseToStart();
           }
           document.designMode = 'off';
         }
