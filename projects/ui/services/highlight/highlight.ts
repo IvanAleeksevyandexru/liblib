@@ -36,14 +36,12 @@ export class HighlightService {
   }
 
   /** для всех страниц в приложении или большом компоненте */
-  public highlightTextFromQueryParam(paramName?: string | null, color?: string): Subscription {
+  public highlightTextFromQueryParam(paramName?: string | null, color?: string) {
     paramName = paramName || 'highlight';
-    return this.route.queryParams.subscribe(params => {
-      const text = params[paramName];
-      if (text) {          
-        this.highlight(text, color);
-      }
-    });
+    const text = this.route.snapshot.queryParamMap.get(paramName);
+    if (text) {          
+      this.highlight(text, color);
+    }
   }
 
   /** найти и подсветить текст на странице */
