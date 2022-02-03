@@ -1,1 +1,1 @@
-export * from './highlight.service';
+export * from './highlight';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Injectable({
@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs';
 })
 export class HighlightService {
   constructor(
-    private router: Router,
     private route: ActivatedRoute
   ) {
   }
@@ -20,24 +19,18 @@ export class HighlightService {
   private static doHighlight(text: string, color = '#DDF5E7'): void {
     const win = (window as any);
     if (win.find && win.getSelection) {
-      const check = () => {
-        if (!win.find(text)) {
-          count++;
-          if (count < 5) {
-            setTimeout(check, 400);
-          }
-        } else {
+      const check = () => {                    
+        if (win.find(text)) {
           document.designMode = 'on';
           const sel = win.getSelection();
           sel.collapse(document.body, 0);
           while (win.find(text)) {
             document.execCommand('hiliteColor', false, color);
-            sel.collapseToStart();
           }
+          sel.collapseToStart();
           document.designMode = 'off';
         }
       };
-      let count = 0;
       check();
     }
   }
@@ -47,7 +40,7 @@ export class HighlightService {
     paramName = paramName || 'highlight';
     return this.route.queryParams.subscribe(params => {
       const text = params[paramName];
-      if (text) {
+      if (text) {          
         this.highlight(text, color);
       }
     });
