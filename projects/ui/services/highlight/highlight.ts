@@ -39,8 +39,10 @@ export class HighlightService {
   public highlightTextFromQueryParam(paramName?: string | null, color?: string) {
     paramName = paramName || 'highlight';
     const text = this.route.snapshot.queryParamMap.get(paramName);
-    if (text) {          
-      this.highlight(text, color);
+    if (text) {   
+      setTimeout(() => {
+        this.highlight(text, color);
+      });       
     }
   }
 
