@@ -1,17 +1,17 @@
 {
   "name": "@epgu/ui",
-  "version": "3.0.399-2-front",
+  "version": "3.0.399-9-frontv3",
   "publishConfig": {
     "registry": "http://nexus.gosuslugi.local/content/repositories/npm-internal/",
     "access": "public"
   },
   "peerDependencies": {
-    "@angular/common": "12.2.6",
-    "@angular/core": "12.2.6",
-    "@angular/cdk": "12.2.6",
+    "@angular/common": "13.1.1",
+    "@angular/core": "13.1.1",
+    "@angular/cdk": "13.1.1",
     "angular2-text-mask": "9.0.0",
     "date-fns": "2.24.0",
-    "ngx-perfect-scrollbar": "8.0.0",
+    "ngx-perfect-scrollbar": "10.1.1",
     "@epgu/zipkin": "0.0.3",
     "zipkin-transport-http": "0.22.0"
   },

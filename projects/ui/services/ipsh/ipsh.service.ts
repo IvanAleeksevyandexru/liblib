@@ -248,6 +248,7 @@ export class IpshService {
           this.healthService.measureEnd('gibdd_photo', 0, {
             BrowserError: 'OK',
             utm_source: 'gibdd_photo_ok',
+            uin: params.uin,
             deptCode: params.div
           });
           this.yaMetricService.callReachGoal('gibdd_photo_ok');

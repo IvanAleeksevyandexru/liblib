@@ -24,7 +24,7 @@
 
   <ng-container *ngIf="!useButton">
     <a
-      [routerLink]=""
+      [routerLink]="[]"
       *ngIf="!onlyIcon"
       (click)="login()"
       [class.partners_link]="loadService.config.viewType === 'PARTNERS'"

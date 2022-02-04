@@ -8,6 +8,7 @@ import { MainPageContentInterface } from '@epgu/ui/models';
 import { FrameType } from '@epgu/ui/models';
 import { IMainData } from '@epgu/ui/models/main-data';
 import { User } from '@epgu/ui/models/user';
+import { LocationService } from '@epgu/ui/services/location';
 
 @Injectable({
   providedIn: 'root'
@@ -22,10 +23,13 @@ export class MainPageService {
   private mainBgType: BehaviorSubject<string> = new BehaviorSubject<string>('person');
   public mainBgType$ = this.mainBgType.asObservable();
 
-  constructor(private http: HttpClient,
-              private loadService: LoadService,
-              private cookieService: CookieService,
-              private searchService: SearchService) {
+  constructor(
+    private http: HttpClient,
+    private loadService: LoadService,
+    private cookieService: CookieService,
+    private searchService: SearchService,
+    private locationService: LocationService,
+  ) {
   }
 
   public getAll() {
@@ -76,11 +80,16 @@ export class MainPageService {
     return personType;
   }
 
-  public getMainBlocksData(): Observable<IMainData> {
+  public getMainBlocksData(isPortalMainPage?: boolean): Observable<IMainData> {
     if (this.mainBlocksData) {
       return of(this.mainBlocksData);
     }
-    return this.http.get<IMainData>(`${this.loadService.config.mainBlocksData}?type=person&_=${Math.random()}`, {
+    let region = ''; // нужен только главной портала. при переходах в ЛК или партнеры идет перезагрузка, поэтому сохраненные данные будут только внутри текущего домена
+    if (isPortalMainPage) {
+      region = this.locationService.getFederalOcato(this.cookieService.get('userSelectedRegion') || '00000000000');
+    }
+    const params = `type=person${region ? '&region=' + region : ''}&_=${Math.random()}`;
+    return this.http.get<IMainData>(`${this.loadService.config.mainBlocksData}?${params}`, {
       withCredentials: true
     });
   }

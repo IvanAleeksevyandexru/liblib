@@ -6,16 +6,15 @@ import { BaseModule } from '@epgu/ui/base';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    TranslatePipeModule,
-    BaseModule,
-  ],
-  declarations: [
-    EdsErrorComponent
-  ],
-  exports: [EdsErrorComponent],
-  entryComponents: [EdsErrorComponent],
+    imports: [
+        CommonModule,
+        TranslatePipeModule,
+        BaseModule,
+    ],
+    declarations: [
+        EdsErrorComponent
+    ],
+    exports: [EdsErrorComponent]
 })
 export class EdsErrorModule {
 }
