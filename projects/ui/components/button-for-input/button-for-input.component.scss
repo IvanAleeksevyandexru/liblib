@@ -46,6 +46,16 @@ button {
   }
 }
 
+.text-button {
+  display: inline;
+  width: auto;
+  background: none;
+  color: #0D4CD3;
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+}
+
 @keyframes rotate {
   to {
     transform: rotate(360deg);
