@@ -160,6 +160,10 @@ $checkbox-active-color: #0D4CD3;
     box-shadow: 0 0 1px $checked-color;
   }
 
+  input:disabled + .slider {
+    background-color: $non-checked-color;
+  }
+
   input:checked + .slider:before {
     transform: translateX($width - $height);
   }
