@@ -38,7 +38,7 @@ export class UserAvatarComponent implements OnInit {
     return this.role?.type === 'BUSINESS' || this.user.type === 'B';
   }
   public get isLegalRole(): boolean {
-    return this.role?.type === 'LEGAL' || this.user.type === 'L';
+    return this.role?.type === 'LEGAL' || this.role?.type === 'AGENCY' || this.user.type === 'L';
   }
 
   public get isPrivatePerson(): boolean {
