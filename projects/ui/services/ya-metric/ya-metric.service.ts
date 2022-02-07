@@ -16,7 +16,7 @@ export class YaMetricService {
   private isLoaded: boolean;
   private isErrorLoadYaMetricScript = new BehaviorSubject<boolean>(null);
   private isErrorLoadYaMetricScript$ = this.isErrorLoadYaMetricScript.asObservable();
-  private subs: { error?: Subscription, success?: () => void} = {};
+  private subs: { error?: Subscription } = {};
 
   public counter = 'unknown';
   public deviceType = 'desk';
@@ -180,14 +180,16 @@ export class YaMetricService {
     } else if (this.isErrorLoadYaMetricScript.getValue()) {
       return Promise.reject();
     }
+
     return new Promise((resolve, reject) => {
       this.subs.error = this.isErrorLoadYaMetricScript$.pipe(
         filter((res) => !!res)
       ).subscribe(() => {
         reject();
         this.unsub();
-      })
-      this.subs.success = this.renderer.listen('document', `yacounter${this.counter}inited`, (event: any) => {
+      });
+
+      this.renderer.listen('document', `yacounter${this.counter}inited`, (event: any) => {
         this.isLoaded = true;
         this.unsub();
         if (!isDevMode()) {
@@ -202,9 +204,6 @@ export class YaMetricService {
   }
 
   private unsub(): void {
-    if (typeof this.subs?.success === 'function') {
-      this.subs?.success();
-    }
     this.subs?.error?.unsubscribe();
   }
 
