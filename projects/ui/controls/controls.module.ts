@@ -130,7 +130,6 @@ import { FileModule } from '@epgu/ui/components/file';
     StandardInputComponent,
     StandardMaskedInputComponent
   ],
-  entryComponents: []
 })
 export class ControlsModule {
 }

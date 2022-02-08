@@ -5,19 +5,16 @@ import { TranslatePipeModule } from '@epgu/ui/pipes';
 import { BaseModule } from '@epgu/ui/base';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    TranslatePipeModule,
-    BaseModule
-  ],
-  declarations: [
-    AddressSaveModalComponent
-  ],
-  exports: [
-    AddressSaveModalComponent
-  ],
-  entryComponents: [
-    AddressSaveModalComponent
-  ]
+    imports: [
+        CommonModule,
+        TranslatePipeModule,
+        BaseModule
+    ],
+    declarations: [
+        AddressSaveModalComponent
+    ],
+    exports: [
+        AddressSaveModalComponent
+    ]
 })
 export class AddressSaveModalModule { }

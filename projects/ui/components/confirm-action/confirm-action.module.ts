@@ -6,16 +6,15 @@ import { BaseModule } from '@epgu/ui/base';
 import { ControlsModule } from '@epgu/ui/controls';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    TranslatePipeModule,
-    ControlsModule,
-    BaseModule
-  ],
-  declarations: [
-    ConfirmActionComponent
-  ],
-  exports: [ ConfirmActionComponent ],
-  entryComponents: [ ConfirmActionComponent ],
+    imports: [
+        CommonModule,
+        TranslatePipeModule,
+        ControlsModule,
+        BaseModule
+    ],
+    declarations: [
+        ConfirmActionComponent
+    ],
+    exports: [ConfirmActionComponent]
 })
 export class ConfirmActionModule { }

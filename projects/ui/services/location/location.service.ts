@@ -110,6 +110,19 @@ export class LocationService {
     };
   }
 
+  public getFederalOcato(okato: string): string {
+    const district = okato ? okato.substring(0, 5) : '';
+    let region = okato ? (okato.substring(0, 2) + '00') : '0000';
+    if (district.match('^711[0-38]\\d$')) {
+      region = '7110'; // Ханты-Мансийский автономный округ - Югра
+    } else if (district.match('^711[4-7]\\d$')) {
+      region = '7114'; // ЯНАО
+    } else if (district.match('^111\\d{2}$')) {
+      region = '1110'; // Ненецкий автономный округ
+    }
+
+    return region + '0000000';
+  }
 
   public getCoordsByAddress(addresses) {
     const out = addresses.map((item) => {
