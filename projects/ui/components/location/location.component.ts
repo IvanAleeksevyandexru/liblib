@@ -3,7 +3,7 @@ import { Modal } from '@epgu/ui/models';
 import { LocationService } from '@epgu/ui/services/location';
 import { Region } from '@epgu/ui/models';
 import { CookieService } from '@epgu/ui/services/cookie';
-import { ListItem, LookupProvider } from '@epgu/ui/models/dropdown';
+import { ListItem, LookupPartialProvider } from '@epgu/ui/models/dropdown';
 import { LoadService } from '@epgu/ui/services/load';
 
 @Component({
@@ -25,7 +25,7 @@ export class LocationComponent implements OnInit, OnDestroy {
   public searching = false;
   public showAutoDetect = false;
 
-  public searchProvider = this.locationService.getSearchRegionProvider() as LookupProvider;
+  public searchProvider = this.locationService.getSearchRegionProvider() as LookupPartialProvider;
   public searchItem: ListItem;
 
   private frame = document.getElementsByTagName('iframe')[0];
