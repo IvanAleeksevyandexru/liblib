@@ -1,33 +1,28 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'lib-file-extension-icon',
   templateUrl: './file-extension-icon.component.html',
   styleUrls: ['./file-extension-icon.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FileExtensionIconComponent implements OnInit {
-
+export class FileExtensionIconComponent {
   public extensionName: string;
-  @Input() public set extension(str) {
+  @Input() public set extension(str: string) {
     if (str) {
-      this.extensionName = this.getShotName(str.toUpperCase());
+      this.extensionName = this.getShortName(str.toUpperCase());
     } else {
       this.extensionName = 'x_x';
     }
   }
 
-  constructor() { }
-
-  public ngOnInit(): void {
-  }
-
-  private getShotName(extension) {
+  private getShortName(extension: string) {
     switch (extension) {
       case 'DOCX':
         return 'DOC';
       case 'PPTX':
         return 'PPT';
+      case 'APPLICATION/VND.MS-EXCEL':
       case 'XLSX':
         return 'XLS';
       case 'TIFF':

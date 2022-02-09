@@ -1,23 +1,33 @@
-<div class="page-controls {{classList}}">
-  <div class="first-page nav-button" *ngIf="tailButtons" [ngClass]="{disabled: currentPage === 1}" >
-    <a class="page-ref" (click)="setPageIf(1, currentPage !== 1)"></a>
-  </div>
-  <div class="prev-page nav-button" *ngIf="prevNextButtons" [ngClass]="{disabled: currentPage === 1}" >
-    <a class="page-ref" (click)="setPageIf(currentPage - 1, currentPage !== 1)"></a>
-  </div>
-  <ng-container *ngIf="numericButtons">
-    <div *ngFor="let page of numericControlStructure" class="nav-button page-item" [ngClass]="{'current-page': page === currentPage}">
-      <div *ngIf="page === -1" class="separator"><span>...</span></div>
-      <ng-container *ngIf="page !== -1">
-        <span *ngIf="page === currentPage" class="page-ref text-plain">{{page}}</span>
-        <a *ngIf="page !== currentPage" class="page-ref text-plain" (click)="setPage(page)">{{page}}</a>
-      </ng-container>
+<div class="flex-container align-items-center flex-wrap flex-column flex-row-md" [ngClass]="{'only-info-mode': showTotalInfo && !showPageSizeControl, 'page-control-mode': showPageSizeControl}">
+  <div *ngIf="showPageSizeControl || showTotalInfo" class="flex-container align-items-center justify-between page-size-wrap">
+    <div class="page-size-control text-plain flex-container align-items-center" *ngIf="showPageSizeControl">
+      Показать: <span (click)="togglePageSizeList($event)" libClickOutside (clickOutside)="isOpenedList = false" class="small-text color-gosblue pointer current-page" [class.opened]="isOpenedList">{{pageSize}}</span>
+      <div *ngIf="isOpenedList" class="page-size-list">
+        <div class="page-size-item small-text pointer" (click)="setPageSize(item)" [class.selected]="item === innerPageSize" *ngFor="let item of innerPageSizeList">
+          {{item}}
+        </div>
+      </div>
     </div>
-  </ng-container>
-  <div class="next-page nav-button" *ngIf="prevNextButtons" [ngClass]="{disabled: currentPage === lastPage}">
-    <a class="page-ref" (click)="setPageIf(currentPage + 1, currentPage !== lastPage)"></a>
+    <div class="page-info text-plain small-text mr-md-24" *ngIf="showTotalInfo">
+     Всего {{count}}
+    </div>
   </div>
-  <div class="last-page nav-button" *ngIf="tailButtons" [ngClass]="{disabled: currentPage === lastPage}" >
-    <a class="page-ref" (click)="setPageIf(lastPage, currentPage !== lastPage)"></a>
+  <div class="page-controls {{classList}}">
+    <div class="prev-page nav-button" *ngIf="prevNextButtons" [ngClass]="{disabled: currentPage === 1}">
+      <a class="page-ref" (click)="setPageIf(currentPage - 1, currentPage !== 1)"></a>
+    </div>
+    <ng-container *ngIf="numericButtons">
+      <div *ngFor="let page of numericControlStructure" class="nav-button page-item"
+           [ngClass]="{'current-page': page === currentPage}">
+        <div *ngIf="page === -1" class="separator"><span>...</span></div>
+        <ng-container *ngIf="page !== -1">
+          <span *ngIf="page === currentPage" class="page-ref text-plain">{{page}}</span>
+          <a *ngIf="page !== currentPage" class="page-ref text-plain" (click)="setPage(page)">{{page}}</a>
+        </ng-container>
+      </div>
+    </ng-container>
+    <div class="next-page nav-button" *ngIf="prevNextButtons" [ngClass]="{disabled: currentPage === lastPage}">
+      <a class="page-ref" (click)="setPageIf(currentPage + 1, currentPage !== lastPage)"></a>
+    </div>
   </div>
 </div>
