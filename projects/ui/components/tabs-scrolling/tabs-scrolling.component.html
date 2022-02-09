@@ -12,6 +12,7 @@
             <span *ngIf="translation === Translation.NONE">{{tab.name}}</span>
             <span *ngIf="translation === Translation.APP">{{tab.name | appTranslate}}</span>
             <span *ngIf="translation === Translation.LIB">{{tab.name | libTranslate}}</span>
+            <lib-counter *ngIf="tab.counter" class="counter" [counter]="tab.counter"></lib-counter>
           </span>
         </div>
       </ng-container>
