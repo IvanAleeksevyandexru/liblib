@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Location } from '@angular/common';
-import { Router } from '@angular/router';
-import { CountersService } from '@epgu/ui/services/counters';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Location} from '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CountersService} from '@epgu/ui/services/counters';
 
 
 @Component({
@@ -21,12 +21,14 @@ export class BackButtonComponent implements OnInit {
   constructor(
     private location: Location,
     private router: Router,
-    private countersService: CountersService
+    private countersService: CountersService,
+    private route: ActivatedRoute,
   ) {
   }
 
   public ngOnInit(): void {
   }
+
 
   public goBack(event: Event): void {
     if (event) {
@@ -35,12 +37,17 @@ export class BackButtonComponent implements OnInit {
     if (this.updateCounters) {
       this.update();
     }
-    if (this.handle) {
-      this.router.navigateByUrl(this.handle);
-    } else if (this.view.indexOf('custom') >= 0) {
-      this.customClick.emit();
+    const backUrl = this.route.snapshot.queryParamMap.get('back_url') || '';
+    if (backUrl) {
+      window.location.href = backUrl;
     } else {
-      this.location.back();
+      if (this.handle) {
+        this.router.navigateByUrl(this.handle);
+      } else if (this.view.indexOf('custom') >= 0) {
+        this.customClick.emit();
+      } else {
+        this.location.back();
+      }
     }
   }
 

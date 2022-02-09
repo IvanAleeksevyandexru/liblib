@@ -6,10 +6,11 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./button-for-input.component.scss']
 })
 export class ButtonForInputComponent implements OnInit {
-  @Input() public type: 'lookup' | 'send' = 'send';
+  @Input() public type: 'text' | 'lookup' | 'send' = 'send';
   @Input() public isLoading?: boolean;
   @Input() public isError?: boolean;
   @Input() public isActive?: boolean;
+  @Input() public text?: string;
 
   public ngOnInit() {
   }
