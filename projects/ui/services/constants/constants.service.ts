@@ -1246,4 +1246,10 @@ export class ConstantsService {
       'm': 'ь'
     }
   };
+
+  public static readonly MP_USER_AGENTS = [
+    'mp_gosuslugi_ios', 
+    'mp_gosuslugi_android', 
+    'mp_gosuslugi_huawei'
+  ];
 }

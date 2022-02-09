@@ -63,7 +63,7 @@ export class HelperService {
       evt.initEvent(eventType, bubbles, cancelable);
       return evt;
     } else {
-      return new Event(eventType, {bubbles, cancelable});
+      return new Event(eventType, { bubbles, cancelable });
     }
   }
 
@@ -213,12 +213,12 @@ export class HelperService {
 
   // выделяет все найденные подстроки в хтмл, предохраняя кейс оригинала: ("foUnd FoUnd", "found") -> <b>foUnd</b> <b>FoUnd</b>
   public static highlightSubstring(html: string, highlighQuery: string, caseSensitive: boolean,
-                                   fromStartOnly: boolean, template = ConstantsService.DEFAULT_HIGHLIGHT_TEMPLATE) {
+    fromStartOnly: boolean, template = ConstantsService.DEFAULT_HIGHLIGHT_TEMPLATE) {
     if (!highlighQuery) {
       return html;
     }
     let line = html;
-    const query = highlighQuery.replace(/\(/g, '\\(', ).replace(/\)/g, '\\)');
+    const query = highlighQuery.replace(/\(/g, '\\(',).replace(/\)/g, '\\)');
     const pattern = new RegExp('(' + (fromStartOnly ? '^' : '') + query + ')', caseSensitive ? 'g' : 'gi');
     const matches = [];
     let match;
@@ -275,7 +275,7 @@ export class HelperService {
     const leftIndent = clientRect.left - hostRect.left;
     const upperIndent = clientRect.top - hostRect.top;
     container.removeChild(probeElement);
-    return {left: leftIndent, top: upperIndent};
+    return { left: leftIndent, top: upperIndent };
   }
 
   // форсирует "подмешивание" переводов модуля к имеющемуся словарю языка
@@ -296,7 +296,7 @@ export class HelperService {
   public static markFormTouched(form: FormGroup) {
     const controls = form.controls;
     for (const controlName of Object.keys(controls)) {
-      controls[controlName].markAsTouched({onlySelf: false});
+      controls[controlName].markAsTouched({ onlySelf: false });
     }
   }
 
@@ -588,7 +588,7 @@ export class HelperService {
         const absoluteUrl = HelperService.appendQueryParams(absoluteBaseUrl, compoundQueryParams);
         window.open(absoluteUrl);
       } else {
-        this.router.navigate([baseUrl], urlIsCompound ? {queryParams: compoundQueryParams} : {});
+        this.router.navigate([baseUrl], urlIsCompound ? { queryParams: compoundQueryParams } : {});
       }
     } else {
       // TODO: need to change logic - internal host link cannot be a part of an application
@@ -596,7 +596,7 @@ export class HelperService {
         const relativeUrl = HelperService.internalUrlToRelative(baseUrl);
         this.router.navigateByUrl(
           this.router.createUrlTree(
-            [relativeUrl], urlIsCompound ? {queryParams: compoundQueryParams} : {}
+            [relativeUrl], urlIsCompound ? { queryParams: compoundQueryParams } : {}
           ));
       } else {
         const absoluteUrl = HelperService.appendQueryParams(baseUrl, compoundQueryParams);
@@ -620,30 +620,34 @@ export class HelperService {
   public get deviceTypeParam(): 'mob' | 'desk' | 'tab' {
     return this.deviceType;
   }
-    /**
-   * Проверка на идентичность объектов.
-   */
-     public static deepEqual(object1: any, object2: any): boolean {
-      if (object1 == null || object2 == null) {
-        return object2 === object1;
-      }
-      const keys1 = Object.keys(object1);
-      const keys2 = Object.keys(object2);
-      if (keys1.length !== keys2.length) {
+  /**
+ * Проверка на идентичность объектов.
+ */
+  public static deepEqual(object1: any, object2: any): boolean {
+    if (object1 == null || object2 == null) {
+      return object2 === object1;
+    }
+    const keys1 = Object.keys(object1);
+    const keys2 = Object.keys(object2);
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+    for (const key of keys1) {
+      const val1 = object1[key];
+      const val2 = object2[key];
+      const areObjects = HelperService.isObject(val1) && HelperService.isObject(val2);
+      if (
+        (areObjects && !HelperService.deepEqual(val1, val2)) ||
+        (!areObjects && val1 !== val2)
+      ) {
         return false;
       }
-      for (const key of keys1) {
-        const val1 = object1[key];
-        const val2 = object2[key];
-        const areObjects = HelperService.isObject(val1) && HelperService.isObject(val2);
-        if (
-          (areObjects && !HelperService.deepEqual(val1, val2)) ||
-          (!areObjects && val1 !== val2)
-        ) {
-          return false;
-        }
-      }
-      return true;
     }
+    return true;
+  }
 
+  public static isMpWebView(): boolean {
+    const userAgent = window.navigator.userAgent;
+    return ConstantsService.MP_USER_AGENTS.findIndex(item => userAgent.indexOf(item) !== -1) !== -1;
+  }
 }
