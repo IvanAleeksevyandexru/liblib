@@ -118,6 +118,7 @@ export class MenuService {
       'HEADER.MENU.SETTINGS': `${lkUrl}settings/account`,
       'HEADER.MENU.SETTINGS_MENU': `${lkUrl}settings/account`,
       'HEADER.MENU.LOGIN_ORG': `${appContext === 'PARTNERS' ? '/' : lkUrl}roles`,
+      'HEADER.MENU.LOGIN_ORG_FROM_PERSON': `${appContext === 'PARTNERS' ? '/' : lkUrl}roles`,
       'HEADER.MENU.SERVICE_CENTERS': `${partnersHost}service-centers`,
       'HEADER.MENU.POWERS': `${partnersHost}powers`,
       'HEADER.MENU.ACCESS_GROUPS': `${partnersHost}access-groups`,
@@ -172,6 +173,29 @@ export class MenuService {
   }
 
   public menuItemClick(link: MenuLink): void {
+    switch (link.mnemonic) {
+      case 'orders':
+        this.yaMetricService.callReachGoal('header', { 'header': ['Заявления'] });
+        break;
+      case 'docs':
+        this.yaMetricService.callReachGoal('header', { 'header': ['Документы'] });
+        break;
+      case 'payment':
+        this.yaMetricService.callReachGoal('header', { 'header': ['Платежи'] });
+        break;
+      case 'overview':
+        this.yaMetricService.callReachGoal('header', { 'header': ['Уведомления'] });
+        break;
+      case 'profile':
+        this.yaMetricService.callReachGoal('header', { 'header': ['Профиль'] });
+        break;
+      case 'loginAsOrganization':
+        this.yaMetricService.callReachGoal('header', { 'header': ['Войти в другой профиль'] });
+        break;
+    }
+
+
+
     if (link.mnemonic === 'docs') {
       const goal = this.viewType === 'LK' ? 'todocuments_from_lk_' : 'todocuments_from_main_new_';
       this.yaMetricService.callReachGoal(goal,
@@ -193,7 +217,7 @@ export class MenuService {
 
   public menuStaticItemClick(itemName: string, mnemonic): void {
     const staticUrl = this.getUrl(itemName);
-    return this.menuItemClick({url: staticUrl, mnemonic} as MenuLink);
+    return this.menuItemClick({ url: staticUrl, mnemonic } as MenuLink);
   }
 
 }

@@ -111,4 +111,5 @@ export interface LightTab {
   hidden?: boolean;
   active?: boolean;
   access?: UserAssuranceLevel[];
+  counter?: CounterData | number;
 }

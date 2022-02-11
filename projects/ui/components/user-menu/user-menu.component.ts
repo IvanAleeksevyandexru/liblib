@@ -79,7 +79,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     private menuService: MenuService,
     private authService: AuthService,
     private countersService: CountersService,
-    public  tabsService: TabsService,
+    public tabsService: TabsService,
     private router: Router,
     private changeDetector: ChangeDetectorRef,
     private yaMetricService: YaMetricService,
@@ -119,7 +119,9 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     } else {
       this.sendYaMetric('logout');
-      window.location.href = this.loadService.config.betaUrl + 'auth/logout?_=' + Math.random();
+      this.yaMetricService.callReachGoal('header', { 'header': ['Выйти'] }, () => {
+        window.location.href = this.loadService.config.betaUrl + 'auth/logout?_=' + Math.random();
+      });
     }
   }
 
@@ -160,7 +162,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       this.onClose();
     };
     if (tab.metric) {
-      const menuTabMetric = Object.assign({}, tab.metric, {name: 'new_lk_dashboard'});
+      const menuTabMetric = Object.assign({}, tab.metric, { name: 'new_lk_dashboard' });
       this.yaMetricService.callReachGoalParamsAsMap(menuTabMetric).then(proceed);
     } else {
       proceed();
@@ -188,7 +190,7 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     if (['B', 'L'].includes(this.user.type)) {
       this.titleChangeRole = 'HEADER.MENU.CHANGE_ROLE';
     } else {
-      this.titleChangeRole = 'HEADER.MENU.LOGIN_ORG';
+      this.titleChangeRole = 'HEADER.MENU.LOGIN_ORG_FROM_PERSON';
     }
   }
 

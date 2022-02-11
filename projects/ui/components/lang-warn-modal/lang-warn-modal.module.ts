@@ -6,18 +6,15 @@ import { BaseModule } from '@epgu/ui/base';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    TranslatePipeModule,
-    BaseModule,
-  ],
-  declarations: [
-    LangWarnModalComponent
-  ],
-  exports: [LangWarnModalComponent],
-  entryComponents: [
-    LangWarnModalComponent
-  ]
+    imports: [
+        CommonModule,
+        TranslatePipeModule,
+        BaseModule,
+    ],
+    declarations: [
+        LangWarnModalComponent
+    ],
+    exports: [LangWarnModalComponent]
 })
 export class LangWarnModalModule {
 }

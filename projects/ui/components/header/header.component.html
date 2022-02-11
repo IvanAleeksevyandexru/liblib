@@ -1,25 +1,22 @@
-<div class="header merge-header"  *ngIf="headerService.visible | async">
+<div class="header merge-header" *ngIf="headerService.visible | async">
   <div class="inner container flex-container justify-between align-items-center">
     <div class="logo-n-type-page-container flex-container align-items-center">
       <div class="catalog-menu-wrap" [class.hide-burger-desk]="hideBurgerDesc" *ngIf="showBurger">
         <ng-container *ngIf="burgerDemoMode; else burgerCatalogMode">
           <ng-container *ngIf="burgerWithCatalog; else burgerWithoutCatalog">
-            <lib-menu-catalog [languageChangeAvailable]="languageChangeAvailable"
-                              [hideBurgerDesc]="hideBurgerDesc"
-                              (menuCatalogOpened)="onMenuCatalogClick($event)">
+            <lib-menu-catalog [languageChangeAvailable]="languageChangeAvailable" [hideBurgerDesc]="hideBurgerDesc"
+              (menuCatalogOpened)="onMenuCatalogClick($event)">
             </lib-menu-catalog>
           </ng-container>
           <ng-template #burgerWithoutCatalog>
-            <lib-menu-catalog-simple
-              (menuCatalogOpened)="onMenuCatalogClick($event, true)">
+            <lib-menu-catalog-simple (menuCatalogOpened)="onMenuCatalogClick($event, true)">
             </lib-menu-catalog-simple>
           </ng-template>
         </ng-container>
         <ng-template #burgerCatalogMode>
           <lib-menu-catalog [languageChangeAvailable]="languageChangeAvailable"
-                            (menuCatalogOpened)="onMenuCatalogClick($event)"
-                            [hideBurgerDesc]="hideBurgerDesc"
-                            [alwaysShowLocationSelect]="alwaysShowLocationSelect">
+            (menuCatalogOpened)="onMenuCatalogClick($event)" [hideBurgerDesc]="hideBurgerDesc"
+            [alwaysShowLocationSelect]="alwaysShowLocationSelect">
           </lib-menu-catalog>
         </ng-template>
       </div>
@@ -31,25 +28,22 @@
       </div>
     </div>
     <div class="avatar-n-location-container flex-container justify-end align-items-center"
-         [class.catalog-menu-opened]="menuCatalogOpened">
+      [class.catalog-menu-opened]="menuCatalogOpened">
       <div class="hide show-md">
         <ul class="links flex-container-md">
           <div *ngIf="user.authorized" class="hide show-lg">
-            <li *ngFor="let link of links"
-                class="item align-items-center"
-                [ngClass]="{'mr-24 flex-container': link.showSeparatelyOnDesk}">
+            <li *ngFor="let link of links" class="item align-items-center"
+              [ngClass]="{'mr-24 flex-container': link.showSeparatelyOnDesk}">
               <ng-container *ngIf="link.showSeparatelyOnDesk">
                 <a *ngIf="!link.listeners || translate.currentLang !== 'ru'; else categoryLink"
-                   (click)="redirect($event, link)">
+                  (click)="redirect($event, link)">
                   <span *ngIf="translation === Translation.NONE">{{link.title}}</span>
                   <span *ngIf="translation === Translation.APP">{{link.title | appTranslate}}</span>
                   <span *ngIf="translation === Translation.LIB">{{link.title | libTranslate}}</span>
                 </a>
                 <ng-template #categoryLink>
-                  <a class="category-link"
-                     [href]="link.url"
-                     (mouseenter)="openCategories()"
-                     (mouseleave)="closeCategories()">
+                  <a class="category-link" [href]="link.url" (mouseenter)="openCategories()"
+                    (mouseleave)="closeCategories()">
                     <span *ngIf="translation === Translation.NONE">{{link.title}}</span>
                     <span *ngIf="translation === Translation.APP">{{link.title | appTranslate}}</span>
                     <span *ngIf="translation === Translation.LIB">{{link.title | libTranslate}}</span>
@@ -59,11 +53,14 @@
             </li>
           </div>
           <li class="item flex-container align-items-center mr-24">
-            <a href="{{loadService.config.betaUrl}}help" target="_self" (click)="sendMetric('clickButtonHelp')">{{'HEADER.HELP' | libTranslate}}</a>
+            <a href="{{loadService.config.betaUrl}}help" target="_self"
+              (click)="sendMetric($event, loadService.config.betaUrl + 'help', 'Помощь')">{{'HEADER.HELP' | libTranslate}}</a>
           </li>
           <li class="item flex-container align-items-center">
-            <a [href]="loadService.config.betaUrl + 'newsearch'">
-              <img class="search-icon" [src]="loadService.config.staticDomainLibAssetsPath + 'svg/search-icons/search-blue.svg'">
+            <a [href]="loadService.config.betaUrl + 'newsearch'"
+              (click)="sendMetric($event, loadService.config.betaUrl + 'newsearch', 'Поиск')">
+              <img class="search-icon"
+                [src]="loadService.config.staticDomainLibAssetsPath + 'svg/search-icons/search-blue.svg'">
             </a>
           </li>
         </ul>
@@ -75,24 +72,17 @@
            }">
         <div class="login-wrapper">
           <div class="login flex-container justify-end overflow-container">
-            <lib-login [useButton]="true" class="hide"
-                       [loginWithNode]="loginWithNode"
-                       [ngClass]="{'show': user.authorized, 'show-lg': !user.authorized}"
-                       [menuOpened]="userMenuState.active"
-                       (closeMenu)="hideUserMenu()"
-                       (userClick)="showUserMenu(false)"
-                       [userCounter]="userCounter">
+            <lib-login [useButton]="true" class="hide" [loginWithNode]="loginWithNode"
+              [ngClass]="{'show': user.authorized, 'show-lg': !user.authorized}" [menuOpened]="userMenuState.active"
+              (closeMenu)="hideUserMenu()" (userClick)="showUserMenu(false)" [userCounter]="userCounter">
             </lib-login>
-            <lib-login *ngIf="!user.authorized" [loginWithNode]="loginWithNode" [onlyText]="true" class="login-mobile-icon"></lib-login>
+            <lib-login *ngIf="!user.authorized" [loginWithNode]="loginWithNode" [onlyText]="true"
+              class="login-mobile-icon"></lib-login>
           </div>
         </div>
         <div class="user-menu-wrapper" *ngIf="user.authorized">
-          <lib-user-menu #menu
-                         [searchSputnikEnabled]="searchSputnikEnabled"
-                         [state]="userMenuState"
-                         [links]="links"
-                         [translation]="translation"
-                         [closeStatisticPopup$]="closeStatisticPopup$">>
+          <lib-user-menu #menu [searchSputnikEnabled]="searchSputnikEnabled" [state]="userMenuState" [links]="links"
+            [translation]="translation" [closeStatisticPopup$]="closeStatisticPopup$">>
           </lib-user-menu>
         </div>
       </div>

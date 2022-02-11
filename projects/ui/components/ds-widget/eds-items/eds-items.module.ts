@@ -8,18 +8,17 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    TranslatePipeModule,
-    EdsItemModule,
-    PagingControlsModule,
-    PerfectScrollbarModule
-  ],
-  declarations: [
-    EdsItemsComponent
-  ],
-  exports: [EdsItemsComponent],
-  entryComponents: [EdsItemsComponent],
+    imports: [
+        CommonModule,
+        TranslatePipeModule,
+        EdsItemModule,
+        PagingControlsModule,
+        PerfectScrollbarModule
+    ],
+    declarations: [
+        EdsItemsComponent
+    ],
+    exports: [EdsItemsComponent]
 })
 export class EdsItemsModule {
 }

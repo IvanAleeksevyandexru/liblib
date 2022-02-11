@@ -6,17 +6,16 @@ import { ControlsModule } from '@epgu/ui/controls';
 import { BaseModule } from '@epgu/ui/base';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ControlsModule,
-    TranslatePipeModule,
-    BaseModule
-  ],
-  declarations: [
-    MailDeliveryModalComponent
-  ],
-  exports: [MailDeliveryModalComponent],
-  entryComponents: [MailDeliveryModalComponent]
+    imports: [
+        CommonModule,
+        ControlsModule,
+        TranslatePipeModule,
+        BaseModule
+    ],
+    declarations: [
+        MailDeliveryModalComponent
+    ],
+    exports: [MailDeliveryModalComponent]
 })
 export class MailDeliveryModalModule {
 }

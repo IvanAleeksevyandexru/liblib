@@ -1,0 +1,91 @@
+<div class="file-uploader" [class.invalid]="invalidDisplayed">
+  <div class="file-container mb-24" *ngFor="let file of files; let i = index">
+    <div class="flex-container justify-between align-items-center">
+      <lib-file
+        [file]="{
+          text: file.name,
+          typeOfFile: file.type,
+          weight: file.size | fileSize
+        }"
+      ></lib-file>
+      <ng-container *ngIf="file.uploadInProcess">
+        <lib-throbber-hexagon></lib-throbber-hexagon>
+      </ng-container>
+      <a
+        *ngIf="!file.uploadInProcess"
+        title="Удалить"
+        class="block ml-8 ml-md-24"
+        (click)="remove(i)"
+      >
+        <span class="hide show-md">Удалить</span>
+        <img
+          [src]="staticDomainLibAssetsPath + 'svg/file-delete.svg'"
+          class="hide-md"
+        />
+      </a>
+    </div>
+    <p *ngIf="file.error" class="error-label mt-8">
+      {{ file.error }}
+    </p>
+  </div>
+
+  <div
+    *ngIf="files?.length < config.maxFilesLength"
+    class="chose-dnd"
+    libDragAndDrop
+    (filesDropped)="onFilesDropped($event)"
+  >
+    <p
+      *ngIf="!noMessages && errorMessage"
+      class="text-center color-tela-rossa mb-12"
+    >
+      {{ errorMessage }}
+    </p>
+
+    <p class="text-center text-plain text-help mb-12">
+      Перетащите {{ config.maxFilesLength === 1 ? 'файл' : 'файлы' }} или выберите на
+      компьютере
+    </p>
+
+    <p class="text-center link-plain mb-10" [hidden]="config.hidePhoto">
+      <span class="select-photo hide-md" (click)="photoInput.click()">
+        Сделать фото
+        <input
+          type="file"
+          class="file-input"
+          #photoInput
+          [multiple]="config.maxFilesLength > 1"
+          accept="image/*"
+          capture
+        />
+      </span>
+    </p>
+
+    <p class="text-center link-plain">
+      <span class="select-file" (click)="fileInput.click()">
+        Выбрать файл
+        <input
+          class="file-input"
+          #fileInput
+          [multiple]="config.maxFilesLength > 1"
+          [accept]="acceptedTypes"
+          type="file"
+        />
+      </span>
+    </p>
+  </div>
+
+  <div
+    class="text-plain text-help mt-4"
+    *ngIf="!config.withoutMessages && (config.maxFileSize || acceptedTypes)"
+  >
+    <ng-container *ngIf="acceptedTypes">
+      Допустимые форматы файла:
+      <span> {{ acceptedTypes }} </span>
+    </ng-container>
+    <ng-container *ngIf="config.maxFileSize">
+      Допустимый размер файла &mdash; до
+      {{ config.maxFileSize | fileSize }}
+    </ng-container>
+  </div>
+</div>

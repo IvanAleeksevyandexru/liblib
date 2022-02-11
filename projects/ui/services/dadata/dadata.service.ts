@@ -30,6 +30,7 @@ export class DadataService implements AutocompleteSuggestionProvider {
   public canOpenFields = new BehaviorSubject<boolean>(false);
   public isOpenedFields = new BehaviorSubject<boolean>(false);
   public isWidgetVisible = new BehaviorSubject<boolean>(false);
+  public addLatinValidator = false;
 
   public kladrCode = '';
 
@@ -186,6 +187,26 @@ export class DadataService implements AutocompleteSuggestionProvider {
     this.initCheckboxChange('house', this.lastHouseValue);
     this.initCheckboxChange('apartment', this.lastApartmentValue);
     this.hideLevelsByDefault();
+  }
+
+  public updateValidationPattern(addLatinValidator: boolean): void {
+    this.addLatinValidator = addLatinValidator;
+    const patternValidator = `А-Яа-яёЁ${addLatinValidator ? 'A-Za-z' : ''}`
+    const validation = [Validators.pattern(`(^([-${patternValidator}0-9,.();№N\'_+<>\\\\/"\\sIVX]+)$)|(^$)`)];
+    const controls = ['region',
+      'city',
+      'district',
+      'town',
+      'inCityDist',
+      'street',
+      'additionalArea',
+      'additionalStreet',
+      'house',
+      'building1',
+      'building2',
+      'apartment'];
+    controls.forEach(controlName => this.form.get(controlName).setValidators(validation));
+    this.form.updateValueAndValidity();
   }
 
   private initCheckboxChange(checkboxName: string, field: string): void {
@@ -444,12 +465,13 @@ export class DadataService implements AutocompleteSuggestionProvider {
 
   public setErrorsByLevel(level: number, needSkipStreet: boolean = false): void {
     const errorFields = this.errorDependencyFields[level];
+    const patternValidator = `А-Яа-яёЁ${this.addLatinValidator ? 'A-Za-z' : ''}`
     if (errorFields && errorFields.length) {
       errorFields.forEach((key) => {
         const controlConfig = this.formConfig[this.levelMap[key]];
         const control = this.getFormControlByLevel(key);
         const isHiddenLvl = this.isElementHidden(this.levelMap[key]);
-        controlConfig.regExpInvalid = !new RegExp('(^([-А-Яа-яёЁ0-9IVXLCivxlc,.();№N\'_+<>\\\\/"\\s]+)$)|(^$)').test(control.value ? control.value : '');
+        controlConfig.regExpInvalid = !new RegExp(`(^([-${patternValidator}0-9IVXLCivxlc,.();№N\'_+<>\\\\/"\\s]+)$)|(^$)`).test(control.value ? control.value : '');
         let isInvalid = false;
         if (!controlConfig.regExpInvalid) {
           switch (key) {
