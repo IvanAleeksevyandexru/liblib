@@ -270,8 +270,8 @@ export class BaseMaskedInputComponent
 
   public clearValue(e: Event) {
     if (!this.disabled) {
-      this.writeValue(null);
-      this.commit(null);
+      this.writeValue('');
+      this.commit('');
       this.cleared.emit();
       this.returnFocus(e);
     }

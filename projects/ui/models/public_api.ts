@@ -16,6 +16,7 @@ export * from './ds.plugin.model';
 export * from './esia-error-response';
 export * from './feed';
 export * from './file-link';
+export * from './file-upload';
 export * from './footer.model';
 export * from './frame-type';
 export * from './http-options';
