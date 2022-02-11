@@ -1,0 +1,43 @@
+.file-uploader {
+  .hint {
+    line-height: 24px;
+    color: #66727f;
+  }
+
+  .chose-dnd {
+    border: 2px dashed #99b1e6;
+    border-radius: 12px;
+    padding: 24px 48px;
+
+    @media all and (min-width: 767px) {
+      padding: 24px 0;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .select-file,
+    .select-photo {
+      padding: 4px 0 4px 32px;
+      background: url(../../../assets/svg/file-uploader.svg) no-repeat 0 center;
+    }
+
+    .select-photo {
+      background: url(../../../assets/svg/photo-camera.svg) no-repeat 0 center;
+    }
+  }
+
+  &.invalid {
+    .chose-dnd {
+      border: none;
+      background: rgba(238, 63, 88, 0.16);
+    }
+  }
+}
+
+.file-container {
+  border: 2px dashed #99b1e6;
+  border-radius: 12px;
+  padding: 24px;
+}
