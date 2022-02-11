@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoadService } from '@epgu/ui/services/load';
 import { Coords, Region, RegionSuggestion } from '@epgu/ui/models';
-import { LookupProvider } from '@epgu/ui/models/dropdown';
+import { LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
 import { PlatformLocation } from '@angular/common';
 import { CountersService } from '@epgu/ui/services/counters';
 import { CookieService } from '@epgu/ui/services/cookie';
@@ -83,18 +83,18 @@ export class LocationService {
       });
   }
 
-  public getSearchRegionProvider(): LookupProvider {
+  public getSearchRegionProvider(): LookupPartialProvider {
     const http = this.http;
     const loadService = this.loadService;
     return {
-      search(query: string, configuration?: { [name: string]: any }) {
+      searchPartial(query: string, page: number, configuration?: { [name: string]: any }) {
         return http
           .get(`${loadService.config.nsiApiUrl}epgu/region/`, {
             withCredentials: true,
             params: {
-              pageNum: '0',
+              pageNum: page,
               pageSize: '10',
-              q: `${query}`
+              q: query
             }
           })
           .toPromise()
