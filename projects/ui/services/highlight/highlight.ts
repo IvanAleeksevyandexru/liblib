@@ -12,26 +12,21 @@ export class HighlightService {
   }
 
   /**
-   * метод поиска и выделения текста,
-   * при отсутствии значения - повторный поиск выполняется на протяжении
-   * двух секунд, на случай если искомый текст приходит от сервиса
+   * метод поиска и выделения текста
    */
   private static doHighlight(text: string, color = '#DDF5E7'): void {
     const win = (window as any);
     if (win.find && win.getSelection) {
-      const check = () => {                    
-        if (win.find(text)) {
-          document.designMode = 'on';
-          const sel = win.getSelection();
-          sel.collapse(document.body, 0);
-          while (win.find(text)) {
-            document.execCommand('hiliteColor', false, color);
-          }
-          sel.collapseToStart();
-          document.designMode = 'off';
+      if (win.find(text, false, true)) {
+        document.designMode = 'on';
+        const sel = win.getSelection();
+        sel.collapseToEnd();
+        while (win.find(text, false, true)) {
+          document.execCommand('hiliteColor', false, color);
         }
-      };
-      check();
+        sel.collapseToStart();
+        document.designMode = 'off';
+      }
     }
   }
 
@@ -39,10 +34,10 @@ export class HighlightService {
   public highlightTextFromQueryParam(paramName?: string | null, color?: string) {
     paramName = paramName || 'highlight';
     const text = this.route.snapshot.queryParamMap.get(paramName);
-    if (text) {   
+    if (text) {
       setTimeout(() => {
         this.highlight(text, color);
-      });       
+      });
     }
   }
 
