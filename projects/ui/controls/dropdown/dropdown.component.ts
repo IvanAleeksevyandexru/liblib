@@ -435,6 +435,9 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnChanges, DoCh
 
   public publishList(items: Array<ListItem>) {
     const alignedItems = this.listService.alignGroupsTreeIfNeeded(items, this.internalItems);
+    if (this.multi && this.internalSelected.length) {
+      alignedItems.forEach(it => it.selected = this.internalSelected.some(s => s.id === it.id));
+    }
     this.internalDisplayed = alignedItems;
     this.updateScrollHeight();
     this.listed.emit(alignedItems);
