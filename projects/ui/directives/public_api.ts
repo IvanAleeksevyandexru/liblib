@@ -1,5 +1,6 @@
 export * from './click-outside/index';
 export * from './common/index';
+export * from './dom-change/index';
 export * from './drag-and-drop/index';
 export * from './only-numbers/index';
 export * from './stop-click-propagation/index';
