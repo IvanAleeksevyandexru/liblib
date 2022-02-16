@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +13,7 @@ export class HighlightService {
   /**
    * метод поиска и выделения текста
    */
-  private static doHighlight(text: string, color = '#DDF5E7'): void {
+  private static doHighlight(text: string, color = '#FEF0CC'): void {
     const win = (window as any);
     if (win.find && win.getSelection) {
       if (win.find(text, false, true)) {
