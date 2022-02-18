@@ -246,7 +246,11 @@ export class FeedsService {
         url += 'organization-feed';
         break;
       case 'ELECTION_INFO':
-        url += `elections/candidate`;
+        if (feed.data?.linked_to) {
+          url = `${feed.data.linked_to}`;
+        } else {
+          url = this.loadService.config.electionLkuipCommissionDomain;
+        }
         break;
       case 'ESIGNATURE':
         url += `settings/signature`;

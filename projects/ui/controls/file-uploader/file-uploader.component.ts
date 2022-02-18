@@ -39,7 +39,7 @@ export interface FileUpload {
   uploadInProcess: boolean;
   file: File;
 }
-
+/** @deprecated Кандидат на удаление. Использовать FileDropControlComponent(lib-file-drop-control) */
 @Component({
   selector: 'lib-file-uploader',
   templateUrl: './file-uploader.component.html',
@@ -310,17 +310,23 @@ export class FileUploaderComponent implements OnInit, ControlValueAccessor, Vali
     this.photoInput.nativeElement.value = '';
     this.touched = true;
     const deletedFile = this.files[index];
-    const objectType = '2';
+
     if (this.storageServiceUrl && this.orderId && !deletedFile.error) {
       deletedFile.uploadInProcess = true;
-      this.fileUploaderService.deleteFileFromStorage(this.storageServiceUrl,
-        this.orderId.toString(),
-        objectType,
-        deletedFile.mnemonic).subscribe(() => {
-        deleteProcess(index, deletedFile, false);
-      }, () => {
-        deleteProcess(index, deletedFile, true);
-      });
+      this.fileUploaderService
+        .deleteFileFromStorage(this.storageServiceUrl, {
+          objectId: this.orderId.toString(),
+          objectTypeId: '2',
+          mnemonic: deletedFile.mnemonic,
+        })
+        .subscribe(
+          () => {
+            deleteProcess(index, deletedFile, false);
+          },
+          () => {
+            deleteProcess(index, deletedFile, true);
+          },
+        );
     } else {
       deleteProcess(index, deletedFile, false);
     }

@@ -327,6 +327,9 @@ export class MultilineInputComponent
     if (!html.startsWith('<div>')) {
       html = html.replace(/<div>/, '\n'); // первому диву может предшествовать текстовая нода
     }
+    html = html.replace(/&lt;script&gt;/g, '');  // удаляем теги script
+    html = html.replace(/&lt;\/script&gt;/g, '');  // удаляем теги script
+    html = html.replace(/<br>/g, '\n');  // brs -> \n
     html = html.replace(/<br>/g, '\n');  // brs -> \n
     html = html.replace(/<br\/>/, '\n');
     html = html.replace(/<div>\n<\/div>/g, '\n'); // divs содержащие только br -> \n

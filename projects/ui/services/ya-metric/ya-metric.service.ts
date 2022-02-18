@@ -1,4 +1,4 @@
-import { Injectable, Optional } from '@angular/core';
+import { Injectable, NgZone, Optional } from '@angular/core';
 import { Renderer2, RendererFactory2 } from '@angular/core';
 import { isDevMode } from '@angular/core';
 import { LoadService } from '@epgu/ui/services/load';
@@ -53,7 +53,8 @@ export class YaMetricService {
 
   constructor(
     private rendererFactory: RendererFactory2,
-    @Optional() private loadService: LoadService
+    @Optional() private loadService: LoadService,
+    private ngZone: NgZone
   ) {
     this.renderer = this.rendererFactory.createRenderer(null, null);
     if (this.loadService && this.loadService.config) {
@@ -65,7 +66,7 @@ export class YaMetricService {
   public loadMetric(): void {
     ((m, e, t, r, i, k, a) => {
       // tslint:disable-next-line:only-arrow-functions
-      const addScript = function() {
+      const addScript = function () {
         (m[i].a = m[i].a || []).push(arguments);
       };
       m[i] = m[i] || addScript;
@@ -182,23 +183,25 @@ export class YaMetricService {
     }
 
     return new Promise((resolve, reject) => {
-      this.subs.error = this.isErrorLoadYaMetricScript$.pipe(
-        filter((res) => !!res)
-      ).subscribe(() => {
-        reject();
-        this.unsub();
-      });
+      this.ngZone.runOutsideAngular(() => {
+        this.subs.error = this.isErrorLoadYaMetricScript$.pipe(
+          filter((res) => !!res)
+        ).subscribe(() => {
+          resolve(false);
+          this.unsub();
+        });
 
-      this.renderer.listen('document', `yacounter${this.counter}inited`, (event: any) => {
-        this.isLoaded = true;
-        this.unsub();
-        if (!isDevMode()) {
-          // @ts-ignore
-          this.ym = ym;
-        } else {
-          console.log('ya metric disabled - environment.name === "local"');
-        }
-        resolve(true);
+        this.renderer.listen('document', `yacounter${this.counter}inited`, (event: any) => {
+          this.isLoaded = true;
+          this.unsub();
+          if (!isDevMode()) {
+            // @ts-ignore
+            this.ym = ym;
+          } else {
+            console.log('ya metric disabled - environment.name === "local"');
+          }
+          resolve(true);
+        });
       });
     });
   }

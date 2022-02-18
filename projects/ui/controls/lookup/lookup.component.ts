@@ -461,6 +461,9 @@ export class LookupComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
       let query = queryOrMarker === SHOW_ALL_MARKER ? '' : queryOrMarker as string;
       let promiseOrObservable = null;
       if (this.incrementalLoading) {
+        if (!this.query || (this.queryMinSymbolsCount && this.queryMinSymbolsCount > this.query.length)) {
+          return;
+        }
         promiseOrObservable = (provider as LookupPartialProvider).searchPartial(query, this.partialPageNumber, config);
       } else {
         if (this.prevQuery === this.query && this.cachedResponse) {

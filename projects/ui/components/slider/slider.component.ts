@@ -42,9 +42,9 @@ export class SliderComponent implements OnInit, AfterViewInit {
 
   @Output() public selectItem = new EventEmitter();
 
-  @ViewChild('sliderContainer', {static: true}) private sliderContainer: ElementRef;
-  @ViewChild('sliderWrapper', {static: true}) private sliderWrapper: ElementRef;
-  @ViewChild('sliderList', {static: true}) private sliderList: ElementRef;
+  @ViewChild('sliderContainer', { static: true }) private sliderContainer: ElementRef;
+  @ViewChild('sliderWrapper', { static: true }) private sliderWrapper: ElementRef;
+  @ViewChild('sliderList', { static: true }) private sliderList: ElementRef;
 
   private device: 'mob' | 'pad' | 'desk' = 'desk';
   public slideWidth: number;
@@ -78,6 +78,11 @@ export class SliderComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize')
   public onResize() {
+    this.buildSlider();
+  }
+
+  @HostListener('window:orientationchange', ['$event'])
+  public onOrientationChange() {
     this.buildSlider();
   }
 
