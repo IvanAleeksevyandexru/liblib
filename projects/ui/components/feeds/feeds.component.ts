@@ -344,7 +344,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public withReload(feed): boolean {
-    const otherDomainFeeds = ['KND_APPEAL', 'KND_APPEAL_DRAFT', 'PAYMENT'];
+    const otherDomainFeeds = ['KND_APPEAL', 'KND_APPEAL_DRAFT', 'PAYMENT', 'ELECTION_INFO'];
     return !(this.isLk && !otherDomainFeeds.includes(feed.feedType) || this.isPartners) || !!(feed.data && feed.data.p16url);
   }
 
