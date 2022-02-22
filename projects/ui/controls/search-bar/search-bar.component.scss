@@ -269,7 +269,7 @@
     width: 21px;
     height: 21px;
     top: 16px;
-    right: 24px;
+    right: 16px;
     background: url(../../../assets/svg/lookup-search-bar.svg) 0 0 no-repeat;
     outline: none;
     &.disabled {
@@ -284,25 +284,23 @@
     width: 24px;
     height: 24px;
     top: 14px;
-    right: 24px;
+    right: 16px;
     background: url(../../../assets/svg/input-clean.svg) 0 0 no-repeat;
     outline: none;
     cursor: pointer;
   }
   .search-in-progress {
     position: absolute;
-    width: 52px;
-    height: 52px;
-    top: 0;
-    right: 7px;
+    width: 24px;
+    height: 24px;
+    top: 14px;
+    right: 16px;
     .search-in-progress-cell {
       position: absolute;
       background: url(../../../assets/svg/search-loader.svg) 0 0 no-repeat;
       background-size: contain;
       width: 24px;
       height: 24px;
-      top: 12px;
-      left: 11px;
       animation: rotate 1.5s linear infinite;
     }
   }
