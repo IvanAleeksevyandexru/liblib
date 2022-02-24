@@ -62,7 +62,7 @@
 
 <ng-template #feedTemplate let-feed="feed" let-i="i">
   <div class="flex-container-md flex-container-lg align-items-center-lg feed-item-content">
-    <div class="feed-link flex-container align-items-center-md">
+    <div class="feed-link flex-container align-items-start-md">
       <div class="feed-type-block flex-container align-items-center">
         <lib-feed-icon [ipshStatus]="getIpshStatus(feed)" [title]="feed.title" [status]="feed.status"></lib-feed-icon>
         <div *ngIf="page !== 'orders' && page !== 'drafts'" class="ml-24">
