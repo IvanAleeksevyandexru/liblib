@@ -340,6 +340,7 @@ export class FeedsService {
         type = 'Обжалования';
         break;
       case 'ELECTION':
+      case 'ELECTION_INFO':
         type = 'Выборы';
         break;
       case 'PARTNERS_DRAFT':
