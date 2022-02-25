@@ -42,6 +42,7 @@ export interface OrderCreator {
 }
 
 export interface FeedDataModel {
+  fakeOrder?: boolean;
   p16url?: string;
   linked_to?: string;
   parentOrderId?: number;
