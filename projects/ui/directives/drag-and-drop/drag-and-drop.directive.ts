@@ -18,6 +18,8 @@ export class DragAndDropDirective {
   @HostListener('dragleave', ['$event']) public onDragLeave(event) {
     event.preventDefault();
     event.stopPropagation();
+
+    this.filesOver = false;
   }
 
   @HostListener('drop', ['$event']) public onDrop(event) {
