@@ -51,6 +51,8 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
   public faqs: FaqCategoriesCMS[];
   public backTitle: string;
   public itemsCounter: undefined | number;
+  public tabListName: string;
+  public activeRoleCode: string;
 
   public loaded: boolean;
   public regionName = this.locationService.userSelectedRegionName;
@@ -69,6 +71,9 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
 
   public ngOnInit(): void {
     this.setItemCounters();
+    this.loadService.userTypeNA$.subscribe(type => {
+      this.activeRoleCode = type;
+    });
   }
 
   public setItemCounters() {
@@ -140,6 +145,7 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
       )
     ]).pipe(
       switchMap((data: [PopularFederal, RegionalPopular[], FaqCategories]) => {
+        this.tabListName = data[0].name;
         if (this.catalogTabsService.catalogTabsData[this.code] && this.catalogTabsService.getDataCatalogStoreData(this.code)[3]) {
           return of(this.catalogTabsService.getDataCatalogStoreData(this.code));
         }
@@ -231,11 +237,24 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
   }
 
   public goToPopular(item: any): void {
+    let yaParams = {};
     this.catalogClose.emit();
-    let yaParams = {
-      'main-header': {}
+
+    if (this.activeRoleCode === 'P') {
+      yaParams = {
+        ['Бургер']: {
+          ['для граждан']: {
+            [this.tabListName] : item.name
+          }
+        }
+      };
+    } else {
+      yaParams = {
+        'main-header': {}
+      };
+      yaParams['main-header'][this.code] = [item.code];
     }
-    yaParams['main-header'][this.code] = [item.code];
+
     this.yaMetricService.callReachGoal('main-page', yaParams, () => {
       location.href = item.type === 'LINK' ? item.url : `${this.loadService.config.betaUrl}${item.url}`;
     });
@@ -250,11 +269,11 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
   public goToDepartment(departmentPassport: CatalogServiceDepartment): void {
     let yaParams = {
       'main-header': {}
-    }
+    };
     yaParams['main-header'][this.code] = [departmentPassport.code];
 
     this.yaMetricService.callReachGoal('main-page', yaParams, () => {
       location.href = `${this.loadService.config.betaUrl}${departmentPassport.url}`;
-    });    
+    });
   }
 }
