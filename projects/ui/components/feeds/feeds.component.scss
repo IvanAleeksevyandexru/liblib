@@ -26,9 +26,15 @@
   width: 100%;
 }
 
+.feed-title {
+  font-weight: 400;
+  font-family: Lato, Arial, sans-serif;
+}
+
 .feed-header-unread {
   .feed-title {
     font-weight: bold;
+    font-family: Lato-Bold, Arial, sans-serif;
   }
 }
 

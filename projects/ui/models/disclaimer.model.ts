@@ -24,7 +24,6 @@ export class Disclaimer {
   public level: string;
   public message: string;
   public mnemonic: string;
-  public notificationEnabled: boolean;
   public show?: boolean;
   public loading?: boolean;
   public readOnly?: boolean;
@@ -45,7 +44,6 @@ export class Disclaimer {
     this.id = data.id;
     this.level = data.level.toLowerCase();
     this.mnemonic = data.mnemonic;
-    this.notificationEnabled = data.notificationEnabled;
     this.message = getMessage(data.messages);
     this.isPriority = data.isPriority;
     this.isHidden = data.isHidden;

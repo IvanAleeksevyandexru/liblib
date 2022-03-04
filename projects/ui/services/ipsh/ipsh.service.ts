@@ -10,7 +10,7 @@ import {
   BillResponse,
   BillsErrors,
   BillsRequestParams,
-  ErrorInfo,
+  ErrorInfo, PaymentStatusResponse,
   PayOption
 } from '@epgu/ui/models/bill';
 import {
@@ -468,5 +468,11 @@ export class IpshService {
   public getBillOrderData(uin: string) {
     const url = `${this.loadService.config.lkApiUrl}orders/orderData/${uin}`;
     return this.http.get(url, {withCredentials: true});
+  }
+
+  public getPaymentStatus(uin: string): Observable<PaymentStatusResponse> {
+    const url = `${this.loadService.config.ipshApi}payment/status`;
+    const params = { uin };
+    return this.http.get<PaymentStatusResponse>(url, { params, withCredentials: true });
   }
 }

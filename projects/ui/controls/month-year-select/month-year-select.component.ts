@@ -42,6 +42,10 @@ export class MonthYearSelectComponent implements OnInit, OnChanges {
 
   @ViewChild('container') private container: ElementRef;
 
+  private readonly ITEM_HEIGHT = 32;
+  private readonly JOINED_ITEM_HEIGHT = 36;
+  private readonly TOP_OFFSET = 78;
+
   private commit: (value: MonthYear) => void;
   private onTouchedCallback: () => void;
 
@@ -171,8 +175,8 @@ export class MonthYearSelectComponent implements OnInit, OnChanges {
       }
       const scrollableArea = selected.closest('.ps');
       if (scrollableArea) {
-        // высота итема списка 20, паддинги верх-низ у joinedView 8, у stdView 12, 110 отступ от верха (центровка)
-        setTimeout(() => scrollableArea.scrollTop = selectedIndex * (this.joinedView ? 36 : 44) - 110);
+        // высота итема списка 32, паддинги верх-низ у joinedView 8, у stdView 12, (110 - 32 = 78) отступ от верха (центровка)
+        setTimeout(() => scrollableArea.scrollTop = selectedIndex * (this.joinedView ? this.JOINED_ITEM_HEIGHT : this.ITEM_HEIGHT) - this.TOP_OFFSET);
       }
     }
   }
