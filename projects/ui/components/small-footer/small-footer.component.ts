@@ -3,6 +3,7 @@ import { LoadService } from '@epgu/ui/services/load';
 import { FooterService } from '@epgu/ui/services/footer';
 import { MainFooter, MainFooterBlockLink } from '@epgu/ui/models';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
+import { HelperService } from '@epgu/ui/services/helper';
 
 @Component({
   selector: 'lib-small-footer',
@@ -24,6 +25,9 @@ export class SmallFooterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    if (HelperService.isMpWebView()) {
+      this.footerService.setVisible(false);
+    }
   }
 
   public openLink(event: Event, link: MainFooterBlockLink): void {

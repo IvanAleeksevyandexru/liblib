@@ -119,6 +119,9 @@ export class HeaderComponent implements OnInit {
       this.isUnread = !!(counter && counter.unread);
     });
 
+    if (HelperService.isMpWebView()) {
+      this.headerService.setVisible(false);
+    }
   }
 
   public burgerWithCatalogShow(currentPath): void {
