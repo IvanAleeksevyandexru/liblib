@@ -40,7 +40,6 @@ export class SnippetsComponent implements OnInit {
       action: 'snippets',
       snippetCode,
       screen: this.loadService.attributes.deviceType
-
     });
   }
 

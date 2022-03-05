@@ -252,9 +252,14 @@ export class HeaderComponent implements OnInit {
   public sendMetric(evt, url: string, name: string) {
     evt.stopPropagation();
     evt.preventDefault();
-    this.yaMetricService.callReachGoal('header', { 'header': [name] }, () => {
+
+    if (this.loadService.config.isYaMetricEnabled) {
+      this.yaMetricService.callReachGoal('header', { 'header': [name] }, () => {
+        window.location.href = url;
+      });
+    } else {
       window.location.href = url;
-    });
+    }    
   }
 }
 
