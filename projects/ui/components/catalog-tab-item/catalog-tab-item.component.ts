@@ -240,7 +240,7 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
     let yaParams = {};
     this.catalogClose.emit();
 
-    if (this.activeRoleCode === 'P') {
+    if (this.activeRoleCode === 'P' && this.viewType === 'side-view') {
       yaParams = {
         ['Бургер']: {
           ['для граждан']: {
