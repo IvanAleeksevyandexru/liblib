@@ -39,14 +39,23 @@ export class SmallFooterComponent implements OnInit {
     const yaParams = {
       footer: [link.title]
     }
-    this.yaMetric.callReachGoal('footer', yaParams, () => {
-      setTimeout(() => {
-        if (link.target === '_blank') {
-          window.open(link.url, '_blank', 'noopener noreferrer');
-        } else {
-          location.href = link.url;
-        }
-      }, 300);
-    });
+
+    if (this.loadService.config.isYaMetricEnabled) {
+      this.yaMetric.callReachGoal('footer', yaParams, () => {
+        setTimeout(() => {
+          if (link.target === '_blank') {
+            window.open(link.url, '_blank', 'noopener noreferrer');
+          } else {
+            location.href = link.url;
+          }
+        }, 300);
+      });
+    } else {
+      if (link.target === '_blank') {
+        window.open(link.url, '_blank', 'noopener noreferrer');
+      } else {
+        location.href = link.url;
+      }
+    } 
   }
 }
