@@ -225,6 +225,10 @@ b, strong, .bold {
       margin-right: 12px;
       vertical-align: middle;
     }
+
+    &:first-child {
+      margin-top: 0;
+    }
   }
 }
 
@@ -251,6 +255,8 @@ ul.list-blue-dotted {
     }
 
     ul {
+      margin-top: 12px;
+
       @include inside-dashed-list();
     }
 
@@ -269,6 +275,8 @@ ul.list-decimal {
     }
 
     ul {
+      margin-top: 12px;
+
       @include inside-dashed-list();
     }
   }
