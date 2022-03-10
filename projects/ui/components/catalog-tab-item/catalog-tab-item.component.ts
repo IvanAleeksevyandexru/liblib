@@ -244,7 +244,7 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
       yaParams = {
         ['Бургер']: {
           ['для граждан']: {
-            [this.tabListName] : item.name
+            [this.tabListName] : [item.name]
           }
         }
       };
