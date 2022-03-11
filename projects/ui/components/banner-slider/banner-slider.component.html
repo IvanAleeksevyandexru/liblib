@@ -29,6 +29,7 @@
             [noBorderRadius]="true"
             [noPadding]="noPadding"
             [needContainer]="needContainer"
+            [inSlider]="true"
           ></lib-static-banner>
         </div>
       </div>
@@ -64,10 +65,11 @@
           [path]="path + '.' + banner.mnemonic"
           [closable]="false"
           [noBorder]="true"
-          [noBorderRadius]="templateType === 'portal-main-page-lower' ? false : true"
+          [noBorderRadius]="templateType !== 'portal-main-page-lower'"
           [noPadding]="true"
           [needContainer]="needContainer"
           [templateType]="templateType"
+          [inSlider]="true"
         ></lib-static-banner>
       </div>
     </div>

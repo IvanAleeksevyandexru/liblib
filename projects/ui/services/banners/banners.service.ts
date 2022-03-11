@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { LoadService } from '@epgu/ui/services/load';
 import { BannerGroup } from '@epgu/ui/models';
 import { tap } from 'rxjs/operators';
@@ -39,10 +39,19 @@ export class BannersService {
     }).pipe(tap((data: BannerGroup[]) => this.setBanners(data)));
   }
 
-  public closeBanner(bannerMnemonic: string): Observable<void> {
-    return this.http.delete<void>(this.config.quadrupelUrl + 'banners/' + bannerMnemonic, {
-      withCredentials: true
-    }).pipe();
+  public closeBanner(bannerMnemonic: string, bCode?: string): void {
+    if (this.loadService.user.authorized) {
+      let params = new HttpParams();
+      if (bCode) {
+        params = params.append('bCode', bCode);
+      }
+      this.http.delete<void>(this.config.quadrupelUrl + 'banners/' + bannerMnemonic, {
+        withCredentials: true,
+        params
+      }).subscribe();
+    } else if (bCode) {
+      this.sendTargetBannersStatistic([bCode], 'CLOSE');
+    }
   }
 
   public closeStaticBanner(bannerMnemonic: string): void {
@@ -74,4 +83,28 @@ export class BannersService {
     this.yaMetricService.initBannerPlaceYaMetric(data);
   }
 
+  public getBannersBCodes(data: BannerGroup[]): string[] {
+    const bCodes = [];
+    if (data?.length) {
+      data.forEach(group => {
+        if (group.banners?.length) {
+          group.banners.forEach(item => {
+            if (item.bcode) {
+              bCodes.push(item.bcode);
+            }
+          });
+        }
+      });
+    }
+    return bCodes;
+  }
+
+  public sendTargetBannersStatistic(bCodes: string[], evtType: 'VIEW' | 'CLICK' | 'CLOSE'): void {
+    if (bCodes?.length) {
+      this.http.get(`${this.loadService.config.quadrupelUrl}bstats`, {
+        withCredentials: true,
+        params: { bCodes: bCodes.toString(), evtType }
+      }).subscribe();
+    }
+  }
 }
