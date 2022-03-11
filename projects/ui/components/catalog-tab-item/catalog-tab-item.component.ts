@@ -267,10 +267,24 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
   }
 
   public goToDepartment(departmentPassport: CatalogServiceDepartment): void {
-    let yaParams = {
-      'main-header': {}
-    };
-    yaParams['main-header'][this.code] = [departmentPassport.code];
+    let yaParams = {};
+
+    if (this.activeRoleCode === 'P' && this.viewType === 'side-view') {
+      yaParams = {
+        ['Бургер']: {
+          ['для граждан']: {
+            ['Ведомства'] : [departmentPassport.name]
+          }
+        }
+      };
+    } else {
+      yaParams = {
+        'main-header': {}
+      };
+      yaParams['main-header'][this.code] = [departmentPassport.code];
+    }
+
+    console.log(yaParams);
 
     this.yaMetricService.callReachGoal('main-page', yaParams, () => {
       location.href = `${this.loadService.config.betaUrl}${departmentPassport.url}`;
