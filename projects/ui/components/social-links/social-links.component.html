@@ -1,28 +1,48 @@
 <div class="social-wrapper">
   <div class="flex-container">
-    <a class="social-link" href="{{config.socialNetworks.vk}}" (click)="openSocial($event,'vk')" target="_blank">
+    <a *ngIf="config.socialNetworks.vk"
+       class="social-link"
+       href="{{config.socialNetworks.vk}}"
+       (click)="openSocial($event,'vk')"
+       target="_blank">
       <img class="unhover" [src]="config.staticDomainLibAssetsPath + 'svg/social-icons/vk-gray.svg'">
       <img class="hover" [src]="config.staticDomainLibAssetsPath + 'svg/social-icons/vk-blue.svg'">
     </a>
-    <a class="social-link" href="{{config.socialNetworks.ok}}" (click)="openSocial($event,'ok')" target="_blank">
+    <a *ngIf="config.socialNetworks.ok"
+       class="social-link"
+       href="{{config.socialNetworks.ok}}"
+       (click)="openSocial($event,'ok')"
+       target="_blank">
       <img class="unhover" [src]="config.staticDomainLibAssetsPath + 'svg/social-icons/ok-gray.svg'">
       <img class="hover" [src]="config.staticDomainLibAssetsPath + 'svg/social-icons/ok-orange.svg'">
     </a>
-    <a class="social-link" href="{{config.socialNetworks.fb}}" (click)="openSocial($event,'facebook')" target="_blank">
+<!--    <a *ngIf="config.socialNetworks.fb"
+       class="social-link"
+       href="{{config.socialNetworks.fb}}"
+       (click)="openSocial($event,'facebook')"
+       target="_blank">
       <img class="unhover" [src]="config.staticDomainLibAssetsPath + 'svg/social-icons/facebook-gray.svg'">
       <img class="hover" [src]="config.staticDomainLibAssetsPath + 'svg/social-icons/facebook-blue.svg'">
-    </a>
-    <a class="social-link" href="{{config.socialNetworks.youtube}}" (click)="openSocial($event,'youtube')" target="_blank">
+    </a>-->
+    <a *ngIf="config.socialNetworks.youtube"
+       class="social-link"
+       href="{{config.socialNetworks.youtube}}"
+       (click)="openSocial($event,'youtube')"
+       target="_blank">
       <img class="unhover" [src]="config.staticDomainLibAssetsPath + 'svg/social-icons/youtube-gray.svg'">
       <img class="hover" [src]="config.staticDomainLibAssetsPath + 'svg/social-icons/youtube-colour.svg'">
     </a>
-    <a class="social-link" href="{{config.socialNetworks.tg}}" (click)="openSocial($event,'tg')" target="_blank">
+    <a *ngIf="config.socialNetworks.tg"
+       class="social-link"
+       href="{{config.socialNetworks.tg}}"
+       (click)="openSocial($event,'tg')"
+       target="_blank">
       <img class="unhover" [src]="config.staticDomainLibAssetsPath + 'svg/social-icons/telegram-gray.svg'">
       <img class="hover" [src]="config.staticDomainLibAssetsPath + 'svg/social-icons/telegram-blue.svg'">
     </a>
   </div>
   <!--<div class="flex-container mt-16">
-    <a class="social-link" href="{{config.socialNetworks.twitter}}" target="_blank">
+    <a ngIf="config.socialNetworks.twitter" class="social-link" href="{{config.socialNetworks.twitter}}" target="_blank">
       <img class="unhover" [src]="config.staticDomainLibAssetsPath + 'svg/social-icons/twitter-gray.svg'">
       <img class="hover" [src]="config.staticDomainLibAssetsPath + 'svg/social-icons/twitter-blue.svg'">
     </a>
