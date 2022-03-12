@@ -105,7 +105,13 @@
             </ng-template>
           </ng-container>
           <ng-template #draftFeed>
-            <h4 class="feed-title text-plain truncate" [innerHTML]="(feed.title + ' ' + feed.subTitle) | removeQuotes | highlight: search"></h4>
+            <ng-container *ngIf="!feed.data.fakeOrder; else fakeOrder">
+              <h4 class="feed-title text-plain truncate" [innerHTML]="(feed.title + ' ' + feed.subTitle) | removeQuotes | highlight: search"></h4>
+            </ng-container>
+            <ng-template #fakeOrder>
+              <h4 class="feed-title text-plain truncate" [innerHTML]="feed.title | removeQuotes | highlight: search"></h4>
+              <p class="small-text gray truncate mt-4" [innerHTML]="feed.subTitle | removeQuotes | highlight: search"></p>
+            </ng-template>
           </ng-template>
           <div class="small-text gray truncate mt-4" *ngIf="showExpiryForLk(feed)">{{feed.data.expiryDate | timeLeft}}</div>
         </ng-template>
