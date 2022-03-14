@@ -139,7 +139,9 @@ export class StaticBannerComponent implements OnInit, OnChanges {
     if (this.loadService.config.yaCounter) {
       this.yaMetricService.bannerClickYaMetric(this.mnemonic, this.isGeps);
     }
-    this.bannersService.sendTargetBannersStatistic([this.activeBanner.bcode], 'CLICK');
+    if (this.activeBanner?.bcode) {
+      this.bannersService.sendTargetBannersStatistic([this.activeBanner.bcode], 'CLICK');
+    }
   }
 
   private sendStatistic(): void {

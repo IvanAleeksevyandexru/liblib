@@ -40,7 +40,7 @@ export class BannersService {
   }
 
   public closeBanner(bannerMnemonic: string, bCode?: string): void {
-    if (this.loadService.user.authorized) {
+    if (this.loadService?.user?.authorized) {
       let params = new HttpParams();
       if (bCode) {
         params = params.append('bCode', bCode);
