@@ -255,9 +255,13 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
       yaParams['main-header'][this.code] = [item.code];
     }
 
-    this.yaMetricService.callReachGoal('main-page', yaParams, () => {
+    if (this.loadService.config.isYaMetricEnabled) {
+      this.yaMetricService.callReachGoal('main-page', yaParams, () => {
+        location.href = item.type === 'LINK' ? item.url : `${this.loadService.config.betaUrl}${item.url}`;
+      });
+    } else {
       location.href = item.type === 'LINK' ? item.url : `${this.loadService.config.betaUrl}${item.url}`;
-    });
+    }
   }
 
   public checkOldPortalBanner(): boolean {
@@ -286,8 +290,12 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
 
     console.log(yaParams);
 
-    this.yaMetricService.callReachGoal('main-page', yaParams, () => {
+    if (this.loadService.config.isYaMetricEnabled) {
+      this.yaMetricService.callReachGoal('main-page', yaParams, () => {
+        location.href = `${this.loadService.config.betaUrl}${departmentPassport.url}`;
+      });
+    } else {
       location.href = `${this.loadService.config.betaUrl}${departmentPassport.url}`;
-    });
+    }
   }
 }

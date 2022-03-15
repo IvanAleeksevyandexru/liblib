@@ -5,7 +5,6 @@ import {
   HostListener,
   Input,
   isDevMode,
-  NgModuleRef,
   OnDestroy,
   OnInit, Output,
   ViewChild
@@ -13,11 +12,9 @@ import {
 import { Category, MAIN_TABS, MenuLink, Tab, Tabs, UserMenuState } from '@epgu/ui/models';
 import { User } from '@epgu/ui/models/user';
 import { CounterData, CounterTarget } from '@epgu/ui/models/counter';
-import { Router } from '@angular/router';
 import { CountersService } from '@epgu/ui/services/counters';
 import { MenuService } from '@epgu/ui/services/menu';
 import { LoadService } from '@epgu/ui/services/load';
-import { ModalService } from '@epgu/ui/services/modal';
 import { AuthService } from '@epgu/ui/services/auth';
 import { TabsService } from '@epgu/ui/services/tabs';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
@@ -74,13 +71,10 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     public loadService: LoadService,
-    private modalService: ModalService,
-    private moduleRef: NgModuleRef<any>,
     private menuService: MenuService,
     private authService: AuthService,
     private countersService: CountersService,
     public tabsService: TabsService,
-    private router: Router,
     private changeDetector: ChangeDetectorRef,
     private yaMetricService: YaMetricService,
     private helperService: HelperService,
@@ -119,9 +113,13 @@ export class UserMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     } else {
       this.sendYaMetric('logout');
-      this.yaMetricService.callReachGoal('header', { 'header': ['Выйти'] }, () => {
+      if (this.loadService.config.isYaMetricEnabled) {
+        this.yaMetricService.callReachGoal('header', { 'header': ['Выйти'] }, () => {
+          window.location.href = this.loadService.config.betaUrl + 'auth/logout?_=' + Math.random();
+        });
+      } else {
         window.location.href = this.loadService.config.betaUrl + 'auth/logout?_=' + Math.random();
-      });
+      }
     }
   }
 

@@ -123,4 +123,11 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor, Validate
     this.focused = false;
   }
 
+  public labelClick(event: MouseEvent): void {
+    const elem = event.target as HTMLElement;
+    if (elem.tagName === 'A') {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+  }
 }

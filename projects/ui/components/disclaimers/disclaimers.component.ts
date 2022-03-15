@@ -19,7 +19,6 @@ export class DisclaimerComponent implements OnInit {
   public disclaimerPack: [Disclaimer[], Disclaimer[], Disclaimer[]] = [[], [], []];
   private user = this.loadService.user as User;
   private config = this.loadService.config;
-  public emailsFormGroup: FormGroup[] = [];
   private region = this.loadService.attributes.selectedRegion;
   private havePriority = 0; // если есть хоть один приоритетный - прячем все. Как только все приоритетные закрыты, показываем остальные
 
@@ -77,36 +76,6 @@ export class DisclaimerComponent implements OnInit {
         if (elem.isPriority) {
           this.havePriority++;
         }
-        // ставим подписку при необходимости
-        if (elem.notificationEnabled) {
-          elem.readOnly = false;
-          const email = (this.user.email && this.user.userType === 'P' && this.user.emailVerified) ? this.user.email : '';
-          this.emailsFormGroup[elem.id] = this.fb.group({
-            email: [email, Validators.compose([
-              Validators.required,
-              Validators.pattern(/^\S+@\S+$/),
-              Validators.maxLength(255)
-            ])]
-          });
-          if (email) {
-            elem.loading = true;
-            elem.readOnly = true; // чувак не может изменить почту т.к. она верифицирована
-            this.disclaimerService.checkSubscriptionDisclaimers(elem.id, email).subscribe(() => {
-                elem.loading = false;
-              },
-              (error) => {
-                elem.loading = false;
-                if (error.status === 409) {
-                  elem.notificationEnabled = false;
-                  elem.noticeEmail = email;
-                  elem.noticeText = 'DISCLAIMER.ALREADY_SUBSCRIBE';
-                } else {
-                  elem.noticeText = 'DISCLAIMER.ERROR';
-                }
-              }
-            );
-          }
-        }
       }
     });
   }
@@ -126,36 +95,6 @@ export class DisclaimerComponent implements OnInit {
 
   public showSubscription($event: MouseEvent | TouchEvent) {
     ($event.target as HTMLElement).nextElementSibling.classList.toggle('hide');
-  }
-
-  public sendSubscription(elem: Disclaimer) {
-    elem.loading = true;
-    const mainPagesUrls = ['/entrepreneur', '/legal-entity', '/', '/foreign-citizen', 'lk'];
-    const mnemonics = ['PGU', 'EPGU_V3', 'EPGU_V3_DESKTOP', 'EPGU_V3_MOBILE', 'SMU_MAIN'];
-    const email = this.emailsFormGroup[elem.id].get('email').value;
-    let url;
-    if (elem.mnemonic && mnemonics.indexOf(elem.mnemonic) !== -1) {
-      url = (mainPagesUrls.indexOf(location.pathname) !== -1 && !this.config.isLk) ? location.href : this.config.betaUrl;
-    } else {
-      url = location.href;
-    }
-    const data = {id: elem.id, email, url};
-    this.disclaimerService.sendSubscriptionDisclaimers(data).subscribe((res) => {
-        elem.notificationEnabled = false;
-        elem.noticeEmail = email;
-        elem.noticeText = 'DISCLAIMER.SUCCESS';
-        elem.loading = false;
-      },
-      (error) => {
-        if (error.status === 409) {
-          elem.notificationEnabled = false;
-          elem.noticeEmail = email;
-          elem.noticeText = 'DISCLAIMER.ALREADY_SUBSCRIBE';
-        } else {
-          elem.noticeText = 'DISCLAIMER.ERROR';
-        }
-        elem.loading = false;
-      });
   }
 
   public showDisclaimer(disclaimer: Disclaimer): boolean {

@@ -148,7 +148,9 @@ export class NotifierComponent implements OnInit, OnDestroy {
   }
 
   public closeNotifier(notifier: Notifier) {
-    notifier.onClose();
+    if (typeof notifier.onClose === 'function') {
+      notifier.onClose();
+    }
     this.removeNotifier(notifier);
   }
 }
