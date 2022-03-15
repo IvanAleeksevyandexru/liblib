@@ -47,6 +47,8 @@ export class ButtonComponent implements OnInit, AfterViewChecked, IButton {
     if (this.disabled || this.showLoader) {
       event.stopPropagation();
     }
+    const el = document.activeElement as HTMLElement;
+    el?.blur();
   }
 
   public setActive(active: boolean) {
