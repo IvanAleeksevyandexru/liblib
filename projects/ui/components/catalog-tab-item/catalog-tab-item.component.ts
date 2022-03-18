@@ -240,7 +240,7 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
     let yaParams = {};
     this.catalogClose.emit();
 
-    if (this.activeRoleCode === 'P' && this.viewType === 'side-view') {
+    if ((this.activeRoleCode === 'P' || this.activeRoleCode === 'PA') && this.viewType === 'side-view') {
       yaParams = {
         ['Бургер']: {
           ['для граждан']: {
@@ -273,7 +273,7 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
   public goToDepartment(departmentPassport: CatalogServiceDepartment): void {
     let yaParams = {};
 
-    if (this.activeRoleCode === 'P' && this.viewType === 'side-view') {
+    if ((this.activeRoleCode === 'P' || this.activeRoleCode === 'PA') && this.viewType === 'side-view') {
       yaParams = {
         ['Бургер']: {
           ['для граждан']: {
@@ -287,8 +287,6 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
       };
       yaParams['main-header'][this.code] = [departmentPassport.code];
     }
-
-    console.log(yaParams);
 
     if (this.loadService.config.isYaMetricEnabled) {
       this.yaMetricService.callReachGoal('main-page', yaParams, () => {
