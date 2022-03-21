@@ -240,7 +240,7 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
     let yaParams = {};
     this.catalogClose.emit();
 
-    if ((this.activeRoleCode === 'P' || this.activeRoleCode === 'PA') && this.viewType === 'side-view') {
+    if ((this.activeRoleCode === 'P' || this.activeRoleCode === 'I') && this.viewType === 'side-view') {
       yaParams = {
         ['Бургер']: {
           ['для граждан']: {
@@ -273,7 +273,7 @@ export class CatalogTabItemComponent implements OnInit, OnChanges {
   public goToDepartment(departmentPassport: CatalogServiceDepartment): void {
     let yaParams = {};
 
-    if ((this.activeRoleCode === 'P' || this.activeRoleCode === 'PA') && this.viewType === 'side-view') {
+    if ((this.activeRoleCode === 'P' || this.activeRoleCode === 'I') && this.viewType === 'side-view') {
       yaParams = {
         ['Бургер']: {
           ['для граждан']: {
