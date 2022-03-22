@@ -23,6 +23,7 @@ export interface BannerItemInterface {
   content: string;
   mnemonic: string;
   orderNumber: number;
+  bcode?: string;
 }
 
 export class Banner implements BannerItemInterface {
@@ -36,6 +37,9 @@ export class Banner implements BannerItemInterface {
     this.content = plain.content;
     this.mnemonic = plain.mnemonic;
     this.orderNumber = plain.orderNumber;
+    if (plain.bcode) {
+      this.bcode = plain.bcode;
+    }
   }
 
   public bgImage: string;
@@ -44,6 +48,7 @@ export class Banner implements BannerItemInterface {
   public content: string;
   public mnemonic: string;
   public orderNumber: number;
+  public bcode?: string;
 }
 
 export class BannerGroup implements BannerInterface {
