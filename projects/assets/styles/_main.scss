@@ -620,3 +620,9 @@ ul.list-dashed {
   }
 }
 
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+  ul.list-decimal {
+    margin-left: 28px;
+  }
+}
+
