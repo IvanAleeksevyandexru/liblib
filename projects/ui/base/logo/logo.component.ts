@@ -25,13 +25,9 @@ export class LogoComponent implements OnInit {
   public clickHandler(e, url: string): void {
     e.stopPropagation();
     e.preventDefault();
-    if (this.loadService.config.isYaMetricEnabled) {
-      this.yaMetricService.callReachGoal('header', { 'header': ['Главная'] }, () => {
-        window.location.href = url;
-      });
-    } else {
+    this.yaMetricService.callReachGoal('header', { 'header': ['Главная'] }, () => {
       window.location.href = url;
-    }
+    });
   }
 }
 

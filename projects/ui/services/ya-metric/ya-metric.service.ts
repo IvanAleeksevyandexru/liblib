@@ -91,15 +91,17 @@ export class YaMetricService {
 
   public callReachGoal(name, params = null, callback?): Promise<void> {
 
-    if (!this.loadService.config.isYaMetricEnabled) {
-      return;
-    }
-
     const doCallback = () => {
       if (typeof callback === 'function') {
         callback();
       }
     };
+
+    if (!this.loadService.config.isYaMetricEnabled) {
+      doCallback();
+      return;
+    }
+
     return this.onInit().then(() => {
       if (this.ym) {
         if (params) {
