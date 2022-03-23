@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChange
 import { Banner, BannerGroup } from '@epgu/ui/models';
 import { LoadService } from '@epgu/ui/services/load';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
+import { BannersService } from '@epgu/ui/services/banners';
 
 @Component({
   selector: 'lib-static-banner',
@@ -15,6 +16,7 @@ export class StaticBannerComponent implements OnInit, OnChanges {
   @Input() public path = '';
   @Input() public closable = undefined;
   @Input() public closePosition: 'top' | '' = '';
+  @Input() public inSlider = false; // true если используется в banner-slider.component
 
   @Input() public fixedHeight?: number = undefined;
   @Input() public noBorder = true;
@@ -55,12 +57,14 @@ export class StaticBannerComponent implements OnInit, OnChanges {
 
   constructor(
     private loadService: LoadService,
-    public yaMetricService: YaMetricService
+    public yaMetricService: YaMetricService,
+    private bannersService: BannersService,
   ) {
   }
 
   public ngOnInit() {
     this.update();
+    this.sendStatistic();
   }
 
   public ngOnChanges(changes: SimpleChanges) {
@@ -123,6 +127,10 @@ export class StaticBannerComponent implements OnInit, OnChanges {
   }
 
   public closeBanner() {
+    if (this.activeBanner) {
+      this.bannersService.closeBanner(this.activeBanner.mnemonic, this.activeBanner.bcode);
+    }
+
     this.closed = true;
     this.close.emit();
   }
@@ -130,6 +138,16 @@ export class StaticBannerComponent implements OnInit, OnChanges {
   public onBannerClick(): void {
     if (this.loadService.config.yaCounter) {
       this.yaMetricService.bannerClickYaMetric(this.mnemonic, this.isGeps);
+    }
+    if (this.activeBanner?.bcode) {
+      this.bannersService.sendTargetBannersStatistic([this.activeBanner.bcode], 'CLICK');
+    }
+  }
+
+  private sendStatistic(): void {
+    // Отправляем статистику только если это единичный баннер. Для слайдера отправиться общий запрос в компоненте banner-slider
+    if (!this.inSlider && this.activeBanner?.bcode) {
+      this.bannersService.sendTargetBannersStatistic([this.activeBanner.bcode], 'VIEW');
     }
   }
 }

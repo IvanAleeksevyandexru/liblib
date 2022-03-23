@@ -5,6 +5,7 @@ import { filter } from 'rxjs/operators';
 import { CommonController } from '@epgu/ui/directives';
 import { FooterService } from '@epgu/ui/services/footer';
 import { FooterCmsComponent } from './footer-cms/footer-cms.component';
+import { HelperService } from '@epgu/ui/services/helper';
 
 @Component({
   selector: 'lib-footer',
@@ -39,6 +40,9 @@ export class FooterComponent implements OnInit {
     const cf = this.cfr.resolveComponentFactory(FooterCmsComponent);
     if (this.viewContainerRef) {
       this.viewContainerRef.createComponent(cf, 0);
+    }
+    if (HelperService.isMpWebView()) {
+      this.footerService.setVisible(false);
     }
   }
 

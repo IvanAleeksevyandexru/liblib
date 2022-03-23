@@ -16,7 +16,7 @@ export class RedirectsService {
       '/profile/personal': '/info'
     };
     if (!isDevMode()) {
-      this.cookieService.set('lk-ul', '1');
+      this.cookieService.set('lkul', 'always');
       this.cookieService.set('old-lk', '1');
       location.href = urlsMap[location.pathname] || '/';
     }

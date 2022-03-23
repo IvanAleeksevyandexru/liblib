@@ -25,6 +25,7 @@ import {
 } from '@epgu/ui/models/drag-drop';
 import { HelperService } from '@epgu/ui/services/helper';
 import { interval, Subscription } from 'rxjs';
+import { BannersService } from '@epgu/ui/services/banners';
 
 export const DEFAULT_SLIDE_SHOW_INTERVAL = 6000;
 export const DEFAULT_SLIDE_TIME = 300;
@@ -43,6 +44,7 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
     private animationBuilder: AnimationBuilder,
     private dragDropManager: DragDropManager,
     private changeDetection: ChangeDetectorRef,
+    private bannersService: BannersService,
   ) {
   }
 
@@ -108,6 +110,7 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
 
   public ngOnInit() {
     this.update();
+    this.sendStatistic();
   }
 
   public ngOnDestroy() {
@@ -204,6 +207,7 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
       if (bannerIndex !== -1) {
         this.bannerList.splice(bannerIndex, 1);  // удаление на месте в клонированном массиве
       }
+      this.bannersService.closeBanner(this.activeBanner.mnemonic, this.activeBanner.bcode);
       if (this.bannerList.length) {
         if (bannerIndex >= this.bannerList.length) {
           bannerIndex--;
@@ -358,4 +362,10 @@ export class SliderBannerComponent implements OnInit, AfterViewInit, OnChanges, 
     return this.bannersFeedContainer.nativeElement.clientWidth;
   }
 
+  private sendStatistic(): void {
+    const bCodes = this.bannersService.getBannersBCodes(this.banners);
+    if (bCodes?.length) {
+      this.bannersService.sendTargetBannersStatistic(bCodes, 'VIEW');
+    }
+  }
 }
