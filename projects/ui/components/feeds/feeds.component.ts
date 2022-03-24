@@ -403,7 +403,11 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public isOrder(feed: FeedModel): boolean {
-    return ['ORDER', 'EQUEUE', 'APPEAL', 'CLAIM', 'COMPLEX_ORDER', 'SIGN'].includes(feed.feedType);
+    return ['ORDER', 'EQUEUE', 'APPEAL', 'CLAIM', 'COMPLEX_ORDER', 'SIGN', 'ESIGNATURE', 'KND_APPEAL'].includes(feed.feedType);
+  }
+
+  public isFeedback(feed: FeedModel): boolean {
+    return feed.feedType === 'FEEDBACK';
   }
 
   public isMain(): boolean {
@@ -669,7 +673,7 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
     if (this.isArchive) {
       return true;
     }
-    if (this.isOrder(feed)) {
+    if (this.isOrder(feed) || this.isFeedback(feed)) {
       return ['reject', 'executed'].includes(feed.status) && !feed.unread;
     }
     if (this.isDraft(feed)) {
