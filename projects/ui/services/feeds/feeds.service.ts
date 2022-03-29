@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { LoadService } from '@epgu/ui/services/load';
-import { FeedModel, FeedsParams } from '@epgu/ui/models';
+import {FeedDataModel, FeedModel, FeedsParams} from '@epgu/ui/models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { throwError } from 'rxjs';
 import { format, formatISO, isValid, parse, parseISO } from 'date-fns';
@@ -305,7 +305,7 @@ export class FeedsService {
     return params;
   }
 
-  public getFeedTypeName(feedType: string): string {
+  public getFeedTypeName(feedType: string, feedData: FeedDataModel): string {
     let type = '';
     switch (feedType) {
       case 'ORDER':
@@ -367,6 +367,11 @@ export class FeedsService {
       default:
         type = 'Заявление';
     }
+    // ПМП/ПМЖ фейковый ORDER
+    if (feedType === 'DRAFT' && feedData?.fakeOrder) {
+      type = 'Заявление';
+    }
     return type;
   }
+
 }

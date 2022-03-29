@@ -664,6 +664,9 @@ export class FeedsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public showRemoveFeedButton(feed: FeedModel): boolean {
+    if (feed.feedType === 'DRAFT' && feed.data.fakeOrder) {
+      return false;
+    }
     const rightPage = ['drafts', 'partners_drafts', 'knd_appeal_draft'].includes(this.page) ||
       this.page === 'events' && this.isDraft(feed);
     return rightPage && !feed.data.reminder && !this.isPaymentDraft(feed);

@@ -296,6 +296,24 @@
   background-image: url('../../../assets/svg/statuses/executed.svg');
 }
 
+// пмп/пмж
+.status-91,
+.status-93 {
+  background-image: url('../../../assets/svg/statuses/order_in_progress.svg');
+}
+
+.status-92,
+.status-96,
+.status-97 {
+  background-image: url('../../../assets/svg/statuses/reject.svg');
+}
+
+.status-94,
+.status-95 {
+  background-image: url('../../../assets/svg/statuses/executed.svg');
+}
+
+
 .feed-im .status-edit, .status-50 {
   background-image: url('../../../assets/svg/statuses/im.svg');
 }

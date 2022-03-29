@@ -66,7 +66,7 @@
       <div class="feed-type-block flex-container align-items-center">
         <lib-feed-icon [ipshStatus]="getIpshStatus(feed)" [title]="feed.title" [status]="feed.status"></lib-feed-icon>
         <div *ngIf="page !== 'orders' && page !== 'drafts'" class="ml-24">
-          <div class="text-plain">{{getFeedTypeName(feed.feedType)}}</div>
+          <div class="text-plain">{{getFeedTypeName(feed.feedType, feed.data)}}</div>
           <div class="small-text gray mt-4">
             <div *ngIf="isSnippetTypeIM(feed)" [innerHTML]="feed.date | timeToEvent:getSnippetType(feed):'':inlineDate"></div>
             <div *ngIf="isSnippetTypeNotIM(feed)" [innerHTML]="feed.date | timeToEvent:getSnippetType(feed):feed.feedType:inlineDate"></div>
@@ -105,7 +105,13 @@
             </ng-template>
           </ng-container>
           <ng-template #draftFeed>
-            <h4 class="feed-title text-plain truncate" [innerHTML]="(feed.title + ' ' + feed.subTitle) | removeQuotes | highlight: search"></h4>
+            <ng-container *ngIf="!feed.data.fakeOrder; else fakeOrder">
+              <h4 class="feed-title text-plain truncate" [innerHTML]="(feed.title + ' ' + feed.subTitle) | removeQuotes | highlight: search"></h4>
+            </ng-container>
+            <ng-template #fakeOrder>
+              <h4 class="feed-title text-plain truncate" [innerHTML]="feed.subTitle | removeQuotes | highlight: search"></h4>
+              <p class="small-text gray truncate mt-4" [innerHTML]="feed.title | removeQuotes | highlight: search"></p>
+            </ng-template>
           </ng-template>
           <div class="small-text gray truncate mt-4" *ngIf="showExpiryForLk(feed)">{{feed.data.expiryDate | timeLeft}}</div>
         </ng-template>
