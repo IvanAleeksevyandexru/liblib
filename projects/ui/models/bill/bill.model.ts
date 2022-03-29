@@ -27,6 +27,7 @@ export enum PayMethodCode {
   MOBTEL = 'MOBTEL',
   QIWI = 'QIWI',
   YADENGI = 'YADENGI',
+  YANDEX_PAY = 'YANDEX_PAY',
   elplat = 'elplat',
   webmoney = 'webmoney'
 }
