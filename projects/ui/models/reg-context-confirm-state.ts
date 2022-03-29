@@ -7,4 +7,5 @@ export type RegContextConfirmState =
   'PS' | // simplified
   'PR' | // simplified ready to confirm
   'PV' | // verified
-  'PT'; // trusted
+  'PT'| // trusted
+  'KD'; // child account
