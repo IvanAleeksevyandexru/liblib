@@ -71,6 +71,7 @@ import {
   isValid,
   parse,
   setYear,
+  setMonth,
   startOfDay,
   startOfMonth,
   startOfYear,
@@ -889,7 +890,7 @@ export class DatePickerComponent implements OnInit, OnChanges, AfterViewInit, Do
 
   private renderSingleMonthGrid(output: Array<Array<DateProperties>>, monthShift: number): void {
     output.splice(0, output.length); // in-place clear
-    const firstDayOfMonth = startOfDay(startOfMonth(setYear(new Date(), this.activeMonthYear.year).setMonth(this.activeMonthYear.month + (monthShift || 0))));
+    const firstDayOfMonth = startOfDay(startOfMonth(setMonth(setYear(new Date(), this.activeMonthYear.year), this.activeMonthYear.month + (monthShift || 0))));
     const firstDayOfWeekInMonth = getISODay(firstDayOfMonth);
     const daysInMonth = getDaysInMonth(firstDayOfMonth);
     let week = 0;
